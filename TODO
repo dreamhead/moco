@@ -1,0 +1,3 @@
+* forward request to other site
+* response based on previous request
+* response with inputstream

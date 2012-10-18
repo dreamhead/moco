@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'checkstyle'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            'com.google.guava:guava:13.0',
+            'joda-time:joda-time:2.1',
+            'io.netty:netty:3.5.8.Final'
+    )
+
+    testCompile(
+            'junit:junit:4.10',
+            'org.mockito:mockito-all:1.9.0',
+            'org.apache.httpcomponents:httpcore:4.2.1',
+            'org.apache.httpcomponents:httpclient:4.2.1',
+            'org.apache.httpcomponents:fluent-hc:4.2.1',
+            'commons-logging:commons-logging:1.1.1',
+    )
+}
