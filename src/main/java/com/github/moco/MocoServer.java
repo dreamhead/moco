@@ -67,11 +67,11 @@ public class MocoServer {
         new AnyRequestSetting(this).response(response);
     }
 
-    public BaseRequestSetting withContent(String requestContent) {
+    public RequestSetting withContent(String requestContent) {
         return new ContentRequestSetting(this, requestContent);
     }
 
-    public BaseRequestSetting withUri(String uri) {
+    public RequestSetting withUri(String uri) {
         return new UriRequestSetting(this, uri);
     }
 }

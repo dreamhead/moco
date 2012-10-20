@@ -3,10 +3,7 @@ package com.github.moco;
 import com.github.moco.request.BaseRequestSetting;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
+import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -36,16 +33,21 @@ public class MocoHandler extends SimpleChannelHandler {
     private void writeResponse(Channel channel, HttpRequest request) {
         for (BaseRequestSetting requestSetting : requestSettings) {
             if (requestSetting.match(request)) {
-                channel.write(createResponse(requestSetting));
+                handleResponse(request, requestSetting, channel);
                 return;
             }
         }
 
         if (anyRequestSetting != null) {
-            channel.write(createResponse(anyRequestSetting));
+            handleResponse(request, anyRequestSetting, channel);
         } else {
             channel.write(new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
         }
+    }
+
+    private ChannelFuture handleResponse(HttpRequest request, BaseRequestSetting requestSetting, Channel channel) {
+        requestSetting.handleRequest(request, channel);
+        return channel.write(createResponse(requestSetting));
     }
 
     private DefaultHttpResponse createResponse(BaseRequestSetting setting) {
