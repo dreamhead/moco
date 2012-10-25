@@ -1,9 +1,9 @@
-package com.github.moco;
+package com.github.moco.internal;
 
-import com.github.moco.request.AnyRequestSetting;
-import com.github.moco.request.BaseRequestSetting;
-import com.github.moco.request.ContentRequestSetting;
-import com.github.moco.request.UriRequestSetting;
+import com.github.moco.RequestMatcher;
+import com.github.moco.Setting;
+import com.github.moco.handler.ContentHandler;
+import com.github.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -18,13 +18,13 @@ import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-public class MocoServer {
-    private int port;
+public class MocoHttpServer {
+    private final int port;
     private ServerBootstrap bootstrap;
-    private ChannelGroup allChannels = new DefaultChannelGroup();
+    private ChannelGroup allChannels;
     private final MocoHandler handler;
 
-    public MocoServer(int port) {
+    public MocoHttpServer(int port) {
         this.port = port;
         this.handler = new MocoHandler();
     }
@@ -48,8 +48,9 @@ public class MocoServer {
 
         bootstrap.setOption("child.tcpNoDelay", true);
         bootstrap.setOption("child.keepAlive", true);
-
         bootstrap.bind(new InetSocketAddress(port));
+
+        allChannels = new DefaultChannelGroup();
         allChannels.add(bootstrap.bind(new java.net.InetSocketAddress("localhost", port)));
     }
 
@@ -59,19 +60,14 @@ public class MocoServer {
     }
 
 
-    public void addRequestSettings(BaseRequestSetting requestSetting) {
-        this.handler.addRequestSetting(requestSetting);
+    public Setting request(RequestMatcher matcher) {
+        BaseSetting setting = new BaseSetting(matcher);
+        this.handler.addSetting(setting);
+        return setting;
     }
 
     public void response(String response) {
-        new AnyRequestSetting(this).response(response);
+        this.handler.setAnyResponseHandler(new ContentHandler(response));
     }
 
-    public RequestSetting withContent(String requestContent) {
-        return new ContentRequestSetting(this, requestContent);
-    }
-
-    public RequestSetting withUri(String uri) {
-        return new UriRequestSetting(this, uri);
-    }
 }

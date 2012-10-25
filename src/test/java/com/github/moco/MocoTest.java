@@ -1,9 +1,8 @@
 package com.github.moco;
 
+import com.github.moco.internal.MocoHttpServer;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoTest {
-
-    private MocoServer server;
+    private MocoHttpServer server;
 
     @Before
     public void setUp() throws Exception {
-        server = server(8080);
+        server = httpserver(8080);
     }
 
     @Test
@@ -42,7 +40,7 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_request() {
-        server.withContent("foo").response("bar");
+        server.request(eqContent("foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -60,7 +58,7 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_uri() {
-        server.withUri("/foo").response("bar");
+        server.request(eqUri("/foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -90,41 +88,5 @@ public class MocoTest {
                 }
             }
         });
-    }
-
-    @Test
-    public void should_call_function_specified_request() {
-        StubRequestHandler handler = new StubRequestHandler();
-        server.withUri("/foo").withHandler(handler).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Content content = Request.Get("http://localhost:8080/foo")
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        assertThat(handler.getResult(), is("/foo"));
-    }
-
-
-
-    private static class StubRequestHandler implements RequestHandler {
-        private String result;
-
-        public String getResult() {
-            return result;
-        }
-
-        @Override
-        public void handle(HttpRequest request, Channel channel) {
-            result = request.getUri();
-        }
     }
 }
