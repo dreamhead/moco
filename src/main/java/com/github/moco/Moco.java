@@ -8,14 +8,21 @@ import com.github.moco.model.ContentStream;
 import com.github.moco.model.Uri;
 
 import java.io.InputStream;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class Moco {
     public static MocoHttpServer httpserver(int port) {
         return new MocoHttpServer(port);
     }
 
+    public static RequestMatcher eq(String content) {
+        return eq(text(content));
+    }
+
     public static RequestMatcher eq(ContentStream stream) {
-        return new ContentMatcher(stream.asInputStream());
+        return new ContentMatcher(stream.asByteArray());
     }
 
     public static RequestMatcher eq(Uri uri) {
@@ -31,6 +38,15 @@ public class Moco {
     }
 
     public static ResponseHandler seq(String... contents) {
+        List<ContentStream> streams = newArrayList();
+        for (String content : contents) {
+            streams.add(text(content));
+        }
+
+        return new SequenceResponseHandler(streams.toArray(new ContentStream[streams.size()]));
+    }
+
+    public static ResponseHandler seq(ContentStream... contents) {
         return new SequenceResponseHandler(contents);
     }
 

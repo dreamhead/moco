@@ -1,25 +1,17 @@
 package com.github.moco.matcher;
 
 import com.github.moco.RequestMatcher;
-import com.google.common.io.CharStreams;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
 public class ContentMatcher implements RequestMatcher {
     private String expected;
 
-    public ContentMatcher(InputStream is) {
-        try {
-            this.expected = CharStreams.toString(new InputStreamReader(is));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public ContentMatcher(byte[] content) {
+        this.expected = new String(content);
     }
 
     @Override

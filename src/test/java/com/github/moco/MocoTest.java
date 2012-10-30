@@ -38,7 +38,59 @@ public class MocoTest {
     }
 
     @Test
+    public void should_return_expected_response_with_text_api() {
+        server.response(text("foo"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertContentFromUri("http://localhost:8080", "foo");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_from_stream() {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.response");
+
+        server.response(stream(is));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertContentFromUri("http://localhost:8080", "foo.response");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
     public void should_return_expected_response_based_on_specified_request() {
+        server.request(eq("foo")).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Content content = Request.Post("http://localhost:8080").bodyByteArray("foo".getBytes())
+                            .execute().returnContent();
+                    assertThat(content.asString(), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_request_with_text_api() {
         server.request(eq(text("foo"))).response(text("bar"));
 
         running(server, new Runnable() {
@@ -106,6 +158,24 @@ public class MocoTest {
     }
 
     @Test
+    public void should_return_content_one_by_one_with_text_api() {
+        server.request(eq(uri("/foo"))).response(seq(text("bar"), text("blah")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertContentFromUri("http://localhost:8080/foo", "bar");
+                    assertContentFromUri("http://localhost:8080/foo", "blah");
+                    assertContentFromUri("http://localhost:8080/foo", "blah");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
     public void should_return_content_from_specified_inputstream() {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.response");
 
@@ -128,6 +198,7 @@ public class MocoTest {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.request");
 
         server.request(eq(stream(is))).response("bar");
+
         running(server, new Runnable() {
             @Override
             public void run() {
@@ -147,8 +218,7 @@ public class MocoTest {
     }
 
     private String get(String uri) throws IOException {
-        Content content = Request.Get(uri)
-                .execute().returnContent();
+        Content content = Request.Get(uri).execute().returnContent();
         return content.asString();
     }
 }

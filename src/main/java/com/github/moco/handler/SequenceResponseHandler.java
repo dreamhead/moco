@@ -1,18 +1,19 @@
 package com.github.moco.handler;
 
+import com.github.moco.model.ContentStream;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 public class SequenceResponseHandler extends AbstractResponseHandler {
-    private String[] contents;
+    private ContentStream[] contents;
     private int index;
 
-    public SequenceResponseHandler(String[] contents) {
+    public SequenceResponseHandler(ContentStream[] contents) {
         this.contents = contents;
     }
 
     @Override
     protected void writeContent(ChannelBuffer buffer) {
-        buffer.writeBytes(contents[current()].getBytes());
+        buffer.writeBytes(contents[current()].asByteArray());
     }
 
     private int current() {

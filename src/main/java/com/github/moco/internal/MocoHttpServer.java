@@ -3,6 +3,7 @@ package com.github.moco.internal;
 import com.github.moco.RequestMatcher;
 import com.github.moco.Setting;
 import com.github.moco.handler.ContentHandler;
+import com.github.moco.model.ContentStream;
 import com.github.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
@@ -67,7 +68,14 @@ public class MocoHttpServer {
     }
 
     public void response(String response) {
-        this.handler.setAnyResponseHandler(new ContentHandler(response));
+        responseWithContentHandler(new ContentHandler(response));
     }
 
+    public void response(ContentStream stream) {
+        responseWithContentHandler(new ContentHandler(stream.asByteArray()));
+    }
+
+    private void responseWithContentHandler(ContentHandler contentHandler) {
+        this.handler.setAnyResponseHandler(contentHandler);
+    }
 }

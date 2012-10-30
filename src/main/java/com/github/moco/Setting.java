@@ -16,7 +16,7 @@ public abstract class Setting {
     }
 
     public void response(ContentStream stream) {
-        this.response(new ContentHandler(stream.asInputStream()));
+        this.response(new ContentHandler(stream.asByteArray()));
     }
 
     public void response(ResponseHandler handler) {
