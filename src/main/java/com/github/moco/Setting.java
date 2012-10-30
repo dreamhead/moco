@@ -1,7 +1,7 @@
 package com.github.moco;
 
 import com.github.moco.handler.ContentHandler;
-import com.github.moco.model.Stream;
+import com.github.moco.model.ContentStream;
 
 public abstract class Setting {
     protected final RequestMatcher matcher;
@@ -15,7 +15,7 @@ public abstract class Setting {
         this.response(new ContentHandler(content));
     }
 
-    public void response(Stream stream) {
+    public void response(ContentStream stream) {
         this.response(new ContentHandler(stream.asInputStream()));
     }
 

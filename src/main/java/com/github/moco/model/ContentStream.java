@@ -3,14 +3,14 @@ package com.github.moco.model;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-public class Stream {
+public class ContentStream {
     private InputStream is;
 
-    public Stream(String text) {
+    public ContentStream(String text) {
         this.is = new ByteArrayInputStream(text.getBytes());
     }
 
-    public Stream(InputStream is) {
+    public ContentStream(InputStream is) {
         this.is = is;
     }
 
