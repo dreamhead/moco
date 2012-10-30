@@ -4,13 +4,17 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class Stream {
-    private String text;
+    private InputStream is;
 
     public Stream(String text) {
-        this.text = text;
+        this.is = new ByteArrayInputStream(text.getBytes());
+    }
+
+    public Stream(InputStream is) {
+        this.is = is;
     }
 
     public InputStream asInputStream() {
-        return new ByteArrayInputStream(text.getBytes());
+        return is;
     }
 }

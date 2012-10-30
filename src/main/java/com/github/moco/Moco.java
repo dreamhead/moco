@@ -34,8 +34,8 @@ public class Moco {
         return new SequenceResponseHandler(contents);
     }
 
-    public static ResponseHandler stream(InputStream is) {
-        return new StreamResponseHandler(is);
+    public static Stream stream(InputStream is) {
+        return new Stream(is);
     }
 
     public static void running(MocoHttpServer httpServer, Runnable runnable) {

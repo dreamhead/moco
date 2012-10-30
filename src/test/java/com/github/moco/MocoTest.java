@@ -115,7 +115,26 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080/foo", "foo");
+                    assertContentFromUri("http://localhost:8080/foo", "foo.response");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_match_content_from_specified_inputstream() {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.request");
+
+        server.request(eq(stream(is))).response("bar");
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Content content = Request.Post("http://localhost:8080").bodyByteArray("foo.request".getBytes())
+                            .execute().returnContent();
+                    assertThat(content.asString(), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
