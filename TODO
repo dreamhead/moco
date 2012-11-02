@@ -1,3 +1,9 @@
+# basic support
+* http method support
+
+# extension
+* marshal support
+* xpath support
+
+# functionality
 * forward request to other site
-* response based on previous request
-* response with inputstream
