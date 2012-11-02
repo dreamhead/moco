@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.github.moco.Moco.*;
+import static com.google.common.io.ByteStreams.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -73,7 +74,7 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_request() {
-        server.request(eq("foo")).response("bar");
+        server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -91,7 +92,7 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_request_with_text_api() {
-        server.request(eq(text("foo"))).response(text("bar"));
+        server.request(by(text("foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
@@ -109,7 +110,7 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_uri() {
-        server.request(eq(uri("/foo"))).response("bar");
+        server.request(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -141,7 +142,7 @@ public class MocoTest {
 
     @Test
     public void should_return_content_one_by_one() {
-        server.request(eq(uri("/foo"))).response(seq("bar", "blah"));
+        server.request(by(uri("/foo"))).response(seq("bar", "blah"));
 
         running(server, new Runnable() {
             @Override
@@ -159,7 +160,7 @@ public class MocoTest {
 
     @Test
     public void should_return_content_one_by_one_with_text_api() {
-        server.request(eq(uri("/foo"))).response(seq(text("bar"), text("blah")));
+        server.request(by(uri("/foo"))).response(seq(text("bar"), text("blah")));
 
         running(server, new Runnable() {
             @Override
@@ -179,7 +180,7 @@ public class MocoTest {
     public void should_return_content_from_specified_inputstream() {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.response");
 
-        server.request(eq(uri("/foo"))).response(stream(is));
+        server.request(by(uri("/foo"))).response(stream(is));
 
         running(server, new Runnable() {
             @Override
@@ -197,7 +198,7 @@ public class MocoTest {
     public void should_match_content_from_specified_inputstream() {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.request");
 
-        server.request(eq(stream(is))).response("bar");
+        server.request(by(stream(is))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -213,12 +214,37 @@ public class MocoTest {
         });
     }
 
+    @Test
+    public void should_return_content_based_on_xpath() {
+        server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
+        server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(post("foo.xml", "http://localhost:8080"), is("foo"));
+                    assertThat(post("bar.xml", "http://localhost:8080"), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     private void assertContentFromUri(String uri, String expectedContent) throws IOException {
         assertThat(get(uri), is(expectedContent));
     }
 
     private String get(String uri) throws IOException {
         Content content = Request.Get(uri).execute().returnContent();
+        return content.asString();
+    }
+
+    private String post(String file, String uri) throws IOException {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(file);
+        Content content = Request.Post(uri).bodyByteArray(toByteArray(is))
+                .execute().returnContent();
         return content.asString();
     }
 }

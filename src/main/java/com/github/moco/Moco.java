@@ -4,8 +4,10 @@ import com.github.moco.handler.SequenceResponseHandler;
 import com.github.moco.internal.MocoHttpServer;
 import com.github.moco.matcher.ContentMatcher;
 import com.github.moco.matcher.UriRequestMatcher;
+import com.github.moco.matcher.XPathRequestMatcher;
 import com.github.moco.model.ContentStream;
 import com.github.moco.model.Uri;
+import com.github.moco.model.XPath;
 
 import java.io.InputStream;
 import java.util.List;
@@ -17,16 +19,20 @@ public class Moco {
         return new MocoHttpServer(port);
     }
 
-    public static RequestMatcher eq(String content) {
-        return eq(text(content));
+    public static RequestMatcher by(String content) {
+        return by(text(content));
     }
 
-    public static RequestMatcher eq(ContentStream stream) {
+    public static RequestMatcher by(ContentStream stream) {
         return new ContentMatcher(stream.asByteArray());
     }
 
-    public static RequestMatcher eq(Uri uri) {
+    public static RequestMatcher by(Uri uri) {
         return new UriRequestMatcher(uri.getUri());
+    }
+
+    public static RequestMatcher eq(XPath xpath, String expected) {
+        return new XPathRequestMatcher(xpath, expected);
     }
 
     public static ContentStream text(String text) {
@@ -35,6 +41,10 @@ public class Moco {
 
     public static Uri uri(String uri) {
         return new Uri(uri);
+    }
+
+    public static XPath xpath(String xpath) {
+        return new XPath(xpath);
     }
 
     public static ResponseHandler seq(String... contents) {
@@ -58,6 +68,8 @@ public class Moco {
         try {
             httpServer.start();
             runnable.run();
+        } catch (Throwable t) {
+            t.printStackTrace(System.err);
         } finally {
             httpServer.stop();
         }

@@ -43,7 +43,7 @@ Only response is not sufficient. In most cases, you also have expectation for re
 If you want to response according to request content, Moco server can be configured as following:
 
 ```java
-server.request(eq("foo")).response("bar");
+server.request(by("foo")).response("bar");
 ```
 
 ## expect URI
@@ -51,8 +51,16 @@ server.request(eq("foo")).response("bar");
 If request uri is your major focus, Moco server could be like this:
 
 ```java
-server.request(eq(uri("/foo"))).response("bar");
+server.request(by(uri("/foo"))).response("bar");
+```
 
+# expect XPath
+
+XML/HTML is popular format for HTTP server. Moco allows you to match with request with XPath.
+
+```java
+server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
+server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
 ```
 
 # Request/Response from File
@@ -63,7 +71,7 @@ In the real world, the request/response content is much bigger for String in cod
 InputStream requestIs = this.getClass().getClassLoader().getResourceAsStream("foo.request");
 InputStream responseIs = this.getClass().getClassLoader().getResourceAsStream("foo.response");
 
-server.request(eq(stream(requestIs))).response(stream(responseIs));
+server.request(by(stream(requestIs))).response(stream(responseIs));
 ```
 
 # Response with sequence
@@ -75,6 +83,5 @@ Sometimes, you want to simulate a real-world operation which change server side 
 
 You can do that by
 ```java
-server.request(eq(uri("/foo"))).response(seq("foo", "bar", "blah"));
+server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
-

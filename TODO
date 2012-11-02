@@ -6,4 +6,5 @@
 * xpath support
 
 # functionality
+* standalone server
 * forward request to other site
