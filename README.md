@@ -54,7 +54,7 @@ If request uri is your major focus, Moco server could be like this:
 server.request(by(uri("/foo"))).response("bar");
 ```
 
-# expect XPath
+## expect XPath
 
 XML/HTML is popular format for HTTP server. Moco allows you to match with request with XPath.
 

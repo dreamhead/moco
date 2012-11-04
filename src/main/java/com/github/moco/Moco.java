@@ -70,6 +70,7 @@ public class Moco {
             runnable.run();
         } catch (Throwable t) {
             t.printStackTrace(System.err);
+            throw new RuntimeException(t);
         } finally {
             httpServer.stop();
         }
