@@ -9,7 +9,7 @@ dependencies {
     compile(
             'com.google.guava:guava:13.0',
             'joda-time:joda-time:2.1',
-            'io.netty:netty:3.5.8.Final'
+            'io.netty:netty:3.5.9.Final'
     )
 
     testCompile(
