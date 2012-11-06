@@ -197,6 +197,39 @@ public class MocoTest {
         });
     }
 
+    @Test
+    public void should_match_get_method() {
+        server.get(by(uri("/foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Content uriResult = Request.Get("http://localhost:8080/foo").execute().returnContent();
+                    assertThat(uriResult.asString(), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_not_response_while_http_method_is_not_get() {
+        server.get(by(uri("/foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Request.Post("http://localhost:8080/foo").execute().returnContent();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     @Test(expected = RuntimeException.class)
     public void should_throw_exception_for_unknown_request() {
         running(server, new Runnable() {

@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Setting;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.github.dreamhead.moco.matcher.HttpMethodRequestMethod;
 import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
@@ -20,6 +21,7 @@ import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
+import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.or;
 
 public class MocoHttpServer {
@@ -84,5 +86,9 @@ public class MocoHttpServer {
 
     private void responseWithContentHandler(ContentHandler contentHandler) {
         this.handler.setAnyResponseHandler(contentHandler);
+    }
+
+    public Setting get(RequestMatcher matcher) {
+        return request(and(new HttpMethodRequestMethod(), matcher));
     }
 }
