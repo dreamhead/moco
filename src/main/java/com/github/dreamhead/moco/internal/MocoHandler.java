@@ -1,7 +1,7 @@
-package com.github.moco.internal;
+package com.github.dreamhead.moco.internal;
 
-import com.github.moco.ResponseHandler;
-import com.github.moco.setting.BaseSetting;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;

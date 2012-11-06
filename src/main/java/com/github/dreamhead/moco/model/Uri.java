@@ -1,4 +1,4 @@
-package com.github.moco.model;
+package com.github.dreamhead.moco.model;
 
 public class Uri {
     private String uri;

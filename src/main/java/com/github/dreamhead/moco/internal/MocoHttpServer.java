@@ -1,10 +1,10 @@
-package com.github.moco.internal;
+package com.github.dreamhead.moco.internal;
 
-import com.github.moco.RequestMatcher;
-import com.github.moco.Setting;
-import com.github.moco.handler.ContentHandler;
-import com.github.moco.model.ContentStream;
-import com.github.moco.setting.BaseSetting;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.Setting;
+import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;

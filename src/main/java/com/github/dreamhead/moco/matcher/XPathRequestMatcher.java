@@ -1,8 +1,6 @@
-package com.github.moco.matcher;
+package com.github.dreamhead.moco.matcher;
 
-import com.github.moco.RequestMatcher;
-import com.github.moco.model.XPath;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import com.github.dreamhead.moco.model.XPath;
 
 public class XPathRequestMatcher extends AbstractContentMatcher {
     private final XPath xpath;

@@ -1,4 +1,4 @@
-package com.github.moco.model;
+package com.github.dreamhead.moco.model;
 
 import java.io.IOException;
 import java.io.InputStream;

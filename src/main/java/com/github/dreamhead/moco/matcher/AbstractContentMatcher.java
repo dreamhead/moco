@@ -1,6 +1,6 @@
-package com.github.moco.matcher;
+package com.github.dreamhead.moco.matcher;
 
-import com.github.moco.RequestMatcher;
+import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;

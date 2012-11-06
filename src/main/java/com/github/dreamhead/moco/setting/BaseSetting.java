@@ -1,7 +1,7 @@
-package com.github.moco.setting;
+package com.github.dreamhead.moco.setting;
 
-import com.github.moco.RequestMatcher;
-import com.github.moco.Setting;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.Setting;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 

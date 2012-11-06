@@ -1,13 +1,13 @@
-package com.github.moco;
+package com.github.dreamhead.moco;
 
-import com.github.moco.handler.SequenceResponseHandler;
-import com.github.moco.internal.MocoHttpServer;
-import com.github.moco.matcher.ContentMatcher;
-import com.github.moco.matcher.UriRequestMatcher;
-import com.github.moco.matcher.XPathRequestMatcher;
-import com.github.moco.model.ContentStream;
-import com.github.moco.model.Uri;
-import com.github.moco.model.XPath;
+import com.github.dreamhead.moco.handler.SequenceResponseHandler;
+import com.github.dreamhead.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.matcher.ContentMatcher;
+import com.github.dreamhead.moco.matcher.UriRequestMatcher;
+import com.github.dreamhead.moco.matcher.XPathRequestMatcher;
+import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.model.Uri;
+import com.github.dreamhead.moco.model.XPath;
 
 import java.io.InputStream;
 import java.util.List;

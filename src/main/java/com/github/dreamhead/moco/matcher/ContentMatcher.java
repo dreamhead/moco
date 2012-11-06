@@ -1,4 +1,4 @@
-package com.github.moco.matcher;
+package com.github.dreamhead.moco.matcher;
 
 public class ContentMatcher extends AbstractContentMatcher {
     private String expected;

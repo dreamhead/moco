@@ -1,12 +1,10 @@
-package com.github.moco.model;
+package com.github.dreamhead.moco.model;
 
 import org.xml.sax.InputSource;
 
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 
 public class XPath {

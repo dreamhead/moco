@@ -1,7 +1,7 @@
-package com.github.moco;
+package com.github.dreamhead.moco;
 
-import com.github.moco.handler.ContentHandler;
-import com.github.moco.model.ContentStream;
+import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.model.ContentStream;
 
 public abstract class Setting {
     protected final RequestMatcher matcher;

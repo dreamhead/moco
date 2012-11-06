@@ -1,6 +1,6 @@
-package com.github.moco;
+package com.github.dreamhead.moco;
 
-import com.github.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.internal.MocoHttpServer;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.github.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.io.ByteStreams.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

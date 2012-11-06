@@ -1,4 +1,4 @@
-package com.github.moco.handler;
+package com.github.dreamhead.moco.handler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 

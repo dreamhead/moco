@@ -1,6 +1,6 @@
-package com.github.moco.handler;
+package com.github.dreamhead.moco.handler;
 
-import com.github.moco.ResponseHandler;
+import com.github.dreamhead.moco.ResponseHandler;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;

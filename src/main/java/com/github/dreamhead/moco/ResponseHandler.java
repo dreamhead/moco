@@ -1,4 +1,4 @@
-package com.github.moco;
+package com.github.dreamhead.moco;
 
 import org.jboss.netty.channel.Channel;
 

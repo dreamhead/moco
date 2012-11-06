@@ -1,9 +1,10 @@
 # basic support
 * http method support
+* http header support
+* REST support
 
 # extension
 * marshal support
-* xpath support
 
 # functionality
 * standalone server

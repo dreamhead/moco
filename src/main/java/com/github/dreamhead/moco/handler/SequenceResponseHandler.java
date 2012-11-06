@@ -1,6 +1,6 @@
-package com.github.moco.handler;
+package com.github.dreamhead.moco.handler;
 
-import com.github.moco.model.ContentStream;
+import com.github.dreamhead.moco.model.ContentStream;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 public class SequenceResponseHandler extends AbstractResponseHandler {
