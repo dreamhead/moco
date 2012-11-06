@@ -2,9 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
-import com.github.dreamhead.moco.matcher.ContentMatcher;
-import com.github.dreamhead.moco.matcher.UriRequestMatcher;
-import com.github.dreamhead.moco.matcher.XPathRequestMatcher;
+import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.model.Uri;
 import com.github.dreamhead.moco.model.XPath;
@@ -33,6 +31,14 @@ public class Moco {
 
     public static RequestMatcher eq(XPath xpath, String expected) {
         return new XPathRequestMatcher(xpath, expected);
+    }
+
+    public static RequestMatcher and(RequestMatcher... matchers) {
+        return new AndRequestMatcher(matchers);
+    }
+
+    public static RequestMatcher or(RequestMatcher... matchers) {
+        return new OrRequestMatcher(matchers);
     }
 
     public static ContentStream text(String text) {

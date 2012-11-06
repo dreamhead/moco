@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Setting;
 import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
@@ -18,6 +19,8 @@ import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
+
+import static com.github.dreamhead.moco.Moco.or;
 
 public class MocoHttpServer {
     private final int port;
@@ -65,6 +68,10 @@ public class MocoHttpServer {
         BaseSetting setting = new BaseSetting(matcher);
         this.handler.addSetting(setting);
         return setting;
+    }
+
+    public Setting request(RequestMatcher... matchers) {
+        return request(or(matchers));
     }
 
     public void response(String response) {
