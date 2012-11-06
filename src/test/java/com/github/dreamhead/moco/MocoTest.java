@@ -30,7 +30,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080", "foo");
+                    assertThat(get("http://localhost:8080"), is("foo"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -46,7 +46,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080", "foo");
+                    assertThat(get("http://localhost:8080"), is("foo"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -64,7 +64,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080", "foo.response");
+                    assertThat(get("http://localhost:8080"), is("foo.response"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -80,9 +80,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Post("http://localhost:8080").bodyByteArray("foo".getBytes())
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
+                    assertThat(postContent("http://localhost:8080", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -98,9 +96,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Post("http://localhost:8080").bodyByteArray("foo".getBytes())
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
+                    assertThat(postContent("http://localhost:8080", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -116,9 +112,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Get("http://localhost:8080/foo")
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -134,9 +128,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Post("http://localhost:8080/foo").bodyByteArray("foo".getBytes())
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
+                    assertThat(postContent("http://localhost:8080/foo", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -148,11 +140,16 @@ public class MocoTest {
     public void should_throw_exception_even_if_match_one_of_conditions() {
         server.request(and(by(text("foo")), by(uri("/foo")))).response(text("bar"));
 
-        try {
-            Request.Get("http://localhost:8080/foo").execute().returnContent();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    get("http://localhost:8080/foo");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Test
@@ -163,12 +160,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content uriResult = Request.Get("http://localhost:8080/foo").execute().returnContent();
-                    assertThat(uriResult.asString(), is("bar"));
-
-                    Content contentResult = Request.Post("http://localhost:8080").bodyByteArray("foo".getBytes())
-                            .execute().returnContent();
-                    assertThat(contentResult.asString(), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(postContent("http://localhost:8080/foo", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -184,12 +177,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content uriResult = Request.Get("http://localhost:8080/foo").execute().returnContent();
-                    assertThat(uriResult.asString(), is("bar"));
-
-                    Content contentResult = Request.Post("http://localhost:8080").bodyByteArray("foo".getBytes())
-                            .execute().returnContent();
-                    assertThat(contentResult.asString(), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(postContent("http://localhost:8080", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -205,8 +194,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content uriResult = Request.Get("http://localhost:8080/foo").execute().returnContent();
-                    assertThat(uriResult.asString(), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -222,7 +210,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Request.Post("http://localhost:8080/foo").execute().returnContent();
+                    postContent("http://localhost:8080/foo", "");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -236,7 +224,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080", "bar");
+                    assertThat(get("http://localhost:8080"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -252,9 +240,9 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080/foo", "bar");
-                    assertContentFromUri("http://localhost:8080/foo", "blah");
-                    assertContentFromUri("http://localhost:8080/foo", "blah");
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("blah"));
+                    assertThat(get("http://localhost:8080/foo"), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -270,9 +258,9 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080/foo", "bar");
-                    assertContentFromUri("http://localhost:8080/foo", "blah");
-                    assertContentFromUri("http://localhost:8080/foo", "blah");
+                    assertThat(get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(get("http://localhost:8080/foo"), is("blah"));
+                    assertThat(get("http://localhost:8080/foo"), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -290,7 +278,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertContentFromUri("http://localhost:8080/foo", "foo.response");
+                    assertThat(get("http://localhost:8080/foo"), is("foo.response"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -308,9 +296,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Post("http://localhost:8080").bodyByteArray("foo.request".getBytes())
-                            .execute().returnContent();
-                    assertThat(content.asString(), is("bar"));
+                    assertThat(postContent("http://localhost:8080", "foo.request"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -327,8 +313,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(post("foo.xml", "http://localhost:8080"), is("foo"));
-                    assertThat(post("bar.xml", "http://localhost:8080"), is("bar"));
+                    assertThat(postFile("http://localhost:8080", "foo.xml"), is("foo"));
+                    assertThat(postFile("http://localhost:8080", "bar.xml"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -336,16 +322,18 @@ public class MocoTest {
         });
     }
 
-    private void assertContentFromUri(String uri, String expectedContent) throws IOException {
-        assertThat(get(uri), is(expectedContent));
-    }
-
     private String get(String uri) throws IOException {
         Content content = Request.Get(uri).execute().returnContent();
         return content.asString();
     }
 
-    private String post(String file, String uri) throws IOException {
+    private String postContent(String uri, String postContent) throws IOException {
+        Content content = Request.Post(uri).bodyByteArray(postContent.getBytes())
+                .execute().returnContent();
+        return content.asString();
+    }
+
+    private String postFile(String uri, String file) throws IOException {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(file);
         Content content = Request.Post(uri).bodyByteArray(toByteArray(is))
                 .execute().returnContent();
