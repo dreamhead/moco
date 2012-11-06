@@ -188,7 +188,7 @@ public class MocoTest {
 
     @Test
     public void should_match_get_method() {
-        server.get(by(uri("/foo"))).response(text("bar"));
+        server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -203,7 +203,7 @@ public class MocoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void should_not_response_while_http_method_is_not_get() {
+    public void should_not_response_for_get_while_http_method_is_not_get() {
         server.get(by(uri("/foo"))).response(text("bar"));
 
         running(server, new Runnable() {
@@ -217,6 +217,39 @@ public class MocoTest {
             }
         });
     }
+
+    @Test
+    public void should_match_post_method() {
+        server.post(by(text("foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(postContent("http://localhost:8080/", "foo"), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_not_response_for_post_while_http_method_is_not_post() {
+        server.post(by(uri("/foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    get("http://localhost:8080/foo");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
 
     @Test(expected = RuntimeException.class)
     public void should_throw_exception_for_unknown_request() {

@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Setting;
 import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.github.dreamhead.moco.matcher.HttpMethodRequestMethod;
+import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
+import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.bootstrap.ServerBootstrap;
@@ -89,6 +89,10 @@ public class MocoHttpServer {
     }
 
     public Setting get(RequestMatcher matcher) {
-        return request(and(new HttpMethodRequestMethod(), matcher));
+        return request(and(new GetMethodRequestMatcher(), matcher));
+    }
+
+    public Setting post(RequestMatcher matcher) {
+        return request(and(new PostMethodRequestMatcher(), matcher));
     }
 }
