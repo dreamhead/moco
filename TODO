@@ -1,6 +1,6 @@
 # basic support
 * http method support
-* http header support
+** GET, POST done
 * REST support
 
 # extension

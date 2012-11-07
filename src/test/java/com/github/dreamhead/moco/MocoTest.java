@@ -72,6 +72,20 @@ public class MocoTest {
         });
     }
 
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_for_unknown_request() {
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(get("http://localhost:8080"), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     @Test
     public void should_return_expected_response_based_on_specified_request() {
         server.request(by("foo")).response("bar");
@@ -122,7 +136,7 @@ public class MocoTest {
 
     @Test
     public void should_match_request_based_on_multiple_matchers() {
-        server.request(and(by(text("foo")), by(uri("/foo")))).response(text("bar"));
+        server.request(and(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
@@ -138,7 +152,7 @@ public class MocoTest {
 
     @Test(expected = RuntimeException.class)
     public void should_throw_exception_even_if_match_one_of_conditions() {
-        server.request(and(by(text("foo")), by(uri("/foo")))).response(text("bar"));
+        server.request(and(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
@@ -154,7 +168,7 @@ public class MocoTest {
 
     @Test
     public void should_match_request_based_on_either_matcher() {
-        server.request(or(by(text("foo")), by(uri("/foo")))).response(text("bar"));
+        server.request(or(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
@@ -171,7 +185,7 @@ public class MocoTest {
 
     @Test
     public void should_match_request_based_on_simplified_either_matcher() {
-        server.request(by(text("foo")), by(uri("/foo"))).response(text("bar"));
+        server.request(by("foo"), by(uri("/foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
@@ -220,7 +234,7 @@ public class MocoTest {
 
     @Test
     public void should_match_post_method() {
-        server.post(by(text("foo"))).response("bar");
+        server.post(by("foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -251,19 +265,7 @@ public class MocoTest {
     }
 
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_for_unknown_request() {
-        running(server, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    assertThat(get("http://localhost:8080"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
+
 
     @Test
     public void should_return_content_one_by_one() {
@@ -330,6 +332,23 @@ public class MocoTest {
             public void run() {
                 try {
                     assertThat(postContent("http://localhost:8080", "foo.request"), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_match_header() {
+        server.request(eq(header("foo"), "bar")).response("blah");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Content content = Request.Get("http://localhost:8080/foo").addHeader("foo", "bar").execute().returnContent();
+                    assertThat(content.asString(), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

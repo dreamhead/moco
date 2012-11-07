@@ -54,6 +54,28 @@ If request uri is your major focus, Moco server could be like this:
 server.request(by(uri("/foo"))).response("bar");
 ```
 
+## expect HTTP method
+
+It's easy to response based on specified HTTP method:
+
+```java
+server.get(by(uri("/foo"))).response("bar");
+```
+
+Also for POST method:
+
+```java
+server.post(by("foo")).response("bar");
+```
+
+## expect header
+
+Sometimes, you will focus HTTP header:
+
+```java
+server.request(eq(header("foo"), "bar")).response("blah")
+```
+
 ## expect XPath
 
 XML/HTML is popular format for HTTP server. Moco allows you to match with request with XPath.
