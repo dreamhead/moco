@@ -1,0 +1,22 @@
+{
+   "port" : 8080,
+   "sessions" :
+      [
+         {
+            "response" :
+               {
+                  "text" : "foo"
+               }
+         },
+         {
+            "request" :
+               {
+                  "uri" : "/foo"
+               },
+            "response" :
+               {
+                  "text" : "bar"
+               }
+         }
+      ]
+}

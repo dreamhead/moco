@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.xml.sax.InputSource;
 
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -14,7 +15,7 @@ public class XPathRequestExtractor implements RequestExtractor {
 
     public XPathRequestExtractor(String xpath) {
         XPathFactory xPathfactory = XPathFactory.newInstance();
-        javax.xml.xpath.XPath target = xPathfactory.newXPath();
+        XPath target = xPathfactory.newXPath();
         try {
             xPathExpression = target.compile(xpath);
         } catch (XPathExpressionException e) {

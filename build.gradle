@@ -7,9 +7,10 @@ repositories {
 
 dependencies {
     compile(
-            'com.google.guava:guava:13.0',
+            'com.google.guava:guava:13.0.1',
             'joda-time:joda-time:2.1',
-            'io.netty:netty:3.5.9.Final'
+            'io.netty:netty:3.5.9.Final',
+            'com.fasterxml.jackson.core:jackson-databind:2.1.0'
     )
 
     testCompile(
@@ -20,4 +21,12 @@ dependencies {
             'org.apache.httpcomponents:fluent-hc:4.2.1',
             'commons-logging:commons-logging:1.1.1',
     )
+}
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
+    manifest {
+        attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main'
+    }
 }
