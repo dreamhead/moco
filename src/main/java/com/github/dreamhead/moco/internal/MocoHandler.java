@@ -28,16 +28,18 @@ public class MocoHandler extends SimpleChannelHandler {
         Object message = e.getMessage();
 
         if (message instanceof HttpRequest) {
-            Channel channel = e.getChannel();
-
-            writeResponse(channel, (HttpRequest) message);
-
-            channel.disconnect();
-            channel.close();
+            httpRequestReceived((HttpRequest) message, e.getChannel());
         }
     }
 
-    private void writeResponse(Channel channel, HttpRequest request) {
+    private void httpRequestReceived(HttpRequest request, Channel channel) {
+        writeResponse(request, channel);
+
+        channel.disconnect();
+        channel.close();
+    }
+
+    private void writeResponse(HttpRequest request, Channel channel) {
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
                 setting.handle(channel);
