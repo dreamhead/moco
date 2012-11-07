@@ -1,12 +1,16 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
+import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
+import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
-import com.github.dreamhead.moco.matcher.*;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.github.dreamhead.moco.matcher.EqRequestMatcher;
+import com.github.dreamhead.moco.matcher.OrRequestMatcher;
+import com.github.dreamhead.moco.matcher.UriRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
-import com.github.dreamhead.moco.model.Header;
 import com.github.dreamhead.moco.model.Uri;
-import com.github.dreamhead.moco.model.XPath;
 
 import java.io.InputStream;
 import java.util.List;
@@ -23,19 +27,15 @@ public class Moco {
     }
 
     public static RequestMatcher by(ContentStream stream) {
-        return new ContentMatcher(stream.asByteArray());
+        return eq(new ContentRequestExtractor(), new String(stream.asByteArray()));
     }
 
     public static RequestMatcher by(Uri uri) {
         return new UriRequestMatcher(uri.getUri());
     }
 
-    public static RequestMatcher eq(XPath xpath, String expected) {
-        return new XPathRequestMatcher(xpath, expected);
-    }
-
-    public static RequestMatcher eq(Header xpath, String expected) {
-        return new HeaderRequestMatcher(xpath, expected);
+    public static RequestMatcher eq(RequestExtractor extractor, String expected) {
+        return new EqRequestMatcher(extractor, expected);
     }
 
     public static RequestMatcher and(RequestMatcher... matchers) {
@@ -54,12 +54,12 @@ public class Moco {
         return new Uri(uri);
     }
 
-    public static Header header(String header) {
-        return new Header(header);
+    public static RequestExtractor header(String header) {
+        return new HeaderRequestExtractor(header);
     }
 
-    public static XPath xpath(String xpath) {
-        return new XPath(xpath);
+    public static XPathRequestExtractor xpath(String xpath) {
+        return new XPathRequestExtractor(xpath);
     }
 
     public static ResponseHandler seq(String... contents) {

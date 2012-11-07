@@ -1,18 +1,16 @@
-package com.github.dreamhead.moco.matcher;
+package com.github.dreamhead.moco.extractor;
 
-import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 import java.nio.charset.Charset;
 
-public abstract class AbstractContentMatcher implements RequestMatcher {
-    protected abstract boolean doMatch(String requestContent);
-
+public class ContentRequestExtractor implements RequestExtractor {
     @Override
-    public boolean match(HttpRequest request) {
-        return doMatch(requestContent(request));
+    public String extract(HttpRequest request) {
+        return requestContent(request);
     }
 
     private String requestContent(HttpRequest request) {
