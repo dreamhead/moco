@@ -14,8 +14,8 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Moco {
-    public static MocoHttpServer httpserver(int port) {
-        return new MocoHttpServer(port);
+    public static HttpServer httpserver(int port) {
+        return new HttpServer(port);
     }
 
     public static RequestMatcher by(String content) {
@@ -79,15 +79,16 @@ public class Moco {
         return new ContentStream(is);
     }
 
-    public static void running(MocoHttpServer httpServer, Runnable runnable) {
+    public static void running(HttpServer httpServer, Runnable runnable) {
+        MocoHttpServer server = new MocoHttpServer(httpServer);
         try {
-            httpServer.start();
+            server.start();
             runnable.run();
         } catch (Throwable t) {
             t.printStackTrace(System.err);
             throw new RuntimeException(t);
         } finally {
-            httpServer.stop();
+            server.stop();
         }
     }
 }

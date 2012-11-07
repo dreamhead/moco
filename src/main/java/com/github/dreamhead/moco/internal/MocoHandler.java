@@ -18,6 +18,11 @@ public class MocoHandler extends SimpleChannelHandler {
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
     private ResponseHandler anyResponseHandler;
 
+    public MocoHandler(List<BaseSetting> settings, ResponseHandler anyResponseHandler) {
+        this.settings = settings;
+        this.anyResponseHandler = anyResponseHandler;
+    }
+
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         Object message = e.getMessage();
@@ -45,13 +50,5 @@ public class MocoHandler extends SimpleChannelHandler {
         } else {
             channel.write(new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
         }
-    }
-
-    public void setAnyResponseHandler(ResponseHandler handler) {
-        this.anyResponseHandler = handler;
-    }
-
-    public void addSetting(BaseSetting setting) {
-        this.settings.add(setting);
     }
 }

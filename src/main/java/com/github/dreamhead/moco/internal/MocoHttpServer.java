@@ -1,12 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.Setting;
-import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
-import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
-import com.github.dreamhead.moco.model.ContentStream;
-import com.github.dreamhead.moco.setting.BaseSetting;
+import com.github.dreamhead.moco.HttpServer;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -18,24 +12,27 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
 
-import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.or;
-
 public class MocoHttpServer {
-    private final int port;
     private ServerBootstrap bootstrap;
     private ChannelGroup allChannels;
     private final MocoHandler handler;
+    private HttpServer server;
 
-    public MocoHttpServer(int port) {
-        this.port = port;
-        this.handler = new MocoHandler();
+    public MocoHttpServer(HttpServer server) {
+        this.server = server;
+        this.handler = new MocoHandler(server.getSettings(), server.getAnyResponseHandler());
     }
 
     public void start() {
+        doStart(server.getPort());
+    }
+
+    private void doStart(int port) {
         ChannelFactory factory = new NioServerSocketChannelFactory(
                 Executors.newCachedThreadPool(),
                 Executors.newCachedThreadPool());
@@ -57,42 +54,15 @@ public class MocoHttpServer {
         bootstrap.bind(new InetSocketAddress(port));
 
         allChannels = new DefaultChannelGroup();
-        allChannels.add(bootstrap.bind(new java.net.InetSocketAddress("localhost", port)));
+        try {
+            allChannels.add(bootstrap.bind(new InetSocketAddress(InetAddress.getLocalHost(), port)));
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void stop() {
         allChannels.close().awaitUninterruptibly();
         bootstrap.releaseExternalResources();
-    }
-
-
-    public Setting request(RequestMatcher matcher) {
-        BaseSetting setting = new BaseSetting(matcher);
-        this.handler.addSetting(setting);
-        return setting;
-    }
-
-    public Setting request(RequestMatcher... matchers) {
-        return request(or(matchers));
-    }
-
-    public void response(String response) {
-        responseWithContentHandler(new ContentHandler(response));
-    }
-
-    public void response(ContentStream stream) {
-        responseWithContentHandler(new ContentHandler(stream.asByteArray()));
-    }
-
-    private void responseWithContentHandler(ContentHandler contentHandler) {
-        this.handler.setAnyResponseHandler(contentHandler);
-    }
-
-    public Setting get(RequestMatcher matcher) {
-        return request(and(new GetMethodRequestMatcher(), matcher));
-    }
-
-    public Setting post(RequestMatcher matcher) {
-        return request(and(new PostMethodRequestMatcher(), matcher));
     }
 }

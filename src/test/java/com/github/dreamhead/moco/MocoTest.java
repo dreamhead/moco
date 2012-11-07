@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.internal.MocoHttpServer;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
@@ -15,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoTest {
-    private MocoHttpServer server;
+    private HttpServer server;
 
     @Before
     public void setUp() throws Exception {
@@ -263,9 +262,6 @@ public class MocoTest {
             }
         });
     }
-
-
-
 
     @Test
     public void should_return_content_one_by_one() {
