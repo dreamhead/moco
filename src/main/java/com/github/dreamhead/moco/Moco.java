@@ -2,15 +2,14 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
+import com.github.dreamhead.moco.extractor.UriRequestExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
-import com.github.dreamhead.moco.matcher.UriRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
-import com.github.dreamhead.moco.model.Uri;
 
 import java.io.InputStream;
 import java.util.List;
@@ -30,8 +29,8 @@ public class Moco {
         return eq(new ContentRequestExtractor(), new String(stream.asByteArray()));
     }
 
-    public static RequestMatcher by(Uri uri) {
-        return new UriRequestMatcher(uri.getUri());
+    public static RequestMatcher by(Expectation expectation) {
+        return eq(expectation.getExtractor(), expectation.getExpected());
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, String expected) {
@@ -50,8 +49,8 @@ public class Moco {
         return new ContentStream(text);
     }
 
-    public static Uri uri(String uri) {
-        return new Uri(uri);
+    public static Expectation uri(String uri) {
+        return new Expectation(new UriRequestExtractor(), uri);
     }
 
     public static RequestExtractor header(String header) {
