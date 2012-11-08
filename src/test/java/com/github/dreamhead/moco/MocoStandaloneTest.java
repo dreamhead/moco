@@ -13,20 +13,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest {
+    private final MocoTestHelper helper = new MocoTestHelper();
+
     @BeforeClass
     public static void startStandaloneServer() throws IOException {
-        String resourceName = "foo.json";
-        InputStream is = Resources.getResource(resourceName).openStream();
-        new JsonRunner().run(is);
+        new JsonRunner().run(Resources.getResource("foo.json").openStream());
     }
 
     @Test
     public void should_return_expected_response() throws IOException {
-        assertThat(MocoTestHelper.get("http://localhost:8080"), is("foo"));
+        assertThat(helper.get("http://localhost:8080"), is("foo"));
     }
 
     @Test
     public void should_return_expected_response_with_text_api() throws IOException {
-        assertThat(MocoTestHelper.get("http://localhost:8080/foo"), is("bar"));
+        assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
     }
 }
