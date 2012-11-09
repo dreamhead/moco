@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.handler.ContentHandler;
 
 import java.io.FileInputStream;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.google.common.io.ByteStreams.toByteArray;
 
@@ -27,11 +29,25 @@ public class HttpServerParser {
             if (session.isAnyResponse()) {
                 server.response(getContent(session));
             } else {
-                server.request(by(uri(session.getRequest().getUri()))).response(getContent(session));
+                server.request(createMatcher(session)).response(getContent(session));
             }
         }
 
         return server;
+    }
+
+    private RequestMatcher createMatcher(SessionSetting session) {
+        RequestSetting request = session.getRequest();
+        String uri = request.getUri();
+        if (uri != null) {
+            return by(uri(uri));
+        }
+        String requestText = request.getText();
+        if (requestText != null) {
+            return by(text(requestText));
+        }
+
+        throw new IllegalArgumentException("unknown request setting with " + session);
     }
 
     private ContentHandler getContent(SessionSetting session) throws IOException {

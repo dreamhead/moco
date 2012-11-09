@@ -27,6 +27,16 @@
                 {
                    "file" : "src/test/resources/foo.response"
                 }
+         },
+         {
+             "request" :
+               {
+                "text" : "text_request"
+               },
+             "response" :
+               {
+                "text" : "response_for_text_request"
+               }
          }
       ]
 }

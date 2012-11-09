@@ -14,6 +14,7 @@ import com.github.dreamhead.moco.model.ContentStream;
 import java.io.InputStream;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Moco {
@@ -46,10 +47,12 @@ public class Moco {
     }
 
     public static ContentStream text(String text) {
+        checkNotNull(text, "Null text is not allowed");
         return new ContentStream(text);
     }
 
     public static Expectation uri(String uri) {
+        checkNotNull(uri, "Null URI is not allowed");
         return new Expectation(new UriRequestExtractor(), uri);
     }
 

@@ -50,8 +50,14 @@ public class MocoStandaloneTest {
     }
 
     @Test
-    public void should_return_expected_response_with_file_api_based_on_specified_request() throws IOException {
+    public void should_return_expected_response_with_file_based_on_specified_request() throws IOException {
         runWithConiguration("foo.json");
         assertThat(helper.get("http://localhost:8080/file"), is("foo.response"));
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_request() throws IOException {
+        runWithConiguration("foo.json");
+        assertThat(helper.postContent("http://localhost:8080", "text_request"), is("response_for_text_request"));
     }
 }
