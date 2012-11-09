@@ -19,7 +19,11 @@ public class MocoStandaloneTest {
     @Before
     public void setup() throws IOException {
         runner = new JsonRunner();
-        runner.run(Resources.getResource("foo.json").openStream());
+
+    }
+
+    private void runWithConiguration(String resourceName) throws IOException {
+        runner.run(Resources.getResource(resourceName).openStream());
     }
 
     @After
@@ -29,16 +33,25 @@ public class MocoStandaloneTest {
 
     @Test
     public void should_return_expected_response() throws IOException {
+        runWithConiguration("foo.json");
         assertThat(helper.get("http://localhost:8080"), is("foo"));
     }
 
     @Test
-    public void should_return_expected_response_with_text_api() throws IOException {
+    public void should_return_expected_response_with_file_api() throws IOException {
+        runWithConiguration("any_response_with_file.json");
+        assertThat(helper.get("http://localhost:8080"), is("foo.response"));
+    }
+
+    @Test
+    public void should_return_expected_response_with_text_api_based_on_specified_request() throws IOException {
+        runWithConiguration("foo.json");
         assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
     }
 
     @Test
-    public void should_return_expected_response_with_file_api() throws IOException {
+    public void should_return_expected_response_with_file_api_based_on_specified_request() throws IOException {
+        runWithConiguration("foo.json");
         assertThat(helper.get("http://localhost:8080/file"), is("foo.response"));
     }
 }

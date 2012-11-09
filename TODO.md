@@ -45,7 +45,7 @@ Any Response with File
 done
 </td>
 <td>
-
+done
 </td>
 </tr>
 
@@ -57,7 +57,6 @@ Request by Text
 done
 </td>
 <td>
-done
 </td>
 </tr>
 
@@ -81,6 +80,7 @@ Request by URI
 done
 </td>
 <td>
+done
 </td>
 </tr>
 
@@ -92,6 +92,18 @@ Request by File
 done
 </td>
 <td>
+</td>
+</tr>
+
+<tr>
+<th>
+Response with File
+</th>
+<td>
+done
+</td>
+<td>
+done
 </td>
 </tr>
 

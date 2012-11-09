@@ -1,0 +1,12 @@
+{
+   "port" : 8080,
+   "sessions" :
+      [
+         {
+             "response" :
+                {
+                   "file" : "src/test/resources/foo.response"
+                }
+         }
+      ]
+}
