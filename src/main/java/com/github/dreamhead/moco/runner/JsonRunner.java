@@ -14,4 +14,8 @@ public class JsonRunner {
         HttpServer server = httpServerParser.parseServer(is);
         runner.run(server);
     }
+
+    public void stop() {
+        runner.stop();
+    }
 }

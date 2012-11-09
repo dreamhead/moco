@@ -4,8 +4,10 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 
 public class StandaloneRunner {
+    private MocoHttpServer server;
+
     public void run(HttpServer httpServer) {
-        final MocoHttpServer server = new MocoHttpServer(httpServer);
+        server = new MocoHttpServer(httpServer);
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -15,5 +17,11 @@ public class StandaloneRunner {
         });
 
         server.start();
+    }
+
+    public void stop() {
+        if (server != null) {
+            server.stop();
+        }
     }
 }

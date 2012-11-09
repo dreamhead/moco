@@ -63,8 +63,14 @@ public class MocoHttpServer {
 
     public void stop() {
         if (allChannels != null) {
-            allChannels.close().awaitUninterruptibly();
-            bootstrap.releaseExternalResources();
+            doStop();
         }
+    }
+
+    private void doStop() {
+        allChannels.close().awaitUninterruptibly();
+        bootstrap.releaseExternalResources();
+        allChannels = null;
+        bootstrap = null;
     }
 }

@@ -3,21 +3,28 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.io.Resources;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest {
+    private static JsonRunner runner;
     private final MocoTestHelper helper = new MocoTestHelper();
 
-    @BeforeClass
-    public static void startStandaloneServer() throws IOException {
-        new JsonRunner().run(Resources.getResource("foo.json").openStream());
+    @Before
+    public void setup() throws IOException {
+        runner = new JsonRunner();
+        runner.run(Resources.getResource("foo.json").openStream());
+    }
+
+    @After
+    public void teardown() {
+        runner.stop();
     }
 
     @Test
