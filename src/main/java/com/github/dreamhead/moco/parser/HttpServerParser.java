@@ -2,13 +2,16 @@ package com.github.dreamhead.moco.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.handler.ContentHandler;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
     public HttpServer parseServer(InputStream is) throws IOException {
@@ -17,17 +20,29 @@ public class HttpServerParser {
         return createHttpServer(jsonSetting);
     }
 
-    private HttpServer createHttpServer(JsonSetting jsonSetting) {
+    private HttpServer createHttpServer(JsonSetting jsonSetting) throws IOException {
         HttpServer server = new HttpServer(jsonSetting.getPort());
         List<SessionSetting> sessions = jsonSetting.getSessions();
         for (SessionSetting session : sessions) {
             if (session.isAnyResponse()) {
-                server.response(session.getResponse().getText());
+                server.response(getContent(session));
             } else {
-                server.request(by(uri(session.getRequest().getUri()))).response(session.getResponse().getText());
+                server.request(by(uri(session.getRequest().getUri()))).response(getContent(session));
             }
         }
 
         return server;
+    }
+
+    private ContentHandler getContent(SessionSetting session) throws IOException {
+        ResponseSetting response = session.getResponse();
+        if (response.getText() != null) {
+            return new ContentHandler(response.getText());
+        } else if (response.getFile() != null) {
+            String file = response.getFile();
+            return new ContentHandler(toByteArray(new FileInputStream(file)));
+        }
+
+        throw new IllegalArgumentException("unknown response setting with " + session);
     }
 }

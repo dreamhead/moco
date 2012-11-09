@@ -1,25 +1,9 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.model.ContentStream;
-
-public abstract class Setting {
+public abstract class Setting extends ResponseSetting {
     protected final RequestMatcher matcher;
-    protected ResponseHandler handler;
 
     protected Setting(RequestMatcher matcher) {
         this.matcher = matcher;
-    }
-
-    public void response(String content) {
-        this.response(new ContentHandler(content));
-    }
-
-    public void response(ContentStream stream) {
-        this.response(new ContentHandler(stream.asByteArray()));
-    }
-
-    public void response(ResponseHandler handler) {
-        this.handler = handler;
     }
 }

@@ -17,6 +17,16 @@
                {
                   "text" : "bar"
                }
+         },
+         {
+             "request" :
+                {
+                   "uri" : "/file"
+                },
+             "response" :
+                {
+                   "file" : "src/test/resources/foo.response"
+                }
          }
       ]
 }

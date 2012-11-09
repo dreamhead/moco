@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
-import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.setting.BaseSetting;
 
 import java.util.ArrayList;
@@ -12,10 +11,9 @@ import java.util.List;
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.or;
 
-public class HttpServer {
+public class HttpServer extends ResponseSetting {
     private final int port;
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
-    private ContentHandler anyResponseHandler;
 
     public HttpServer(int port) {
         this.port = port;
@@ -29,18 +27,6 @@ public class HttpServer {
 
     public Setting request(RequestMatcher... matchers) {
         return request(or(matchers));
-    }
-
-    public void response(String response) {
-        responseWithContentHandler(new ContentHandler(response));
-    }
-
-    public void response(ContentStream stream) {
-        responseWithContentHandler(new ContentHandler(stream.asByteArray()));
-    }
-
-    private void responseWithContentHandler(ContentHandler contentHandler) {
-        this.anyResponseHandler = contentHandler;
     }
 
     public Setting get(RequestMatcher matcher) {
@@ -59,7 +45,7 @@ public class HttpServer {
         return settings;
     }
 
-    public ContentHandler getAnyResponseHandler() {
-        return anyResponseHandler;
+    public ResponseHandler getAnyResponseHandler() {
+        return this.handler;
     }
 }

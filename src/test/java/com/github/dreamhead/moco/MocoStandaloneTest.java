@@ -29,4 +29,9 @@ public class MocoStandaloneTest {
     public void should_return_expected_response_with_text_api() throws IOException {
         assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
     }
+
+    @Test
+    public void should_return_expected_response_with_file_api() throws IOException {
+        assertThat(helper.get("http://localhost:8080/file"), is("foo.response"));
+    }
 }
