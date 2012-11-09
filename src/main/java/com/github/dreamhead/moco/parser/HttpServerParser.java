@@ -6,13 +6,12 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.handler.ContentHandler;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
@@ -36,18 +35,24 @@ public class HttpServerParser {
         return server;
     }
 
-    private RequestMatcher createMatcher(SessionSetting session) {
+    private RequestMatcher createMatcher(SessionSetting session) throws FileNotFoundException {
         RequestSetting request = session.getRequest();
         String uri = request.getUri();
         if (uri != null) {
             return by(uri(uri));
         }
+
         String requestText = request.getText();
         if (requestText != null) {
             return by(text(requestText));
         }
 
-        throw new IllegalArgumentException("unknown request setting with " + session);
+        String file = request.getFile();
+        if (file != null) {
+            return by(stream(new FileInputStream(file)));
+        }
+
+        throw new IllegalArgumentException("unknown request setting with " + request);
     }
 
     private ContentHandler getContent(SessionSetting session) throws IOException {
