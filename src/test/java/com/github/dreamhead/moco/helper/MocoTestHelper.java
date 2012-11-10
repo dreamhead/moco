@@ -10,18 +10,18 @@ import java.io.InputStream;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
-    public static String get(String uri) throws IOException {
+    public String get(String uri) throws IOException {
         Content content = Request.Get(uri).execute().returnContent();
         return content.asString();
     }
 
-    public static String postContent(String uri, String postContent) throws IOException {
+    public String postContent(String uri, String postContent) throws IOException {
         Content content = Request.Post(uri).bodyByteArray(postContent.getBytes())
                 .execute().returnContent();
         return content.asString();
     }
 
-    public static String postFile(String uri, String file) throws IOException {
+    public String postFile(String uri, String file) throws IOException {
         InputStream is = Resources.getResource(file).openStream();
         Content content = Request.Post(uri).bodyByteArray(toByteArray(is))
                 .execute().returnContent();
