@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.parser;
+package com.github.dreamhead.moco.parser.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.parser;
+package com.github.dreamhead.moco.parser.model;
 
 public class SessionSetting {
     private RequestSetting request;

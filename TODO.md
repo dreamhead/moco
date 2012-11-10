@@ -117,6 +117,7 @@ Get Request
 done
 </td>
 <td>
+done
 </td>
 </tr>
 
@@ -137,6 +138,26 @@ Request by Header
 </th>
 <td>
 done
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<th>
+Response with Header
+</th>
+<td>
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<th>
+Response with HTTP Code
+</th>
+<td>
 </td>
 <td>
 </td>

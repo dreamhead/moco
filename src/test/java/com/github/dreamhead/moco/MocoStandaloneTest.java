@@ -13,13 +13,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest {
-    private static JsonRunner runner;
     private final MocoTestHelper helper = new MocoTestHelper();
+    private JsonRunner runner;
 
     @Before
     public void setup() throws IOException {
         runner = new JsonRunner();
-
     }
 
     private void runWithConiguration(String resourceName) throws IOException {
@@ -65,5 +64,17 @@ public class MocoStandaloneTest {
     public void should_return_expected_response_based_on_specified_file_request() throws IOException {
         runWithConiguration("foo.json");
         assertThat(helper.postFile("http://localhost:8080", "foo.request"), is("response_for_file_request"));
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_get_request() throws IOException {
+        runWithConiguration("get_method.json");
+        assertThat(helper.get("http://localhost:8080/get"), is("response_for_get_method"));
+    }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_based_on_specified_get_request() throws IOException {
+        runWithConiguration("get_method.json");
+        assertThat(helper.postContent("http://localhost:8080/get", ""), is("response_for_get_method"));
     }
 }
