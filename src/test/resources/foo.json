@@ -47,6 +47,19 @@
                {
                 "text" : "response_for_file_request"
                }
+         },
+         {
+             "request" :
+               {
+                 "uri" : "/header",
+                 "headers" : {
+                     "content-type" : "application/json"
+                 }
+               },
+             "response" :
+               {
+                 "text" : "response_for_header_request"
+               }
          }
       ]
 }

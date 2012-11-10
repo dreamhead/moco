@@ -20,7 +20,13 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
-    private List<MatcherParser> parsers = newArrayList(new UriMatcherParser(), new TextMatcherParser(), new FileMatcherParser(), new MethodMatcherParser());
+    private List<MatcherParser> parsers = newArrayList(
+            new UriMatcherParser(),
+            new TextMatcherParser(),
+            new FileMatcherParser(),
+            new MethodMatcherParser(),
+            new HeadersMatcherParser()
+    );
 
     public HttpServer parseServer(InputStream is) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

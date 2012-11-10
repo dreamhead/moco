@@ -3,6 +3,8 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.io.Resources;
+import org.apache.http.client.fluent.Content;
+import org.apache.http.client.fluent.Request;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,5 +90,12 @@ public class MocoStandaloneTest {
     public void should_throw_exception_while_request_non_post_request() throws IOException {
         runWithConiguration("post_method.json");
         helper.get("http://localhost:8080/post");
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_header_request() throws IOException {
+        runWithConiguration("foo.json");
+        Content content = Request.Get("http://localhost:8080/header").addHeader("content-type", "application/json").execute().returnContent();
+        assertThat(content.asString(), is("response_for_header_request"));
     }
 }

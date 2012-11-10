@@ -141,6 +141,7 @@ Request by Header
 done
 </td>
 <td>
+done
 </td>
 </tr>
 
@@ -157,6 +158,16 @@ Response with Header
 <tr>
 <th>
 Response with HTTP Code
+</th>
+<td>
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<th>
+Request by Parameter
 </th>
 <td>
 </td>
