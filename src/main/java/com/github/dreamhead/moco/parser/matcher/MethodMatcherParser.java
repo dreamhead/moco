@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.matcher;
 
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
+import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 
 public class MethodMatcherParser implements MatcherParser {
@@ -16,6 +17,10 @@ public class MethodMatcherParser implements MatcherParser {
             return new GetMethodRequestMatcher();
         }
 
-        return null;
+        if (method.equalsIgnoreCase("post")) {
+            return new PostMethodRequestMatcher();
+        }
+
+        throw new UnsupportedOperationException("unsupported request method:" + method);
     }
 }

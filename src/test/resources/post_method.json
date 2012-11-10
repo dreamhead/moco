@@ -1,0 +1,17 @@
+{
+   "port" : 8080,
+   "sessions" :
+      [
+         {
+             "request" :
+               {
+                "method" : "post",
+                "uri" : "/post"
+               },
+             "response" :
+               {
+                "text" : "response_for_post_method"
+               }
+         }
+      ]
+}

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.parser.matcher.*;
 import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
@@ -12,16 +11,17 @@ import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.and;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
+    private List<MatcherParser> parsers = newArrayList(new UriMatcherParser(), new TextMatcherParser(), new FileMatcherParser(), new MethodMatcherParser());
+
     public HttpServer parseServer(InputStream is) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonSetting jsonSetting = mapper.readValue(is, JsonSetting.class);
@@ -42,29 +42,30 @@ public class HttpServerParser {
         return server;
     }
 
-    private RequestMatcher createMatcher(SessionSetting session) throws FileNotFoundException {
-        return getRequestMatcher(session.getRequest());
+    private RequestMatcher createMatcher(SessionSetting session) {
+        return createRequestMatcher(session.getRequest(), parseRequestMatchers(session.getRequest()));
     }
 
-    private RequestMatcher getRequestMatcher(RequestSetting request) throws FileNotFoundException {
-        List<MatcherParser> matcherParsers = newArrayList(new UriMatcherParser(), new TextMatcherParser(), new FileMatcherParser(), new MethodMatcherParser());
+    private List<RequestMatcher> parseRequestMatchers(RequestSetting request) {
         List<RequestMatcher> matchers = newArrayList();
-        for (MatcherParser matcherParser : matcherParsers) {
+        for (MatcherParser matcherParser : parsers) {
             RequestMatcher matcher = matcherParser.parse(request);
             if (matcher != null) {
                 matchers.add(matcher);
             }
         }
+        return matchers;
+    }
 
-        if (matchers.size() == 1) {
-            return matchers.get(0);
+    private RequestMatcher createRequestMatcher(RequestSetting request, List<RequestMatcher> matchers) {
+        switch (matchers.size()) {
+            case 0:
+                throw new IllegalArgumentException("unknown request setting with " + request);
+            case 1:
+                return matchers.get(0);
+            default:
+                return and(matchers.toArray(new RequestMatcher[matchers.size()]));
         }
-
-        if (matchers.size() == 0) {
-            throw new IllegalArgumentException("unknown request setting with " + request);
-        }
-
-        return and(matchers.toArray(new RequestMatcher[matchers.size()]));
     }
 
 

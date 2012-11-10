@@ -73,8 +73,20 @@ public class MocoStandaloneTest {
     }
 
     @Test(expected = IOException.class)
-    public void should_throw_exception_based_on_specified_get_request() throws IOException {
+    public void should_throw_exception_while_request_non_get_request() throws IOException {
         runWithConiguration("get_method.json");
-        assertThat(helper.postContent("http://localhost:8080/get", ""), is("response_for_get_method"));
+        helper.postContent("http://localhost:8080/get", "");
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_post_request() throws IOException {
+        runWithConiguration("post_method.json");
+        assertThat(helper.postContent("http://localhost:8080/post", ""), is("response_for_post_method"));
+    }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_while_request_non_post_request() throws IOException {
+        runWithConiguration("post_method.json");
+        helper.get("http://localhost:8080/post");
     }
 }
