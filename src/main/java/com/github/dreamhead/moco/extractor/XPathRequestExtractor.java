@@ -22,6 +22,7 @@ public class XPathRequestExtractor implements RequestExtractor {
             throw new RuntimeException(e);
         }
     }
+
     private XPathExpression xPathExpression;
 
     @Override
@@ -29,7 +30,7 @@ public class XPathRequestExtractor implements RequestExtractor {
         try {
             return xPathExpression.evaluate(new InputSource(new StringReader(extractor.extract(request))));
         } catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
+            return "";
         }
     }
 }

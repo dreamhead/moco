@@ -10,6 +10,7 @@ public class RequestSetting {
     private String file;
     private String method;
     private Map<String, String> headers;
+    private Map<String, String> xpaths;
 
     public String getUri() {
         return uri;
@@ -29,6 +30,10 @@ public class RequestSetting {
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public Map<String, String> getXpaths() {
+        return xpaths;
     }
 
     @Override

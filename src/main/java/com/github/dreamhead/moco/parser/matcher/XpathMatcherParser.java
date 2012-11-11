@@ -7,18 +7,20 @@ import com.google.common.base.Function;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.xpath;
 
-public class HeadersMatcherParser extends AbstractCompositeMatcherParser {
+public class XpathMatcherParser extends AbstractCompositeMatcherParser {
+    @Override
     protected Map<String, String> getCollection(RequestSetting request) {
-        return request.getHeaders();
+        return request.getXpaths();
     }
 
+    @Override
     protected Function<Map.Entry<String, String>, RequestMatcher> toTargetMatcher() {
         return new Function<Map.Entry<String, String>, RequestMatcher>() {
             @Override
-            public RequestMatcher apply(Map.Entry<String, String> entry) {
-                return eq(header(entry.getKey()), entry.getValue());
+            public RequestMatcher apply(Map.Entry<String, String> input) {
+                return eq(xpath(input.getKey()), input.getValue());
             }
         };
     }

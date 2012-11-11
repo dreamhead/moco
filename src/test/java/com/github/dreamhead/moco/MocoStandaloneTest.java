@@ -98,4 +98,22 @@ public class MocoStandaloneTest {
         Content content = Request.Get("http://localhost:8080/header").addHeader("content-type", "application/json").execute().returnContent();
         assertThat(content.asString(), is("response_for_header_request"));
     }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_for_unknown_header() throws IOException {
+        runWithConiguration("header.json");
+        helper.get("http://localhost:8080/header");
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_xpath_request() throws IOException {
+        runWithConiguration("xpath.json");
+        assertThat(helper.postFile("http://localhost:8080/xpath", "foo.xml"), is("response_for_xpath_request"));
+    }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_for_unknown_xpath_request() throws IOException {
+        runWithConiguration("xpath.json");
+        helper.postFile("http://localhost:8080/xpath", "bar.xml");
+    }
 }

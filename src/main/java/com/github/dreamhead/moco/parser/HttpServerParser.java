@@ -9,13 +9,18 @@ import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
-import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.parser.matcher.CompositeMatcherParserHelper.createRequestMatcher;
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.ByteStreams.toByteArray;
 
@@ -25,7 +30,8 @@ public class HttpServerParser {
             new TextMatcherParser(),
             new FileMatcherParser(),
             new MethodMatcherParser(),
-            new HeadersMatcherParser()
+            new HeadersMatcherParser(),
+            new XpathMatcherParser()
     );
 
     public HttpServer parseServer(InputStream is) throws IOException {
@@ -41,39 +47,34 @@ public class HttpServerParser {
             if (session.isAnyResponse()) {
                 server.response(getContent(session));
             } else {
-                server.request(createMatcher(session)).response(getContent(session));
+                server.request(createRequestMatcher(session.getRequest(), parseRequestMatchers(session.getRequest()))).response(getContent(session));
             }
         }
 
         return server;
     }
 
-    private RequestMatcher createMatcher(SessionSetting session) {
-        return createRequestMatcher(session.getRequest(), parseRequestMatchers(session.getRequest()));
+    private Collection<RequestMatcher> parseRequestMatchers(final RequestSetting request) {
+        return filter(transform(parsers, parseRequestMatcher(request)), filterEmptyMatcher());
     }
 
-    private List<RequestMatcher> parseRequestMatchers(RequestSetting request) {
-        List<RequestMatcher> matchers = newArrayList();
-        for (MatcherParser matcherParser : parsers) {
-            RequestMatcher matcher = matcherParser.parse(request);
-            if (matcher != null) {
-                matchers.add(matcher);
+    private Predicate<RequestMatcher> filterEmptyMatcher() {
+        return new Predicate<RequestMatcher>() {
+            @Override
+            public boolean apply(RequestMatcher matcher) {
+                return matcher != null;
             }
-        }
-        return matchers;
+        };
     }
 
-    private RequestMatcher createRequestMatcher(RequestSetting request, List<RequestMatcher> matchers) {
-        switch (matchers.size()) {
-            case 0:
-                throw new IllegalArgumentException("unknown request setting with " + request);
-            case 1:
-                return matchers.get(0);
-            default:
-                return and(matchers.toArray(new RequestMatcher[matchers.size()]));
-        }
+    private Function<MatcherParser, RequestMatcher> parseRequestMatcher(final RequestSetting request) {
+        return new Function<MatcherParser, RequestMatcher>() {
+            @Override
+            public RequestMatcher apply(MatcherParser parser) {
+                return parser.parse(request);
+            }
+        };
     }
-
 
     private ContentHandler getContent(SessionSetting session) throws IOException {
         ResponseSetting response = session.getResponse();
