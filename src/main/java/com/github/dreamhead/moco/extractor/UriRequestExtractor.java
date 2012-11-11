@@ -6,6 +6,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 public class UriRequestExtractor implements RequestExtractor {
     @Override
     public String extract(HttpRequest request) {
-        return request.getUri();
+        String uri = request.getUri();
+        int index = uri.indexOf("?");
+        return index == -1 ? uri : uri.substring(0, index);
     }
 }

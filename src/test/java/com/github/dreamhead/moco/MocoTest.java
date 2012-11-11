@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.io.Resources;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpRetryException;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -348,6 +350,38 @@ public class MocoTest {
                 try {
                     Content content = Request.Get("http://localhost:8080/foo").addHeader("foo", "bar").execute().returnContent();
                     assertThat(content.asString(), is("blah"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_without_specified_header() {
+        server.request(eq(header("foo"), "bar")).response("blah");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    helper.get("http://localhost:8080/foo");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_for_specified_query() {
+        server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get("http://localhost:8080/foo?param=blah"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

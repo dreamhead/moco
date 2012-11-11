@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
-import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
-import com.github.dreamhead.moco.extractor.UriRequestExtractor;
-import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
+import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
@@ -58,6 +55,10 @@ public class Moco {
 
     public static RequestExtractor header(String header) {
         return new HeaderRequestExtractor(header);
+    }
+
+    public static RequestExtractor query(String param) {
+        return new ParamRequestExtractor(param);
     }
 
     public static XPathRequestExtractor xpath(String xpath) {

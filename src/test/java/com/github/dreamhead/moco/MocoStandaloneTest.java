@@ -39,13 +39,13 @@ public class MocoStandaloneTest {
     }
 
     @Test
-    public void should_return_expected_response_with_file_api() throws IOException {
+    public void should_return_expected_response_with_file() throws IOException {
         runWithConiguration("any_response_with_file.json");
         assertThat(helper.get("http://localhost:8080"), is("foo.response"));
     }
 
     @Test
-    public void should_return_expected_response_with_text_api_based_on_specified_request() throws IOException {
+    public void should_return_expected_response_with_text_based_on_specified_uri() throws IOException {
         runWithConiguration("foo.json");
         assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
     }
@@ -94,7 +94,7 @@ public class MocoStandaloneTest {
 
     @Test
     public void should_return_expected_response_based_on_specified_header_request() throws IOException {
-        runWithConiguration("foo.json");
+        runWithConiguration("header.json");
         Content content = Request.Get("http://localhost:8080/header").addHeader("content-type", "application/json").execute().returnContent();
         assertThat(content.asString(), is("response_for_header_request"));
     }

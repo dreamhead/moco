@@ -10,6 +10,9 @@
 * standalone server
 * forward request to other site
 
+# debug
+* more debuggable response
+
 # function support
 
 <table>
@@ -170,6 +173,7 @@ Response with HTTP Code
 Request by Parameter
 </th>
 <td>
+done
 </td>
 <td>
 </td>
