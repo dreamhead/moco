@@ -38,7 +38,7 @@ Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents
 
 Only response is not sufficient. In most cases, you also have expectation for request.
 
-## expect content
+## Content
 
 If you want to response according to request content, Moco server can be configured as following:
 
@@ -46,7 +46,7 @@ If you want to response according to request content, Moco server can be configu
 server.request(by("foo")).response("bar");
 ```
 
-## expect URI
+## URI
 
 If request uri is your major focus, Moco server could be like this:
 
@@ -54,7 +54,15 @@ If request uri is your major focus, Moco server could be like this:
 server.request(by(uri("/foo"))).response("bar");
 ```
 
-## expect HTTP method
+## Query parameter
+
+Sometimes, your request has parameters:
+
+```java
+server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
+```
+
+## HTTP method
 
 It's easy to response based on specified HTTP method:
 
@@ -68,7 +76,7 @@ Also for POST method:
 server.post(by("foo")).response("bar");
 ```
 
-## expect header
+## Header
 
 Sometimes, you will focus HTTP header:
 
@@ -76,7 +84,7 @@ Sometimes, you will focus HTTP header:
 server.request(eq(header("foo"), "bar")).response("blah")
 ```
 
-## expect XPath
+## XPath
 
 XML/HTML is popular format for HTTP server. Moco allows you to match with request with XPath.
 
