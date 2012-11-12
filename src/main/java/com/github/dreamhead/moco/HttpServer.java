@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
 import com.github.dreamhead.moco.setting.BaseSetting;

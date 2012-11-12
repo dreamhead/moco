@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
+import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
 
@@ -53,6 +54,11 @@ public class Moco {
     public static Expectation uri(String uri) {
         checkNotNull(uri, "Null URI is not allowed");
         return new Expectation(new UriRequestExtractor(), uri);
+    }
+
+    public static Expectation method(String requestMethod) {
+        checkNotNull(requestMethod, "Null Method is not allowed");
+        return new Expectation(new HttpMethodExtractor(), requestMethod.toUpperCase());
     }
 
     public static RequestExtractor header(String header) {

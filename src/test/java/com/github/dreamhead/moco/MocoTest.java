@@ -2,7 +2,6 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.io.Resources;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpRetryException;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -223,6 +221,22 @@ public class MocoTest {
     @Test
     public void should_match_get_method() {
         server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_match_get_method_by_method_api() {
+        server.request(and(by(uri("/foo")), by(method("get")))).response("bar");
 
         running(server, new Runnable() {
             @Override

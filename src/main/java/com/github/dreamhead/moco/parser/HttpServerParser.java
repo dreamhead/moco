@@ -15,7 +15,7 @@ import java.util.List;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
-    private RequestMatcherParser requestMatcherParser = new DefaultRequestMatcherParser();
+    private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
 
     public HttpServer parseServer(InputStream is) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
