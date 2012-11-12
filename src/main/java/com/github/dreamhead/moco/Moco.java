@@ -8,6 +8,8 @@ import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -80,6 +82,14 @@ public class Moco {
 
     public static ContentStream stream(InputStream is) {
         return new ContentStream(is);
+    }
+
+    public static ContentStream file(String filename) {
+        try {
+            return stream(new FileInputStream(filename));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void running(HttpServer httpServer, Runnable runnable) {

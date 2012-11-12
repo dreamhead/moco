@@ -90,6 +90,18 @@ done
 
 <tr>
 <th>
+Request by Stream
+</th>
+<td>
+done
+</td>
+<td>
+N/A
+</td>
+</tr>
+
+<tr>
+<th>
 Request by File
 </th>
 <td>

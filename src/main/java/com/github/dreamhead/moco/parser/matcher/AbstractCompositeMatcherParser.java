@@ -6,7 +6,7 @@ import com.google.common.base.Function;
 
 import java.util.Map;
 
-import static com.github.dreamhead.moco.parser.matcher.CompositeMatcherParserHelper.createRequestMatcher;
+import static com.github.dreamhead.moco.parser.DefaultRequestMatcherParser.wrapRequestMatcher;
 import static com.google.common.collect.Collections2.transform;
 
 public abstract class AbstractCompositeMatcherParser implements MatcherParser {
@@ -25,6 +25,6 @@ public abstract class AbstractCompositeMatcherParser implements MatcherParser {
             return null;
         }
 
-        return createRequestMatcher(request, transform(collection.entrySet(), function));
+        return wrapRequestMatcher(request, transform(collection.entrySet(), function));
     }
 }

@@ -76,6 +76,22 @@ public class MocoTest {
         });
     }
 
+    @Test
+    public void should_return_expected_response_from_file() throws IOException {
+        server.response(file("src/test/resources/foo.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get("http://localhost:8080"), is("foo.response"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     @Test(expected = RuntimeException.class)
     public void should_throw_exception_for_unknown_request() {
         running(server, new Runnable() {
