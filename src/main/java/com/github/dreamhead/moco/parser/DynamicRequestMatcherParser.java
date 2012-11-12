@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -23,9 +24,14 @@ import java.util.Map;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.Maps.newHashMap;
 
 public class DynamicRequestMatcherParser implements RequestMatcherParser {
+    private Map<String, String> methods = ImmutableMap.of(
+            "headers", "header",
+            "queries", "query",
+            "xpaths", "xpath"
+    );
+
     @Override
     public RequestMatcher createRequestMatcher(RequestSetting request) {
         return wrapRequestMatcher(request, createRequestMatchers(request));
@@ -125,10 +131,6 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private Method getMethodForCompositeMatcher(String name) {
-        Map<String, String> methods = newHashMap();
-        methods.put("headers", "header");
-        methods.put("queries", "query");
-        methods.put("xpaths", "xpath");
         try {
             return Moco.class.getMethod(methods.get(name), String.class);
         } catch (NoSuchMethodException e) {
@@ -154,7 +156,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         }
     }
 
-    public static RequestMatcher wrapRequestMatcher(RequestSetting request, Collection<RequestMatcher> matchers) {
+    private static RequestMatcher wrapRequestMatcher(RequestSetting request, Collection<RequestMatcher> matchers) {
         switch (matchers.size()) {
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);
