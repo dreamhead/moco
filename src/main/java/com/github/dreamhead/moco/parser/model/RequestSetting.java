@@ -11,6 +11,7 @@ public class RequestSetting {
     private String method;
     private Map<String, String> headers;
     private Map<String, String> xpaths;
+    private Map<String, String> queries;
 
     public String getUri() {
         return uri;
@@ -34,6 +35,10 @@ public class RequestSetting {
 
     public Map<String, String> getXpaths() {
         return xpaths;
+    }
+
+    public Map<String, String> getQueries() {
+        return queries;
     }
 
     @Override

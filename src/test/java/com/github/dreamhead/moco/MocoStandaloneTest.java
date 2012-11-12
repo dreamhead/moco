@@ -23,8 +23,12 @@ public class MocoStandaloneTest {
         runner = new JsonRunner();
     }
 
-    private void runWithConiguration(String resourceName) throws IOException {
-        runner.run(Resources.getResource(resourceName).openStream());
+    private void runWithConiguration(String resourceName) {
+        try {
+            runner.run(Resources.getResource(resourceName).openStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @After
@@ -103,6 +107,24 @@ public class MocoStandaloneTest {
     public void should_throw_exception_for_unknown_header() throws IOException {
         runWithConiguration("header.json");
         helper.get("http://localhost:8080/header");
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_query_request() throws IOException {
+        runWithConiguration("query.json");
+        assertThat(helper.get("http://localhost:8080/query?param=foo"), is("response_for_query_request"));
+    }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_for_different_query_param() throws IOException {
+        runWithConiguration("query.json");
+        helper.get("http://localhost:8080/query?param2=foo");
+    }
+
+    @Test(expected = IOException.class)
+    public void should_throw_exception_for_different_query_param_value() throws IOException {
+        runWithConiguration("query.json");
+        helper.get("http://localhost:8080/query?param=foo2");
     }
 
     @Test

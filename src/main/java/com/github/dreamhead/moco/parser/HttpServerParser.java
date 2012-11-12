@@ -31,7 +31,8 @@ public class HttpServerParser {
             new FileMatcherParser(),
             new MethodMatcherParser(),
             new HeadersMatcherParser(),
-            new XpathMatcherParser()
+            new XpathMatcherParser(),
+            new QueriesMatcherParser()
     );
 
     public HttpServer parseServer(InputStream is) throws IOException {

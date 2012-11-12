@@ -64,6 +64,19 @@
          {
              "request" :
                {
+                 "uri" : "/query",
+                 "queries" : {
+                     "param" : "foo"
+                 }
+               },
+             "response" :
+               {
+                 "text" : "response_for_query_request"
+               }
+         },
+         {
+             "request" :
+               {
                  "uri" : "/xpath",
                  "xpaths" : {
                     "/request/parameters/id/text()" : "1"
