@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -483,6 +485,23 @@ public class MocoTest {
                     assertThat(json, is("application/json"));
                     String bar = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("foo")[0].getValue();
                     assertThat(bar, is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_run_as_proxy() throws IOException {
+        server.response(url("http://www.google.com"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int statusCode = Request.Get("http://localhost:8080").execute().returnResponse().getStatusLine().getStatusCode();
+                    assertThat(statusCode, is(200));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

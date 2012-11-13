@@ -15,6 +15,7 @@ import com.google.common.base.Function;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,9 @@ public class HttpServerParser {
             Map<String,String> headers = response.getHeaders();
             Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
             return new AndResponseHandler(collection.toArray(new ResponseHandler[collection.size()]));
+        } else if (response.getUrl() != null) {
+            URL url = new URL(response.getUrl());
+            return new ContentHandler(toByteArray(url.openStream()));
         }
 
         throw new IllegalArgumentException("unknown response setting with " + session);

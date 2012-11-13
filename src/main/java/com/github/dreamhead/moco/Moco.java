@@ -10,7 +10,9 @@ import com.github.dreamhead.moco.model.ContentStream;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -107,6 +109,14 @@ public class Moco {
 
     public static ResponseHandler status(int code) {
         return new StatusCodeResponseHandler(code);
+    }
+
+    public static ContentStream url(String url) {
+        try {
+            return stream(new URL(url).openStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void running(HttpServer httpServer, Runnable runnable) {

@@ -6,10 +6,6 @@
 # extension
 * marshal support
 
-# functionality
-* standalone server
-* forward request to other site
-
 # debug
 * more debuggable response
 
@@ -199,6 +195,18 @@ Request by Parameter
 <tr>
 <th>
 Request by XPath
+</th>
+<td>
+ &#10003;
+</td>
+<td>
+ &#10003;
+</td>
+</tr>
+
+<tr>
+<th>
+Response with Forward to other URL
 </th>
 <td>
  &#10003;

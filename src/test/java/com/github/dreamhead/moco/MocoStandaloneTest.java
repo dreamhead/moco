@@ -154,4 +154,11 @@ public class MocoStandaloneTest {
         assertThat(response.getHeaders("content-type")[0].getValue(), is("application/json"));
         assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
     }
+
+    @Test
+    public void should_run_as_proxy() throws IOException {
+        runWithConiguration("foo.json");
+        HttpResponse response = Request.Get("http://localhost:8080/url").execute().returnResponse();
+        assertThat(response.getStatusLine().getStatusCode(), is(200));
+    }
 }

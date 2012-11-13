@@ -109,6 +109,16 @@
                    "foo" : "bar"
                  }
                }
+         },
+         {
+             "request" :
+               {
+                 "uri" : "/url"
+               },
+             "response" :
+               {
+                 "url" : "http://www.google.com"
+               }
          }
       ]
 }
