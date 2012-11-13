@@ -436,4 +436,21 @@ public class MocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_status_code() {
+        server.response(status(200));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int statusCode = Request.Get("http://localhost:8080").execute().returnResponse().getStatusLine().getStatusCode();
+                    assertThat(statusCode, is(200));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 }

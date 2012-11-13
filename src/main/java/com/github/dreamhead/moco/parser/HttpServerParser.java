@@ -2,7 +2,9 @@ package com.github.dreamhead.moco.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
@@ -37,13 +39,14 @@ public class HttpServerParser {
         return server;
     }
 
-    private ContentHandler getContent(SessionSetting session) throws IOException {
+    private ResponseHandler getContent(SessionSetting session) throws IOException {
         ResponseSetting response = session.getResponse();
         if (response.getText() != null) {
             return new ContentHandler(response.getText());
         } else if (response.getFile() != null) {
-            String file = response.getFile();
-            return new ContentHandler(toByteArray(new FileInputStream(file)));
+            return new ContentHandler(toByteArray(new FileInputStream(response.getFile())));
+        } else if (response.getStatus() != null) {
+            return new StatusCodeResponseHandler(Integer.parseInt(response.getStatus()));
         }
 
         throw new IllegalArgumentException("unknown response setting with " + session);

@@ -86,6 +86,16 @@
                {
                  "text" : "response_for_xpath_request"
                }
+         },
+         {
+             "request" :
+               {
+                 "uri" : "/status"
+               },
+             "response" :
+               {
+                 "status" : 200
+               }
          }
       ]
 }

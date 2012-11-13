@@ -10,6 +10,8 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 
 public abstract class AbstractResponseHandler implements ResponseHandler {
+    protected abstract void writeContent(ChannelBuffer buffer);
+
     @Override
     public void writeToResponse(Channel channel) {
         channel.write(createResponse());
@@ -24,6 +26,4 @@ public abstract class AbstractResponseHandler implements ResponseHandler {
         response.setHeader("Content-Length", response.getContent().writerIndex());
         return response;
     }
-
-    protected abstract void writeContent(ChannelBuffer buffer);
 }

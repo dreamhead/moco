@@ -138,4 +138,11 @@ public class MocoStandaloneTest {
         runWithConiguration("xpath.json");
         helper.postFile("http://localhost:8080/xpath", "bar.xml");
     }
+
+    @Test
+    public void should_response_status_code() throws IOException {
+        runWithConiguration("foo.json");
+        int statusCode = Request.Get("http://localhost:8080/status").execute().returnResponse().getStatusLine().getStatusCode();
+        assertThat(statusCode, is(200));
+    }
 }

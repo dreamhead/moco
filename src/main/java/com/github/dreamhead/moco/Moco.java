@@ -2,10 +2,9 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
-import com.github.dreamhead.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
-import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
 
@@ -57,19 +56,22 @@ public class Moco {
     }
 
     public static Expectation method(String requestMethod) {
-        checkNotNull(requestMethod, "Null Method is not allowed");
+        checkNotNull(requestMethod, "Null method is not allowed");
         return new Expectation(new HttpMethodExtractor(), requestMethod.toUpperCase());
     }
 
     public static RequestExtractor header(String header) {
+        checkNotNull(header, "Null header is not allowed");
         return new HeaderRequestExtractor(header);
     }
 
     public static RequestExtractor query(String param) {
+        checkNotNull(param, "Null query is not allowed");
         return new ParamRequestExtractor(param);
     }
 
     public static XPathRequestExtractor xpath(String xpath) {
+        checkNotNull(xpath, "Null XPath is not allowed");
         return new XPathRequestExtractor(xpath);
     }
 
@@ -96,6 +98,10 @@ public class Moco {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ResponseHandler status(int code) {
+        return new StatusCodeResponseHandler(code);
     }
 
     public static void running(HttpServer httpServer, Runnable runnable) {
