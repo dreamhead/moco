@@ -105,7 +105,8 @@
              "response" :
                {
                  "headers" : {
-                   "content-type" : "application/json"
+                   "content-type" : "application/json",
+                   "foo" : "bar"
                  }
                }
          }

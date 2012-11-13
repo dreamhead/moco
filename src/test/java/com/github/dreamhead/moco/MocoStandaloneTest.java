@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.io.Resources;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.After;
@@ -149,7 +150,8 @@ public class MocoStandaloneTest {
     @Test
     public void should_expected_response_header() throws IOException {
         runWithConiguration("foo.json");
-        String value = Request.Get("http://localhost:8080/response_header").execute().returnResponse().getHeaders("content-type")[0].getValue();
-        assertThat(value, is("application/json"));
+        HttpResponse response = Request.Get("http://localhost:8080/response_header").execute().returnResponse();
+        assertThat(response.getHeaders("content-type")[0].getValue(), is("application/json"));
+        assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
     }
 }

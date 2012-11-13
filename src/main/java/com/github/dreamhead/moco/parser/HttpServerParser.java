@@ -4,18 +4,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.HeaderResponseHandler;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
+import com.google.common.base.Function;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Collections2.transform;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
@@ -51,12 +55,19 @@ public class HttpServerParser {
             return new StatusCodeResponseHandler(Integer.parseInt(response.getStatus()));
         } else if (response.getHeaders() != null) {
             Map<String,String> headers = response.getHeaders();
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
-                return new HeaderResponseHandler(entry.getKey(), entry.getValue());
-            }
-
+            Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
+            return new AndResponseHandler(collection.toArray(new ResponseHandler[collection.size()]));
         }
 
         throw new IllegalArgumentException("unknown response setting with " + session);
+    }
+
+    private Function<Map.Entry<String, String>, ResponseHandler> toHeaderResponseHandler() {
+        return new Function<Map.Entry<String, String>, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(Map.Entry<String, String> entry) {
+                return new HeaderResponseHandler(entry.getKey(), entry.getValue());
+            }
+        };
     }
 }
