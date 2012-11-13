@@ -175,8 +175,10 @@ Response with Header
 Response with HTTP Code
 </th>
 <td>
+done
 </td>
 <td>
+done
 </td>
 </tr>
 

@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
-import org.jboss.netty.channel.Channel;
+import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public interface ResponseHandler {
-    void writeToResponse(Channel channel);
+    HttpResponse createResponse();
 }

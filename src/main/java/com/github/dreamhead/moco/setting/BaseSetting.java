@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Setting;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class BaseSetting extends Setting {
     public BaseSetting(RequestMatcher matcher) {
@@ -14,7 +15,7 @@ public class BaseSetting extends Setting {
         return this.matcher.match(request);
     }
 
-    public void handle(Channel channel) {
-        this.handler.writeToResponse(channel);
+    public HttpResponse getResponse() {
+        return this.handler.createResponse();
     }
 }

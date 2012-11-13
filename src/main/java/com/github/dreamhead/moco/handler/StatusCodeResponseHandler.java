@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.ResponseHandler;
-import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -15,8 +14,7 @@ public class StatusCodeResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(Channel channel) {
-        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
-        channel.write(response);
+    public HttpResponse createResponse() {
+        return new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
     }
 }

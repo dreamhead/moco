@@ -6,10 +6,7 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
+import org.jboss.netty.handler.codec.http.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,24 +30,23 @@ public class MocoHandler extends SimpleChannelHandler {
     }
 
     private void httpRequestReceived(HttpRequest request, Channel channel) {
-        writeResponse(request, channel);
+        channel.write(getResponse(request));
 
         channel.disconnect();
         channel.close();
     }
 
-    private void writeResponse(HttpRequest request, Channel channel) {
+    private HttpResponse getResponse(HttpRequest request) {
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
-                setting.handle(channel);
-                return;
+                return setting.getResponse();
             }
         }
 
         if (anyResponseHandler != null) {
-            anyResponseHandler.writeToResponse(channel);
-        } else {
-            channel.write(new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
+            return anyResponseHandler.createResponse();
         }
+
+        return new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
     }
 }
