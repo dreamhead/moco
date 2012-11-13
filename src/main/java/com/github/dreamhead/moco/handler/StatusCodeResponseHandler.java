@@ -1,10 +1,8 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.ResponseHandler;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
 
 public class StatusCodeResponseHandler implements ResponseHandler {
     private final HttpResponseStatus status;
@@ -14,7 +12,7 @@ public class StatusCodeResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public HttpResponse createResponse() {
-        return new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
+    public void writeToResponse(HttpResponse response) {
+        response.setStatus(status);
     }
 }

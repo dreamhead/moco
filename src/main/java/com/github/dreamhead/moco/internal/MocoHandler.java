@@ -37,14 +37,18 @@ public class MocoHandler extends SimpleChannelHandler {
     }
 
     private HttpResponse getResponse(HttpRequest request) {
+        DefaultHttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
-                return setting.getResponse();
+                setting.writeToResponse(response);
+                return response;
             }
         }
 
         if (anyResponseHandler != null) {
-            return anyResponseHandler.createResponse();
+            anyResponseHandler.writeToResponse(response);
+            return response;
         }
 
         return new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);

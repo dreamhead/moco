@@ -470,4 +470,23 @@ public class MocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_multiple_expected_header() {
+        server.response(header("content-type", "application/json"), header("foo", "bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String json = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("content-type")[0].getValue();
+                    assertThat(json, is("application/json"));
+                    String bar = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("foo")[0].getValue();
+                    assertThat(bar, is("bar"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 }

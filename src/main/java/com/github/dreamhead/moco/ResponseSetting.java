@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.model.ContentStream;
 
@@ -19,5 +20,9 @@ public abstract class ResponseSetting {
 
     public void response(ResponseHandler handler) {
         this.handler = handler;
+    }
+
+    public void response(ResponseHandler... handler) {
+        this.handler = new AndResponseHandler(handler);
     }
 }

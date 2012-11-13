@@ -11,11 +11,11 @@ public class BaseSetting extends Setting {
         super(matcher);
     }
 
-    public  boolean match(HttpRequest request) {
+    public boolean match(HttpRequest request) {
         return this.matcher.match(request);
     }
 
-    public HttpResponse getResponse() {
-        return this.handler.createResponse();
+    public void writeToResponse(HttpResponse response) {
+        this.handler.writeToResponse(response);
     }
 }

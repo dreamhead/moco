@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
 
 public class HeaderResponseHandler implements ResponseHandler {
     private String name;
@@ -15,9 +12,7 @@ public class HeaderResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public HttpResponse createResponse() {
-        DefaultHttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+    public void writeToResponse(HttpResponse response) {
         response.setHeader(name, value);
-        return response;
     }
 }
