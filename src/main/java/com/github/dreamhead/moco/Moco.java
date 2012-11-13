@@ -65,6 +65,11 @@ public class Moco {
         return new HeaderRequestExtractor(header);
     }
 
+    public static ResponseHandler header(String name, String value) {
+        return new HeaderResponseHandler(name, value);
+
+    }
+
     public static RequestExtractor query(String param) {
         checkNotNull(param, "Null query is not allowed");
         return new ParamRequestExtractor(param);

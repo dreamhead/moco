@@ -438,7 +438,7 @@ public class MocoTest {
     }
 
     @Test
-    public void should_return_status_code() {
+    public void should_return_expected_status_code() {
         server.response(status(200));
 
         running(server, new Runnable() {
@@ -447,6 +447,23 @@ public class MocoTest {
                 try {
                     int statusCode = Request.Get("http://localhost:8080").execute().returnResponse().getStatusLine().getStatusCode();
                     assertThat(statusCode, is(200));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_header() {
+        server.response(header("content-type", "application/json"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String value = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("content-type")[0].getValue();
+                    assertThat(value, is("application/json"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -33,10 +33,10 @@ JSON
 Any Response with Text
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -45,10 +45,10 @@ done
 Any Response with File
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -57,10 +57,10 @@ done
 Request by Text
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -69,10 +69,10 @@ done
 Response with Text
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -81,10 +81,10 @@ done
 Request by URI
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -93,7 +93,7 @@ done
 Request by Stream
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
 N/A
@@ -105,10 +105,10 @@ N/A
 Request by File
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -117,10 +117,10 @@ done
 Response with File
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -129,10 +129,10 @@ done
 Get Request
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -141,10 +141,10 @@ done
 Post Request
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -153,10 +153,10 @@ done
 Request by Header
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -165,6 +165,7 @@ done
 Response with Header
 </th>
 <td>
+ &#10003;
 </td>
 <td>
 </td>
@@ -175,10 +176,10 @@ Response with Header
 Response with HTTP Code
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -187,10 +188,10 @@ done
 Request by Parameter
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 
@@ -199,10 +200,10 @@ done
 Request by XPath
 </th>
 <td>
-done
+ &#10003;
 </td>
 <td>
-done
+ &#10003;
 </td>
 </tr>
 

@@ -140,9 +140,16 @@ public class MocoStandaloneTest {
     }
 
     @Test
-    public void should_response_status_code() throws IOException {
+    public void should_expected_response_status_code() throws IOException {
         runWithConiguration("foo.json");
         int statusCode = Request.Get("http://localhost:8080/status").execute().returnResponse().getStatusLine().getStatusCode();
         assertThat(statusCode, is(200));
+    }
+
+    @Test
+    public void should_expected_response_header() throws IOException {
+        runWithConiguration("foo.json");
+        String value = Request.Get("http://localhost:8080/response_header").execute().returnResponse().getHeaders("content-type")[0].getValue();
+        assertThat(value, is("application/json"));
     }
 }
