@@ -4,18 +4,17 @@ import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.model.ContentStream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.github.dreamhead.moco.Moco.text;
 
 public abstract class ResponseSetting {
     protected ResponseHandler handler;
 
     public void response(String content) {
-        checkNotNull(content, "Null content is not allowed");
-        this.response(new ContentHandler(content));
+        this.response(text(content));
     }
 
     public void response(ContentStream stream) {
-        this.response(new ContentHandler(stream.asByteArray()));
+        this.response(new ContentHandler(stream));
     }
 
     public void response(ResponseHandler handler) {
@@ -23,6 +22,6 @@ public abstract class ResponseSetting {
     }
 
     public void response(ResponseHandler... handler) {
-        this.handler = new AndResponseHandler(handler);
+        this.response(new AndResponseHandler(handler));
     }
 }

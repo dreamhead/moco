@@ -6,22 +6,19 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.google.common.base.Function;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Collections2.transform;
-import static com.google.common.io.ByteStreams.toByteArray;
 
 public class HttpServerParser {
     private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
@@ -49,18 +46,17 @@ public class HttpServerParser {
     private ResponseHandler getContent(SessionSetting session) throws IOException {
         ResponseSetting response = session.getResponse();
         if (response.getText() != null) {
-            return new ContentHandler(response.getText());
+            return new ContentHandler(text(response.getText()));
         } else if (response.getFile() != null) {
-            return new ContentHandler(toByteArray(new FileInputStream(response.getFile())));
+            return new ContentHandler(file(response.getFile()));
         } else if (response.getStatus() != null) {
-            return new StatusCodeResponseHandler(Integer.parseInt(response.getStatus()));
+            return status(Integer.parseInt(response.getStatus()));
         } else if (response.getHeaders() != null) {
             Map<String,String> headers = response.getHeaders();
             Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
             return new AndResponseHandler(collection.toArray(new ResponseHandler[collection.size()]));
         } else if (response.getUrl() != null) {
-            URL url = new URL(response.getUrl());
-            return new ContentHandler(toByteArray(url.openStream()));
+            return new ContentHandler(url(response.getUrl()));
         }
 
         throw new IllegalArgumentException("unknown response setting with " + session);

@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static org.hamcrest.CoreMatchers.is;
