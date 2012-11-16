@@ -34,23 +34,18 @@ subprojects {
     }
 }
 
-project(':core') {
-    jar.baseName = 'moco-core'
-}
-
-project(':json-runner') {
+project(':moco-runner') {
     dependencies {
         compile(
-                project(':core'),
+                project(':moco-core'),
                 'com.fasterxml.jackson.core:jackson-databind:2.1.0'
         )
 
-        testCompile project(':core').sourceSets.test.output
-        testRuntime project(':core').sourceSets.test.resources
+        testCompile project(':moco-core').sourceSets.test.output
+        testRuntime project(':moco-core').sourceSets.test.resources
     }
 
     jar {
-        baseName = 'moco-runner'
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 
         manifest {

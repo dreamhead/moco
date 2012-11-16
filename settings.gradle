@@ -1,1 +1,1 @@
-include 'core', 'json-runner'
+include 'moco-core', 'moco-runner'
