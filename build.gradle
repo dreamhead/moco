@@ -34,6 +34,10 @@ subprojects {
     }
 }
 
+project(':core') {
+    jar.baseName = 'moco-core'
+}
+
 project(':json-runner') {
     dependencies {
         compile(
@@ -46,6 +50,7 @@ project(':json-runner') {
     }
 
     jar {
+        baseName = 'moco-runner'
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 
         manifest {
