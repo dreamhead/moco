@@ -1,32 +1,52 @@
-apply plugin: 'java'
-apply plugin: 'idea'
-
-repositories {
-    mavenCentral()
+allprojects {
+    apply plugin: 'idea'
 }
 
-dependencies {
-    compile(
-            'com.google.guava:guava:13.0.1',
-            'joda-time:joda-time:2.1',
-            'io.netty:netty:3.5.9.Final',
-            'com.fasterxml.jackson.core:jackson-databind:2.1.0'
-    )
+subprojects {
+    apply plugin: 'java'
+    group = 'com.github.dreamhead.moco'
+    version = '1.0'
 
-    testCompile(
-            'junit:junit:4.10',
-            'org.mockito:mockito-all:1.9.0',
-            'org.apache.httpcomponents:httpcore:4.2.1',
-            'org.apache.httpcomponents:httpclient:4.2.1',
-            'org.apache.httpcomponents:fluent-hc:4.2.1',
-            'commons-logging:commons-logging:1.1.1',
-    )
-}
+    repositories {
+        mavenCentral()
+    }
 
-jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    dependencies {
+        compile(
+                'com.google.guava:guava:13.0.1',
+                'joda-time:joda-time:2.1',
+                'io.netty:netty:3.5.9.Final',
+                'org.slf4j:slf4j-api:1.7.2',
+                'org.slf4j:slf4j-log4j12:1.6.6',
+                'log4j:log4j:1.2.17',
+                'com.fasterxml.jackson.core:jackson-databind:2.1.0'
+        )
 
-    manifest {
-        attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main'
+        testCompile(
+                'junit:junit:4.10',
+                'org.mockito:mockito-all:1.9.0',
+                'org.apache.httpcomponents:httpcore:4.2.1',
+                'org.apache.httpcomponents:httpclient:4.2.1',
+                'org.apache.httpcomponents:fluent-hc:4.2.1',
+                'commons-logging:commons-logging:1.1.1',
+        )
     }
 }
+
+project(':json-runner') {
+    dependencies {
+        compile project(':core')
+        testCompile project(':core').sourceSets.test.output
+        testRuntime project(':core').sourceSets.test.resources
+    }
+}
+
+
+
+//jar {
+//    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//
+//    manifest {
+//        attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main'
+//    }
+//}

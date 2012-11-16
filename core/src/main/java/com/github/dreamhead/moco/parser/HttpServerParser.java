@@ -10,6 +10,8 @@ import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.google.common.base.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,8 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Collections2.transform;
 
 public class HttpServerParser {
+    private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
+
     private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
 
     public HttpServer parseServer(InputStream is) throws IOException {
@@ -33,6 +37,8 @@ public class HttpServerParser {
         HttpServer server = new HttpServer(jsonSetting.getPort());
         List<SessionSetting> sessions = jsonSetting.getSessions();
         for (SessionSetting session : sessions) {
+            logger.debug("Parse session: {}", session);
+
             if (session.isAnyResponse()) {
                 server.response(getContent(session));
             } else {

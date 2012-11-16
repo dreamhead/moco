@@ -492,7 +492,7 @@ public class MocoTest {
 
     @Test
     public void should_run_as_proxy() throws IOException {
-        server.response(url("http://www.google.com"));
+        server.response(url("http://www.github.com"));
 
         running(server, new Runnable() {
             @Override
