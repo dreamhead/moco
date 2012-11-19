@@ -24,7 +24,7 @@ subprojects {
         )
 
         testCompile(
-                'junit:junit:4.10',
+                'junit:junit:4.11',
                 'org.mockito:mockito-all:1.9.0',
                 'org.apache.httpcomponents:httpcore:4.2.1',
                 'org.apache.httpcomponents:httpclient:4.2.1',
