@@ -1,44 +1,57 @@
 Moco is a testing server framework, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.org/)
 
-#  How to use it?
+# Why
 
-Before we start, we should have a server.
+Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most our development.
 
-```
-MocoHttpServer server = httpserver(8080);
-```
+In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all konw, it's so boring to develop a WAR and deploy it to any application server, even if we use embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
-## Response as expected
+# Usage
 
-In most our test cases, what we expect is just some specific content. You can setup with Moco like this.
+You have two ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.
+
+## API
+
+### Typical Usage
+
+
+Here is an typical Moco test case in JUnit.
 
 ```java
-server.reponse("foo");
-```
+@Test
+public void should_response_as_expected() {
+  MocoHttpServer server = httpserver(8080);
+  server.reponse("foo");
 
-Now we can start our test as following:
-
-```java
-running(server, new Runnable() {
+  running(server, new Runnable() {
     @Override
     public void run() {
-        try {
-            Content content = Request.Get("http://localhost:8080").execute().returnContent();
-            assertThat(content.asString(), is("foo"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+      try {
+        Content content = Request.Get("http://localhost:8080").execute().returnContent();
+        assertThat(content.asString(), is("foo"));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
-});
+  }
+}
 ```
+
+As shown above, we created a new server and configure it as expected. And then run our test against this server.
 
 Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fluent.html) to request our testing server.
 
-# Expect request
+### Configurations
 
-Only response is not sufficient. In most cases, you also have expectation for request.
+Moco API mainly focuses on server configuration. There are only two kinds of configuration right now: Request and Response.
 
-## Content
+That means if we get the expected request and then return our response. You have seen the simplest test case in previous example, that is, no matter what request is, return "foo" as response.
+
+Now, you can see a Moco reference in details.
+
+#### Request
+
+##### Content
 
 If you want to response according to request content, Moco server can be configured as following:
 
@@ -46,7 +59,13 @@ If you want to response according to request content, Moco server can be configu
 server.request(by("foo")).response("bar");
 ```
 
-## URI
+If request content is too large, you can put it in a file:
+
+```java
+server.request(by(file("foo.request"))).response("bar");
+```
+
+##### URI
 
 If request uri is your major focus, Moco server could be like this:
 
@@ -54,7 +73,7 @@ If request uri is your major focus, Moco server could be like this:
 server.request(by(uri("/foo"))).response("bar");
 ```
 
-## Query parameter
+##### Query parameter
 
 Sometimes, your request has parameters:
 
@@ -62,7 +81,7 @@ Sometimes, your request has parameters:
 server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 ```
 
-## HTTP method
+##### HTTP method
 
 It's easy to response based on specified HTTP method:
 
@@ -76,35 +95,41 @@ Also for POST method:
 server.post(by("foo")).response("bar");
 ```
 
-## Header
+##### Header
 
-Sometimes, you will focus HTTP header:
+You will focus HTTP header at times:
 
 ```java
 server.request(eq(header("foo"), "bar")).response("blah")
 ```
 
-## XPath
+##### XPath
 
-XML/HTML is popular format for HTTP server. Moco allows you to match with request with XPath.
+XML/HTML is popular format for HTTP server. Moco allows us to match request with XPath.
 
 ```java
 server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
 server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
 ```
 
-# Request/Response from File
+#### Response
 
-In the real world, the request/response content is much bigger for String in code. It would be better to load content from File.
+##### Content
+
+As you have seen in previous example, response with content is pretty easy.
 
 ```java
-InputStream requestIs = this.getClass().getClassLoader().getResourceAsStream("foo.request");
-InputStream responseIs = this.getClass().getClassLoader().getResourceAsStream("foo.response");
-
-server.request(by(stream(requestIs))).response(stream(responseIs));
+server.request(by("foo")).response("bar");
 ```
 
-# Response with sequence
+The same as request, you can response with a file if content is too large to put in a string.
+
+```java
+server.request(by("foo")).response(file("bar.response"));
+```
+
+
+##### Response with sequence
 
 Sometimes, you want to simulate a real-world operation which change server side resource. For example:
 * First time you request a resource and "foo" is returned
