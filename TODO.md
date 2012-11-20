@@ -2,6 +2,7 @@
 * http method support
   * GET, POST done
 * REST support
+* HTTPS
 
 # extension
 * marshal support
