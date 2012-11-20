@@ -307,6 +307,7 @@ server.request(by("foo")).response(file("bar.response"));
 
 You can also response with the specified url, just like a proxy.
 
+* API
 ```java
 server.request(by("foo")).response(url("http://www.github.com"));
 ```
