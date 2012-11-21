@@ -1,11 +1,12 @@
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'maven'
 }
 
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead.moco'
-    version = '1.0'
+    version = '0.5'
 
     repositories {
         mavenCentral()
