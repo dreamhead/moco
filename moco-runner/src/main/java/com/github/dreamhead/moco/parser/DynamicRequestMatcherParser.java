@@ -52,9 +52,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
                 try {
                     Object value = descriptor.getReadMethod().invoke(request);
                     return createRequestMatcherFromValue(descriptor.getName(), value);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -120,9 +118,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
                 try {
                     RequestExtractor extractor = RequestExtractor.class.cast(method.invoke(null, pair.getKey()));
                     return eq(extractor, pair.getValue());
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
@@ -147,11 +143,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             } else {
                 return by(ContentStream.class.cast(result));
             }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

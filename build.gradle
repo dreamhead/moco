@@ -15,7 +15,7 @@ subprojects {
     dependencies {
         compile(
                 'com.google.guava:guava:13.0.1',
-                'io.netty:netty:3.5.10.Final',
+                'io.netty:netty:3.5.11.Final',
                 'org.slf4j:slf4j-api:1.7.2'
         )
 
