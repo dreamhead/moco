@@ -1,6 +1,7 @@
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
+    apply plugin: 'signing'
 }
 
 subprojects {
@@ -33,6 +34,20 @@ subprojects {
                 'commons-logging:commons-logging:1.1.1',
         )
     }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    artifacts {
+        archives jar
+        archives sourcesJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
 }
 
 project(':moco-runner') {
@@ -47,7 +62,7 @@ project(':moco-runner') {
     }
 
     task uberjar(type: Jar) {
-        archiveName = "${baseName}-${version}-standalone.${extension}"
+        classifier = 'standalone'
 
         from files(sourceSets.main.output.classesDir)
         from configurations.runtime.asFileTree.files.collect { zipTree(it) }
@@ -55,6 +70,10 @@ project(':moco-runner') {
         manifest {
             attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main'
         }
+    }
+
+    artifacts {
+        archives uberjar
     }
 }
 
