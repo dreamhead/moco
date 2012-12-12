@@ -101,9 +101,11 @@ project(':moco-runner') {
         testRuntime project(':moco-core').sourceSets.test.resources
     }
 
-    task uberjar(type: Jar) {
+    task uberjar(type: Jar, dependsOn: jar) {
         classifier = 'standalone'
 
+        from files(project(':moco-core').sourceSets.main.output.classesDir)
+        from files(project(':moco-core').sourceSets.main.output.resourcesDir)
         from files(sourceSets.main.output.classesDir)
         from configurations.runtime.asFileTree.files.collect { zipTree(it) }
 
