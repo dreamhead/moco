@@ -196,7 +196,7 @@ server.post(by("foo")).response("bar");
   "request" :
     {
       "method" : "post",
-      "uri" : "/foo"
+      "text" : "foo"
     },
   "response" :
     {

@@ -6,3 +6,4 @@ build
 *.iws
 out
 reports
+.DS_Store
