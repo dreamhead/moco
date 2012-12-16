@@ -61,8 +61,8 @@ subprojects {
         )
 
         runtime(
-                'org.slf4j:slf4j-log4j12:1.6.6',
-                'log4j:log4j:1.2.17'
+                'com.googlecode.sli4j:sli4j-slf4j-logback:2.0',
+                'ch.qos.logback:logback-classic:1.0.9'
         )
 
         testCompile(
