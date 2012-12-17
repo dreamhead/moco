@@ -5,6 +5,29 @@ Integration, especially based on HTTP protocol, e.g. web service, REST etc, is w
 
 In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all konw, it's so boring to develop a WAR and deploy it to any application server, even if we use embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
+# Dependencies
+Moco has been published on Maven repository, so you can refer it directly in your code.
+
+A gradle example is as follow:
+```groovy
+repositories {
+  maven {
+    url "https://oss.sonatype.org/content/groups/public"
+  }
+  mavenCentral()
+}
+
+dependencies {
+  compile(
+    "com.github.dreamhead:moco-core:0.5-SNAPSHOT",
+    "com.github.dreamhead:moco-runner:0.5-SNAPSHOT"
+  )
+}
+```
+
+Moco can be used as standalone to run with configuration and you can download standalone directly:
+[Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.5-SNAPSHOT/moco-runner-0.5-20121212.112753-2-standalone.jar)
+
 # Usage
 You have two ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.
 
