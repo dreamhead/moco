@@ -326,6 +326,30 @@ server.request(by("foo")).response(file("bar.response"));
 }
 ```
 
+### Header
+We can also specify HTTP header in response.
+
+* API
+```java
+server.response(header("content-type", "application/json"));
+```
+
+* JSON
+```json
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "headers" : {
+        "content-type" : "application/json"
+      }
+    }
+}
+```
+
 ### Url
 
 You can also response with the specified url, just like a proxy.
