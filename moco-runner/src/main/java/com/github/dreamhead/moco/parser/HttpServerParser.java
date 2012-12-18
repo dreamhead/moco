@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.parser.model.JsonSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.google.common.base.Function;
