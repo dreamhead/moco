@@ -331,7 +331,7 @@ Moco also supports HTTP status codein response.
 
 * API
 ```java
-server.request(by("foo"))response(status(200));
+server.request(by("foo")).response(status(200));
 ```
 
 * JSON
