@@ -62,24 +62,20 @@ Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents
 Now we are going to run Moco as standalone server. First of all, a JSON configuration file needs to be provided to start Moco.
 
 ```json
-{
-  "port" : 8080,
-  "sessions" :
-    [
+[
+  {
+    "response" :
       {
-        "response" :
-          {
-            "text" : "foo"
-          }
+        "text" : "foo"
       }
-    ]
-}
+  }
+]
 ```
 
 It's time to run Moco standalone server:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar foo.json
+java -jar moco-runner-<version>-standalone.jar -p 8080 foo.json
 ```
 
 Now, open your browser and input "http://localhost:8080". You will see "foo". That's it.

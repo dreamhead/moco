@@ -1,17 +1,13 @@
-{
-   "port" : 8080,
-   "sessions" :
-      [
-         {
-             "request" :
-               {
-                "method" : "get",
-                "uri" : "/get"
-               },
-             "response" :
-               {
-                "text" : "response_for_get_method"
-               }
-         }
-      ]
-}
+[
+  {
+     "request" :
+       {
+        "method" : "get",
+        "uri" : "/get"
+       },
+     "response" :
+       {
+        "text" : "response_for_get_method"
+       }
+  }
+]

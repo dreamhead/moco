@@ -1,19 +1,15 @@
-{
-   "port" : 8080,
-   "sessions" :
-      [
-         {
-             "request" :
-               {
-                 "uri" : "/header",
-                 "headers" : {
-                     "content-type" : "application/json"
-                 }
-               },
-             "response" :
-               {
-                 "text" : "response_for_header_request"
-               }
+[
+   {
+     "request" :
+       {
+         "uri" : "/header",
+         "headers" : {
+             "content-type" : "application/json"
          }
-      ]
-}
+       },
+     "response" :
+       {
+         "text" : "response_for_header_request"
+       }
+   }
+]

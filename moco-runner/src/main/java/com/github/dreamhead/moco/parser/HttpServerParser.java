@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HeaderResponseHandler;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.ResponseHandler;
@@ -27,16 +28,16 @@ public class HttpServerParser {
 
     private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
 
-    public HttpServer parseServer(InputStream is) throws IOException {
+    public HttpServer parseServer(InputStream is, int port) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonSetting jsonSetting = mapper.readValue(is, JsonSetting.class);
-        return createHttpServer(jsonSetting);
+        TypeFactory factory = TypeFactory.defaultInstance();
+        List<SessionSetting> sessionSettings = mapper.readValue(is, factory.constructCollectionType(List.class, SessionSetting.class));
+        return createHttpServer(sessionSettings, port);
     }
 
-    private HttpServer createHttpServer(JsonSetting jsonSetting) throws IOException {
-        HttpServer server = new HttpServer(jsonSetting.getPort());
-        List<SessionSetting> sessions = jsonSetting.getSessions();
-        for (SessionSetting session : sessions) {
+    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port) throws IOException {
+        HttpServer server = new HttpServer(port);
+        for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 
             if (session.isAnyResponse()) {

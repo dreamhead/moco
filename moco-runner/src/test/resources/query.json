@@ -1,19 +1,15 @@
-{
-   "port" : 8080,
-   "sessions" :
-      [
-         {
-             "request" :
-               {
-                 "uri" : "/query",
-                 "queries" : {
-                     "param" : "foo"
-                 }
-               },
-             "response" :
-               {
-                 "text" : "response_for_query_request"
-               }
+[
+   {
+     "request" :
+       {
+         "uri" : "/query",
+         "queries" : {
+             "param" : "foo"
          }
-      ]
-}
+       },
+     "response" :
+       {
+         "text" : "response_for_query_request"
+       }
+   }
+]

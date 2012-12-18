@@ -10,8 +10,8 @@ public class JsonRunner {
     private final HttpServerParser httpServerParser = new HttpServerParser();
     private final StandaloneRunner runner = new StandaloneRunner();
 
-    public void run(InputStream is) throws IOException {
-        HttpServer server = httpServerParser.parseServer(is);
+    public void run(InputStream is, int port) throws IOException {
+        HttpServer server = httpServerParser.parseServer(is, port);
         runner.run(server);
     }
 
