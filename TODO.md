@@ -3,7 +3,6 @@
   * GET, POST done
 * REST support
 * HTTPS
-* HTTP response code
 
 # extension
 * marshal support

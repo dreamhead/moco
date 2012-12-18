@@ -326,12 +326,34 @@ server.request(by("foo")).response(file("bar.response"));
 }
 ```
 
+### Status Code
+Moco also supports HTTP status codein response.
+
+* API
+```java
+server.request(by("foo"))response(status(200));
+```
+
+* JSON
+```json
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "status" : 200
+    }
+}
+```
+
 ### Header
 We can also specify HTTP header in response.
 
 * API
 ```java
-server.response(header("content-type", "application/json"));
+server.request(by("foo")).response(header("content-type", "application/json"));
 ```
 
 * JSON
