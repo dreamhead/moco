@@ -1,4 +1,4 @@
-Moco is a easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.org/)
+Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.org/)
 
 # Why
 Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most our development.
