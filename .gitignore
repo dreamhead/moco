@@ -7,3 +7,4 @@ build
 out
 reports
 .DS_Store
+.idea
