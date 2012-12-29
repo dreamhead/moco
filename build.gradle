@@ -95,7 +95,8 @@ project(':moco-runner') {
         compile(
                 project(':moco-core'),
                 'com.fasterxml.jackson.core:jackson-databind:2.1.0',
-                'commons-cli:commons-cli:1.2'
+                'commons-cli:commons-cli:1.2',
+                'commons-io:commons-io:2.4'
         )
 
         testCompile project(':moco-core').sourceSets.test.output

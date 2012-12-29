@@ -1,38 +1,19 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.runner.JsonRunner;
-import org.apache.commons.cli.*;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+
+import static com.github.dreamhead.moco.bootstrap.BootArgs.parse;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         try {
-            CommandLineParser parser = new PosixParser();
-            CommandLine cmd = parser.parse(createMocoOptions(), args);
-            int port = Integer.parseInt(cmd.getOptionValue("p"));
-            if (cmd.getArgs().length != 1) {
-                help();
-            }
-
-            new JsonRunner().run(new FileInputStream(cmd.getArgs()[0]), port);
-        } catch (ParseException e) {
+            BootArgs bootArgs = parse(args);
+            new JsonRunner().run(bootArgs.getConfigurationFile(), bootArgs.getPort());
+        } catch (ParseArgException e) {
             help();
         }
-    }
-
-    private static Options createMocoOptions() {
-        Options options = new Options();
-        options.addOption(portOption());
-        return options;
-    }
-
-    private static Option portOption() {
-        Option opt = new Option("p", true, "port");
-        opt.setType(Integer.class);
-        opt.setRequired(true);
-        return opt;
     }
 
     private static void help() {

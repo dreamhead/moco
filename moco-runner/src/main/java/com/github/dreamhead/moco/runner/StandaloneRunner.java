@@ -28,6 +28,7 @@ public class StandaloneRunner {
     public void stop() {
         if (server != null) {
             server.stop();
+            logger.info("Server stopped.");
         }
     }
 }
