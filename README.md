@@ -19,8 +19,8 @@ repositories {
 
 dependencies {
   compile(
-    "com.github.dreamhead:moco-core:0.5-SNAPSHOT",
-    "com.github.dreamhead:moco-runner:0.5-SNAPSHOT"
+    "com.github.dreamhead:moco-core:0.6-SNAPSHOT",
+    "com.github.dreamhead:moco-runner:0.6-SNAPSHOT"
   )
 }
 ```

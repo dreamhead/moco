@@ -32,7 +32,9 @@ public class JsonRunner {
 
     private FileAlterationMonitor monitorConfigurationFile(String fileName, final int port) {
         final File configFile = new File(fileName);
-        FileAlterationObserver observer = new FileAlterationObserver(configFile.getParentFile(), sameFile(configFile));
+        File parentFile = configFile.getParentFile();
+        File directory = (parentFile == null) ? new File(".") : parentFile;
+        FileAlterationObserver observer = new FileAlterationObserver(directory, sameFile(configFile));
         observer.addListener(configurationChangeListener(port));
 
         return new FileAlterationMonitor(1000, observer);
