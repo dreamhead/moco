@@ -95,7 +95,7 @@ public class Moco {
         return new SequenceResponseHandler(contents);
     }
 
-    public static ContentStream stream(InputStream is) {
+    private static ContentStream stream(InputStream is) {
         return new ContentStream(is);
     }
 

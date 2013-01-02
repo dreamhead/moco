@@ -57,24 +57,6 @@ public class MocoTest {
     }
 
     @Test
-    public void should_return_expected_response_from_stream() throws IOException {
-        InputStream is = Resources.getResource("foo.response").openStream();
-
-        server.response(stream(is));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    assertThat(helper.get("http://localhost:8080"), is("foo.response"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
-    @Test
     public void should_return_expected_response_from_file() throws IOException {
         server.response(file("src/test/resources/foo.response"));
 
@@ -327,42 +309,6 @@ public class MocoTest {
                     assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
                     assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
                     assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
-    @Test
-    public void should_return_content_from_specified_inputstream() throws IOException {
-        InputStream is = Resources.getResource("foo.response").openStream();
-
-        server.request(by(uri("/foo"))).response(stream(is));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("foo.response"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
-    @Test
-    public void should_match_content_from_specified_inputstream() throws IOException {
-        InputStream is = Resources.getResource("foo.request").openStream();
-
-        server.request(by(stream(is))).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    assertThat(helper.postContent("http://localhost:8080", "foo.request"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
