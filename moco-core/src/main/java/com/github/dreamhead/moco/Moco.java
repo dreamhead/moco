@@ -2,16 +2,19 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
-import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;import com.github.dreamhead.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
+import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.model.FileContentStream;
+import com.github.dreamhead.moco.model.StringContentStream;
+import com.github.dreamhead.moco.model.UrlContentStream;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -49,7 +52,7 @@ public class Moco {
 
     public static ContentStream text(String text) {
         checkNotNull(text, "Null text is not allowed");
-        return new ContentStream(text);
+        return new StringContentStream(text);
     }
 
     public static Expectation uri(String uri) {
@@ -95,16 +98,8 @@ public class Moco {
         return new SequenceResponseHandler(contents);
     }
 
-    private static ContentStream stream(InputStream is) {
-        return new ContentStream(is);
-    }
-
     public static ContentStream file(String filename) {
-        try {
-            return stream(new FileInputStream(filename));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return new FileContentStream(new File(filename));
     }
 
     public static ResponseHandler status(int code) {
@@ -113,8 +108,8 @@ public class Moco {
 
     public static ContentStream url(String url) {
         try {
-            return stream(new URL(url).openStream());
-        } catch (IOException e) {
+            return new UrlContentStream(new URL(url));
+        } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
