@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.SequenceResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
-import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
@@ -11,7 +10,6 @@ import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.model.FileContentStream;
 import com.github.dreamhead.moco.model.StringContentStream;
 import com.github.dreamhead.moco.model.UrlContentStream;
-
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -111,19 +109,6 @@ public class Moco {
             return new UrlContentStream(new URL(url));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public static void running(HttpServer httpServer, Runnable runnable) {
-        MocoHttpServer server = new MocoHttpServer(httpServer);
-        try {
-            server.start();
-            runnable.run();
-        } catch (Throwable t) {
-            t.printStackTrace(System.err);
-            throw new RuntimeException(t);
-        } finally {
-            server.stop();
         }
     }
 }

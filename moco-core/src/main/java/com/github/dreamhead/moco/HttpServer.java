@@ -2,13 +2,18 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
+import com.github.dreamhead.moco.mount.MountHandler;
+import com.github.dreamhead.moco.mount.MountMatcher;
+import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.setting.BaseSetting;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.or;
+import static java.lang.String.format;
 
 public class HttpServer extends ResponseSetting {
     private final int port;
@@ -46,5 +51,13 @@ public class HttpServer extends ResponseSetting {
 
     public ResponseHandler getAnyResponseHandler() {
         return this.handler;
+    }
+
+    public void mount(String dir, MountTo target) {
+        File mountedDir = new File(dir);
+        if (!mountedDir.exists()) {
+            throw new IllegalArgumentException(format("Mounted directory %s does not exist", dir));
+        }
+        this.request(new MountMatcher(dir, target)).response(new MountHandler(dir, target));
     }
 }

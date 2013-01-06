@@ -41,13 +41,13 @@ public class MocoHandler extends SimpleChannelHandler {
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
-                setting.writeToResponse(response);
+                setting.writeToResponse(request, response);
                 return response;
             }
         }
 
         if (anyResponseHandler != null) {
-            anyResponseHandler.writeToResponse(response);
+            anyResponseHandler.writeToResponse(request, response);
             return response;
         }
 

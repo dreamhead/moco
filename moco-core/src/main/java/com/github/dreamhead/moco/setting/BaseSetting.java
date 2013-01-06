@@ -14,7 +14,7 @@ public class BaseSetting extends Setting {
         return this.matcher.match(request);
     }
 
-    public void writeToResponse(HttpResponse response) {
-        this.handler.writeToResponse(response);
+    public void writeToResponse(HttpRequest request, HttpResponse response) {
+        this.handler.writeToResponse(request, response);
     }
 }

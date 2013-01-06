@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class HeaderResponseHandler implements ResponseHandler {
@@ -12,7 +13,7 @@ public class HeaderResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(HttpResponse response) {
+    public void writeToResponse(HttpRequest request, HttpResponse response) {
         response.setHeader(name, value);
     }
 }
