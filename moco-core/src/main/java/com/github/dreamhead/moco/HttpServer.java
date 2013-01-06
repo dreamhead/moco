@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
 import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
+import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.setting.BaseSetting;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.or;
+import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
 public class HttpServer extends ResponseSetting {
@@ -53,11 +55,12 @@ public class HttpServer extends ResponseSetting {
         return this.handler;
     }
 
-    public void mount(String dir, MountTo target) {
+    public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(dir);
         if (!mountedDir.exists()) {
             throw new IllegalArgumentException(format("Mounted directory %s does not exist", dir));
         }
-        this.request(new MountMatcher(dir, target)).response(new MountHandler(dir, target));
+
+        this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
     }
 }

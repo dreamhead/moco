@@ -57,7 +57,8 @@ subprojects {
         compile(
                 'com.google.guava:guava:13.0.1',
                 'io.netty:netty:3.6.1.Final',
-                'org.slf4j:slf4j-api:1.7.2'
+                'org.slf4j:slf4j-api:1.7.2',
+                'commons-io:commons-io:2.4'
         )
 
         runtime(
@@ -95,8 +96,7 @@ project(':moco-runner') {
         compile(
                 project(':moco-core'),
                 'com.fasterxml.jackson.core:jackson-databind:2.1.0',
-                'commons-cli:commons-cli:1.2',
-                'commons-io:commons-io:2.4'
+                'commons-cli:commons-cli:1.2'
         )
 
         testCompile project(':moco-core').sourceSets.test.output

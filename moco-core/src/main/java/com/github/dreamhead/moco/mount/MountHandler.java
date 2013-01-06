@@ -15,10 +15,10 @@ import static com.google.common.io.Files.toByteArray;
 public class MountHandler implements ResponseHandler {
     private UriRequestExtractor extractor = new UriRequestExtractor();
 
-    private String dir;
+    private File dir;
     private MountTo target;
 
-    public MountHandler(String dir, MountTo target) {
+    public MountHandler(File dir, MountTo target) {
         this.dir = dir;
         this.target = target;
     }

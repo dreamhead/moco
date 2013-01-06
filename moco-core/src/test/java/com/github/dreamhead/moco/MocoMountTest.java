@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.httpserver;
-import static com.github.dreamhead.moco.MocoMount.to;
+import static com.github.dreamhead.moco.MocoMount.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -55,6 +55,70 @@ public class MocoMountTest {
             public void run() {
                 try {
                     helper.get("http://localhost:8080/dir/unknown.response");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_inclusion_file() {
+        server.mount(MOUNT_DIR, to("/dir"), include("*.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get("http://localhost:8080/dir/dir.response"), is("response from dir"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_not_return_non_inclusion_file() {
+        server.mount(MOUNT_DIR, to("/dir"), include("*.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    helper.get("http://localhost:8080/dir/foo.bar");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_not_return_exclusion_file() {
+        server.mount(MOUNT_DIR, to("/dir"), exclude("*.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    helper.get("http://localhost:8080/dir/dir.response");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_return_non_exclusion_file() {
+        server.mount(MOUNT_DIR, to("/dir"), exclude("*.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get("http://localhost:8080/dir/foo.bar"), is("foo.bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
