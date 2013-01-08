@@ -20,7 +20,7 @@ public class MocoTest {
     @Before
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
-        server = httpserver(8080);
+        server = httpserver(9090);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080"), is("foo"));
+                    assertThat(helper.get("http://localhost:9090"), is("foo"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -47,7 +47,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080"), is("foo"));
+                    assertThat(helper.get("http://localhost:9090"), is("foo"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -63,7 +63,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080"), is("foo.response"));
+                    assertThat(helper.get("http://localhost:9090"), is("foo.response"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -77,7 +77,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -93,7 +93,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.postContent("http://localhost:8080", "foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -109,7 +109,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.postContent("http://localhost:8080", "foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -125,7 +125,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -141,7 +141,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.postContent("http://localhost:8080/foo", "foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090/foo", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -157,7 +157,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:8080/foo");
+                    helper.get("http://localhost:9090/foo");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -173,8 +173,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
-                    assertThat(helper.postContent("http://localhost:8080/foo", "foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090/foo", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -190,8 +190,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
-                    assertThat(helper.postContent("http://localhost:8080", "foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -207,7 +207,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -223,7 +223,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -239,7 +239,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    helper.postContent("http://localhost:8080/foo", "");
+                    helper.postContent("http://localhost:9090/foo", "");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -255,7 +255,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.postContent("http://localhost:8080/", "foo"), is("bar"));
+                    assertThat(helper.postContent("http://localhost:9090/", "foo"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -271,7 +271,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:8080/foo");
+                    helper.get("http://localhost:9090/foo");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -287,9 +287,9 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
-                    assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
-                    assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("blah"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -305,9 +305,9 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo"), is("bar"));
-                    assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
-                    assertThat(helper.get("http://localhost:8080/foo"), is("blah"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("blah"));
+                    assertThat(helper.get("http://localhost:9090/foo"), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -323,7 +323,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    Content content = Request.Get("http://localhost:8080/foo").addHeader("foo", "bar").execute().returnContent();
+                    Content content = Request.Get("http://localhost:9090/foo").addHeader("foo", "bar").execute().returnContent();
                     assertThat(content.asString(), is("blah"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -340,7 +340,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:8080/foo");
+                    helper.get("http://localhost:9090/foo");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -356,7 +356,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:8080/foo?param=blah"), is("bar"));
+                    assertThat(helper.get("http://localhost:9090/foo?param=blah"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -373,8 +373,8 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.postFile("http://localhost:8080", "foo.xml"), is("foo"));
-                    assertThat(helper.postFile("http://localhost:8080", "bar.xml"), is("bar"));
+                    assertThat(helper.postFile("http://localhost:9090", "foo.xml"), is("foo"));
+                    assertThat(helper.postFile("http://localhost:9090", "bar.xml"), is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -390,7 +390,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    int statusCode = Request.Get("http://localhost:8080").execute().returnResponse().getStatusLine().getStatusCode();
+                    int statusCode = Request.Get("http://localhost:9090").execute().returnResponse().getStatusLine().getStatusCode();
                     assertThat(statusCode, is(200));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -407,7 +407,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    String value = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("content-type")[0].getValue();
+                    String value = Request.Get("http://localhost:9090").execute().returnResponse().getHeaders("content-type")[0].getValue();
                     assertThat(value, is("application/json"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -424,9 +424,9 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    String json = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("content-type")[0].getValue();
+                    String json = Request.Get("http://localhost:9090").execute().returnResponse().getHeaders("content-type")[0].getValue();
                     assertThat(json, is("application/json"));
-                    String bar = Request.Get("http://localhost:8080").execute().returnResponse().getHeaders("foo")[0].getValue();
+                    String bar = Request.Get("http://localhost:9090").execute().returnResponse().getHeaders("foo")[0].getValue();
                     assertThat(bar, is("bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -443,7 +443,7 @@ public class MocoTest {
             @Override
             public void run() {
                 try {
-                    int statusCode = Request.Get("http://localhost:8080").execute().returnResponse().getStatusLine().getStatusCode();
+                    int statusCode = Request.Get("http://localhost:9090").execute().returnResponse().getStatusLine().getStatusCode();
                     assertThat(statusCode, is(200));
                 } catch (IOException e) {
                     throw new RuntimeException(e);

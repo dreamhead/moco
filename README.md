@@ -37,14 +37,14 @@ Here is an typical Moco test case in JUnit.
 ```java
 @Test
 public void should_response_as_expected() {
-  MocoHttpServer server = httpserver(8080);
+  MocoHttpServer server = httpserver(9090);
   server.reponse("foo");
 
   running(server, new Runnable() {
     @Override
     public void run() {
       try {
-        Content content = Request.Get("http://localhost:8080").execute().returnContent();
+        Content content = Request.Get("http://localhost:9090").execute().returnContent();
         assertThat(content.asString(), is("foo"));
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -75,10 +75,10 @@ Now we are going to run Moco as standalone server. First of all, a JSON configur
 It's time to run Moco standalone server:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar -p 8080 foo.json
+java -jar moco-runner-<version>-standalone.jar -p 9090 foo.json
 ```
 
-Now, open your browser and input "http://localhost:8080". You will see "foo". That's it.
+Now, open your browser and input "http://localhost:9090". You will see "foo". That's it.
 
 # Configurations
 Moco mainly focuses on server configuration. There are only two kinds of configuration right now: Request and Response.
