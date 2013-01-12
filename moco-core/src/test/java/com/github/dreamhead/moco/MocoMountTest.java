@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.MocoMount.*;
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -21,7 +23,7 @@ public class MocoMountTest {
 
     @Before
     public void setUp() throws Exception {
-        server = httpserver(9090);
+        server = httpserver(port());
         helper = new MocoTestHelper();
     }
 
@@ -38,7 +40,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:9090/dir/dir.response"), is("response from dir"));
+                    assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -54,7 +56,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:9090/dir/unknown.response");
+                    helper.get(remoteUrl("/dir/unknown.response"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -70,7 +72,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:9090/dir/dir.response"), is("response from dir"));
+                    assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -86,7 +88,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:9090/dir/foo.bar");
+                    helper.get(remoteUrl("/dir/foo.bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -102,7 +104,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    helper.get("http://localhost:9090/dir/dir.response");
+                    helper.get(remoteUrl("/dir/dir.response"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -118,7 +120,7 @@ public class MocoMountTest {
             @Override
             public void run() {
                 try {
-                    assertThat(helper.get("http://localhost:9090/dir/foo.bar"), is("foo.bar"));
+                    assertThat(helper.get(remoteUrl("/dir/foo.bar")), is("foo.bar"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

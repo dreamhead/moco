@@ -10,11 +10,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoMountStandaloneTest {
-    private static int PORT = 9090;
     private final MocoTestHelper helper = new MocoTestHelper();
     private JsonRunner runner;
 
@@ -38,31 +39,31 @@ public class MocoMountStandaloneTest {
 
     @Test
     public void should_mount_dir_to_uri() throws IOException {
-        runWithConfiguration("mount.json", PORT);
-        assertThat(helper.get("http://localhost:9090/mount/mount.response"), is("response from mount"));
+        runWithConfiguration("mount.json", port());
+        assertThat(helper.get(remoteUrl("/mount/mount.response")), is("response from mount"));
     }
 
     @Test
     public void should_mount_dir_to_uri_with_include() throws IOException {
-        runWithConfiguration("mount.json", PORT);
-        assertThat(helper.get("http://localhost:9090/mount-include/mount.response"), is("response from mount"));
+        runWithConfiguration("mount.json", port());
+        assertThat(helper.get(remoteUrl("/mount-include/mount.response")), is("response from mount"));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_return_non_inclusion() throws IOException {
-        runWithConfiguration("mount.json", PORT);
-        helper.get("http://localhost:9090/mount-include/foo.bar");
+        runWithConfiguration("mount.json", port());
+        helper.get(remoteUrl("/mount-include/foo.bar"));
     }
 
     @Test
     public void should_mount_dir_to_uri_with_exclude() throws IOException {
-        runWithConfiguration("mount.json", PORT);
-        assertThat(helper.get("http://localhost:9090/mount-exclude/foo.bar"), is("foo.bar"));
+        runWithConfiguration("mount.json", port());
+        assertThat(helper.get(remoteUrl("/mount-exclude/foo.bar")), is("foo.bar"));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_return_exclusion() throws IOException {
-        runWithConfiguration("mount.json", PORT);
-        helper.get("http://localhost:9090/mount-exclude/mount.response");
+        runWithConfiguration("mount.json", port());
+        helper.get(remoteUrl("/mount-exclude/mount.response"));
     }
 }

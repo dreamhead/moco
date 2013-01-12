@@ -12,11 +12,13 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest {
-    private static int PORT = 9090;
     private final MocoTestHelper helper = new MocoTestHelper();
     private JsonRunner runner;
 
@@ -40,126 +42,126 @@ public class MocoStandaloneTest {
 
     @Test
     public void should_return_expected_response() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        assertThat(helper.get("http://localhost:9090"), is("foo"));
+        runWithConfiguration("foo.json", port());
+        assertThat(helper.get(root()), is("foo"));
     }
 
     @Test
     public void should_return_expected_response_with_file() throws IOException {
-        runWithConfiguration("any_response_with_file.json", PORT);
-        assertThat(helper.get("http://localhost:9090"), is("foo.response"));
+        runWithConfiguration("any_response_with_file.json", port());
+        assertThat(helper.get(root()), is("foo.response"));
     }
 
     @Test
     public void should_return_expected_response_with_text_based_on_specified_uri() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        assertThat(helper.get("http://localhost:9090/foo"), is("bar"));
+        runWithConfiguration("foo.json", port());
+        assertThat(helper.get(remoteUrl("/foo")), is("bar"));
     }
 
     @Test
     public void should_return_expected_response_with_file_based_on_specified_request() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        assertThat(helper.get("http://localhost:9090/file"), is("foo.response"));
+        runWithConfiguration("foo.json", port());
+        assertThat(helper.get(remoteUrl("/file")), is("foo.response"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_text_request() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        assertThat(helper.postContent("http://localhost:9090", "text_request"), is("response_for_text_request"));
+        runWithConfiguration("foo.json", port());
+        assertThat(helper.postContent(root(), "text_request"), is("response_for_text_request"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_file_request() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        assertThat(helper.postFile("http://localhost:9090", "foo.request"), is("response_for_file_request"));
+        runWithConfiguration("foo.json", port());
+        assertThat(helper.postFile(root(), "foo.request"), is("response_for_file_request"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_get_request() throws IOException {
-        runWithConfiguration("get_method.json", PORT);
-        assertThat(helper.get("http://localhost:9090/get"), is("response_for_get_method"));
+        runWithConfiguration("get_method.json", port());
+        assertThat(helper.get(remoteUrl("/get")), is("response_for_get_method"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_while_request_non_get_request() throws IOException {
-        runWithConfiguration("get_method.json", PORT);
-        helper.postContent("http://localhost:9090/get", "");
+        runWithConfiguration("get_method.json", port());
+        helper.postContent(remoteUrl("/get"), "");
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_post_request() throws IOException {
-        runWithConfiguration("post_method.json", PORT);
-        assertThat(helper.postContent("http://localhost:9090/post", ""), is("response_for_post_method"));
+        runWithConfiguration("post_method.json", port());
+        assertThat(helper.postContent(remoteUrl("/post"), ""), is("response_for_post_method"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_while_request_non_post_request() throws IOException {
-        runWithConfiguration("post_method.json", PORT);
-        helper.get("http://localhost:9090/post");
+        runWithConfiguration("post_method.json", port());
+        helper.get(remoteUrl("/post"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_header_request() throws IOException {
-        runWithConfiguration("header.json", PORT);
-        Content content = Request.Get("http://localhost:9090/header").addHeader("content-type", "application/json").execute().returnContent();
+        runWithConfiguration("header.json", port());
+        Content content = Request.Get(remoteUrl("/header")).addHeader("content-type", "application/json").execute().returnContent();
         assertThat(content.asString(), is("response_for_header_request"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_for_unknown_header() throws IOException {
-        runWithConfiguration("header.json", PORT);
-        helper.get("http://localhost:9090/header");
+        runWithConfiguration("header.json", port());
+        helper.get(remoteUrl("/header"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_query_request() throws IOException {
-        runWithConfiguration("query.json", PORT);
-        assertThat(helper.get("http://localhost:9090/query?param=foo"), is("response_for_query_request"));
+        runWithConfiguration("query.json", port());
+        assertThat(helper.get(remoteUrl("/query?param=foo")), is("response_for_query_request"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_for_different_query_param() throws IOException {
-        runWithConfiguration("query.json", PORT);
-        helper.get("http://localhost:9090/query?param2=foo");
+        runWithConfiguration("query.json", port());
+        helper.get(remoteUrl("/query?param2=foo"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_for_different_query_param_value() throws IOException {
-        runWithConfiguration("query.json", PORT);
-        helper.get("http://localhost:9090/query?param=foo2");
+        runWithConfiguration("query.json", port());
+        helper.get(remoteUrl("/query?param=foo2"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_xpath_request() throws IOException {
-        runWithConfiguration("xpath.json", PORT);
-        assertThat(helper.postFile("http://localhost:9090/xpath", "foo.xml"), is("response_for_xpath_request"));
+        runWithConfiguration("xpath.json", port());
+        assertThat(helper.postFile(remoteUrl("/xpath"), "foo.xml"), is("response_for_xpath_request"));
     }
 
     @Test(expected = IOException.class)
     public void should_throw_exception_for_unknown_xpath_request() throws IOException {
-        runWithConfiguration("xpath.json", PORT);
-        helper.postFile("http://localhost:9090/xpath", "bar.xml");
+        runWithConfiguration("xpath.json", port());
+        helper.postFile(remoteUrl("/xpath"), "bar.xml");
     }
 
     @Test
     public void should_expected_response_status_code() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        int statusCode = Request.Get("http://localhost:9090/status").execute().returnResponse().getStatusLine().getStatusCode();
+        runWithConfiguration("foo.json", port());
+        int statusCode = Request.Get(remoteUrl("/status")).execute().returnResponse().getStatusLine().getStatusCode();
         assertThat(statusCode, is(200));
     }
 
     @Test
     public void should_expected_response_header() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        HttpResponse response = Request.Get("http://localhost:9090/response_header").execute().returnResponse();
+        runWithConfiguration("foo.json", port());
+        HttpResponse response = Request.Get(remoteUrl("/response_header")).execute().returnResponse();
         assertThat(response.getHeaders("content-type")[0].getValue(), is("application/json"));
         assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
     }
 
     @Test
     public void should_run_as_proxy() throws IOException {
-        runWithConfiguration("foo.json", PORT);
-        HttpResponse response = Request.Get("http://localhost:9090/url").execute().returnResponse();
+        runWithConfiguration("foo.json", port());
+        HttpResponse response = Request.Get(remoteUrl("/url")).execute().returnResponse();
         assertThat(response.getStatusLine().getStatusCode(), is(200));
     }
 }
