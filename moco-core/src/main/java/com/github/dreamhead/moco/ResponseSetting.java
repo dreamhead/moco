@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
-import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.resource.Resource;
 
 import static com.github.dreamhead.moco.Moco.text;
 
@@ -13,8 +13,8 @@ public abstract class ResponseSetting {
         this.response(text(content));
     }
 
-    public void response(ContentStream stream) {
-        this.response(new ContentHandler(stream));
+    public void response(Resource resource) {
+        this.response(new ContentHandler(resource));
     }
 
     public void response(ResponseHandler handler) {

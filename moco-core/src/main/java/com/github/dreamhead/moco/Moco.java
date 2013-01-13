@@ -6,10 +6,8 @@ import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
-import com.github.dreamhead.moco.model.ContentStream;
-import com.github.dreamhead.moco.model.FileContentStream;
-import com.github.dreamhead.moco.model.StringContentStream;
-import com.github.dreamhead.moco.model.UrlContentStream;
+import com.github.dreamhead.moco.resource.*;
+import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -17,7 +15,9 @@ import java.net.URL;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.String.format;
 
 public class Moco {
     public static HttpServer httpserver(int port) {
@@ -28,15 +28,15 @@ public class Moco {
         return by(text(content));
     }
 
-    public static RequestMatcher by(ContentStream stream) {
-        return eq(new ContentRequestExtractor(), new String(stream.asByteArray()));
-    }
-
-    public static RequestMatcher by(Expectation expectation) {
-        return eq(expectation.getExtractor(), expectation.getExpected());
+    public static RequestMatcher by(Resource resource) {
+        return eq(extractor(resource.id()), resource);
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, String expected) {
+        return new EqRequestMatcher(extractor, text(expected));
+    }
+
+    public static RequestMatcher eq(RequestExtractor extractor, Resource expected) {
         return new EqRequestMatcher(extractor, expected);
     }
 
@@ -48,19 +48,19 @@ public class Moco {
         return new OrRequestMatcher(matchers);
     }
 
-    public static ContentStream text(String text) {
+    public static Resource text(String text) {
         checkNotNull(text, "Null text is not allowed");
-        return new StringContentStream(text);
+        return new TextResource(text);
     }
 
-    public static Expectation uri(String uri) {
+    public static Resource uri(String uri) {
         checkNotNull(uri, "Null URI is not allowed");
-        return new Expectation(new UriRequestExtractor(), uri);
+        return new UriResource(uri);
     }
 
-    public static Expectation method(String requestMethod) {
+    public static Resource method(String requestMethod) {
         checkNotNull(requestMethod, "Null method is not allowed");
-        return new Expectation(new HttpMethodExtractor(), requestMethod.toUpperCase());
+        return new MethodResource(requestMethod);
     }
 
     public static RequestExtractor header(String header) {
@@ -70,7 +70,6 @@ public class Moco {
 
     public static ResponseHandler header(String name, String value) {
         return new HeaderResponseHandler(name, value);
-
     }
 
     public static RequestExtractor query(String param) {
@@ -84,31 +83,55 @@ public class Moco {
     }
 
     public static ResponseHandler seq(String... contents) {
-        List<ContentStream> streams = newArrayList();
+        List<Resource> streams = newArrayList();
         for (String content : contents) {
             streams.add(text(content));
         }
 
-        return new SequenceResponseHandler(streams.toArray(new ContentStream[streams.size()]));
+        return new SequenceResponseHandler(streams.toArray(new Resource[streams.size()]));
     }
 
-    public static ResponseHandler seq(ContentStream... contents) {
+    public static ResponseHandler seq(Resource... contents) {
         return new SequenceResponseHandler(contents);
     }
 
-    public static ContentStream file(String filename) {
-        return new FileContentStream(new File(filename));
+    public static Resource file(String filename) {
+        checkNotNull(filename, "Null filename is not allowed");
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            throw new RuntimeException(format("File %s not found", filename));
+        }
+
+        return new FileResource(file);
     }
 
     public static ResponseHandler status(int code) {
         return new StatusCodeResponseHandler(code);
     }
 
-    public static ContentStream url(String url) {
+    public static Resource url(String url) {
+        checkNotNull(url, "Null url is not allowed");
+
         try {
-            return new UrlContentStream(new URL(url));
+            return new UrlResource(new URL(url));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static ImmutableMap<String, ? extends RequestExtractor> extractors = of(
+            "file", new ContentRequestExtractor(),
+            "text", new ContentRequestExtractor(),
+            "uri", new UriRequestExtractor(),
+            "method", new HttpMethodExtractor()
+    );
+
+    private static RequestExtractor extractor(String id) {
+        RequestExtractor extractor = extractors.get(id);
+        if (extractor == null) {
+            throw new RuntimeException(format("unknown extractor for [%s]", id));
+        }
+        return extractor;
     }
 }

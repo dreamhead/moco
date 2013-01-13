@@ -1,18 +1,20 @@
-package com.github.dreamhead.moco.model;
+package com.github.dreamhead.moco.resource;
 
 import java.io.File;
 import java.io.IOException;
 
 import static com.google.common.io.Files.toByteArray;
 
-public class FileContentStream implements ContentStream {
-    private File file;
+public class FileResource implements Resource {
+    private final File file;
 
-    public FileContentStream(File file) {
-        if (!file.exists()) {
-            throw new RuntimeException(String.format("File %s not found", file.getName()));
-        }
+    public FileResource(File file) {
         this.file = file;
+    }
+
+    @Override
+    public String id() {
+        return "file";
     }
 
     @Override
