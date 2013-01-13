@@ -1,17 +1,17 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 public class ContentHandler extends AbstractResponseHandler {
-    private final ContentStream stream;
+    private final Resource resource;
 
-    public ContentHandler(ContentStream stream) {
-        this.stream = stream;
+    public ContentHandler(final Resource resource) {
+        this.resource = resource;
     }
 
     @Override
     protected void writeContent(ChannelBuffer buffer) {
-        buffer.writeBytes(stream.asByteArray());
+        buffer.writeBytes(resource.asByteArray());
     }
 }

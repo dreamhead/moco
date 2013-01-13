@@ -1,25 +1,25 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.model.ContentStream;
+import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 public class SequenceResponseHandler extends AbstractResponseHandler {
-    private ContentStream[] contents;
+    private Resource[] resources;
     private int index;
 
-    public SequenceResponseHandler(ContentStream[] contents) {
-        this.contents = contents;
+    public SequenceResponseHandler(final Resource[] resources) {
+        this.resources = resources;
     }
 
     @Override
     protected void writeContent(ChannelBuffer buffer) {
-        buffer.writeBytes(contents[current()].asByteArray());
+        buffer.writeBytes(resources[current()].asByteArray());
     }
 
     private int current() {
         int current = this.index;
-        if (++index >= contents.length) {
-            index = contents.length - 1;
+        if (++index >= resources.length) {
+            index = resources.length - 1;
         }
 
         return current;

@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.parser;
 
-import com.github.dreamhead.moco.Expectation;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.model.ContentStream;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
@@ -138,11 +137,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         try {
             Method method = Moco.class.getMethod(name, String.class);
             Object result = method.invoke(null, value);
-            if (Expectation.class.isInstance(result)) {
-                return by(Expectation.class.cast(result));
-            } else {
-                return by(ContentStream.class.cast(result));
-            }
+            return by(Resource.class.cast(result));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

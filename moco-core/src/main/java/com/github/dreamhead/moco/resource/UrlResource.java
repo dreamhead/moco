@@ -1,15 +1,20 @@
-package com.github.dreamhead.moco.model;
+package com.github.dreamhead.moco.resource;
 
 import java.io.IOException;
 import java.net.URL;
 
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public class UrlContentStream implements ContentStream {
+public class UrlResource implements Resource {
     private URL url;
 
-    public UrlContentStream(URL url) {
+    public UrlResource(URL url) {
         this.url = url;
+    }
+
+    @Override
+    public String id() {
+        return "url";
     }
 
     @Override
