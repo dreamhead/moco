@@ -1,17 +1,20 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import com.google.common.io.Files;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.ResourceFiles.newTempResourceFile;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -60,7 +63,8 @@ public class MocoTest {
 
     @Test
     public void should_return_expected_response_from_file() throws IOException {
-        server.response(file("src/test/resources/foo.response"));
+        String filePath = newTempResourceFile("foo.response").getAbsolutePath();
+        server.response(file(filePath));
 
         running(server, new Runnable() {
             @Override
