@@ -56,7 +56,7 @@ subprojects {
     dependencies {
         compile(
                 'com.google.guava:guava:13.0.1',
-                'io.netty:netty:3.6.1.Final',
+                'io.netty:netty:3.6.2.Final',
                 'org.slf4j:slf4j-api:1.7.2',
                 'commons-io:commons-io:2.4'
         )
@@ -68,7 +68,7 @@ subprojects {
 
         testCompile(
                 'junit:junit:4.10',
-                'org.mockito:mockito-all:1.9.0',
+                'org.mockito:mockito-all:1.9.5',
                 'org.apache.httpcomponents:httpcore:4.2.1',
                 'org.apache.httpcomponents:httpclient:4.2.1',
                 'org.apache.httpcomponents:fluent-hc:4.2.1',
