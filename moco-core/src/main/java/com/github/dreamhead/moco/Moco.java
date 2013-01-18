@@ -120,6 +120,12 @@ public class Moco {
         }
     }
 
+    public static Resource cache(Resource resource) {
+        checkNotNull(resource, "Null resource is not allowed for cache");
+
+        return new CacheResource(resource);
+    }
+
     private static ImmutableMap<String, ? extends RequestExtractor> extractors = of(
             "file", new ContentRequestExtractor(),
             "text", new ContentRequestExtractor(),
