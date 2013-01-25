@@ -4,6 +4,13 @@ allprojects {
     apply plugin: 'signing'
 }
 
+project(':') {
+    idea.workspace.iws.withXml { provider ->
+        def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find { it.@type == 'JUnit' }
+        junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
