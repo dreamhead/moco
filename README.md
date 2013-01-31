@@ -89,6 +89,8 @@ That means if we get the expected request and then return our response. You have
 
 Now, you can see a Moco reference in details.
 
+WARNING: the json configuration below is just configuration snippet for one pair of request and response, instead of the whole configuration file.
+
 ## Request
 
 ### Content
