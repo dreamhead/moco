@@ -1,45 +1,17 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.runner.JsonRunner;
-import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoStandaloneTest {
-    private final MocoTestHelper helper = new MocoTestHelper();
-    private JsonRunner runner;
-
-    @Before
-    public void setup() throws IOException {
-        runner = new JsonRunner();
-    }
-
-    private void runWithConfiguration(String resourceName, int port) {
-        try {
-            runner.run(Resources.getResource(resourceName).openStream(), port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @After
-    public void teardown() {
-        runner.stop();
-    }
-
+public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response() throws IOException {
         runWithConfiguration("foo.json", port());
