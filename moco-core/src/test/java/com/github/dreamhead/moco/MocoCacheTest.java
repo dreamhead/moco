@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.MocoCache.with;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
@@ -73,7 +74,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), MocoCache.with(file(cacheFile.getAbsolutePath()))));
+        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
 
         running(server, new Runnable() {
             @Override
@@ -93,7 +94,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), MocoCache.with(file(cacheFile.getAbsolutePath()))));
+        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
 
         running(server, new Runnable() {
             @Override
@@ -106,7 +107,7 @@ public class MocoCacheTest {
             }
         });
 
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), MocoCache.with(file(cacheFile.getAbsolutePath()))));
+        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
         response.delete();
         assertThat(response.exists(), is(false));
 
@@ -120,7 +121,42 @@ public class MocoCacheTest {
                 }
             }
         });
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_without_resource_and_persistence_file() throws IOException {
+        final File response = File.createTempFile("response", ".tmp");
+        changeFileContent(response, "foo");
+        final File cacheFile = File.createTempFile("cache", ".tmp");
+        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    assertThat(helper.get(root()), is("foo"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        response.delete();
+        assertThat(response.exists(), is(false));
+        cacheFile.delete();
+        assertThat(cacheFile.exists(), is(false));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    helper.get(root());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     private void changeFileContent(File response, String content) throws FileNotFoundException {

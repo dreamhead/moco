@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MocoHandler extends SimpleChannelHandler {
+    private static final DefaultHttpResponse DEFAULT_HTTP_RESPONSE = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
     private ResponseHandler anyResponseHandler;
 
@@ -31,12 +32,19 @@ public class MocoHandler extends SimpleChannelHandler {
 
     private void httpRequestReceived(HttpRequest request, Channel channel) {
         channel.write(getResponse(request));
-
         channel.disconnect();
         channel.close();
     }
 
     private HttpResponse getResponse(HttpRequest request) {
+        try {
+            return doGetHttpResponse(request);
+        } catch (Exception e) {
+            return DEFAULT_HTTP_RESPONSE;
+        }
+    }
+
+    private HttpResponse doGetHttpResponse(HttpRequest request) {
         DefaultHttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
 
         for (BaseSetting setting : settings) {
@@ -51,6 +59,6 @@ public class MocoHandler extends SimpleChannelHandler {
             return response;
         }
 
-        return new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
+        return DEFAULT_HTTP_RESPONSE;
     }
 }
