@@ -95,7 +95,7 @@ public class Moco {
         return new SequenceResponseHandler(contents);
     }
 
-    public static Resource file(String filename) {
+    public static WritableResource file(String filename) {
         checkNotNull(filename, "Null filename is not allowed");
 
         File file = new File(filename);
@@ -118,12 +118,6 @@ public class Moco {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static Resource cache(Resource resource) {
-        checkNotNull(resource, "Null resource is not allowed for cache");
-
-        return new CacheResource(resource);
     }
 
     private static ImmutableMap<String, ? extends RequestExtractor> extractors = of(
