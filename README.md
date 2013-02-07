@@ -89,7 +89,7 @@ That means if we get the expected request and then return our response. You have
 
 Now, you can see a Moco reference in details.
 
-WARNING: the json configuration below is just configuration snippet for one pair of request and response, instead of the whole configuration file.
+**WARNING** the json configuration below is just configuration snippet for one pair of request and response, instead of the whole configuration file.
 
 ## Request
 
@@ -406,3 +406,95 @@ You can do that by
 ```java
 server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
+
+### Mount
+
+Moco allows us to mount a directory to uri.
+
+* API
+```java
+server.mount(dir, to("/uri"));
+```
+
+* JSON
+```json
+{
+  "mount" :
+    {
+      "dir" : "dir",
+      "uri" : "/uri"
+    }
+}
+```
+
+Wildcard is acceptable to filter specified files, e.g we can include by
+
+* API
+```java
+server.mount(dir, to("/uri"), include("*.txt"));
+```
+
+* JSON
+```json
+{
+  "mount" :
+    {
+      "dir" : "dir",
+      "uri" : "/uri"
+      "includes" :
+      [
+        "*.txt"
+      ]
+    }
+}
+```
+
+or exclude by
+
+* API
+```java
+server.mount(dir, to("/uri"), exclude("*.txt"));
+```
+
+* JSON
+```json
+{
+  "mount" :
+    {
+      "dir" : "dir",
+      "uri" : "/uri"
+      "excludes" :
+      [
+        "*.txt"
+      ]
+    }
+}
+```
+
+even compose them by
+
+* API
+```java
+server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt"));
+```
+
+* JSON
+```json
+{
+  "mount" :
+    {
+      "dir" : "dir",
+      "uri" : "/uri"
+      "includes" :
+      [
+        "a.txt",
+        "b.txt"
+      ]
+      "excludes" :
+      [
+        "c.txt"
+      ]
+    }
+}
+```
+
