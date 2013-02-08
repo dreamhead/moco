@@ -99,10 +99,6 @@ public class Moco {
         checkNotNull(filename, "Null filename is not allowed");
 
         File file = new File(filename);
-        if (!file.exists()) {
-            throw new RuntimeException(format("File %s not found", filename));
-        }
-
         return new FileResource(file);
     }
 
