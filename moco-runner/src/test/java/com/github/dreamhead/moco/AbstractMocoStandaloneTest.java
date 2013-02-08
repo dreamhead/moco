@@ -8,6 +8,8 @@ import org.junit.Before;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
+
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
     protected JsonRunner runner;
@@ -22,9 +24,9 @@ public class AbstractMocoStandaloneTest {
         runner.stop();
     }
 
-    protected void runWithConfiguration(String resourceName, int port) {
+    protected void runWithConfiguration(String resourceName) {
         try {
-            runner.run(Resources.getResource(resourceName).openStream(), port);
+            runner.run(Resources.getResource(resourceName).openStream(), port());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

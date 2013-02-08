@@ -73,7 +73,9 @@ public class JsonRunner {
 
     public void stop() {
         try {
-            monitor.stop();
+            if (monitor != null) {
+                monitor.stop();
+            }
         } catch (Exception e) {
             logger.error("Error found.", e);
         }

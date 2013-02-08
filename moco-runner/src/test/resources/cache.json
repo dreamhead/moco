@@ -1,0 +1,26 @@
+[
+    {
+        "response" :
+        {
+            "cache" : {
+                "file" : "src/test/resources/cache/cache.response"
+            }
+        }
+    },
+
+    {
+        "request" :
+        {
+            "uri" : "/persist"
+        },
+        "response" :
+        {
+            "cache" : {
+                "file" : "src/test/resources/cache/cache.response",
+                "with" : {
+                    "file" : "src/test/resources/cache/cache.persistence"
+                }
+            }
+        }
+    }
+]

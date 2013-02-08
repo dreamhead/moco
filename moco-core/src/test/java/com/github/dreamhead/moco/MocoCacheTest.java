@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.MocoCache.cache;
 import static com.github.dreamhead.moco.MocoCache.with;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
@@ -53,7 +54,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
 
-        server.response(MocoCache.cache(file(response.getAbsolutePath())));
+        server.response(cache(file(response.getAbsolutePath())));
 
         running(server, new Runnable() {
             @Override
@@ -74,7 +75,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
 
         running(server, new Runnable() {
             @Override
@@ -94,7 +95,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
 
         running(server, new Runnable() {
             @Override
@@ -107,7 +108,7 @@ public class MocoCacheTest {
             }
         });
 
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
         response.delete();
         assertThat(response.exists(), is(false));
 
@@ -128,7 +129,7 @@ public class MocoCacheTest {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
 
         running(server, new Runnable() {
             @Override
@@ -141,7 +142,7 @@ public class MocoCacheTest {
             }
         });
 
-        server.response(MocoCache.cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
+        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
         response.delete();
         assertThat(response.exists(), is(false));
         cacheFile.delete();
