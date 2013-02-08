@@ -22,25 +22,17 @@ public class MountSetting {
         return uri;
     }
 
-    public List<String> getIncludes() {
-        return includes;
-    }
-
-    public List<String> getExcludes() {
-        return excludes;
-    }
-
     public MountPredicate[] getMountPredicates() {
         List<MountPredicate> predicates = newArrayList();
 
-        if (getIncludes() != null) {
-            for (String include : getIncludes()) {
+        if (includes != null) {
+            for (String include : includes) {
                 predicates.add(include(include));
             }
         }
 
-        if (getExcludes() != null) {
-            for (String exclude : getExcludes()) {
+        if (excludes != null) {
+            for (String exclude : excludes) {
                 predicates.add(exclude(exclude));
             }
         }
