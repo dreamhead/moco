@@ -22,6 +22,14 @@ public class MountSetting {
         return uri;
     }
 
+    public List<String> getIncludes() {
+        return includes;
+    }
+
+    public List<String> getExcludes() {
+        return excludes;
+    }
+
     public MountPredicate[] getMountPredicates() {
         List<MountPredicate> predicates = newArrayList();
 
