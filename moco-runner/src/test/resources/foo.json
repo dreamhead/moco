@@ -116,5 +116,17 @@
        {
          "url" : "https://github.com/"
        }
- }
+ },
+{
+    "request" : {
+        "uri" : "/composite-response"
+    },
+    "response" :
+    {
+        "status"  : 200,
+        "headers" : {
+            "foo" : "bar"
+        }
+    }
+}
 ]

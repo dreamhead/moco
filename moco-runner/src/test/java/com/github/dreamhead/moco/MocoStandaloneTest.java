@@ -136,4 +136,12 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         HttpResponse response = Request.Get(remoteUrl("/url")).execute().returnResponse();
         assertThat(response.getStatusLine().getStatusCode(), is(200));
     }
+
+    @Test
+    public void should_expected_composite_response() throws IOException {
+        runWithConfiguration("foo.json");
+        HttpResponse response = Request.Get(remoteUrl("/composite-response")).execute().returnResponse();
+        assertThat(response.getStatusLine().getStatusCode(), is(200));
+        assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
+    }
 }

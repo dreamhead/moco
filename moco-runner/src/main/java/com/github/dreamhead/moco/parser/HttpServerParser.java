@@ -25,6 +25,7 @@ import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.MocoCache.cache;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
 
 public class HttpServerParser {
@@ -73,17 +74,31 @@ public class HttpServerParser {
     }
 
     private ResponseHandler getResponseHandler(ResponseSetting response) {
+        List<ResponseHandler> handlers = newArrayList();
         if (response.isResource()) {
-            return new ContentHandler(response.retrieveResource());
-        } else if (response.getStatus() != null) {
-            return status(Integer.parseInt(response.getStatus()));
-        } else if (response.getHeaders() != null) {
-            Map<String, String> headers = response.getHeaders();
-            Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
-            return new AndResponseHandler(collection.toArray(new ResponseHandler[collection.size()]));
+            handlers.add(new ContentHandler(response.retrieveResource()));
         }
 
-        throw new IllegalArgumentException("unknown response setting with " + response);
+        if (response.getStatus() != null) {
+            handlers.add(status(Integer.parseInt(response.getStatus())));
+        }
+
+        if (response.getHeaders() != null) {
+            Map<String, String> headers = response.getHeaders();
+            Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
+            handlers.add(compositeResponseHandlers(collection));
+        }
+
+        if (handlers.isEmpty()) {
+            throw new IllegalArgumentException("unknown response setting with " + response);
+        }
+
+        return handlers.size() == 1 ? handlers.get(0) : compositeResponseHandlers(handlers);
+    }
+
+    private ResponseHandler compositeResponseHandlers(Collection<ResponseHandler> collection) {
+        ResponseHandler[] headerHandlers = collection.toArray(new ResponseHandler[collection.size()]);
+        return new AndResponseHandler(headerHandlers);
     }
 
     private Function<Map.Entry<String, String>, ResponseHandler> toHeaderResponseHandler() {
