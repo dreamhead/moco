@@ -1,0 +1,20 @@
+[
+{
+    "request" :
+    {
+        "uri" : "/redirectTo"
+    },
+    "response" :
+    {
+        "text" : "foo"
+    }
+},
+{
+    "request" :
+    {
+        "uri" : "/redirect"
+    },
+
+    "redirectTo" : "http://localhost:12306/redirectTo"
+}
+]

@@ -1,22 +1,26 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.base.Objects;
+
+import java.io.IOException;
 
 public class SessionSetting {
     private RequestSetting request;
     private ResponseSetting response;
+    private String redirectTo;
     private MountSetting mount;
 
-    public SessionSetting() {
+    public RequestSetting getRequest() {
+        return request;
     }
-
 
     public ResponseSetting getResponse() {
         return response;
     }
 
-    public RequestSetting getRequest() {
-        return request;
+    public String getRedirectTo() {
+        return redirectTo;
     }
 
     public MountSetting getMount() {
@@ -34,5 +38,13 @@ public class SessionSetting {
     @Override
     public String toString() {
         return Objects.toStringHelper(this).add("request", request).add("response", response).toString();
+    }
+
+    public boolean isRedirectResponse() {
+        return redirectTo != null;
+    }
+
+    public ResponseHandler getResponseHandler() throws IOException {
+        return response.getResponseHandler();
     }
 }

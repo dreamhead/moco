@@ -7,10 +7,9 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 public class AndResponseHandler implements ResponseHandler {
     private ResponseHandler[] handlers;
 
-    public AndResponseHandler(ResponseHandler[] handlers) {
+    public AndResponseHandler(ResponseHandler... handlers) {
         this.handlers = handlers;
     }
-
 
     @Override
     public void writeToResponse(HttpRequest request, HttpResponse response) {

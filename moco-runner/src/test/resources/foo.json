@@ -118,13 +118,15 @@
        }
  },
 {
-    "request" : {
+    "request" :
+    {
         "uri" : "/composite-response"
     },
     "response" :
     {
         "status"  : 200,
-        "headers" : {
+        "headers" :
+        {
             "foo" : "bar"
         }
     }
