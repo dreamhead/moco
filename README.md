@@ -230,7 +230,7 @@ server.post(by("foo")).response("bar");
 
 ### Header
 
-You will focus HTTP header at times:
+We will focus HTTP header at times:
 
 * API
 ```java
@@ -374,7 +374,7 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 
 ### Url
 
-You can also response with the specified url, just like a proxy.
+We can also response with the specified url, just like a proxy.
 
 * API
 ```java
@@ -395,14 +395,38 @@ server.request(by("foo")).response(url("http://www.github.com"));
 }
 ```
 
+
+### Redirect
+
+Redirect is a common case for normal web development. We can simply redirect a request to different url.
+
+* API
+```java
+server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
+```
+
+* JSON
+```json
+[
+{
+    "request" :
+    {
+        "uri" : "/redirect"
+    },
+
+    "redirectTo" : "http://www.github.com"
+}
+]
+```
+
 ### Sequence
 
-Sometimes, you want to simulate a real-world operation which change server side resource. For example:
+Sometimes, we want to simulate a real-world operation which change server side resource. For example:
 * First time you request a resource and "foo" is returned
-* You update this resource
+* We update this resource
 * Again request the same URL, updated content, e.g. "bar" is expected.
 
-You can do that by
+We can do that by
 ```java
 server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
