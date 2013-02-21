@@ -13,9 +13,13 @@ public class DynamicRunner {
     private final FileMonitor fileMonitor = new FileMonitor();
     public final JsonRunner jsonRunner = new JsonRunner();
 
-    public void run(final String fileName, final int port) throws IOException {
-        jsonRunner.run(new FileInputStream(fileName), port);
-        fileMonitor.startMonitor(new File(fileName), configurationChangeListener(port));
+    public void run(final String fileName, final int port) {
+        try {
+            jsonRunner.run(new FileInputStream(fileName), port);
+            fileMonitor.startMonitor(new File(fileName), configurationChangeListener(port));
+        } catch (FileNotFoundException e) {
+            logger.error("failed to find file: {}", fileName);
+        }
     }
 
     private FileAlterationListener configurationChangeListener(final int port) {
@@ -26,7 +30,7 @@ public class DynamicRunner {
 
                 try {
                     jsonRunner.restart(new FileInputStream(file), port);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     logger.error("Fail to load configuration in {}.", file.getName());
                 }
             }
@@ -37,5 +41,4 @@ public class DynamicRunner {
         fileMonitor.stopMonitor();
         jsonRunner.stop();
     }
-
 }

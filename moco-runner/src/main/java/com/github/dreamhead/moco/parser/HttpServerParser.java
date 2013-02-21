@@ -23,7 +23,7 @@ public class HttpServerParser {
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
 
-    public HttpServer parseServer(InputStream is, int port) throws IOException {
+    public HttpServer parseServer(InputStream is, int port) {
         List<SessionSetting> sessionSettings = readSessions(is);
         return createHttpServer(sessionSettings, port);
     }
@@ -39,7 +39,7 @@ public class HttpServerParser {
         }
     }
 
-    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port) throws IOException {
+    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port) {
         HttpServer server = new HttpServer(port);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);

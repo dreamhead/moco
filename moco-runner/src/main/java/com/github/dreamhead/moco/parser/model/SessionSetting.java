@@ -44,7 +44,7 @@ public class SessionSetting {
         return redirectTo != null;
     }
 
-    public ResponseHandler getResponseHandler() throws IOException {
+    public ResponseHandler getResponseHandler() {
         return response.getResponseHandler();
     }
 }
