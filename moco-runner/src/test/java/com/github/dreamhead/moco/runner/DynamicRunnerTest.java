@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
@@ -17,14 +16,11 @@ public class DynamicRunnerTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
     private DynamicRunner runner;
 
-    @Before
-    public void setUp() throws Exception {
-        runner = new DynamicRunner();
-    }
-
     @After
     public void tearDown() {
-        runner.stop();
+        if (runner != null) {
+            runner.stop();
+        }
     }
 
     @Test
@@ -34,7 +30,8 @@ public class DynamicRunnerTest {
                 "\"text\" : \"foo\"" +
                 "}}]");
 
-        runner.run(config.getAbsolutePath(), port());
+        runner = new DynamicRunner(config.getAbsolutePath(), port());
+        runner.run();
         assertThat(helper.get(root()), is("foo"));
 
         changeFileContent(config, "[{\"response\" :{" +

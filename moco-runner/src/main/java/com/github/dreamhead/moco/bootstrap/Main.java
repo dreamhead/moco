@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             BootArgs bootArgs = parse(args);
-            new DynamicRunner().run(bootArgs.getConfigurationFile(), bootArgs.getPort());
+            new DynamicRunner(bootArgs.getConfigurationFile(), bootArgs.getPort()).run();
         } catch (ParseArgException e) {
             help();
         }

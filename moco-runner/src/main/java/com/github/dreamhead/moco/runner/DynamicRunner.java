@@ -13,12 +13,20 @@ public class DynamicRunner {
     private final FileMonitor fileMonitor = new FileMonitor();
     public final JsonRunner jsonRunner = new JsonRunner();
 
-    public void run(final String fileName, final int port) {
+    private String filename;
+    private int port;
+
+    public DynamicRunner(String filename, int port) {
+        this.filename = filename;
+        this.port = port;
+    }
+
+    public void run() {
         try {
-            jsonRunner.run(new FileInputStream(fileName), port);
-            fileMonitor.startMonitor(new File(fileName), configurationChangeListener(port));
+            jsonRunner.run(new FileInputStream(filename), port);
+            fileMonitor.startMonitor(new File(filename), configurationChangeListener(port));
         } catch (FileNotFoundException e) {
-            logger.error("failed to find file: {}", fileName);
+            logger.error("failed to find file: {}", filename);
         }
     }
 
