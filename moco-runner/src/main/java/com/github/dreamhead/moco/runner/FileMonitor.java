@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 public class FileMonitor {
+    public static final int INTERVAL = 1000;
     private static Logger logger = LoggerFactory.getLogger(FileMonitor.class);
 
     private FileAlterationMonitor monitor;
@@ -39,7 +40,7 @@ public class FileMonitor {
         FileAlterationObserver observer = new FileAlterationObserver(directory, sameFile(file));
         observer.addListener(listener);
 
-        return new FileAlterationMonitor(1000, observer);
+        return new FileAlterationMonitor(INTERVAL, observer);
     }
 
     private FileFilter sameFile(final File file) {
