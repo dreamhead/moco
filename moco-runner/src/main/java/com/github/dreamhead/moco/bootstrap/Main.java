@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.github.dreamhead.moco.runner.JsonRunner;
+import com.github.dreamhead.moco.runner.DynamicRunner;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             BootArgs bootArgs = parse(args);
-            new JsonRunner().run(bootArgs.getConfigurationFile(), bootArgs.getPort());
+            new DynamicRunner().run(bootArgs.getConfigurationFile(), bootArgs.getPort());
         } catch (ParseArgException e) {
             help();
         }

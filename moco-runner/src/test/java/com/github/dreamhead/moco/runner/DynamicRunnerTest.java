@@ -13,13 +13,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class JsonRunnerTest {
+public class DynamicRunnerTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
-    private JsonRunner runner;
+    private DynamicRunner runner;
 
     @Before
     public void setUp() throws Exception {
-        runner = new JsonRunner();
+        runner = new DynamicRunner();
     }
 
     @After
