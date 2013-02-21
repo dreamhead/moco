@@ -14,20 +14,23 @@ public class FileMonitor {
     private static Logger logger = LoggerFactory.getLogger(FileMonitor.class);
 
     private FileAlterationMonitor monitor;
+    private boolean running = false;
 
-    public void startMonitor(File file, FileAlterationListener listener) {
+    public synchronized void startMonitor(File file, FileAlterationListener listener) {
         monitor = monitorFile(file, listener);
         try {
             monitor.start();
+            running = true;
         } catch (Exception e) {
             logger.error("Error found.", e);
         }
     }
 
-    public void stopMonitor() {
+    public synchronized void stopMonitor() {
         try {
-            if (monitor != null) {
+            if (monitor != null && running) {
                 monitor.stop();
+                running = false;
             }
         } catch (Exception e) {
             logger.error("Error found.", e);

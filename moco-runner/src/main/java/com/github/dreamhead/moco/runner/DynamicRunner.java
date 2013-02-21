@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
-public class DynamicRunner {
+public class DynamicRunner implements Runner {
     private static Logger logger = LoggerFactory.getLogger(DynamicRunner.class);
 
     private final FileMonitor fileMonitor = new FileMonitor();
@@ -21,6 +21,7 @@ public class DynamicRunner {
         this.port = port;
     }
 
+    @Override
     public void run() {
         try {
             jsonRunner.run(new FileInputStream(filename), port);
@@ -28,6 +29,12 @@ public class DynamicRunner {
         } catch (FileNotFoundException e) {
             logger.error("failed to find file: {}", filename);
         }
+    }
+
+    @Override
+    public void stop() {
+        fileMonitor.stopMonitor();
+        jsonRunner.stop();
     }
 
     private FileAlterationListener configurationChangeListener(final int port) {
@@ -43,10 +50,5 @@ public class DynamicRunner {
                 }
             }
         };
-    }
-
-    public void stop() {
-        fileMonitor.stopMonitor();
-        jsonRunner.stop();
     }
 }

@@ -7,8 +7,8 @@ import java.io.InputStream;
 
 public class JsonRunner {
 
-    static final HttpServerParser httpServerParser = new HttpServerParser();
-    static final StandaloneRunner runner = new StandaloneRunner();
+    private final HttpServerParser httpServerParser = new HttpServerParser();
+    private final StandaloneRunner runner = new StandaloneRunner();
 
     public void run(InputStream is, int port) {
         runner.run(httpServerParser.parseServer(is, port));

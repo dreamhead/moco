@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.*;
@@ -12,17 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class DynamicRunnerTest {
-    protected final MocoTestHelper helper = new MocoTestHelper();
-    private DynamicRunner runner;
-
-    @After
-    public void tearDown() {
-        if (runner != null) {
-            runner.stop();
-        }
-    }
-
+public class DynamicRunnerTest extends AbstractRunnerTest {
     @Test
     public void should_reload_configuration() throws IOException, InterruptedException {
         final File config = File.createTempFile("config", ".json");
@@ -38,7 +26,7 @@ public class DynamicRunnerTest {
                 "\"text\" : \"foobar\"" +
                 "}}]");
 
-        Thread.sleep(FileMonitor.INTERVAL + 500);
+        waitChangeHappens();
 
         assertThat(helper.get(root()), is("foobar"));
     }
