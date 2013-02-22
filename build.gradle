@@ -32,7 +32,7 @@ subprojects {
                 pom.project {
                     name project.name
                     packaging 'jar'
-                    description 'Moco is Moco is a easy setup stub framework, mainly focusing on testing and integration'
+                    description 'Moco is a easy setup stub framework, mainly focusing on testing and integration.'
                     url 'https://github.com/dreamhead/moco'
 
                     scm {
@@ -63,7 +63,7 @@ subprojects {
     dependencies {
         compile(
                 'com.google.guava:guava:13.0.1',
-                'io.netty:netty:3.6.2.Final',
+                'io.netty:netty:3.6.3.Final',
                 'org.slf4j:slf4j-api:1.7.2',
                 'commons-io:commons-io:2.4'
         )
@@ -125,4 +125,3 @@ project(':moco-runner') {
         archives uberjar
     }
 }
-
