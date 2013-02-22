@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
-import com.github.dreamhead.moco.HeaderResponseHandler;
+import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;

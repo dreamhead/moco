@@ -1,5 +1,6 @@
-package com.github.dreamhead.moco;
+package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.ResponseHandler;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
