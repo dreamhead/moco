@@ -439,6 +439,26 @@ public class MocoTest {
     }
 
     @Test
+    public void should_set_and_recognize_cookie() {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true"), status(302));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                    assertThat(statusBeforeLogin, is(302));
+                    int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                    assertThat(statusAfterLogin, is(200));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    @Test
     public void should_run_as_proxy() throws IOException {
         server.response(url("http://www.github.com"));
 
