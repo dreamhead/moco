@@ -37,7 +37,6 @@ public class BootArgs {
         return new BootArgs(port, cmd.getArgs()[0]);
     }
 
-
     private static Options createMocoOptions() {
         Options options = new Options();
         options.addOption(portOption());
