@@ -481,7 +481,6 @@ public class MocoTest {
         });
     }
 
-
     @Test
     public void should_run_as_proxy() throws IOException {
         server.response(url("http://www.github.com"));

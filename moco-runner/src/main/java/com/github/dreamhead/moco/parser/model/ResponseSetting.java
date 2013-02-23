@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.Moco.latency;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
@@ -20,6 +21,7 @@ public class ResponseSetting extends AbstractResource {
     protected String status;
     protected Map<String, String> headers;
     private CacheSetting cache;
+    private Long latency;
 
     public String getStatus() {
         return status;
@@ -33,6 +35,10 @@ public class ResponseSetting extends AbstractResource {
         return cache;
     }
 
+    public long getLatency() {
+        return latency;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -42,6 +48,7 @@ public class ResponseSetting extends AbstractResource {
                 .add("headers", headers)
                 .add("url", url)
                 .add("cache", cache)
+                .add("latency", latency)
                 .toString();
     }
 
@@ -79,6 +86,10 @@ public class ResponseSetting extends AbstractResource {
         if (headers != null) {
             Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
             handlers.add(compositeResponseHandlers(collection));
+        }
+
+        if (latency != null) {
+            handlers.add(latency(latency));
         }
 
         if (handlers.isEmpty()) {

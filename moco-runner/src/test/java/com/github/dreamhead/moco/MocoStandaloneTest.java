@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
@@ -143,5 +144,18 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         HttpResponse response = Request.Get(remoteUrl("/composite-response")).execute().returnResponse();
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
+    }
+
+    @Test
+    public void should_wait_for_awhile() throws IOException {
+        final long latency = 1000;
+        final long delta = 200;
+
+        runWithConfiguration("foo.json");
+        long start = System.currentTimeMillis();
+        helper.get(remoteUrl("/latency"));
+        long stop = System.currentTimeMillis();
+        long gap = stop - start + delta;
+        assertThat(gap, greaterThan(latency));
     }
 }

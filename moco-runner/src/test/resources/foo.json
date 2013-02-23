@@ -130,5 +130,15 @@
             "foo" : "bar"
         }
     }
+},
+{
+    "request" :
+    {
+        "uri" : "/latency"
+    },
+    "response" :
+    {
+        "latency"  : 1000
+    }
 }
 ]
