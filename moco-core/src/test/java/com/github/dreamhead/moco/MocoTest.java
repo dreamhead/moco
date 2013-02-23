@@ -14,6 +14,7 @@ import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
 public class MocoTest {
@@ -457,6 +458,29 @@ public class MocoTest {
             }
         });
     }
+
+    @Test
+    public void should_wait_for_awhile() {
+        final long latency = 1000;
+        final long delta = 200;
+        server.response(latency(latency));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    long start = System.currentTimeMillis();
+                    helper.get(root());
+                    long stop = System.currentTimeMillis();
+                    long gap = stop - start + delta;
+                    assertThat(gap, greaterThan(latency));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
 
     @Test
     public void should_run_as_proxy() throws IOException {

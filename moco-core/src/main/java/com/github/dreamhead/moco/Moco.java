@@ -1,10 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
-import com.github.dreamhead.moco.handler.CookieResponseHandler;
-import com.github.dreamhead.moco.handler.HeaderResponseHandler;
-import com.github.dreamhead.moco.handler.SequenceResponseHandler;
-import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
+import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
@@ -81,6 +78,10 @@ public class Moco {
 
     public static ResponseHandler cookie(String key, String value) {
         return new CookieResponseHandler(key, value);
+    }
+
+    public static ResponseHandler latency(long millis) {
+        return new LatencyResponseHandler(millis);
     }
 
     public static RequestExtractor query(String param) {
