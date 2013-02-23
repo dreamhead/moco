@@ -153,9 +153,10 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
 
         runWithConfiguration("foo.json");
         long start = System.currentTimeMillis();
-        helper.get(remoteUrl("/latency"));
+        int code = Request.Get(remoteUrl("/latency")).execute().returnResponse().getStatusLine().getStatusCode();
         long stop = System.currentTimeMillis();
         long gap = stop - start + delta;
         assertThat(gap, greaterThan(latency));
+        assertThat(code, is(200));
     }
 }

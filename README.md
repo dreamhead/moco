@@ -409,12 +409,38 @@ server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 ```json
 [
 {
-    "request" :
+  "request" :
     {
         "uri" : "/redirect"
     },
 
-    "redirectTo" : "http://www.github.com"
+  "redirectTo" : "http://www.github.com"
+}
+]
+```
+
+### Latency
+
+Sometimes, we need a latency to simulate slow server side operation.
+
+* API
+```java
+server.request(by("foo")).response(latency(5000));
+```
+
+* JSON
+```json
+[
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+
+  "response" :
+    {
+      "latency" : 5000
+    }
 }
 ]
 ```

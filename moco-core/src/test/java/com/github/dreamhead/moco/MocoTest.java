@@ -471,9 +471,11 @@ public class MocoTest {
                 try {
                     long start = System.currentTimeMillis();
                     helper.get(root());
+                    int code = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
                     long stop = System.currentTimeMillis();
                     long gap = stop - start + delta;
                     assertThat(gap, greaterThan(latency));
+                    assertThat(code, is(200));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

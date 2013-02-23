@@ -47,6 +47,7 @@ public class DynamicRunner implements Runner {
                     jsonRunner.restart(new FileInputStream(file), port);
                 } catch (Exception e) {
                     logger.error("Fail to load configuration in {}.", file.getName());
+                    logger.error(e.getMessage());
                 }
             }
         };
