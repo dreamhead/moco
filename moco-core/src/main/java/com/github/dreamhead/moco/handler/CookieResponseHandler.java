@@ -6,6 +6,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class CookieResponseHandler implements ResponseHandler {
+    private static final String COOKIE_HEADER = "Set-Cookie";
+
     private final String key;
     private final String value;
 
@@ -18,6 +20,6 @@ public class CookieResponseHandler implements ResponseHandler {
     public void writeToResponse(HttpRequest request, HttpResponse response) {
         CookieEncoder cookieEncoder = new CookieEncoder(true);
         cookieEncoder.addCookie(key, value);
-        response.setHeader("Set-Cookie", cookieEncoder.encode());
+        response.setHeader(COOKIE_HEADER, cookieEncoder.encode());
     }
 }

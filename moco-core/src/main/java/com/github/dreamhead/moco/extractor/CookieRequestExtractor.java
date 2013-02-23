@@ -2,17 +2,18 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.CookieDecoder;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.collect.Iterables.find;
+
 public class CookieRequestExtractor implements RequestExtractor {
-    private String key;
+    private CookieDecoder decoder = new CookieDecoder();
+
+    private final String key;
 
     public CookieRequestExtractor(String key) {
         this.key = key;
@@ -25,18 +26,18 @@ public class CookieRequestExtractor implements RequestExtractor {
             return null;
         }
 
-        Set<Cookie> cookies = new CookieDecoder().decode(cookieString);
-        Collection<Cookie> cookiesWithGivenKey = Collections2.filter(cookies, new Predicate<Cookie>() {
+        Set<Cookie> cookies = decoder.decode(cookieString);
+
+        Cookie cookie = find(cookies, byCookieName(key), null);
+        return cookie == null ? null : cookie.getValue();
+    }
+
+    private Predicate<Cookie> byCookieName(final String key) {
+        return new Predicate<Cookie>() {
             @Override
             public boolean apply(Cookie cookie) {
-                return cookie.getName().equals(key);
+                return key.equals(cookie.getName());
             }
-        });
-        if(cookiesWithGivenKey.isEmpty()) {
-            return null;
-        }
-
-        Cookie cookie = cookiesWithGivenKey.iterator().next();
-        return cookie.getValue();
+        };
     }
 }
