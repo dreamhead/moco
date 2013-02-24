@@ -5,9 +5,9 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class AndResponseHandler implements ResponseHandler {
-    private ResponseHandler[] handlers;
+    private Iterable<ResponseHandler> handlers;
 
-    public AndResponseHandler(ResponseHandler... handlers) {
+    public AndResponseHandler(Iterable<ResponseHandler> handlers) {
         this.handlers = handlers;
     }
 

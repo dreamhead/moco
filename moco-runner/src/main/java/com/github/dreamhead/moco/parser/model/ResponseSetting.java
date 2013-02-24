@@ -85,7 +85,7 @@ public class ResponseSetting extends AbstractResource {
 
         if (headers != null) {
             Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
-            handlers.add(compositeResponseHandlers(collection));
+            handlers.add(new AndResponseHandler(collection));
         }
 
         if (latency != null) {
@@ -96,12 +96,7 @@ public class ResponseSetting extends AbstractResource {
             throw new IllegalArgumentException("unknown response setting with " + this);
         }
 
-        return handlers.size() == 1 ? handlers.get(0) : compositeResponseHandlers(handlers);
-    }
-
-    private ResponseHandler compositeResponseHandlers(Collection<ResponseHandler> collection) {
-        ResponseHandler[] headerHandlers = collection.toArray(new ResponseHandler[collection.size()]);
-        return new AndResponseHandler(headerHandlers);
+        return handlers.size() == 1 ? handlers.get(0) : new AndResponseHandler(handlers);
     }
 
     private Function<Map.Entry<String, String>, ResponseHandler> toHeaderResponseHandler() {

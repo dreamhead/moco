@@ -1,11 +1,15 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
-import com.github.dreamhead.moco.handler.*;
+import com.github.dreamhead.moco.handler.HeaderResponseHandler;
+import com.github.dreamhead.moco.handler.LatencyResponseHandler;
+import com.github.dreamhead.moco.handler.SequenceResponseHandler;
+import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.resource.*;
+import com.github.dreamhead.moco.util.Cookies;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
@@ -77,7 +81,9 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(String key, String value) {
-        return new CookieResponseHandler(key, value);
+        checkNotNull(key, "Null cookie key is not allowed");
+        checkNotNull(key, "Null cookie value is not allowed");
+        return header("Set-Cookie", new Cookies().encodeCookie(key, value));
     }
 
     public static ResponseHandler latency(long millis) {

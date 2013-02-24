@@ -1,3 +1,23 @@
+# Functionality
+## Matcher
+* wildcard or RE matcher
+## Handler
+* Response with Request parameter
+## REST
+## Client
+* Socket
+
+# Tools Support
+* Shell
+* Maven Plugin
+* Groovy Plugin
+
+# Polyglot
+* Groovy
+* Clojure
+
+**OLD FASHION ARE BELOW**
+
 # basic support
 * http method support
   * GET, POST done
@@ -11,7 +31,6 @@
 * more debuggable response
 
 # function support
-
 <table>
 
 <tr>

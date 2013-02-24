@@ -8,6 +8,7 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.text;
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
     protected ResponseHandler handler;
@@ -25,7 +26,7 @@ public abstract class ResponseSetting {
     }
 
     public void response(ResponseHandler... handler) {
-        this.response(new AndResponseHandler(handler));
+        this.response(new AndResponseHandler(newArrayList(handler)));
     }
 
     public void redirectTo(String url) {
