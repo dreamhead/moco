@@ -51,14 +51,9 @@ public class MocoHttpServer {
 
         bootstrap.setOption("child.tcpNoDelay", true);
         bootstrap.setOption("child.keepAlive", true);
-        bootstrap.bind(new InetSocketAddress("127.0.0.1", port));
 
         allChannels = new DefaultChannelGroup();
-        try {
-            allChannels.add(bootstrap.bind(new InetSocketAddress(InetAddress.getLocalHost(), port)));
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        allChannels.add(bootstrap.bind(new InetSocketAddress("127.0.0.1", port)));
     }
 
     public void stop() {
