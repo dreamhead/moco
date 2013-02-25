@@ -1,25 +1,24 @@
 package com.github.dreamhead.moco.parser.model;
 
-import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.latency;
-import static com.github.dreamhead.moco.Moco.status;
-import static com.google.common.collect.Collections2.transform;
+import static com.github.dreamhead.moco.Moco.*;
+import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ResponseSetting extends AbstractResource {
-    protected String status;
-    protected Map<String, String> headers;
+    private String status;
+    private Map<String, String> headers;
+    private Map<String, String> cookie;
     private CacheSetting cache;
     private Long latency;
 
@@ -29,6 +28,10 @@ public class ResponseSetting extends AbstractResource {
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public Map<String, String> getCookie() {
+        return cookie;
     }
 
     public CacheSetting getCache() {
@@ -46,6 +49,7 @@ public class ResponseSetting extends AbstractResource {
                 .add("file", file)
                 .add("status", status)
                 .add("headers", headers)
+                .add("cookie", cookie)
                 .add("url", url)
                 .add("cache", cache)
                 .add("latency", latency)
@@ -84,12 +88,17 @@ public class ResponseSetting extends AbstractResource {
         }
 
         if (headers != null) {
-            Collection<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
+            Iterable<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
             handlers.add(new AndResponseHandler(collection));
         }
 
         if (latency != null) {
             handlers.add(latency(latency));
+        }
+
+        if (cookie != null) {
+            Iterable<ResponseHandler> cookies = transform(cookie.entrySet(), toCookieResponseHandler());
+            handlers.add(new AndResponseHandler(cookies));
         }
 
         if (handlers.isEmpty()) {
@@ -104,6 +113,15 @@ public class ResponseSetting extends AbstractResource {
             @Override
             public ResponseHandler apply(Map.Entry<String, String> entry) {
                 return new HeaderResponseHandler(entry.getKey(), entry.getValue());
+            }
+        };
+    }
+
+    private Function<Map.Entry<String, String>, ResponseHandler> toCookieResponseHandler() {
+        return new Function<Map.Entry<String, String>, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(Map.Entry<String, String> entry) {
+                return cookie(entry.getKey(), entry.getValue());
             }
         };
     }

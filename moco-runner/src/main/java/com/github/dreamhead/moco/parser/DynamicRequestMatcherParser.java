@@ -28,7 +28,8 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     private Map<String, String> methods = ImmutableMap.of(
             "headers", "header",
             "queries", "query",
-            "xpaths", "xpath"
+            "xpaths", "xpath",
+            "cookie", "cookie"
     );
 
     @Override

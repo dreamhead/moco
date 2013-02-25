@@ -9,9 +9,11 @@ public class RequestSetting {
     private String uri;
     private String file;
     private String method;
+
     private Map<String, String> headers;
     private Map<String, String> xpaths;
     private Map<String, String> queries;
+    private Map<String, String> cookie;
 
     public String getUri() {
         return uri;
@@ -27,6 +29,10 @@ public class RequestSetting {
 
     public String getMethod() {
         return method;
+    }
+
+    public Map<String, String> getCookie() {
+        return cookie;
     }
 
     public Map<String, String> getHeaders() {

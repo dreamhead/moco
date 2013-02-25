@@ -140,5 +140,32 @@
     {
         "latency"  : 1000
     }
+},
+{
+    "request" :
+    {
+        "uri" : "/cookie",
+        "cookie" :
+        {
+            "login" : "true"
+        }
+    },
+    "response" :
+    {
+        "text" : "success"
+    }
+},
+{
+    "request" :
+    {
+        "uri" : "/cookie"
+    },
+    "response" :
+    {
+        "cookie" :
+        {
+            "login" : "true"
+        }
+    }
 }
 ]

@@ -147,6 +147,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_set_and_recognize_cookie() throws IOException {
+        runWithConfiguration("foo.json");
+        helper.get(remoteUrl("/cookie"));
+        assertThat(helper.get(remoteUrl("/cookie")), is("success"));
+    }
+
+    @Test
     public void should_wait_for_awhile() throws IOException {
         final long latency = 1000;
         final long delta = 200;
