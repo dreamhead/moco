@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
 import static java.lang.String.format;
 
 public class Moco {
@@ -101,12 +103,17 @@ public class Moco {
     }
 
     public static ResponseHandler seq(String... contents) {
-        List<Resource> streams = newArrayList();
-        for (String content : contents) {
-            streams.add(text(content));
-        }
+        List<Resource> resources = transform(newArrayList(contents), toResource());
+        return new SequenceResponseHandler(resources.toArray(new Resource[resources.size()]));
+    }
 
-        return new SequenceResponseHandler(streams.toArray(new Resource[streams.size()]));
+    private static Function<String, Resource> toResource() {
+        return new Function<String, Resource>() {
+            @Override
+            public Resource apply(String content) {
+                return text(content);
+            }
+        };
     }
 
     public static ResponseHandler seq(Resource... contents) {
@@ -116,8 +123,7 @@ public class Moco {
     public static WritableResource file(String filename) {
         checkNotNull(filename, "Null filename is not allowed");
 
-        File file = new File(filename);
-        return new FileResource(file);
+        return new FileResource(new File(filename));
     }
 
     public static ResponseHandler status(int code) {

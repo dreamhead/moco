@@ -10,7 +10,7 @@ import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class MountMatcher implements RequestMatcher {
-    private UriRequestExtractor extractor = new UriRequestExtractor();
+    private final UriRequestExtractor extractor = new UriRequestExtractor();
 
     private final File dir;
     private final MountTo target;
@@ -25,10 +25,11 @@ public class MountMatcher implements RequestMatcher {
     @Override
     public boolean match(HttpRequest request) {
         String relativePath = target.extract(extractor.extract(request));
-        if (isNullOrEmpty(relativePath) || !and(predicates).apply(relativePath)) {
-            return false;
-        }
+        return isTarget(relativePath) && new File(dir, relativePath).exists();
 
-        return new File(dir, relativePath).exists();
+    }
+
+    private boolean isTarget(String relativePath) {
+        return !isNullOrEmpty(relativePath) && and(predicates).apply(relativePath);
     }
 }

@@ -18,7 +18,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ResponseSetting extends AbstractResource {
     private String status;
     private Map<String, String> headers;
-    private Map<String, String> cookie;
+    private Map<String, String> cookies;
     private CacheSetting cache;
     private Long latency;
 
@@ -30,8 +30,8 @@ public class ResponseSetting extends AbstractResource {
         return headers;
     }
 
-    public Map<String, String> getCookie() {
-        return cookie;
+    public Map<String, String> getCookies() {
+        return cookies;
     }
 
     public CacheSetting getCache() {
@@ -49,7 +49,7 @@ public class ResponseSetting extends AbstractResource {
                 .add("file", file)
                 .add("status", status)
                 .add("headers", headers)
-                .add("cookie", cookie)
+                .add("cookies", cookies)
                 .add("url", url)
                 .add("cache", cache)
                 .add("latency", latency)
@@ -96,8 +96,8 @@ public class ResponseSetting extends AbstractResource {
             handlers.add(latency(latency));
         }
 
-        if (cookie != null) {
-            Iterable<ResponseHandler> cookies = transform(cookie.entrySet(), toCookieResponseHandler());
+        if (cookies != null) {
+            Iterable<ResponseHandler> cookies = transform(this.cookies.entrySet(), toCookieResponseHandler());
             handlers.add(new AndResponseHandler(cookies));
         }
 

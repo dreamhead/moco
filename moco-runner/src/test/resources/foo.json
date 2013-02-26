@@ -145,7 +145,7 @@
     "request" :
     {
         "uri" : "/cookie",
-        "cookie" :
+        "cookies" :
         {
             "login" : "true"
         }
@@ -162,7 +162,7 @@
     },
     "response" :
     {
-        "cookie" :
+        "cookies" :
         {
             "login" : "true"
         }

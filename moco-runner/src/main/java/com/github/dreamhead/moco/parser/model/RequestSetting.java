@@ -13,7 +13,7 @@ public class RequestSetting {
     private Map<String, String> headers;
     private Map<String, String> xpaths;
     private Map<String, String> queries;
-    private Map<String, String> cookie;
+    private Map<String, String> cookies;
 
     public String getUri() {
         return uri;
@@ -31,8 +31,8 @@ public class RequestSetting {
         return method;
     }
 
-    public Map<String, String> getCookie() {
-        return cookie;
+    public Map<String, String> getCookies() {
+        return cookies;
     }
 
     public Map<String, String> getHeaders() {

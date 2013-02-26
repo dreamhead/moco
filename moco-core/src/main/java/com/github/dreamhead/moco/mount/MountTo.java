@@ -14,10 +14,6 @@ public class MountTo {
     }
 
     public String extract(String uri) {
-        if (!uri.startsWith(this.target)) {
-            return null;
-        }
-
-        return nullToEmpty(uri.replaceFirst(this.target, ""));
+        return uri.startsWith(this.target) ? nullToEmpty(uri.replaceFirst(this.target, "")) : "";
     }
 }
