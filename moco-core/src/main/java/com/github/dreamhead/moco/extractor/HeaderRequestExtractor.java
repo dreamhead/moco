@@ -4,14 +4,14 @@ import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class HeaderRequestExtractor implements RequestExtractor {
-    private String header;
+    private final String name;
 
-    public HeaderRequestExtractor(String header) {
-        this.header = header;
+    public HeaderRequestExtractor(String name) {
+        this.name = name;
     }
 
     @Override
     public String extract(HttpRequest request) {
-        return request.getHeader(header);
+        return request.getHeader(name);
     }
 }

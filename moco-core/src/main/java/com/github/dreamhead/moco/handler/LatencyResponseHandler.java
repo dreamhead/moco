@@ -5,7 +5,7 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class LatencyResponseHandler implements ResponseHandler {
-    private long millis;
+    private final long millis;
 
     public LatencyResponseHandler(long millis) {
         this.millis = millis;

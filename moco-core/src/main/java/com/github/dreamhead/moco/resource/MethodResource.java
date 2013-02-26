@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 public class MethodResource implements Resource {
-    private String method;
+    private final String method;
 
     public MethodResource(String method) {
         this.method = method.toUpperCase();

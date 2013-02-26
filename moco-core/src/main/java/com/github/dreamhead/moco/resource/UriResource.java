@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 public class UriResource implements Resource {
-    private String uri;
+    private final String uri;
 
     public UriResource(String uri) {
         this.uri = uri;

@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.util.Cookies;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class CookieRequestExtractor implements RequestExtractor {
-    private Cookies cookies = new Cookies();
+    private final Cookies cookies = new Cookies();
 
     private final String key;
 

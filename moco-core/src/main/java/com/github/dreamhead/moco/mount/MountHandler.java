@@ -13,10 +13,10 @@ import java.io.IOException;
 import static com.google.common.io.Files.toByteArray;
 
 public class MountHandler implements ResponseHandler {
-    private UriRequestExtractor extractor = new UriRequestExtractor();
+    private final UriRequestExtractor extractor = new UriRequestExtractor();
 
-    private File dir;
-    private MountTo target;
+    private final File dir;
+    private final MountTo target;
 
     public MountHandler(File dir, MountTo target) {
         this.dir = dir;

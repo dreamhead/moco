@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.mount;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.junit.Assert.assertThat;
 
 public class MountToTest {
@@ -17,12 +17,12 @@ public class MountToTest {
     @Test
     public void should_return_null_if_uri_does_not_match() {
         MountTo to = new MountTo("/dir");
-        assertThat(to.extract("/target/filename"), nullValue());
+        assertThat(to.extract("/target/filename"), isEmptyOrNullString());
     }
 
     @Test
     public void should_return_null_if_no_relative_path_found() {
         MountTo to = new MountTo("/dir");
-        assertThat(to.extract("/dir/"), nullValue());
+        assertThat(to.extract("/dir/"), isEmptyOrNullString());
     }
 }

@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 public class SequenceResponseHandler extends AbstractResponseHandler {
-    private Resource[] resources;
+    private final Resource[] resources;
     private int index;
 
     public SequenceResponseHandler(final Resource[] resources) {

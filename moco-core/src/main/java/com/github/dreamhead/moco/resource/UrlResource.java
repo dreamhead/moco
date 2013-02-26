@@ -6,7 +6,7 @@ import java.net.URL;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class UrlResource implements Resource {
-    private URL url;
+    private final URL url;
 
     public UrlResource(URL url) {
         this.url = url;

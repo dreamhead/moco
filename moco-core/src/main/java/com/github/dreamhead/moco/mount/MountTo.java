@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.mount;
 
+import static com.google.common.base.Strings.nullToEmpty;
+
 public class MountTo {
-    private String target;
+    private final String target;
 
     public MountTo(String target) {
         if (!target.endsWith("/")) {
@@ -16,7 +18,6 @@ public class MountTo {
             return null;
         }
 
-        String result = uri.replaceFirst(this.target, "");
-        return result.length() == 0 ? null : result;
+        return nullToEmpty(uri.replaceFirst(this.target, ""));
     }
 }
