@@ -62,25 +62,38 @@ subprojects {
         }
     }
 
+    project.ext {
+        guavaVersion = '13.0.1'
+        nettyVersion = '3.6.3.Final'
+        slf4jVersion = '1.7.2'
+        commonsIoVersion = '2.4'
+        slf4jLogbackBridgeVersion = '2.0'
+        logbackVersion='1.0.9'
+        junitVersion = '4.10'
+        hamcrestVersion = '1.3'
+        mockitoVersion = '1.9.5'
+        httpComponentVersion = '4.2.1'
+    }
+
     dependencies {
         compile(
-                'com.google.guava:guava:13.0.1',
-                'io.netty:netty:3.6.3.Final',
-                'org.slf4j:slf4j-api:1.7.2',
-                'commons-io:commons-io:2.4'
+                "com.google.guava:guava:$guavaVersion",
+                "io.netty:netty:$nettyVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion",
+                "commons-io:commons-io:$commonsIoVersion"
         )
 
         runtime(
-                'com.googlecode.sli4j:sli4j-slf4j-logback:2.0',
-                'ch.qos.logback:logback-classic:1.0.9'
+                "com.googlecode.sli4j:sli4j-slf4j-logback:$slf4jLogbackBridgeVersion",
+                "ch.qos.logback:logback-classic:$logbackVersion"
         )
 
         testCompile(
-                'junit:junit-dep:4.10',
-                'org.hamcrest:hamcrest-core:1.3',
-                'org.hamcrest:hamcrest-library:1.3',
-                'org.mockito:mockito-all:1.9.5',
-                'org.apache.httpcomponents:fluent-hc:4.2.1'
+                "junit:junit-dep:$junitVersion",
+                "org.hamcrest:hamcrest-core:$hamcrestVersion",
+                "org.hamcrest:hamcrest-library:$hamcrestVersion",
+                "org.mockito:mockito-all:$mockitoVersion",
+                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion"
         )
     }
 
