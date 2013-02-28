@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
 
@@ -38,7 +41,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return transform(filter(filter(getPropertyDescriptors(), nonClassField()), existField(request)), toRequestMatcher(request));
+        return transform(filter(getPropertyDescriptors(), and(not(classField()), existField(request))), toRequestMatcher(request));
     }
 
     private List<PropertyDescriptor> getPropertyDescriptors() {
@@ -74,11 +77,11 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         };
     }
 
-    private Predicate<PropertyDescriptor> nonClassField() {
+    private Predicate<PropertyDescriptor> classField() {
         return new Predicate<PropertyDescriptor>() {
             @Override
             public boolean apply(PropertyDescriptor descriptor) {
-                return !"class".equals(descriptor.getName());
+                return "class".equals(descriptor.getName());
             }
         };
     }
@@ -151,7 +154,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             case 1:
                 return matchers.iterator().next();
             default:
-                return and(matchers.toArray(new RequestMatcher[matchers.size()]));
+                return new AndRequestMatcher(matchers);
         }
     }
 }

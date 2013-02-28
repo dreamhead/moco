@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class AndRequestMatcher implements RequestMatcher {
-    private RequestMatcher[] matchers;
+    private Iterable<RequestMatcher> matchers;
 
-    public AndRequestMatcher(RequestMatcher[] matchers) {
+    public AndRequestMatcher(Iterable<RequestMatcher> matchers) {
         this.matchers = matchers;
     }
 

@@ -46,7 +46,7 @@ public class Moco {
     }
 
     public static RequestMatcher and(RequestMatcher... matchers) {
-        return new AndRequestMatcher(matchers);
+        return new AndRequestMatcher(newArrayList(matchers));
     }
 
     public static RequestMatcher or(RequestMatcher... matchers) {
