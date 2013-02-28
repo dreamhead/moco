@@ -254,6 +254,33 @@ server.request(eq(header("foo"), "bar")).response("blah")
 }
 ```
 
+### Cookie
+
+Cookie is widely used in web development.
+
+* API
+```java
+server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+```
+
+* JSON
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie",
+      "cookies" :
+      {
+        "login" : "true"
+      }
+    },
+  "response" :
+    {
+      "text" : "success"
+    }
+}
+```
+
 ### XPath
 
 XML/HTML is popular format for HTTP server. Moco allows us to match request with XPath.
@@ -327,7 +354,7 @@ server.request(by("foo")).response(file("bar.response"));
 ```
 
 ### Status Code
-Moco also supports HTTP status codein response.
+Moco also supports HTTP status code response.
 
 * API
 ```java
@@ -365,7 +392,8 @@ server.request(by("foo")).response(header("content-type", "application/json"));
     },
   "response" :
     {
-      "headers" : {
+      "headers" :
+      {
         "content-type" : "application/json"
       }
     }
@@ -407,17 +435,42 @@ server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 
 * JSON
 ```json
-[
 {
   "request" :
     {
-        "uri" : "/redirect"
+      "uri" : "/redirect"
     },
 
   "redirectTo" : "http://www.github.com"
 }
-]
 ```
+
+### Cookie
+
+Cookie can also be in the response.
+
+* API
+```java
+server.response(cookie("loggedIn", "true"), status(302));
+```
+
+* JSON
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : "true"
+      }
+    }
+}
+```
+
 
 ### Latency
 
