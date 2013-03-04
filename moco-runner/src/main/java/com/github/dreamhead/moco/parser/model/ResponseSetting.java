@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
@@ -15,32 +16,13 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends AbstractResource {
     private String status;
     private Map<String, String> headers;
     private Map<String, String> cookies;
     private CacheSetting cache;
     private Long latency;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public Map<String, String> getCookies() {
-        return cookies;
-    }
-
-    public CacheSetting getCache() {
-        return cache;
-    }
-
-    public long getLatency() {
-        return latency;
-    }
 
     @Override
     public String toString() {

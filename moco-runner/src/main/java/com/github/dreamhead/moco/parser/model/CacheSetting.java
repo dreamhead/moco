@@ -1,17 +1,15 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Objects;
 
 import static com.github.dreamhead.moco.MocoCache.cache;
 import static com.github.dreamhead.moco.MocoCache.with;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CacheSetting extends AbstractResource {
     private FileSetting with;
-
-    public FileSetting getWith() {
-        return with;
-    }
 
     @Override
     public String toString() {

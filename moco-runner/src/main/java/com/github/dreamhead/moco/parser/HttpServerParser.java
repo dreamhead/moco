@@ -50,7 +50,7 @@ public class HttpServerParser {
             } else if (session.isAnyResponse()) {
                 server.response(session.getResponseHandler());
             } else if (session.isRedirectResponse()) {
-                server.redirectTo(session.getRedirectTo());
+                server.request(requestMatcherParser.createRequestMatcher(session.getRequest())).redirectTo(session.getRedirectTo());
             } else {
                 server.request(requestMatcherParser.createRequestMatcher(session.getRequest())).response(session.getResponseHandler());
             }

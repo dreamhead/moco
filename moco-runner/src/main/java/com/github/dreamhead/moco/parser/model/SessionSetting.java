@@ -1,27 +1,20 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.base.Objects;
 
-import java.io.IOException;
-
+@JsonIgnoreProperties({ "description" })
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class SessionSetting {
-    private String description;
     private RequestSetting request;
     private ResponseSetting response;
     private String redirectTo;
     private MountSetting mount;
 
-    public String getDescription() {
-        return description;
-    }
-
     public RequestSetting getRequest() {
         return request;
-    }
-
-    public ResponseSetting getResponse() {
-        return response;
     }
 
     public String getRedirectTo() {
