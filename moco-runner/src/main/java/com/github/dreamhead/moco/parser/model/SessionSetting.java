@@ -6,10 +6,15 @@ import com.google.common.base.Objects;
 import java.io.IOException;
 
 public class SessionSetting {
+    private String description;
     private RequestSetting request;
     private ResponseSetting response;
     private String redirectTo;
     private MountSetting mount;
+
+    public String getDescription() {
+        return description;
+    }
 
     public RequestSetting getRequest() {
         return request;

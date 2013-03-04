@@ -32,7 +32,7 @@ public class HttpServerParser {
         try {
             return mapper.readValue(is, factory.constructCollectionType(List.class, SessionSetting.class));
         } catch (UnrecognizedPropertyException e) {
-            logger.info("Unrecognized field", e);
+            logger.info("Unrecognized field: {}", e.getMessage());
             throw new RuntimeException(format("Unrecognized field [ %s ], please check!", e.getUnrecognizedPropertyName()));
         } catch (IOException e) {
             throw new RuntimeException(e);
