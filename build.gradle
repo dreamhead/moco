@@ -67,7 +67,6 @@ subprojects {
         nettyVersion = '3.6.3.Final'
         slf4jVersion = '1.7.2'
         commonsIoVersion = '2.4'
-        slf4jLogbackBridgeVersion = '2.0'
         logbackVersion='1.0.9'
         junitVersion = '4.10'
         hamcrestVersion = '1.3'
@@ -84,7 +83,6 @@ subprojects {
         )
 
         runtime(
-                "com.googlecode.sli4j:sli4j-slf4j-logback:$slf4jLogbackBridgeVersion",
                 "ch.qos.logback:logback-classic:$logbackVersion"
         )
 
