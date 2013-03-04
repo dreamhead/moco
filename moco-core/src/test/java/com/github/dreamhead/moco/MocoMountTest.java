@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,97 +34,73 @@ public class MocoMountTest {
     }
 
     @Test
-    public void should_mount_dir_to_uri() {
+    public void should_mount_dir_to_uri() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_return_bad_request_for_nonexistence_file() {
+    @Test(expected = HttpResponseException.class)
+    public void should_return_bad_request_for_nonexistence_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/dir/unknown.response"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/dir/unknown.response"));
             }
         });
     }
 
     @Test
-    public void should_return_inclusion_file() {
+    public void should_return_inclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), include("*.response"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_not_return_non_inclusion_file() {
+    @Test(expected = HttpResponseException.class)
+    public void should_not_return_non_inclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), include("*.response"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/dir/foo.bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/dir/foo.bar"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_not_return_exclusion_file() {
+    @Test(expected = HttpResponseException.class)
+    public void should_not_return_exclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), exclude("*.response"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/dir/dir.response"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/dir/dir.response"));
             }
         });
     }
 
     @Test
-    public void should_return_non_exclusion_file() {
+    public void should_return_non_exclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), exclude("*.response"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/dir/foo.bar")), is("foo.bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/dir/foo.bar")), is("foo.bar"));
             }
         });
     }

@@ -25,19 +25,15 @@ public class MocoRedirectTest {
     }
 
     @Test
-    public void should_redirect_to_expected_url() {
+    public void should_redirect_to_expected_url() throws Exception {
         server.get(by(uri("/"))).response("foo");
         server.get(by(uri("/redirectTo"))).redirectTo(root());
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
             }
         });
-    }
+}
 }

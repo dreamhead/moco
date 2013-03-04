@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.io.Files;
+import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ public class MocoCacheTest {
     }
 
     @Test
-    public void should_change_file_content_dynamically() throws IOException {
+    public void should_change_file_content_dynamically() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
 
@@ -36,21 +37,17 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                    changeFileContent(response, "bar");
-                    assertThat(helper.get(root()), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
+                changeFileContent(response, "bar");
+                assertThat(helper.get(root()), is("bar"));
             }
         });
 
     }
 
     @Test
-    public void should_cache_result() throws IOException {
+    public void should_cache_result() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
 
@@ -58,20 +55,16 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                    changeFileContent(response, "bar");
-                    assertThat(helper.get(root()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
+                changeFileContent(response, "bar");
+                assertThat(helper.get(root()), is("foo"));
             }
         });
     }
 
     @Test
-    public void should_cache_with_persistence_file() throws IOException {
+    public void should_cache_with_persistence_file() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
@@ -79,19 +72,15 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                    assertThat(Files.toString(cacheFile, Charset.defaultCharset()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
+                assertThat(Files.toString(cacheFile, Charset.defaultCharset()), is("foo"));
             }
         });
     }
 
     @Test
-    public void should_response_with_persistence_file() throws IOException {
+    public void should_response_with_persistence_file() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
@@ -99,12 +88,8 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
             }
         });
 
@@ -124,8 +109,8 @@ public class MocoCacheTest {
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_without_resource_and_persistence_file() throws IOException {
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_resource_and_persistence_file() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
         changeFileContent(response, "foo");
         final File cacheFile = File.createTempFile("cache", ".tmp");
@@ -133,12 +118,8 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
             }
         });
 
@@ -150,12 +131,8 @@ public class MocoCacheTest {
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(root());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(root());
             }
         });
     }

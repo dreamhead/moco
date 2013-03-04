@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Before;
@@ -28,474 +29,362 @@ public class MocoTest {
     }
 
     @Test
-    public void should_return_expected_response() {
+    public void should_return_expected_response() throws Exception {
         server.response("foo");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws Exception {
+                assertThat(helper.get(root()), is("foo"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_with_text_api() {
+    public void should_return_expected_response_with_text_api() throws Exception {
         server.response(text("foo"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_from_file() throws IOException {
+    public void should_return_expected_response_from_file() throws Exception {
         server.response(file("src/test/resources/foo.response"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("foo.response"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo.response"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_for_unknown_request() {
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_for_unknown_request() throws Exception {
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(root()), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_based_on_specified_request() {
+    public void should_return_expected_response_based_on_specified_request() throws Exception {
         server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.postContent(root(), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "foo"), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_based_on_specified_request_with_text_api() {
+    public void should_return_expected_response_based_on_specified_request_with_text_api() throws Exception {
         server.request(by(text("foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.postContent(root(), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "foo"), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_based_on_specified_uri() {
+    public void should_return_expected_response_based_on_specified_uri() throws Exception {
         server.request(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_match_request_based_on_multiple_matchers() {
+    public void should_match_request_based_on_multiple_matchers() throws Exception {
         server.request(and(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.postContent(remoteUrl("/foo"), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/foo"), "foo"), is("bar"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_even_if_match_one_of_conditions() {
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_even_if_match_one_of_conditions() throws Exception {
         server.request(and(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/foo"));
             }
         });
     }
 
     @Test
-    public void should_match_request_based_on_either_matcher() {
+    public void should_match_request_based_on_either_matcher() throws Exception {
         server.request(or(by("foo"), by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                    assertThat(helper.postContent(remoteUrl("/foo"), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.postContent(remoteUrl("/foo"), "foo"), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_match_request_based_on_simplified_either_matcher() {
+    public void should_match_request_based_on_simplified_either_matcher() throws Exception {
         server.request(by("foo"), by(uri("/foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                    assertThat(helper.postContent(root(), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.postContent(root(), "foo"), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_match_get_method() {
+    public void should_match_get_method() throws Exception {
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_match_get_method_by_method_api() {
+    public void should_match_get_method_by_method_api() throws Exception {
         server.request(and(by(uri("/foo")), by(method("get")))).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_not_response_for_get_while_http_method_is_not_get() {
+    @Test(expected = HttpResponseException.class)
+    public void should_not_response_for_get_while_http_method_is_not_get() throws Exception {
         server.get(by(uri("/foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.postContent(remoteUrl("/foo"), "");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.postContent(remoteUrl("/foo"), "");
             }
         });
     }
 
     @Test
-    public void should_match_post_method() {
+    public void should_match_post_method() throws Exception {
         server.post(by("foo")).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.postContent(root(), "foo"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "foo"), is("bar"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_not_response_for_post_while_http_method_is_not_post() {
+    @Test(expected = HttpResponseException.class)
+    public void should_not_response_for_post_while_http_method_is_not_post() throws Exception {
         server.post(by(uri("/foo"))).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/foo"));
             }
         });
     }
 
     @Test
-    public void should_return_content_one_by_one() {
+    public void should_return_content_one_by_one() throws Exception {
         server.request(by(uri("/foo"))).response(seq("bar", "blah"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                    assertThat(helper.get(remoteUrl("/foo")), is("blah"));
-                    assertThat(helper.get(remoteUrl("/foo")), is("blah"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
             }
         });
     }
 
     @Test
-    public void should_return_content_one_by_one_with_text_api() {
+    public void should_return_content_one_by_one_with_text_api() throws Exception {
         server.request(by(uri("/foo"))).response(seq(text("bar"), text("blah")));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                    assertThat(helper.get(remoteUrl("/foo")), is("blah"));
-                    assertThat(helper.get(remoteUrl("/foo")), is("blah"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
             }
         });
     }
 
     @Test
-    public void should_match_header() {
+    public void should_match_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    Content content = Request.Get(remoteUrl("/foo")).addHeader("foo", "bar").execute().returnContent();
-                    assertThat(content.asString(), is("blah"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                Content content = Request.Get(remoteUrl("/foo")).addHeader("foo", "bar").execute().returnContent();
+                assertThat(content.asString(), is("blah"));
             }
         });
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_without_specified_header() {
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_specified_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    helper.get(remoteUrl("/foo"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                helper.get(remoteUrl("/foo"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_response_for_specified_query() {
+    public void should_return_expected_response_for_specified_query() throws Exception {
         server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.get(remoteUrl("/foo?param=blah")), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo?param=blah")), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_return_content_based_on_xpath() {
+    public void should_return_content_based_on_xpath() throws Exception {
         server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
         server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
-                    assertThat(helper.postFile(root(), "bar.xml"), is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
+                assertThat(helper.postFile(root(), "bar.xml"), is("bar"));
             }
         });
     }
 
     @Test
-    public void should_return_expected_status_code() {
+    public void should_return_expected_status_code() throws Exception {
         server.response(status(200));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                    assertThat(statusCode, is(200));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusCode, is(200));
             }
         });
     }
 
     @Test
-    public void should_return_expected_header() {
+    public void should_return_expected_header() throws Exception {
         server.response(header("content-type", "application/json"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    String value = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
-                    assertThat(value, is("application/json"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                String value = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
+                assertThat(value, is("application/json"));
             }
         });
     }
 
     @Test
-    public void should_return_multiple_expected_header() {
+    public void should_return_multiple_expected_header() throws Exception {
         server.response(header("content-type", "application/json"), header("foo", "bar"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    String json = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
-                    assertThat(json, is("application/json"));
-                    String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
-                    assertThat(bar, is("bar"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                String json = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
+                assertThat(json, is("application/json"));
+                String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
+                assertThat(bar, is("bar"));
             }
         });
     }
 
     @Test
-    public void should_set_and_recognize_cookie() {
+    public void should_set_and_recognize_cookie() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true"), status(302));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                    assertThat(statusBeforeLogin, is(302));
-                    int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                    assertThat(statusAfterLogin, is(200));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusBeforeLogin, is(302));
+                int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusAfterLogin, is(200));
             }
         });
     }
 
     @Test
-    public void should_wait_for_awhile() {
+    public void should_wait_for_awhile() throws Exception {
         final long latency = 1000;
         final long delta = 200;
         server.response(latency(latency));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    long start = System.currentTimeMillis();
-                    helper.get(root());
-                    int code = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                    long stop = System.currentTimeMillis();
-                    long gap = stop - start + delta;
-                    assertThat(gap, greaterThan(latency));
-                    assertThat(code, is(200));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                long start = System.currentTimeMillis();
+                helper.get(root());
+                int code = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                long stop = System.currentTimeMillis();
+                long gap = stop - start + delta;
+                assertThat(gap, greaterThan(latency));
+                assertThat(code, is(200));
             }
         });
     }
 
     @Test
-    public void should_run_as_proxy() throws IOException {
+    public void should_run_as_proxy() throws Exception {
         server.response(url("http://www.github.com"));
 
         running(server, new Runnable() {
             @Override
-            public void run() {
-                try {
-                    int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                    assertThat(statusCode, is(200));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            public void run() throws IOException {
+                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusCode, is(200));
             }
         });
     }
