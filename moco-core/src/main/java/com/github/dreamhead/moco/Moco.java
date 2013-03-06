@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.LatencyResponseHandler;
-import com.github.dreamhead.moco.handler.SequenceResponseHandler;
+import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
@@ -104,7 +104,7 @@ public class Moco {
 
     public static ResponseHandler seq(String... contents) {
         List<Resource> resources = transform(newArrayList(contents), toResource());
-        return new SequenceResponseHandler(resources.toArray(new Resource[resources.size()]));
+        return new SequenceContentHandler(resources.toArray(new Resource[resources.size()]));
     }
 
     private static Function<String, Resource> toResource() {
@@ -117,7 +117,7 @@ public class Moco {
     }
 
     public static ResponseHandler seq(Resource... contents) {
-        return new SequenceResponseHandler(contents);
+        return new SequenceContentHandler(contents);
     }
 
     public static WritableResource file(String filename) {

@@ -6,13 +6,13 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
-public abstract class AbstractResponseHandler implements ResponseHandler {
-    protected abstract void writeContent(ChannelBuffer buffer);
+public abstract class AbstractContentResponseHandler implements ResponseHandler {
+    protected abstract void writeContentResponse(HttpRequest request, ChannelBuffer buffer);
 
     @Override
     public void writeToResponse(HttpRequest request, HttpResponse response) {
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-        writeContent(buffer);
+        writeContentResponse(request, buffer);
         response.setContent(buffer);
         response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setHeader("Content-Length", response.getContent().writerIndex());

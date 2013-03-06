@@ -3,11 +3,11 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class SequenceResponseHandler extends AbstractResponseHandler {
+public class SequenceContentHandler extends AbstractContentHandler {
     private final Resource[] resources;
     private int index;
 
-    public SequenceResponseHandler(final Resource[] resources) {
+    public SequenceContentHandler(final Resource[] resources) {
         this.resources = resources;
     }
 
