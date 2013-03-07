@@ -1,9 +1,13 @@
 # Functionality
+
 ## Matcher
 * wildcard or RE matcher
+
 ## Handler
 * Response with Request parameter
+
 ## REST
+
 ## Client
 * Socket
 
@@ -11,6 +15,7 @@
 * Shell
 * Maven Plugin
 * Groovy Plugin
+* Moco favicon.ico
 
 # Polyglot
 * Groovy
