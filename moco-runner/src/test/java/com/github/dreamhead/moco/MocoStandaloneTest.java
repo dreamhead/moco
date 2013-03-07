@@ -74,6 +74,20 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_return_expected_response_based_on_specified_put_request() throws IOException {
+        runWithConfiguration("put_method.json");
+        String response = Request.Put(remoteUrl("/put")).execute().returnContent().toString();
+        assertThat(response, is("response_for_put_method"));
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_delete_request() throws IOException {
+        runWithConfiguration("delete_method.json");
+        String response = Request.Delete(remoteUrl("/delete")).execute().returnContent().toString();
+        assertThat(response, is("response_for_delete_method"));
+    }
+
+    @Test
     public void should_return_expected_response_based_on_specified_header_request() throws IOException {
         runWithConfiguration("header.json");
         Content content = Request.Get(remoteUrl("/header")).addHeader("content-type", "application/json").execute().returnContent();

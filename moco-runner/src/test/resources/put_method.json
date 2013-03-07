@@ -1,0 +1,13 @@
+[
+  {
+     "request" :
+       {
+        "method" : "put",
+        "uri" : "/put"
+       },
+     "response" :
+       {
+        "text" : "response_for_put_method"
+       }
+  }
+]

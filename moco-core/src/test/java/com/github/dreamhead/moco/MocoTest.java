@@ -197,6 +197,32 @@ public class MocoTest {
     }
 
     @Test
+    public void should_match_put_method_via_api() throws Exception {
+        server.request(and(by(uri("/foo")), by(method("put")))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String response = Request.Put(remoteUrl("/foo")).execute().returnContent().toString();
+                assertThat(response, is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_delete_method_via_api() throws Exception {
+        server.request(and(by(uri("/foo")), by(method("delete")))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String response = Request.Delete(remoteUrl("/foo")).execute().returnContent().toString();
+                assertThat(response, is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_post_method() throws Exception {
         server.post(by("foo")).response("bar");
 

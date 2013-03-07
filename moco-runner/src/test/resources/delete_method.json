@@ -1,0 +1,13 @@
+[
+  {
+     "request" :
+       {
+        "method" : "delete",
+        "uri" : "/delete"
+       },
+     "response" :
+       {
+        "text" : "response_for_delete_method"
+       }
+  }
+]
