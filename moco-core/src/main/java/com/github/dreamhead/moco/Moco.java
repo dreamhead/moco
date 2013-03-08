@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
+import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableMap.of;
@@ -43,6 +45,11 @@ public class Moco {
 
     public static RequestMatcher eq(RequestExtractor extractor, Resource expected) {
         return new EqRequestMatcher(extractor, expected);
+    }
+
+    public static RequestMatcher match(Resource patternResource) {
+        Pattern pattern = Pattern.compile(new String(patternResource.asByteArray()));
+        return new MatchMatcher(extractor(patternResource.id()), pattern);
     }
 
     public static RequestMatcher and(RequestMatcher... matchers) {

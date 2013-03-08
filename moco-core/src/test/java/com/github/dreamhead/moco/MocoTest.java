@@ -275,6 +275,19 @@ public class MocoTest {
     }
 
     @Test
+    public void should_match() throws Exception {
+        server.request(match(uri("/\\w*/foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/bar/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/blah/foo")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
