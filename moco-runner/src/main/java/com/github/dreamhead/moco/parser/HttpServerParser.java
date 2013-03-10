@@ -1,11 +1,15 @@
 package com.github.dreamhead.moco.parser;
 
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.parser.model.MountSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
+import com.github.dreamhead.moco.parser.model.TextContainer;
+import com.github.dreamhead.moco.parser.model.TextContainerDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +26,13 @@ public class HttpServerParser {
     private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
+
+    public HttpServerParser() {
+        SimpleModule textContainerModule = new SimpleModule("TextContainerModule",
+                new Version(1, 0, 0, null, null, null))
+                .addDeserializer(TextContainer.class, new TextContainerDeserializer());
+        mapper.registerModule(textContainerModule);
+    }
 
     public HttpServer parseServer(InputStream is, int port) {
         List<SessionSetting> sessionSettings = readSessions(is);

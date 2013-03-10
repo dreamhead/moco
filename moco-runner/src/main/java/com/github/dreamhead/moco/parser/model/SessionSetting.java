@@ -35,7 +35,7 @@ public class SessionSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("request", request).add("response", response).toString();
+        return Objects.toStringHelper(this).omitNullValues().add("request", request).add("response", response).toString();
     }
 
     public boolean isRedirectResponse() {

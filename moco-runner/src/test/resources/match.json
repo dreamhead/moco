@@ -1,0 +1,34 @@
+[
+    {
+        "request": {
+            "uri": {
+                "match": "/\\w*/foo"
+            }
+        },
+        "response": {
+            "text": "uri_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/text-match",
+            "text": {
+                "match": "\\w*foo"
+            }
+        },
+        "response": {
+            "text": "text_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/method-match",
+            "method": {
+                "match": "get|post"
+            }
+        },
+        "response": {
+            "text": "method_match"
+        }
+    }
+]

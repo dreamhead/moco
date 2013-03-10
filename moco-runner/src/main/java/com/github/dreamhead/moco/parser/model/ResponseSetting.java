@@ -27,6 +27,7 @@ public class ResponseSetting extends AbstractResource {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
+                .omitNullValues()
                 .add("text", text)
                 .add("file", file)
                 .add("status", status)

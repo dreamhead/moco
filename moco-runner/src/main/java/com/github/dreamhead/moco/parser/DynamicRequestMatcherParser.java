@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
+import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -100,6 +101,8 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             return createSingleMatcher(name, String.class.cast(value));
         } else if (Map.class.isInstance(value)) {
             return createCompositeMatcher(name, castToMap(value));
+        } else if (TextContainer.class.isInstance(value)) {
+            return createSingleTextMatcher(name, TextContainer.class.cast(value));
         } else {
             throw new IllegalArgumentException("unknown configuration :" + value);
         }
@@ -108,6 +111,32 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     @SuppressWarnings("unchecked")
     private Map<String, String> castToMap(Object value) {
         return Map.class.cast(value);
+    }
+
+    private RequestMatcher createSingleMatcher(String name, String value) {
+        try {
+            Method method = Moco.class.getMethod(name, String.class);
+            Object result = method.invoke(null, value);
+            return by(Resource.class.cast(result));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private RequestMatcher createSingleTextMatcher(String name, TextContainer container) {
+        if (container.isRawText()) {
+            return createSingleMatcher(name, container.getText());
+        }
+
+        try {
+            Method method = Moco.class.getMethod(name, String.class);
+            Object result = method.invoke(null, container.getText());
+            Method operationMethod = Moco.class.getMethod(container.getOperation(), Resource.class);
+            return RequestMatcher.class.cast(operationMethod.invoke(null, result));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private RequestMatcher createCompositeMatcher(String name, Map<String, String> collection) {
@@ -133,16 +162,6 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         try {
             return Moco.class.getMethod(methods.get(name), String.class);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private RequestMatcher createSingleMatcher(String name, String value) {
-        try {
-            Method method = Moco.class.getMethod(name, String.class);
-            Object result = method.invoke(null, value);
-            return by(Resource.class.cast(result));
-        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

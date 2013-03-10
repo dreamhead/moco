@@ -5,21 +5,21 @@ import com.google.common.base.Objects;
 import java.util.Map;
 
 public class RequestSetting {
-    private String text;
-    private String uri;
+    private TextContainer text;
+    private TextContainer uri;
     private String file;
-    private String method;
+    private TextContainer method;
 
     private Map<String, String> headers;
     private Map<String, String> xpaths;
     private Map<String, String> queries;
     private Map<String, String> cookies;
 
-    public String getUri() {
+    public Object getUri() {
         return uri;
     }
 
-    public String getText() {
+    public TextContainer getText() {
         return text;
     }
 
@@ -27,7 +27,7 @@ public class RequestSetting {
         return file;
     }
 
-    public String getMethod() {
+    public TextContainer getMethod() {
         return method;
     }
 
@@ -49,6 +49,6 @@ public class RequestSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("URI", uri).add("text", text).add("file", file).add("headers", headers).toString();
+        return Objects.toStringHelper(this).omitNullValues().add("URI", uri).add("text", text).add("file", file).add("headers", headers).toString();
     }
 }
