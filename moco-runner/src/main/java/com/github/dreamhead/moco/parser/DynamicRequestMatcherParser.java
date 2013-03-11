@@ -99,25 +99,33 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
         if (String.class.isInstance(value)) {
             return createSingleMatcher(name, String.class.cast(value));
-        } else if (Map.class.isInstance(value)) {
-            return createCompositeMatcher(name, castToMap(value));
-        } else if (TextContainer.class.isInstance(value)) {
-            return createSingleTextMatcher(name, TextContainer.class.cast(value));
-        } else {
-            throw new IllegalArgumentException("unknown configuration :" + value);
         }
+
+        if (Map.class.isInstance(value)) {
+            return createCompositeMatcher(name, castToMap(value));
+        }
+
+        if (TextContainer.class.isInstance(value)) {
+            return createSingleTextMatcher(name, TextContainer.class.cast(value));
+        }
+
+        throw new IllegalArgumentException("unknown configuration :" + value);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> castToMap(Object value) {
+    private Map<String, Object> castToMap(Object value) {
         return Map.class.cast(value);
     }
 
     private RequestMatcher createSingleMatcher(String name, String value) {
+        return by(createResource(name, value));
+    }
+
+    private Resource createResource(String name, String value) {
         try {
             Method method = Moco.class.getMethod(name, String.class);
             Object result = method.invoke(null, value);
-            return by(Resource.class.cast(result));
+            return Resource.class.cast(result);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -128,34 +136,64 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             return createSingleMatcher(name, container.getText());
         }
 
-        try {
-            Method method = Moco.class.getMethod(name, String.class);
-            Object result = method.invoke(null, container.getText());
-            Method operationMethod = Moco.class.getMethod(container.getOperation(), Resource.class);
-            return RequestMatcher.class.cast(operationMethod.invoke(null, result));
+        return createRequestMatcher(container.getOperation(), createResource(name, container.getText()));
+    }
 
+    private RequestMatcher createRequestMatcher(String operation, Resource resource) {
+        try {
+            Method operationMethod = Moco.class.getMethod(operation, Resource.class);
+            return RequestMatcher.class.cast(operationMethod.invoke(null, resource));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private RequestMatcher createCompositeMatcher(String name, Map<String, String> collection) {
+    private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
         return wrapRequestMatcher(null, transform(collection.entrySet(), toTargetMatcher(getMethodForCompositeMatcher(name))));
     }
 
-    private Function<Map.Entry<String, String>, RequestMatcher> toTargetMatcher(final Method method) {
-        return new Function<Map.Entry<String, String>, RequestMatcher>() {
+    private Function<Map.Entry<String, Object>, RequestMatcher> toTargetMatcher(final Method extractorMethod) {
+        return new Function<Map.Entry<String, Object>, RequestMatcher>() {
             @Override
-            public RequestMatcher apply(Map.Entry<String, String> pair) {
-                try {
-                    RequestExtractor extractor = RequestExtractor.class.cast(method.invoke(null, pair.getKey()));
-                    return eq(extractor, pair.getValue());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
+            public RequestMatcher apply(Map.Entry<String, Object> pair) {
+                RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
+                return createRequestMatcher(extractor, pair.getValue());
             }
         };
+    }
+
+    private RequestExtractor createRequestExtractor(Method method, String key) {
+        try {
+            return RequestExtractor.class.cast(method.invoke(null, key));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private RequestMatcher createRequestMatcher(RequestExtractor extractor, Object value) {
+        if (String.class.isInstance(value)) {
+            return eq(extractor, String.class.cast(value));
+        }
+
+        if (TextContainer.class.isInstance(value)) {
+            return getRequestMatcher(extractor, TextContainer.class.cast(value));
+        }
+
+        throw new IllegalArgumentException("unknown value type: " + value);
+    }
+
+    private RequestMatcher getRequestMatcher(RequestExtractor extractor, TextContainer container) {
+        if (container.isRawText()) {
+            return eq(extractor, container.getText());
+        }
+
+        try {
+            Method operationMethod = Moco.class.getMethod(container.getOperation(), RequestExtractor.class, String.class);
+            Object result = operationMethod.invoke(null, extractor, container.getText());
+            return RequestMatcher.class.cast(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Method getMethodForCompositeMatcher(String name) {

@@ -10,10 +10,10 @@ public class RequestSetting {
     private String file;
     private TextContainer method;
 
-    private Map<String, String> headers;
-    private Map<String, String> xpaths;
-    private Map<String, String> queries;
-    private Map<String, String> cookies;
+    private Map<String, TextContainer> headers;
+    private Map<String, TextContainer> xpaths;
+    private Map<String, TextContainer> queries;
+    private Map<String, TextContainer> cookies;
 
     public Object getUri() {
         return uri;
@@ -31,19 +31,19 @@ public class RequestSetting {
         return method;
     }
 
-    public Map<String, String> getCookies() {
+    public Map<String, TextContainer> getCookies() {
         return cookies;
     }
 
-    public Map<String, String> getHeaders() {
+    public Map<String, TextContainer> getHeaders() {
         return headers;
     }
 
-    public Map<String, String> getXpaths() {
+    public Map<String, TextContainer> getXpaths() {
         return xpaths;
     }
 
-    public Map<String, String> getQueries() {
+    public Map<String, TextContainer> getQueries() {
         return queries;
     }
 

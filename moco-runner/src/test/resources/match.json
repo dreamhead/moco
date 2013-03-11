@@ -30,5 +30,31 @@
         "response": {
             "text": "method_match"
         }
+    },
+    {
+        "request": {
+            "uri": "/header-match",
+            "headers": {
+                "content-type": {
+                    "match" : "application/\\w*"
+                }
+            }
+        },
+        "response": {
+            "text": "header_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query-match",
+            "queries": {
+                "foo": {
+                    "match" : "b\\w*"
+                }
+            }
+        },
+        "response": {
+            "text": "query_match"
+        }
     }
 ]
