@@ -289,6 +289,21 @@ public class MocoTest {
 
     @Test
     public void should_match_header() throws Exception {
+        server.request(match(header("foo"), "bar|blah")).response(text("header"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Content barRequest = Request.Get(root()).addHeader("foo", "bar").execute().returnContent();
+                assertThat(barRequest.asString(), is("header"));
+                Content blahRequest = Request.Get(root()).addHeader("foo", "blah").execute().returnContent();
+                assertThat(blahRequest.asString(), is("header"));
+            }
+        });
+    }
+
+    @Test
+    public void should_eq_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
         running(server, new Runnable() {

@@ -90,7 +90,7 @@ subprojects {
                 "junit:junit-dep:$junitVersion",
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
-                "org.mockito:mockito-all:$mockitoVersion",
+                "org.mockito:mockito-core:$mockitoVersion",
                 "org.apache.httpcomponents:fluent-hc:$httpComponentVersion"
         )
     }

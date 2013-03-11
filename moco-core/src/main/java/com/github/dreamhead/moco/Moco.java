@@ -40,7 +40,7 @@ public class Moco {
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, String expected) {
-        return new EqRequestMatcher(extractor, text(expected));
+        return eq(extractor, text(expected));
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, Resource expected) {
@@ -48,8 +48,16 @@ public class Moco {
     }
 
     public static RequestMatcher match(Resource patternResource) {
-        Pattern pattern = Pattern.compile(new String(patternResource.asByteArray()));
-        return new MatchMatcher(extractor(patternResource.id()), pattern);
+        return match(extractor(patternResource.id()), patternResource);
+    }
+
+    public static RequestMatcher match(RequestExtractor extractor, String expected) {
+        return match(extractor, text(expected));
+    }
+
+    public static RequestMatcher match(RequestExtractor extractor, Resource expected) {
+        Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
+        return new MatchMatcher(extractor, pattern);
     }
 
     public static RequestMatcher and(RequestMatcher... matchers) {
