@@ -9,7 +9,6 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -22,14 +21,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.eq;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.ImmutableMap.of;
 
 public class DynamicRequestMatcherParser implements RequestMatcherParser {
-    private Map<String, String> methods = ImmutableMap.of(
+    private Map<String, String> methods = of(
             "headers", "header",
             "queries", "query",
             "xpaths", "xpath",
@@ -171,10 +172,6 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private RequestMatcher createRequestMatcher(RequestExtractor extractor, Object value) {
-        if (String.class.isInstance(value)) {
-            return eq(extractor, String.class.cast(value));
-        }
-
         if (TextContainer.class.isInstance(value)) {
             return getRequestMatcher(extractor, TextContainer.class.cast(value));
         }
