@@ -340,20 +340,6 @@ public class MocoTest {
     }
 
     @Test
-    public void should_return_content_based_on_xpath() throws Exception {
-        server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
-        server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
-                assertThat(helper.postFile(root(), "bar.xml"), is("bar"));
-            }
-        });
-    }
-
-    @Test
     public void should_return_expected_status_code() throws Exception {
         server.response(status(200));
 

@@ -117,6 +117,10 @@ public class Moco {
         return new XPathRequestExtractor(xpath);
     }
 
+    public static RequestMatcher xml(Resource resource) {
+        return new XmlRequestMatcher(extractor(resource.id()), resource);
+    }
+
     public static ResponseHandler seq(String... contents) {
         List<Resource> resources = transform(newArrayList(contents), toResource());
         return new SequenceContentHandler(resources.toArray(new Resource[resources.size()]));

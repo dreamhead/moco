@@ -2,16 +2,16 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.xml.sax.InputSource;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.StringReader;
 
 public class XPathRequestExtractor implements RequestExtractor {
-    private ContentRequestExtractor extractor = new ContentRequestExtractor();
+    private final XmlExtractorHelper helper = new XmlExtractorHelper();
+    private final ContentRequestExtractor extractor = new ContentRequestExtractor();
+    private final XPathExpression xPathExpression;
 
     public XPathRequestExtractor(String xpath) {
         XPathFactory xPathfactory = XPathFactory.newInstance();
@@ -23,12 +23,10 @@ public class XPathRequestExtractor implements RequestExtractor {
         }
     }
 
-    private XPathExpression xPathExpression;
-
     @Override
     public String extract(HttpRequest request) {
         try {
-            return xPathExpression.evaluate(new InputSource(new StringReader(extractor.extract(request))));
+            return xPathExpression.evaluate(helper.extractAsInputSource(request, extractor));
         } catch (XPathExpressionException e) {
             return "";
         }
