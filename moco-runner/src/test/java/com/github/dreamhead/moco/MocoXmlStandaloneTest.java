@@ -22,7 +22,7 @@ public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_return_epected_response_based_on_specified_xml_request() throws IOException {
+    public void should_return_expected_response_based_on_specified_xml_request() throws IOException {
         runWithConfiguration("xml.json");
         assertThat(helper.postFile(remoteUrl("/xml"), "foo.xml"), is("response_for_xml_request"));
     }
