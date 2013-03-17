@@ -72,6 +72,7 @@ subprojects {
         hamcrestVersion = '1.3'
         mockitoVersion = '1.9.5'
         httpComponentVersion = '4.2.1'
+        jacksonVersion = '2.1.0'
     }
 
     dependencies {
@@ -79,7 +80,8 @@ subprojects {
                 "com.google.guava:guava:$guavaVersion",
                 "io.netty:netty:$nettyVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion",
-                "commons-io:commons-io:$commonsIoVersion"
+                "commons-io:commons-io:$commonsIoVersion",
+                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
         )
 
         runtime(
@@ -115,7 +117,6 @@ project(':moco-runner') {
     dependencies {
         compile(
                 project(':moco-core'),
-                'com.fasterxml.jackson.core:jackson-databind:2.1.0',
                 'commons-cli:commons-cli:1.2'
         )
 

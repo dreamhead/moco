@@ -23,7 +23,7 @@ import static java.lang.String.format;
 public class HttpServerParser {
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
-    private RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
+    private final RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
 

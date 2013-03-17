@@ -5,10 +5,7 @@ import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.LatencyResponseHandler;
 import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
-import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.github.dreamhead.moco.matcher.EqRequestMatcher;
-import com.github.dreamhead.moco.matcher.MatchMatcher;
-import com.github.dreamhead.moco.matcher.OrRequestMatcher;
+import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.google.common.base.Function;
@@ -119,6 +116,10 @@ public class Moco {
 
     public static RequestMatcher xml(Resource resource) {
         return new XmlRequestMatcher(extractor(resource.id()), resource);
+    }
+
+    public static RequestMatcher json(Resource resource) {
+        return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
     public static ResponseHandler seq(String... contents) {
