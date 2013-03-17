@@ -43,6 +43,10 @@ public class SessionSetting {
     }
 
     public ResponseHandler getResponseHandler() {
+        if (response == null) {
+            throw new RuntimeException("No response specified");
+        }
+
         return response.getResponseHandler();
     }
 }

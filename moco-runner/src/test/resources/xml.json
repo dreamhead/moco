@@ -1,0 +1,13 @@
+[
+    {
+        "request": {
+            "uri": "/xml",
+            "text": {
+                "xml": "<request><parameters><id>1</id></parameters></request>"
+            }
+        },
+        "response": {
+            "text": "response_for_xml_request"
+        }
+    }
+]

@@ -119,18 +119,6 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_return_expected_response_based_on_specified_xpath_request() throws IOException {
-        runWithConfiguration("xpath.json");
-        assertThat(helper.postFile(remoteUrl("/xpath"), "foo.xml"), is("response_for_xpath_request"));
-    }
-
-    @Test(expected = IOException.class)
-    public void should_throw_exception_for_unknown_xpath_request() throws IOException {
-        runWithConfiguration("xpath.json");
-        helper.postFile(remoteUrl("/xpath"), "bar.xml");
-    }
-
-    @Test
     public void should_expected_response_status_code() throws IOException {
         runWithConfiguration("foo.json");
         int statusCode = Request.Get(remoteUrl("/status")).execute().returnResponse().getStatusLine().getStatusCode();
