@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.RequestExtractor;
@@ -26,6 +27,8 @@ public class JsonRequestMatcher implements RequestMatcher {
             JsonNode requestNode = mapper.readTree(extractor.extract(request));
             JsonNode resourceNode = mapper.readTree(resource.asByteArray());
             return requestNode.equals(resourceNode);
+        } catch (JsonProcessingException jpe) {
+            return false;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
