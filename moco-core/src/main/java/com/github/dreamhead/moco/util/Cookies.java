@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.CookieDecoder;
 import org.jboss.netty.handler.codec.http.CookieEncoder;
+import org.jboss.netty.handler.codec.http.DefaultCookie;
 
 import java.util.Set;
 
@@ -14,7 +15,10 @@ public class Cookies {
 
     public String encodeCookie(String key, String value) {
         CookieEncoder cookieEncoder = new CookieEncoder(true);
-        cookieEncoder.addCookie(key, value);
+        DefaultCookie cookie = new DefaultCookie(key, value);
+        cookie.setPath("/");
+        cookieEncoder.addCookie(cookie);
+
         return cookieEncoder.encode();
     }
 

@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser;
 
 import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -28,7 +29,7 @@ public class HttpServerParser {
     private final TypeFactory factory = TypeFactory.defaultInstance();
 
     public HttpServerParser() {
-        SimpleModule textContainerModule = new SimpleModule("TextContainerModule",
+        Module textContainerModule = new SimpleModule("TextContainerModule",
                 new Version(1, 0, 0, null, null, null))
                 .addDeserializer(TextContainer.class, new TextContainerDeserializer());
         mapper.registerModule(textContainerModule);

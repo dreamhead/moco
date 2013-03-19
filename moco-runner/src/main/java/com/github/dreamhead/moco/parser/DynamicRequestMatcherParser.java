@@ -25,8 +25,7 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.of;
 
 public class DynamicRequestMatcherParser implements RequestMatcherParser {
@@ -43,7 +42,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return transform(filter(getPropertyDescriptors(), and(not(classField()), existField(request))), toRequestMatcher(request));
+        return from(getPropertyDescriptors()).filter(and(not(classField()), existField(request))).transform(toRequestMatcher(request)).toList();
     }
 
     private List<PropertyDescriptor> getPropertyDescriptors() {
@@ -150,7 +149,8 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
-        return wrapRequestMatcher(null, transform(collection.entrySet(), toTargetMatcher(getMethodForCompositeMatcher(name))));
+        List<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethodForCompositeMatcher(name))).toList();
+        return wrapRequestMatcher(null, matchers);
     }
 
     private Function<Map.Entry<String, Object>, RequestMatcher> toTargetMatcher(final Method extractorMethod) {
