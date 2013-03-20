@@ -1,32 +1,19 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.http.client.HttpResponseException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.MocoMount.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoMountTest {
+public class MocoMountTest extends AbstractMocoTest {
 
     public static final String MOUNT_DIR = "src/test/resources/test";
-
-    private HttpServer server;
-    private MocoTestHelper helper;
-
-    @Before
-    public void setUp() throws Exception {
-        server = httpserver(port());
-        helper = new MocoTestHelper();
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_if_dir_does_not_exist() {

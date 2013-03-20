@@ -1,16 +1,13 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
@@ -18,16 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
-public class MocoTest {
-    private HttpServer server;
-    private MocoTestHelper helper;
-
-    @Before
-    public void setUp() throws Exception {
-        helper = new MocoTestHelper();
-        server = httpserver(port());
-    }
-
+public class MocoTest extends AbstractMocoTest {
     @Test
     public void should_return_expected_response() throws Exception {
         server.response("foo");
@@ -376,22 +364,6 @@ public class MocoTest {
                 assertThat(json, is("application/json"));
                 String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
                 assertThat(bar, is("bar"));
-            }
-        });
-    }
-
-    @Test
-    public void should_set_and_recognize_cookie() throws Exception {
-        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
-        server.response(cookie("loggedIn", "true"), status(302));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusBeforeLogin, is(302));
-                int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusAfterLogin, is(200));
             }
         });
     }

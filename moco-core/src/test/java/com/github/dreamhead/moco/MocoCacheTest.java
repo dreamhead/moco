@@ -1,33 +1,21 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.io.Files;
 import org.apache.http.client.HttpResponseException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.MocoCache.cache;
 import static com.github.dreamhead.moco.MocoCache.with;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoCacheTest {
-    private HttpServer server;
-    private MocoTestHelper helper;
-
-    @Before
-    public void setUp() throws Exception {
-        helper = new MocoTestHelper();
-        server = httpserver(port());
-    }
-
+public class MocoCacheTest extends AbstractMocoTest {
     @Test
     public void should_change_file_content_dynamically() throws Exception {
         final File response = File.createTempFile("response", ".tmp");
