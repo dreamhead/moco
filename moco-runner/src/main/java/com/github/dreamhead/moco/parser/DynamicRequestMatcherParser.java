@@ -97,10 +97,6 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
-        if (String.class.isInstance(value)) {
-            return createSingleMatcher(name, String.class.cast(value));
-        }
-
         if (Map.class.isInstance(value)) {
             return createCompositeMatcher(name, castToMap(value));
         }

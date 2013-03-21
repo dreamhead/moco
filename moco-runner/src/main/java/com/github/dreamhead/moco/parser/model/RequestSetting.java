@@ -7,7 +7,7 @@ import java.util.Map;
 public class RequestSetting {
     private TextContainer text;
     private TextContainer uri;
-    private String file;
+    private TextContainer file;
     private TextContainer method;
 
     private Map<String, TextContainer> headers;
@@ -23,7 +23,7 @@ public class RequestSetting {
         return text;
     }
 
-    public String getFile() {
+    public TextContainer getFile() {
         return file;
     }
 

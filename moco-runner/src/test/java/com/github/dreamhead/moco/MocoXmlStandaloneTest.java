@@ -26,4 +26,10 @@ public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("xml.json");
         assertThat(helper.postFile(remoteUrl("/xml"), "foo.xml"), is("response_for_xml_request"));
     }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_xml_file_request() throws IOException {
+        runWithConfiguration("xml.json");
+        assertThat(helper.postFile(remoteUrl("/xmlfile"), "foo.xml"), is("response_for_xml_file_request"));
+    }
 }
