@@ -131,7 +131,44 @@ server.request(by(file("foo.request"))).response("bar");
     }
 }
 ```
-
+### XML Request
+* API
+```java
+server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+```
+* JSON
+```json
+{
+   "request": {
+    "uri": "/xml",
+    "text": {
+      "xml": "<request><parameters><id>1</id></parameters></request>"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
+### JSON Request
+* API
+```java
+server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
+```
+* JSON
+```json
+{
+  "request": {
+    "uri": "/json",
+    "text": {
+      "json": "{\"foo\":\"bar\"}"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
 ### URI
 If request uri is your major focus, Moco server could be like this:
 
