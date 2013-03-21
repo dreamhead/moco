@@ -150,10 +150,24 @@ server.request(xml(text("<request><parameters><id>1</id></parameters></request>"
   }
 }
 ```
+Or
+```json
+{
+   "request": {
+    "uri": "/xml",
+    "text": {
+      "file": "your_file.xml"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
 ### JSON Request
 * API
 ```java
-server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
+server.request(json(text("{"foo":"bar"}"))).response("foo");
 ```
 * JSON
 ```json
@@ -161,7 +175,21 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
   "request": {
     "uri": "/json",
     "text": {
-      "json": "{\"foo\":\"bar\"}"
+      "json": "{"foo":"bar"}"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
+Or
+```json
+{
+  "request": {
+    "uri": "/json",
+    "text": {
+      "json": "your_file.json"
     }
   },
   "response": {
@@ -190,7 +218,6 @@ server.request(by(uri("/foo"))).response("bar");
     }
 }
 ```
-
 ### Query parameter
 Sometimes, your request has parameters:
 
