@@ -46,6 +46,7 @@ public class MocoHandler extends SimpleChannelHandler {
         try {
             return doGetHttpResponse(request);
         } catch (Exception e) {
+            eventBus.post(e);
             return DEFAULT_HTTP_RESPONSE;
         }
     }

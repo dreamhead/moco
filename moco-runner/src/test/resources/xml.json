@@ -1,0 +1,24 @@
+[
+    {
+        "request": {
+            "uri": "/xml",
+            "text": {
+                "xml": "<request><parameters><id>1</id></parameters></request>"
+            }
+        },
+        "response": {
+            "text": "response_for_xml_request"
+        }
+    },
+    {
+        "request": {
+            "uri": "/xmlfile",
+            "file": {
+                "xml": "src/test/resources/xml.xml"
+            }
+        },
+        "response": {
+            "text": "response_for_xml_file_request"
+        }
+    }
+]

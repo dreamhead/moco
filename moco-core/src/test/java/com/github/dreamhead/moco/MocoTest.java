@@ -1,16 +1,13 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
@@ -18,16 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
-public class MocoTest {
-    private HttpServer server;
-    private MocoTestHelper helper;
-
-    @Before
-    public void setUp() throws Exception {
-        helper = new MocoTestHelper();
-        server = httpserver(port());
-    }
-
+public class MocoTest extends AbstractMocoTest {
     @Test
     public void should_return_expected_response() throws Exception {
         server.response("foo");
@@ -289,6 +277,21 @@ public class MocoTest {
 
     @Test
     public void should_match_header() throws Exception {
+        server.request(match(header("foo"), "bar|blah")).response(text("header"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Content barRequest = Request.Get(root()).addHeader("foo", "bar").execute().returnContent();
+                assertThat(barRequest.asString(), is("header"));
+                Content blahRequest = Request.Get(root()).addHeader("foo", "blah").execute().returnContent();
+                assertThat(blahRequest.asString(), is("header"));
+            }
+        });
+    }
+
+    @Test
+    public void should_eq_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
         running(server, new Runnable() {
@@ -320,20 +323,6 @@ public class MocoTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/foo?param=blah")), is("bar"));
-            }
-        });
-    }
-
-    @Test
-    public void should_return_content_based_on_xpath() throws Exception {
-        server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("foo");
-        server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
-                assertThat(helper.postFile(root(), "bar.xml"), is("bar"));
             }
         });
     }
@@ -375,22 +364,6 @@ public class MocoTest {
                 assertThat(json, is("application/json"));
                 String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
                 assertThat(bar, is("bar"));
-            }
-        });
-    }
-
-    @Test
-    public void should_set_and_recognize_cookie() throws Exception {
-        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
-        server.response(cookie("loggedIn", "true"), status(302));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusBeforeLogin, is(302));
-                int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusAfterLogin, is(200));
             }
         });
     }

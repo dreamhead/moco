@@ -28,7 +28,7 @@ dependencies {
 ```
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.6-SNAPSHOT/moco-runner-0.6-20130222.060606-6-standalone.jar)
+[Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.6.3-SNAPSHOT/moco-runner-0.6.3-20130314.090338-1-standalone.jar)
 
 # Usage
 You have two ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.

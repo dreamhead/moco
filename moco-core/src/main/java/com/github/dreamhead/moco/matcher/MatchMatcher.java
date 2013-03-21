@@ -17,6 +17,7 @@ public class MatchMatcher implements RequestMatcher {
 
     @Override
     public boolean match(HttpRequest request) {
-        return pattern.matcher(extractor.extract(request)).matches();
+        String target = extractor.extract(request);
+        return target != null && pattern.matcher(target).matches();
     }
 }

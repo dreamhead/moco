@@ -19,6 +19,11 @@ public class MocoEventListener {
         logger.info("Request received:\n\n{}\n", toMessageString(request));
     }
 
+    @Subscribe
+    public void onException(Exception e) {
+        logger.error("Exception thrown", e);
+    }
+
     private String toMessageString(HttpRequest request) {
         StringBuilder buf = new StringBuilder();
         appendProtocolLine(request, buf);

@@ -5,10 +5,7 @@ import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.LatencyResponseHandler;
 import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
-import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.github.dreamhead.moco.matcher.EqRequestMatcher;
-import com.github.dreamhead.moco.matcher.MatchMatcher;
-import com.github.dreamhead.moco.matcher.OrRequestMatcher;
+import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.google.common.base.Function;
@@ -40,7 +37,7 @@ public class Moco {
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, String expected) {
-        return new EqRequestMatcher(extractor, text(expected));
+        return eq(extractor, text(expected));
     }
 
     public static RequestMatcher eq(RequestExtractor extractor, Resource expected) {
@@ -48,8 +45,16 @@ public class Moco {
     }
 
     public static RequestMatcher match(Resource patternResource) {
-        Pattern pattern = Pattern.compile(new String(patternResource.asByteArray()));
-        return new MatchMatcher(extractor(patternResource.id()), pattern);
+        return match(extractor(patternResource.id()), patternResource);
+    }
+
+    public static RequestMatcher match(RequestExtractor extractor, String expected) {
+        return match(extractor, text(expected));
+    }
+
+    public static RequestMatcher match(RequestExtractor extractor, Resource expected) {
+        Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
+        return new MatchMatcher(extractor, pattern);
     }
 
     public static RequestMatcher and(RequestMatcher... matchers) {
@@ -107,6 +112,14 @@ public class Moco {
     public static XPathRequestExtractor xpath(String xpath) {
         checkNotNull(xpath, "Null XPath is not allowed");
         return new XPathRequestExtractor(xpath);
+    }
+
+    public static RequestMatcher xml(Resource resource) {
+        return new XmlRequestMatcher(extractor(resource.id()), resource);
+    }
+
+    public static RequestMatcher json(Resource resource) {
+        return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
     public static ResponseHandler seq(String... contents) {

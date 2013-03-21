@@ -1,11 +1,12 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.client.fluent.Content;
+import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -29,5 +30,23 @@ public class MocoMatchTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("match.json");
         assertThat(helper.get(remoteUrl("/method-match")), is("method_match"));
         assertThat(helper.postContent(remoteUrl("/method-match"), "blah"), is("method_match"));
+    }
+
+    @Test
+    public void should_match_header() throws IOException {
+        runWithConfiguration("match.json");
+
+        Content jsonContent = Request.Get(remoteUrl("/header-match")).addHeader("Content-type", "application/json").execute().returnContent();
+        assertThat(jsonContent.asString(), is("header_match"));
+        Content xmlContent = Request.Get(remoteUrl("/header-match")).addHeader("Content-type", "application/xml").execute().returnContent();
+        assertThat(xmlContent.asString(), is("header_match"));
+    }
+
+    @Test
+    public void should_match_query() throws IOException {
+        runWithConfiguration("match.json");
+
+        assertThat(helper.get(remoteUrl("/query-match?foo=bar")), is("query_match"));
+        assertThat(helper.get(remoteUrl("/query-match?foo=blah")), is("query_match"));
     }
 }
