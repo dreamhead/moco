@@ -131,72 +131,7 @@ server.request(by(file("foo.request"))).response("bar");
     }
 }
 ```
-### XML Request
-* API
-```java
-server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
-```
-* JSON
-```json
-{
-   "request": {
-    "uri": "/xml",
-    "text": {
-      "xml": "<request><parameters><id>1</id></parameters></request>"
-    }
-  },
-  "response": {
-    "text": "foo"
-  }
-}
-```
-Or
-```json
-{
-   "request": {
-    "uri": "/xml",
-    "file": {
-      "xml": "your_file.xml"
-    }
-  },
-  "response": {
-    "text": "foo"
-  }
-}
-```
-### JSON Request
-* API
-```java
-server.request(json(text("{"foo":"bar"}"))).response("foo");
-```
-* JSON
-```json
-{
-  "request": {
-    "uri": "/json",
-    "text": {
-      "json": "{"foo":"bar"}"
-    }
-  },
-  "response": {
-    "text": "foo"
-  }
-}
-```
-Or
-```json
-{
-  "request": {
-    "uri": "/json",
-    "file": {
-      "json": "your_file.json"
-    }
-  },
-  "response": {
-    "text": "foo"
-  }
-}
-```
+
 ### URI
 If request uri is your major focus, Moco server could be like this:
 
@@ -341,9 +276,50 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 }
 ```
 
+### XML Request
+XML is popular format for Web Service. When request is XML, in the most case, only XML structure is important, no one really care about whilespace, tab etc. xml operation can be used for this case.
+
+* API
+```java
+server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+```
+
+* JSON
+```json
+{
+   "request": {
+    "uri": "/xml",
+    "text": {
+      "xml": "<request><parameters><id>1</id></parameters></request>"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
+
+**NOTE**: Please escape the quote in text.
+
+The large request can be put into a file:
+
+```json
+{
+   "request": {
+    "uri": "/xml",
+    "file": {
+      "xml": "your_file.xml"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
+
 ### XPath
 
-XML/HTML is popular format for HTTP server. Moco allows us to match request with XPath.
+For the XML/HTML request, Moco allows us to match request with XPath.
 
 * API
 ```java
@@ -364,6 +340,47 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
     {
       "text" : "bar"
     }
+}
+```
+
+### JSON Request
+Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so json operator can be used.
+
+* API
+```java
+server.request(json(text("{"foo":"bar"}"))).response("foo");
+```
+
+* JSON
+```json
+{
+  "request": {
+    "uri": "/json",
+    "text": {
+      "json": "{\"foo\":\"bar\"}"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
+}
+```
+
+**NOTE**: Please escape the quote in text.
+
+The large request can be put into a file:
+
+```json
+{
+  "request": {
+    "uri": "/json",
+    "file": {
+      "json": "your_file.json"
+    }
+  },
+  "response": {
+    "text": "foo"
+  }
 }
 ```
 

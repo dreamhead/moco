@@ -1,8 +1,5 @@
 # Functionality
 
-## Matcher
-* wildcard or RE matcher
-
 ## Handler
 * Response with Request parameter
 
