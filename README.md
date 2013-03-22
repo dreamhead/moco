@@ -155,8 +155,8 @@ Or
 {
    "request": {
     "uri": "/xml",
-    "text": {
-      "file": "your_file.xml"
+    "file": {
+      "xml": "your_file.xml"
     }
   },
   "response": {
@@ -188,7 +188,7 @@ Or
 {
   "request": {
     "uri": "/json",
-    "text": {
+    "file": {
       "json": "your_file.json"
     }
   },
