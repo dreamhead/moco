@@ -78,6 +78,12 @@ java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.
 
+# Maven Plugin
+
+Moco also can be used as Maven plugin.
+
+https://github.com/GarrettHeel/moco-maven-plugin
+
 # Configurations
 Moco mainly focuses on server configuration. There are only two kinds of configuration right now: Request and Response.
 
@@ -276,7 +282,7 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 }
 ```
 
-### XML Request
+### XML
 XML is popular format for Web Service. When request is XML, in the most case, only XML structure is important, no one really care about whilespace, tab etc. xml operation can be used for this case.
 
 * API
