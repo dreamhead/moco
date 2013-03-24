@@ -128,5 +128,6 @@ public class MocoCacheTest extends AbstractMocoTest {
     private void changeFileContent(File response, String content) throws FileNotFoundException {
         PrintStream stream = new PrintStream(new FileOutputStream(response));
         stream.print(content);
+        stream.close();
     }
 }

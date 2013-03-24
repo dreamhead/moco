@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.matcher.GetMethodRequestMatcher;
-import com.github.dreamhead.moco.matcher.PostMethodRequestMatcher;
+import com.github.dreamhead.moco.matcher.HttpMethodRequestMatcher;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.setting.BaseSetting;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,11 +36,11 @@ public class HttpServer extends ResponseSetting {
     }
 
     public Setting get(RequestMatcher matcher) {
-        return request(and(new GetMethodRequestMatcher(), matcher));
+        return request(and(new HttpMethodRequestMatcher(HttpMethod.GET), matcher));
     }
 
     public Setting post(RequestMatcher matcher) {
-        return request(and(new PostMethodRequestMatcher(), matcher));
+        return request(and(new HttpMethodRequestMatcher(HttpMethod.POST), matcher));
     }
 
     public int getPort() {
