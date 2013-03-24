@@ -4,9 +4,15 @@ import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-public class GetMethodRequestMatcher implements RequestMatcher {
+public class HttpMethodRequestMatcher implements RequestMatcher {
+    private HttpMethod method;
+
+    public HttpMethodRequestMatcher(HttpMethod method) {
+        this.method = method;
+    }
+
     @Override
     public boolean match(HttpRequest request) {
-        return HttpMethod.GET.equals(request.getMethod());
+        return method.equals(request.getMethod());
     }
 }
