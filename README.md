@@ -3,12 +3,12 @@
 Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.com/)
 
 # Why
-Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most our development.
+Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most of our development.
 
-In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all konw, it's so boring to develop a WAR and deploy it to any application server, even if we use embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
+In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all know, it's so boring to develop a WAR and deploy it to any application server, even if we use an embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
 # Dependencies
-Moco has been published on Maven repository, so you can refer it directly in your code.
+Moco has been published on Maven repository, so you can refer to it directly in your code.
 
 A gradle example is as follow:
 ```groovy
@@ -99,11 +99,13 @@ Now, you can see a Moco reference in details.
 If you want to response according to request content, Moco server can be configured as following:
 
 * API
+
 ```java
 server.request(by("foo")).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -120,11 +122,13 @@ server.request(by("foo")).response("bar");
 If request content is too large, you can put it in a file:
 
 * API
+
 ```java
 server.request(by(file("foo.request"))).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -142,11 +146,13 @@ server.request(by(file("foo.request"))).response("bar");
 If request uri is your major focus, Moco server could be like this:
 
 * API
+
 ```java
 server.request(by(uri("/foo"))).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -163,11 +169,13 @@ server.request(by(uri("/foo"))).response("bar");
 Sometimes, your request has parameters:
 
 * API
+
 ```java
 server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -188,11 +196,13 @@ server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 It's easy to response based on specified HTTP method:
 
 * API
+
 ```java
 server.get(by(uri("/foo"))).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -210,11 +220,13 @@ server.get(by(uri("/foo"))).response("bar");
 Also for POST method:
 
 * API
+
 ```java
 server.post(by("foo")).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -234,11 +246,13 @@ server.post(by("foo")).response("bar");
 We will focus HTTP header at times:
 
 * API
+
 ```java
 server.request(eq(header("foo"), "bar")).response("blah")
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -260,11 +274,13 @@ server.request(eq(header("foo"), "bar")).response("blah")
 Cookie is widely used in web development.
 
 * API
+
 ```java
 server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -283,14 +299,16 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 ```
 
 ### XML
-XML is popular format for Web Service. When request is XML, in the most case, only XML structure is important, no one really care about whilespace, tab etc. xml operation can be used for this case.
+XML is a popular format for Web Services. When a request is in XML, only the XML structure is important in most cases and whitespace can be ignored. The `xml` operation can be used for this case.
 
 * API
+
 ```java
 server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
 ```
 
 * JSON
+
 ```json
 {
    "request": {
@@ -328,11 +346,13 @@ The large request can be put into a file:
 For the XML/HTML request, Moco allows us to match request with XPath.
 
 * API
+
 ```java
 server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -350,14 +370,16 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ```
 
 ### JSON Request
-Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so json operator can be used.
+Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
 * API
+
 ```java
-server.request(json(text("{"foo":"bar"}"))).response("foo");
+server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 ```
 
 * JSON
+
 ```json
 {
   "request": {
@@ -397,11 +419,13 @@ The large request can be put into a file:
 As you have seen in previous example, response with content is pretty easy.
 
 * API
+
 ```java
 server.request(by("foo")).response("bar");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -418,11 +442,13 @@ server.request(by("foo")).response("bar");
 The same as request, you can response with a file if content is too large to put in a string.
 
 * API
+
 ```java
 server.request(by("foo")).response(file("bar.response"));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -440,11 +466,13 @@ server.request(by("foo")).response(file("bar.response"));
 Moco also supports HTTP status code response.
 
 * API
+
 ```java
 server.request(by("foo")).response(status(200));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -462,11 +490,13 @@ server.request(by("foo")).response(status(200));
 We can also specify HTTP header in response.
 
 * API
+
 ```java
 server.request(by("foo")).response(header("content-type", "application/json"));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -488,11 +518,13 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 We can also response with the specified url, just like a proxy.
 
 * API
+
 ```java
 server.request(by("foo")).response(url("http://www.github.com"));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -512,18 +544,19 @@ server.request(by("foo")).response(url("http://www.github.com"));
 Redirect is a common case for normal web development. We can simply redirect a request to different url.
 
 * API
+
 ```java
 server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 ```
 
 * JSON
+
 ```json
 {
   "request" :
     {
       "uri" : "/redirect"
     },
-
   "redirectTo" : "http://www.github.com"
 }
 ```
@@ -533,11 +566,13 @@ server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 Cookie can also be in the response.
 
 * API
+
 ```java
 server.response(cookie("loggedIn", "true"), status(302));
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -560,25 +595,24 @@ server.response(cookie("loggedIn", "true"), status(302));
 Sometimes, we need a latency to simulate slow server side operation.
 
 * API
+
 ```java
 server.request(by("foo")).response(latency(5000));
 ```
 
 * JSON
+
 ```json
-[
 {
   "request" :
     {
       "text" : "foo"
     },
-
   "response" :
     {
       "latency" : 5000
     }
 }
-]
 ```
 
 ### Sequence
@@ -598,11 +632,13 @@ server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 Moco allows us to mount a directory to uri.
 
 * API
+
 ```java
 server.mount(dir, to("/uri"));
 ```
 
 * JSON
+
 ```json
 {
   "mount" :
@@ -616,11 +652,13 @@ server.mount(dir, to("/uri"));
 Wildcard is acceptable to filter specified files, e.g we can include by
 
 * API
+
 ```java
 server.mount(dir, to("/uri"), include("*.txt"));
 ```
 
 * JSON
+
 ```json
 {
   "mount" :
@@ -638,11 +676,13 @@ server.mount(dir, to("/uri"), include("*.txt"));
 or exclude by
 
 * API
+
 ```java
 server.mount(dir, to("/uri"), exclude("*.txt"));
 ```
 
 * JSON
+
 ```json
 {
   "mount" :
@@ -660,11 +700,13 @@ server.mount(dir, to("/uri"), exclude("*.txt"));
 even compose them by
 
 * API
+
 ```java
 server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt"));
 ```
 
 * JSON
+
 ```json
 {
   "mount" :
@@ -688,11 +730,13 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
 Moco supports cache, which means you can cache resource access, so no need to access resource many times.
 
 * API
+
 ```java
 server.response(cache(file("target.txt")));
 ```
 
 * JSON
+
 ```json
 {
   "response" :
@@ -707,11 +751,13 @@ server.response(cache(file("target.txt")));
 
 You can even persist your cache
 * API
+
 ```java
 server.response(cache(file("target.txt"), with(file("persist.txt"))));
 ```
 
 * JSON
+
 ```json
 {
   "response" :
