@@ -31,9 +31,14 @@ java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
 
 * Now, open your favorite browser to visit http://localhost:12306 and Moco is there.
 
+# Documents
+
+* More [Usage](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
+* Detailed [Configurations](https://github.com/dreamhead/moco/blob/master/moco-doc/configurations.md)
+
 # Copyright and license
 Copyright 2013 ZHENG Ye
 
-Licensed under MIT License(the "License"); You may obtain a copy of the License in the LICENSE file, or at:
+Licensed under MIT License (the "License"); You may obtain a copy of the License in the LICENSE file, or at:
 
 https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt
