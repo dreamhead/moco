@@ -10,14 +10,14 @@ In the old days, we just deployed another WAR to an application server, e.g. Jet
 # Quick Start
 
 * Download [Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.6.3-SNAPSHOT/moco-runner-0.6.3-20130314.090338-1-standalone.jar)
-* Write your own configuration file
+* Write your own configuration file to describe your Moco server configuration as follow:
 
 ```json
 [
   {
     "response" :
       {
-        "text" : "foo"
+        "text" : "Hello, Moco"
       }
   }
 ]
@@ -29,7 +29,7 @@ In the old days, we just deployed another WAR to an application server, e.g. Jet
 java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
 ```
 
-* Now, open your favorite browser to visit http://localhost:12306 and Moco is there.
+* Now, open your favorite browser to visit http://localhost:12306 and you will see "Hello, Moco".
 
 # Documents
 
