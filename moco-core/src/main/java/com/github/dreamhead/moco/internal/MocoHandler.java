@@ -23,7 +23,7 @@ public class MocoHandler extends SimpleChannelHandler {
     public MocoHandler(List<BaseSetting> settings, ResponseHandler anyResponseHandler) {
         this.settings = settings;
         this.anyResponseHandler = anyResponseHandler;
-        eventBus.register(new MocoEventListener());
+        this.eventBus.register(new MocoEventListener());
     }
 
     @Override
@@ -37,7 +37,9 @@ public class MocoHandler extends SimpleChannelHandler {
     }
 
     private void httpRequestReceived(HttpRequest request, Channel channel) {
-        channel.write(getResponse(request));
+        HttpResponse response = getResponse(request);
+        eventBus.post(response);
+        channel.write(response);
         channel.disconnect();
         channel.close();
     }
