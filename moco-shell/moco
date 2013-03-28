@@ -4,12 +4,6 @@
 # somewhere on your $PATH, like ~/bin. The rest of moco will be
 # installed upon first run into the ~/.moco directory.
 
-if [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]]; then
-    delimiter=";"
-else
-    delimiter=":"
-fi
-
 if [ `id -u` -eq 0 ] && [ "$MOCO_ROOT" = "" ]; then
     echo "WARNING: You're currently running as root; probably by accident."
     echo "Press control-C to abort or Enter to continue as root."
@@ -65,7 +59,6 @@ function download_failed_message {
     echo "set HTTP_PROXY and HTTPS_PROXY."
 }
 
-
 function download {
     $HTTP_CLIENT "$2.pending" "$1"
     if [ $? == 0 ]; then
@@ -99,7 +92,6 @@ function parse_latest_maven_metadata {
     TIMESTAMP=$tag_value
     parse_tag $MOCO_LATEST_MAVEM_METADATA buildNumber
     BUILD_NUMBER=$tag_value
-
 }
 
 function parse_standalone_latest_url {
@@ -121,20 +113,17 @@ function install {
 
 function load_current_version {
     read MOCO_STANDALONE CURRENT_VERSION < $VERSION_LOG_FILE
-
 }
-
 
 function usage {
   printf "
 options:
-       help: Show help
-       start: Start Server. Use moco start -p 12306 configfile.json to start moco
-       upgrade: Upgrade the moco
-       *: Show help
+       help      show help
+       start     start server, e.g. moco start -p 12306 configfile.json
+       shutdown  shutdown moco server 
+       upgrade   upgrade moco
 "
 }
-
 
 if [ ! -e "$MOCO_HOME" ]
 then
@@ -146,7 +135,7 @@ if [ "$1" = "start" ]; then
     echo "Starting..."
     OTHER_PARAMETERS=${*%%start}
     load_current_version
-    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $OTHER_PARAMETERS &
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $OTHER_PARAMETERS
 elif [ "$1" = "shutdown" ]; then
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $1
