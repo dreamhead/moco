@@ -74,3 +74,19 @@ Now, open your browser and input "http://localhost:12306". You will see "foo". T
 Moco also can be used as Maven plugin.
 
 https://github.com/GarrettHeel/moco-maven-plugin
+
+# Shell
+
+If you are using Mac or Linux, you may try the following approach:
+
+* Make sure you have JDK 6 or later.
+* [Download the script](https://raw.github.com/dreamhead/moco/master/moco-shell/moco).
+* Place it on your $PATH. (~/bin is a good choice if it is on your path.)
+* Set it to be executable. (chmod 755 ~/bin/moco)
+
+Now, you can try
+```shell
+moco -p 12306 foo.json
+```
+
+It will download the latest moco automatically if you don't have locally.
