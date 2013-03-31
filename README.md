@@ -53,7 +53,7 @@ gradle check
 ```
 
 # Contributing
-Check out what you can help [here](https://github.com/dreamhead/moco/blob/master/moco-doc/todo.md) if you do not have any existing idea.
+Check out what you can help [here](https://github.com/dreamhead/moco/blob/master/moco-doc/plan.md) if you do not have any existing idea.
 
 # Copyright and license
 Copyright 2013 ZHENG Ye
