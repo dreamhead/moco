@@ -36,18 +36,22 @@ java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
 Make sure you have JDK and Gradle installed.
 
 * Clone Moco
+
 ```shell
 git clone git@github.com:dreamhead/moco.git
 ```
 * Build Moco
+
 ```shell
 gradle build
 ```
 * Build uberjar
+
 ```shell
 gradle uberjar
 ```
 * Check code before commit
+
 ```shell
 gradle check
 ```
