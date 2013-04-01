@@ -25,7 +25,6 @@ public class ShutdownMonitorRunner implements Runner {
                 stop();
             }
         });
-
     }
 
     @Override
