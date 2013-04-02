@@ -30,7 +30,7 @@ Here is an typical Moco test case in JUnit.
 ```java
 @Test
 public void should_response_as_expected() {
-  MocoHttpServer server = httpserver(12306);
+  HttpServer server = httpserver(12306);
   server.reponse("foo");
 
   running(server, new Runnable() {
