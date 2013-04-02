@@ -18,22 +18,6 @@ import static org.junit.Assert.fail;
 
 public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
     @Test(expected = HttpHostConnectException.class)
-    public void should_shutdown_runner() throws IOException, InterruptedException {
-        Runner rawRunner = new DynamicRunner("src/test/resources/foo.json", port());
-        File shutdownFile = File.createTempFile("shutdown", "hook");
-        shutdownFile.delete();
-        runner = new ShutdownMonitorRunner(rawRunner, shutdownFile.getAbsolutePath());
-        runner.run();
-
-        assertThat(helper.get(root()), is("foo"));
-
-        shutdownFile.createNewFile();
-        waitChangeHappens();
-
-        helper.get(root());
-    }
-
-    @Test(expected = HttpHostConnectException.class)
     public void should_shutdown_runner_by_socket() throws IOException {
         String shutdownMocoKey = "_SHUTDOWN_MOCO_KEY";
         int shutdownPort = 9527;

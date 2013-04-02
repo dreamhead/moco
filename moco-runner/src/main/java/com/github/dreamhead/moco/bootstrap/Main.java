@@ -2,19 +2,22 @@ package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.runner.DynamicRunner;
 import com.github.dreamhead.moco.runner.Runner;
-import com.github.dreamhead.moco.runner.ShutdownMonitorRunner;
+import com.github.dreamhead.moco.runner.SocketShutdownMonitorRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 
 import static com.github.dreamhead.moco.bootstrap.BootArgs.parse;
 
 public class Main {
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    private static final String SHUTDOWN_FILE = ".shutdown_moco_hook";
+    private static final int DEFAULT_SHUTDOWN_PORT = 9527;
+    private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
     public static void main(String[] args) {
         try {
@@ -22,27 +25,30 @@ public class Main {
                 throw new ParseArgException("at least one arguments required");
             }
 
-            String tmpDir = System.getProperty("java.io.tmpdir");
-            File shutdownFile = new File(tmpDir, SHUTDOWN_FILE);
-
             if ("shutdown".equals(args[0])) {
-                shutdown(shutdownFile.getAbsolutePath());
+                socketShutdown(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
                 System.exit(0);
             }
 
             BootArgs bootArgs = parse(args);
             Runner runner = new DynamicRunner(bootArgs.getConfigurationFile(), bootArgs.getPort());
-            new ShutdownMonitorRunner(runner, shutdownFile.getAbsolutePath()).run();
+            new SocketShutdownMonitorRunner(runner, DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY).run();
         } catch (ParseArgException e) {
             help();
         }
     }
 
-    private static void shutdown(String filename) {
+    private static void socketShutdown(int shutdownPort, String shutdownMocoKey) {
         try {
-            new File(filename).createNewFile();
+            Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), shutdownPort);
+            socket.setSoLinger(false, 0);
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write((shutdownMocoKey + "\r\n").getBytes());
+            outputStream.flush();
+            socket.close();
         } catch (IOException e) {
-            logger.error("failed to create shutdown file");
+            logger.error("exception is thrown", e);
+            throw new RuntimeException(e);
         }
     }
 
