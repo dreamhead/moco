@@ -33,6 +33,11 @@ public class Main {
             }
 
             BootArgs bootArgs = parse(args);
+            if (bootArgs.getPort() == DEFAULT_SHUTDOWN_PORT && bootArgs.getShutdownPort() == null) {
+                System.err.println("port is same as default shutdown port, please specify another port or shutdown port.");
+                System.exit(1);
+            }
+
             Runner runner = new DynamicRunner(bootArgs.getConfigurationFile(), bootArgs.getPort());
             new SocketShutdownMonitorRunner(runner, getShutdownPort(bootArgs.getShutdownPort()), DEFAULT_SHUTDOWN_KEY).run();
         } catch (ParseArgException e) {
@@ -61,7 +66,7 @@ public class Main {
     }
 
     private static void help() {
-        System.out.println("moco -p port [configuration file]");
+        System.out.println("moco -p port {-s [shutdown port]} [configuration file]");
         System.exit(1);
     }
 }
