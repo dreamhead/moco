@@ -2,6 +2,8 @@ package com.github.dreamhead.moco.bootstrap;
 
 import org.apache.commons.cli.*;
 
+import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
+
 public class BootArgs {
     private int port;
     private Integer shutdownPort;
@@ -41,11 +43,8 @@ public class BootArgs {
         if (cmd.getArgs().length != 1) {
             throw new ParseArgException("only one args allowed");
         }
-        return new BootArgs(port, getShutdownPort(shutdownPort), cmd.getArgs()[0]);
-    }
 
-    private static Integer getShutdownPort(String shutdownPort) {
-        return shutdownPort == null ? null : Integer.valueOf(shutdownPort);
+        return new BootArgs(port, ShutdownPortOption.getShutdownPort(shutdownPort), cmd.getArgs()[0]);
     }
 
     private static Options createMocoOptions() {
@@ -59,13 +58,6 @@ public class BootArgs {
         Option opt = new Option("p", true, "port");
         opt.setType(Integer.class);
         opt.setRequired(true);
-        return opt;
-    }
-
-    private static Option shutdownPortOption() {
-        Option opt = new Option("s", true, "shutdown port");
-        opt.setType(Integer.class);
-        opt.setRequired(false);
         return opt;
     }
 }

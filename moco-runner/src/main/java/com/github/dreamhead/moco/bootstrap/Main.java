@@ -27,20 +27,21 @@ public class Main {
             }
 
             if ("shutdown".equals(args[0])) {
-                socketShutdown(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
+                ShutdownArgs shutdownArgs = ShutdownArgs.parse(args);
+                socketShutdown(getShutdownPort(shutdownArgs.getShutdownPort()), DEFAULT_SHUTDOWN_KEY);
                 System.exit(0);
             }
 
             BootArgs bootArgs = parse(args);
             Runner runner = new DynamicRunner(bootArgs.getConfigurationFile(), bootArgs.getPort());
-            new SocketShutdownMonitorRunner(runner, getShutdownPort(bootArgs), DEFAULT_SHUTDOWN_KEY).run();
+            new SocketShutdownMonitorRunner(runner, getShutdownPort(bootArgs.getShutdownPort()), DEFAULT_SHUTDOWN_KEY).run();
         } catch (ParseArgException e) {
             help();
         }
     }
 
-    private static int getShutdownPort(BootArgs bootArgs) {
-        return bootArgs.getShutdownPort() == null ? DEFAULT_SHUTDOWN_PORT : bootArgs.getShutdownPort();
+    private static int getShutdownPort(Integer shutdownPort) {
+        return shutdownPort == null ? DEFAULT_SHUTDOWN_PORT : shutdownPort;
     }
 
     private static void socketShutdown(int shutdownPort, String shutdownMocoKey) {
