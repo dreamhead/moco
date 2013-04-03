@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -32,10 +33,14 @@ public class Main {
 
             BootArgs bootArgs = parse(args);
             Runner runner = new DynamicRunner(bootArgs.getConfigurationFile(), bootArgs.getPort());
-            new SocketShutdownMonitorRunner(runner, DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY).run();
+            new SocketShutdownMonitorRunner(runner, getShutdownPort(bootArgs), DEFAULT_SHUTDOWN_KEY).run();
         } catch (ParseArgException e) {
             help();
         }
+    }
+
+    private static int getShutdownPort(BootArgs bootArgs) {
+        return bootArgs.getShutdownPort() == null ? DEFAULT_SHUTDOWN_PORT : bootArgs.getShutdownPort();
     }
 
     private static void socketShutdown(int shutdownPort, String shutdownMocoKey) {
@@ -46,6 +51,8 @@ public class Main {
             outputStream.write((shutdownMocoKey + "\r\n").getBytes());
             outputStream.flush();
             socket.close();
+        } catch (ConnectException e) {
+            System.err.println("fail to shutdown, please specify correct shutdown port.");
         } catch (IOException e) {
             logger.error("exception is thrown", e);
             throw new RuntimeException(e);
