@@ -2,16 +2,13 @@ package com.github.dreamhead.moco.bootstrap;
 
 import org.apache.commons.cli.*;
 
-import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
-
-public class BootArgs {
+public class StartArgs extends ShutdownPortOption {
     private int port;
-    private Integer shutdownPort;
     private String configurationFile;
 
-    public BootArgs(int port, Integer shutdownPort, String configurationFile) {
+    public StartArgs(int port, Integer shutdownPort, String configurationFile) {
+        super(shutdownPort);
         this.port = port;
-        this.shutdownPort = shutdownPort;
         this.configurationFile = configurationFile;
     }
 
@@ -19,15 +16,11 @@ public class BootArgs {
         return port;
     }
 
-    public Integer getShutdownPort() {
-        return shutdownPort;
-    }
-
     public String getConfigurationFile() {
         return configurationFile;
     }
 
-    public static BootArgs parse(String[] args) {
+    public static StartArgs parse(String[] args) {
         try {
             return doParse(args);
         } catch (ParseException e) {
@@ -35,7 +28,7 @@ public class BootArgs {
         }
     }
 
-    private static BootArgs doParse(String[] args) throws ParseException {
+    private static StartArgs doParse(String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
         int port = Integer.parseInt(cmd.getOptionValue("p"));
@@ -44,7 +37,7 @@ public class BootArgs {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new BootArgs(port, ShutdownPortOption.getShutdownPort(shutdownPort), cmd.getArgs()[0]);
+        return new StartArgs(port, getShutdownPort(shutdownPort), cmd.getArgs()[0]);
     }
 
     private static Options createMocoOptions() {
