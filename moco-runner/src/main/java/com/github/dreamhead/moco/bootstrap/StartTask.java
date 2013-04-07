@@ -20,7 +20,7 @@ public class StartTask implements BootstrapTask {
         StartArgs startArgs = parse(args);
         if (conflictWithDefaultShutdownPort(startArgs, defaultShutdownPort)) {
             System.err.println("port is same as default shutdown port, please specify another port or shutdown port.");
-            System.exit(1);
+            return;
         }
 
         Runner runner = new DynamicRunner(startArgs.getConfigurationFile(), startArgs.getPort());

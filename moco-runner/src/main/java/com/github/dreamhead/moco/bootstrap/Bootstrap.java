@@ -27,6 +27,5 @@ public class Bootstrap implements BootstrapTask {
 
     private void help() {
         System.out.println("moco -p port {-s [shutdown port]} [configuration file]");
-        System.exit(1);
     }
 }

@@ -28,7 +28,7 @@ public class ShutdownTask implements BootstrapTask {
         socketShutdown(shutdownArgs.getShutdownPort(defaultShutdownPort), defaultShutdownKey);
     }
 
-    public void socketShutdown(int shutdownPort, String shutdownMocoKey) {
+    private void socketShutdown(int shutdownPort, String shutdownMocoKey) {
         try {
             Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), shutdownPort);
             socket.setSoLinger(false, 0);
