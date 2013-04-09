@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.matcher.HttpMethodRequestMatcher;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
@@ -12,8 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.or;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
@@ -36,11 +34,11 @@ public class HttpServer extends ResponseSetting {
     }
 
     public Setting get(RequestMatcher matcher) {
-        return request(and(new HttpMethodRequestMatcher(HttpMethod.GET), matcher));
+        return request(and(by(method(HttpMethod.GET.getName())), matcher));
     }
 
     public Setting post(RequestMatcher matcher) {
-        return request(and(new HttpMethodRequestMatcher(HttpMethod.POST), matcher));
+        return request(and(by(method(HttpMethod.POST.getName())), matcher));
     }
 
     public int getPort() {

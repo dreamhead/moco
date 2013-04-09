@@ -6,6 +6,6 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 public class HttpMethodExtractor implements RequestExtractor {
     @Override
     public String extract(HttpRequest request) {
-        return request.getMethod().getName();
+        return request.getMethod().getName().toUpperCase();
     }
 }
