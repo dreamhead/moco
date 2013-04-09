@@ -65,9 +65,9 @@ subprojects {
     project.ext {
         guavaVersion = '14.0.1'
         nettyVersion = '3.6.4.Final'
-        slf4jVersion = '1.7.3'
+        slf4jVersion = '1.7.5'
         commonsIoVersion = '2.4'
-        logbackVersion='1.0.10'
+        logbackVersion='1.0.11'
         junitVersion = '4.10'
         hamcrestVersion = '1.3'
         mockitoVersion = '1.9.5'
