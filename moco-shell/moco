@@ -119,7 +119,7 @@ function usage {
   printf "
 options:
        help      show help
-       start     start server, e.g. moco start -p 12306 configfile.json
+       start     start server, e.g. moco start -p 12306 -c configfile.json
        shutdown  shutdown moco server 
        upgrade   upgrade moco
 "
@@ -133,9 +133,8 @@ fi
 
 if [ "$1" = "start" ]; then
     echo "Starting..."
-    OTHER_PARAMETERS=${*%%start}
     load_current_version
-    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $OTHER_PARAMETERS
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $1
 elif [ "$1" = "shutdown" ]; then
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $1
