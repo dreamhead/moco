@@ -20,7 +20,7 @@ public class StartArgs extends ShutdownPortOption {
         return configurationFile;
     }
 
-    public static StartArgs parse(String[] args) {
+    public static StartArgs parse(String... args) {
         try {
             return doParse(args);
         } catch (ParseException e) {
@@ -31,17 +31,20 @@ public class StartArgs extends ShutdownPortOption {
     private static StartArgs doParse(String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
-        int port = Integer.parseInt(cmd.getOptionValue("p"));
+        long port = (Long)cmd.getParsedOptionValue("p");
+        String config = cmd.getOptionValue("c");
+
         String shutdownPort = cmd.getOptionValue("s");
         if (cmd.getArgs().length != 1) {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs(port, getShutdownPort(shutdownPort), cmd.getArgs()[0]);
+        return new StartArgs((int)port, getShutdownPort(shutdownPort), config);
     }
 
     private static Options createMocoOptions() {
         Options options = new Options();
+        options.addOption(configOption());
         options.addOption(portOption());
         options.addOption(shutdownPortOption());
         return options;
@@ -49,7 +52,14 @@ public class StartArgs extends ShutdownPortOption {
 
     private static Option portOption() {
         Option opt = new Option("p", true, "port");
-        opt.setType(Integer.class);
+        opt.setType(Number.class);
+        opt.setRequired(true);
+        return opt;
+    }
+
+    private static Option configOption() {
+        Option opt = new Option("c", true, "config");
+        opt.setType(String.class);
         opt.setRequired(true);
         return opt;
     }

@@ -14,12 +14,17 @@ public class Bootstrap implements BootstrapTask {
                 throw new ParseArgException("at least one arguments required");
             }
 
+            if ("start".equals(args[0])) {
+                startTask.run(args);
+                return;
+            }
+
             if ("shutdown".equals(args[0])) {
                 shutdownTask.run(args);
                 return;
             }
 
-            startTask.run(args);
+            help();
         } catch (ParseArgException e) {
             help();
         }
