@@ -64,7 +64,7 @@ Now we are going to run Moco as standalone server. First of all, a JSON configur
 It's time to run Moco standalone server:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 ```
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.
@@ -86,7 +86,7 @@ If you are using Mac or Linux, you may try the following approach:
 
 Now, you can try
 ```shell
-moco -p 12306 foo.json
+moco start -p 12306 -c foo.json
 ```
 
 It will download the latest moco automatically if you don't have locally.
