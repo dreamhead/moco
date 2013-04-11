@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
@@ -323,6 +324,20 @@ public class MocoTest extends AbstractMocoTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/foo?param=blah")), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_version() throws Exception {
+        server.response(version("HTTP/1.0"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                ProtocolVersion version = Request.Get(root()).execute().returnResponse().getProtocolVersion();
+                assertThat(version.getMajor(), is(1));
+                assertThat(version.getMinor(), is(0));
             }
         });
     }

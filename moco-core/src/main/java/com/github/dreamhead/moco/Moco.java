@@ -1,10 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
-import com.github.dreamhead.moco.handler.HeaderResponseHandler;
-import com.github.dreamhead.moco.handler.LatencyResponseHandler;
-import com.github.dreamhead.moco.handler.SequenceContentHandler;
-import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
+import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
@@ -144,6 +141,10 @@ public class Moco {
         checkNotNull(filename, "Null filename is not allowed");
 
         return new FileResource(new File(filename));
+    }
+
+    public static ResponseHandler version(String version) {
+        return new VersionResponseHandler(checkNotNull(version, "Null version is not allowed"));
     }
 
     public static ResponseHandler status(int code) {
