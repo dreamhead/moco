@@ -143,6 +143,10 @@ public class Moco {
         return new FileResource(new File(filename));
     }
 
+    public static RequestExtractor version() {
+        return new VersionExtractor();
+    }
+
     public static ResponseHandler version(String version) {
         return new VersionResponseHandler(checkNotNull(version, "Null version is not allowed"));
     }
