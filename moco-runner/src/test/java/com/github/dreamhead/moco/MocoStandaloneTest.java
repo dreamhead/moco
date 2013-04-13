@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
@@ -93,6 +94,15 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("foo.json");
         String response = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnContent().toString();
         assertThat(response, is("version"));
+    }
+
+    @Test
+    public void should_return_specified_version_for_request() throws IOException {
+        runWithConfiguration("foo.json");
+        ProtocolVersion version = Request.Get(remoteUrl("/version10")).execute().returnResponse().getProtocolVersion();
+        assertThat(version.getProtocol(), is("HTTP"));
+        assertThat(version.getMajor(), is(1));
+        assertThat(version.getMinor(), is(0));
     }
 
     @Test

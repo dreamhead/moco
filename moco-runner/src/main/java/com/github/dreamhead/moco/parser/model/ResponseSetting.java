@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
+import com.github.dreamhead.moco.handler.VersionResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -18,6 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends AbstractResource {
+    private String version;
     private String status;
     private Map<String, String> headers;
     private Map<String, String> cookies;
@@ -30,6 +32,7 @@ public class ResponseSetting extends AbstractResource {
                 .omitNullValues()
                 .add("text", text)
                 .add("file", file)
+                .add("version", version)
                 .add("status", status)
                 .add("headers", headers)
                 .add("cookies", cookies)
@@ -64,6 +67,10 @@ public class ResponseSetting extends AbstractResource {
         List<ResponseHandler> handlers = newArrayList();
         if (isResource()) {
             handlers.add(new ContentHandler(retrieveResource()));
+        }
+
+        if (version != null) {
+            handlers.add(new VersionResponseHandler(version(version)));
         }
 
         if (status != null) {

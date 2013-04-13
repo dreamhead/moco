@@ -54,6 +54,6 @@ public class RequestSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).omitNullValues().add("URI", uri).add("text", text).add("file", file).add("headers", headers).toString();
+        return Objects.toStringHelper(this).omitNullValues().add("version", version).add("URI", uri).add("text", text).add("file", file).add("headers", headers).toString();
     }
 }
