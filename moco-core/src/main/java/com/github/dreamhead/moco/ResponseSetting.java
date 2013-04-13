@@ -2,7 +2,9 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ContentHandler;
+import com.github.dreamhead.moco.handler.VersionResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.resource.VersionResource;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.header;
@@ -15,6 +17,10 @@ public abstract class ResponseSetting {
 
     public void response(String content) {
         this.response(text(content));
+    }
+
+    public void response(VersionResource resource) {
+        this.response(new VersionResponseHandler(resource));
     }
 
     public void response(Resource resource) {

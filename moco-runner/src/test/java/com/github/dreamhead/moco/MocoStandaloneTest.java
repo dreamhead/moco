@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
@@ -85,6 +86,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("delete_method.json");
         String response = Request.Delete(remoteUrl("/delete")).execute().returnContent().toString();
         assertThat(response, is("response_for_delete_method"));
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_specified_version() throws IOException {
+        runWithConfiguration("foo.json");
+        String response = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnContent().toString();
+        assertThat(response, is("version"));
     }
 
     @Test

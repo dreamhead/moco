@@ -331,7 +331,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_match_version() throws Exception {
-        server.request(eq(version(), "HTTP/1.0")).response("foo");
+        server.request(by(version("HTTP/1.0"))).response("foo");
 
         running(server, new Runnable() {
             @Override

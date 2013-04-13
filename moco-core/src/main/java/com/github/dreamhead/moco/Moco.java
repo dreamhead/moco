@@ -143,12 +143,8 @@ public class Moco {
         return new FileResource(new File(filename));
     }
 
-    public static RequestExtractor version() {
-        return new VersionExtractor();
-    }
-
-    public static ResponseHandler version(String version) {
-        return new VersionResponseHandler(checkNotNull(version, "Null version is not allowed"));
+    public static VersionResource version(String version) {
+        return new VersionResource(checkNotNull(version, "Null version is not allowed"));
     }
 
     public static ResponseHandler status(int code) {
@@ -169,7 +165,8 @@ public class Moco {
             "file", new ContentRequestExtractor(),
             "text", new ContentRequestExtractor(),
             "uri", new UriRequestExtractor(),
-            "method", new HttpMethodExtractor()
+            "method", new HttpMethodExtractor(),
+            "version", new VersionExtractor()
     );
 
     private static RequestExtractor extractor(String id) {

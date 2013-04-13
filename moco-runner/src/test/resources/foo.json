@@ -136,5 +136,13 @@
                 "login": "true"
             }
         }
+    },
+    {
+        "request": {
+            "version": "HTTP/1.0"
+        },
+        "response": {
+            "text": "version"
+        }
     }
 ]

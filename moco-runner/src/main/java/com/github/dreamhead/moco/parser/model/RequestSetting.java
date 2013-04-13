@@ -9,6 +9,7 @@ public class RequestSetting {
     private TextContainer uri;
     private TextContainer file;
     private TextContainer method;
+    private TextContainer version;
 
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> xpaths;
@@ -29,6 +30,10 @@ public class RequestSetting {
 
     public TextContainer getMethod() {
         return method;
+    }
+
+    public TextContainer getVersion() {
+        return version;
     }
 
     public Map<String, TextContainer> getCookies() {
