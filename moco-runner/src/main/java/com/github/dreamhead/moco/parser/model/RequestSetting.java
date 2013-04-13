@@ -16,7 +16,7 @@ public class RequestSetting {
     private Map<String, TextContainer> queries;
     private Map<String, TextContainer> cookies;
 
-    public Object getUri() {
+    public TextContainer getUri() {
         return uri;
     }
 
