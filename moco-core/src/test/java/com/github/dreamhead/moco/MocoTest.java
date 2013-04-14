@@ -441,4 +441,22 @@ public class MocoTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_same_http_version_without_specified_version() throws Exception {
+        server.response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                ProtocolVersion version10 = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
+                assertThat(version10.getMajor(), is(1));
+                assertThat(version10.getMinor(), is(0));
+
+                ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
+                assertThat(version11.getMajor(), is(1));
+                assertThat(version11.getMinor(), is(1));
+            }
+        });
+    }
 }
