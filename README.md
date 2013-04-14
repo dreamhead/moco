@@ -23,7 +23,7 @@ In the old days, we just deployed another WAR to an application server, e.g. Jet
 
 * Run Moco server
 ```shell
-java -jar moco-runner-<version>-standalone.jar -p 12306 foo.json
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 ```
 
 * Now, open your favorite browser to visit http://localhost:12306 and you will see "Hello, Moco".
