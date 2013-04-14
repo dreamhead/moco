@@ -54,6 +54,18 @@ public class MocoTest extends AbstractMocoTest {
         });
     }
 
+    @Test
+    public void should_return_expected_response_from_classpath_file() throws Exception {
+        server.response(classpathFile("foo.response"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_for_unknown_request() throws Exception {
         running(server, new Runnable() {

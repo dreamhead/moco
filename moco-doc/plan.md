@@ -1,8 +1,13 @@
 # Functionality
 
+## Configuration
+* Multiple configuration files
+* Session group
+* Relative file root
+
 ## Matcher
 * JSONPath
-* marshal support
+* Marshal support
 
 ## Handler
 * Response with Request parameter (Current plan: template)

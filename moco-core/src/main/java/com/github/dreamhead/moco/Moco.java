@@ -143,6 +143,10 @@ public class Moco {
         return new FileResource(new File(filename));
     }
 
+    public static Resource classpathFile(String filename) {
+        return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
+    }
+
     public static VersionResource version(String version) {
         return new VersionResource(checkNotNull(version, "Null version is not allowed"));
     }
