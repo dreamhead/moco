@@ -27,7 +27,7 @@ public class DynamicRunner implements Runner {
             jsonRunner.run(new FileInputStream(filename), port);
             fileMonitor.startMonitor(new File(filename), configurationChangeListener(port));
         } catch (FileNotFoundException e) {
-            logger.error("failed to find file: {}", filename);
+            throw new RuntimeException(e);
         }
     }
 

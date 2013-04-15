@@ -1,6 +1,10 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Bootstrap implements BootstrapTask {
+    private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private static final int DEFAULT_SHUTDOWN_PORT = 9527;
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
@@ -11,7 +15,7 @@ public class Bootstrap implements BootstrapTask {
     public void run(String[] args) {
         try {
             if (args.length < 1) {
-                throw new ParseArgException("at least one arguments required");
+                throw new ParseArgException("task name needs to be specified");
             }
 
             if ("start".equals(args[0])) {
@@ -27,10 +31,12 @@ public class Bootstrap implements BootstrapTask {
             help();
         } catch (ParseArgException e) {
             help();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
     }
 
     private void help() {
-        System.out.println("moco -p port {-s [shutdown port]} [configuration file]");
+        System.out.println("moco start -p port -c [configuration file] {-s [shutdown port]}");
     }
 }
