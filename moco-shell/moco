@@ -134,10 +134,10 @@ fi
 if [ "$1" = "start" ]; then
     echo "Starting..."
     load_current_version
-    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $1
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
 elif [ "$1" = "shutdown" ]; then
     load_current_version
-    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $1
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
 elif [ "$1" = "upgrade" ]; then
     echo "Check the new version"
     parse_maven_metadata
