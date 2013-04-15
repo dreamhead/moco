@@ -63,38 +63,35 @@ public class Moco {
     }
 
     public static Resource text(String text) {
-        checkNotNull(text, "Null text is not allowed");
-        return new TextResource(text);
+        return new TextResource(checkNotNull(text, "Null text is not allowed"));
     }
 
     public static Resource uri(String uri) {
-        checkNotNull(uri, "Null URI is not allowed");
-        return new UriResource(uri);
+        return new UriResource(checkNotNull(uri, "Null URI is not allowed"));
     }
 
     public static Resource method(String requestMethod) {
-        checkNotNull(requestMethod, "Null method is not allowed");
-        return new MethodResource(requestMethod);
+        return new MethodResource(checkNotNull(requestMethod, "Null method is not allowed"));
     }
 
     public static RequestExtractor header(String header) {
-        checkNotNull(header, "Null header is not allowed");
-        return new HeaderRequestExtractor(header);
+        return new HeaderRequestExtractor(checkNotNull(header, "Null header is not allowed"));
     }
 
     public static ResponseHandler header(String name, String value) {
-        return new HeaderResponseHandler(name, value);
+        return new HeaderResponseHandler(
+                checkNotNull(name, "Null header name is not allowed"),
+                checkNotNull(value, "Null header value is not allowed"));
     }
 
     public static RequestExtractor cookie(String key) {
-        checkNotNull(key, "Null cookie is not allowed");
-        return new CookieRequestExtractor(key);
+        return new CookieRequestExtractor(checkNotNull(key, "Null cookie is not allowed"));
     }
 
     public static ResponseHandler cookie(String key, String value) {
-        checkNotNull(key, "Null cookie key is not allowed");
-        checkNotNull(key, "Null cookie value is not allowed");
-        return header("Set-Cookie", new Cookies().encodeCookie(key, value));
+        return header("Set-Cookie", new Cookies().encodeCookie(
+                checkNotNull(key, "Null cookie key is not allowed"),
+                checkNotNull(value, "Null cookie value is not allowed")));
     }
 
     public static ResponseHandler latency(long millis) {
@@ -102,13 +99,11 @@ public class Moco {
     }
 
     public static RequestExtractor query(String param) {
-        checkNotNull(param, "Null query is not allowed");
-        return new ParamRequestExtractor(param);
+        return new ParamRequestExtractor(checkNotNull(param, "Null query is not allowed"));
     }
 
     public static XPathRequestExtractor xpath(String xpath) {
-        checkNotNull(xpath, "Null XPath is not allowed");
-        return new XPathRequestExtractor(xpath);
+        return new XPathRequestExtractor(checkNotNull(xpath, "Null XPath is not allowed"));
     }
 
     public static RequestMatcher xml(Resource resource) {
@@ -138,9 +133,7 @@ public class Moco {
     }
 
     public static WritableResource file(String filename) {
-        checkNotNull(filename, "Null filename is not allowed");
-
-        return new FileResource(new File(filename));
+        return new FileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
     }
 
     public static Resource classpathFile(String filename) {
@@ -156,10 +149,8 @@ public class Moco {
     }
 
     public static Resource url(String url) {
-        checkNotNull(url, "Null url is not allowed");
-
         try {
-            return new UrlResource(new URL(url));
+            return new UrlResource(new URL(checkNotNull(url, "Null url is not allowed")));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -178,6 +169,7 @@ public class Moco {
         if (extractor == null) {
             throw new RuntimeException(format("unknown extractor for [%s]", id));
         }
+
         return extractor;
     }
 }
