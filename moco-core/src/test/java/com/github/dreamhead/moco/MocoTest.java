@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.ContentHandler;
+import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
@@ -405,6 +407,19 @@ public class MocoTest extends AbstractMocoTest {
                 assertThat(json, is("application/json"));
                 String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
                 assertThat(bar, is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_not_add_content_type_header_if_exists() throws Exception {
+        server.response(header("content-type", "application/xml"), new ContentHandler(text("foo")));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+            Header[] headers = Request.Get(root()).execute().returnResponse().getHeaders("content-type");
+            assertThat(headers.length, is(1));
+            assertThat(headers[0].getValue(), is("application/xml"));
             }
         });
     }
