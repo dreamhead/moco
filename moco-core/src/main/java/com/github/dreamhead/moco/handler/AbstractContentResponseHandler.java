@@ -14,7 +14,18 @@ public abstract class AbstractContentResponseHandler implements ResponseHandler 
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
         writeContentResponse(request, buffer);
         response.setContent(buffer);
-        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        if (!hasContentType(response)) {
+            response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        }
         response.setHeader("Content-Length", response.getContent().writerIndex());
+    }
+
+    private boolean hasContentType(HttpResponse response) {
+        for (String header : response.getHeaderNames()) {
+            if (header.equalsIgnoreCase("Content-Type")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
