@@ -66,6 +66,10 @@ public class Moco {
         return new TextResource(checkNotNull(text, "Null text is not allowed"));
     }
 
+    public static ResponseHandler content(Resource resource) {
+        return new ContentHandler(resource);
+    }
+
     public static Resource uri(String uri) {
         return new UriResource(checkNotNull(uri, "Null URI is not allowed"));
     }

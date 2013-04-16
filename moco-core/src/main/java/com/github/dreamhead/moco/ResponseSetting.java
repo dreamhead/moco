@@ -7,9 +7,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.VersionResource;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
-import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.Moco.status;
-import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
@@ -24,7 +22,7 @@ public abstract class ResponseSetting {
     }
 
     public void response(Resource resource) {
-        this.response(new ContentHandler(resource));
+        this.response(content(resource));
     }
 
     public void response(ResponseHandler handler) {

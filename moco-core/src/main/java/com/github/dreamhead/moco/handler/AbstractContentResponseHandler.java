@@ -14,7 +14,6 @@ public abstract class AbstractContentResponseHandler implements ResponseHandler 
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
         writeContentResponse(request, buffer);
         response.setContent(buffer);
-        response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setHeader("Content-Length", response.getContent().writerIndex());
     }
 }

@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.ContentHandler;
+import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
@@ -472,6 +474,19 @@ public class MocoTest extends AbstractMocoTest {
                 ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
                 assertThat(version11.getMajor(), is(1));
                 assertThat(version11.getMinor(), is(1));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_specified_content_type() throws Exception {
+        server.response(content(text("foo")), header("Content-Type", "text/plain"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                assertThat(header.getValue(), is("text/plain"));
             }
         });
     }
