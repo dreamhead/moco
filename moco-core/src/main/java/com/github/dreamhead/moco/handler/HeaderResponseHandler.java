@@ -6,6 +6,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class HeaderResponseHandler implements ResponseHandler {
+    private ContentTypeDetector detector = new ContentTypeDetector();
+
     private final String name;
     private final String value;
 
@@ -16,6 +18,10 @@ public class HeaderResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(HttpRequest request, HttpResponse response) {
+        if (detector.hasHeader(response, name)) {
+            response.removeHeader(name);
+        }
+
         HttpHeaders.addHeader(response, name, value);
     }
 }

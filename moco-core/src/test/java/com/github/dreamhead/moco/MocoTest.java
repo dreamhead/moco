@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.handler.ContentHandler;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -479,14 +478,40 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_return_specified_content_type() throws Exception {
-        server.response(content(text("foo")), header("Content-Type", "text/plain"));
+    public void should_return_default_content_type() throws Exception {
+        server.response(content(text("foo")));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
                 Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
-                assertThat(header.getValue(), is("text/plain"));
+                assertThat(header.getValue(), is("text/plain; charset=UTF-8"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_specified_content_type() throws Exception {
+        server.response(content(text("foo")), header("Content-Type", "text/html"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                assertThat(header.getValue(), is("text/html"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_specified_content_type_no_matter_order() throws Exception {
+        server.response(header("Content-Type", "text/html"), content(text("foo")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                assertThat(header.getValue(), is("text/html"));
             }
         });
     }

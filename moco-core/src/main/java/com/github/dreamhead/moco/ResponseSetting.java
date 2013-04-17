@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.handler.VersionResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.VersionResource;

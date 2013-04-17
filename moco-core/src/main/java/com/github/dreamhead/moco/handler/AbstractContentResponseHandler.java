@@ -7,6 +7,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public abstract class AbstractContentResponseHandler implements ResponseHandler {
+    private ContentTypeDetector detector = new ContentTypeDetector();
+
     protected abstract void writeContentResponse(HttpRequest request, ChannelBuffer buffer);
 
     @Override
@@ -15,5 +17,10 @@ public abstract class AbstractContentResponseHandler implements ResponseHandler 
         writeContentResponse(request, buffer);
         response.setContent(buffer);
         response.setHeader("Content-Length", response.getContent().writerIndex());
+        if (!detector.hasContentType(response)) {
+            response.setHeader("Content-Type", "text/plain; charset=UTF-8");
+        }
+
     }
+
 }

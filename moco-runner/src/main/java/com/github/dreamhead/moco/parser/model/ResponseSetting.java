@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.ContentHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.VersionResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
@@ -66,7 +65,7 @@ public class ResponseSetting extends AbstractResource {
     public ResponseHandler getResponseHandler() {
         List<ResponseHandler> handlers = newArrayList();
         if (isResource()) {
-            handlers.add(new ContentHandler(retrieveResource()));
+            handlers.add(content(retrieveResource()));
         }
 
         if (version != null) {
