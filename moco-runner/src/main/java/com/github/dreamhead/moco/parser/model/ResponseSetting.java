@@ -45,7 +45,8 @@ public class ResponseSetting extends AbstractResource {
         return (text != null)
                 || (file != null)
                 || (url != null)
-                || (cache != null);
+                || (cache != null)
+                || (pathResource != null);
     }
 
     @Override
