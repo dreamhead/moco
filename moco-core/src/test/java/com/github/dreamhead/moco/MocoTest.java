@@ -57,7 +57,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_expected_response_from_classpath_file() throws Exception {
-        server.response(classpathFile("foo.response"));
+        server.response(pathResource("foo.response"));
 
         running(server, new Runnable() {
             @Override

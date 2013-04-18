@@ -140,7 +140,7 @@ public class Moco {
         return new FileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
     }
 
-    public static Resource classpathFile(String filename) {
+    public static Resource pathResource(String filename) {
         return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
     }
 
