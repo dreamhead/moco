@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.MocoConfiguration;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.eventbus.EventBus;
@@ -17,10 +19,12 @@ public class MocoHandler extends SimpleChannelHandler {
 
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
     private ResponseHandler anyResponseHandler;
+    private MocoConfiguration configuration;
 
-    public MocoHandler(List<BaseSetting> settings, ResponseHandler anyResponseHandler) {
-        this.settings = settings;
-        this.anyResponseHandler = anyResponseHandler;
+    public MocoHandler(HttpServer server) {
+        this.settings = server.getSettings();
+        this.anyResponseHandler = server.getAnyResponseHandler();
+        this.configuration = server.getConfiguration();
         this.eventBus.register(new MocoEventListener());
     }
 

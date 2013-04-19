@@ -21,7 +21,7 @@ public class MocoHttpServer {
                 ChannelPipeline pipeline = Channels.pipeline();
                 pipeline.addLast("decoder", new HttpRequestDecoder(4096, 8192, 8192));
                 pipeline.addLast("encoder", new HttpResponseEncoder());
-                pipeline.addLast("handler", new MocoHandler(serverSetting.getSettings(), serverSetting.getAnyResponseHandler()));
+                pipeline.addLast("handler", new MocoHandler(serverSetting));
                 return pipeline;
             }
         });
