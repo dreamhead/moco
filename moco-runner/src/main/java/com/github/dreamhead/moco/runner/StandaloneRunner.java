@@ -15,13 +15,6 @@ public class StandaloneRunner {
 
         logger.info("Server is started at {}", httpServer.getPort());
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                server.stop();
-            }
-        });
-
         server.start();
     }
 

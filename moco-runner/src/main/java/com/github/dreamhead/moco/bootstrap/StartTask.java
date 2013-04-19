@@ -23,8 +23,20 @@ public class StartTask implements BootstrapTask {
             return;
         }
 
-        Runner runner = new DynamicRunner(startArgs.getConfigurationFile(), startArgs.getPort());
-        new SocketShutdownMonitorRunner(runner, startArgs.getShutdownPort(defaultShutdownPort), defaultShutdownKey).run();
+        final Runner runner = createRunner(startArgs);
+        runner.run();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                runner.stop();
+            }
+        });
+    }
+
+    private Runner createRunner(StartArgs startArgs) {
+        final Runner dynamicRunner = new DynamicRunner(startArgs.getConfigurationFile(), startArgs.getPort());
+        return new SocketShutdownMonitorRunner(dynamicRunner, startArgs.getShutdownPort(defaultShutdownPort), defaultShutdownKey);
     }
 
     private boolean conflictWithDefaultShutdownPort(StartArgs startArgs, int defaultShutdownPort) {
