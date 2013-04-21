@@ -143,6 +143,7 @@ project(':moco-runner') {
         from files(project(':moco-core').sourceSets.main.output.classesDir)
         from files(project(':moco-core').sourceSets.main.output.resourcesDir)
         from files(sourceSets.main.output.classesDir)
+        from files(sourceSets.main.output.resourcesDir)
         from configurations.runtime.asFileTree.files.collect { zipTree(it) }
 
         manifest {
