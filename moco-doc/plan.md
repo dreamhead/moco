@@ -22,7 +22,6 @@
 # Tools Support
 * Groovy Plugin
 * Proguard to reduce uberjar size
-* Moco favicon.ico
 
 # Polyglot
 * Groovy

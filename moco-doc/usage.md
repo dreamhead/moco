@@ -75,6 +75,12 @@ Moco also can be used as Maven plugin.
 
 https://github.com/GarrettHeel/moco-maven-plugin
 
+# Gradle Plugin
+
+Moco can be used in Gradle
+
+https://github.com/silverjava/moco-gradle-plugin
+
 # Shell
 
 If you are using Mac or Linux, you may try the following approach:

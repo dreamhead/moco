@@ -6,6 +6,7 @@ the first public release of Moco
 * stanalone server
 * shell
 * maven plugin (external)
+* gradle plugin (external)
 
 ## Congiruation
 
@@ -16,6 +17,7 @@ the first public release of Moco
 * URI
 * query Parameter
 * HTTP method
+* version
 * header
 
 #### operator
@@ -23,7 +25,7 @@ the first public release of Moco
 * match
 
 #### Web
-* Cookie
+* cookie
 
 #### Integration
 * XML
@@ -34,6 +36,7 @@ the first public release of Moco
 
 #### HTTP
 * content(text, file)
+* version
 * status code
 * header
 
