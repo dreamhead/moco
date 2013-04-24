@@ -98,6 +98,10 @@ public class Moco {
                 checkNotNull(value, "Null cookie value is not allowed")));
     }
 
+    public static RequestExtractor form(String key) {
+        return new FormRequestExtractor(checkNotNull(key, "Null form name is not allowed"));
+    }
+
     public static ResponseHandler latency(long millis) {
         return new LatencyResponseHandler(millis);
     }

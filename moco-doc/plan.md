@@ -20,7 +20,6 @@
 * Socket
 
 # Tools Support
-* Groovy Plugin
 * Proguard to reduce uberjar size
 
 # Polyglot

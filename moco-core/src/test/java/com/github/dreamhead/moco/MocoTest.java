@@ -6,6 +6,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -473,6 +474,19 @@ public class MocoTest extends AbstractMocoTest {
                 ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
                 assertThat(version11.getMajor(), is(1));
                 assertThat(version11.getMinor(), is(1));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_form_value() throws Exception {
+        server.post(eq(form("name"), "dreamhead")).response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                assertThat(content, is("foobar"));
             }
         });
     }

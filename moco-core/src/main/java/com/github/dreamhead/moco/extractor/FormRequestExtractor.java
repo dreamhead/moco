@@ -1,0 +1,32 @@
+package com.github.dreamhead.moco.extractor;
+
+import com.github.dreamhead.moco.RequestExtractor;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.multipart.Attribute;
+import org.jboss.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
+import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData;
+
+public class FormRequestExtractor implements RequestExtractor {
+    private final String key;
+
+    public FormRequestExtractor(String key) {
+        this.key = key;
+    }
+
+    @Override
+    public String extract(HttpRequest request) {
+        try {
+            HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(new DefaultHttpDataFactory(false), request);
+            InterfaceHttpData data = decoder.getBodyHttpData(key);
+            if (data != null && data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
+                Attribute attribute = (Attribute)data;
+                return attribute.getValue();
+            }
+
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
