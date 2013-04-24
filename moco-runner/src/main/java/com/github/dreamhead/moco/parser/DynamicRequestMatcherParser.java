@@ -33,7 +33,8 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             "headers", "header",
             "queries", "query",
             "xpaths", "xpath",
-            "cookies", "cookie"
+            "cookies", "cookie",
+            "forms", "form"
     );
 
     @Override

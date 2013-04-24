@@ -15,6 +15,7 @@ public class RequestSetting {
     private Map<String, TextContainer> xpaths;
     private Map<String, TextContainer> queries;
     private Map<String, TextContainer> cookies;
+    private Map<String, TextContainer> forms;
 
     public TextContainer getUri() {
         return uri;
@@ -52,8 +53,22 @@ public class RequestSetting {
         return queries;
     }
 
+    public Map<String, TextContainer> getForms() {
+        return forms;
+    }
+
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).omitNullValues().add("version", version).add("URI", uri).add("text", text).add("file", file).add("headers", headers).toString();
+        return Objects.toStringHelper(this).omitNullValues()
+                .add("version", version)
+                .add("URI", uri)
+                .add("text", text)
+                .add("file", file)
+                .add("headers", headers)
+                .add("xpaths", xpaths)
+                .add("queries", queries)
+                .add("cookies", cookies)
+                .add("forms", forms)
+                .toString();
     }
 }

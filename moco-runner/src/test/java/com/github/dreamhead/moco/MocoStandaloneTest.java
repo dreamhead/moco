@@ -5,6 +5,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -185,5 +186,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         long gap = stop - start + delta;
         assertThat(gap, greaterThan(latency));
         assertThat(code, is(200));
+    }
+
+    @Test
+    public void should_match_form_value() throws IOException {
+        runWithConfiguration("form.json");
+
+        String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+        assertThat(content, is("foobar"));
     }
 }

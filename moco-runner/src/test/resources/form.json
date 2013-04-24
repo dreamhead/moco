@@ -1,0 +1,13 @@
+[
+    {
+        "request" : {
+            "method" : "post",
+            "forms" : {
+                "name" : "dreamhead"
+            }
+        },
+        "response" : {
+            "text" : "foobar"
+        }
+    }
+]
