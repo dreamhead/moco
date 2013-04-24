@@ -18,7 +18,11 @@ public abstract class AbstractContentResponseHandler implements ResponseHandler 
         response.setContent(buffer);
         response.setHeader("Content-Length", response.getContent().writerIndex());
         if (!detector.hasContentType(response)) {
-            response.setHeader("Content-Type", "text/html; charset=UTF-8");
+            response.setHeader("Content-Type", getContentType(request));
         }
+    }
+
+    protected String getContentType(HttpRequest request) {
+        return "text/html; charset=UTF-8";
     }
 }

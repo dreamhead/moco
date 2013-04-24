@@ -5,7 +5,7 @@ import java.net.URL;
 
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public class UrlResource implements Resource {
+public class UrlResource implements ContentResource {
     private final URL url;
 
     public UrlResource(URL url) {
@@ -24,5 +24,10 @@ public class UrlResource implements Resource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String getContentType() {
+        return "text/html";
     }
 }

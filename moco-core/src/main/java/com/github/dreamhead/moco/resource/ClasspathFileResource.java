@@ -1,10 +1,12 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.FileContentType;
+
 import java.io.IOException;
 
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public class ClasspathFileResource implements Resource {
+public class ClasspathFileResource implements ContentResource {
     private String filename;
 
     public ClasspathFileResource(String filename) {
@@ -23,5 +25,10 @@ public class ClasspathFileResource implements Resource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String getContentType() {
+        return new FileContentType(this.filename).getContentType();
     }
 }

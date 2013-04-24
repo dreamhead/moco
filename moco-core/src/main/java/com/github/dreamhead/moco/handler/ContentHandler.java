@@ -1,17 +1,23 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.resource.ContentResource;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class ContentHandler extends AbstractContentHandler {
-    private final Resource resource;
+    private final ContentResource resource;
 
-    public ContentHandler(final Resource resource) {
+    public ContentHandler(final ContentResource resource) {
         this.resource = resource;
     }
 
     @Override
     protected void writeContent(ChannelBuffer buffer) {
         buffer.writeBytes(resource.asByteArray());
+    }
+
+    @Override
+    protected String getContentType(HttpRequest request) {
+        return resource.getContentType();
     }
 }

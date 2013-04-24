@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.mount;
 
+import com.github.dreamhead.moco.FileContentType;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -31,5 +32,10 @@ public class MountHandler extends AbstractContentResponseHandler {
     private File targetFile(HttpRequest request) {
         String relativePath = mountPathExtractor.extract(request);
         return new File(dir, relativePath);
+    }
+
+    @Override
+    protected String getContentType(HttpRequest request) {
+        return new FileContentType(targetFile(request).getName()).getContentType();
     }
 }

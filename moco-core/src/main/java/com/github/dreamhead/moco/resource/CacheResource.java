@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.resource;
 
-public class CacheResource implements Resource {
-    private Resource resource;
+public class CacheResource implements ContentResource {
+    private final ContentResource resource;
     private LocalCache localCache;
     private byte[] cache;
 
-    public CacheResource(Resource resource, LocalCache localCache) {
+    public CacheResource(ContentResource resource, LocalCache localCache) {
         this.resource = resource;
         this.localCache = localCache;
     }
@@ -36,5 +36,10 @@ public class CacheResource implements Resource {
 
     private byte[] contentFromLocalCache() {
         return localCache.read();
+    }
+
+    @Override
+    public String getContentType() {
+        return resource.getContentType();
     }
 }

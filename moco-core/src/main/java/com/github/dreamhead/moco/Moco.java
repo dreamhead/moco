@@ -62,11 +62,11 @@ public class Moco {
         return new OrRequestMatcher(matchers);
     }
 
-    public static Resource text(String text) {
+    public static TextResource text(String text) {
         return new TextResource(checkNotNull(text, "Null text is not allowed"));
     }
 
-    public static ResponseHandler content(Resource resource) {
+    public static ResponseHandler content(ContentResource resource) {
         return new ContentHandler(resource);
     }
 
@@ -136,11 +136,11 @@ public class Moco {
         return new SequenceContentHandler(contents);
     }
 
-    public static WritableResource file(String filename) {
+    public static FileResource file(String filename) {
         return new FileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
     }
 
-    public static Resource pathResource(String filename) {
+    public static ClasspathFileResource pathResource(String filename) {
         return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
     }
 
@@ -152,7 +152,7 @@ public class Moco {
         return new StatusCodeResponseHandler(code);
     }
 
-    public static Resource url(String url) {
+    public static UrlResource url(String url) {
         try {
             return new UrlResource(new URL(checkNotNull(url, "Null url is not allowed")));
         } catch (MalformedURLException e) {

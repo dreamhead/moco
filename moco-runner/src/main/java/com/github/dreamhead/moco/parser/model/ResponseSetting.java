@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.VersionResponseHandler;
-import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 
@@ -50,12 +50,12 @@ public class ResponseSetting extends AbstractResource {
     }
 
     @Override
-    public Resource retrieveResource() {
-        Resource resource = super.retrieveResource();
+    public ContentResource retrieveResource() {
+        ContentResource resource = super.retrieveResource();
         if (resource != null) {
             return resource;
         }
-        Resource cacheResource = cache.retrieveResource();
+        ContentResource cacheResource = cache.retrieveResource();
         if (cacheResource != null) {
             return cacheResource;
         }
