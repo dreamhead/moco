@@ -16,7 +16,11 @@ public class MocoTestHelper {
     }
 
     public String postContent(String uri, String postContent) throws IOException {
-        Content content = Request.Post(uri).bodyByteArray(postContent.getBytes())
+        return postBytes(uri, postContent.getBytes());
+    }
+
+    public String postBytes(String uri, byte[] bytes) throws IOException {
+        Content content = Request.Post(uri).bodyByteArray(bytes)
                 .execute().returnContent();
         return content.asString();
     }

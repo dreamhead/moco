@@ -79,8 +79,7 @@ public class MocoTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 InputStream asStream = this.getClass().getClassLoader().getResourceAsStream("foo.request");
-                byte[] bytes = ByteStreams.toByteArray(asStream);
-                assertThat(helper.postContent(root(), new String(bytes)), is("foo"));
+                assertThat(helper.postBytes(root(), ByteStreams.toByteArray(asStream)), is("foo"));
             }
         });
     }

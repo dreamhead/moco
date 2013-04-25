@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
 import java.util.Map;
@@ -8,6 +9,8 @@ public class RequestSetting {
     private TextContainer text;
     private TextContainer uri;
     private TextContainer file;
+    @JsonProperty("path_resource")
+    private TextContainer pathResource;
     private TextContainer method;
     private TextContainer version;
 
@@ -27,6 +30,10 @@ public class RequestSetting {
 
     public TextContainer getFile() {
         return file;
+    }
+
+    public TextContainer getPathResource() {
+        return pathResource;
     }
 
     public TextContainer getMethod() {
