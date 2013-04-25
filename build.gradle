@@ -141,3 +141,7 @@ project(':moco-runner') {
         archives uberjar
     }
 }
+
+task wrapper(type: Wrapper) << {
+    gradleVersion = '1.5'
+}
