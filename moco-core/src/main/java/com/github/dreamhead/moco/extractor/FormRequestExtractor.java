@@ -25,6 +25,8 @@ public class FormRequestExtractor implements RequestExtractor {
             }
 
             return null;
+        } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

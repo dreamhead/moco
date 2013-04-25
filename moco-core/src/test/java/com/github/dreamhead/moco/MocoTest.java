@@ -492,6 +492,19 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_no_exception_form_get_request() throws Exception {
+        server.request(eq(form("password"), "hello")).response("foobar");
+        server.response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(root()), is("foobar"));
+            }
+        });
+    }
+
+    @Test
     public void should_return_default_content_type() throws Exception {
         server.response(content(text("foo")));
 
