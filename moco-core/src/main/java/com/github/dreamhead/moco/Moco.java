@@ -164,13 +164,13 @@ public class Moco {
         }
     }
 
-    private static ImmutableMap<String, ? extends RequestExtractor> extractors = of(
-            "file", new ContentRequestExtractor(),
-            "text", new ContentRequestExtractor(),
-            "uri", new UriRequestExtractor(),
-            "method", new HttpMethodExtractor(),
-            "version", new VersionExtractor()
-    );
+    private static ImmutableMap<String, ? extends RequestExtractor> extractors = ImmutableMap.<String, RequestExtractor>builder()
+            .put("file", new ContentRequestExtractor())
+            .put("text", new ContentRequestExtractor())
+            .put("pathresource", new ContentRequestExtractor())
+            .put("uri", new UriRequestExtractor())
+            .put("method", new HttpMethodExtractor())
+            .put("version", new VersionExtractor()).build();
 
     private static RequestExtractor extractor(String id) {
         RequestExtractor extractor = extractors.get(id);

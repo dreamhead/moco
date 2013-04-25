@@ -15,7 +15,7 @@ public class ClasspathFileResource implements ContentResource {
 
     @Override
     public String id() {
-        return "classpathfile";
+        return "pathresource";
     }
 
     @Override

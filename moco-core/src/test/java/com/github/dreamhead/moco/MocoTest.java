@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -10,6 +12,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
@@ -64,6 +67,20 @@ public class MocoTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_path_resource() throws Exception {
+        server.request(by(pathResource("foo.request"))).response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                InputStream asStream = this.getClass().getClassLoader().getResourceAsStream("foo.request");
+                byte[] bytes = ByteStreams.toByteArray(asStream);
+                assertThat(helper.postContent(root(), new String(bytes)), is("foo"));
             }
         });
     }
