@@ -12,22 +12,6 @@ public abstract class AbstractResource {
     @JsonProperty("path_resource")
     protected String pathResource;
 
-    public String getText() {
-        return text;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getPathResource() {
-        return pathResource;
-    }
-
     public ContentResource retrieveResource() {
         if (text != null) {
             return text(text);
