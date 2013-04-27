@@ -10,11 +10,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,20 +39,37 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return from(getPropertyDescriptors()).filter(and(not(classField()), existField(request))).transform(toRequestMatcher(request)).toList();
+        return from(getFields()).filter(and(not(isClassField()), fieldExist(request))).transform(fieldToRequestMatcher(request)).toList();
     }
 
-    private List<PropertyDescriptor> getPropertyDescriptors() {
-        return Arrays.asList(doGetPropertyDescriptors());
+    private Iterable<Field> getFields() {
+        Field[] fields = RequestSetting.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+        }
+        return Arrays.asList(fields);
     }
 
-    private Function<PropertyDescriptor, RequestMatcher> toRequestMatcher(final RequestSetting request) {
-        return new Function<PropertyDescriptor, RequestMatcher>() {
+    private Predicate<Field> fieldExist(final RequestSetting request) {
+        return new Predicate<Field>() {
             @Override
-            public RequestMatcher apply(PropertyDescriptor descriptor) {
+            public boolean apply(Field field) {
                 try {
-                    Object value = descriptor.getReadMethod().invoke(request);
-                    return createRequestMatcherFromValue(descriptor.getName(), value);
+                    return field.get(request) != null;
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+    }
+
+    private Function<Field, RequestMatcher> fieldToRequestMatcher(final RequestSetting request) {
+        return new Function<Field, RequestMatcher>() {
+            @Override
+            public RequestMatcher apply(Field field) {
+                try {
+                    Object value = field.get(request);
+                    return createRequestMatcherFromValue(field.getName(), value);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -64,37 +77,13 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         };
     }
 
-    private Predicate<PropertyDescriptor> existField(final RequestSetting request) {
-        return new Predicate<PropertyDescriptor>() {
+    private Predicate<Field> isClassField() {
+        return new Predicate<Field>() {
             @Override
-            public boolean apply(PropertyDescriptor descriptor) {
-                try {
-                    return descriptor.getReadMethod().invoke(request) != null;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
+            public boolean apply(Field field) {
+                return "class".equals(field.getName());
             }
         };
-    }
-
-    private Predicate<PropertyDescriptor> classField() {
-        return new Predicate<PropertyDescriptor>() {
-            @Override
-            public boolean apply(PropertyDescriptor descriptor) {
-                return "class".equals(descriptor.getName());
-            }
-        };
-    }
-
-    private PropertyDescriptor[] doGetPropertyDescriptors() {
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(RequestSetting.class);
-            return beanInfo.getPropertyDescriptors();
-        } catch (IntrospectionException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
