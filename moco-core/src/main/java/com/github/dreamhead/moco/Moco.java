@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -14,11 +13,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
-import static java.lang.String.format;
 
 public class Moco {
     public static HttpServer httpserver(int port) {
@@ -164,20 +162,5 @@ public class Moco {
         }
     }
 
-    private static ImmutableMap<String, ? extends RequestExtractor> extractors = ImmutableMap.<String, RequestExtractor>builder()
-            .put("file", new ContentRequestExtractor())
-            .put("text", new ContentRequestExtractor())
-            .put("pathresource", new ContentRequestExtractor())
-            .put("uri", new UriRequestExtractor())
-            .put("method", new HttpMethodExtractor())
-            .put("version", new VersionExtractor()).build();
-
-    private static RequestExtractor extractor(String id) {
-        RequestExtractor extractor = extractors.get(id);
-        if (extractor == null) {
-            throw new RuntimeException(format("unknown extractor for [%s]", id));
-        }
-
-        return extractor;
-    }
+    private Moco() {}
 }

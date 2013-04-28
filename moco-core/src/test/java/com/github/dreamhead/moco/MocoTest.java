@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;

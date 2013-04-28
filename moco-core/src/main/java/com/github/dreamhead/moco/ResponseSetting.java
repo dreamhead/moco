@@ -1,12 +1,11 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.VersionResponseHandler;
-import com.github.dreamhead.moco.resource.ContentResource;
-import com.github.dreamhead.moco.resource.VersionResource;
+import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
@@ -16,12 +15,8 @@ public abstract class ResponseSetting {
         this.response(text(content));
     }
 
-    public void response(VersionResource resource) {
-        this.response(new VersionResponseHandler(resource));
-    }
-
-    public void response(ContentResource resource) {
-        this.response(content(resource));
+    public void response(Resource resource) {
+        this.response(responseHandler(resource));
     }
 
     public void response(ResponseHandler handler) {
