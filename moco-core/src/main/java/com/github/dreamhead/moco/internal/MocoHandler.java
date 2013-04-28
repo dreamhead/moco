@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpServer;
-import com.github.dreamhead.moco.MocoConfiguration;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.eventbus.EventBus;
@@ -9,7 +8,10 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.handler.codec.http.*;
+import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.HttpResponse;
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +21,10 @@ public class MocoHandler extends SimpleChannelHandler {
 
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
     private ResponseHandler anyResponseHandler;
-    private MocoConfiguration configuration;
 
     public MocoHandler(HttpServer server) {
         this.settings = server.getSettings();
         this.anyResponseHandler = server.getAnyResponseHandler();
-        this.configuration = server.getConfiguration();
         this.eventBus.register(new MocoEventListener());
     }
 

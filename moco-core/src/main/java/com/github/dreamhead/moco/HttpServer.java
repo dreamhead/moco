@@ -16,11 +16,11 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
 public class HttpServer extends ResponseSetting {
-    private final MocoConfiguration configuration;
+    private final int port;
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
 
     public HttpServer(int port) {
-        this.configuration = new MocoConfiguration(port);
+        this.port = port;
     }
 
     public Setting request(RequestMatcher matcher) {
@@ -42,11 +42,7 @@ public class HttpServer extends ResponseSetting {
     }
 
     public int getPort() {
-        return configuration.getPort();
-    }
-
-    public MocoConfiguration getConfiguration() {
-        return configuration;
+        return port;
     }
 
     public List<BaseSetting> getSettings() {
