@@ -156,7 +156,6 @@ server.post(by("foo")).response("bar");
 ```
 
 ### Header
-
 We will focus HTTP header at times:
 
 * API
@@ -184,7 +183,6 @@ server.request(eq(header("foo"), "bar")).response("blah")
 ```
 
 ### Cookie
-
 Cookie is widely used in web development.
 
 * API
@@ -212,8 +210,33 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 }
 ```
 
+### Form
+In web development, form is often used to submit information to server side.
+
+* API
+
+```java
+server.post(eq(form("name"), "foo")).response("bar");
+```
+
+```json
+{
+  "request" :
+    {
+      "method" : "post",
+      "forms" :
+      {
+        "name" : "foo"
+      }
+    },
+    "response" : {
+      "text" : "bar"
+    }
+}
+```
+
 ### XML
-XML is a popular format for Web Services. When a request is in XML, only the XML structure is important in most cases and whitespace can be ignored. The `xml` operation can be used for this case.
+XML is a popular format for Web Services. When a request is in XML, only the XML structure is important in most cases and whitespace can be ignored. The `xml` operator can be used for this case.
 
 * API
 
@@ -628,7 +651,7 @@ server.mount(dir, to("/uri"), include("*.txt"));
   "mount" :
     {
       "dir" : "dir",
-      "uri" : "/uri"
+      "uri" : "/uri",
       "includes" :
       [
         "*.txt"
@@ -652,7 +675,7 @@ server.mount(dir, to("/uri"), exclude("*.txt"));
   "mount" :
     {
       "dir" : "dir",
-      "uri" : "/uri"
+      "uri" : "/uri",
       "excludes" :
       [
         "*.txt"
@@ -676,7 +699,7 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
   "mount" :
     {
       "dir" : "dir",
-      "uri" : "/uri"
+      "uri" : "/uri",
       "includes" :
       [
         "a.txt",

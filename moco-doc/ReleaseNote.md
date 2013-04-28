@@ -20,12 +20,13 @@ the first public release of Moco
 * version
 * header
 
-#### operator
+#### Operator
 * eq
 * match
 
 #### Web
 * cookie
+* form
 
 #### Integration
 * XML
