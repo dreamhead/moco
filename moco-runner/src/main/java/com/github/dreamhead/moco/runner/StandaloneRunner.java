@@ -12,9 +12,7 @@ public class StandaloneRunner {
 
     public void run(HttpServer httpServer) {
         server = new MocoHttpServer(httpServer);
-
         logger.info("Server is started at {}", httpServer.getPort());
-
         server.start();
     }
 

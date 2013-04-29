@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 
 import static com.github.dreamhead.moco.Moco.*;
 
@@ -11,8 +11,9 @@ public abstract class AbstractResource {
     protected String url;
     @JsonProperty("path_resource")
     protected String pathResource;
+    protected String version;
 
-    public ContentResource retrieveResource() {
+    public Resource retrieveResource() {
         if (text != null) {
             return text(text);
         }
@@ -27,6 +28,10 @@ public abstract class AbstractResource {
 
         if (pathResource != null) {
             return pathResource(pathResource);
+        }
+
+        if (version != null) {
+            return version(version);
         }
 
         return null;

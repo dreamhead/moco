@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
-import com.github.dreamhead.moco.handler.VersionResponseHandler;
-import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 
@@ -13,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends AbstractResource {
-    private String version;
     private String status;
     private Map<String, String> headers;
     private Map<String, String> cookies;
@@ -46,16 +45,18 @@ public class ResponseSetting extends AbstractResource {
                 || (file != null)
                 || (url != null)
                 || (cache != null)
-                || (pathResource != null);
+                || (pathResource != null)
+                || (version != null);
     }
 
     @Override
-    public ContentResource retrieveResource() {
-        ContentResource resource = super.retrieveResource();
+    public Resource retrieveResource() {
+        Resource resource = super.retrieveResource();
         if (resource != null) {
             return resource;
         }
-        ContentResource cacheResource = cache.retrieveResource();
+
+        Resource cacheResource = cache.retrieveResource();
         if (cacheResource != null) {
             return cacheResource;
         }
@@ -66,11 +67,7 @@ public class ResponseSetting extends AbstractResource {
     public ResponseHandler getResponseHandler() {
         List<ResponseHandler> handlers = newArrayList();
         if (isResource()) {
-            handlers.add(content(retrieveResource()));
-        }
-
-        if (version != null) {
-            handlers.add(new VersionResponseHandler(version(version)));
+            handlers.add(responseHandler(retrieveResource()));
         }
 
         if (status != null) {
