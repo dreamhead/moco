@@ -11,7 +11,7 @@ project(':') {
             languageLevel = '1.6'
 
             ipr.withXml { xml ->
-                def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings"}.mapping
+                def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping
                 mapping.@vcs = 'Git'
                 mapping.@directory = '$PROJECT_DIR$'
             }
@@ -58,8 +58,8 @@ subprojects {
 
                     licenses {
                         license {
-                            name 'The Apache Software License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            name 'MIT Licence'
+                            url 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
                             distribution 'repo'
                         }
                     }
@@ -87,6 +87,20 @@ subprojects {
         httpComponentVersion = '4.2.1'
         jacksonVersion = '2.1.0'
     }
+
+    jar {
+        manifest {
+            attributes 'Package': "com.github.dreamhead",
+                    'Implementation-Title': "${project.name}",
+                    'Implementation-Version': "${version}",
+                    'Implementation-Vendor': 'Zheng Ye',
+                    'Built-By': 'Zheng Ye',
+                    'Built-Date': new Date().getDateTimeString(),
+                    'Built-With': "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
+                    'Created-By': 'Java ' + System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
+        }
+    }
+
 
     dependencies {
         compile(
@@ -147,7 +161,15 @@ project(':moco-runner') {
         from configurations.runtime.asFileTree.files.collect { zipTree(it) }
 
         manifest {
-            attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main'
+            attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main',
+                    'Package': "com.github.dreamhead",
+                    'Implementation-Title': "${project.name}",
+                    'Implementation-Version': "${version}",
+                    'Implementation-Vendor': 'Zheng Ye',
+                    'Built-By': 'Zheng Ye',
+                    'Built-Date': new Date().getDateTimeString(),
+                    'Built-With': "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
+                    'Created-By': 'Java ' + System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
         }
     }
 
