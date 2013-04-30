@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
-import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -75,8 +75,7 @@ public class ResponseSetting extends AbstractResource {
         }
 
         if (headers != null) {
-            Iterable<ResponseHandler> collection = transform(headers.entrySet(), toHeaderResponseHandler());
-            handlers.add(new AndResponseHandler(collection));
+            handlers.add(toResponseHandler(headers, toHeaderResponseHandler()));
         }
 
         if (latency != null) {
@@ -84,8 +83,7 @@ public class ResponseSetting extends AbstractResource {
         }
 
         if (cookies != null) {
-            Iterable<ResponseHandler> cookies = transform(this.cookies.entrySet(), toCookieResponseHandler());
-            handlers.add(new AndResponseHandler(cookies));
+            handlers.add(toResponseHandler(cookies, toCookieResponseHandler()));
         }
 
         if (handlers.isEmpty()) {
@@ -93,6 +91,11 @@ public class ResponseSetting extends AbstractResource {
         }
 
         return handlers.size() == 1 ? handlers.get(0) : new AndResponseHandler(handlers);
+    }
+
+    private AndResponseHandler toResponseHandler(Map<String, String> map,
+                                                 Function<Map.Entry<String, String>, ResponseHandler> function) {
+        return new AndResponseHandler(from(map.entrySet()).transform(function));
     }
 
     private Function<Map.Entry<String, String>, ResponseHandler> toHeaderResponseHandler() {

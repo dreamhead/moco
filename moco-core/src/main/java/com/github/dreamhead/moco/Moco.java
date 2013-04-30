@@ -11,122 +11,120 @@ import com.google.common.base.Function;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
 
 public class Moco {
-    public static HttpServer httpserver(int port) {
+    public static HttpServer httpserver(final int port) {
         return new ActualHttpServer(port);
     }
 
-    public static RequestMatcher by(String content) {
+    public static RequestMatcher by(final String content) {
         return by(text(content));
     }
 
-    public static RequestMatcher by(Resource resource) {
+    public static RequestMatcher by(final Resource resource) {
         return eq(extractor(resource.id()), resource);
     }
 
-    public static RequestMatcher eq(RequestExtractor extractor, String expected) {
+    public static RequestMatcher eq(final RequestExtractor extractor, final String expected) {
         return eq(extractor, text(expected));
     }
 
-    public static RequestMatcher eq(RequestExtractor extractor, Resource expected) {
+    public static RequestMatcher eq(final RequestExtractor extractor, final Resource expected) {
         return new EqRequestMatcher(extractor, expected);
     }
 
-    public static RequestMatcher match(Resource patternResource) {
+    public static RequestMatcher match(final Resource patternResource) {
         return match(extractor(patternResource.id()), patternResource);
     }
 
-    public static RequestMatcher match(RequestExtractor extractor, String expected) {
+    public static RequestMatcher match(final RequestExtractor extractor, final String expected) {
         return match(extractor, text(expected));
     }
 
-    public static RequestMatcher match(RequestExtractor extractor, Resource expected) {
+    public static RequestMatcher match(final RequestExtractor extractor, final Resource expected) {
         Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
         return new MatchMatcher(extractor, pattern);
     }
 
-    public static RequestMatcher and(RequestMatcher... matchers) {
+    public static RequestMatcher and(final RequestMatcher... matchers) {
         return new AndRequestMatcher(newArrayList(matchers));
     }
 
-    public static RequestMatcher or(RequestMatcher... matchers) {
+    public static RequestMatcher or(final RequestMatcher... matchers) {
         return new OrRequestMatcher(matchers);
     }
 
-    public static TextResource text(String text) {
+    public static TextResource text(final String text) {
         return new TextResource(checkNotNull(text, "Null text is not allowed"));
     }
 
-    public static ResponseHandler content(ContentResource resource) {
+    public static ResponseHandler content(final ContentResource resource) {
         return new ContentHandler(resource);
     }
 
-    public static Resource uri(String uri) {
+    public static Resource uri(final String uri) {
         return new UriResource(checkNotNull(uri, "Null URI is not allowed"));
     }
 
-    public static Resource method(String requestMethod) {
-        return new MethodResource(checkNotNull(requestMethod, "Null method is not allowed"));
+    public static Resource method(final String httpMethod) {
+        return new MethodResource(checkNotNull(httpMethod, "Null HTTP method is not allowed"));
     }
 
-    public static RequestExtractor header(String header) {
-        return new HeaderRequestExtractor(checkNotNull(header, "Null header is not allowed"));
+    public static RequestExtractor header(final String header) {
+        return new HeaderRequestExtractor(checkNotNull(header, "Null header name is not allowed"));
     }
 
-    public static ResponseHandler header(String name, String value) {
+    public static ResponseHandler header(final String name, final String value) {
         return new HeaderResponseHandler(
                 checkNotNull(name, "Null header name is not allowed"),
                 checkNotNull(value, "Null header value is not allowed"));
     }
 
-    public static RequestExtractor cookie(String key) {
+    public static RequestExtractor cookie(final String key) {
         return new CookieRequestExtractor(checkNotNull(key, "Null cookie is not allowed"));
     }
 
-    public static ResponseHandler cookie(String key, String value) {
+    public static ResponseHandler cookie(final String key, final String value) {
         return header("Set-Cookie", new Cookies().encodeCookie(
                 checkNotNull(key, "Null cookie key is not allowed"),
                 checkNotNull(value, "Null cookie value is not allowed")));
     }
 
-    public static RequestExtractor form(String key) {
+    public static RequestExtractor form(final String key) {
         return new FormRequestExtractor(checkNotNull(key, "Null form name is not allowed"));
     }
 
-    public static ResponseHandler latency(long millis) {
+    public static ResponseHandler latency(final long millis) {
         return new LatencyResponseHandler(millis);
     }
 
-    public static RequestExtractor query(String param) {
+    public static RequestExtractor query(final String param) {
         return new ParamRequestExtractor(checkNotNull(param, "Null query is not allowed"));
     }
 
-    public static XPathRequestExtractor xpath(String xpath) {
+    public static XPathRequestExtractor xpath(final String xpath) {
         return new XPathRequestExtractor(checkNotNull(xpath, "Null XPath is not allowed"));
     }
 
-    public static RequestMatcher xml(Resource resource) {
+    public static RequestMatcher xml(final Resource resource) {
         return new XmlRequestMatcher(extractor(resource.id()), resource);
     }
 
-    public static RequestMatcher json(Resource resource) {
+    public static RequestMatcher json(final Resource resource) {
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
-    public static ResponseHandler seq(String... contents) {
-        List<Resource> resources = transform(newArrayList(contents), toResource());
-        return new SequenceContentHandler(resources.toArray(new Resource[resources.size()]));
+    public static ResponseHandler seq(final String... contents) {
+        return seq(from(newArrayList(contents)).transform(textToResource()).toArray(Resource.class));
     }
 
-    private static Function<String, Resource> toResource() {
+    private static Function<String, Resource> textToResource() {
         return new Function<String, Resource>() {
             @Override
             public Resource apply(String content) {
@@ -135,27 +133,27 @@ public class Moco {
         };
     }
 
-    public static ResponseHandler seq(Resource... contents) {
+    public static ResponseHandler seq(final Resource... contents) {
         return new SequenceContentHandler(contents);
     }
 
-    public static FileResource file(String filename) {
+    public static FileResource file(final String filename) {
         return new FileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
     }
 
-    public static ClasspathFileResource pathResource(String filename) {
+    public static ClasspathFileResource pathResource(final String filename) {
         return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
     }
 
-    public static VersionResource version(String version) {
+    public static VersionResource version(final String version) {
         return new VersionResource(checkNotNull(version, "Null version is not allowed"));
     }
 
-    public static ResponseHandler status(int code) {
+    public static ResponseHandler status(final int code) {
         return new StatusCodeResponseHandler(code);
     }
 
-    public static UrlResource url(String url) {
+    public static UrlResource url(final String url) {
         try {
             return new UrlResource(new URL(checkNotNull(url, "Null url is not allowed")));
         } catch (MalformedURLException e) {
