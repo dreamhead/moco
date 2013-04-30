@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.mount;
 
-import com.github.dreamhead.moco.FileContentType;
+import com.github.dreamhead.moco.util.FileContentType;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;

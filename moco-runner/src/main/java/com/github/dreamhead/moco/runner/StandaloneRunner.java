@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +12,9 @@ public class StandaloneRunner {
     private MocoHttpServer server;
 
     public void run(HttpServer httpServer) {
-        server = new MocoHttpServer(httpServer);
-        logger.info("Server is started at {}", httpServer.getPort());
+        ActualHttpServer actualHttpServer = (ActualHttpServer) httpServer;
+        server = new MocoHttpServer(actualHttpServer);
+        logger.info("Server is started at {}", actualHttpServer.getPort());
         server.start();
     }
 

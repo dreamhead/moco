@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpServer;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -9,9 +8,9 @@ import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 
 public class MocoHttpServer {
     private final MocoServer server = new MocoServer();
-    private final HttpServer serverSetting;
+    private final ActualHttpServer serverSetting;
 
-    public MocoHttpServer(HttpServer serverSetting) {
+    public MocoHttpServer(ActualHttpServer serverSetting) {
         this.serverSetting = serverSetting;
     }
 

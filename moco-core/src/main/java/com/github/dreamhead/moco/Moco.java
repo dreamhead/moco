@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
+import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
 import com.github.dreamhead.moco.util.Cookies;
@@ -20,7 +21,7 @@ import static com.google.common.collect.Lists.transform;
 
 public class Moco {
     public static HttpServer httpserver(int port) {
-        return new HttpServer(port);
+        return new ActualHttpServer(port);
     }
 
     public static RequestMatcher by(String content) {

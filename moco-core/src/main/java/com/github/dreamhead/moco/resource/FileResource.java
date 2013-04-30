@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
-import com.github.dreamhead.moco.FileContentType;
+import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.io.Files;
 
 import java.io.File;

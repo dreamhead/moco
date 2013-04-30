@@ -8,24 +8,17 @@ import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
-public class HttpServer extends ResponseSetting {
-    private final int port;
-    private List<BaseSetting> settings = new ArrayList<BaseSetting>();
-
-    public HttpServer(int port) {
-        this.port = port;
-    }
+public abstract  class HttpServer extends ResponseSetting {
+    protected abstract void addSetting(BaseSetting setting);
 
     public Setting request(RequestMatcher matcher) {
         BaseSetting setting = new BaseSetting(matcher);
-        this.settings.add(setting);
+        addSetting(setting);
         return setting;
     }
 
@@ -39,18 +32,6 @@ public class HttpServer extends ResponseSetting {
 
     public Setting post(RequestMatcher matcher) {
         return request(and(by(method(HttpMethod.POST.getName())), matcher));
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public List<BaseSetting> getSettings() {
-        return settings;
-    }
-
-    public ResponseHandler getAnyResponseHandler() {
-        return this.handler;
     }
 
     public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {

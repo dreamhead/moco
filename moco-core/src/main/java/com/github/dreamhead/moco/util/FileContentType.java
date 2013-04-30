@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco;
+package com.github.dreamhead.moco.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
