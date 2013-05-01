@@ -1,9 +1,10 @@
 # Functionality
 
 ## Configuration
-* Multiple configuration files
-* Session group
-* Relative file root
+* Setting file
+** multiple configuration files
+** context path
+** relative file root
 
 ## Matcher
 * JSONPath

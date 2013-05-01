@@ -1,9 +1,7 @@
 # Configurations
-Moco mainly focuses on server configuration. There are only two kinds of configuration right now: Request and Response.
+Moco mainly focuses on server configuration. There are only two kinds of configuration right now: **Request** and **Response**.
 
-That means if we get the expected request and then return our response. You have seen the simplest test case in previous example, that is, no matter what request is, return "foo" as response.
-
-Now, you can see a Moco reference in details.
+That means if we get the expected request and then return our response. Now, you can see a Moco reference in details.
 
 **WARNING** the json configuration below is just configuration snippet for one pair of request and response, instead of the whole configuration file.
 
@@ -94,10 +92,11 @@ server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 {
   "request" :
     {
-      "uri" : "/foo"
-      "queries" : {
-        "param" : "blah"
-      }
+      "uri" : "/foo",
+      "queries" : 
+        {
+          "param" : "blah"
+        }
     },
   "response" :
     {
@@ -155,6 +154,30 @@ server.post(by("foo")).response("bar");
 }
 ```
 
+### Version
+We can return different response for different HTTP version:
+
+* API
+
+```java
+server.request(by(version("HTTP/1.0"))).response("version");
+```
+
+* JSON
+
+```json
+{
+  "request": 
+    {
+      "version": "HTTP/1.0"
+    },
+  "response": 
+    {
+      "text": "version"
+    }
+}
+```
+
 ### Header
 We will focus HTTP header at times:
 
@@ -171,7 +194,8 @@ server.request(eq(header("foo"), "bar")).response("blah")
   "request" :
     {
       "method" : "post",
-      "headers" : {
+      "headers" : 
+      {
         "content-type" : "application/json"
       }
     },
@@ -199,9 +223,9 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
     {
       "uri" : "/cookie",
       "cookies" :
-      {
-        "login" : "true"
-      }
+        {
+          "login" : "true"
+        }
     },
   "response" :
     {
@@ -219,17 +243,21 @@ In web development, form is often used to submit information to server side.
 server.post(eq(form("name"), "foo")).response("bar");
 ```
 
+* JSON
+
+
 ```json
 {
   "request" :
     {
       "method" : "post",
       "forms" :
-      {
-        "name" : "foo"
-      }
+        {
+          "name" : "foo"
+        }
     },
-    "response" : {
+  "response" : 
+    {
       "text" : "bar"
     }
 }
@@ -248,15 +276,18 @@ server.request(xml(text("<request><parameters><id>1</id></parameters></request>"
 
 ```json
 {
-   "request": {
-    "uri": "/xml",
-    "text": {
-      "xml": "<request><parameters><id>1</id></parameters></request>"
+  "request": 
+    {
+      "uri": "/xml",
+      "text": 
+        {
+          "xml": "<request><parameters><id>1</id></parameters></request>"
+        }
+    },
+  "response": 
+    {
+      "text": "foo"
     }
-  },
-  "response": {
-    "text": "foo"
-  }
 }
 ```
 
@@ -266,15 +297,18 @@ The large request can be put into a file:
 
 ```json
 {
-   "request": {
-    "uri": "/xml",
-    "file": {
-      "xml": "your_file.xml"
+   "request": 
+     {
+        "uri": "/xml",
+        "file": 
+          {
+            "xml": "your_file.xml"
+          }
+    },
+  "response": 
+    {
+      "text": "foo"
     }
-  },
-  "response": {
-    "text": "foo"
-  }
 }
 ```
 
@@ -295,9 +329,10 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
   "request" :
     {
       "method" : "post",
-      "xpaths" : {
-        "/request/parameters/id/text()" : "1"
-      }
+      "xpaths" : 
+        {
+          "/request/parameters/id/text()" : "1"
+        }
     },
   "response" :
     {
@@ -319,15 +354,18 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 
 ```json
 {
-  "request": {
-    "uri": "/json",
-    "text": {
-      "json": "{\"foo\":\"bar\"}"
+  "request": 
+    {
+      "uri": "/json",
+      "text": 
+        {
+          "json": "{\"foo\":\"bar\"}"
+        }
+    },
+  "response": 
+    {
+      "text": "foo"
     }
-  },
-  "response": {
-    "text": "foo"
-  }
 }
 ```
 
@@ -337,17 +375,50 @@ The large request can be put into a file:
 
 ```json
 {
-  "request": {
-    "uri": "/json",
-    "file": {
-      "json": "your_file.json"
+  "request": 
+    {
+      "uri": "/json",
+      "file": 
+        {
+          "json": "your_file.json"
+        }
+    },
+  "response": 
+    {
+      "text": "foo"
     }
-  },
-  "response": {
-    "text": "foo"
-  }
 }
 ```
+
+### match
+
+match is not a functionality, it is an operator. You match your request with regular expression:
+
+* API
+
+```java
+server.request(match(uri("/\\w*/foo"))).response(text("bar"));
+```
+
+* JSON
+
+```json
+{
+  "request": 
+    {
+      "uri": 
+        {
+          "match": "/\\w*/foo"
+        }
+    },
+  "response": 
+    {
+      "text": "bar"
+    }
+}
+```
+
+Moco is implemented by Java regular expression, you can refer [here](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html) for more details.
 
 ## Response
 
@@ -423,6 +494,33 @@ server.request(by("foo")).response(status(200));
 }
 ```
 
+### Version
+
+By default, response HTTP version is supposed to request HTTP version, but you can set your own HTTP version:
+
+* API
+
+```java
+server.response(version("HTTP/1.0"));
+```
+
+* JSON
+
+
+```json
+{
+  "request": 
+    {
+      "uri": "/version10"
+    },
+  "response": 
+    {
+      "version": "HTTP/1.0"
+    }
+}
+```
+
+
 ### Header
 We can also specify HTTP header in response.
 
@@ -443,9 +541,9 @@ server.request(by("foo")).response(header("content-type", "application/json"));
   "response" :
     {
       "headers" :
-      {
-        "content-type" : "application/json"
-      }
+        {
+          "content-type" : "application/json"
+        }
     }
 }
 ```
@@ -580,9 +678,9 @@ server.response(cache(file("target.txt")));
   "response" :
   {
     "cache" :
-    {
-      "file" : "cache.response"
-    }
+      {
+        "file" : "cache.response"
+      }
   }
 }
 ```
@@ -599,16 +697,16 @@ server.response(cache(file("target.txt"), with(file("persist.txt"))));
 ```json
 {
   "response" :
-  {
-    "cache" :
     {
-      "file" : "cache.response",
-      "with" :
-      {
-        "file" : "src/test/resources/cache/cache.persistence"
-      }
+      "cache" :
+        {
+          "file" : "cache.response",
+          "with" :
+            {
+              "file" : "src/test/resources/cache/cache.persistence"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -653,9 +751,9 @@ server.mount(dir, to("/uri"), include("*.txt"));
       "dir" : "dir",
       "uri" : "/uri",
       "includes" :
-      [
-        "*.txt"
-      ]
+        [
+          "*.txt"
+        ]
     }
 }
 ```
@@ -677,9 +775,9 @@ server.mount(dir, to("/uri"), exclude("*.txt"));
       "dir" : "dir",
       "uri" : "/uri",
       "excludes" :
-      [
-        "*.txt"
-      ]
+        [
+          "*.txt"
+        ]
     }
 }
 ```
@@ -701,14 +799,14 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
       "dir" : "dir",
       "uri" : "/uri",
       "includes" :
-      [
-        "a.txt",
-        "b.txt"
-      ],
+        [
+          "a.txt",
+          "b.txt"
+        ],
       "excludes" :
-      [
-        "c.txt"
-      ]
+        [
+          "c.txt"
+        ]
     }
 }
 ```

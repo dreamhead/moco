@@ -1,4 +1,6 @@
 # Release 0.7
+in 2013.5.1
+
 the first public release of Moco
 
 ## Usage
