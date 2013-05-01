@@ -1,25 +1,41 @@
 # Dependencies
-Moco has been published on Maven repository, so you can refer to it directly in your code.
+Moco has been published on Maven repository, so you can refer to it directly in your dependency. This is core dependency
+
+```xml
+<dependency>
+  <groupId>com.github.dreamhead</groupId>
+  <artifactId>moco-core</artifactId>
+  <version>0.7</version>
+</dependency>
+```
+
+and runner
+
+```xml
+<dependency>
+  <groupId>com.github.dreamhead</groupId>
+  <artifactId>moco-runner</artifactId>
+  <version>0.7</version>
+</dependency>
+```
 
 A gradle example is as follow:
+
 ```groovy
 repositories {
-  maven {
-    url "https://oss.sonatype.org/content/groups/public"
-  }
   mavenCentral()
 }
 
 dependencies {
   compile(
-    "com.github.dreamhead:moco-core:0.6.4-SNAPSHOT",
-    "com.github.dreamhead:moco-runner:0.6.4-SNAPSHOT"
+    "com.github.dreamhead:moco-core:0.7",
+    "com.github.dreamhead:moco-runner:0.7"
   )
 }
 ```
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.6.4-SNAPSHOT/moco-runner-0.6.4-20130425.000031-11-standalone.jar)
+[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
 
 # Usage
 You have several ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.

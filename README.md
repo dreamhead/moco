@@ -8,7 +8,7 @@ Integration, especially based on HTTP protocol, e.g. web service, REST etc, is w
 In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all know, it's so boring to develop a WAR and deploy it to any application server, even if we use an embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
 # Quick Start
-* Download [Standalone Moco Runner](https://oss.sonatype.org/content/groups/public/com/github/dreamhead/moco-runner/0.6.4-SNAPSHOT/moco-runner-0.6.4-20130425.000031-11-standalone.jar)
+* Download [Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
 * Write your own configuration file to describe your Moco server configuration as follow:
 ```json
 [
