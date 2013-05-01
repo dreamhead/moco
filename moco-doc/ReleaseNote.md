@@ -1,5 +1,4 @@
-# Release 0.7
-in 2013.5.1
+# Release 0.7 (1-May-2013)
 
 the first public release of Moco
 
@@ -21,6 +20,7 @@ the first public release of Moco
 * HTTP method
 * version
 * header
+* redirect
 
 #### Operator
 * eq
@@ -44,7 +44,6 @@ the first public release of Moco
 * header
 
 #### Web
-* redirect
 * cookie
 
 #### Integration
