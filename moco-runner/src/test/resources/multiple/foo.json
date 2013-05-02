@@ -1,0 +1,10 @@
+[
+    {
+        "request" : {
+            "uri" : "/foo"
+        },
+        "response" : {
+            "text" : "foo"
+        }
+    }
+]

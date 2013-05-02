@@ -7,8 +7,11 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
@@ -24,9 +27,13 @@ public class AbstractMocoStandaloneTest {
         runner.stop();
     }
 
-    protected void runWithConfiguration(String resourceName) {
+    protected void runWithConfiguration(String... resourceNames) {
         try {
-            runner.run(Resources.getResource(resourceName).openStream(), port());
+            List<InputStream> streams = newArrayList();
+            for (String resourceName : resourceNames) {
+                streams.add(Resources.getResource(resourceName).openStream());
+            }
+            runner.run(streams, port());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
