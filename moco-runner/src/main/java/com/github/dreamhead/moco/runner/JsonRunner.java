@@ -56,6 +56,6 @@ public class JsonRunner {
 
     private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {
         ActualHttpServer thisServer = (ActualHttpServer) server;
-        return thisServer.mergeHttpServer(parsedServer);
+        return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 }

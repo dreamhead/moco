@@ -20,6 +20,10 @@ public abstract class ResponseSetting {
     }
 
     public void response(ResponseHandler handler) {
+        if (this.handler != null) {
+            throw new RuntimeException("handler has already been set");
+        }
+
         this.handler = handler;
     }
 

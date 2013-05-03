@@ -37,8 +37,7 @@ public class HttpServerParser {
     }
 
     public HttpServer parseServer(InputStream is, int port) {
-        List<SessionSetting> sessionSettings = readSessions(is);
-        return createHttpServer(sessionSettings, port);
+        return createHttpServer(readSessions(is), port);
     }
 
     private List<SessionSetting> readSessions(InputStream is) {

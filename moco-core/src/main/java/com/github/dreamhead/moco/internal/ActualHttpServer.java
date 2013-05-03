@@ -32,28 +32,18 @@ public class ActualHttpServer extends HttpServer {
         this.settings.add(setting);
     }
 
-    public HttpServer mergeHttpServer(HttpServer server) {
+    public HttpServer mergeHttpServer(ActualHttpServer thatServer) {
         ActualHttpServer newServer = new ActualHttpServer(this.port);
-        for (BaseSetting setting : settings) {
-            newServer.addSetting(setting);
-        }
-
-        ActualHttpServer thatServer = (ActualHttpServer) server;
-        List<BaseSetting> thatSettings = thatServer.getSettings();
-        for (BaseSetting thatSetting : thatSettings) {
-            newServer.addSetting(thatSetting);
-        }
-
-        if (this.handler != null && thatServer.handler != null) {
-            throw new RuntimeException("there is more than 2 any handlers");
-        }
-
-        if (this.handler == null) {
-            newServer.handler = thatServer.handler;
-        } else {
-            newServer.handler = this.handler;
-        }
-
+        newServer.addSettings(settings);
+        newServer.addSettings(thatServer.getSettings());
+        newServer.response(this.handler);
+        newServer.response(thatServer.handler);
         return newServer;
+    }
+
+    private void addSettings(List<BaseSetting> thatSettings) {
+        for (BaseSetting thatSetting : thatSettings) {
+            addSetting(thatSetting);
+        }
     }
 }

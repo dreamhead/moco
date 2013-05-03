@@ -8,6 +8,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.MocoCache.cache;
 import static com.github.dreamhead.moco.MocoCache.with;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
@@ -81,7 +82,6 @@ public class MocoCacheTest extends AbstractMocoTest {
             }
         });
 
-        server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
         response.delete();
         assertThat(response.exists(), is(false));
 
@@ -111,6 +111,7 @@ public class MocoCacheTest extends AbstractMocoTest {
             }
         });
 
+        HttpServer server = httpserver(12306);
         server.response(cache(file(response.getAbsolutePath()), with(file(cacheFile.getAbsolutePath()))));
         response.delete();
         assertThat(response.exists(), is(false));
