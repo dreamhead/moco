@@ -195,4 +195,11 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
         assertThat(content, is("foobar"));
     }
+
+    @Test
+    public void should_have_favicon() throws IOException {
+        runWithConfiguration("foo.json");
+        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getHeaders("Content-Type")[0].getValue();
+        assertThat(header, is("image/png"));
+    }
 }

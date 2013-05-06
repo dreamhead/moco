@@ -23,23 +23,12 @@ public class JsonRunner {
         runner.run(createHttpServer(streams, port));
     }
 
-    private HttpServer createHttpServer(List<InputStream> streams, int port) {
-        HttpServer server = new ActualHttpServer(port);
-
-        for (InputStream stream : streams) {
-            HttpServer parsedServer = httpServerParser.parseServer(stream, port);
-            server = mergeServer(server, parsedServer);
-        }
-
-        return server;
-    }
-
     public void stop() {
         runner.stop();
     }
 
     public void restart(InputStream is, int port) {
-        HttpServer httpServer = createServer(is, port);
+        HttpServer httpServer = createHttpServer(of(is), port);
         stop();
         run(httpServer);
     }
@@ -48,10 +37,21 @@ public class JsonRunner {
         runner.run(httpServer);
     }
 
-    private HttpServer createServer(InputStream is, int port) {
-        HttpServer httpServer = httpServerParser.parseServer(is, port);
-        httpServer.request(by(uri("/favicon.ico"))).response(content(pathResource("favicon.png")), header("Content-Type", "image/png"));
-        return httpServer;
+    private HttpServer createHttpServer(List<InputStream> streams, int port) {
+        HttpServer server = createBaseHttpServer(streams, port);
+        server.request(by(uri("/favicon.ico"))).response(content(pathResource("favicon.png")), header("Content-Type", "image/png"));
+        return server;
+    }
+
+    private HttpServer createBaseHttpServer(List<InputStream> streams, int port) {
+        HttpServer server = new ActualHttpServer(port);
+
+        for (InputStream stream : streams) {
+            HttpServer parsedServer = httpServerParser.parseServer(stream, port);
+            server = mergeServer(server, parsedServer);
+        }
+
+        return server;
     }
 
     private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {

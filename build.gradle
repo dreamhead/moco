@@ -154,7 +154,11 @@ project(':moco-runner') {
         )
 
         testCompile project(':moco-core').sourceSets.test.output
-        testRuntime project(':moco-core').sourceSets.test.resources
+
+        testRuntime(
+                project(':moco-core').sourceSets.test.resources,
+                project(':moco-runner').sourceSets.main.resources
+        )
     }
 
     task uberjar(type: Jar, dependsOn: jar) {
