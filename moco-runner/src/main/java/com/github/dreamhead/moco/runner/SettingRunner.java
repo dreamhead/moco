@@ -11,13 +11,21 @@ import java.util.List;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public class SettingRunner {
+public class SettingRunner implements Runner {
     private final SettingParser settingParser = new SettingParser();
-    private final JsonRunner jsonRunner = new JsonRunner();
+    private final InputStream stream;
+    private final int port;
+    private JsonRunner jsonRunner;
 
-    public void run(InputStream stream, int port) {
+    public SettingRunner(InputStream stream, int port) {
+        this.stream = stream;
+        this.port = port;
+    }
+
+    public void run() {
         List<GlobalSetting> globalSettings = settingParser.parse(stream);
-        jsonRunner.run(from(globalSettings).transform(toStream()).toList(), port);
+        jsonRunner = new JsonRunner(from(globalSettings).transform(toStream()).toList(), port);
+        jsonRunner.run();
     }
 
     public void stop() {

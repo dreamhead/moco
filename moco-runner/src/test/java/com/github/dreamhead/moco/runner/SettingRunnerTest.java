@@ -16,11 +16,6 @@ public class SettingRunnerTest {
     private final MocoTestHelper helper = new MocoTestHelper();
     private SettingRunner runner;
 
-    @Before
-    public void setUp() {
-        runner = new SettingRunner();
-    }
-
     @After
     public void tearDown() {
         runner.stop();
@@ -29,7 +24,8 @@ public class SettingRunnerTest {
     @Test
     public void should_run_with_setting() throws IOException {
         InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/settings.json");
-        runner.run(stream, 12306);
+        runner = new SettingRunner(stream, 12306);
+        runner.run();
 
         assertThat(helper.get(remoteUrl("/foo")), is("foo"));
         assertThat(helper.get(remoteUrl("/bar")), is("bar"));

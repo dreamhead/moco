@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.Files;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
@@ -16,9 +17,8 @@ public class MocoCacheStandaloneTest extends AbstractMocoStandaloneTest {
     private final File cacheTarget = new File("src/test/resources/cache/cache.response");
     private File persistenceTarget;
 
-    @Override
+    @Before
     public void setup() throws IOException {
-        super.setup();
         cacheTarget.createNewFile();
         persistenceTarget = new File("src/test/resources/cache/cache.persistence");
         persistenceTarget.createNewFile();
