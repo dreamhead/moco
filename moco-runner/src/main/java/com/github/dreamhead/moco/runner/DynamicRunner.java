@@ -13,7 +13,7 @@ public class DynamicRunner implements Runner {
     private static Logger logger = LoggerFactory.getLogger(DynamicRunner.class);
 
     private final FileMonitor fileMonitor = new FileMonitor();
-    public final JsonRunner jsonRunner;
+    public Runner jsonRunner;
 
     private String filename;
     private int port;
@@ -47,7 +47,9 @@ public class DynamicRunner implements Runner {
                 logger.info("{} change detected.", file.getName());
 
                 try {
-                    jsonRunner.restart(new FileInputStream(file), port);
+                    jsonRunner.stop();
+                    jsonRunner = new JsonRunner(of(new FileInputStream(file)), port);
+                    jsonRunner.run();
                 } catch (Exception e) {
                     logger.error("Fail to load configuration in {}.", file.getName());
                     logger.error(e.getMessage());
