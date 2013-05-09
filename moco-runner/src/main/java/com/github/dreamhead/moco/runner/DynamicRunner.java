@@ -12,17 +12,15 @@ import static com.google.common.collect.ImmutableList.of;
 public class DynamicRunner implements Runner {
     private static Logger logger = LoggerFactory.getLogger(DynamicRunner.class);
 
-    private final FileMonitor fileMonitor = new FileMonitor();
-    public Runner jsonRunner;
-
-    private String filename;
-    private int port;
+    private FileMonitor fileMonitor;
+    private Runner runner;
+    private File file;
 
     public DynamicRunner(String filename, int port) {
-        this.filename = filename;
-        this.port = port;
+        this.file = new File(filename);
+        this.fileMonitor = new FileMonitor(file, configurationChangeListener(port));
         try {
-            this.jsonRunner = new JsonRunner(of(new FileInputStream(filename)), port);
+            this.runner = new JsonRunner(of(new FileInputStream(file)), port);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -30,14 +28,14 @@ public class DynamicRunner implements Runner {
 
     @Override
     public void run() {
-        jsonRunner.run();
-        fileMonitor.startMonitor(new File(filename), configurationChangeListener(port));
+        runner.run();
+        fileMonitor.startMonitor();
     }
 
     @Override
     public void stop() {
         fileMonitor.stopMonitor();
-        jsonRunner.stop();
+        runner.stop();
     }
 
     private FileAlterationListener configurationChangeListener(final int port) {
@@ -47,14 +45,18 @@ public class DynamicRunner implements Runner {
                 logger.info("{} change detected.", file.getName());
 
                 try {
-                    jsonRunner.stop();
-                    jsonRunner = new JsonRunner(of(new FileInputStream(file)), port);
-                    jsonRunner.run();
+                    restartRunner(port);
                 } catch (Exception e) {
                     logger.error("Fail to load configuration in {}.", file.getName());
                     logger.error(e.getMessage());
                 }
             }
         };
+    }
+
+    private void restartRunner(int port) throws FileNotFoundException {
+        runner.stop();
+        runner = new JsonRunner(of(new FileInputStream(this.file)), port);
+        runner.run();
     }
 }

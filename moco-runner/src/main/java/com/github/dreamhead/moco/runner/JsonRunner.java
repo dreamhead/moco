@@ -12,16 +12,14 @@ public class JsonRunner implements Runner {
 
     private final HttpServerParser httpServerParser = new HttpServerParser();
     private final StandaloneRunner runner = new StandaloneRunner();
-    private final Iterable<? extends InputStream> streams;
-    private int port;
+    private HttpServer httpServer;
 
     public JsonRunner(Iterable<? extends InputStream> streams, int port) {
-        this.streams = streams;
-        this.port = port;
+        this.httpServer = createHttpServer(streams, port);
     }
 
     public void run() {
-        runner.run(createHttpServer(streams, port));
+        runner.run(httpServer);
     }
 
     public void stop() {

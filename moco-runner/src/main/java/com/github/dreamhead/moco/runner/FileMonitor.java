@@ -16,8 +16,14 @@ public class FileMonitor {
     private FileAlterationMonitor monitor;
     private boolean running = false;
 
-    public synchronized void startMonitor(File file, FileAlterationListener listener) {
-        monitor = monitorFile(file, listener);
+    private File file;
+
+    public FileMonitor(File file, FileAlterationListener listener) {
+        this.file = file;
+        this.monitor = monitorFile(this.file, listener);
+    }
+
+    public synchronized void startMonitor() {
         try {
             monitor.start();
             running = true;
