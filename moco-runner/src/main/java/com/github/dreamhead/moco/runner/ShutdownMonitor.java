@@ -11,7 +11,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
-public class ShutdownMonitor {
+public class ShutdownMonitor implements Monitor {
     private final MocoServer server = new MocoServer();
     private final int shutdownPort;
     private final String shutdownKey;

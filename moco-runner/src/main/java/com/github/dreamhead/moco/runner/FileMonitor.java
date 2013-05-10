@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 
-public class FileMonitor {
+public class FileMonitor implements Monitor {
     public static final int INTERVAL = 1000;
     private static Logger logger = LoggerFactory.getLogger(FileMonitor.class);
 
