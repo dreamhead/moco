@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.http.conn.HttpHostConnectException;
 import org.junit.Test;
 
@@ -17,13 +18,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
+
     @Test(expected = HttpHostConnectException.class)
     public void should_shutdown_runner_by_socket() throws IOException {
         String shutdownMocoKey = "_SHUTDOWN_MOCO_KEY";
         int shutdownPort = 9527;
 
-        Runner rawRunner = new DynamicRunner("src/test/resources/foo.json", port());
-        runner = new SocketShutdownMonitorRunner(rawRunner, shutdownPort, shutdownMocoKey);
+        RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
+        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null));
         runner.run();
 
         try {
@@ -42,8 +44,8 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
         String shutdownMocoKey = "_SHUTDOWN_MOCO_KEY";
         int shutdownPort = 9527;
 
-        Runner rawRunner = new DynamicRunner("src/test/resources/foo.json", port());
-        runner = new SocketShutdownMonitorRunner(rawRunner, shutdownPort, shutdownMocoKey);
+        RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
+        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null));
         runner.run();
 
         try {

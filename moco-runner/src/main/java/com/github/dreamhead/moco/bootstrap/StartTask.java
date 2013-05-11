@@ -1,18 +1,16 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.github.dreamhead.moco.runner.DynamicRunner;
-import com.github.dreamhead.moco.runner.Runner;
-import com.github.dreamhead.moco.runner.SocketShutdownMonitorRunner;
+import com.github.dreamhead.moco.runner.*;
 
 import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
 
 public class StartTask implements BootstrapTask {
     private final int defaultShutdownPort;
-    private final String defaultShutdownKey;
+    private final RunnerFactory factory;
 
     public StartTask(int defaultShutdownPort, String defaultShutdownKey) {
+        this.factory = new RunnerFactory(defaultShutdownPort, defaultShutdownKey);
         this.defaultShutdownPort = defaultShutdownPort;
-        this.defaultShutdownKey = defaultShutdownKey;
     }
 
     @Override
@@ -23,7 +21,7 @@ public class StartTask implements BootstrapTask {
             return;
         }
 
-        final Runner runner = createRunner(startArgs);
+        final Runner runner = factory.createRunner(startArgs);
         runner.run();
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -32,11 +30,6 @@ public class StartTask implements BootstrapTask {
                 runner.stop();
             }
         });
-    }
-
-    private Runner createRunner(StartArgs startArgs) {
-        final Runner dynamicRunner = new DynamicRunner(startArgs.getConfigurationFile(), startArgs.getPort());
-        return new SocketShutdownMonitorRunner(dynamicRunner, startArgs.getShutdownPort(defaultShutdownPort), defaultShutdownKey);
     }
 
     private boolean conflictWithDefaultShutdownPort(StartArgs startArgs, int defaultShutdownPort) {
