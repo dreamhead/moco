@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import com.github.dreamhead.moco.runner.monitor.FileMonitor;
 import org.junit.After;
 
 import static java.lang.String.format;

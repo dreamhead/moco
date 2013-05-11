@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.runner.monitor.Monitor;
+
 public class MonitorRunner implements Runner {
     private Runner runner;
     private Monitor monitor;

@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner;
+package com.github.dreamhead.moco.runner.monitor;
 
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationMonitor;

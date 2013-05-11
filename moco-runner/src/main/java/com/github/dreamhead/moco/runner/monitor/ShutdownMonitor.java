@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner;
+package com.github.dreamhead.moco.runner.monitor;
 
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.io.CharStreams;
