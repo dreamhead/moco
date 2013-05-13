@@ -1,16 +1,17 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-public class DynamicRunnerTest extends AbstractRunnerTest {
+public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
     @Test
     public void should_reload_configuration() throws IOException, InterruptedException {
         final File config = File.createTempFile("config", ".json");
@@ -18,7 +19,8 @@ public class DynamicRunnerTest extends AbstractRunnerTest {
                 "\"text\" : \"foo\"" +
                 "}}]");
 
-        runner = new DynamicRunner(config.getAbsolutePath(), port());
+        RunnerFactory factory = new RunnerFactory(9090, "SHUTDOWN");
+        runner = factory.createRunner(new StartArgs(port(), 9090, config.getAbsolutePath(), null));
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 
@@ -29,19 +31,5 @@ public class DynamicRunnerTest extends AbstractRunnerTest {
         waitChangeHappens();
 
         assertThat(helper.get(root()), is("foobar"));
-    }
-
-    private void changeFileContent(File response, String content) throws FileNotFoundException {
-        PrintStream stream = null;
-        try {
-            stream = new PrintStream(new FileOutputStream(response));
-            stream.print(content);
-        } catch (IOException e) {
-            fail("failed to change file content");
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-        }
     }
 }

@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.monitor.FileMonitor;
 import org.junit.After;
 
+import java.io.*;
+
 import static java.lang.String.format;
 import static org.junit.Assert.fail;
 
@@ -23,6 +25,20 @@ public abstract class AbstractRunnerTest {
             Thread.sleep(FileMonitor.INTERVAL * 2);
         } catch (InterruptedException e) {
             fail(format("failed to wait change happens: %s", e.getMessage()));
+        }
+    }
+
+    protected void changeFileContent(File response, String content) throws FileNotFoundException {
+        PrintStream stream = null;
+        try {
+            stream = new PrintStream(new FileOutputStream(response));
+            stream.print(content);
+        } catch (IOException e) {
+            fail("failed to change file content");
+        } finally {
+            if (stream != null) {
+                stream.close();
+            }
         }
     }
 }

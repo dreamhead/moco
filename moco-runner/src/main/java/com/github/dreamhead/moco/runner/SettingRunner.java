@@ -21,6 +21,10 @@ public class SettingRunner implements Runner {
         this.files = from(globalSettings).transform(toFile());
     }
 
+    public Iterable<File> getFiles() {
+        return files;
+    }
+
     public void run() {
         jsonRunner = new JsonRunner(files.transform(toStream()), port);
         jsonRunner.run();

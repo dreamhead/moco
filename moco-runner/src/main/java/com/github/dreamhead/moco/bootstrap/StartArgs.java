@@ -22,6 +22,10 @@ public class StartArgs extends ShutdownPortOption {
         return configurationFile;
     }
 
+    public boolean hasConfigurationFile() {
+        return this.configurationFile != null;
+    }
+
     public String getSettings() {
         return settings;
     }
