@@ -2,13 +2,14 @@
 
 ## Configuration
 * Setting file
-** multiple configuration files
-** context path
-** relative file root
+ * multiple configuration files
+ * context path
+ * relative file root
 
 ## Matcher
 * JSONPath
 * Marshal support
+* Prefix
 
 ## Handler
 * Response with Request parameter (Current plan: template)
@@ -27,3 +28,4 @@
 * Groovy
 * Scala
 * Clojure
+* Node.js
