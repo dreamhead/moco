@@ -1,3 +1,8 @@
+# Release 0.8
+
+## Usage
+* Settings file
+
 # Release 0.7 (1-May-2013)
 
 the first public release of Moco
