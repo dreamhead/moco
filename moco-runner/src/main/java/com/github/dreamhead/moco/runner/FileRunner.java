@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import static com.google.common.collect.ImmutableList.of;
 
 public abstract class FileRunner implements Runner {
-    protected File file;
-    protected int port;
+    protected final File file;
+    protected final int port;
     private Runner runner;
 
     protected abstract Runner createRunner();
@@ -39,7 +39,7 @@ public abstract class FileRunner implements Runner {
         this.runner.stop();
     }
 
-    public static FileRunner createConfigurationFileRunner(File file, int port) {
+    public static FileRunner createConfigurationFileRunner(final File file, final int port) {
         return new FileRunner(file, port) {
             @Override
             protected Runner createRunner() {
@@ -48,7 +48,7 @@ public abstract class FileRunner implements Runner {
         };
     }
 
-    public static FileRunner createSettingFileRunner(File file, int port) {
+    public static FileRunner createSettingFileRunner(final File file, final int port) {
         return new FileRunner(file, port) {
             @Override
             protected Runner createRunner() {
@@ -57,7 +57,7 @@ public abstract class FileRunner implements Runner {
         };
     }
 
-    private static FileInputStream toInputStream(File file) {
+    private static FileInputStream toInputStream(final File file) {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
