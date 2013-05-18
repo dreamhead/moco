@@ -13,7 +13,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
-public abstract  class HttpServer extends ResponseSetting {
+public abstract class HttpServer extends ResponseSetting {
     protected abstract void addSetting(BaseSetting setting);
 
     public Setting request(RequestMatcher matcher) {

@@ -19,7 +19,7 @@ public class ResponseHandlers {
     public static ResponseHandler responseHandler(Resource resource) {
         Class clazz = handlers.get(resource.id());
         if (clazz == null) {
-            throw new RuntimeException(format("unknown extractor for [%s]", resource.id()));
+            throw new RuntimeException(format("unknown response handler for [%s]", resource.id()));
         }
 
         try {
@@ -32,5 +32,4 @@ public class ResponseHandlers {
 
     private ResponseHandlers() {
     }
-
 }
