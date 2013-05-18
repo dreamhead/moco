@@ -1,4 +1,8 @@
-[![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
+<a href="https://github.com/dreamhead/moco">
+  <img src="https://raw.github.com/dreamhead/moco/master/moco-doc/moco.png" width="100px">
+</a>
+
+# [Moco](https://github.com/dreamhead/moco) [![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
 
 Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.com/)
 
