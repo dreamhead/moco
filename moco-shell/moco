@@ -76,29 +76,18 @@ function parse_tag {
 }
 
 function parse_maven_metadata {
-    MOCO_METADATA_URL="https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/maven-metadata.xml"
+    MOCO_METADATA_URL="http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/maven-metadata.xml"
     MOCO_METADATA="/tmp/maven-metadata.xml"
     download $MOCO_METADATA_URL $MOCO_METADATA
     parse_tag $MOCO_METADATA latest
     LATEST_VERSION=$tag_value
 }
 
-function parse_latest_maven_metadata {
-    parse_maven_metadata
-    MOCO_LATEST_MAVEN_METADATA_URL="https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/$LATEST_VERSION/maven-metadata.xml"
-    MOCO_LATEST_MAVEM_METADATA="/tmp/latest-maven-metadata.xml"
-    download $MOCO_LATEST_MAVEN_METADATA_URL $MOCO_LATEST_MAVEM_METADATA
-    parse_tag $MOCO_LATEST_MAVEM_METADATA timestamp
-    TIMESTAMP=$tag_value
-    parse_tag $MOCO_LATEST_MAVEM_METADATA buildNumber
-    BUILD_NUMBER=$tag_value
-}
-
 function parse_standalone_latest_url {
-    parse_latest_maven_metadata
-    VERSION=${LATEST_VERSION%-SNAPSHOT}
-    LATEST_MOCO_STANDALONE_JAR="moco-runner-$VERSION-$TIMESTAMP-$BUILD_NUMBER-standalone.jar"
-    MOCO_STANDLONE_URL="https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/$LATEST_VERSION/$LATEST_MOCO_STANDALONE_JAR"
+    parse_maven_metadata
+    VERSION=${LATEST_VERSION%}
+    LATEST_MOCO_STANDALONE_JAR="moco-runner-$VERSION-standalone.jar"
+    MOCO_STANDLONE_URL="http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/$LATEST_VERSION/$LATEST_MOCO_STANDALONE_JAR"
 }
 
 function install {
