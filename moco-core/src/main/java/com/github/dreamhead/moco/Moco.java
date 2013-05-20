@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
-import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -155,15 +154,19 @@ public class Moco {
     }
 
     public static UrlResource url(final String url) {
-        try {
-            return new UrlResource(new URL(checkNotNull(url, "Null url is not allowed")));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new UrlResource(toUrl(url));
     }
 
     public static ResponseHandler proxy(final String url) {
-        return responseHandler(url(url));
+        return new ProxyResponseHandler(toUrl(url));
+    }
+
+    private static URL toUrl(String url) {
+        try {
+            return new URL(checkNotNull(url, "Null url is not allowed"));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Moco() {}
