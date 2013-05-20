@@ -33,7 +33,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 * Now, open your favorite browser to visit http://localhost:12306 and you will see "Hello, Moco".
 
 ## Documents
-* More [Usage](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
+* More [Usages](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
 * Detailed [Configurations](https://github.com/dreamhead/moco/blob/master/moco-doc/configurations.md)
 * [Settings](https://github.com/dreamhead/moco/blob/master/moco-doc/settings.md) file for multiple configurations
 

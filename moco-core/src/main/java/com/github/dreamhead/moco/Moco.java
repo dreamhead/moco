@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
+import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -159,6 +160,10 @@ public class Moco {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ResponseHandler proxy(final String url) {
+        return responseHandler(url(url));
     }
 
     private Moco() {}
