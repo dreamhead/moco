@@ -56,4 +56,19 @@ public class MocoProxyTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_proxy_with_request_query_parameters() throws Exception {
+        server.request(and(by(uri("/target")), eq(query("foo"), "foo"))).response("foo_proxy");
+        server.request(and(by(uri("/target")), eq(query("bar"), "bar"))).response("bar_proxy");
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/proxy?foo=foo")), is("foo_proxy"));
+                assertThat(helper.get(remoteUrl("/proxy?bar=bar")), is("bar_proxy"));
+            }
+        });
+    }
 }
