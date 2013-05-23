@@ -71,4 +71,19 @@ public class MocoProxyTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_proxy_with_response_headers() throws Exception {
+        server.request(and(by(uri("/target")), eq(header("foo"), "foo"))).response(header("foo", "foo_header"));
+        server.request(and(by(uri("/target")), eq(header("bar"), "bar"))).response(header("bar", "bar_header"));
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String fooHeader = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnResponse().getHeaders("foo")[0].getValue();
+                assertThat(fooHeader, is("foo_header"));
+            }
+        });
+    }
 }

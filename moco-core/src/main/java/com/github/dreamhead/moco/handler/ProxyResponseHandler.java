@@ -1,20 +1,19 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.ResponseHandler;
+import org.apache.http.Header;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.util.EntityUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.io.ByteStreams.toByteArray;
 
 public class ProxyResponseHandler implements ResponseHandler {
     private URL url;
@@ -28,44 +27,43 @@ public class ProxyResponseHandler implements ResponseHandler {
         try {
             URL url = remoteUrl(request);
 
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod(request.getMethod().toString());
-            urlConnection.setDoInput(true);
+            Request targetRequest = createRequest(url, request);
+            for (Map.Entry<String, String> entry : request.getHeaders()) {
+                targetRequest.addHeader(entry.getKey(), entry.getValue());
+            }
+            targetRequest.removeHeaders("Content-Length");
 
-            prepareHeader(request, urlConnection);
-            prepareContent(request, urlConnection);
+            long contentLength = HttpHeaders.getContentLength(request, -1);
+            if (contentLength > 0) {
+                targetRequest.bodyByteArray(request.getContent().array());
+            }
 
-            writeResponse(response, urlConnection);
+            org.apache.http.HttpResponse targetResponse = targetRequest.config(ClientPNames.HANDLE_REDIRECTS, false).execute().returnResponse();
+            response.setStatus(HttpResponseStatus.valueOf(targetResponse.getStatusLine().getStatusCode()));
+
+            Header[] allHeaders = targetResponse.getAllHeaders();
+            for (Header header : allHeaders) {
+                response.setHeader(header.getName(), header.getValue());
+            }
+
+            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+            buffer.writeBytes(EntityUtils.toByteArray(targetResponse.getEntity()));
+            response.setContent(buffer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void prepareContent(HttpRequest request, HttpURLConnection urlConnection) throws IOException {
-        long contentLength = HttpHeaders.getContentLength(request, -1);
-        if (contentLength > 0) {
-            urlConnection.setDoOutput(true);
-            OutputStream os = urlConnection.getOutputStream();
-            os.write(request.getContent().array());
+    private Request createRequest(URL url, HttpRequest request) {
+        if (request.getMethod() == HttpMethod.GET) {
+            return Request.Get(url.toString());
         }
-    }
 
-    private void prepareHeader(HttpRequest request, HttpURLConnection urlConnection) {
-        for (Map.Entry<String, String> entry : request.getHeaders()) {
-            urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+        if (request.getMethod() == HttpMethod.POST) {
+            return Request.Post(url.toString());
         }
-    }
 
-    private void writeResponse(HttpResponse response, HttpURLConnection urlConnection) throws IOException {
-        int responseCode = urlConnection.getResponseCode();
-        response.setStatus(HttpResponseStatus.valueOf(responseCode));
-        if (responseCode == HttpResponseStatus.OK.getCode()) {
-            InputStream inputStream = urlConnection.getInputStream();
-            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-            buffer.writeBytes(toByteArray(inputStream));
-            response.setContent(buffer);
-            response.setHeader("Content-Length", response.getContent().writerIndex());
-        }
+        throw new RuntimeException("unknown HTTP method");
     }
 
     private URL remoteUrl(HttpRequest request) throws MalformedURLException {

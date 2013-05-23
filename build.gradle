@@ -107,7 +107,8 @@ subprojects {
                 "io.netty:netty:$nettyVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion",
                 "commons-io:commons-io:$commonsIoVersion",
-                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion"
         )
 
         runtime(
@@ -118,8 +119,7 @@ subprojects {
                 "junit:junit-dep:$junitVersion",
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
-                "org.mockito:mockito-core:$mockitoVersion",
-                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion"
+                "org.mockito:mockito-core:$mockitoVersion"
         )
     }
 
