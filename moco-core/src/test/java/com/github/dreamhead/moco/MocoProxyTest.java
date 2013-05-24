@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
@@ -83,6 +84,24 @@ public class MocoProxyTest extends AbstractMocoTest {
             public void run() throws IOException {
                 String fooHeader = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnResponse().getHeaders("foo")[0].getValue();
                 assertThat(fooHeader, is("foo_header"));
+            }
+        });
+    }
+
+    @Test
+    public void should_proxy_with_request_version() throws Exception {
+        server.request(and(by(uri("/target")), by(version("HTTP/1.0")))).response("1.0");
+        server.request(and(by(uri("/target")), by(version("HTTP/1.1")))).response("1.1");
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String responseFor10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
+                assertThat(responseFor10, is("1.0"));
+
+                String responseFor11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnContent().asString();
+                assertThat(responseFor11, is("1.1"));
             }
         });
     }

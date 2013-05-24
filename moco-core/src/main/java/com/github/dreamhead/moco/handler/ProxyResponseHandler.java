@@ -28,6 +28,8 @@ public class ProxyResponseHandler implements ResponseHandler {
             URL url = remoteUrl(request);
 
             Request targetRequest = createRequest(url, request);
+            HttpVersion protocolVersion = request.getProtocolVersion();
+            targetRequest.version(new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion()));
             for (Map.Entry<String, String> entry : request.getHeaders()) {
                 targetRequest.addHeader(entry.getKey(), entry.getValue());
             }
