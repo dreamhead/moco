@@ -1,13 +1,10 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import org.jboss.netty.bootstrap.ClientBootstrap;
+import com.github.dreamhead.moco.internal.MocoClient;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.*;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 
 import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
 
 import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
 import static org.jboss.netty.buffer.ChannelBuffers.buffer;
@@ -30,31 +27,6 @@ public class ShutdownTask implements BootstrapTask {
                 return Channels.pipeline(new ShutdownHandler());
             }
         });
-    }
-
-    private static class MocoClient {
-        private ClientBootstrap bootstrap;
-
-        public void run(final int port, final ChannelPipelineFactory pipelineFactory) {
-            ChannelFactory factory = new NioClientSocketChannelFactory(
-                    Executors.newCachedThreadPool(),
-                    Executors.newCachedThreadPool());
-
-            bootstrap = new ClientBootstrap(factory);
-            bootstrap.setPipelineFactory(pipelineFactory);
-
-            bootstrap.setOption("tcpNoDelay", true);
-            bootstrap.setOption("keepAlive", true);
-
-            bootstrap.connect(new InetSocketAddress("127.0.0.1", port));
-        }
-
-        public void stop() {
-            if (bootstrap != null) {
-                bootstrap.releaseExternalResources();
-                bootstrap = null;
-            }
-        }
     }
 
     private class ShutdownHandler extends SimpleChannelHandler {
