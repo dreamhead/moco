@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
-import com.github.dreamhead.moco.setting.BaseSetting;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
@@ -14,12 +13,10 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
 public abstract class HttpServer extends ResponseSetting {
-    protected abstract void addSetting(BaseSetting setting);
+    protected abstract Setting onRequestAttached(RequestMatcher matcher);
 
     public Setting request(RequestMatcher matcher) {
-        BaseSetting setting = new BaseSetting(matcher);
-        addSetting(setting);
-        return setting;
+        return this.onRequestAttached(matcher);
     }
 
     public Setting request(RequestMatcher... matchers) {

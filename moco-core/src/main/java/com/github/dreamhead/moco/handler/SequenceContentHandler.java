@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.buffer.ChannelBuffer;
 
@@ -23,5 +24,12 @@ public class SequenceContentHandler extends AbstractContentHandler {
         }
 
         return current;
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        for (Resource resource : resources) {
+            resource.apply(config);
+        }
     }
 }

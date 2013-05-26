@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -32,5 +33,10 @@ public class JsonRequestMatcher implements RequestMatcher {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        this.resource.apply(config);
     }
 }

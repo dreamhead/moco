@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
@@ -38,6 +39,11 @@ public class XmlRequestMatcher implements RequestMatcher {
         } catch (SAXException e) {
             return false;
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        this.resource.apply(config);
     }
 
     private Document getResourceDocument(Resource resource) throws SAXException {

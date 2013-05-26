@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -24,6 +26,10 @@ public class UrlResource implements ContentResource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 
     @Override

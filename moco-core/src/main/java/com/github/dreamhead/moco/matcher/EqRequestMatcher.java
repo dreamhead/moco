@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -20,5 +21,10 @@ public class EqRequestMatcher implements RequestMatcher {
     public boolean match(HttpRequest request) {
         String extractContent = extractor.extract(request);
         return extractContent != null && Arrays.equals(extractContent.getBytes(), expected.asByteArray());
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        this.expected.apply(config);
     }
 }

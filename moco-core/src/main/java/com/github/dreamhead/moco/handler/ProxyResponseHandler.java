@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.apache.http.Header;
 import org.apache.http.client.fluent.Request;
@@ -54,6 +55,10 @@ public class ProxyResponseHandler implements ResponseHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 
     private Request createRequest(URL url, HttpRequest request) {

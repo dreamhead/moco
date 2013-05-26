@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
@@ -18,5 +19,9 @@ public class LatencyResponseHandler implements ResponseHandler {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

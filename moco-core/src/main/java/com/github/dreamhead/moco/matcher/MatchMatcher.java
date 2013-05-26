@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -19,5 +20,9 @@ public class MatchMatcher implements RequestMatcher {
     public boolean match(HttpRequest request) {
         String target = extractor.extract(request);
         return target != null && pattern.matcher(target).matches();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

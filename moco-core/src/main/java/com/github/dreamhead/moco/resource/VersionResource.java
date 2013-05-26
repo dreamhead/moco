@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public class VersionResource implements Resource {
     private final String version;
 
@@ -15,5 +17,9 @@ public class VersionResource implements Resource {
     @Override
     public byte[] asByteArray() {
         return version.getBytes();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

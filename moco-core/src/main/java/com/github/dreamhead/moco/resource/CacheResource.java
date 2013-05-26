@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public class CacheResource implements ContentResource {
     private final ContentResource resource;
     private LocalCache localCache;
@@ -22,6 +24,12 @@ public class CacheResource implements ContentResource {
         }
 
         return cache;
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        this.resource.apply(config);
+        this.localCache.apply(config);
     }
 
     private byte[] content() {

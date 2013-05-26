@@ -1,6 +1,10 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public interface Resource {
     String id();
     byte[] asByteArray();
+
+    void apply(MocoConfig config);
 }

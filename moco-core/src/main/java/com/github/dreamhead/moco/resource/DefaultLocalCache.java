@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public class DefaultLocalCache implements LocalCache {
     private WritableResource resource;
 
@@ -13,5 +15,10 @@ public class DefaultLocalCache implements LocalCache {
 
     public byte[] read() {
         return resource.asByteArray();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        this.resource.apply(config);
     }
 }

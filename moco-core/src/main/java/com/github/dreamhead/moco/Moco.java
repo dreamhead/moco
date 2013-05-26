@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.extractor.*;
+import com.github.dreamhead.moco.config.MocoContextConfig;import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
@@ -19,8 +19,12 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Moco {
-    public static HttpServer httpserver(final int port) {
-        return new ActualHttpServer(port);
+    public static HttpServer httpserver(final int port, final MocoConfig... configs) {
+        return new ActualHttpServer(port, configs);
+    }
+
+    public static MocoConfig context(final String context) {
+        return new MocoContextConfig(context);
     }
 
     public static RequestMatcher by(final String content) {

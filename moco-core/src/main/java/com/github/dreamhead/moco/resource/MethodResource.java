@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public class MethodResource implements Resource {
     private final String method;
 
@@ -15,5 +17,9 @@ public class MethodResource implements Resource {
     @Override
     public byte[] asByteArray() {
         return method.getBytes();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.io.Files;
 
@@ -27,6 +28,10 @@ public class FileResource implements WritableResource, ContentResource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 
     @Override

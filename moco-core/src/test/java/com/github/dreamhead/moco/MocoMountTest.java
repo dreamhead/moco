@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class MocoMountTest extends AbstractMocoTest {
 
-    public static final String MOUNT_DIR = "src/test/resources/test";
+    private static final String MOUNT_DIR = "src/test/resources/test";
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_if_dir_does_not_exist() {

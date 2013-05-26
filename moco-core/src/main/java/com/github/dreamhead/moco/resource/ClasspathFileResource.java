@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.util.FileContentType;
 
 import java.io.IOException;
@@ -26,6 +27,12 @@ public class ClasspathFileResource implements ContentResource {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void apply(MocoConfig config) {
+
+    }
+
 
     @Override
     public String getContentType() {

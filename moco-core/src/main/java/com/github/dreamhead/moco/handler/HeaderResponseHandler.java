@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -23,5 +24,9 @@ public class HeaderResponseHandler implements ResponseHandler {
         }
 
         HttpHeaders.addHeader(response, name, value);
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

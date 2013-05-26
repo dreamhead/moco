@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
@@ -15,5 +16,9 @@ public class StatusCodeResponseHandler implements ResponseHandler {
     @Override
     public void writeToResponse(HttpRequest request, HttpResponse response) {
         response.setStatus(status);
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

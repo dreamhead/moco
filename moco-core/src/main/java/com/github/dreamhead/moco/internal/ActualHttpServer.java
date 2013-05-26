@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpServer;
-import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.setting.BaseSetting;
 
 import java.util.ArrayList;
@@ -9,10 +8,12 @@ import java.util.List;
 
 public class ActualHttpServer extends HttpServer {
     private final int port;
+    private final MocoConfig[] configs;
     private List<BaseSetting> settings = new ArrayList<BaseSetting>();
 
-    public ActualHttpServer(int port) {
+    public ActualHttpServer(int port, MocoConfig... configs) {
         this.port = port;
+        this.configs = configs;
     }
 
     public List<BaseSetting> getSettings() {
@@ -27,8 +28,11 @@ public class ActualHttpServer extends HttpServer {
         return port;
     }
 
-    @Override
-    protected void addSetting(final BaseSetting setting) {
+    public void addSetting(final BaseSetting setting) {
+        for (MocoConfig config : configs) {
+            setting.apply(config);
+        }
+
         this.settings.add(setting);
     }
 
@@ -44,6 +48,18 @@ public class ActualHttpServer extends HttpServer {
     private void addSettings(List<BaseSetting> thatSettings) {
         for (BaseSetting thatSetting : thatSettings) {
             addSetting(thatSetting);
+        }
+    }
+
+    @Override
+    protected Setting onRequestAttached(RequestMatcher matcher) {
+        return new BaseSetting(this, matcher);
+    }
+
+    @Override
+    protected void onResponseAttached(ResponseHandler handler) {
+        for (MocoConfig config : configs) {
+            this.handler.apply(config);
         }
     }
 }

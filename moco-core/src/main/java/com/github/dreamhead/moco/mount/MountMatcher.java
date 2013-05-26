@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.mount;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
@@ -9,14 +10,16 @@ import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class MountMatcher implements RequestMatcher {
-    private final MountPathExtractor extractor;
+    private MountPathExtractor extractor;
 
     private final File dir;
     private final Iterable<MountPredicate> predicates;
+    private final MountTo target;
 
     public MountMatcher(File dir, MountTo target, Iterable<MountPredicate> predicates) {
         this.dir = dir;
         this.predicates = predicates;
+        this.target = target;
         this.extractor = new MountPathExtractor(target);
     }
 
@@ -24,6 +27,13 @@ public class MountMatcher implements RequestMatcher {
     public boolean match(HttpRequest request) {
         String relativePath = extractor.extract(request);
         return isTarget(relativePath) && new File(dir, relativePath).exists();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
+        if (config.isFor("uri")) {
+            this.extractor = new MountPathExtractor(target.apply(config));
+        }
     }
 
     private boolean isTarget(String relativePath) {

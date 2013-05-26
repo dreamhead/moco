@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.VersionResource;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -16,5 +17,9 @@ public class VersionResponseHandler implements ResponseHandler {
     @Override
     public void writeToResponse(HttpRequest request, HttpResponse response) {
         response.setProtocolVersion(httpVersion);
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 }

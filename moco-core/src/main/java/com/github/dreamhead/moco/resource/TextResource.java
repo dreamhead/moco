@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.MocoConfig;
+
 public class TextResource implements ContentResource {
     private final String text;
 
@@ -15,6 +17,10 @@ public class TextResource implements ContentResource {
     @Override
     public byte[] asByteArray() {
         return text.getBytes();
+    }
+
+    @Override
+    public void apply(MocoConfig config) {
     }
 
     @Override
