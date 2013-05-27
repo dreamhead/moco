@@ -29,11 +29,12 @@ public class ActualHttpServer extends HttpServer {
     }
 
     public void addSetting(final BaseSetting setting) {
+        BaseSetting configSetting = setting;
         for (MocoConfig config : configs) {
-            setting.apply(config);
+            configSetting = configSetting.apply(config);
         }
 
-        this.settings.add(setting);
+        this.settings.add(configSetting);
     }
 
     public HttpServer mergeHttpServer(ActualHttpServer thatServer) {

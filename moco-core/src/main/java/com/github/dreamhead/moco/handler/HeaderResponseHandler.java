@@ -27,6 +27,7 @@ public class HeaderResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public ResponseHandler apply(final MocoConfig config) {
+        return this;
     }
 }

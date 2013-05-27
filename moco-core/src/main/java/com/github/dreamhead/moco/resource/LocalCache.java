@@ -6,7 +6,7 @@ public interface LocalCache {
     void write(byte[] content);
     byte[] read();
 
-    void apply(MocoConfig config);
+    LocalCache apply(final MocoConfig config);
 
     LocalCache EMPTY_LOCAL_CACHE = new LocalCache() {
         @Override
@@ -19,7 +19,8 @@ public interface LocalCache {
         }
 
         @Override
-        public void apply(MocoConfig config) {
+        public LocalCache apply(final MocoConfig config) {
+            return this;
         }
     };
 }

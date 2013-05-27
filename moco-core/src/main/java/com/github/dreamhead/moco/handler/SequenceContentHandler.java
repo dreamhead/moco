@@ -1,8 +1,14 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 import org.jboss.netty.buffer.ChannelBuffer;
+
+import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class SequenceContentHandler extends AbstractContentHandler {
     private final Resource[] resources;
@@ -27,9 +33,17 @@ public class SequenceContentHandler extends AbstractContentHandler {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        for (Resource resource : resources) {
-            resource.apply(config);
-        }
+    public ResponseHandler apply(final MocoConfig config) {
+        FluentIterable<Resource> transformedResources = from(newArrayList(resources)).transform(applyConfig(config));
+        return new SequenceContentHandler(transformedResources.toArray(Resource.class));
+    }
+
+    private Function<Resource, Resource> applyConfig(final MocoConfig config) {
+        return new Function<Resource, Resource>() {
+            @Override
+            public Resource apply(Resource handler) {
+                return handler.apply(config);
+            }
+        };
     }
 }

@@ -20,6 +20,7 @@ public class VersionResource implements Resource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public Resource apply(final MocoConfig config) {
+        return this;
     }
 }

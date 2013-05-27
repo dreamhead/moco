@@ -18,7 +18,7 @@ public class DefaultLocalCache implements LocalCache {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.resource.apply(config);
+    public LocalCache apply(final MocoConfig config) {
+        return new DefaultLocalCache((WritableResource)resource.apply(config));
     }
 }

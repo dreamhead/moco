@@ -29,8 +29,8 @@ public class ClasspathFileResource implements ContentResource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-
+    public Resource apply(final MocoConfig config) {
+        return this;
     }
 
 

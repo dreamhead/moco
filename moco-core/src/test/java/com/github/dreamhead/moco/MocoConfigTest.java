@@ -28,7 +28,6 @@ public class MocoConfigTest {
     @Test
     public void should_config_context() throws Exception {
         server = httpserver(port(), context("/context"));
-
         server.get(by(uri("/foo"))).response("foo");
 
         running(server, new Runnable() {

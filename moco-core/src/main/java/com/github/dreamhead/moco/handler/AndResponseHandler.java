@@ -2,8 +2,11 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.google.common.base.Function;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
+
+import static com.google.common.collect.FluentIterable.from;
 
 public class AndResponseHandler implements ResponseHandler {
     private final Iterable<ResponseHandler> handlers;
@@ -20,9 +23,16 @@ public class AndResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        for (ResponseHandler handler : handlers) {
-            handler.apply(config);
-        }
+    public ResponseHandler apply(final MocoConfig config) {
+        return new AndResponseHandler(from(handlers).transform(applyConfig(config)));
+    }
+
+    private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
+        return new Function<ResponseHandler, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(ResponseHandler handler) {
+                return handler.apply(config);
+            }
+        };
     }
 }

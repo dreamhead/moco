@@ -36,7 +36,7 @@ public class JsonRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.resource.apply(config);
+    public RequestMatcher apply(final MocoConfig config) {
+        return new JsonRequestMatcher(this.extractor, this.resource.apply(config));
     }
 }

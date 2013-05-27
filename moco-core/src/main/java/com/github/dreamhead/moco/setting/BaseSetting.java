@@ -24,9 +24,10 @@ public class BaseSetting extends Setting {
         this.handler.writeToResponse(request, response);
     }
 
-    public void apply(MocoConfig config) {
-        this.matcher.apply(config);
-        this.handler.apply(config);
+    public BaseSetting apply(final MocoConfig config) {
+        BaseSetting setting = new BaseSetting(this.httpServer, this.matcher.apply(config));
+        setting.handler = this.handler.apply(config);
+        return setting;
     }
 
     @Override

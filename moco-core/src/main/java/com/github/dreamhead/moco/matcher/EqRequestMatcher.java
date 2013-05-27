@@ -24,7 +24,7 @@ public class EqRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.expected.apply(config);
+    public RequestMatcher apply(final MocoConfig config) {
+        return new EqRequestMatcher(extractor, expected.apply(config));
     }
 }

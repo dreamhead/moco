@@ -20,7 +20,8 @@ public class TextResource implements ContentResource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public Resource apply(final MocoConfig config) {
+        return this;
     }
 
     @Override

@@ -6,5 +6,5 @@ public interface Resource {
     String id();
     byte[] asByteArray();
 
-    void apply(MocoConfig config);
+    Resource apply(final MocoConfig config);
 }

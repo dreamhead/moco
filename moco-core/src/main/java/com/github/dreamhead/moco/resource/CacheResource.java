@@ -27,9 +27,8 @@ public class CacheResource implements ContentResource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.resource.apply(config);
-        this.localCache.apply(config);
+    public Resource apply(final MocoConfig config) {
+        return new CacheResource((ContentResource)resource.apply(config), localCache.apply(config));
     }
 
     private byte[] content() {

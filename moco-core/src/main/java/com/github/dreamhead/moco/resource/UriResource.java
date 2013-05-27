@@ -20,9 +20,11 @@ public class UriResource implements Resource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public Resource apply(final MocoConfig config) {
         if (config.isFor(this.id())) {
-            this.uri = config.apply(this.uri);
+            return new UriResource(config.apply(this.uri));
         }
+
+        return this;
     }
 }

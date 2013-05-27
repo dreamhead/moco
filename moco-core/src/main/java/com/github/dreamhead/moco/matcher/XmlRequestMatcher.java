@@ -42,8 +42,8 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.resource.apply(config);
+    public RequestMatcher apply(final MocoConfig config) {
+        return new XmlRequestMatcher(this.extractor, resource.apply(config));
     }
 
     private Document getResourceDocument(Resource resource) throws SAXException {

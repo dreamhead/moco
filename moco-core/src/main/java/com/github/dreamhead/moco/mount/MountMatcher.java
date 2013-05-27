@@ -30,10 +30,11 @@ public class MountMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public RequestMatcher apply(final MocoConfig config) {
         if (config.isFor("uri")) {
-            this.extractor = new MountPathExtractor(target.apply(config));
+            return new MountMatcher(this.dir, this.target.apply(config), this.predicates);
         }
+        return this;
     }
 
     private boolean isTarget(String relativePath) {

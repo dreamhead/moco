@@ -61,7 +61,7 @@ public class Moco {
     }
 
     public static RequestMatcher or(final RequestMatcher... matchers) {
-        return new OrRequestMatcher(matchers);
+        return new OrRequestMatcher(newArrayList(matchers));
     }
 
     public static TextResource text(final String text) {

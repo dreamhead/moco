@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -23,7 +24,7 @@ public class ContentHandler extends AbstractContentHandler {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        this.resource.apply(config);
+    public ResponseHandler apply(final MocoConfig config) {
+        return new ContentHandler((ContentResource)this.resource.apply(config));
     }
 }

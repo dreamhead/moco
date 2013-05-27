@@ -23,6 +23,7 @@ public class MatchMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public RequestMatcher apply(final MocoConfig config) {
+        return this;
     }
 }

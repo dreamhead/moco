@@ -4,11 +4,9 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-public class AndRequestMatcher implements RequestMatcher {
-    private Iterable<RequestMatcher> matchers;
-
+public class AndRequestMatcher extends CompositeRequestMatcher {
     public AndRequestMatcher(Iterable<RequestMatcher> matchers) {
-        this.matchers = matchers;
+        super(matchers);
     }
 
     @Override
@@ -23,9 +21,7 @@ public class AndRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public void apply(MocoConfig config) {
-        for (RequestMatcher matcher : matchers) {
-            matcher.apply(config);
-        }
+    public RequestMatcher apply(final MocoConfig config) {
+        return new AndRequestMatcher(applyToMatchers(config));
     }
 }

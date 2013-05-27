@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -43,9 +44,11 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public ResponseHandler apply(final MocoConfig config) {
         if (config.isFor("uri")) {
-            this.extractor = new MountPathExtractor(target.apply(config));
+            return new MountHandler(this.dir, this.target.apply(config));
         }
+
+        return this;
     }
 }

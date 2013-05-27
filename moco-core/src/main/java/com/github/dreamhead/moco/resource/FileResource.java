@@ -31,7 +31,8 @@ public class FileResource implements WritableResource, ContentResource {
     }
 
     @Override
-    public void apply(MocoConfig config) {
+    public Resource apply(final MocoConfig config) {
+        return this;
     }
 
     @Override
