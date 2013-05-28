@@ -25,6 +25,9 @@
 
 # Tools Support
 * Proguard to reduce uberjar size
+* homebrew
+* IntelliJ IDEA plugin
+* Eclipse plugin
 
 # Polyglot
 * Groovy

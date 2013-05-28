@@ -13,7 +13,7 @@ import java.io.IOException;
 import static com.google.common.io.Files.toByteArray;
 
 public class MountHandler extends AbstractContentResponseHandler {
-    private MountPathExtractor extractor;
+    private final MountPathExtractor extractor;
 
     private final File dir;
     private final MountTo target;

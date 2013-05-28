@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public class HeaderResponseHandler implements ResponseHandler {
-    private ContentTypeDetector detector = new ContentTypeDetector();
+    private final ContentTypeDetector detector = new ContentTypeDetector();
 
     private final String name;
     private final String value;

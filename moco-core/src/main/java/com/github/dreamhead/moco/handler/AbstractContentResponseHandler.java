@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public abstract class AbstractContentResponseHandler implements ResponseHandler {
-    private ContentTypeDetector detector = new ContentTypeDetector();
+    private final ContentTypeDetector detector = new ContentTypeDetector();
 
     protected abstract void writeContentResponse(HttpRequest request, ChannelBuffer buffer);
 

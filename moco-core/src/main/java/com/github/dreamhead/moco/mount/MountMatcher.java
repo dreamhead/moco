@@ -10,7 +10,7 @@ import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class MountMatcher implements RequestMatcher {
-    private MountPathExtractor extractor;
+    private final MountPathExtractor extractor;
 
     private final File dir;
     private final Iterable<MountPredicate> predicates;

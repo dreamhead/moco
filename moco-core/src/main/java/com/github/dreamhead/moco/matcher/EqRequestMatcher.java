@@ -9,8 +9,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import java.util.Arrays;
 
 public class EqRequestMatcher implements RequestMatcher {
-    private RequestExtractor extractor;
-    private Resource expected;
+    private final RequestExtractor extractor;
+    private final Resource expected;
 
     public EqRequestMatcher(RequestExtractor extractor, Resource expected) {
         this.extractor = extractor;
