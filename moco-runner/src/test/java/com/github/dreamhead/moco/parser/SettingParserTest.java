@@ -19,4 +19,16 @@ public class SettingParserTest {
         assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
         assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
     }
+
+    @Test
+    public void should_parse_settings_file_with_context() {
+        SettingParser parser = new SettingParser();
+        InputStream stream = SettingParserTest.class.getClassLoader().getResourceAsStream("multiple/context-settings.json");
+        List<GlobalSetting> globalSettings = parser.parse(stream);
+
+        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
+        assertThat(globalSettings.get(0).getContext(), is("/foo"));
+        assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
+        assertThat(globalSettings.get(1).getContext(), is("/bar"));
+    }
 }

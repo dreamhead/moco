@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
