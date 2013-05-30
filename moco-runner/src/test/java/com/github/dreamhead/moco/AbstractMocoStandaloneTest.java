@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class AbstractMocoStandaloneTest {
@@ -27,7 +28,7 @@ public class AbstractMocoStandaloneTest {
             for (String resourceName : resourceNames) {
                 streams.add(Resources.getResource(resourceName).openStream());
             }
-            runner = new JsonRunner(streams,port());
+            runner = newJsonRunnerWithStreams(streams, port());
             runner.run();
         } catch (IOException e) {
             throw new RuntimeException(e);

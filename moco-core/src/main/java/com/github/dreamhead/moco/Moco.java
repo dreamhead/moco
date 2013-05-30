@@ -24,7 +24,7 @@ public class Moco {
     }
 
     public static MocoConfig context(final String context) {
-        return new MocoContextConfig(context);
+        return new MocoContextConfig(checkNotNull(context, "context should not be null"));
     }
 
     public static RequestMatcher by(final String content) {

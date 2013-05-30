@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.model.MountSetting;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
@@ -36,8 +37,8 @@ public class HttpServerParser {
         mapper.registerModule(textContainerModule);
     }
 
-    public HttpServer parseServer(InputStream is, int port) {
-        return createHttpServer(readSessions(is), port);
+    public HttpServer parseServer(InputStream is, int port, MocoConfig... configs) {
+        return createHttpServer(readSessions(is), port, configs);
     }
 
     private List<SessionSetting> readSessions(InputStream is) {
@@ -51,8 +52,8 @@ public class HttpServerParser {
         }
     }
 
-    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port) {
-        HttpServer server = new ActualHttpServer(port);
+    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port, MocoConfig... configs) {
+        HttpServer server = new ActualHttpServer(port, configs);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 

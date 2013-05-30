@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 import static com.google.common.collect.ImmutableList.of;
 
 public abstract class FileRunner implements Runner {
@@ -43,7 +44,7 @@ public abstract class FileRunner implements Runner {
         return new FileRunner(file, port) {
             @Override
             protected Runner createRunner() {
-                return new JsonRunner(of(toInputStream(file)), port);
+                return newJsonRunnerWithStreams(of(toInputStream(file)), port);
             }
         };
     }

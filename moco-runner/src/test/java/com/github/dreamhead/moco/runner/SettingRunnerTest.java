@@ -29,4 +29,14 @@ public class SettingRunnerTest {
         assertThat(helper.get(remoteUrl("/foo")), is("foo"));
         assertThat(helper.get(remoteUrl("/bar")), is("bar"));
     }
+
+    @Test
+    public void should_run_with_setting_with_context() throws IOException {
+        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/context-settings.json");
+        runner = new SettingRunner(stream, 12306);
+        runner.run();
+
+        assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
+        assertThat(helper.get(remoteUrl("/bar/bar")), is("bar"));
+    }
 }
