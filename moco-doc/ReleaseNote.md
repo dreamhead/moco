@@ -3,6 +3,11 @@
 ## Usage
 * Settings file
 
+## Congiruation
+### Response
+#### Misc Response
+* remove cache
+
 # Release 0.7 (1-May-2013)
 
 the first public release of Moco

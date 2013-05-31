@@ -21,7 +21,6 @@ public class ResponseSetting extends AbstractResource {
     private String status;
     private Map<String, String> headers;
     private Map<String, String> cookies;
-    private CacheSetting cache;
     private Long latency;
 
     @Override
@@ -35,7 +34,6 @@ public class ResponseSetting extends AbstractResource {
                 .add("headers", headers)
                 .add("cookies", cookies)
                 .add("url", url)
-                .add("cache", cache)
                 .add("latency", latency)
                 .toString();
     }
@@ -44,7 +42,6 @@ public class ResponseSetting extends AbstractResource {
         return (text != null)
                 || (file != null)
                 || (url != null)
-                || (cache != null)
                 || (pathResource != null)
                 || (version != null);
     }
@@ -54,11 +51,6 @@ public class ResponseSetting extends AbstractResource {
         Resource resource = super.retrieveResource();
         if (resource != null) {
             return resource;
-        }
-
-        Resource cacheResource = cache.retrieveResource();
-        if (cacheResource != null) {
-            return cacheResource;
         }
 
         throw new IllegalArgumentException("unknown response setting with " + this);

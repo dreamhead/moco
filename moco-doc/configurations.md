@@ -662,56 +662,6 @@ We can do that by
 server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
 
-### Cache
-Moco supports cache, which means you can cache resource access, so no need to access resource many times.
-
-* API
-
-```java
-server.response(cache(file("target.txt")));
-```
-
-* JSON
-
-```json
-{
-  "response" :
-  {
-    "cache" :
-      {
-        "file" : "cache.response"
-      }
-  }
-}
-```
-
-You can even persist your cache
-* API
-
-```java
-server.response(cache(file("target.txt"), with(file("persist.txt"))));
-```
-
-* JSON
-
-```json
-{
-  "response" :
-    {
-      "cache" :
-        {
-          "file" : "cache.response",
-          "with" :
-            {
-              "file" : "src/test/resources/cache/cache.persistence"
-            }
-        }
-    }
-}
-```
-
-**TIPS** even if the resource is not accessible, response can still be returned from persistence file.
-
 ## Mount
 
 Moco allows us to mount a directory to uri.
