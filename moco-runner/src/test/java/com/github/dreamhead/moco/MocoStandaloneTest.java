@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
@@ -155,8 +156,9 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_run_as_proxy() throws IOException {
         runWithConfiguration("foo.json");
-        HttpResponse response = Request.Get(remoteUrl("/url")).execute().returnResponse();
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+        HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
+        String value = response.getHeaders("Content-Type")[0].getValue();
+        assertThat(value, startsWith("text/html"));
     }
 
     @Test

@@ -91,10 +91,10 @@
     },
     {
         "request": {
-            "uri": "/url"
+            "uri": "/proxy"
         },
         "response": {
-            "url": "https://github.com/"
+            "proxy": "https://github.com/"
         }
     },
     {

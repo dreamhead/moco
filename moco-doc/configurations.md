@@ -555,7 +555,7 @@ We can also response with the specified url, just like a proxy.
 * API
 
 ```java
-server.request(by("foo")).response(url("http://www.github.com"));
+server.request(by("foo")).response(proxy("http://www.github.com"));
 ```
 
 * JSON
@@ -568,11 +568,10 @@ server.request(by("foo")).response(url("http://www.github.com"));
     },
   "response" :
     {
-      "url" : "http://www.github.com"
+      "proxy" : "http://www.github.com"
     }
 }
 ```
-
 
 ### Redirect
 

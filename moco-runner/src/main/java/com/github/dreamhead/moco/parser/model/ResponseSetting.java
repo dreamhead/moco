@@ -19,6 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends AbstractResource {
     private String status;
+    private String proxy;
     private Map<String, String> headers;
     private Map<String, String> cookies;
     private Long latency;
@@ -33,7 +34,7 @@ public class ResponseSetting extends AbstractResource {
                 .add("status", status)
                 .add("headers", headers)
                 .add("cookies", cookies)
-                .add("url", url)
+                .add("proxy", proxy)
                 .add("latency", latency)
                 .toString();
     }
@@ -41,7 +42,6 @@ public class ResponseSetting extends AbstractResource {
     public boolean isResource() {
         return (text != null)
                 || (file != null)
-                || (url != null)
                 || (pathResource != null)
                 || (version != null);
     }
@@ -76,6 +76,10 @@ public class ResponseSetting extends AbstractResource {
 
         if (cookies != null) {
             handlers.add(toResponseHandler(cookies, toCookieResponseHandler()));
+        }
+
+        if (proxy != null) {
+            handlers.add(proxy(proxy));
         }
 
         if (handlers.isEmpty()) {

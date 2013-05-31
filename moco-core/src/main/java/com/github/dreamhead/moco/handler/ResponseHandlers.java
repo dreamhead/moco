@@ -13,7 +13,6 @@ public class ResponseHandlers {
             .put("file", ContentHandler.class)
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
-            .put("url", ContentHandler.class)
             .put("version", VersionResponseHandler.class).build();
 
     public static ResponseHandler responseHandler(Resource resource) {

@@ -448,7 +448,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_run_as_proxy() throws Exception {
-        server.response(url("https://github.com/"));
+        server.response(proxy("https://github.com/"));
 
         running(server, new Runnable() {
             @Override

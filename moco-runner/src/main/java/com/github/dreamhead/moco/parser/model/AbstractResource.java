@@ -8,7 +8,6 @@ import static com.github.dreamhead.moco.Moco.*;
 public abstract class AbstractResource {
     protected String text;
     protected String file;
-    protected String url;
     @JsonProperty("path_resource")
     protected String pathResource;
     protected String version;
@@ -20,10 +19,6 @@ public abstract class AbstractResource {
 
         if (file != null) {
             return file(file);
-        }
-
-        if (url != null) {
-            return url(url);
         }
 
         if (pathResource != null) {

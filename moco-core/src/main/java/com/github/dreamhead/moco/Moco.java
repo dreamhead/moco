@@ -157,10 +157,6 @@ public class Moco {
         return new StatusCodeResponseHandler(code);
     }
 
-    public static UrlResource url(final String url) {
-        return new UrlResource(toUrl(url));
-    }
-
     public static ResponseHandler proxy(final String url) {
         return new ProxyResponseHandler(toUrl(url));
     }
