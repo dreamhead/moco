@@ -1,5 +1,5 @@
 # Settings
-We can write all our configurations in one single configuration files. But if we want stub many services in one Moco instance, the configurations file would be huge.
+We can write all our configurations in one single configuration files. But if we want stub many services in a single Moco instance, the configurations file would be huge.
 
 In this case, we can use settings file to separate our configurations for different into different configugration files.
 
@@ -53,3 +53,26 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
 ```
 
 Feel free to open your browser to try.
+
+## Configuration
+
+In fact, there are some configurations for settings to simplify your configuration.
+
+## Context
+
+We can put all responses for one service in a specified context:
+
+```json
+[
+    {
+        "context": "/foo",
+        "include": "src/test/resources/multiple/foo.json"
+    },
+    {
+        "context": "/bar",
+        "include": "src/test/resources/multiple/bar.json"
+    }
+]
+```
+
+Now all configurations in foo.json must be accessed by /foo context.
