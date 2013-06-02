@@ -1,8 +1,12 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.extractor.UriRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
+import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.resource.Resource;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+
+import java.util.regex.Pattern;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
@@ -36,5 +40,9 @@ public abstract class ResponseSetting {
 
     public void redirectTo(String url) {
         this.response(status(HttpResponseStatus.FOUND.getCode()), header("Location", url));
+    }
+
+    protected static RequestMatcher context(String context) {
+        return new MatchMatcher(new UriRequestExtractor(), Pattern.compile(context + "\\w*"));
     }
 }

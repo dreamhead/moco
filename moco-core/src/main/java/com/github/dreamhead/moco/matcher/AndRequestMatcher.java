@@ -22,6 +22,11 @@ public class AndRequestMatcher extends CompositeRequestMatcher {
 
     @Override
     public RequestMatcher apply(final MocoConfig config) {
-        return new AndRequestMatcher(applyToMatchers(config));
+        Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
+        if (appliedMatchers == this.matchers) {
+            return this;
+        }
+
+        return new AndRequestMatcher(appliedMatchers);
     }
 }

@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.eventbus.EventBus;
@@ -12,17 +13,18 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MocoHandler extends SimpleChannelHandler {
     private EventBus eventBus = new EventBus();
 
-    private List<BaseSetting> settings = new ArrayList<BaseSetting>();
-    private ResponseHandler anyResponseHandler;
+    private final List<BaseSetting> settings;
+    private final RequestMatcher anyRequestMatcher;
+    private final ResponseHandler anyResponseHandler;
 
     public MocoHandler(ActualHttpServer server) {
         this.settings = server.getSettings();
+        this.anyRequestMatcher = server.getAnyRequestMatcher();
         this.anyResponseHandler = server.getAnyResponseHandler();
         this.eventBus.register(new MocoEventListener());
     }
@@ -65,8 +67,10 @@ public class MocoHandler extends SimpleChannelHandler {
         }
 
         if (anyResponseHandler != null) {
-            anyResponseHandler.writeToResponse(request, response);
-            return response;
+            if (anyRequestMatcher.match(request)) {
+                anyResponseHandler.writeToResponse(request, response);
+                return response;
+            }
         }
 
         return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);

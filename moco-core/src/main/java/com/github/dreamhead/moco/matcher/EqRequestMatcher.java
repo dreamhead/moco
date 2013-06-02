@@ -25,6 +25,11 @@ public class EqRequestMatcher implements RequestMatcher {
 
     @Override
     public RequestMatcher apply(final MocoConfig config) {
-        return new EqRequestMatcher(extractor, expected.apply(config));
+        Resource appliedResource = expected.apply(config);
+        if (appliedResource == expected) {
+            return this;
+        }
+
+        return new EqRequestMatcher(extractor, appliedResource);
     }
 }

@@ -22,6 +22,11 @@ public class OrRequestMatcher extends CompositeRequestMatcher {
 
     @Override
     public RequestMatcher apply(final MocoConfig config) {
+        Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
+        if (appliedMatchers == this.matchers) {
+            return this;
+        }
+
         return new OrRequestMatcher(applyToMatchers(config));
     }
 }

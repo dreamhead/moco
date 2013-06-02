@@ -5,8 +5,11 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.Setting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
+
+import static com.google.common.collect.ImmutableList.of;
 
 public class BaseSetting extends Setting {
     private final ActualHttpServer httpServer;
@@ -25,7 +28,12 @@ public class BaseSetting extends Setting {
     }
 
     public BaseSetting apply(final MocoConfig config) {
-        BaseSetting setting = new BaseSetting(this.httpServer, this.matcher.apply(config));
+        RequestMatcher appliedMatcher = this.matcher.apply(config);
+        if (config.isFor("uri") && this.matcher == appliedMatcher) {
+            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context(config.apply(""))));
+        }
+
+        BaseSetting setting = new BaseSetting(this.httpServer, appliedMatcher);
         setting.handler = this.handler.apply(config);
         return setting;
     }

@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +11,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,11 +25,11 @@ public class MocoConfigTest {
     @Before
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
+        server = httpserver(port(), context("/context"));
     }
 
     @Test
     public void should_config_context() throws Exception {
-        server = httpserver(port(), context("/context"));
         server.get(by(uri("/foo"))).response("foo");
 
         running(server, new Runnable() {
@@ -40,14 +42,49 @@ public class MocoConfigTest {
 
     @Test
     public void should_mount_correctly() throws Exception {
-        server = httpserver(port(), context("/context"));
-
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/context/dir/dir.response")), is("response from dir"));
+            }
+        });
+    }
+
+    @Test
+    public void should_have_context_even_if_there_is_no_context_configured() throws Exception {
+        server.response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String content = helper.get(remoteUrl("/context"));
+                assertThat(content, is("foo"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_context() throws Exception {
+        server.request(by("foo")).response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.postContent(root(), "foo");
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_context_for_any_response_handler() throws Exception {
+        server.response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.get(root());
             }
         });
     }

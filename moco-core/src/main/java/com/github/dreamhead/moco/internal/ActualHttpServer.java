@@ -1,15 +1,20 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.setting.BaseSetting;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.ImmutableList.of;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
     private final int port;
     private final MocoConfig[] configs;
-    private List<BaseSetting> settings = new ArrayList<BaseSetting>();
+    private List<BaseSetting> settings = newArrayList();
+    private RequestMatcher matcher = anyRequest();
 
     public ActualHttpServer(int port, MocoConfig... configs) {
         this.port = port;
@@ -18,6 +23,10 @@ public class ActualHttpServer extends HttpServer {
 
     public List<BaseSetting> getSettings() {
         return settings;
+    }
+
+    public RequestMatcher getAnyRequestMatcher() {
+        return this.matcher;
     }
 
     public ResponseHandler getAnyResponseHandler() {
@@ -60,7 +69,27 @@ public class ActualHttpServer extends HttpServer {
     @Override
     protected void onResponseAttached(ResponseHandler handler) {
         for (MocoConfig config : configs) {
-            this.handler.apply(config);
+            RequestMatcher appliedMatcher = this.matcher.apply(config);
+            if (config.isFor("uri") && this.matcher == appliedMatcher) {
+                appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context(config.apply(""))));
+            }
+
+            this.matcher = appliedMatcher;
+            this.handler = this.handler.apply(config);
         }
+    }
+
+    private static RequestMatcher anyRequest() {
+        return new RequestMatcher() {
+            @Override
+            public boolean match(HttpRequest request) {
+                return true;
+            }
+
+            @Override
+            public RequestMatcher apply(MocoConfig config) {
+                return this;
+            }
+        };
     }
 }
