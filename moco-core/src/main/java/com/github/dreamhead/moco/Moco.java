@@ -51,7 +51,7 @@ public class Moco {
         return match(extractor, text(expected));
     }
 
-    public static RequestMatcher match(final RequestExtractor extractor, final Resource expected) {
+    private static RequestMatcher match(final RequestExtractor extractor, final Resource expected) {
         Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
         return new MatchMatcher(extractor, pattern);
     }

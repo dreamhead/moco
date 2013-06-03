@@ -43,6 +43,6 @@ public abstract class ResponseSetting {
     }
 
     protected static RequestMatcher context(String context) {
-        return new MatchMatcher(new UriRequestExtractor(), Pattern.compile(context + "\\w*"));
+        return match(uri(context + "\\w*"));
     }
 }
