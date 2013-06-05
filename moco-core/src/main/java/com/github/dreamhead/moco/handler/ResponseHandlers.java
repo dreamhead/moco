@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 import static java.lang.String.format;
 
 public class ResponseHandlers {
-    private static ImmutableMap<String, Class> handlers = ImmutableMap.<String, Class>builder()
+    private static final ImmutableMap<String, Class> handlers = ImmutableMap.<String, Class>builder()
             .put("file", ContentHandler.class)
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)

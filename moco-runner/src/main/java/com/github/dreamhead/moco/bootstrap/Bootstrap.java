@@ -8,8 +8,8 @@ public class Bootstrap implements BootstrapTask {
     private static final int DEFAULT_SHUTDOWN_PORT = 9527;
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
-    private BootstrapTask startTask = new StartTask(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
-    private BootstrapTask shutdownTask = new ShutdownTask(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
+    private final BootstrapTask startTask = new StartTask(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
+    private final BootstrapTask shutdownTask = new ShutdownTask(DEFAULT_SHUTDOWN_PORT, DEFAULT_SHUTDOWN_KEY);
 
     @Override
     public void run(String[] args) {

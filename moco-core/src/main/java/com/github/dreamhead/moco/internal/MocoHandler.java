@@ -16,7 +16,7 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import java.util.List;
 
 public class MocoHandler extends SimpleChannelHandler {
-    private EventBus eventBus = new EventBus();
+    private final EventBus eventBus = new EventBus();
 
     private final List<BaseSetting> settings;
     private final RequestMatcher anyRequestMatcher;

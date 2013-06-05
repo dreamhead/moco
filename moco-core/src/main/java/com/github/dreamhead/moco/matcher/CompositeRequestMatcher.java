@@ -8,7 +8,7 @@ import com.google.common.collect.FluentIterable;
 import static com.google.common.collect.FluentIterable.from;
 
 public abstract class CompositeRequestMatcher implements RequestMatcher {
-    protected Iterable<RequestMatcher> matchers;
+    protected final Iterable<RequestMatcher> matchers;
 
     public CompositeRequestMatcher(Iterable<RequestMatcher> matchers) {
         this.matchers = matchers;

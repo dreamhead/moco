@@ -17,7 +17,7 @@ public class JsonRunner implements Runner {
 
     private final HttpServerParser httpServerParser = new HttpServerParser();
     private final StandaloneRunner runner = new StandaloneRunner();
-    private HttpServer httpServer;
+    private final HttpServer httpServer;
 
     private JsonRunner(Iterable<? extends RunnerSetting> settings, int port) {
         this.httpServer = createHttpServer(settings, port);

@@ -13,7 +13,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ActualHttpServer extends HttpServer {
     private final int port;
     private final MocoConfig[] configs;
-    private List<BaseSetting> settings = newArrayList();
+    private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
 
     public ActualHttpServer(int port, MocoConfig... configs) {

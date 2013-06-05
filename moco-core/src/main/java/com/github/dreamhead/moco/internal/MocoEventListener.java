@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.internal.dumper.Dumper;
 import com.github.dreamhead.moco.internal.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.internal.dumper.HttpResponseDumper;
 import com.google.common.eventbus.Subscribe;
@@ -10,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 public class MocoEventListener {
     private Logger logger = LoggerFactory.getLogger(MocoEventListener.class);
-    private final HttpRequestDumper requestDumper = new HttpRequestDumper();
-    private final HttpResponseDumper responseDumper = new HttpResponseDumper();
+    private final Dumper requestDumper = new HttpRequestDumper();
+    private final Dumper responseDumper = new HttpResponseDumper();
 
     @Subscribe
     public void onMessageArrived(HttpRequest request) {

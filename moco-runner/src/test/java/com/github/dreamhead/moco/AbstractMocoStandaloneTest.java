@@ -15,7 +15,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
-    protected JsonRunner runner;
+    private JsonRunner runner;
 
     @After
     public void teardown() {

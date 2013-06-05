@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ParamRequestExtractor implements RequestExtractor {
-    private String param;
+    private final String param;
 
     public ParamRequestExtractor(String param) {
         this.param = param;

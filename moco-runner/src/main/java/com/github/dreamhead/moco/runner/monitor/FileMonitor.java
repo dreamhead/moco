@@ -13,14 +13,11 @@ public class FileMonitor implements Monitor {
     public static final int INTERVAL = 1000;
     private static Logger logger = LoggerFactory.getLogger(FileMonitor.class);
 
-    private FileAlterationMonitor monitor;
+    private final FileAlterationMonitor monitor;
     private boolean running = false;
 
-    private File file;
-
     public FileMonitor(File file, FileAlterationListener listener) {
-        this.file = file;
-        this.monitor = monitorFile(this.file, listener);
+        this.monitor = monitorFile(file, listener);
     }
 
     public synchronized void startMonitor() {

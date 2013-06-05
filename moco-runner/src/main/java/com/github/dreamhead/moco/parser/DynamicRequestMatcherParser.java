@@ -25,7 +25,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.of;
 
 public class DynamicRequestMatcherParser implements RequestMatcherParser {
-    private Map<String, String> methods = of(
+    private final Map<String, String> methods = of(
             "headers", "header",
             "queries", "query",
             "xpaths", "xpath",

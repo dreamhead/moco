@@ -12,7 +12,7 @@ import static org.jboss.netty.buffer.ChannelBuffers.buffer;
 public class ShutdownTask implements BootstrapTask {
     private final int defaultShutdownPort;
     private final String defaultShutdownKey;
-    private MocoClient client = new MocoClient();
+    private final MocoClient client = new MocoClient();
 
     public ShutdownTask(int defaultShutdownPort, String defaultShutdownKey) {
         this.defaultShutdownPort = defaultShutdownPort;

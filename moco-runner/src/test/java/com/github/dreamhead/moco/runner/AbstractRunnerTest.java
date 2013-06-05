@@ -28,7 +28,7 @@ public abstract class AbstractRunnerTest {
         }
     }
 
-    protected void changeFileContent(File response, String content) throws FileNotFoundException {
+    protected void changeFileContent(File response, String content) {
         PrintStream stream = null;
         try {
             stream = new PrintStream(new FileOutputStream(response));

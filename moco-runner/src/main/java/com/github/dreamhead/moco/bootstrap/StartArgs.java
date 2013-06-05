@@ -3,9 +3,9 @@ package com.github.dreamhead.moco.bootstrap;
 import org.apache.commons.cli.*;
 
 public class StartArgs extends ShutdownPortOption {
-    private int port;
-    private String configurationFile;
-    private String settings;
+    private final int port;
+    private final String configurationFile;
+    private final String settings;
 
     public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings) {
         super(shutdownPort);

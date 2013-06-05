@@ -11,7 +11,7 @@ import java.util.Set;
 import static com.google.common.collect.Iterables.find;
 
 public class Cookies {
-    private CookieDecoder decoder = new CookieDecoder();
+    private final CookieDecoder decoder = new CookieDecoder();
 
     public String encodeCookie(String key, String value) {
         CookieEncoder cookieEncoder = new CookieEncoder(true);

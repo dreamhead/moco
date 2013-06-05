@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProxyResponseHandler implements ResponseHandler {
-    private URL url;
+    private final URL url;
 
     public ProxyResponseHandler(URL url) {
         this.url = url;

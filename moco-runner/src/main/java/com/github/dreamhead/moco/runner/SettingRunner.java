@@ -18,7 +18,7 @@ public class SettingRunner implements Runner {
     private final int port;
     private final List<GlobalSetting> globalSettings;
     private JsonRunner jsonRunner;
-    private FluentIterable<File> files;
+    private final FluentIterable<File> files;
 
     public SettingRunner(InputStream stream, int port) {
         this.port = port;

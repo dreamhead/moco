@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.runner;
 import com.github.dreamhead.moco.runner.monitor.Monitor;
 
 public class MonitorRunner implements Runner {
-    private Runner runner;
-    private Monitor monitor;
+    private final Runner runner;
+    private final Monitor monitor;
 
     public MonitorRunner(Runner runner, Monitor monitor) {
         this.runner = runner;

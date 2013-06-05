@@ -8,7 +8,7 @@ import java.io.File;
 import static com.google.common.collect.FluentIterable.from;
 
 public class FilesMonitor implements Monitor {
-    private Iterable<FileMonitor> monitors;
+    private final Iterable<FileMonitor> monitors;
 
     public FilesMonitor(Iterable<File> files, final FileAlterationListener listener) {
         this.monitors = from(files).transform(new Function<File, FileMonitor>() {

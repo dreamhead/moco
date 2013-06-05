@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.parser.model;
 import com.google.common.base.Objects;
 
 public class TextContainer {
-    private String text;
-    private String operation;
+    private final String text;
+    private final String operation;
 
     public TextContainer(String text, String operation) {
         this.text = text;
