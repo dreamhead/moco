@@ -3,8 +3,14 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.apache.http.Header;
-import org.apache.http.client.fluent.Request;
+import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -28,33 +34,50 @@ public class ProxyResponseHandler implements ResponseHandler {
         try {
             URL url = remoteUrl(request);
 
-            Request targetRequest = createRequest(url, request);
-            HttpVersion protocolVersion = request.getProtocolVersion();
-            targetRequest.version(new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion()));
-            for (Map.Entry<String, String> entry : request.getHeaders()) {
-                targetRequest.addHeader(entry.getKey(), entry.getValue());
-            }
-            targetRequest.removeHeaders("Content-Length");
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+
+            HttpRequestBase remoteRequest = createRemoteRequest(request, url);
 
             long contentLength = HttpHeaders.getContentLength(request, -1);
-            if (contentLength > 0) {
-                targetRequest.bodyByteArray(request.getContent().array());
+            if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
+                HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
+                entityRequest.setEntity(new ByteArrayEntity(request.getContent().array()));
             }
 
-            org.apache.http.HttpResponse targetResponse = targetRequest.config(ClientPNames.HANDLE_REDIRECTS, false).execute().returnResponse();
-            response.setStatus(HttpResponseStatus.valueOf(targetResponse.getStatusLine().getStatusCode()));
-
-            Header[] allHeaders = targetResponse.getAllHeaders();
-            for (Header header : allHeaders) {
-                response.setHeader(header.getName(), header.getValue());
-            }
-
-            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-            buffer.writeBytes(EntityUtils.toByteArray(targetResponse.getEntity()));
-            response.setContent(buffer);
+            setupResponse(response, httpclient.execute(remoteRequest));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setupResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
+        response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
+
+        Header[] allHeaders = remoteResponse.getAllHeaders();
+        for (Header header : allHeaders) {
+            response.setHeader(header.getName(), header.getValue());
+        }
+
+        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+        buffer.writeBytes(EntityUtils.toByteArray(remoteResponse.getEntity()));
+        response.setContent(buffer);
+    }
+
+    private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
+        HttpRequestBase remoteRequest = createBaseRequest(url, request);
+
+        HttpVersion protocolVersion = request.getProtocolVersion();
+        org.apache.http.HttpVersion remoteVersion = new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion());
+
+        remoteRequest.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, remoteVersion);
+
+        for (Map.Entry<String, String> entry : request.getHeaders()) {
+            remoteRequest.addHeader(entry.getKey(), entry.getValue());
+        }
+
+        remoteRequest.removeHeaders("Content-Length");
+        remoteRequest.getParams().setParameter(ClientPNames.HANDLE_REDIRECTS, false);
+        return remoteRequest;
     }
 
     @Override
@@ -62,13 +85,13 @@ public class ProxyResponseHandler implements ResponseHandler {
         return this;
     }
 
-    private Request createRequest(URL url, HttpRequest request) {
+    private HttpRequestBase createBaseRequest(URL url, HttpRequest request) {
         if (request.getMethod() == HttpMethod.GET) {
-            return Request.Get(url.toString());
+            return new HttpGet(url.toString());
         }
 
         if (request.getMethod() == HttpMethod.POST) {
-            return Request.Post(url.toString());
+            return new HttpPost(url.toString());
         }
 
         throw new RuntimeException("unknown HTTP method");
