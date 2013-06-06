@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MocoEventListener {
-    private Logger logger = LoggerFactory.getLogger(MocoEventListener.class);
-    private final Dumper requestDumper = new HttpRequestDumper();
-    private final Dumper responseDumper = new HttpResponseDumper();
+    private static Logger logger = LoggerFactory.getLogger(MocoEventListener.class);
+    private final Dumper<HttpRequest> requestDumper = new HttpRequestDumper();
+    private final Dumper<HttpResponse> responseDumper = new HttpResponseDumper();
 
     @Subscribe
     public void onMessageArrived(HttpRequest request) {

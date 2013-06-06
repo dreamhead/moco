@@ -4,12 +4,14 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -34,7 +36,7 @@ public class ProxyResponseHandler implements ResponseHandler {
         try {
             URL url = remoteUrl(request);
 
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpClient httpclient = new DefaultHttpClient(createParams(request));
 
             HttpRequestBase remoteRequest = createRemoteRequest(request, url);
 
@@ -48,6 +50,18 @@ public class ProxyResponseHandler implements ResponseHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private BasicHttpParams createParams(HttpRequest request) {
+        BasicHttpParams params = new BasicHttpParams();
+        params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, createVersion(request));
+        params.setParameter(ClientPNames.HANDLE_REDIRECTS, false);
+        return params;
+    }
+
+    private org.apache.http.HttpVersion createVersion(HttpRequest request) {
+        HttpVersion protocolVersion = request.getProtocolVersion();
+        return new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion());
     }
 
     private void setupResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
@@ -65,18 +79,11 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request);
-
-        HttpVersion protocolVersion = request.getProtocolVersion();
-        org.apache.http.HttpVersion remoteVersion = new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion());
-
-        remoteRequest.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, remoteVersion);
-
         for (Map.Entry<String, String> entry : request.getHeaders()) {
             remoteRequest.addHeader(entry.getKey(), entry.getValue());
         }
 
         remoteRequest.removeHeaders("Content-Length");
-        remoteRequest.getParams().setParameter(ClientPNames.HANDLE_REDIRECTS, false);
         return remoteRequest;
     }
 
