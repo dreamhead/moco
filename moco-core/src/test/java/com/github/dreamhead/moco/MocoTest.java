@@ -47,6 +47,18 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_return_expected_response_with_content_api() throws Exception {
+        server.response(content("foo"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo"));
+            }
+        });
+    }
+
+    @Test
     public void should_return_expected_response_from_file() throws Exception {
         server.response(file("src/test/resources/foo.response"));
 
