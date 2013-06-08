@@ -1,20 +1,18 @@
-# Dependencies
+# Usage
+You have several ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.
+
+On the other hand, Moco has serveral different ways to integrate with some tools: Maven plugin, Gradle plugin and shell support.
+
+## API
+
+### dependeny
+
 Moco has been published on Maven repository, so you can refer to it directly in your dependency. This is core dependency
 
 ```xml
 <dependency>
   <groupId>com.github.dreamhead</groupId>
   <artifactId>moco-core</artifactId>
-  <version>0.7</version>
-</dependency>
-```
-
-and runner
-
-```xml
-<dependency>
-  <groupId>com.github.dreamhead</groupId>
-  <artifactId>moco-runner</artifactId>
   <version>0.7</version>
 </dependency>
 ```
@@ -29,18 +27,12 @@ repositories {
 dependencies {
   compile(
     "com.github.dreamhead:moco-core:0.7",
-    "com.github.dreamhead:moco-runner:0.7"
   )
 }
 ```
 
-Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
+### API example
 
-# Usage
-You have several ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.
-
-## API
 Here is an typical Moco test case in JUnit.
 
 ```java
@@ -64,7 +56,11 @@ As shown above, we created a new server and configure it as expected. And then r
 Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fluent.html) to request our testing server.
 
 ## Standalone
-Now we are going to run Moco as standalone server. First of all, a JSON configuration file needs to be provided to start Moco.
+
+Moco can be used as standalone to run with configuration and you can download standalone directly:
+[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
+
+First of all, a JSON configuration file needs to be provided to start Moco.
 
 ```json
 [
@@ -85,19 +81,19 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.
 
-# Maven Plugin
+## Maven Plugin
 
 Moco also can be used as Maven plugin.
 
 https://github.com/GarrettHeel/moco-maven-plugin
 
-# Gradle Plugin
+## Gradle Plugin
 
 Moco can be used in Gradle
 
 https://github.com/silverjava/moco-gradle-plugin
 
-# Shell
+## Shell
 
 If you are using Mac or Linux, you may try the following approach:
 
