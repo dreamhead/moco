@@ -5,6 +5,10 @@
 
 ## Congiruation
 ### Response
+#### Integration
+* proxy
+* remove url (using proxy instead)
+
 #### Misc Response
 * remove cache
 

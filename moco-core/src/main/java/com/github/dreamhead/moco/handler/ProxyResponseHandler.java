@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -13,7 +14,6 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.util.EntityUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
@@ -73,7 +73,8 @@ public class ProxyResponseHandler implements ResponseHandler {
         }
 
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-        buffer.writeBytes(EntityUtils.toByteArray(remoteResponse.getEntity()));
+        HttpEntity entity = remoteResponse.getEntity();
+        buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
         response.setContent(buffer);
     }
 
