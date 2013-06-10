@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-  compile(
+  testCompile(
     "com.github.dreamhead:moco-core:0.7",
   )
 }

@@ -2,7 +2,6 @@
 
 ## Configuration
 * Setting file
- * context path
  * relative file root
 
 ## Matcher
@@ -24,6 +23,7 @@
 * Cookbook
 
 # Tools Support
+* JUnit better support
 * Proguard to reduce uberjar size
 * homebrew
 * IntelliJ IDEA plugin
