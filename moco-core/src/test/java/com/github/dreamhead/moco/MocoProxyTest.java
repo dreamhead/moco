@@ -1,11 +1,14 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.Files;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
@@ -104,5 +107,21 @@ public class MocoProxyTest extends AbstractMocoTest {
                 assertThat(responseFor11, is("1.1"));
             }
         });
+    }
+
+    @Test
+    public void should_failover_with_response_content() throws Exception {
+        server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
+        final File tempFile = File.createTempFile("temp", "");
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile)));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()).isEmpty(), is(false));
+            }
+        });
+
     }
 }

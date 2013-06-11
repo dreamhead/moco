@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.handler.failover.Failover;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -26,9 +27,11 @@ import java.util.Map;
 
 public class ProxyResponseHandler implements ResponseHandler {
     private final URL url;
+    private final Failover failover;
 
-    public ProxyResponseHandler(URL url) {
+    public ProxyResponseHandler(URL url, Failover failover) {
         this.url = url;
+        this.failover = failover;
     }
 
     @Override
@@ -47,6 +50,8 @@ public class ProxyResponseHandler implements ResponseHandler {
             }
 
             setupResponse(response, httpclient.execute(remoteRequest));
+
+            failover.onCompleteResponse(response);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal.dumper;
+package com.github.dreamhead.moco.dumper;
 
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.util.internal.StringUtil;

@@ -2,6 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.config.MocoContextConfig;import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
+import com.github.dreamhead.moco.handler.failover.DefaultFailover;
+import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
@@ -162,7 +164,15 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url) {
-        return new ProxyResponseHandler(toUrl(url));
+        return new ProxyResponseHandler(toUrl(url), Failover.EMPTY_FAILOVER);
+    }
+
+    public static ResponseHandler proxy(final String url, Failover failover) {
+        return new ProxyResponseHandler(toUrl(url), failover);
+    }
+
+    public static Failover failover(final File file) {
+        return new DefaultFailover(file);
     }
 
     private static URL toUrl(String url) {

@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal.dumper;
+package com.github.dreamhead.moco.dumper;
 
 import com.google.common.base.Joiner;
 import org.jboss.netty.handler.codec.http.HttpHeaders;

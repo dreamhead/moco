@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.internal.dumper.Dumper;
-import com.github.dreamhead.moco.internal.dumper.HttpRequestDumper;
-import com.github.dreamhead.moco.internal.dumper.HttpResponseDumper;
+import com.github.dreamhead.moco.dumper.Dumper;
+import com.github.dreamhead.moco.dumper.HttpRequestDumper;
+import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.google.common.eventbus.Subscribe;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
