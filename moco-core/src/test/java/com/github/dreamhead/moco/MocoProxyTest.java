@@ -14,6 +14,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -111,17 +112,16 @@ public class MocoProxyTest extends AbstractMocoTest {
 
     @Test
     public void should_failover_with_response_content() throws Exception {
-        server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
+        server.post(and(by(uri("/target")), by("proxy"))).response("proxy");
         final File tempFile = File.createTempFile("temp", "");
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile)));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()).isEmpty(), is(false));
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("proxy"));
             }
         });
-
     }
 }
