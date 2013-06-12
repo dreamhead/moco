@@ -171,8 +171,8 @@ public class Moco {
         return new ProxyResponseHandler(toUrl(url), failover);
     }
 
-    public static Failover failover(final File file) {
-        return new DefaultFailover(file);
+    public static Failover failover(final String file) {
+        return new DefaultFailover(new File(file));
     }
 
     private static URL toUrl(String url) {

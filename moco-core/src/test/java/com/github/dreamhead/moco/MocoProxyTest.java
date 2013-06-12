@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.Files;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
@@ -101,11 +102,33 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String responseFor10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
-                assertThat(responseFor10, is("1.0"));
+                Content content10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnContent();
+                assertThat(content10.asString(), is("1.0"));
 
-                String responseFor11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnContent().asString();
-                assertThat(responseFor11, is("1.1"));
+                Content content11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnContent();
+                assertThat(content11.asString(), is("1.1"));
+            }
+        });
+    }
+
+    @Test
+    public void should_proxy_with_response_version() throws Exception {
+        server.request(and(by(uri("/target")), by(version("HTTP/1.0")))).response(version("HTTP/1.0"));
+        server.request(and(by(uri("/target")), by(version("HTTP/1.1")))).response(version("HTTP/1.1"));
+        server.request(and(by(uri("/target")), by(version("HTTP/0.9")))).response(version("HTTP/1.0"));
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                HttpResponse response10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnResponse();
+                assertThat(response10.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
+
+                HttpResponse response11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnResponse();
+                assertThat(response11.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
+
+                HttpResponse response09 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_0_9).execute().returnResponse();
+                assertThat(response09.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
             }
         });
     }
@@ -114,7 +137,7 @@ public class MocoProxyTest extends AbstractMocoTest {
     public void should_failover_with_response_content() throws Exception {
         server.post(and(by(uri("/target")), by("proxy"))).response("proxy");
         final File tempFile = File.createTempFile("temp", "");
-        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile)));
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, new Runnable() {
             @Override

@@ -70,7 +70,9 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
     private void setupResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
-        response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
+        int statusCode = remoteResponse.getStatusLine().getStatusCode();
+        response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
+        response.setStatus(HttpResponseStatus.valueOf(statusCode));
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
