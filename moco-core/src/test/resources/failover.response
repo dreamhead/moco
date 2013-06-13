@@ -1,0 +1,9 @@
+{
+  "version" : "HTTP/1.1",
+  "content" : "proxy",
+  "headers" : {
+    "Content-Length" : "5",
+    "Content-Type" : "text/plain; charset=UTF-8"
+  },
+  "statusCode" : 200
+}

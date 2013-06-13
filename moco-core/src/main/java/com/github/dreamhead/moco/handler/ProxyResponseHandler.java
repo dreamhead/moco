@@ -51,7 +51,7 @@ public class ProxyResponseHandler implements ResponseHandler {
 
             setupResponse(response, httpclient.execute(remoteRequest));
 
-            failover.onCompleteResponse(response);
+            failover.onCompleteResponse(request, response);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,6 +71,11 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     private void setupResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
+        if (statusCode == HttpResponseStatus.BAD_REQUEST.getCode()) {
+            failover.failover(response);
+            return;
+        }
+
         response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
         response.setStatus(HttpResponseStatus.valueOf(statusCode));
 
