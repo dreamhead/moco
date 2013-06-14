@@ -149,6 +149,25 @@ public class MocoProxyTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_failover_with_many_response_content() throws Exception {
+        server.get(by(uri("/target"))).response("get_proxy");
+        server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
+
+        final File tempFile = File.createTempFile("temp", ".json");
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("get_proxy"));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("post_proxy"));
+            }
+        });
+    }
+
+    @Test
     public void should_failover_for_unreachable_remote_server() throws Exception {
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover("src/test/resources/failover.response")));
 
