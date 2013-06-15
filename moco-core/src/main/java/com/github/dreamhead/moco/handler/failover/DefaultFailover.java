@@ -48,21 +48,18 @@ public class DefaultFailover implements Failover {
     }
 
     @Override
-    public void failover(HttpResponse response) {
-        try {
-            Response dumpedResponse = mapper.readValue(this.file, Response.class);
-            response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
-            response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
-            for (Map.Entry<String, String> entry : dumpedResponse.getHeaders().entrySet()) {
-                response.addHeader(entry.getKey(), entry.getValue());
-            }
-
-            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-            buffer.writeBytes(dumpedResponse.getContent().getBytes());
-            response.setContent(buffer);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public void failover(HttpRequest request, HttpResponse response) {
+        List<Session> sessions = restoreSessions(this.file);
+        Response dumpedResponse = sessions.get(0).getResponse();
+        response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
+        response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
+        for (Map.Entry<String, String> entry : dumpedResponse.getHeaders().entrySet()) {
+            response.addHeader(entry.getKey(), entry.getValue());
         }
+
+        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+        buffer.writeBytes(dumpedResponse.getContent().getBytes());
+        response.setContent(buffer);
     }
 
     private Request createDumpedRequest(HttpRequest request) {

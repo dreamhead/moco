@@ -5,7 +5,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 
 public interface Failover {
     void onCompleteResponse(HttpRequest request, HttpResponse response);
-    void failover(HttpResponse response);
+    void failover(HttpRequest request, HttpResponse response);
 
     Failover EMPTY_FAILOVER = new Failover() {
         @Override
@@ -13,7 +13,7 @@ public interface Failover {
         }
 
         @Override
-        public void failover(HttpResponse response) {
+        public void failover(HttpRequest request, HttpResponse response) {
         }
     };
 }

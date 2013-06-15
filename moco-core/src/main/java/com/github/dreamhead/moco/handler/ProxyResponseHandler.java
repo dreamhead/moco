@@ -49,9 +49,7 @@ public class ProxyResponseHandler implements ResponseHandler {
                 entityRequest.setEntity(new ByteArrayEntity(request.getContent().array()));
             }
 
-            setupResponse(response, httpclient.execute(remoteRequest));
-
-            failover.onCompleteResponse(request, response);
+            setupResponse(request, response, httpclient.execute(remoteRequest));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,10 +67,12 @@ public class ProxyResponseHandler implements ResponseHandler {
         return new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion());
     }
 
-    private void setupResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
+    private void setupResponse(HttpRequest request,
+                               HttpResponse response,
+                               org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.getCode()) {
-            failover.failover(response);
+            failover.failover(request, response);
             return;
         }
 
@@ -88,6 +88,8 @@ public class ProxyResponseHandler implements ResponseHandler {
         HttpEntity entity = remoteResponse.getEntity();
         buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
         response.setContent(buffer);
+
+        failover.onCompleteResponse(request, response);
     }
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
