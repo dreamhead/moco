@@ -161,8 +161,9 @@ public class MocoProxyTest extends AbstractMocoTest {
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("get_proxy"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("post_proxy"));
+                String failoverContent = Files.toString(tempFile, Charset.defaultCharset());
+                assertThat(failoverContent, containsString("get_proxy"));
+                assertThat(failoverContent, containsString("post_proxy"));
             }
         });
     }
@@ -175,6 +176,19 @@ public class MocoProxyTest extends AbstractMocoTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
+            }
+        });
+    }
+
+    @Test
+    public void should_failover_for_unreachable_remote_server_with_many_content() throws Exception {
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover("src/test/resources/many_content_failover.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
             }
         });
     }

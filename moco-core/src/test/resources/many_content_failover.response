@@ -1,0 +1,44 @@
+[ {
+  "request" : {
+    "version" : "HTTP/1.1",
+    "content" : "",
+    "headers" : {
+      "Host" : "localhost:12306",
+      "User-Agent" : "Apache-HttpClient/4.2.5 (java 1.5)",
+      "Connection" : "Keep-Alive"
+    },
+    "queries" : null,
+    "method" : "GET"
+  },
+  "response" : {
+    "version" : "HTTP/1.1",
+    "content" : "get_proxy",
+    "headers" : {
+      "Content-Length" : "9",
+      "Content-Type" : "text/plain; charset=UTF-8"
+    },
+    "statusCode" : 200
+  }
+}, {
+  "request" : {
+    "version" : "HTTP/1.1",
+    "content" : "proxy",
+    "headers" : {
+      "Host" : "localhost:12306",
+      "Content-Length" : "5",
+      "User-Agent" : "Apache-HttpClient/4.2.5 (java 1.5)",
+      "Connection" : "Keep-Alive"
+    },
+    "queries" : null,
+    "method" : "POST"
+  },
+  "response" : {
+    "version" : "HTTP/1.1",
+    "content" : "post_proxy",
+    "headers" : {
+      "Content-Length" : "10",
+      "Content-Type" : "text/plain; charset=UTF-8"
+    },
+    "statusCode" : 200
+  }
+} ]

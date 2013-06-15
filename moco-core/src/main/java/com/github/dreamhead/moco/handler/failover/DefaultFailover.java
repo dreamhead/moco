@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +21,7 @@ import java.util.Map;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultFailover implements Failover {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultFailover.class);
     private final TypeFactory factory = TypeFactory.defaultInstance();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File file;
@@ -41,6 +46,7 @@ public class DefaultFailover implements Failover {
         try {
             return mapper.readValue(file, factory.constructCollectionType(List.class, Session.class));
         } catch (JsonMappingException jme) {
+            logger.error("exception found", jme);
             return newArrayList();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -49,8 +55,7 @@ public class DefaultFailover implements Failover {
 
     @Override
     public void failover(HttpRequest request, HttpResponse response) {
-        List<Session> sessions = restoreSessions(this.file);
-        Response dumpedResponse = sessions.get(0).getResponse();
+        Response dumpedResponse = failoverResponse(request);
         response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
         response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
         for (Map.Entry<String, String> entry : dumpedResponse.getHeaders().entrySet()) {
@@ -60,6 +65,21 @@ public class DefaultFailover implements Failover {
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
         buffer.writeBytes(dumpedResponse.getContent().getBytes());
         response.setContent(buffer);
+    }
+
+    private Response failoverResponse(HttpRequest request) {
+        final Request dumpedRequest = createDumpedRequest(request);
+        final Session session = Iterables.find(restoreSessions(this.file), isForRequest(dumpedRequest));
+        return session.getResponse();
+    }
+
+    private Predicate<Session> isForRequest(final Request dumpedRequest) {
+        return new Predicate<Session>() {
+            @Override
+            public boolean apply(Session session) {
+                return dumpedRequest.equals(session.getRequest());
+            }
+        };
     }
 
     private Request createDumpedRequest(HttpRequest request) {
