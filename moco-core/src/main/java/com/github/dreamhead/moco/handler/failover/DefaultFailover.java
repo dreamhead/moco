@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultFailover implements Failover {
@@ -33,13 +34,22 @@ public class DefaultFailover implements Failover {
     public void onCompleteResponse(HttpRequest request, HttpResponse response) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-            Session session = Session.newSession(createDumpedRequest(request), createDumpedResponse(response));
-            List<Session> sessions = restoreSessions(this.file);
-            sessions.add(session);
-            writer.writeValue(this.file, sessions);
+            Session targetSession = Session.newSession(createDumpedRequest(request), createDumpedResponse(response));
+            writer.writeValue(this.file, prepareTargetSessions(targetSession));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Session> prepareTargetSessions(Session targetSession) {
+        List<Session> sessions = restoreSessions(this.file);
+        Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
+        if (session.isPresent()) {
+            session.get().setResponse(targetSession.getResponse());
+        } else {
+            sessions.add(targetSession);
+        }
+        return sessions;
     }
 
     private List<Session> restoreSessions(File file) {
@@ -69,8 +79,12 @@ public class DefaultFailover implements Failover {
 
     private Response failoverResponse(HttpRequest request) {
         final Request dumpedRequest = createDumpedRequest(request);
-        final Session session = Iterables.find(restoreSessions(this.file), isForRequest(dumpedRequest));
-        return session.getResponse();
+        final Optional<Session> session = tryFind(restoreSessions(this.file), isForRequest(dumpedRequest));
+        if (session.isPresent()) {
+            return session.get().getResponse();
+        }
+
+        throw new RuntimeException("no failover response found");
     }
 
     private Predicate<Session> isForRequest(final Request dumpedRequest) {

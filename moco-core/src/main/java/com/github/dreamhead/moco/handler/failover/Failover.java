@@ -14,6 +14,7 @@ public interface Failover {
 
         @Override
         public void failover(HttpRequest request, HttpResponse response) {
+            throw new RuntimeException("no failover response found");
         }
     };
 }

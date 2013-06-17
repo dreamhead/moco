@@ -459,19 +459,6 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_run_as_proxy() throws Exception {
-        server.response(proxy("https://github.com/"));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusCode, is(200));
-            }
-        });
-    }
-
-    @Test
     public void should_return_same_http_version_without_specified_version() throws Exception {
         server.response("foobar");
 

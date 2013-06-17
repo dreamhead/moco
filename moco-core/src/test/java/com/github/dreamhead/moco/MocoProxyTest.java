@@ -5,6 +5,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.SubstringMatcher;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,6 +17,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -166,6 +169,49 @@ public class MocoProxyTest extends AbstractMocoTest {
                 assertThat(failoverContent, containsString("post_proxy"));
             }
         });
+    }
+
+    @Test
+    public void should_failover_with_same_response_once() throws Exception {
+        server.post(and(by(uri("/target")), by("proxy"))).response("0XCAFEBABE");
+        final File tempFile = File.createTempFile("temp", ".json");
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()), countString("0XCAFEBABE", 1));
+            }
+        });
+    }
+
+    private Matcher<String> countString(final String substring, final int targetCount) {
+        return new SubstringMatcher(substring) {
+            @Override
+            protected boolean evalSubstringOf(String string) {
+                int count = 0;
+                int current = 0;
+
+                while (current < string.length()) {
+                    int index = string.indexOf(substring, current);
+                    if (index > 0) {
+                        count++;
+                        current = index + substring.length();
+                    } else {
+                        break;
+                    }
+                }
+
+                return count == targetCount;
+            }
+
+            @Override
+            protected String relationship() {
+                return format("count %d string", targetCount);
+            }
+        };
     }
 
     @Test
