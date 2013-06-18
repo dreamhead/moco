@@ -7,9 +7,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -76,8 +74,14 @@ public class ProxyResponseHandler implements ResponseHandler {
             return;
         }
 
+        setupNormalRequest(response, remoteResponse);
+
+        failover.onCompleteResponse(request, response);
+    }
+
+    private void setupNormalRequest(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
         response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
-        response.setStatus(HttpResponseStatus.valueOf(statusCode));
+        response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
@@ -88,8 +92,6 @@ public class ProxyResponseHandler implements ResponseHandler {
         HttpEntity entity = remoteResponse.getEntity();
         buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
         response.setContent(buffer);
-
-        failover.onCompleteResponse(request, response);
     }
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
@@ -114,6 +116,14 @@ public class ProxyResponseHandler implements ResponseHandler {
 
         if (request.getMethod() == HttpMethod.POST) {
             return new HttpPost(url.toString());
+        }
+
+        if (request.getMethod() == HttpMethod.PUT) {
+            return new HttpPut(url.toString());
+        }
+
+        if (request.getMethod() == HttpMethod.DELETE) {
+            return new HttpDelete(url.toString());
         }
 
         throw new RuntimeException("unknown HTTP method");

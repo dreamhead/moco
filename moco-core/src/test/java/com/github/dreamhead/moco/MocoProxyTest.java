@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
 import org.junit.Test;
@@ -40,6 +41,9 @@ public class MocoProxyTest extends AbstractMocoTest {
     public void should_proxy_with_request_method() throws Exception {
         server.get(by(uri("/target"))).response("get_proxy");
         server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
+        server.request(and(by(uri("/target")), by(method("put")), by("proxy"))).response("put_proxy");
+        server.request(and(by(uri("/target")), by(method("delete")))).response("delete_proxy");
+
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, new Runnable() {
@@ -47,6 +51,12 @@ public class MocoProxyTest extends AbstractMocoTest {
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+
+                String putResponse = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT).execute().returnContent().asString();
+                assertThat(putResponse, is("put_proxy"));
+
+                String deleteResponse = Request.Delete(remoteUrl("/proxy")).execute().returnContent().asString();
+                assertThat(deleteResponse, is("delete_proxy"));
             }
         });
     }
