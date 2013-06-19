@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.io.Files;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -43,6 +44,9 @@ public class MocoProxyTest extends AbstractMocoTest {
         server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
         server.request(and(by(uri("/target")), by(method("put")), by("proxy"))).response("put_proxy");
         server.request(and(by(uri("/target")), by(method("delete")))).response("delete_proxy");
+        server.request(and(by(uri("/target")), by(method("head")))).response(status(200));
+        server.request(and(by(uri("/target")), by(method("options")))).response("options_proxy");
+        server.request(and(by(uri("/target")), by(method("trace")))).response("trace_proxy");
 
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
@@ -57,6 +61,15 @@ public class MocoProxyTest extends AbstractMocoTest {
 
                 String deleteResponse = Request.Delete(remoteUrl("/proxy")).execute().returnContent().asString();
                 assertThat(deleteResponse, is("delete_proxy"));
+
+                StatusLine headStatusLine = Request.Head(remoteUrl("/proxy")).execute().returnResponse().getStatusLine();
+                assertThat(headStatusLine.getStatusCode(), is(200));
+
+                String optionsResponse = Request.Options(remoteUrl("/proxy")).execute().returnContent().asString();
+                assertThat(optionsResponse, is("options_proxy"));
+
+                String traceResponse = Request.Trace(remoteUrl("/proxy")).execute().returnContent().asString();
+                assertThat(traceResponse, is("trace_proxy"));
             }
         });
     }

@@ -88,10 +88,13 @@ public class ProxyResponseHandler implements ResponseHandler {
             response.setHeader(header.getName(), header.getValue());
         }
 
-        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
         HttpEntity entity = remoteResponse.getEntity();
-        buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
-        response.setContent(buffer);
+        if (entity != null) {
+            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+            buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
+            response.setContent(buffer);
+        }
+
     }
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
@@ -110,20 +113,36 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
     private HttpRequestBase createBaseRequest(URL url, HttpRequest request) {
-        if (request.getMethod() == HttpMethod.GET) {
+        return createBaseRequest(url, request.getMethod());
+    }
+
+    private HttpRequestBase createBaseRequest(URL url, HttpMethod method) {
+        if (method == HttpMethod.GET) {
             return new HttpGet(url.toString());
         }
 
-        if (request.getMethod() == HttpMethod.POST) {
+        if (method == HttpMethod.POST) {
             return new HttpPost(url.toString());
         }
 
-        if (request.getMethod() == HttpMethod.PUT) {
+        if (method == HttpMethod.PUT) {
             return new HttpPut(url.toString());
         }
 
-        if (request.getMethod() == HttpMethod.DELETE) {
+        if (method == HttpMethod.DELETE) {
             return new HttpDelete(url.toString());
+        }
+
+        if (method == HttpMethod.HEAD) {
+            return new HttpHead(url.toString());
+        }
+
+        if (method == HttpMethod.OPTIONS) {
+            return new HttpOptions(url.toString());
+        }
+
+        if (method == HttpMethod.TRACE) {
+            return new HttpTrace(url.toString());
         }
 
         throw new RuntimeException("unknown HTTP method");
