@@ -1,0 +1,23 @@
+[
+    {
+        "request" :
+        {
+            "uri" : "/target"
+        },
+        "response" :
+        {
+            "text" : "proxy_target"
+        }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/proxy"
+        },
+        "response" :
+        {
+            "proxy" : "http://localhost:12306/target"
+        }
+    }
+]
+
