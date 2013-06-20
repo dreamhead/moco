@@ -49,7 +49,7 @@ public class ProxyResponseHandler implements ResponseHandler {
 
             setupResponse(request, response, httpclient.execute(remoteRequest));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            failover.failover(request, response);
         }
     }
 
