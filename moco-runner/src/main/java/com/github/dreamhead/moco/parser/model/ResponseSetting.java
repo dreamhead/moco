@@ -19,7 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends AbstractResource {
     private String status;
-    private String proxy;
+    private ProxyContainer proxy;
     private Map<String, String> headers;
     private Map<String, String> cookies;
     private Long latency;
@@ -79,7 +79,8 @@ public class ResponseSetting extends AbstractResource {
         }
 
         if (proxy != null) {
-            handlers.add(proxy(proxy));
+
+            handlers.add(createProxy(proxy));
         }
 
         if (handlers.isEmpty()) {
@@ -87,6 +88,14 @@ public class ResponseSetting extends AbstractResource {
         }
 
         return handlers.size() == 1 ? handlers.get(0) : new AndResponseHandler(handlers);
+    }
+
+    private ResponseHandler createProxy(ProxyContainer proxy) {
+        if (proxy.getFailover() != null) {
+            return proxy(proxy.getUrl(), failover(proxy.getFailover()));
+        }
+
+        return proxy(proxy.getUrl());
     }
 
     private AndResponseHandler toResponseHandler(Map<String, String> map,

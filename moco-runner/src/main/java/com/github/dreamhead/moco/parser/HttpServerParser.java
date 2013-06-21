@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
-import com.github.dreamhead.moco.parser.model.MountSetting;
-import com.github.dreamhead.moco.parser.model.SessionSetting;
-import com.github.dreamhead.moco.parser.model.TextContainer;
-import com.github.dreamhead.moco.parser.model.TextContainerDeserializer;
+import com.github.dreamhead.moco.parser.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +31,11 @@ public class HttpServerParser {
         Module textContainerModule = new SimpleModule("TextContainerModule",
                 new Version(1, 0, 0, null, null, null))
                 .addDeserializer(TextContainer.class, new TextContainerDeserializer());
+        Module proxyContainerModule = new SimpleModule("ProxyContainerModule",
+                new Version(1, 0, 0, null, null, null))
+                .addDeserializer(ProxyContainer.class, new ProxyContainerDeserializer());
         mapper.registerModule(textContainerModule);
+        mapper.registerModule(proxyContainerModule);
     }
 
     public HttpServer parseServer(InputStream is, int port, MocoConfig... configs) {
