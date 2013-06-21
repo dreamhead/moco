@@ -85,7 +85,7 @@ public class DefaultFailover implements Failover {
             return session.get().getResponse();
         }
 
-        logger.error(format("no match request found: %s", request.toString()));
+        logger.error(format("no match request found: %s", dumpedRequest.toString()));
 
         throw new RuntimeException("no failover response found");
     }
