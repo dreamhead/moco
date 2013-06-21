@@ -46,9 +46,27 @@ public abstract class Message {
         }
 
         Message that = (Message) obj;
-        return Objects.equal(version, that.version)
-                && Objects.equal(content, that.content)
-                && Objects.equal(headers, that.headers);
+        return doEquals(version, that.version)
+                && doEquals(content, that.content)
+                && doEquals(headers, that.headers);
+    }
+
+    protected boolean doEquals(Map<String, String> thisField, Map<String, String> thatField) {
+        if (thisField == null) {
+            return true;
+        }
+
+        for (Map.Entry<String, String> entry : thisField.entrySet()) {
+            if (!doEquals(entry.getValue(), thatField.get(entry.getKey()))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected boolean doEquals(String thisField, String thatField) {
+        return thisField == null || thisField.equals(thatField);
     }
 
     @Override

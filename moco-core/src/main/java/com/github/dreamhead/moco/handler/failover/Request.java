@@ -30,8 +30,8 @@ public class Request extends Message {
 
 
         Request that = (Request) obj;
-        return super.equals(that) && Objects.equal(method, that.method)
-                && Objects.equal(queries, that.queries);
+        return super.equals(that) && doEquals(method, that.method)
+                && doEquals(queries, that.queries);
     }
 
     @Override
