@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.String.format;
 
 public class DefaultFailover implements Failover {
     private static final Logger logger = LoggerFactory.getLogger(DefaultFailover.class);
@@ -83,6 +84,8 @@ public class DefaultFailover implements Failover {
         if (session.isPresent()) {
             return session.get().getResponse();
         }
+
+        logger.error(format("no match request found: %s", request.toString()));
 
         throw new RuntimeException("no failover response found");
     }

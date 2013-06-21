@@ -38,4 +38,15 @@ public class Request extends Message {
     public int hashCode() {
         return Objects.hashCode(super.hashCode(), queries, method);
     }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(Request.class)
+                .add("version", version)
+                .add("queries", queries)
+                .add("method", method)
+                .add("header", headers)
+                .add("content", content)
+                .toString();
+    }
 }

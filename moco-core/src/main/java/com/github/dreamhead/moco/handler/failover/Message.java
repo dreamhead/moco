@@ -6,10 +6,10 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public class Message {
-    private String version;
-    private String content;
-    private Map<String, String> headers = newHashMap();
+public abstract class Message {
+    protected String version;
+    protected String content;
+    protected Map<String, String> headers = newHashMap();
 
     public void setVersion(String version) {
         this.version = version;
