@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.handler.codec.http.*;
@@ -103,7 +104,10 @@ public class DefaultFailover implements Failover {
     private Request createDumpedRequest(HttpRequest request) {
         Request dumpedRequest = new Request();
         dumpedRequest.setVersion(request.getProtocolVersion().getText());
-        dumpedRequest.setContent(request.getContent().toString(Charset.defaultCharset()));
+        String content = request.getContent().toString(Charset.defaultCharset());
+        if (!Strings.isNullOrEmpty(content)) {
+            dumpedRequest.setContent(content);
+        }
         dumpedRequest.setMethod(request.getMethod().getName());
 
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());

@@ -31,6 +31,7 @@ public class Request extends Message {
     @Override
     public String toString() {
         return Objects.toStringHelper(Request.class)
+                .omitNullValues()
                 .add("version", version)
                 .add("queries", queries)
                 .add("method", method)
