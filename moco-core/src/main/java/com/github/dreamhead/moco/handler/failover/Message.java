@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.handler.failover;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public abstract class Message {
     }
 
     protected boolean doMatch(String thisField, String thatField) {
-        return thisField == null || thisField.equals(thatField);
+        return Strings.isNullOrEmpty(thisField) || thisField.equals(thatField);
     }
 
     @Override
