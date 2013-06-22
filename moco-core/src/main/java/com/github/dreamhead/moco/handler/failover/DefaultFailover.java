@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.String.format;
 
 public class DefaultFailover implements Failover {
     private static final Logger logger = LoggerFactory.getLogger(DefaultFailover.class);
@@ -80,12 +79,14 @@ public class DefaultFailover implements Failover {
 
     private Response failoverResponse(HttpRequest request) {
         final Request dumpedRequest = createDumpedRequest(request);
-        final Optional<Session> session = tryFind(restoreSessions(this.file), isForRequest(dumpedRequest));
+        List<Session> sessions = restoreSessions(this.file);
+        logger.info("Restore session size: {}", sessions.size());
+        final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
         if (session.isPresent()) {
             return session.get().getResponse();
         }
 
-        logger.error(format("no match request found: %s", dumpedRequest.toString()));
+        logger.error("No match request found: {}", dumpedRequest);
         throw new RuntimeException("no failover response found");
     }
 
@@ -93,7 +94,7 @@ public class DefaultFailover implements Failover {
         return new Predicate<Session>() {
             @Override
             public boolean apply(Session session) {
-                logger.info("failover request: %s", session.getRequest());
+                logger.info("Failover request: {}", session.getRequest());
                 return dumpedRequest.match(session.getRequest());
             }
         };
