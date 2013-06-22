@@ -35,29 +35,19 @@ public abstract class Message {
         return this.headers;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Message)) {
-            return false;
-        }
-
-        Message that = (Message) obj;
-        return doEquals(version, that.version)
-                && doEquals(content, that.content)
-                && doEquals(headers, that.headers);
+    public boolean match(Message that) {
+        return doMatch(version, that.version)
+                && doMatch(content, that.content)
+                && doMatch(headers, that.headers);
     }
 
-    protected boolean doEquals(Map<String, String> thisField, Map<String, String> thatField) {
+    protected boolean doMatch(Map<String, String> thisField, Map<String, String> thatField) {
         if (thisField == null) {
             return true;
         }
 
         for (Map.Entry<String, String> entry : thisField.entrySet()) {
-            if (!doEquals(entry.getValue(), thatField.get(entry.getKey()))) {
+            if (!doMatch(entry.getValue(), thatField.get(entry.getKey()))) {
                 return false;
             }
         }
@@ -65,7 +55,7 @@ public abstract class Message {
         return true;
     }
 
-    protected boolean doEquals(String thisField, String thatField) {
+    protected boolean doMatch(String thisField, String thatField) {
         return thisField == null || thisField.equals(thatField);
     }
 

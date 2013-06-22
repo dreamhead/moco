@@ -8,7 +8,6 @@
       "User-Agent" : "Apache-HttpClient/4.2.5 (java 1.5)",
       "Connection" : "Keep-Alive"
     },
-    "queries" : null,
     "method" : "POST"
   },
   "response" : {

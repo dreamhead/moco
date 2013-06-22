@@ -86,7 +86,6 @@ public class DefaultFailover implements Failover {
         }
 
         logger.error(format("no match request found: %s", dumpedRequest.toString()));
-
         throw new RuntimeException("no failover response found");
     }
 
@@ -94,7 +93,8 @@ public class DefaultFailover implements Failover {
         return new Predicate<Session>() {
             @Override
             public boolean apply(Session session) {
-                return dumpedRequest.equals(session.getRequest());
+                logger.info("failover request: %s", session.getRequest());
+                return dumpedRequest.match(session.getRequest());
             }
         };
     }

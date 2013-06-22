@@ -18,20 +18,9 @@ public class Request extends Message {
         this.method = method;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Message)) {
-            return false;
-        }
-
-
-        Request that = (Request) obj;
-        return super.equals(that) && doEquals(method, that.method)
-                && doEquals(queries, that.queries);
+    public boolean match(Request that) {
+        return super.match(that) && doMatch(method, that.method)
+                && doMatch(queries, that.queries);
     }
 
     @Override
@@ -45,7 +34,7 @@ public class Request extends Message {
                 .add("version", version)
                 .add("queries", queries)
                 .add("method", method)
-                .add("header", headers)
+                .add("headers", headers)
                 .add("content", content)
                 .toString();
     }
