@@ -81,7 +81,6 @@ public class DefaultFailover implements Failover {
     private Response failoverResponse(HttpRequest request) {
         final Request dumpedRequest = createDumpedRequest(request);
         List<Session> sessions = restoreSessions(this.file);
-        logger.info("Restore session size: {}", sessions.size());
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
         if (session.isPresent()) {
             return session.get().getResponse();
@@ -95,7 +94,6 @@ public class DefaultFailover implements Failover {
         return new Predicate<Session>() {
             @Override
             public boolean apply(Session session) {
-                logger.info("Failover request: {}", session.getRequest());
                 return session.getRequest().match(dumpedRequest);
             }
         };
