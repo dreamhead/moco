@@ -96,7 +96,7 @@ public class DefaultFailover implements Failover {
             @Override
             public boolean apply(Session session) {
                 logger.info("Failover request: {}", session.getRequest());
-                return dumpedRequest.match(session.getRequest());
+                return session.getRequest().match(dumpedRequest);
             }
         };
     }

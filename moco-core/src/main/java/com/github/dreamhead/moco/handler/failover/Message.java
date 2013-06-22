@@ -43,7 +43,7 @@ public abstract class Message {
     }
 
     protected boolean doMatch(Map<String, String> thisField, Map<String, String> thatField) {
-        if (thisField == null) {
+        if (thisField == null || thisField.isEmpty()) {
             return true;
         }
 
