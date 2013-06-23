@@ -102,10 +102,7 @@ public class DefaultFailover implements Failover {
     private Request createDumpedRequest(HttpRequest request) {
         Request dumpedRequest = new Request();
         dumpedRequest.setVersion(request.getProtocolVersion().getText());
-        String content = request.getContent().toString(Charset.defaultCharset());
-        if (!Strings.isNullOrEmpty(content)) {
-            dumpedRequest.setContent(content);
-        }
+        setContent(request, dumpedRequest);
         dumpedRequest.setMethod(request.getMethod().getName());
 
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
@@ -120,6 +117,13 @@ public class DefaultFailover implements Failover {
         return dumpedRequest;
     }
 
+    private void setContent(HttpMessage message, Message dumpedMessage) {
+        String content = message.getContent().toString(Charset.defaultCharset());
+        if (!Strings.isNullOrEmpty(content)) {
+            dumpedMessage.setContent(content);
+        }
+    }
+
     private Response createDumpedResponse(HttpResponse response) {
         Response dumpedResponse = new Response();
         dumpedResponse.setStatusCode(response.getStatus().getCode());
@@ -127,7 +131,7 @@ public class DefaultFailover implements Failover {
         for (Map.Entry<String, String> entry : response.getHeaders()) {
             dumpedResponse.addHeader(entry.getKey(), entry.getValue());
         }
-        dumpedResponse.setContent(response.getContent().toString(Charset.defaultCharset()));
+        setContent(response, dumpedResponse);
         return dumpedResponse;
     }
 }

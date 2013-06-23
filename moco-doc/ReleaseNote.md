@@ -7,10 +7,10 @@
 ### Response
 #### Integration
 * proxy
-* remove url (using proxy instead)
+* removed url (using proxy instead)
 
 #### Misc Response
-* remove cache
+* removed cache
 
 # Release 0.7 (1-May-2013)
 

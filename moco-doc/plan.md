@@ -7,7 +7,6 @@
 ## Matcher
 * JSONPath
 * Marshal support
-* Proxy
 
 ## Handler
 * Response with Request parameter (Current plan: template)
