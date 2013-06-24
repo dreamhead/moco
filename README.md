@@ -34,7 +34,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 
 ## Documents
 * More [Usages](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
-* Detailed [Configurations](https://github.com/dreamhead/moco/blob/master/moco-doc/configurations.md)
+* Detailed [Configurations](https://github.com/dreamhead/moco/blob/master/moco-doc/api.md)
 * [Settings](https://github.com/dreamhead/moco/blob/master/moco-doc/settings.md) file for multiple configurations
 
 ## Build

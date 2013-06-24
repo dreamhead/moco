@@ -1,16 +1,16 @@
-# Configurations
-Moco mainly focuses on server configuration. There are only two kinds of configuration right now: **Request** and **Response**.
+# APIs
+Moco mainly focuses on server configuration. There are only two kinds of API right now: **Request** and **Response**.
 
 That means if we get the expected request and then return our response. Now, you can see a Moco reference in details.
 
-**WARNING** the json configuration below is just configuration snippet for one pair of request and response, instead of the whole configuration file.
+**WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
 ## Request
 
 ### Content
 If you want to response according to request content, Moco server can be configured as following:
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response("bar");
@@ -33,7 +33,7 @@ server.request(by("foo")).response("bar");
 
 If request content is too large, you can put it in a file:
 
-* API
+* Java API
 
 ```java
 server.request(by(file("foo.request"))).response("bar");
@@ -57,7 +57,7 @@ server.request(by(file("foo.request"))).response("bar");
 ### URI
 If request uri is your major focus, Moco server could be like this:
 
-* API
+* Java API
 
 ```java
 server.request(by(uri("/foo"))).response("bar");
@@ -80,7 +80,7 @@ server.request(by(uri("/foo"))).response("bar");
 ### Query parameter
 Sometimes, your request has parameters:
 
-* API
+* Java API
 
 ```java
 server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
@@ -108,7 +108,7 @@ server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 ### HTTP method
 It's easy to response based on specified HTTP method:
 
-* API
+* Java API
 
 ```java
 server.get(by(uri("/foo"))).response("bar");
@@ -132,7 +132,7 @@ server.get(by(uri("/foo"))).response("bar");
 
 Also for POST method:
 
-* API
+* Java API
 
 ```java
 server.post(by("foo")).response("bar");
@@ -157,7 +157,7 @@ server.post(by("foo")).response("bar");
 ### Version
 We can return different response for different HTTP version:
 
-* API
+* Java API
 
 ```java
 server.request(by(version("HTTP/1.0"))).response("version");
@@ -181,7 +181,7 @@ server.request(by(version("HTTP/1.0"))).response("version");
 ### Header
 We will focus HTTP header at times:
 
-* API
+* Java API
 
 ```java
 server.request(eq(header("foo"), "bar")).response("blah")
@@ -209,7 +209,7 @@ server.request(eq(header("foo"), "bar")).response("blah")
 ### Cookie
 Cookie is widely used in web development.
 
-* API
+* Java API
 
 ```java
 server.request(eq(cookie("loggedIn"), "true")).response(status(200));
@@ -237,7 +237,7 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 ### Form
 In web development, form is often used to submit information to server side.
 
-* API
+* Java API
 
 ```java
 server.post(eq(form("name"), "foo")).response("bar");
@@ -266,7 +266,7 @@ server.post(eq(form("name"), "foo")).response("bar");
 ### XML
 XML is a popular format for Web Services. When a request is in XML, only the XML structure is important in most cases and whitespace can be ignored. The `xml` operator can be used for this case.
 
-* API
+* Java API
 
 ```java
 server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
@@ -316,7 +316,7 @@ The large request can be put into a file:
 
 For the XML/HTML request, Moco allows us to match request with XPath.
 
-* API
+* Java API
 
 ```java
 server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
@@ -344,7 +344,7 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ### JSON Request
 Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
-* API
+* Java API
 
 ```java
 server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
@@ -394,7 +394,7 @@ The large request can be put into a file:
 
 match is not a functionality, it is an operator. You match your request with regular expression:
 
-* API
+* Java API
 
 ```java
 server.request(match(uri("/\\w*/foo"))).response(text("bar"));
@@ -426,7 +426,7 @@ Moco is implemented by Java regular expression, you can refer [here](http://docs
 
 As you have seen in previous example, response with content is pretty easy.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response("bar");
@@ -449,7 +449,7 @@ server.request(by("foo")).response("bar");
 
 The same as request, you can response with a file if content is too large to put in a string.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response(file("bar.response"));
@@ -473,7 +473,7 @@ server.request(by("foo")).response(file("bar.response"));
 ### Status Code
 Moco also supports HTTP status code response.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response(status(200));
@@ -498,7 +498,7 @@ server.request(by("foo")).response(status(200));
 
 By default, response HTTP version is supposed to request HTTP version, but you can set your own HTTP version:
 
-* API
+* Java API
 
 ```java
 server.response(version("HTTP/1.0"));
@@ -524,7 +524,7 @@ server.response(version("HTTP/1.0"));
 ### Header
 We can also specify HTTP header in response.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response(header("content-type", "application/json"));
@@ -552,7 +552,7 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 
 We can also response with the specified url, just like a proxy.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response(proxy("http://www.github.com"));
@@ -577,7 +577,7 @@ server.request(by("foo")).response(proxy("http://www.github.com"));
 
 Redirect is a common case for normal web development. We can simply redirect a request to different url.
 
-* API
+* Java API
 
 ```java
 server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
@@ -599,7 +599,7 @@ server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 
 Cookie can also be in the response.
 
-* API
+* Java API
 
 ```java
 server.response(cookie("loggedIn", "true"), status(302));
@@ -628,7 +628,7 @@ server.response(cookie("loggedIn", "true"), status(302));
 
 Sometimes, we need a latency to simulate slow server side operation.
 
-* API
+* Java API
 
 ```java
 server.request(by("foo")).response(latency(5000));
@@ -665,7 +665,7 @@ server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 
 Moco allows us to mount a directory to uri.
 
-* API
+* Java API
 
 ```java
 server.mount(dir, to("/uri"));
@@ -685,7 +685,7 @@ server.mount(dir, to("/uri"));
 
 Wildcard is acceptable to filter specified files, e.g we can include by
 
-* API
+* Java API
 
 ```java
 server.mount(dir, to("/uri"), include("*.txt"));
@@ -709,7 +709,7 @@ server.mount(dir, to("/uri"), include("*.txt"));
 
 or exclude by
 
-* API
+* Java API
 
 ```java
 server.mount(dir, to("/uri"), exclude("*.txt"));
@@ -733,7 +733,7 @@ server.mount(dir, to("/uri"), exclude("*.txt"));
 
 even compose them by
 
-* API
+* Java API
 
 ```java
 server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt"));
