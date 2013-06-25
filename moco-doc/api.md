@@ -548,7 +548,7 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 }
 ```
 
-### Url
+### Proxy
 
 We can also response with the specified url, just like a proxy.
 
@@ -572,6 +572,37 @@ server.request(by("foo")).response(proxy("http://www.github.com"));
     }
 }
 ```
+
+Actually, proxy is more powerful than that. It can forward the whole request to the target url, including HTTP method, version, header, content etc.
+
+Besides the basic functionality, proxy also support failover, for example:
+
+* Java API
+
+```java
+server.request(by("foo")).response(proxy("http://www.github.com", failover("failover.json")));
+```
+
+```json
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "proxy" :
+        {
+          "url" : "http://localhost:12306/unknown",
+          "failover" : "failover.json"
+        }
+    }
+}
+```
+
+Proxy will save request/response pair into your failover file. If the proxy target is not reachable, proxy will failover from the file. This feature is very useful for development environment, especially for the case the integration server is not stable.
+
+As the file suffix suggests, this failover file is actually a JSON file, which means you can read/edit it to return whatever you want.
 
 ### Redirect
 
