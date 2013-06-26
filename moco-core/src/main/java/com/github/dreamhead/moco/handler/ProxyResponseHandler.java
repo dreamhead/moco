@@ -74,12 +74,12 @@ public class ProxyResponseHandler implements ResponseHandler {
             return;
         }
 
-        setupNormalRequest(response, remoteResponse);
+        setupNormalResponse(response, remoteResponse);
 
         failover.onCompleteResponse(request, response);
     }
 
-    private void setupNormalRequest(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
+    private void setupNormalResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
         response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
         response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
 
@@ -94,7 +94,6 @@ public class ProxyResponseHandler implements ResponseHandler {
             buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
             response.setContent(buffer);
         }
-
     }
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
