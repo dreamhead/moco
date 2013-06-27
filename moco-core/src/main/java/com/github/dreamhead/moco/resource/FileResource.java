@@ -32,6 +32,9 @@ public class FileResource implements WritableResource, ContentResource {
 
     @Override
     public Resource apply(final MocoConfig config) {
+        if (config.isFor(this.id())) {
+           return new FileResource(new File(config.apply(file.getName())));
+        }
         return this;
     }
 

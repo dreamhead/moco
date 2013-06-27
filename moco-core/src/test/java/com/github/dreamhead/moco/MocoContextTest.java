@@ -16,7 +16,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoConfigTest {
+public class MocoContextTest {
     private static final String MOUNT_DIR = "src/test/resources/test";
 
     private HttpServer server;

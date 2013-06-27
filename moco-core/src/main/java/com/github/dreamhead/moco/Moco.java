@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.config.MocoContextConfig;import com.github.dreamhead.moco.extractor.*;
+import com.github.dreamhead.moco.config.MocoContextConfig;
+import com.github.dreamhead.moco.config.MocoFileRootConfig;
+import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -27,6 +29,10 @@ public class Moco {
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNull(context, "context should not be null"));
+    }
+
+    public static MocoConfig fileRoot(final String fileRoot) {
+        return new MocoFileRootConfig(checkNotNull(fileRoot, "file root should not be null"));
     }
 
     public static RequestMatcher by(final String content) {
