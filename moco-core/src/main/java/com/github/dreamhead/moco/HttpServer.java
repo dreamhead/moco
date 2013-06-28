@@ -33,10 +33,6 @@ public abstract class HttpServer extends ResponseSetting {
 
     public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(dir);
-        if (!mountedDir.exists()) {
-            throw new IllegalArgumentException(format("Mounted directory %s does not exist", dir));
-        }
-
         this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
     }
 }

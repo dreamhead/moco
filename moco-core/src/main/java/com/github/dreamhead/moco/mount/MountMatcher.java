@@ -34,6 +34,11 @@ public class MountMatcher implements RequestMatcher {
         if (config.isFor("uri")) {
             return new MountMatcher(this.dir, this.target.apply(config), this.predicates);
         }
+
+        if (config.isFor("file")) {
+            return new MountMatcher(new File(config.apply(this.dir.getName())), this.target, this.predicates);
+        }
+
         return this;
     }
 

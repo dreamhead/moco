@@ -49,6 +49,10 @@ public class MountHandler extends AbstractContentResponseHandler {
             return new MountHandler(this.dir, this.target.apply(config));
         }
 
+        if (config.isFor("file")) {
+            return new MountHandler(new File(config.apply(this.dir.getName())), this.target);
+        }
+
         return this;
     }
 }

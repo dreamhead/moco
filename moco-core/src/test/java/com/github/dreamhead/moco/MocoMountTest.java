@@ -15,11 +15,6 @@ public class MocoMountTest extends AbstractMocoTest {
 
     private static final String MOUNT_DIR = "src/test/resources/test";
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_exception_if_dir_does_not_exist() {
-        server.mount("unknown_dir", to("/dir"));
-    }
-
     @Test
     public void should_mount_dir_to_uri() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"));
