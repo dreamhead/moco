@@ -1,0 +1,12 @@
+[
+    {
+        "context": "/foo",
+        "file_root": "src/test/resources/",
+        "include": "src/test/resources/multiple/foo.json"
+    },
+    {
+        "context": "/bar",
+        "file_root": "src/test/resources/",
+        "include": "src/test/resources/multiple/bar.json"
+    }
+]
