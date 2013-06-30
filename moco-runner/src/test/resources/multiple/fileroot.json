@@ -1,0 +1,10 @@
+[
+    {
+        "request" : {
+            "uri" : "/fileroot"
+        },
+        "response" : {
+            "file" : "foo.response"
+        }
+    }
+]

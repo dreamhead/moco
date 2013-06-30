@@ -54,6 +54,10 @@ public class JsonRunner implements Runner {
             configs.add(context(setting.getContext().get()));
         }
 
+        if (setting.getFileRoot().isPresent()) {
+            configs.add(fileRoot(setting.getFileRoot().get()));
+        }
+
         return configs.toArray(new MocoConfig[configs.size()]);
     }
 
@@ -70,7 +74,7 @@ public class JsonRunner implements Runner {
         return new Function<InputStream, RunnerSetting>() {
             @Override
             public RunnerSetting apply(InputStream input) {
-                return new RunnerSetting(input, null);
+                return new RunnerSetting(input, null, null);
             }
         };
     }

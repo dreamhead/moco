@@ -2,6 +2,8 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.File;
+
 public class GlobalSetting {
     private String include;
     private String context;
@@ -9,7 +11,7 @@ public class GlobalSetting {
     private String fileRoot;
 
     public String getInclude() {
-        return include;
+        return fileRoot != null ? new File(fileRoot, include).getPath() : include;
     }
 
     public String getContext() {

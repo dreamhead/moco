@@ -38,11 +38,8 @@ public class SettingParserTest {
         InputStream stream = SettingParserTest.class.getClassLoader().getResourceAsStream("multiple/fileroot-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
-        assertThat(globalSettings.get(0).getContext(), is("/foo"));
+        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/fileroot.json"));
+        assertThat(globalSettings.get(0).getContext(), is("/fileroot"));
         assertThat(globalSettings.get(0).getFileRoot(), is("src/test/resources/"));
-        assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
-        assertThat(globalSettings.get(1).getContext(), is("/bar"));
-        assertThat(globalSettings.get(1).getFileRoot(), is("src/test/resources/"));
     }
 }
