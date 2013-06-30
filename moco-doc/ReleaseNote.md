@@ -3,7 +3,7 @@
 ## Usage
 * Settings file
 
-## Congiruation
+## APIs
 ### Response
 #### Integration
 * proxy
@@ -11,6 +11,10 @@
 
 #### Misc Response
 * removed cache
+
+## Settings
+* context
+* file root
 
 # Release 0.7 (1-May-2013)
 
@@ -23,7 +27,7 @@ the first public release of Moco
 * maven plugin (external)
 * gradle plugin (external)
 
-## Congiruation
+## APIs
 
 ### Request
 

@@ -1,8 +1,7 @@
 # Functionality
 
 ## Configuration
-* Setting file
- * relative file root
+* Environment
 
 ## Matcher
 * JSONPath
