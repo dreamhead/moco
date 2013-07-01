@@ -9,6 +9,7 @@ public class GlobalSetting {
     private String context;
     @JsonProperty("file_root")
     private String fileRoot;
+    private String env;
 
     public String getInclude() {
         return fileRoot != null ? new File(fileRoot, include).getPath() : include;
@@ -20,5 +21,9 @@ public class GlobalSetting {
 
     public String getFileRoot() {
         return fileRoot;
+    }
+
+    public String getEnv() {
+        return env;
     }
 }
