@@ -2,13 +2,15 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.*;
+import java.util.List;
 
-public class XPathRequestExtractor implements RequestExtractor {
+import static com.google.common.collect.Lists.newArrayList;
+
+public class XPathRequestExtractor implements RequestExtractor<String[]> {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor = new ContentRequestExtractor();
     private final XPathExpression xPathExpression;
@@ -24,11 +26,17 @@ public class XPathRequestExtractor implements RequestExtractor {
     }
 
     @Override
-    public String extract(HttpRequest request) {
+    public String[] extract(HttpRequest request) {
         try {
-            return xPathExpression.evaluate(helper.extractAsInputSource(request, extractor));
+            NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
+            List<String> values = newArrayList();
+            for (int i = 0; i < list.getLength(); i++) {
+                Node node = list.item(i);
+                values.add(node.getNodeValue());
+            }
+            return values.toArray(new String[values.size()]);
         } catch (XPathExpressionException e) {
-            return "";
+            return new String[0];
         }
     }
 }

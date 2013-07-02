@@ -12,11 +12,11 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import java.io.IOException;
 
 public class JsonRequestMatcher implements RequestMatcher {
-    private final RequestExtractor extractor;
+    private final RequestExtractor<String> extractor;
     private final Resource resource;
     private final ObjectMapper mapper;
 
-    public JsonRequestMatcher(RequestExtractor extractor, Resource resource) {
+    public JsonRequestMatcher(RequestExtractor<String> extractor, Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.mapper = new ObjectMapper();

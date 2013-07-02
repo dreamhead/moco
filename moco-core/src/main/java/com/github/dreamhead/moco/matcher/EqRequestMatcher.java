@@ -4,23 +4,21 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import com.google.common.base.Predicate;
 
 import java.util.Arrays;
 
-public class EqRequestMatcher implements RequestMatcher {
-    private final RequestExtractor extractor;
+public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     private final Resource expected;
 
-    public EqRequestMatcher(RequestExtractor extractor, Resource expected) {
-        this.extractor = extractor;
+    public EqRequestMatcher(final RequestExtractor extractor, final Resource expected) {
+        super(extractor, new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return Arrays.equals(input.getBytes(), expected.asByteArray());
+            }
+        });
         this.expected = expected;
-    }
-
-    @Override
-    public boolean match(HttpRequest request) {
-        String extractContent = extractor.extract(request);
-        return extractContent != null && Arrays.equals(extractContent.getBytes(), expected.asByteArray());
     }
 
     @Override
@@ -30,6 +28,6 @@ public class EqRequestMatcher implements RequestMatcher {
             return this;
         }
 
-        return new EqRequestMatcher(extractor, appliedResource);
+        return new EqRequestMatcher<T>(extractor, appliedResource);
     }
 }

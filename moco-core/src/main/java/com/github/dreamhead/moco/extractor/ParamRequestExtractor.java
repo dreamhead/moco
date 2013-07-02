@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import java.util.List;
 import java.util.Map;
 
-public class ParamRequestExtractor implements RequestExtractor {
+public class ParamRequestExtractor implements RequestExtractor<String> {
     private final String param;
 
     public ParamRequestExtractor(String param) {

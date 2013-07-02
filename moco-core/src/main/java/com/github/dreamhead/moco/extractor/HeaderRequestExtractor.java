@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.RequestExtractor;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-public class HeaderRequestExtractor implements RequestExtractor {
+public class HeaderRequestExtractor implements RequestExtractor<String> {
     private final String name;
 
     public HeaderRequestExtractor(String name) {

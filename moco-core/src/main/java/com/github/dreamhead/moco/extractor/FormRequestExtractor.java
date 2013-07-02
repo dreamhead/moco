@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData;
 
-public class FormRequestExtractor implements RequestExtractor {
+public class FormRequestExtractor implements RequestExtractor<String> {
     private final String key;
 
     public FormRequestExtractor(String key) {

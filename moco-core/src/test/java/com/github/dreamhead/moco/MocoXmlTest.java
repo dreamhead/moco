@@ -26,6 +26,18 @@ public class MocoXmlTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_return_content_based_on_xpath_with_many_elements() throws Exception {
+        server.request(eq(xpath("/request/parameters/id/text()"), "2")).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postFile(root(), "foobar.xml"), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_exact_xml() throws Exception {
         server.request(xml(file("src/test/resources/foo.xml"))).response("foo");
 
