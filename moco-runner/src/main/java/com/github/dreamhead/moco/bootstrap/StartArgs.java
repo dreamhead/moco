@@ -6,12 +6,14 @@ public class StartArgs extends ShutdownPortOption {
     private final int port;
     private final String configurationFile;
     private final String settings;
+    private final String env;
 
-    public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings) {
+    public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
         super(shutdownPort);
         this.port = port;
         this.configurationFile = configurationFile;
         this.settings = globalSettings;
+        this.env = env;
     }
 
     public int getPort() {
@@ -30,6 +32,10 @@ public class StartArgs extends ShutdownPortOption {
         return settings;
     }
 
+    public String getEnv() {
+        return env;
+    }
+
     public static StartArgs parse(String... args) {
         try {
             return doParse(args);
@@ -45,6 +51,7 @@ public class StartArgs extends ShutdownPortOption {
         String config = cmd.getOptionValue("c");
         String globalSettings = cmd.getOptionValue("g");
         String shutdownPort = cmd.getOptionValue("s");
+        String env = cmd.getOptionValue("e");
 
         if (config == null && globalSettings == null) {
             throw new ParseArgException("config or global setting is required");
@@ -54,11 +61,15 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("config and global settings can not be set at the same time");
         }
 
+        if (globalSettings == null && env != null) {
+            throw new ParseArgException("environment must be configured with global settings");
+        }
+
         if (cmd.getArgs().length != 1) {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs((int)port, getShutdownPort(shutdownPort), config, globalSettings);
+        return new StartArgs((int)port, getShutdownPort(shutdownPort), config, globalSettings, env);
     }
 
     private static Options createMocoOptions() {
@@ -67,6 +78,7 @@ public class StartArgs extends ShutdownPortOption {
         options.addOption(portOption());
         options.addOption(shutdownPortOption());
         options.addOption(settingsOption());
+        options.addOption(envOption());
         return options;
     }
 
@@ -86,6 +98,13 @@ public class StartArgs extends ShutdownPortOption {
 
     private static Option settingsOption() {
         Option opt = new Option("g", true, "global settings");
+        opt.setType(String.class);
+        opt.setRequired(false);
+        return opt;
+    }
+
+    private static Option envOption() {
+        Option opt = new Option("e", true, "environment");
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;

@@ -15,6 +15,7 @@ import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetti
 import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
+    private static final SettingParser settingParser = new SettingParser();
     private final int port;
     private final List<GlobalSetting> globalSettings;
     private JsonRunner jsonRunner;
@@ -22,7 +23,7 @@ public class SettingRunner implements Runner {
 
     public SettingRunner(InputStream stream, int port) {
         this.port = port;
-        this.globalSettings = new SettingParser().parse(stream);
+        this.globalSettings = settingParser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
     }
 

@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.http.conn.HttpHostConnectException;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ConnectException;
@@ -25,7 +24,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
         int shutdownPort = 9527;
 
         RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
-        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null));
+        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null, null));
         runner.run();
 
         try {
@@ -45,7 +44,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
         int shutdownPort = 9527;
 
         RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
-        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null));
+        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null, null));
         runner.run();
 
         try {
