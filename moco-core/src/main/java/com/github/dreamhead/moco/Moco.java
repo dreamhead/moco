@@ -43,25 +43,25 @@ public class Moco {
         return eq(extractor(resource.id()), resource);
     }
 
-    public static RequestMatcher eq(final RequestExtractor extractor, final String expected) {
+    public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {
         return eq(extractor, text(expected));
     }
 
-    public static RequestMatcher eq(final RequestExtractor extractor, final Resource expected) {
-        return new EqRequestMatcher(extractor, expected);
+    public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final Resource expected) {
+        return new EqRequestMatcher<T>(extractor, expected);
     }
 
     public static RequestMatcher match(final Resource patternResource) {
         return match(extractor(patternResource.id()), patternResource);
     }
 
-    public static RequestMatcher match(final RequestExtractor extractor, final String expected) {
+    public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final String expected) {
         return match(extractor, text(expected));
     }
 
-    private static RequestMatcher match(final RequestExtractor extractor, final Resource expected) {
+    private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
         Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
-        return new MatchMatcher(extractor, pattern);
+        return new MatchMatcher<T>(extractor, pattern);
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
@@ -92,7 +92,7 @@ public class Moco {
         return new MethodResource(checkNotNull(httpMethod, "Null HTTP method is not allowed"));
     }
 
-    public static RequestExtractor header(final String header) {
+    public static RequestExtractor<String> header(final String header) {
         return new HeaderRequestExtractor(checkNotNull(header, "Null header name is not allowed"));
     }
 
@@ -102,7 +102,7 @@ public class Moco {
                 checkNotNull(value, "Null header value is not allowed"));
     }
 
-    public static RequestExtractor cookie(final String key) {
+    public static RequestExtractor<String> cookie(final String key) {
         return new CookieRequestExtractor(checkNotNull(key, "Null cookie is not allowed"));
     }
 
@@ -112,7 +112,7 @@ public class Moco {
                 checkNotNull(value, "Null cookie value is not allowed")));
     }
 
-    public static RequestExtractor form(final String key) {
+    public static RequestExtractor<String> form(final String key) {
         return new FormRequestExtractor(checkNotNull(key, "Null form name is not allowed"));
     }
 
@@ -120,7 +120,7 @@ public class Moco {
         return new LatencyResponseHandler(millis);
     }
 
-    public static RequestExtractor query(final String param) {
+    public static RequestExtractor<String> query(final String param) {
         return new ParamRequestExtractor(checkNotNull(param, "Null query is not allowed"));
     }
 

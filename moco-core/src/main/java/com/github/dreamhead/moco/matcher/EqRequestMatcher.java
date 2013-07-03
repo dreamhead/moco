@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     private final Resource expected;
 
-    public EqRequestMatcher(final RequestExtractor extractor, final Resource expected) {
+    public EqRequestMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
