@@ -1,0 +1,1 @@
+moved to [APIs](https://github.com/dreamhead/moco/blob/master/moco-doc/apis.md)
