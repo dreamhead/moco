@@ -1,0 +1,13 @@
+[
+    {
+        "request": {
+            "uri": "/jsonpath",
+            "json_paths": {
+            	"$.book[*].price": "1"
+            }
+        },
+        "response": {
+            "text": "response_for_json_path_request"
+        }
+    }
+]

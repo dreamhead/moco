@@ -135,6 +135,10 @@ public class Moco {
     public static RequestMatcher json(final Resource resource) {
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
+    
+    public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
+    	return new JsonPathRequestExtractor(checkNotNull(jsonPath, "Null JsonPath is not allowed"));
+    }
 
     public static ResponseHandler seq(final String... contents) {
         return seq(from(newArrayList(contents)).transform(textToResource()).toArray(Resource.class));
