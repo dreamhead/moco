@@ -142,6 +142,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     private Function<Map.Entry<String, Object>, RequestMatcher> toTargetMatcher(final Method extractorMethod) {
         return new Function<Map.Entry<String, Object>, RequestMatcher>() {
             @Override
+            @SuppressWarnings("unchecked")
             public RequestMatcher apply(Map.Entry<String, Object> pair) {
                 RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
                 return createRequestMatcher(extractor, pair.getValue());
@@ -149,6 +150,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         };
     }
 
+    @SuppressWarnings("unchecked")
     private RequestExtractor createRequestExtractor(Method method, String key) {
         try {
             return RequestExtractor.class.cast(method.invoke(null, key));

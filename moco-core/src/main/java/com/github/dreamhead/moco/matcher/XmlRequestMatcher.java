@@ -21,10 +21,10 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public class XmlRequestMatcher implements RequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final DocumentBuilder documentBuilder;
-    private final RequestExtractor extractor;
+    private final RequestExtractor<String> extractor;
     private final Resource resource;
 
-    public XmlRequestMatcher(RequestExtractor extractor, Resource resource) {
+    public XmlRequestMatcher(RequestExtractor<String> extractor, Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.documentBuilder = documentBuilder();
@@ -56,7 +56,7 @@ public class XmlRequestMatcher implements RequestMatcher {
         return extractDocument(new InputSource(stream), this);
     }
 
-    private Document extractDocument(HttpRequest request, RequestExtractor extractor) throws SAXException {
+    private Document extractDocument(HttpRequest request, RequestExtractor<String> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 
