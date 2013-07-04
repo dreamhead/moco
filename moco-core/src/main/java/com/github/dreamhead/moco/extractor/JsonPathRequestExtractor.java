@@ -22,12 +22,12 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 		return toStringArray(jsonPath.read(extractor.extract(request)));
 	}
 	
-	private String[] toStringArray(Object actualValue){
+	private String[] toStringArray(Object content){
 		String[] valueArray = null;
-		if(actualValue instanceof List){
-			valueArray = from((List<String>)actualValue).toArray(String.class);
+		if(content instanceof List){
+			valueArray = from((List<String>)content).toArray(String.class);
 		}else{
-			valueArray = new String[]{(String)actualValue};
+			valueArray = new String[]{(String)content};
 		}
 		return valueArray;
 	}
