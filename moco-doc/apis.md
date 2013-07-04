@@ -390,6 +390,35 @@ The large request can be put into a file:
 }
 ```
 
+### JSONPath
+
+For the JSON/HTML request, Moco allows us to match request with JSONPath.
+
+* Java API
+
+```java
+server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
+```
+
+* JSON
+
+```json
+{
+  "request": 
+    {
+      "uri": "/jsonpath",
+      "json_paths": 
+        {
+          "$.book[*].price": "1"
+	}
+    },
+  "response": 
+    {
+      "text": "response_for_json_path_request"
+    }
+}
+```
+
 ### match
 
 match is not a functionality, it is an operator. You match your request with regular expression:
