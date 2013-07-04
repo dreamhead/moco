@@ -1,19 +1,20 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
 public class StartArgs extends ShutdownPortOption {
     private final int port;
     private final String configurationFile;
     private final String settings;
-    private final String env;
+    private final Optional<String> env;
 
     public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
         super(shutdownPort);
         this.port = port;
         this.configurationFile = configurationFile;
         this.settings = globalSettings;
-        this.env = env;
+        this.env = Optional.fromNullable(env);
     }
 
     public int getPort() {
@@ -32,7 +33,7 @@ public class StartArgs extends ShutdownPortOption {
         return settings;
     }
 
-    public String getEnv() {
+    public Optional<String> getEnv() {
         return env;
     }
 

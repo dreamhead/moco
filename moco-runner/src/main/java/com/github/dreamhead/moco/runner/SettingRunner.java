@@ -1,8 +1,11 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.parser.SettingParser;
+import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.parser.GlobalSettingParser;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 
 import java.io.File;
@@ -15,14 +18,16 @@ import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetti
 import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
-    private static final SettingParser settingParser = new SettingParser();
+    private static final GlobalSettingParser settingParser = new GlobalSettingParser();
     private final int port;
     private final List<GlobalSetting> globalSettings;
+    private final Optional<String> env;
     private JsonRunner jsonRunner;
     private final FluentIterable<File> files;
 
-    public SettingRunner(InputStream stream, int port) {
-        this.port = port;
+    public SettingRunner(InputStream stream, StartArgs args) {
+        this.port = args.getPort();
+        this.env = args.getEnv();
         this.globalSettings = settingParser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
     }
@@ -32,9 +37,21 @@ public class SettingRunner implements Runner {
     }
 
     public void run() {
-        jsonRunner = newJsonRunnerWithSetting(from(globalSettings).transform(toRunnerSetting()), port);
+        jsonRunner = newJsonRunnerWithSetting(from(globalSettings).filter(byEnv(this.env)).transform(toRunnerSetting()), port);
         jsonRunner.run();
     }
+
+    private Predicate<? super GlobalSetting> byEnv(final Optional<String> env) {
+
+        return new Predicate<GlobalSetting>() {
+            @Override
+            public boolean apply(GlobalSetting globalSetting) {
+                return !env.isPresent() || env.get().equalsIgnoreCase(globalSetting.getEnv());
+
+            }
+        };
+    }
+
 
     private Function<GlobalSetting, RunnerSetting> toRunnerSetting() {
         return new Function<GlobalSetting, RunnerSetting>() {

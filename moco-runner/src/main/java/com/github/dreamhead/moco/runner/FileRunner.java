@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.StartArgs;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +13,15 @@ public abstract class FileRunner implements Runner {
     protected final File file;
     protected final int port;
     private Runner runner;
+
+    static FileRunner createSettingFileRunner(final File settingsFile, final StartArgs startArgs) {
+        return new FileRunner(settingsFile, startArgs.getPort()) {
+            @Override
+            protected Runner createRunner() {
+                return new SettingRunner(toInputStream(file), startArgs);
+            }
+        };
+    }
 
     protected abstract Runner createRunner();
 
@@ -45,15 +56,6 @@ public abstract class FileRunner implements Runner {
             @Override
             protected Runner createRunner() {
                 return newJsonRunnerWithStreams(of(toInputStream(file)), port);
-            }
-        };
-    }
-
-    public static FileRunner createSettingFileRunner(final File file, final int port) {
-        return new FileRunner(file, port) {
-            @Override
-            protected Runner createRunner() {
-                return new SettingRunner(toInputStream(file), port);
             }
         };
     }
