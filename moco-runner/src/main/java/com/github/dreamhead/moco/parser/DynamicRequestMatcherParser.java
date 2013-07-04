@@ -1,5 +1,18 @@
 package com.github.dreamhead.moco.parser;
 
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.FluentIterable.from;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
@@ -9,29 +22,16 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableMap.of;
+import com.google.common.collect.ImmutableMap;
 
 public class DynamicRequestMatcherParser implements RequestMatcherParser {
-    private final Map<String, String> methods = of(
-            "headers", "header",
-            "queries", "query",
-            "xpaths", "xpath",
-            "cookies", "cookie",
-            "forms", "form"
-    );
+    private final Map<String, String> methods = ImmutableMap.<String,String>builder()
+    		.put("headers", "header")
+    		.put("queries", "query")
+    		.put("xpaths", "xpath")
+    		.put("jsonPaths", "jsonPath")
+    		.put("cookies", "cookie")
+    		.put("forms", "form").build();
 
     @Override
     public RequestMatcher createRequestMatcher(RequestSetting request) {

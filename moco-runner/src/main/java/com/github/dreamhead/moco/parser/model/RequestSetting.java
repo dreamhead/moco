@@ -18,6 +18,8 @@ public class RequestSetting {
 
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> xpaths;
+    @JsonProperty("json_paths")
+    private Map<String, TextContainer> jsonPaths;
     private Map<String, TextContainer> queries;
     private Map<String, TextContainer> cookies;
     private Map<String, TextContainer> forms;
