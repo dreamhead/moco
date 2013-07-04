@@ -13,8 +13,8 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class SettingParser {
-    private static Logger logger = LoggerFactory.getLogger(SettingParser.class);
+public class GlobalSettingParser {
+    private static Logger logger = LoggerFactory.getLogger(GlobalSettingParser.class);
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
 

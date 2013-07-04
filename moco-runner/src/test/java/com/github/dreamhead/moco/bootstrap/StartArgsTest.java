@@ -23,7 +23,7 @@ public class StartArgsTest {
     @Test
     public void should_parse_environment() {
         StartArgs args = parse("start", "-p", "12306", "-g", "setting.json", "-e", "foo");
-        assertThat(args.getEnv(), is("foo"));
+        assertThat(args.getEnv().get(), is("foo"));
     }
 
     @Test(expected = ParseArgException.class)

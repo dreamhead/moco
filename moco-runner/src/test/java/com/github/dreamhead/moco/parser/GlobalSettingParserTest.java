@@ -10,13 +10,13 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SettingParserTest {
+public class GlobalSettingParserTest {
 
-    private SettingParser parser;
+    private GlobalSettingParser parser;
 
     @Before
     public void setUp() throws Exception {
-        parser = new SettingParser();
+        parser = new GlobalSettingParser();
     }
 
     @Test
@@ -29,7 +29,7 @@ public class SettingParserTest {
     }
 
     private InputStream getResourceAsStream(String filename) {
-        return SettingParserTest.class.getClassLoader().getResourceAsStream(filename);
+        return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
     }
 
     @Test
