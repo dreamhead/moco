@@ -86,7 +86,7 @@ subprojects {
         hamcrestVersion = '1.3'
         mockitoVersion = '1.9.5'
         httpComponentVersion = '4.2.5'
-		jsonpathVersion = '0.8.1'
+        jsonpathVersion = '0.8.1'
     }
 
     jar {
