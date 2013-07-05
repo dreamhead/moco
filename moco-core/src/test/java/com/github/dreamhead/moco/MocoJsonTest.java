@@ -16,14 +16,14 @@ import org.junit.Test;
 import static com.github.dreamhead.moco.Moco.eq;
 
 public class MocoJsonTest extends AbstractMocoTest {
-	
 	@Test
-	public void should_return_content_based_on_jsonpath() throws Exception{
+	public void should_return_content_based_on_jsonpath() throws Exception {
 		server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
 		running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"), is("jsonpath match success"));
+                assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"), 
+                        is("jsonpath match success"));
             }
         });
 	}

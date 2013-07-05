@@ -23,13 +23,10 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 	}
 	
 	private String[] toStringArray(Object content){
-		String[] valueArray = null;
 		if(content instanceof List){
-			valueArray = from((List<String>)content).toArray(String.class);
-		}else{
-			valueArray = new String[]{(String)content};
+			return from((List<String>)content).toArray(String.class);
 		}
-		return valueArray;
+		return new String[]{(String)content};
 	}
 
 }
