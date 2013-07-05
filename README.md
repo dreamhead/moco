@@ -35,7 +35,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 ## Documents
 * More [Usages](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
 * Detailed [APIs](https://github.com/dreamhead/moco/blob/master/moco-doc/apis.md)
-* [Settings](https://github.com/dreamhead/moco/blob/master/moco-doc/settings.md) file for multiple configurations
+* [Global Settings](https://github.com/dreamhead/moco/blob/master/moco-doc/global-settings.md) for multiple configuration files.
 
 ## Build
 Make sure you have JDK and Gradle installed.
