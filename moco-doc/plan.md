@@ -1,10 +1,8 @@
 # Functionality
 
 ## Configuration
-* Environment
 
 ## Matcher
-* JSONPath
 * Marshal support
 
 ## Handler

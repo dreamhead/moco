@@ -419,7 +419,7 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match su
 }
 ```
 
-### match
+### Match
 
 match is not a functionality, it is an operator. You match your request with regular expression:
 

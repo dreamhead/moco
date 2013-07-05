@@ -61,7 +61,7 @@ Moco can be used as standalone to run with configuration and you can download st
 [Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
 
 For the brave, you can try latest version from snapshot repository.
-[Snapshot Standalone Moco Runner](https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/0.8-SNAPSHOT/moco-runner-0.8-20130630.082042-2-standalone.jar)
+[Snapshot Standalone Moco Runner](https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/0.8-SNAPSHOT/moco-runner-0.8-20130705.033109-3-standalone.jar)
 
 First of all, a JSON configuration file needs to be provided to start Moco.
 

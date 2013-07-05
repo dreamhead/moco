@@ -4,6 +4,8 @@
 * Settings file
 
 ## APIs
+### Request
+* JSONPath
 ### Response
 #### Integration
 * proxy
@@ -15,6 +17,7 @@
 ## Settings
 * context
 * file root
+* environment
 
 # Release 0.7 (1-May-2013)
 
