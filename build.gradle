@@ -146,6 +146,10 @@ subprojects {
         required { gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
+
+    tasks.withType(Compile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
 }
 
 project(':moco-runner') {

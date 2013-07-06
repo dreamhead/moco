@@ -159,7 +159,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         }
     }
 
-    private RequestMatcher createRequestMatcher(RequestExtractor extractor, Object value) {
+    private <T> RequestMatcher createRequestMatcher(RequestExtractor<T> extractor, Object value) {
         if (TextContainer.class.isInstance(value)) {
             return getRequestMatcher(extractor, TextContainer.class.cast(value));
         }
@@ -167,7 +167,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
         throw new IllegalArgumentException("unknown value type: " + value);
     }
 
-    private RequestMatcher getRequestMatcher(RequestExtractor extractor, TextContainer container) {
+    private <T> RequestMatcher getRequestMatcher(RequestExtractor<T> extractor, TextContainer container) {
         if (container.isRawText()) {
             return eq(extractor, container.getText());
         }

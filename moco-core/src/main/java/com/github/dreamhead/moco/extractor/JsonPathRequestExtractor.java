@@ -1,15 +1,12 @@
 package com.github.dreamhead.moco.extractor;
 
-import java.util.List;
-
-import static com.google.common.collect.FluentIterable.*;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-
 import com.github.dreamhead.moco.RequestExtractor;
 import com.jayway.jsonpath.JsonPath;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+
+import java.util.List;
 
 public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
-	
 	private final ContentRequestExtractor extractor = new ContentRequestExtractor();
 	private final JsonPath jsonPath;
 
@@ -21,12 +18,14 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 	public String[] extract(HttpRequest request) {
 		return toStringArray(jsonPath.read(extractor.extract(request)));
 	}
-	
+
+    @SuppressWarnings("unchecked")
 	private String[] toStringArray(Object content){
 		if(content instanceof List){
-			return from((List<String>)content).toArray(String.class);
+            List<String> texts = (List<String>) content;
+            return texts.toArray(new String[texts.size()]);
 		}
-		return new String[]{(String)content};
-	}
 
+		return new String[]{content.toString()};
+	}
 }
