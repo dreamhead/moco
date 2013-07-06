@@ -11,13 +11,13 @@ public class StartArgsTest {
     public void should_parse_start_arguments() {
         StartArgs args = parse("start", "-p", "12306", "-c", "foo.json");
         assertThat(args.getPort(), is(12306));
-        assertThat(args.getConfigurationFile(), is("foo.json"));
+        assertThat(args.getConfigurationFile().get(), is("foo.json"));
     }
 
     @Test
     public void should_parse_settings() {
         StartArgs args = parse("start", "-p", "12306", "-g", "settings.json");
-        assertThat(args.getSettings(), is("settings.json"));
+        assertThat(args.getSettings().get(), is("settings.json"));
     }
 
     @Test

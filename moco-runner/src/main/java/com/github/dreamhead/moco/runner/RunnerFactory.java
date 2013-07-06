@@ -35,7 +35,7 @@ public class RunnerFactory {
     }
 
     private Runner createDynamicSettingRunner(StartArgs startArgs) {
-        File settingsFile = new File(startArgs.getSettings());
+        File settingsFile = new File(startArgs.getSettings().get());
         FileRunner fileRunner = createSettingFileRunner(settingsFile, startArgs);
         SettingRunner runner = (SettingRunner) fileRunner.getRunner();
         Monitor fileMonitor = monitorFactory.createSettingMonitor(settingsFile, runner.getFiles(), fileRunner);
@@ -43,7 +43,7 @@ public class RunnerFactory {
     }
 
     private Runner createDynamicConfigurationRunner(StartArgs startArgs) {
-        final File configuration = new File(startArgs.getConfigurationFile());
+        final File configuration = new File(startArgs.getConfigurationFile().get());
         final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs.getPort());
         Monitor fileMonitor = monitorFactory.createConfigurationMonitor(configuration, fileRunner);
         return new MonitorRunner(fileRunner, fileMonitor);

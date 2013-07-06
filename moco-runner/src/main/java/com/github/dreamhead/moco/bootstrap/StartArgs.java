@@ -3,33 +3,35 @@ package com.github.dreamhead.moco.bootstrap;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
+import static com.google.common.base.Optional.fromNullable;
+
 public class StartArgs extends ShutdownPortOption {
     private final int port;
-    private final String configurationFile;
-    private final String settings;
+    private final Optional<String> configurationFile;
+    private final Optional<String> settings;
     private final Optional<String> env;
 
     public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
         super(shutdownPort);
         this.port = port;
-        this.configurationFile = configurationFile;
-        this.settings = globalSettings;
-        this.env = Optional.fromNullable(env);
+        this.configurationFile = fromNullable(configurationFile);
+        this.settings = fromNullable(globalSettings);
+        this.env = fromNullable(env);
     }
 
     public int getPort() {
         return port;
     }
 
-    public String getConfigurationFile() {
+    public Optional<String> getConfigurationFile() {
         return configurationFile;
     }
 
     public boolean hasConfigurationFile() {
-        return this.configurationFile != null;
+        return this.configurationFile.isPresent();
     }
 
-    public String getSettings() {
+    public Optional<String> getSettings() {
         return settings;
     }
 
