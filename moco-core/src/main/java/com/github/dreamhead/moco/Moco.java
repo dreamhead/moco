@@ -181,6 +181,14 @@ public class Moco {
         return new ProxyResponseHandler(toUrl(url), failover);
     }
 
+    public static ResponseHandler template(final String template) {
+        return new TemplateResponseHandler(text(checkNotNull(template, "Null template is not allowed")));
+    }
+
+    public static ResponseHandler template(final ContentResource resource) {
+        return new TemplateResponseHandler(checkNotNull(resource, "Null template is not allowed"));
+    }
+
     public static Failover failover(final String file) {
         return new DefaultFailover(new File(file));
     }

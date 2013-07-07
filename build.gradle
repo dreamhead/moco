@@ -87,6 +87,7 @@ subprojects {
         mockitoVersion = '1.9.5'
         httpComponentVersion = '4.2.5'
         jsonpathVersion = '0.8.1'
+        freemarkerVersion = '2.3.20'
     }
 
     jar {
@@ -111,6 +112,7 @@ subprojects {
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
 				"com.jayway.jsonpath:json-path:$jsonpathVersion",
+                "org.freemarker:freemarker:$freemarkerVersion"
         )
 
         runtime(

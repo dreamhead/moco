@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.handler.failover;
+package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Objects;
@@ -16,6 +16,10 @@ public class Request extends Message {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public String getMethod() {
+        return method;
     }
 
     public boolean match(Request that) {

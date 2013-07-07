@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler.failover;
 
+import com.github.dreamhead.moco.model.Request;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

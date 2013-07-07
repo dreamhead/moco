@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.handler.failover;
+package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
