@@ -50,4 +50,30 @@ public class MocoTemplateTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_generate_response_with_http_header() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.headers[\"foo\"]}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String response = Request.Get(remoteUrl("/template")).addHeader("foo", "bar").version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
+                assertThat(response, is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_http_query() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.queries[\"foo\"]}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String response = Request.Get(remoteUrl("/template?foo=bar")).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
+                assertThat(response, is("bar"));
+            }
+        });
+    }
 }

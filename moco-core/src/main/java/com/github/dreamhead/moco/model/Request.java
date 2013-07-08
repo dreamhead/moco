@@ -5,13 +5,19 @@ import com.google.common.base.Objects;
 
 import java.util.Map;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Request extends Message {
-    private Map<String, String> queries;
+    private Map<String, String> queries = newHashMap();
     private String method;
 
     public void addQuery(String key, String value) {
         this.queries.put(key, value);
+    }
+
+    public Map<String, String> getQueries() {
+        return queries;
     }
 
     public void setMethod(String method) {
