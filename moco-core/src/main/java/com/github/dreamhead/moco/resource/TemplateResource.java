@@ -1,12 +1,9 @@
-package com.github.dreamhead.moco.handler;
+package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.MessageFactory;
-import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.*;
-import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 import java.io.ByteArrayOutputStream;
@@ -16,12 +13,12 @@ import java.io.Writer;
 
 import static com.google.common.collect.ImmutableMap.of;
 
-public class TemplateResponseHandler extends AbstractContentResponseHandler {
+public class TemplateResource implements ContentResource {
     private static final String TEMPLATE_NAME = "template";
     private final ContentResource template;
     private final Configuration cfg;
 
-    public TemplateResponseHandler(ContentResource template) {
+    public TemplateResource(ContentResource template) {
         this.template = template;
         this.cfg = new Configuration();
         this.cfg.setObjectWrapper(new DefaultObjectWrapper());
@@ -30,9 +27,14 @@ public class TemplateResponseHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
+    public String id() {
+        return template.id();
+    }
+
+    @Override
+    public byte[] asByteArray(HttpRequest request) {
         StringTemplateLoader templateLoader = new StringTemplateLoader();
-        templateLoader.putTemplate(TEMPLATE_NAME, new String(this.template.asByteArray()));
+        templateLoader.putTemplate(TEMPLATE_NAME, new String(this.template.asByteArray(request)));
         cfg.setTemplateLoader(templateLoader);
 
         try {
@@ -40,21 +42,26 @@ public class TemplateResponseHandler extends AbstractContentResponseHandler {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
             template.process(of("req", MessageFactory.createRequest(request)), writer);
-            buffer.writeBytes(stream.toByteArray());
+            return stream.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TemplateException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
-    public ResponseHandler apply(MocoConfig config) {
+    public Resource apply(MocoConfig config) {
+        if (config.isFor(template.id())) {
+            return new TemplateResource((ContentResource)template.apply(config));
+        }
+
         return this;
     }
 
     @Override
-    protected String getContentType(HttpRequest request) {
-        return this.template.getContentType();
+    public String getContentType() {
+        return template.getContentType();
     }
 }

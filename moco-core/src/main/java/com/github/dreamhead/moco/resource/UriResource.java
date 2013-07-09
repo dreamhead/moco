@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class UriResource implements Resource {
     private final String uri;
@@ -15,7 +16,7 @@ public class UriResource implements Resource {
     }
 
     @Override
-    public byte[] asByteArray() {
+    public byte[] asByteArray(HttpRequest request) {
         return this.uri.getBytes();
     }
 

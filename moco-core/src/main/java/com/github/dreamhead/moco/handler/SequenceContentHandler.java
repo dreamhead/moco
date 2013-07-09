@@ -6,11 +6,12 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class SequenceContentHandler extends AbstractContentHandler {
+public class SequenceContentHandler extends AbstractContentResponseHandler {
     private final Resource[] resources;
     private int index;
 
@@ -19,8 +20,8 @@ public class SequenceContentHandler extends AbstractContentHandler {
     }
 
     @Override
-    protected void writeContent(ChannelBuffer buffer) {
-        buffer.writeBytes(resources[current()].asByteArray());
+    protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
+        buffer.writeBytes(resources[current()].asByteArray(request));
     }
 
     private int current() {

@@ -60,7 +60,7 @@ public class Moco {
     }
 
     private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
-        Pattern pattern = Pattern.compile(new String(expected.asByteArray()));
+        Pattern pattern = Pattern.compile(new String(expected.asByteArray(null)));
         return new MatchMatcher<T>(extractor, pattern);
     }
 
@@ -181,12 +181,12 @@ public class Moco {
         return new ProxyResponseHandler(toUrl(url), failover);
     }
 
-    public static ResponseHandler template(final String template) {
-        return new TemplateResponseHandler(text(checkNotNull(template, "Null template is not allowed")));
+    public static Resource template(final String template) {
+        return template(text(checkNotNull(template, "Null template is not allowed")));
     }
 
-    public static ResponseHandler template(final ContentResource resource) {
-        return new TemplateResponseHandler(checkNotNull(resource, "Null template is not allowed"));
+    public static Resource template(final ContentResource resource) {
+        return new TemplateResource(checkNotNull(resource, "Null template is not allowed"));
     }
 
     public static Failover failover(final String file) {

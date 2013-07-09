@@ -11,7 +11,7 @@ public class VersionResponseHandler implements ResponseHandler {
     private final HttpVersion httpVersion;
 
     public VersionResponseHandler(VersionResource resource) {
-        this.httpVersion = HttpVersion.valueOf(new String(resource.asByteArray()));
+        this.httpVersion = HttpVersion.valueOf(new String(resource.asByteArray(null)));
     }
 
     @Override

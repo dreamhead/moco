@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.io.Files;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class FileResource implements WritableResource, ContentResource {
     }
 
     @Override
-    public byte[] asByteArray() {
+    public byte[] asByteArray(HttpRequest request) {
         try {
             return toByteArray(file);
         } catch (IOException e) {

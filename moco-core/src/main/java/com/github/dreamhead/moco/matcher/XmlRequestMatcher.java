@@ -34,7 +34,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     public boolean match(HttpRequest request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
-            Document resourceDocument = getResourceDocument(this.resource);
+            Document resourceDocument = getResourceDocument(null, this.resource);
             return requestDocument.isEqualNode(resourceDocument);
         } catch (SAXException e) {
             return false;
@@ -51,8 +51,8 @@ public class XmlRequestMatcher implements RequestMatcher {
         return new XmlRequestMatcher(this.extractor, applied);
     }
 
-    private Document getResourceDocument(Resource resource) throws SAXException {
-        ByteArrayInputStream stream = new ByteArrayInputStream(resource.asByteArray());
+    private Document getResourceDocument(HttpRequest request, Resource resource) throws SAXException {
+        ByteArrayInputStream stream = new ByteArrayInputStream(resource.asByteArray(request));
         return extractDocument(new InputSource(stream), this);
     }
 

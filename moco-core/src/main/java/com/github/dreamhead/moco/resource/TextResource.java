@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class TextResource implements ContentResource {
     private final String text;
@@ -15,7 +16,7 @@ public class TextResource implements ContentResource {
     }
 
     @Override
-    public byte[] asByteArray() {
+    public byte[] asByteArray(HttpRequest request) {
         return text.getBytes();
     }
 

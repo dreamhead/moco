@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-public class ContentHandler extends AbstractContentHandler {
+public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;
 
     public ContentHandler(final ContentResource resource) {
@@ -14,8 +14,8 @@ public class ContentHandler extends AbstractContentHandler {
     }
 
     @Override
-    protected void writeContent(ChannelBuffer buffer) {
-        buffer.writeBytes(resource.asByteArray());
+    protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
+        buffer.writeBytes(this.resource.asByteArray(request));
     }
 
     @Override
