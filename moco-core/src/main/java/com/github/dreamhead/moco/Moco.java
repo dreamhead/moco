@@ -15,7 +15,6 @@ import com.google.common.base.Function;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -60,8 +59,7 @@ public class Moco {
     }
 
     private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
-        Pattern pattern = Pattern.compile(new String(expected.asByteArray(null)));
-        return new MatchMatcher<T>(extractor, pattern);
+        return new MatchMatcher<T>(extractor, expected);
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
