@@ -4,9 +4,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.template;
-import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
@@ -73,6 +71,18 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws Exception {
                 String response = Request.Get(remoteUrl("/template?foo=bar")).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
                 assertThat(response, is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/foo.template")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("GET"));
             }
         });
     }
