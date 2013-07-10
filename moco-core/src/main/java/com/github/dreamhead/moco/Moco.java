@@ -97,6 +97,12 @@ public class Moco {
     public static ResponseHandler header(final String name, final String value) {
         return new HeaderResponseHandler(
                 checkNotNull(name, "Null header name is not allowed"),
+                text(checkNotNull(value, "Null header value is not allowed")));
+    }
+
+    public static ResponseHandler header(final String name, final Resource value) {
+        return new HeaderResponseHandler(
+                checkNotNull(name, "Null header name is not allowed"),
                 checkNotNull(value, "Null header value is not allowed"));
     }
 

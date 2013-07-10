@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -107,7 +106,7 @@ public class ResponseSetting extends AbstractResource {
         return new Function<Map.Entry<String, String>, ResponseHandler>() {
             @Override
             public ResponseHandler apply(Map.Entry<String, String> entry) {
-                return new HeaderResponseHandler(entry.getKey(), entry.getValue());
+                return header(entry.getKey(), entry.getValue());
             }
         };
     }

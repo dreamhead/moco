@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Request;
@@ -97,6 +98,19 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws Exception {
                 ProtocolVersion version = Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
                 assertThat(version.toString(), is("HTTP/1.0"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_header() throws Exception {
+        server.request(by(uri("/template"))).response(header("foo", template("${req.method}")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Header header = Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getFirstHeader("foo");
+                assertThat(header.getValue(), is("GET"));
             }
         });
     }
