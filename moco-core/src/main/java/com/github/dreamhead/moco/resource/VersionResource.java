@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.MocoConfig;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public class VersionResource implements Resource {
-    private final String version;
+    private final Resource version;
 
-    public VersionResource(String version) {
+    public VersionResource(Resource version) {
         this.version = version;
     }
 
@@ -17,7 +17,7 @@ public class VersionResource implements Resource {
 
     @Override
     public byte[] asByteArray(HttpRequest request) {
-        return version.getBytes();
+        return version.asByteArray(request);
     }
 
     @Override

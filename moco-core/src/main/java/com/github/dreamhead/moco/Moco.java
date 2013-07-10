@@ -163,8 +163,12 @@ public class Moco {
         return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
     }
 
+    public static VersionResource version(final Resource resource) {
+        return new VersionResource(checkNotNull(resource, "Null version is not allowed"));
+    }
+
     public static VersionResource version(final String version) {
-        return new VersionResource(checkNotNull(version, "Null version is not allowed"));
+        return version(text(version));
     }
 
     public static ResponseHandler status(final int code) {
