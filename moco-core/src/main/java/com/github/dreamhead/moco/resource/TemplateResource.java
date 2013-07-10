@@ -28,7 +28,7 @@ public class TemplateResource implements ContentResource {
 
     @Override
     public String id() {
-        return template.id();
+        return "template";
     }
 
     @Override

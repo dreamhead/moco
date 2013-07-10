@@ -27,8 +27,7 @@ public class FileContentType {
     }
 
     public String getContentType() {
-        String extension = Files.getFileExtension(filename);
-        return toContentType(extension);
+        return toContentType(Files.getFileExtension(filename));
     }
 
     private String toContentType(String extension) {

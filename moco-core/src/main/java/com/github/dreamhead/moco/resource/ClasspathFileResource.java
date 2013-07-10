@@ -34,7 +34,6 @@ public class ClasspathFileResource implements ContentResource {
         return this;
     }
 
-
     @Override
     public String getContentType() {
         return new FileContentType(this.filename).getContentType();
