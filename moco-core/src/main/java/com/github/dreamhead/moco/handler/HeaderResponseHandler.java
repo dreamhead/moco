@@ -11,11 +11,11 @@ public class HeaderResponseHandler implements ResponseHandler {
     private final ContentTypeDetector detector = new ContentTypeDetector();
 
     private final String name;
-    private final Resource value;
+    private final Resource resource;
 
-    public HeaderResponseHandler(String name, Resource value) {
+    public HeaderResponseHandler(String name, Resource resource) {
         this.name = name;
-        this.value = value;
+        this.resource = resource;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class HeaderResponseHandler implements ResponseHandler {
             response.removeHeader(name);
         }
 
-        HttpHeaders.addHeader(response, name, new String(value.asByteArray(request)));
+        HttpHeaders.addHeader(response, name, new String(resource.asByteArray(request)));
     }
 
     @Override

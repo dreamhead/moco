@@ -9,7 +9,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.*;
-import com.github.dreamhead.moco.util.Cookies;
 import com.google.common.base.Function;
 
 import java.io.File;
@@ -101,8 +100,12 @@ public class Moco {
     }
 
     public static ResponseHandler header(final String name, final Resource value) {
-        return new HeaderResponseHandler(
-                checkNotNull(name, "Null header name is not allowed"),
+        String key = checkNotNull(name, "Null header name is not allowed");
+        if (key.trim().isEmpty()) {
+            throw new IllegalArgumentException("Null header name is not allowed");
+        }
+
+        return new HeaderResponseHandler(key,
                 checkNotNull(value, "Null header value is not allowed"));
     }
 
@@ -111,9 +114,13 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final String value) {
-        return header("Set-Cookie", new Cookies().encodeCookie(
+        return cookie(key, text(value));
+    }
+
+    public static ResponseHandler cookie(final String key, final Resource resource) {
+        return header("Set-Cookie", new HeaderResource(
                 checkNotNull(key, "Null cookie key is not allowed"),
-                checkNotNull(value, "Null cookie value is not allowed")));
+                checkNotNull(resource, "Null cookie value is not allowed")));
     }
 
     public static RequestExtractor<String> form(final String key) {
