@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.setting;
 
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.Setting;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -11,7 +8,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 
 import static com.google.common.collect.ImmutableList.of;
 
-public class BaseSetting extends Setting {
+public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
     private final ActualHttpServer httpServer;
 
     public BaseSetting(ActualHttpServer httpServer, RequestMatcher matcher) {

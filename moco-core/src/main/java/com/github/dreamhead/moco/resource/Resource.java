@@ -1,10 +1,9 @@
 package com.github.dreamhead.moco.resource;
 
-import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.ConfigApplier;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-public interface Resource {
+public interface Resource extends ConfigApplier<Resource> {
     String id();
-    Resource apply(final MocoConfig config);
     byte[] asByteArray(HttpRequest request);
 }
