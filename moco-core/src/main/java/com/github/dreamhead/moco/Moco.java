@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
+import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -69,8 +70,8 @@ public class Moco {
         return new OrRequestMatcher(newArrayList(matchers));
     }
 
-    public static TextResource text(final String text) {
-        return new TextResource(checkNotNull(text, "Null text is not allowed"));
+    public static ContentResource text(final String text) {
+        return textResource(checkNotNull(text, "Null text is not allowed"));
     }
 
     public static ResponseHandler content(String text) {
@@ -86,7 +87,7 @@ public class Moco {
     }
 
     public static Resource method(final String httpMethod) {
-        return new MethodResource(checkNotNull(httpMethod, "Null HTTP method is not allowed"));
+        return methodResource(checkNotNull(httpMethod, "Null HTTP method is not allowed"));
     }
 
     public static RequestExtractor<String> header(final String header) {
@@ -118,7 +119,7 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource) {
-        return header("Set-Cookie", new HeaderResource(
+        return header("Set-Cookie", headerResource(
                 checkNotNull(key, "Null cookie key is not allowed"),
                 checkNotNull(resource, "Null cookie value is not allowed")));
     }
@@ -168,19 +169,19 @@ public class Moco {
         return new SequenceContentHandler(contents);
     }
 
-    public static FileResource file(final String filename) {
-        return new FileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
+    public static ContentResource file(final String filename) {
+        return fileResource(new File(checkNotNull(filename, "Null filename is not allowed")));
     }
 
-    public static ClasspathFileResource pathResource(final String filename) {
-        return new ClasspathFileResource(checkNotNull(filename, "Null filename is not allowed"));
+    public static ContentResource pathResource(final String filename) {
+        return classpathFileResource(checkNotNull(filename, "Null filename is not allowed"));
     }
 
-    public static VersionResource version(final Resource resource) {
-        return new VersionResource(checkNotNull(resource, "Null version is not allowed"));
+    public static Resource version(final Resource resource) {
+        return versionResource(checkNotNull(resource, "Null version is not allowed"));
     }
 
-    public static VersionResource version(final String version) {
+    public static Resource version(final String version) {
         return version(text(version));
     }
 
@@ -201,7 +202,7 @@ public class Moco {
     }
 
     public static Resource template(final ContentResource resource) {
-        return new TemplateResource(checkNotNull(resource, "Null template is not allowed"));
+        return templateResource(checkNotNull(resource, "Null template is not allowed"));
     }
 
     public static Failover failover(final String file) {

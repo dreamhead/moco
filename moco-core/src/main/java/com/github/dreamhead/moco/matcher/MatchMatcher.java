@@ -14,7 +14,7 @@ public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
 
             @Override
             public boolean apply(String input) {
-                Pattern pattern = Pattern.compile(new String(expected.asByteArray(null)));
+                Pattern pattern = Pattern.compile(new String(expected.readFor(null)));
                 return pattern.matcher(input).matches();
             }
         });

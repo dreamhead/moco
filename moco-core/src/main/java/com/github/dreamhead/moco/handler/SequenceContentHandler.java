@@ -21,7 +21,7 @@ public class SequenceContentHandler extends AbstractContentResponseHandler {
 
     @Override
     protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
-        buffer.writeBytes(resources[current()].asByteArray(request));
+        buffer.writeBytes(resources[current()].readFor(request));
     }
 
     private int current() {

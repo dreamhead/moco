@@ -16,7 +16,7 @@ public class UriResource implements Resource {
     }
 
     @Override
-    public byte[] asByteArray(HttpRequest request) {
+    public byte[] readFor(HttpRequest request) {
         return this.uri.getBytes();
     }
 

@@ -51,7 +51,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     private Document getResourceDocument(HttpRequest request, Resource resource) throws SAXException {
-        ByteArrayInputStream stream = new ByteArrayInputStream(resource.asByteArray(request));
+        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(request));
         return extractDocument(new InputSource(stream), this);
     }
 

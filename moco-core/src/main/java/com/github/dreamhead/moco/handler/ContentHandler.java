@@ -15,7 +15,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
 
     @Override
     protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
-        buffer.writeBytes(this.resource.asByteArray(request));
+        buffer.writeBytes(this.resource.readFor(request));
     }
 
     @Override

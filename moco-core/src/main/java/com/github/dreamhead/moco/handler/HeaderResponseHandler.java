@@ -24,7 +24,7 @@ public class HeaderResponseHandler implements ResponseHandler {
             response.removeHeader(name);
         }
 
-        HttpHeaders.addHeader(response, name, new String(resource.asByteArray(request)));
+        HttpHeaders.addHeader(response, name, new String(resource.readFor(request)));
     }
 
     @Override
