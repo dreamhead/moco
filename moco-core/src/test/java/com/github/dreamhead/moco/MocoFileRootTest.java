@@ -53,6 +53,18 @@ public class MocoFileRootTest {
     }
 
     @Test
+    public void should_return_template_from_file_root() throws Exception {
+        server.response(template(file("foo.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
     public void should_mount_correctly() throws Exception {
         server.mount("test", to("/dir"));
 

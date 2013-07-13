@@ -5,11 +5,11 @@ import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
+import com.github.dreamhead.moco.util.FileContentType;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 import java.io.File;
 
-import static com.github.dreamhead.moco.resource.ResourceConfigApplier.DO_NOTHING_APPLIER;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
 
@@ -18,7 +18,7 @@ public class ResourceFactory {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public String getContentType() {
-                return "text/plain; charset=UTF-8";
+                return FileContentType.DEFAULT_CONTENT_TYPE;
             }
 
             @Override

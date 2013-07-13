@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 
 public class FileContentType {
+    public static final String DEFAULT_CONTENT_TYPE = "text/plain; charset=UTF-8";
+
     private static final ImmutableMap<String, String> contentTypeMap = ImmutableMap.<String, String>builder()
             .put("png", "image/png")
             .put("gif", "image/gif")
@@ -32,6 +34,6 @@ public class FileContentType {
 
     private String toContentType(String extension) {
         String contentType = contentTypeMap.get(extension.toLowerCase());
-        return contentType != null ? contentType : "text/html; charset=UTF-8";
+        return contentType != null ? contentType : DEFAULT_CONTENT_TYPE;
     }
 }
