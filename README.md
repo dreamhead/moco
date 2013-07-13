@@ -1,3 +1,5 @@
+<img src="https://raw.github.com/dreamhead/moco/master/moco-doc/DukeChoice-960x90-lm.png">
+
 <a href="https://github.com/dreamhead/moco">
   <img src="https://raw.github.com/dreamhead/moco/master/moco-doc/moco.png" width="100px">
 </a>
