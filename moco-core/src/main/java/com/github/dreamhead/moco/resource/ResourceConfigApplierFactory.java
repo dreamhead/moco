@@ -20,12 +20,12 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier headerConfigApplier(final String key, final Resource headerResource) {
+    public static ResourceConfigApplier cookieConfigApplier(final String key, final Resource headerResource) {
         return new ResourceConfigApplier() {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
                 if (config.isFor(headerResource.id())) {
-                    return headerResource(key, resource.apply(config));
+                    return cookieResource(key, resource.apply(config));
                 }
 
                 return resource;

@@ -95,9 +95,7 @@ public class Moco {
     }
 
     public static ResponseHandler header(final String name, final String value) {
-        return new HeaderResponseHandler(
-                checkNotNull(name, "Null header name is not allowed"),
-                text(checkNotNull(value, "Null header value is not allowed")));
+        return header(name, text(value));
     }
 
     public static ResponseHandler header(final String name, final Resource value) {
@@ -119,7 +117,7 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource) {
-        return header("Set-Cookie", headerResource(
+        return header("Set-Cookie", cookieResource(
                 checkNotNull(key, "Null cookie key is not allowed"),
                 checkNotNull(resource, "Null cookie value is not allowed")));
     }

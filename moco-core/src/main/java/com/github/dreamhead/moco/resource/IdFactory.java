@@ -10,14 +10,5 @@ public class IdFactory {
         };
     }
 
-    public static Identifiable id(final Resource resource) {
-        return new Identifiable() {
-            @Override
-            public String id() {
-                return resource.id();
-            }
-        };
-    }
-
     private IdFactory() {}
 }

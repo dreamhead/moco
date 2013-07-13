@@ -55,8 +55,8 @@ public class ResourceFactory {
         });
     }
 
-    public static Resource headerResource(final String key, final Resource resource) {
-        return resource(id(resource.id()), headerConfigApplier(key, resource), new ResourceReader() {
+    public static Resource cookieResource(final String key, final Resource resource) {
+        return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
             public byte[] readFor(HttpRequest request) {
                 return new Cookies().encodeCookie(key, new String(resource.readFor(request))).getBytes();
