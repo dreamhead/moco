@@ -1,6 +1,7 @@
-package com.github.dreamhead.moco.resource;
+package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.model.MessageFactory;
+import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.*;
 import org.jboss.netty.handler.codec.http.HttpRequest;

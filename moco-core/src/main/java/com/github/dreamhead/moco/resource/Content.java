@@ -1,5 +1,5 @@
 package com.github.dreamhead.moco.resource;
 
-public interface ContentResourceReader extends ResourceReader {
+public interface Content {
     String getContentType();
 }
