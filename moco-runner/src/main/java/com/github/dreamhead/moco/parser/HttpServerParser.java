@@ -24,7 +24,6 @@ import static java.lang.String.format;
 public class HttpServerParser {
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
-    private final RequestMatcherParser requestMatcherParser = new DynamicRequestMatcherParser();
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
 
@@ -68,9 +67,9 @@ public class HttpServerParser {
             } else if (session.isAnyResponse()) {
                 server.response(session.getResponseHandler());
             } else if (session.isRedirectResponse()) {
-                server.request(requestMatcherParser.createRequestMatcher(session.getRequest())).redirectTo(session.getRedirectTo());
+                server.request(session.getRequestMatcher()).redirectTo(session.getRedirectTo());
             } else {
-                server.request(requestMatcherParser.createRequestMatcher(session.getRequest())).response(session.getResponseHandler());
+                server.request(session.getRequestMatcher()).response(session.getResponseHandler());
             }
         }
 

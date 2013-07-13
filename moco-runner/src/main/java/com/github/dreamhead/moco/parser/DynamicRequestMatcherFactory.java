@@ -4,10 +4,12 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
+import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.FluentIterable.from;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +26,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 
-public class DynamicRequestMatcherParser implements RequestMatcherParser {
+public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
     private final Map<String, String> methods = ImmutableMap.<String,String>builder()
     		.put("headers", "header")
     		.put("queries", "query")
@@ -39,7 +41,7 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
     }
 
     private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return from(getFields()).filter(and(not(isClassField()), fieldExist(request))).transform(fieldToRequestMatcher(request)).toList();
+        return from(getFields()).filter(and(not(or(isClassField(), isFinalField())), fieldExist(request))).transform(fieldToRequestMatcher(request)).toList();
     }
 
     private Iterable<Field> getFields() {
@@ -82,6 +84,15 @@ public class DynamicRequestMatcherParser implements RequestMatcherParser {
             @Override
             public boolean apply(Field field) {
                 return "class".equals(field.getName());
+            }
+        };
+    }
+
+    private Predicate<Field> isFinalField() {
+        return new Predicate<Field>() {
+            @Override
+            public boolean apply(Field field) {
+                return Modifier.isFinal(field.getModifiers());
             }
         };
     }

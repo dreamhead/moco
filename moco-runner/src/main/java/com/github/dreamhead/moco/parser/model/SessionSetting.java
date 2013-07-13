@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.base.Objects;
 
@@ -12,10 +13,6 @@ public class SessionSetting {
     private ResponseSetting response;
     private String redirectTo;
     private MountSetting mount;
-
-    public RequestSetting getRequest() {
-        return request;
-    }
 
     public String getRedirectTo() {
         return redirectTo;
@@ -48,5 +45,13 @@ public class SessionSetting {
         }
 
         return response.getResponseHandler();
+    }
+
+    public RequestMatcher getRequestMatcher() {
+        if (request == null) {
+            throw new RuntimeException("No request specified");
+        }
+
+        return request.getRequestMatcher();
     }
 }

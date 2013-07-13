@@ -2,12 +2,17 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.parser.DynamicRequestMatcherFactory;
+import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.google.common.base.Objects;
 
 import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RequestSetting {
+    private final RequestMatcherFactory factory = new DynamicRequestMatcherFactory();
+
     private TextContainer text;
     private TextContainer uri;
     private TextContainer file;
@@ -37,5 +42,9 @@ public class RequestSetting {
                 .add("cookies", cookies)
                 .add("forms", forms)
                 .toString();
+    }
+
+    public RequestMatcher getRequestMatcher() {
+        return factory.createRequestMatcher(this);
     }
 }
