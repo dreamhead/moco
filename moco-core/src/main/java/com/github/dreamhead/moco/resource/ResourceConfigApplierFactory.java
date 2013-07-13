@@ -20,11 +20,11 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier headerConfigApplier(final String key) {
+    public static ResourceConfigApplier headerConfigApplier(final String key, final Resource headerResource) {
         return new ResourceConfigApplier() {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
-                if (config.isFor(resource.id())) {
+                if (config.isFor(headerResource.id())) {
                     return headerResource(key, resource.apply(config));
                 }
 
@@ -46,11 +46,11 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier uriConfigApplier(final String uri) {
+    public static ResourceConfigApplier uriConfigApplier(final String id, final String uri) {
         return new ResourceConfigApplier() {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
-                if (config.isFor("uri")) {
+                if (config.isFor(id)) {
                     return uriResource(config.apply(uri));
                 }
 

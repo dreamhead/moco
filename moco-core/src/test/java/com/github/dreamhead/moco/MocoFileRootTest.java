@@ -1,14 +1,14 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import org.apache.http.Header;
+import org.apache.http.client.fluent.Request;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.file;
-import static com.github.dreamhead.moco.Moco.fileRoot;
-import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
@@ -35,6 +35,19 @@ public class MocoFileRootTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_header_from_file_root() throws Exception {
+        server.response(header("foo", file("foo.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("foo");
+                assertThat(header.getValue(), is("foo.response"));
             }
         });
     }

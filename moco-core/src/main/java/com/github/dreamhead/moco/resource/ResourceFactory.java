@@ -11,7 +11,7 @@ import java.io.File;
 
 import static com.github.dreamhead.moco.resource.ResourceConfigApplier.DO_NOTHING_APPLIER;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
-import static com.github.dreamhead.moco.resource.TextId.id;
+import static com.github.dreamhead.moco.resource.IdFactory.id;
 
 public class ResourceFactory {
     public static ContentResource textResource(final String text) {
@@ -56,7 +56,7 @@ public class ResourceFactory {
     }
 
     public static Resource headerResource(final String key, final Resource resource) {
-        return resource(id("header"), headerConfigApplier(key), new ResourceReader() {
+        return resource(id(resource.id()), headerConfigApplier(key, resource), new ResourceReader() {
             @Override
             public byte[] readFor(HttpRequest request) {
                 return new Cookies().encodeCookie(key, new String(resource.readFor(request))).getBytes();
@@ -69,7 +69,7 @@ public class ResourceFactory {
     }
 
     public static Resource uriResource(final String uri) {
-        return resource(id("uri"), uriConfigApplier(uri), new ResourceReader() {
+        return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
             @Override
             public byte[] readFor(HttpRequest request) {
                 return uri.getBytes();

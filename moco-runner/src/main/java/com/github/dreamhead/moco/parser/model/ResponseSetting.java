@@ -101,7 +101,6 @@ public class ResponseSetting {
         }
 
         if (proxy != null) {
-
             handlers.add(createProxy(proxy));
         }
 

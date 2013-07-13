@@ -1,11 +1,14 @@
-package com.github.dreamhead.moco.parser;
+package com.github.dreamhead.moco.parser.model;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.base.Predicates.or;
-import static com.google.common.collect.FluentIterable.from;
+import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.github.dreamhead.moco.parser.RequestMatcherFactory;
+import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -15,16 +18,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.github.dreamhead.moco.Moco;
-import com.github.dreamhead.moco.RequestExtractor;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.github.dreamhead.moco.parser.model.RequestSetting;
-import com.github.dreamhead.moco.parser.model.TextContainer;
-import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.google.common.base.Predicates.*;
+import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
     private final Map<String, String> methods = ImmutableMap.<String,String>builder()

@@ -29,6 +29,10 @@ public class HeaderResponseHandler implements ResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
+        if (config.isFor(resource.id())) {
+            return new HeaderResponseHandler(name, resource.apply(config));
+        }
+
         return this;
     }
 }
