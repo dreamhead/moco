@@ -1,0 +1,12 @@
+[
+    {
+        "request": {
+            "uri": "/template"
+        },
+        "response": {
+            "text": {
+                "template" : "${req.method}"
+            }
+        }
+    }
+]

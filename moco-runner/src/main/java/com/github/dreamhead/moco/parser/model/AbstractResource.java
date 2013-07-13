@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import static com.github.dreamhead.moco.Moco.*;
 
 public abstract class AbstractResource {
-    protected String text;
+    protected TextContainer text;
     protected String file;
     @JsonProperty("path_resource")
     protected String pathResource;
@@ -14,7 +14,13 @@ public abstract class AbstractResource {
 
     public Resource retrieveResource() {
         if (text != null) {
-            return text(text);
+            if (text.isRawText()) {
+                return text(text.getText());
+            }
+
+            if ("template".equalsIgnoreCase(text.getOperation())) {
+                return template(text.getText());
+            }
         }
 
         if (file != null) {
