@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
@@ -16,12 +17,44 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ResponseSetting extends AbstractResource {
+public class ResponseSetting {
     private String status;
     private ProxyContainer proxy;
     private Map<String, String> headers;
     private Map<String, String> cookies;
     private Long latency;
+    private TextContainer text;
+    private String file;
+    @JsonProperty("path_resource")
+    private String pathResource;
+    private String version;
+
+    public Resource retrieveResource() {
+        if (text != null) {
+            if (text.isRawText()) {
+                return text(text.getText());
+            }
+
+            if ("template".equalsIgnoreCase(text.getOperation())) {
+                return template(text.getText());
+            }
+        }
+
+        if (file != null) {
+            return file(file);
+        }
+
+        if (pathResource != null) {
+            return pathResource(pathResource);
+        }
+
+        if (version != null) {
+            return version(version);
+        }
+
+        throw new IllegalArgumentException("unknown response setting with " + this);
+    }
+
 
     @Override
     public String toString() {
@@ -43,16 +76,6 @@ public class ResponseSetting extends AbstractResource {
                 || (file != null)
                 || (pathResource != null)
                 || (version != null);
-    }
-
-    @Override
-    public Resource retrieveResource() {
-        Resource resource = super.retrieveResource();
-        if (resource != null) {
-            return resource;
-        }
-
-        throw new IllegalArgumentException("unknown response setting with " + this);
     }
 
     public ResponseHandler getResponseHandler() {
