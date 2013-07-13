@@ -4,13 +4,15 @@ import com.github.dreamhead.moco.MocoConfig;
 
 import java.io.File;
 
+import static com.github.dreamhead.moco.resource.ResourceFactory.*;
+
 public class ResourceConfigApplierFactory {
     public static ResourceConfigApplier fileConfigApplier(final String id, final File file) {
         return new ResourceConfigApplier() {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
                 if (config.isFor(id)) {
-                    return ResourceFactory.fileResource(new File(config.apply(file.getName())));
+                    return fileResource(new File(config.apply(file.getName())));
                 }
 
                 return resource;
@@ -23,7 +25,7 @@ public class ResourceConfigApplierFactory {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
                 if (config.isFor(resource.id())) {
-                    return ResourceFactory.headerResource(key, resource.apply(config));
+                    return headerResource(key, resource.apply(config));
                 }
 
                 return resource;
@@ -36,10 +38,23 @@ public class ResourceConfigApplierFactory {
             @Override
             public Resource apply(MocoConfig config, Resource resource) {
                 if (config.isFor(template.id())) {
-                    return ResourceFactory.templateResource((ContentResource) template.apply(config));
+                    return templateResource((ContentResource) template.apply(config));
                 }
 
                 return null;
+            }
+        };
+    }
+
+    public static ResourceConfigApplier uriConfigApplier(final String uri) {
+        return new ResourceConfigApplier() {
+            @Override
+            public Resource apply(MocoConfig config, Resource resource) {
+                if (config.isFor("uri")) {
+                    return uriResource(config.apply(uri));
+                }
+
+                return resource;
             }
         };
     }

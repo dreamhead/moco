@@ -83,7 +83,7 @@ public class Moco {
     }
 
     public static Resource uri(final String uri) {
-        return new UriResource(checkNotNull(uri, "Null URI is not allowed"));
+        return uriResource(checkNotNull(uri, "Null URI is not allowed"));
     }
 
     public static Resource method(final String httpMethod) {
