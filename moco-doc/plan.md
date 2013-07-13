@@ -2,15 +2,16 @@
 
 ## Configuration
 
-## Matcher
+### Matcher
 * Marshal support
 
-## Handler
+### Handler
 * Response with Request parameter (Current plan: template)
 
-## REST
-
-## HTTPS
+## More
+* Async
+* REST
+* HTTPS
 
 ## Client
 * Socket
