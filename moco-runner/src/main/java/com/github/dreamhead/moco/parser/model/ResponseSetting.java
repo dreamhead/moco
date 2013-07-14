@@ -24,7 +24,7 @@ public class ResponseSetting {
     private Map<String, String> cookies;
     private Long latency;
     private TextContainer text;
-    private String file;
+    private TextContainer file;
     @JsonProperty("path_resource")
     private String pathResource;
     private String version;
@@ -41,7 +41,13 @@ public class ResponseSetting {
         }
 
         if (file != null) {
-            return file(file);
+            if (file.isRawText()) {
+                return file(file.getText());
+            }
+
+            if ("template".equalsIgnoreCase(file.getOperation())) {
+                return template(file(file.getText()));
+            }
         }
 
         if (pathResource != null) {

@@ -14,4 +14,10 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template.json");
         assertThat(helper.get(remoteUrl("/template")), is("GET"));
     }
+
+    @Test
+    public void should_return_content_from_file_template() throws IOException {
+        runWithConfiguration("template.json");
+        assertThat(helper.get(remoteUrl("/file_template")), is("GET"));
+    }
 }

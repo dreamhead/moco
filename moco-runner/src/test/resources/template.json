@@ -8,5 +8,15 @@
                 "template" : "${req.method}"
             }
         }
+    },
+    {
+        "request": {
+            "uri": "/file_template"
+        },
+        "response": {
+            "file": {
+                "template" : "src/test/resources/template.foo"
+            }
+        }
     }
 ]
