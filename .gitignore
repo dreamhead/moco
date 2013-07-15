@@ -8,3 +8,8 @@ out
 reports
 .DS_Store
 .idea
+
+.classpath
+.project
+.settings/
+bin
