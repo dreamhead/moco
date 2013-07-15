@@ -9,7 +9,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -17,22 +16,17 @@ import com.google.common.collect.ImmutableSet;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.*;
-import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ResponseSetting {
+public class ResponseSetting extends Dynamics {
     private static final ImmutableSet<String> RESOURCES = of("text", "file", "pathResource", "version");
     private static final ImmutableMap<String, String> COMPOSITES = ImmutableMap.<String,String>builder()
             .put("headers", "header")
@@ -65,49 +59,9 @@ public class ResponseSetting {
                 .toString();
     }
 
-    private Iterable<Field> getFields(Class<?> clazz) {
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-        }
-        return Arrays.asList(fields);
-    }
-
-    private Predicate<Field> isClassField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                return "class".equals(field.getName());
-            }
-        };
-    }
-
-    private Predicate<Field> isFinalField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                return Modifier.isFinal(field.getModifiers());
-            }
-        };
-    }
-
-    private <T> Predicate<Field> fieldExist(final T request) {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                try {
-                    return field.get(request) != null;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
-    }
-
     public ResponseHandler getResponseHandler() {
-        FluentIterable<ResponseHandler> handlers = from(getFields(this.getClass())).filter(and(not(or(isClassField(), isFinalField())), fieldExist(this))).transform(fieldToResponseHandler(this));
-        List<ResponseHandler> list = handlers.toList();
-        return getResponseHandler(list);
+        FluentIterable<ResponseHandler> handlers = from(getFields(this.getClass())).filter(isValidField(this)).transform(fieldToResponseHandler(this));
+        return getResponseHandler(handlers.toList());
     }
 
     private ResponseHandler getResponseHandler(List<ResponseHandler> list) {
@@ -215,37 +169,6 @@ public class ResponseSetting {
 
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
-
-    private <T> T invokeTarget(String name, Object value, Class<T> clazz) {
-        try {
-            Method method = Moco.class.getMethod(name, value.getClass());
-            Object result = method.invoke(null, value);
-            return clazz.cast(result);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private <T> T invokeTarget(String name, int value, Class<T> clazz) {
-        try {
-            Method method = Moco.class.getMethod(name, Integer.TYPE);
-            Object result = method.invoke(null, value);
-            return clazz.cast(result);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private <T> T invokeTarget(String name, long value, Class<T> clazz) {
-        try {
-            Method method = Moco.class.getMethod(name, Long.TYPE);
-            Object result = method.invoke(null, value);
-            return clazz.cast(result);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     private ResponseHandler createProxy(ProxyContainer proxy) {
         if (proxy.getFailover() != null) {

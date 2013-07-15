@@ -7,23 +7,19 @@ import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
-import static com.google.common.base.Predicates.*;
 import static com.google.common.collect.FluentIterable.from;
 
-public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
+public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
     private final Map<String, String> methods = ImmutableMap.<String,String>builder()
     		.put("headers", "header")
     		.put("queries", "query")
@@ -38,28 +34,7 @@ public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
     }
 
     private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return from(getFields()).filter(and(not(or(isClassField(), isFinalField())), fieldExist(request))).transform(fieldToRequestMatcher(request)).toList();
-    }
-
-    private Iterable<Field> getFields() {
-        Field[] fields = RequestSetting.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-        }
-        return Arrays.asList(fields);
-    }
-
-    private Predicate<Field> fieldExist(final RequestSetting request) {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                try {
-                    return field.get(request) != null;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
+        return from(getFields(RequestSetting.class)).filter(isValidField(request)).transform(fieldToRequestMatcher(request)).toList();
     }
 
     private Function<Field, RequestMatcher> fieldToRequestMatcher(final RequestSetting request) {
@@ -72,24 +47,6 @@ public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            }
-        };
-    }
-
-    private Predicate<Field> isClassField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                return "class".equals(field.getName());
-            }
-        };
-    }
-
-    private Predicate<Field> isFinalField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(Field field) {
-                return Modifier.isFinal(field.getModifiers());
             }
         };
     }
@@ -116,13 +73,7 @@ public class DynamicRequestMatcherFactory implements RequestMatcherFactory {
     }
 
     private Resource createResource(String name, String value) {
-        try {
-            Method method = Moco.class.getMethod(name, String.class);
-            Object result = method.invoke(null, value);
-            return Resource.class.cast(result);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return invokeTarget(name, value, Resource.class);
     }
 
     private RequestMatcher createSingleTextMatcher(String name, TextContainer container) {
