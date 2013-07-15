@@ -18,5 +18,25 @@
                 "template" : "src/test/resources/template.foo"
             }
         }
+    },
+    {
+        "request": {
+            "uri": "/path_resource_template"
+        },
+        "response": {
+            "path_resource": {
+                "template" : "template.foo"
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/version_template"
+        },
+        "response": {
+            "version": {
+                "template" : "${req.version}"
+            }
+        }
     }
 ]
