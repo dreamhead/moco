@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Request;
@@ -35,5 +36,20 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template.json");
         ProtocolVersion version = Request.Get(remoteUrl("/version_template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
         assertThat(version.toString(), is("HTTP/1.0"));
+    }
+
+    @Test
+    public void should_return_header_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        Header header = Request.Get(remoteUrl("/header_template")).addHeader("foo", "bar").execute().returnResponse().getFirstHeader("foo");
+        assertThat(header.getValue(), is("bar"));
+    }
+
+    @Test
+    public void should_return_cookie_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        Request.Get(remoteUrl("/cookie_template")).execute();
+        String content = helper.get(remoteUrl("/cookie_template"));
+        assertThat(content, is("OK"));
     }
 }

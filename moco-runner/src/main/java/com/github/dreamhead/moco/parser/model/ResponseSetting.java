@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +27,15 @@ import static java.lang.String.format;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends Dynamics {
     private static final ImmutableSet<String> RESOURCES = of("text", "file", "pathResource", "version");
-    private static final ImmutableMap<String, String> COMPOSITES = ImmutableMap.<String,String>builder()
+    private static final ImmutableMap<String, String> COMPOSITES = ImmutableMap.<String, String>builder()
             .put("headers", "header")
             .put("cookies", "cookie")
             .build();
 
     private String status;
     private ProxyContainer proxy;
-    private Map<String, String> headers;
-    private Map<String, String> cookies;
+    private Map<String, TextContainer> headers;
+    private Map<String, TextContainer> cookies;
     private Long latency;
     private TextContainer text;
     private TextContainer file;
@@ -110,47 +109,48 @@ public class ResponseSetting extends Dynamics {
         }
 
         if (ProxyContainer.class.isInstance(value)) {
-            return createProxy((ProxyContainer)value);
+            return createProxy((ProxyContainer) value);
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
     }
 
-    private ResponseHandler createCompositeHandler(String name, Map<String, String> map) {
-        List<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(getMethodForCompositeHandler(name))).toList();
+    private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {
+        List<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name)).toList();
         return getResponseHandler(handlers);
     }
 
-    private Function<Map.Entry<String, String>, ResponseHandler> toTargetHandler(final Method method) {
-        return new Function<Map.Entry<String, String>, ResponseHandler>() {
+    private Function<Map.Entry<String, TextContainer>, ResponseHandler> toTargetHandler(final String name) {
+        return new Function<Map.Entry<String, TextContainer>, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(Map.Entry<String, String> pair) {
-                try {
-                    return (ResponseHandler)method.invoke(null, pair.getKey(), pair.getValue());
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
+            public ResponseHandler apply(Map.Entry<String, TextContainer> pair) {
+                String result = COMPOSITES.get(name);
+                if (result == null) {
+                    throw new RuntimeException("unknown composite handler name [" + name + "]");
                 }
+
+                return createResponseHandler(pair, result);
             }
         };
     }
 
-    private Method getMethodForCompositeHandler(String name) {
+    private ResponseHandler createResponseHandler(Map.Entry<String, TextContainer> pair, String targetMethodName) {
+        TextContainer container = pair.getValue();
         try {
-            String result = COMPOSITES.get(name);
-            if (result == null) {
-                throw new RuntimeException("unknown composite handler name [" + name + "]");
+            if ("template".equalsIgnoreCase(container.getOperation())) {
+                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
+                return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()));
             }
-            return Moco.class.getMethod(result, String.class, String.class);
 
-        } catch (NoSuchMethodException e) {
+            Method method = Moco.class.getMethod(targetMethodName, String.class, String.class);
+            return (ResponseHandler) method.invoke(null, pair.getKey(), container.getText());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> castToMap(Object value) {
+    private Map<String, TextContainer> castToMap(Object value) {
         return Map.class.cast(value);
     }
 

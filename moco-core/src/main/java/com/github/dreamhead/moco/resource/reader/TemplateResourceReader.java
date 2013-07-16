@@ -3,8 +3,11 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
+import freemarker.core.ParseException;
 import freemarker.template.*;
 import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,6 +17,7 @@ import java.io.Writer;
 import static com.google.common.collect.ImmutableMap.of;
 
 public class TemplateResourceReader implements ContentResourceReader {
+    private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
     private static final String TEMPLATE_NAME = "template";
     private final ContentResource template;
     private final Configuration cfg;
@@ -29,7 +33,8 @@ public class TemplateResourceReader implements ContentResourceReader {
     @Override
     public byte[] readFor(HttpRequest request) {
         StringTemplateLoader templateLoader = new StringTemplateLoader();
-        templateLoader.putTemplate(TEMPLATE_NAME, new String(this.template.readFor(request)));
+        String templateSource = new String(this.template.readFor(request));
+        templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
         cfg.setTemplateLoader(templateLoader);
 
         try {
@@ -38,6 +43,9 @@ public class TemplateResourceReader implements ContentResourceReader {
             Writer writer = new OutputStreamWriter(stream);
             template.process(of("req", MessageFactory.createRequest(request)), writer);
             return stream.toByteArray();
+        } catch (ParseException e) {
+            logger.info("Template is {}", templateSource);
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TemplateException e) {

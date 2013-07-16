@@ -5,7 +5,7 @@
         },
         "response": {
             "text": {
-                "template" : "${req.method}"
+                "template": "${req.method}"
             }
         }
     },
@@ -15,7 +15,7 @@
         },
         "response": {
             "file": {
-                "template" : "src/test/resources/template.foo"
+                "template": "src/test/resources/template.foo"
             }
         }
     },
@@ -25,7 +25,7 @@
         },
         "response": {
             "path_resource": {
-                "template" : "template.foo"
+                "template": "template.foo"
             }
         }
     },
@@ -35,8 +35,44 @@
         },
         "response": {
             "version": {
-                "template" : "${req.version}"
+                "template": "${req.version}"
             }
+        }
+    },
+    {
+        "request": {
+            "uri": "/header_template"
+        },
+        "response": {
+            "headers": {
+                "foo": {
+                    "template" : "${req.headers['foo']}"
+                }
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/cookie_template",
+            "cookies": {
+                "foo" : "GET"
+            }
+        },
+        "response": {
+            "text" : "OK"
+        }
+    },
+    {
+        "request": {
+            "uri": "/cookie_template"
+        },
+        "response": {
+            "cookies": {
+                "foo": {
+                    "template" : "${req.method}"
+                }
+            },
+            "status" : 302
         }
     }
 ]
