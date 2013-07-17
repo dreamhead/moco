@@ -6,7 +6,7 @@
 * Marshal support
 
 ### Handler
-* Response with Request parameter (Current plan: template)
+* Template function
 
 ## More
 * Async

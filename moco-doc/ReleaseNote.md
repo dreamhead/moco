@@ -9,6 +9,7 @@
 ### Response
 #### Integration
 * proxy
+* (Beta) template
 * removed url (using proxy instead)
 
 #### Misc Response
