@@ -19,6 +19,9 @@
 # Document
 * Cookbook
 
+# Dependencies
+* Netty 4
+
 # Tools Support
 * JUnit better support
 * Proguard to reduce uberjar size
