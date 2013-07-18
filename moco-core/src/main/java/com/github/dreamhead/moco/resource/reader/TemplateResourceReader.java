@@ -2,9 +2,13 @@ package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.google.common.collect.Maps;
+
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
+
+import org.apache.commons.lang.time.DateUtils;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +17,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Date;
+import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.of;
 
@@ -41,7 +47,14 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template template = cfg.getTemplate("template");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(of("req", MessageFactory.createRequest(request)), writer);
+            
+            Map<String, Object> variables = Maps.newHashMap();
+            variables.put("req", MessageFactory.createRequest(request));
+            variables.put("now", new Date());
+            variables.put("dateUtils", new DateUtils());
+            
+			template.process(variables, writer);
+            
             return stream.toByteArray();
         } catch (ParseException e) {
             logger.info("Template is {}", templateSource);
