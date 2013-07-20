@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
+import freemarker.core.InvalidReferenceException;
 import freemarker.core.ParseException;
 import freemarker.template.*;
 import org.jboss.netty.handler.codec.http.HttpRequest;
@@ -19,6 +20,15 @@ import static com.google.common.collect.ImmutableMap.of;
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
     private static final String TEMPLATE_NAME = "template";
+
+    static {
+        try {
+            freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private final ContentResource template;
     private final Configuration cfg;
 

@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
@@ -63,6 +64,18 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws Exception {
                 String response = Request.Get(remoteUrl("/template")).addHeader("foo", "bar").execute().returnContent().asString();
                 assertThat(response, is("bar"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_for_unknown_header() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.headers['foo']}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.get(remoteUrl("/template"));
             }
         });
     }
