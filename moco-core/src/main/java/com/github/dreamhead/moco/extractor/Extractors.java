@@ -19,7 +19,7 @@ public class Extractors {
             return extractors.get(id);
         }
 
-        throw new RuntimeException(format("unknown extractor for [%s]", id));
+        throw new IllegalArgumentException(format("unknown extractor for [%s]", id));
     }
 
     private Extractors() {}

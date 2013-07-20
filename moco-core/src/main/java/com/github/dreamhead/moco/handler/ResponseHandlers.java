@@ -21,7 +21,7 @@ public class ResponseHandlers {
             return createResponseHandler(resource);
         }
 
-        throw new RuntimeException(format("unknown response handler for [%s]", resource.id()));
+        throw new IllegalArgumentException(format("unknown response handler for [%s]", resource.id()));
     }
 
     private static ResponseHandler createResponseHandler(Resource resource) {

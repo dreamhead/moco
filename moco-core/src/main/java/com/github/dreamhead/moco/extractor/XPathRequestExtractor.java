@@ -21,7 +21,7 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
         try {
             xPathExpression = target.compile(xpath);
         } catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
