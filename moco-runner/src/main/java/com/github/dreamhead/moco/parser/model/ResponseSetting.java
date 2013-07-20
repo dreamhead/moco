@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
@@ -92,7 +91,7 @@ public class ResponseSetting extends Dynamics {
     private ResponseHandler createResponseHandler(String name, Object value) {
         if (isResource(name) && TextContainer.class.isInstance(value)) {
             TextContainer container = TextContainer.class.cast(value);
-            return responseHandler(resourceFrom(name, container));
+            return with(resourceFrom(name, container));
         }
 
         if (Map.class.isInstance(value)) {

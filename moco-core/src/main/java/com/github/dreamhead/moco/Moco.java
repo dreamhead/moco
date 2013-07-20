@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
+import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
@@ -74,12 +75,12 @@ public class Moco {
         return textResource(checkNotNull(text, "Null text is not allowed"));
     }
 
-    public static ResponseHandler content(String text) {
-        return content(text(text));
+    public static ResponseHandler with(String text) {
+        return with(text(text));
     }
 
-    public static ResponseHandler content(final ContentResource resource) {
-        return new ContentHandler(resource);
+    public static ResponseHandler with(final Resource resource) {
+        return responseHandler(resource);
     }
 
     public static Resource uri(final String uri) {

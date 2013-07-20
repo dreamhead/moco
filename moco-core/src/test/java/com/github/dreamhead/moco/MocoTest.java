@@ -48,7 +48,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_expected_response_with_content_api() throws Exception {
-        server.response(content("foo"));
+        server.response(with("foo"));
 
         running(server, new Runnable() {
             @Override
@@ -520,7 +520,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_default_content_type() throws Exception {
-        server.response(content(text("foo")));
+        server.response(with(text("foo")));
 
         running(server, new Runnable() {
             @Override
@@ -533,7 +533,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_specified_content_type() throws Exception {
-        server.response(content(text("foo")), header("Content-Type", "text/html"));
+        server.response(with(text("foo")), header("Content-Type", "text/html"));
 
         running(server, new Runnable() {
             @Override
@@ -546,7 +546,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_specified_content_type_no_matter_order() throws Exception {
-        server.response(header("Content-Type", "text/html"), content(text("foo")));
+        server.response(header("Content-Type", "text/html"), with(text("foo")));
 
         running(server, new Runnable() {
             @Override

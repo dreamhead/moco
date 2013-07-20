@@ -33,7 +33,7 @@ public class JsonRunner implements Runner {
 
     private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, int port) {
         HttpServer server = createBaseHttpServer(settings, port);
-        server.request(by(uri("/favicon.ico"))).response(content(pathResource("favicon.png")), header("Content-Type", "image/png"));
+        server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header("Content-Type", "image/png"));
         return server;
     }
 
