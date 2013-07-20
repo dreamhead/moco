@@ -51,8 +51,8 @@ subprojects {
                     url 'https://github.com/dreamhead/moco'
 
                     scm {
-                        url 'scm:git@github.com:dreamhead/moco.git'
-                        connection 'scm:git@github.com:dreamhead/moco.git'
+                        url 'https://github.com/dreamhead/moco'
+                        connection 'https://github.com/dreamhead/moco.git'
                         developerConnection 'git@github.com:dreamhead/moco.git'
                     }
 
