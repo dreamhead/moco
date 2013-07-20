@@ -78,7 +78,7 @@ server.request(by(uri("/foo"))).response("bar");
 }
 ```
 ### Query parameter
-Sometimes, your request has parameters:
+Sometimes, your request has parameters in query:
 
 * Java API
 
@@ -816,6 +816,130 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
         [
           "c.txt"
         ]
+    }
+}
+```
+
+## Template(Beta)
+**Note**: Template is an experimental feature which could be changed a lot in the future. Feel free to tell how it helps or you need more feature in template.
+
+Sometimes, we need to customize our response based on something, e.g. response should have same header with request.
+
+The goal can be reached by template:
+
+### Version
+
+With "req.version", request version can be retrieved in template.
+
+The following example will return response version as content.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.version}"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.version}"
+        }
+    }
+}
+```
+
+### Method
+
+Request method is identified by "req.method"
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.method}"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.method}"
+        }
+    }
+}
+```
+
+### Content
+
+All request content can be used in template with "req.content"
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.content}"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.content}"
+        }
+    }
+}
+```
+
+### Header
+
+Header is another important element in template and we can use "req.headers" for headers.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.headers['foo']}"
+        }
+    }
+}
+```
+
+### Query
+
+"req.queries" helps us to extract request query.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.queries['foo']}"
+        }
     }
 }
 ```
