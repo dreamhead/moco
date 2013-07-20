@@ -1,7 +1,7 @@
 # Release 0.8
 
 ## Usage
-* Settings file
+* global setting file
 
 ## APIs
 ### Request
@@ -9,8 +9,10 @@
 ### Response
 #### Integration
 * proxy
+* with
 * (Beta) template
 * removed url (using proxy instead)
+* removed content (using with instead)
 
 #### Misc Response
 * removed cache
