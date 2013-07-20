@@ -15,12 +15,11 @@ public class Extractors {
             .put("version", new VersionExtractor()).build();
 
     public static RequestExtractor<String> extractor(String id) {
-        RequestExtractor<String> extractor = extractors.get(id);
-        if (extractor == null) {
-            throw new RuntimeException(format("unknown extractor for [%s]", id));
+        if (extractors.containsKey(id)) {
+            return extractors.get(id);
         }
 
-        return extractor;
+        throw new RuntimeException(format("unknown extractor for [%s]", id));
     }
 
     private Extractors() {}

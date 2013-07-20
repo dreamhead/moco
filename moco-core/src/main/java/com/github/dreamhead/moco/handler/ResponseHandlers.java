@@ -17,11 +17,15 @@ public class ResponseHandlers {
             .put("version", VersionResponseHandler.class).build();
 
     public static ResponseHandler responseHandler(Resource resource) {
-        Class clazz = handlers.get(resource.id());
-        if (clazz == null) {
-            throw new RuntimeException(format("unknown response handler for [%s]", resource.id()));
+        if (handlers.containsKey(resource.id())) {
+            return createResponseHandler(resource);
         }
 
+        throw new RuntimeException(format("unknown response handler for [%s]", resource.id()));
+    }
+
+    private static ResponseHandler createResponseHandler(Resource resource) {
+        Class clazz = handlers.get(resource.id());
         try {
             Constructor[] constructors = clazz.getConstructors();
             return (ResponseHandler)constructors[0].newInstance(resource);
