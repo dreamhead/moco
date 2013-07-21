@@ -1,4 +1,4 @@
-# Release 0.8
+# Release 0.8 (21-July-2013)
 
 ## Usage
 * global setting file

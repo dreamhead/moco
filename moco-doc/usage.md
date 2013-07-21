@@ -13,7 +13,7 @@ Moco has been published on Maven repository, so you can refer to it directly in 
 <dependency>
   <groupId>com.github.dreamhead</groupId>
   <artifactId>moco-core</artifactId>
-  <version>0.7</version>
+  <version>0.8</version>
 </dependency>
 ```
 
@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
   testCompile(
-    "com.github.dreamhead:moco-core:0.7",
+    "com.github.dreamhead:moco-core:0.8",
   )
 }
 ```
@@ -58,10 +58,7 @@ Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents
 ## Standalone
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.7/moco-runner-0.7-standalone.jar)
-
-For the brave, you can try latest version from snapshot repository.
-[Snapshot Standalone Moco Runner](https://oss.sonatype.org/content/repositories/snapshots/com/github/dreamhead/moco-runner/0.8-SNAPSHOT/moco-runner-0.8-20130718.221338-4-standalone.jar)
+[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.8/moco-runner-0.8-standalone.jar)
 
 First of all, a JSON configuration file needs to be provided to start Moco.
 
