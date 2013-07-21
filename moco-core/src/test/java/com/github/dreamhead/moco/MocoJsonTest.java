@@ -1,19 +1,14 @@
 package com.github.dreamhead.moco;
 
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.json;
-import static com.github.dreamhead.moco.Moco.jsonPath;
-import static com.github.dreamhead.moco.Moco.text;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
-
-import org.junit.Test;
-
-import static com.github.dreamhead.moco.Moco.eq;
 
 public class MocoJsonTest extends AbstractMocoTest {
 	@Test

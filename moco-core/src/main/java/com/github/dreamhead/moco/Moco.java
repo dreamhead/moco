@@ -193,7 +193,7 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url, Failover failover) {
-        return new ProxyResponseHandler(toUrl(url), failover);
+        return new ProxyResponseHandler(toUrl(url), checkNotNull(failover, "Null failover is not allowed"));
     }
 
     public static Resource template(final String template) {
