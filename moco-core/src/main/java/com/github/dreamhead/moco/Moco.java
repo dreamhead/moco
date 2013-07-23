@@ -212,7 +212,7 @@ public class Moco {
         try {
             return new URL(checkNotNull(url, "Null url is not allowed"));
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
