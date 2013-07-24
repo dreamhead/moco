@@ -5,7 +5,7 @@ On the other hand, Moco has serveral different ways to integrate with some tools
 
 ## API
 
-### dependeny
+### dependency
 
 Moco has been published on Maven repository, so you can refer to it directly in your dependency. This is core dependency
 
