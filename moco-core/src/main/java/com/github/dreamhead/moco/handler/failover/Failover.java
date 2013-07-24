@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.handler.failover;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 
 public interface Failover {
     void onCompleteResponse(HttpRequest request, HttpResponse response);

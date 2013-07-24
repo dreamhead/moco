@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.dreamhead.moco.model.*;
+import com.github.dreamhead.moco.model.MessageFactory;
+import com.github.dreamhead.moco.model.Request;
+import com.github.dreamhead.moco.model.Response;
+import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,12 +70,13 @@ public class DefaultFailover implements Failover {
         response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
         response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
         for (Map.Entry<String, String> entry : dumpedResponse.getHeaders().entrySet()) {
-            response.addHeader(entry.getKey(), entry.getValue());
+            response.headers().add(entry.getKey(), entry.getValue());
         }
 
-        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-        buffer.writeBytes(dumpedResponse.getContent().getBytes());
-        response.setContent(buffer);
+        if (response instanceof HttpContent) {
+            HttpContent content = (HttpContent) response;
+            content.content().writeBytes(dumpedResponse.getContent().getBytes());
+        }
     }
 
     private Response failoverResponse(HttpRequest request) {

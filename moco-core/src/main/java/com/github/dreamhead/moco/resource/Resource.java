@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
     private Identifiable identifiable;

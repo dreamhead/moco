@@ -1,25 +1,20 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.base.Predicate;
-import org.jboss.netty.handler.codec.http.Cookie;
-import org.jboss.netty.handler.codec.http.CookieDecoder;
-import org.jboss.netty.handler.codec.http.CookieEncoder;
-import org.jboss.netty.handler.codec.http.DefaultCookie;
+import io.netty.handler.codec.http.Cookie;
+import io.netty.handler.codec.http.CookieDecoder;
+import io.netty.handler.codec.http.DefaultCookie;
+import io.netty.handler.codec.http.ServerCookieEncoder;
 
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.find;
 
 public class Cookies {
-    private final CookieDecoder decoder = new CookieDecoder();
-
     public String encodeCookie(String key, String value) {
-        CookieEncoder cookieEncoder = new CookieEncoder(true);
-        DefaultCookie cookie = new DefaultCookie(key, value);
+        Cookie cookie = new DefaultCookie(key, value);
         cookie.setPath("/");
-        cookieEncoder.addCookie(cookie);
-
-        return cookieEncoder.encode();
+        return ServerCookieEncoder.encode(cookie);
     }
 
     public String decodeCookie(String cookieString, String key) {
@@ -27,7 +22,7 @@ public class Cookies {
             return null;
         }
 
-        Set<Cookie> cookies = decoder.decode(cookieString);
+        Set<Cookie> cookies = CookieDecoder.decode(cookieString);
 
         Cookie cookie = find(cookies, byCookieName(key), null);
         return cookie == null ? null : cookie.getValue();

@@ -4,18 +4,13 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.eventbus.EventBus;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.*;
 
 import java.util.List;
 
-public class MocoHandler extends SimpleChannelHandler {
+public class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private final EventBus eventBus = new EventBus();
 
     private final List<BaseSetting> settings;
@@ -29,23 +24,41 @@ public class MocoHandler extends SimpleChannelHandler {
         this.eventBus.register(new MocoEventListener());
     }
 
-    @Override
-    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-        Object message = e.getMessage();
 
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, Object message) throws Exception {
         if (message instanceof HttpRequest) {
             eventBus.post(message);
-            httpRequestReceived((HttpRequest) message, e.getChannel());
+            httpRequestReceived(ctx, (HttpRequest)message);
         }
     }
 
-    private void httpRequestReceived(HttpRequest request, Channel channel) {
+    private void httpRequestReceived(ChannelHandlerContext ctx, HttpRequest request) {
         HttpResponse response = getResponse(request);
         eventBus.post(response);
-        channel.write(response);
-        channel.disconnect();
-        channel.close();
+        ctx.writeAndFlush(response);
+        ctx.disconnect();
+        ctx.close();
     }
+
+
+//    @Override
+//    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+//        Object message = e.getMessage();
+//
+//        if (message instanceof HttpRequest) {
+//            eventBus.post(message);
+//            httpRequestReceived((HttpRequest) message, e.getChannel());
+//        }
+//    }
+
+//    private void httpRequestReceived(HttpRequest request, Channel channel) {
+//        HttpResponse response = getResponse(request);
+//        eventBus.post(response);
+//        channel.write(response);
+//        channel.disconnect();
+//        channel.close();
+//    }
 
     private HttpResponse getResponse(HttpRequest request) {
         try {
@@ -80,6 +93,6 @@ public class MocoHandler extends SimpleChannelHandler {
     }
 
     private HttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
-        return new DefaultHttpResponse(request.getProtocolVersion(), status);
+        return new DefaultFullHttpResponse(request.getProtocolVersion(), status);
     }
 }

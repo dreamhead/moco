@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.setting.BaseSetting;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 import java.util.List;
 

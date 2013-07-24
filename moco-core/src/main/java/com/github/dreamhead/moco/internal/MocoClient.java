@@ -1,34 +1,42 @@
 package com.github.dreamhead.moco.internal;
 
-import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.channel.ChannelFactory;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MocoClient {
-    private ClientBootstrap bootstrap;
 
-    public void run(final int port, final ChannelPipelineFactory pipelineFactory) {
-        ChannelFactory factory = new NioClientSocketChannelFactory(
-                Executors.newCachedThreadPool(),
-                Executors.newCachedThreadPool());
+    private EventLoopGroup group;
 
-        bootstrap = new ClientBootstrap(factory);
-        bootstrap.setPipelineFactory(pipelineFactory);
+    public MocoClient() {
+        this.group = new NioEventLoopGroup();
+    }
 
-        bootstrap.setOption("tcpNoDelay", true);
-        bootstrap.setOption("keepAlive", true);
+    public void run(final int port, final ChannelHandler pipelineFactory) {
 
-        bootstrap.connect(new InetSocketAddress("127.0.0.1", port));
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .handler(pipelineFactory);
+
+        try {
+            ChannelFuture f = bootstrap.connect("127.0.0.1", port).sync();
+            f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            group.shutdownGracefully();
+            throw new RuntimeException(e);
+        }
     }
 
     public void stop() {
-        if (bootstrap != null) {
-            bootstrap.releaseExternalResources();
-            bootstrap = null;
+        if (group != null) {
+            group.shutdownGracefully();
+            group = null;
         }
     }
 }

@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 import java.io.File;
 

@@ -3,8 +3,12 @@ package com.github.dreamhead.moco.runner.monitor;
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.io.CharStreams;
 import com.google.common.io.InputSupplier;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -24,11 +28,12 @@ public class ShutdownMonitor implements Monitor {
     }
 
     public void startMonitor() {
-        server.start(this.shutdownPort, new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() throws Exception {
-                ChannelPipeline pipeline = Channels.pipeline();
+        server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+                ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("handler", new ShutdownHandler());
-                return pipeline;
+
             }
         });
     }
@@ -37,12 +42,11 @@ public class ShutdownMonitor implements Monitor {
         server.stop();
     }
 
-    private class ShutdownHandler extends SimpleChannelHandler {
+    private class ShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
-        public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-            ChannelBuffer message = (ChannelBuffer)e.getMessage();
-
-            if (shouldShutdown(message)) {
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            ByteBuf buffer = (ByteBuf)msg;
+            if (shouldShutdown(buffer.toString(Charset.defaultCharset()))) {
                 shutdownListener.onShutdown();
                 shutdownMonitorSelf();
             }
@@ -57,10 +61,9 @@ public class ShutdownMonitor implements Monitor {
             }).start();
         }
 
-        private boolean shouldShutdown(ChannelBuffer message) {
+        private boolean shouldShutdown(String message) {
             try {
-                final String content = message.toString(Charset.defaultCharset());
-                return shutdownKey.equals(CharStreams.readFirstLine(toSuppiler(content)));
+                return shutdownKey.equals(CharStreams.readFirstLine(toSuppiler(message)));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.List;
-import java.util.Map;
 
 public class ParamRequestExtractor implements RequestExtractor<String> {
     private final String param;
@@ -17,7 +16,7 @@ public class ParamRequestExtractor implements RequestExtractor<String> {
     @Override
     public String extract(HttpRequest request) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        List<String> values = decoder.getParameters().get(param);
+        List<String> values = decoder.parameters().get(param);
         return values == null ? null : values.get(0);
     }
 }

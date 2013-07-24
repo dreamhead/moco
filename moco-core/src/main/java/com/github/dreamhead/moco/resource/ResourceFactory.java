@@ -6,12 +6,12 @@ import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 import java.io.File;
 
-import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
 
 public class ResourceFactory {
     public static ContentResource textResource(final String text) {

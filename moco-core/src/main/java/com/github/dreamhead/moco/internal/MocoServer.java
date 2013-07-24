@@ -1,43 +1,43 @@
 package com.github.dreamhead.moco.internal;
 
-import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.ChannelFactory;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.DefaultChannelGroup;
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
-
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class MocoServer {
-    private ServerBootstrap bootstrap;
-    private ChannelGroup allChannels;
+    private EventLoopGroup bossGroup;
+    private EventLoopGroup workerGroup;
 
-    public void start(final int port, ChannelPipelineFactory pipelineFactory) {
-        ChannelFactory factory = new NioServerSocketChannelFactory(
-                Executors.newCachedThreadPool(),
-                Executors.newCachedThreadPool());
+    public MocoServer() {
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
+    }
 
-        bootstrap = new ServerBootstrap(factory);
-        bootstrap.setPipelineFactory(pipelineFactory);
-        bootstrap.setOption("child.tcpNoDelay", true);
-        bootstrap.setOption("child.keepAlive", true);
+    public void start(final int port, ChannelHandler pipelineFactory) {
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        bootstrap.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(pipelineFactory);
 
-        allChannels = new DefaultChannelGroup();
-        allChannels.add(bootstrap.bind(new InetSocketAddress(port)));
+        bootstrap.bind(port);
     }
 
     public void stop() {
-        if (allChannels != null) {
-            doStop();
-        }
+        doStop();
     }
 
     private void doStop() {
-        allChannels.close().awaitUninterruptibly();
-        bootstrap.releaseExternalResources();
-        allChannels = null;
-        bootstrap = null;
+        if (bossGroup != null) {
+            bossGroup.shutdownGracefully();
+            workerGroup = null;
+        }
+
+
+        if (workerGroup != null) {
+            workerGroup.shutdownGracefully();
+            workerGroup = null;
+        }
     }
 }

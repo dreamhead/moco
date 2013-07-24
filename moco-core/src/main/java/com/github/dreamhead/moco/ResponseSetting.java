@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Lists.newArrayList;
@@ -34,7 +34,7 @@ public abstract class ResponseSetting {
     }
 
     public void redirectTo(String url) {
-        this.response(status(HttpResponseStatus.FOUND.getCode()), header("Location", url));
+        this.response(status(HttpResponseStatus.FOUND.code()), header("Location", url));
     }
 
     protected static RequestMatcher context(String context) {

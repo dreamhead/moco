@@ -1,9 +1,10 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.google.common.base.Joiner;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMessage;
-import org.jboss.netty.util.internal.StringUtil;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMessage;
+import io.netty.util.internal.StringUtil;
 
 import java.nio.charset.Charset;
 
@@ -15,7 +16,10 @@ public abstract class HttpMessageBaseDumper<T> implements Dumper<T> {
         if (contentLength > 0) {
             buf.append(StringUtil.NEWLINE);
             buf.append(StringUtil.NEWLINE);
-            buf.append(request.getContent().toString(Charset.defaultCharset()));
+            if (request instanceof HttpContent) {
+                HttpContent content = (HttpContent) request;
+                buf.append(content.content().toString(Charset.defaultCharset()));
+            }
         }
     }
 }

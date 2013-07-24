@@ -1,10 +1,11 @@
 package com.github.dreamhead.moco.internal;
 
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
-import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 
 public class MocoHttpServer {
     private final MocoServer server = new MocoServer();
@@ -15,13 +16,14 @@ public class MocoHttpServer {
     }
 
     public void start() {
-        server.start(serverSetting.getPort(), new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() throws Exception {
-                ChannelPipeline pipeline = Channels.pipeline();
-                pipeline.addLast("decoder", new HttpRequestDecoder(4096, 8192, 8192));
+        server.start(serverSetting.getPort(), new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+                ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast("decoder", new HttpRequestDecoder());
+                pipeline.addLast("aggregator", new HttpObjectAggregator(1048576));
                 pipeline.addLast("encoder", new HttpResponseEncoder());
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
-                return pipeline;
             }
         });
     }

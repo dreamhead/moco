@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.util.FileContentType;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 import java.io.File;
 import java.io.IOException;

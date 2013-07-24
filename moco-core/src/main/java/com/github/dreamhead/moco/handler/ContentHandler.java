@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpRequest;
 
 public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;
@@ -14,7 +14,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ChannelBuffer buffer) {
+    protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
         buffer.writeBytes(this.resource.readFor(request));
     }
 

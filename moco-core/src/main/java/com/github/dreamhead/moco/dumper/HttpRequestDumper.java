@@ -1,14 +1,14 @@
 package com.github.dreamhead.moco.dumper;
 
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.util.internal.StringUtil;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.util.internal.StringUtil;
 
 public class HttpRequestDumper extends HttpMessageBaseDumper<HttpRequest> {
     public String dump(HttpRequest request) {
         StringBuilder buf = new StringBuilder();
         appendRequestProtocolLine(request, buf);
         buf.append(StringUtil.NEWLINE);
-        headerJoiner.appendTo(buf, request.getHeaders());
+        headerJoiner.appendTo(buf, request.headers());
         appendContent(request, buf);
 
         return buf.toString();
@@ -19,6 +19,6 @@ public class HttpRequestDumper extends HttpMessageBaseDumper<HttpRequest> {
         buf.append(' ');
         buf.append(request.getUri());
         buf.append(' ');
-        buf.append(request.getProtocolVersion().getText());
+        buf.append(request.getProtocolVersion().text());
     }
 }

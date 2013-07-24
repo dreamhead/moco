@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 public class HeaderRequestExtractor implements RequestExtractor<String> {
     private final String name;
@@ -12,6 +12,6 @@ public class HeaderRequestExtractor implements RequestExtractor<String> {
 
     @Override
     public String extract(HttpRequest request) {
-        return request.getHeader(name);
+        return request.headers().get(name);
     }
 }

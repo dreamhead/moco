@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.google.common.base.Predicate;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpRequest;
 
 public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     protected final RequestExtractor<T> extractor;

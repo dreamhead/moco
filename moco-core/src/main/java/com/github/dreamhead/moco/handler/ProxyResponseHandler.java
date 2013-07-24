@@ -3,6 +3,9 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.*;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -13,15 +16,14 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.handler.codec.http.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.io.ByteStreams.toByteArray;
 
 public class ProxyResponseHandler implements ResponseHandler {
     private final URL url;
@@ -44,7 +46,11 @@ public class ProxyResponseHandler implements ResponseHandler {
             long contentLength = HttpHeaders.getContentLength(request, -1);
             if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-                entityRequest.setEntity(new ByteArrayEntity(request.getContent().array()));
+
+                if (request instanceof HttpContent) {
+                    HttpContent content = (HttpContent) request;
+                    entityRequest.setEntity(new ByteArrayEntity(content.content().array()));
+                }
             }
 
             setupResponse(request, response, httpclient.execute(remoteRequest));
@@ -62,14 +68,14 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     private org.apache.http.HttpVersion createVersion(HttpRequest request) {
         HttpVersion protocolVersion = request.getProtocolVersion();
-        return new org.apache.http.HttpVersion(protocolVersion.getMajorVersion(), protocolVersion.getMinorVersion());
+        return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
     private void setupResponse(HttpRequest request,
                                HttpResponse response,
                                org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
-        if (statusCode == HttpResponseStatus.BAD_REQUEST.getCode()) {
+        if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
             failover.failover(request, response);
             return;
         }
@@ -85,20 +91,22 @@ public class ProxyResponseHandler implements ResponseHandler {
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
-            response.setHeader(header.getName(), header.getValue());
+            response.headers().set(header.getName(), header.getValue());
         }
 
         HttpEntity entity = remoteResponse.getEntity();
-        if (entity != null) {
-            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-            buffer.writeBytes(entity.getContent(), (int)entity.getContentLength());
-            response.setContent(buffer);
+        if (entity != null && entity.getContentLength() > 0) {
+            if (response instanceof HttpContent) {
+                ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
+                HttpContent content = (HttpContent) response;
+                content.content().writeBytes(buffer);
+            }
         }
     }
 
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request);
-        for (Map.Entry<String, String> entry : request.getHeaders()) {
+        for (Map.Entry<String, String> entry : request.headers()) {
             remoteRequest.addHeader(entry.getKey(), entry.getValue());
         }
 
@@ -151,7 +159,7 @@ public class ProxyResponseHandler implements ResponseHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         QueryStringEncoder encoder = new QueryStringEncoder(this.url.getPath());
 
-        for (Map.Entry<String, List<String>> entry : decoder.getParameters().entrySet()) {
+        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
             encoder.addParam(entry.getKey(), entry.getValue().get(0));
         }
 
