@@ -106,7 +106,7 @@ subprojects {
     dependencies {
         compile(
                 "com.google.guava:guava:$guavaVersion",
-                "io.netty:netty-all:$nettyVersion",
+                "io.netty:netty-codec-http:$nettyVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion",
                 "commons-io:commons-io:$commonsIoVersion",
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
