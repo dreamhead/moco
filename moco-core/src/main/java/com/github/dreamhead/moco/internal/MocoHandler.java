@@ -50,6 +50,9 @@ public class MocoHandler extends SimpleChannelHandler {
     private HttpResponse getResponse(HttpRequest request) {
         try {
             return doGetHttpResponse(request);
+        } catch (RuntimeException e) {
+            eventBus.post(e);
+            return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
         } catch (Exception e) {
             eventBus.post(e);
             return defaultResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR);
