@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpRequest;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
@@ -31,7 +32,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(FullHttpRequest request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
             Document resourceDocument = getResourceDocument(null, this.resource);

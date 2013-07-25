@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.setting;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 
@@ -16,7 +17,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         this.httpServer = httpServer;
     }
 
-    public boolean match(HttpRequest request) {
+    public boolean match(FullHttpRequest request) {
         return this.matcher.match(request);
     }
 

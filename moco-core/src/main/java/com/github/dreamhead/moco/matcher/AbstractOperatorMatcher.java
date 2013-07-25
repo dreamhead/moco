@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.google.common.base.Predicate;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     protected final RequestExtractor<T> extractor;
@@ -15,7 +15,7 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(FullHttpRequest request) {
         T extractContent = extractor.extract(request);
         if (extractContent == null) {
             return false;

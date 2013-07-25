@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.matcher;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 public class OrRequestMatcher extends CompositeRequestMatcher {
     public OrRequestMatcher(Iterable<RequestMatcher> matchers) {
@@ -10,7 +10,7 @@ public class OrRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(FullHttpRequest request) {
         for (RequestMatcher matcher : matchers) {
             if (matcher.match(request)) {
                 return true;

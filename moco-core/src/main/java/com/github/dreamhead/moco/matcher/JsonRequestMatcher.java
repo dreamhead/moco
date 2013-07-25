@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class JsonRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(FullHttpRequest request) {
         try {
             JsonNode requestNode = mapper.readTree(extractor.extract(request));
             JsonNode resourceNode = mapper.readTree(resource.readFor(request));

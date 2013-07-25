@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.setting.BaseSetting;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public class ActualHttpServer extends HttpServer {
     private static RequestMatcher anyRequest() {
         return new RequestMatcher() {
             @Override
-            public boolean match(HttpRequest request) {
+            public boolean match(FullHttpRequest request) {
                 return true;
             }
 

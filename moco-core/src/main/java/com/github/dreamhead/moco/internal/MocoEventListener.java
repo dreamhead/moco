@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.google.common.eventbus.Subscribe;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
