@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.*;
 
 import java.util.List;
 
-public class MocoHandler extends SimpleChannelInboundHandler<Object> {
+public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final EventBus eventBus = new EventBus();
 
     private final List<BaseSetting> settings;
@@ -24,16 +24,13 @@ public class MocoHandler extends SimpleChannelInboundHandler<Object> {
         this.eventBus.register(new MocoEventListener());
     }
 
-
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object message) throws Exception {
-        if (message instanceof HttpRequest) {
-            eventBus.post(message);
-            httpRequestReceived(ctx, (HttpRequest)message);
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
+        eventBus.post(message);
+        httpRequestReceived(ctx, message);
     }
 
-    private void httpRequestReceived(ChannelHandlerContext ctx, HttpRequest request) {
+    private void httpRequestReceived(ChannelHandlerContext ctx, FullHttpRequest request) {
         HttpResponse response = getResponse(request);
         eventBus.post(response);
         ctx.writeAndFlush(response);
@@ -41,26 +38,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<Object> {
         ctx.close();
     }
 
-
-//    @Override
-//    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-//        Object message = e.getMessage();
-//
-//        if (message instanceof HttpRequest) {
-//            eventBus.post(message);
-//            httpRequestReceived((HttpRequest) message, e.getChannel());
-//        }
-//    }
-
-//    private void httpRequestReceived(HttpRequest request, Channel channel) {
-//        HttpResponse response = getResponse(request);
-//        eventBus.post(response);
-//        channel.write(response);
-//        channel.disconnect();
-//        channel.close();
-//    }
-
-    private HttpResponse getResponse(HttpRequest request) {
+    private FullHttpResponse getResponse(FullHttpRequest request) {
         try {
             return doGetHttpResponse(request);
         } catch (RuntimeException e) {
@@ -72,8 +50,8 @@ public class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
 
-    private HttpResponse doGetHttpResponse(HttpRequest request) {
-        HttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
+    private FullHttpResponse doGetHttpResponse(FullHttpRequest request) {
+        FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
@@ -92,7 +70,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<Object> {
         return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
     }
 
-    private HttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
+    private FullHttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
         return new DefaultFullHttpResponse(request.getProtocolVersion(), status);
     }
 }

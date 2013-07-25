@@ -1,10 +1,11 @@
 package com.github.dreamhead.moco.dumper;
 
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.util.internal.StringUtil;
 
-public class HttpRequestDumper extends HttpMessageBaseDumper<HttpRequest> {
-    public String dump(HttpRequest request) {
+public class HttpRequestDumper extends HttpMessageBaseDumper<FullHttpRequest> {
+    public String dump(FullHttpRequest request) {
         StringBuilder buf = new StringBuilder();
         appendRequestProtocolLine(request, buf);
         buf.append(StringUtil.NEWLINE);
