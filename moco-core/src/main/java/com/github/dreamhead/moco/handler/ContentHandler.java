@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;
@@ -14,12 +14,12 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
+    protected void writeContentResponse(FullHttpRequest request, ByteBuf buffer) {
         buffer.writeBytes(this.resource.readFor(request));
     }
 
     @Override
-    protected String getContentType(HttpRequest request) {
+    protected String getContentType(FullHttpRequest request) {
         return resource.getContentType();
     }
 

@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.base.Function;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.google.common.collect.FluentIterable.from;
 
@@ -16,7 +16,7 @@ public class AndResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(HttpRequest request, HttpResponse response) {
+    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         for (ResponseHandler handler : handlers) {
             handler.writeToResponse(request, response);
         }

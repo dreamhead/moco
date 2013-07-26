@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.extractor;
 
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,12 +12,12 @@ import static org.mockito.Mockito.when;
 
 public class ParamRequestExtractorTest {
     private ParamRequestExtractor extractor;
-    private HttpRequest request;
+    private FullHttpRequest request;
 
     @Before
     public void setUp() throws Exception {
         extractor = new ParamRequestExtractor("param");
-        request = mock(HttpRequest.class);
+        request = mock(FullHttpRequest.class);
     }
 
     @Test

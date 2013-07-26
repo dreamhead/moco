@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.util.FileContentType;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class FileResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(HttpRequest request) {
+    public byte[] readFor(FullHttpRequest request) {
         try {
             return toByteArray(file);
         } catch (IOException e) {

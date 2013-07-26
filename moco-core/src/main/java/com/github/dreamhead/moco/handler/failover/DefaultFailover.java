@@ -32,7 +32,7 @@ public class DefaultFailover implements Failover {
         this.file = file;
     }
 
-    public void onCompleteResponse(HttpRequest request, HttpResponse response) {
+    public void onCompleteResponse(FullHttpRequest request, FullHttpResponse response) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
             Session targetSession = Session.newSession(MessageFactory.createRequest(request), MessageFactory.createResponse(response));
@@ -65,7 +65,7 @@ public class DefaultFailover implements Failover {
     }
 
     @Override
-    public void failover(HttpRequest request, HttpResponse response) {
+    public void failover(FullHttpRequest request, FullHttpResponse response) {
         Response dumpedResponse = failoverResponse(request);
         response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
         response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
@@ -73,13 +73,10 @@ public class DefaultFailover implements Failover {
             response.headers().add(entry.getKey(), entry.getValue());
         }
 
-        if (response instanceof HttpContent) {
-            HttpContent content = (HttpContent) response;
-            content.content().writeBytes(dumpedResponse.getContent().getBytes());
-        }
+        response.content().writeBytes(dumpedResponse.getContent().getBytes());
     }
 
-    private Response failoverResponse(HttpRequest request) {
+    private Response failoverResponse(FullHttpRequest request) {
         final Request dumpedRequest = MessageFactory.createRequest(request);
         List<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));

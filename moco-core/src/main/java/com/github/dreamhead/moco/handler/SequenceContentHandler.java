@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -20,7 +20,7 @@ public class SequenceContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
+    protected void writeContentResponse(FullHttpRequest request, ByteBuf buffer) {
         buffer.writeBytes(resources[current()].readFor(request));
     }
 

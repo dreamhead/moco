@@ -4,8 +4,7 @@ import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.google.common.collect.ImmutableList.of;
 
@@ -21,7 +20,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         return this.matcher.match(request);
     }
 
-    public void writeToResponse(HttpRequest request, HttpResponse response) {
+    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         this.handler.writeToResponse(request, response);
     }
 

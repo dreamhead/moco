@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
@@ -15,7 +15,7 @@ public class FormRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public String extract(HttpRequest request) {
+    public String extract(FullHttpRequest request) {
         try {
             HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(new DefaultHttpDataFactory(false), request);
             InterfaceHttpData data = decoder.getBodyHttpData(key);

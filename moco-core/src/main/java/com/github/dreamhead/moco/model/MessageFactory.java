@@ -8,17 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageFactory {
-    private static void setContent(HttpMessage message, Message dumpedMessage) {
-        if (message instanceof HttpContent) {
-            HttpContent content = (HttpContent) message;
-            String text = content.content().toString(Charset.defaultCharset());
-            if (!Strings.isNullOrEmpty(text)) {
-                dumpedMessage.setContent(text);
-            }
+    private static void setContent(FullHttpMessage message, Message dumpedMessage) {
+        String text = message.content().toString(Charset.defaultCharset());
+        if (!Strings.isNullOrEmpty(text)) {
+            dumpedMessage.setContent(text);
         }
     }
 
-    public static Request createRequest(HttpRequest request) {
+    public static Request createRequest(FullHttpRequest request) {
         Request dumpedRequest = new Request();
         dumpedRequest.setVersion(request.getProtocolVersion().text());
         setContent(request, dumpedRequest);
@@ -36,7 +33,7 @@ public class MessageFactory {
         return dumpedRequest;
     }
 
-    public static Response createResponse(HttpResponse response) {
+    public static Response createResponse(FullHttpResponse response) {
         Response dumpedResponse = new Response();
         dumpedResponse.setStatusCode(response.getStatus().code());
         dumpedResponse.setVersion(response.getProtocolVersion().text());

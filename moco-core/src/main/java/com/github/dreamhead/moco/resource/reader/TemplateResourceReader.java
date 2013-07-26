@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(HttpRequest request) {
+    public byte[] readFor(FullHttpRequest request) {
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         String templateSource = new String(this.template.readFor(request));
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);

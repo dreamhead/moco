@@ -35,7 +35,7 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(HttpRequest request, HttpResponse response) {
+    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         try {
             URL url = remoteUrl(request);
 
@@ -46,11 +46,7 @@ public class ProxyResponseHandler implements ResponseHandler {
             long contentLength = HttpHeaders.getContentLength(request, -1);
             if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-
-                if (request instanceof HttpContent) {
-                    HttpContent content = (HttpContent) request;
-                    entityRequest.setEntity(new ByteArrayEntity(content.content().array()));
-                }
+                entityRequest.setEntity(new ByteArrayEntity(request.content().array()));
             }
 
             setupResponse(request, response, httpclient.execute(remoteRequest));
@@ -71,8 +67,8 @@ public class ProxyResponseHandler implements ResponseHandler {
         return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
-    private void setupResponse(HttpRequest request,
-                               HttpResponse response,
+    private void setupResponse(FullHttpRequest request,
+                               FullHttpResponse response,
                                org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
@@ -85,7 +81,7 @@ public class ProxyResponseHandler implements ResponseHandler {
         failover.onCompleteResponse(request, response);
     }
 
-    private void setupNormalResponse(HttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
+    private void setupNormalResponse(FullHttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
         response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
         response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
 
@@ -96,11 +92,8 @@ public class ProxyResponseHandler implements ResponseHandler {
 
         HttpEntity entity = remoteResponse.getEntity();
         if (entity != null && entity.getContentLength() > 0) {
-            if (response instanceof HttpContent) {
-                ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
-                HttpContent content = (HttpContent) response;
-                content.content().writeBytes(buffer);
-            }
+            ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
+            response.content().writeBytes(buffer);
         }
     }
 

@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.util.FileContentType;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
+    protected void writeContentResponse(FullHttpRequest request, ByteBuf buffer) {
         try {
             buffer.writeBytes(toByteArray(targetFile(request)));
         } catch (IOException e) {
@@ -33,13 +33,13 @@ public class MountHandler extends AbstractContentResponseHandler {
         }
     }
 
-    private File targetFile(HttpRequest request) {
+    private File targetFile(FullHttpRequest request) {
         String relativePath = extractor.extract(request);
         return new File(dir, relativePath);
     }
 
     @Override
-    protected String getContentType(HttpRequest request) {
+    protected String getContentType(FullHttpRequest request) {
         return new FileContentType(targetFile(request).getName()).getContentType();
     }
 

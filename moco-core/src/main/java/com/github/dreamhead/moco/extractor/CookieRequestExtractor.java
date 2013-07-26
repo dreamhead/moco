@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.util.Cookies;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 public class CookieRequestExtractor implements RequestExtractor<String> {
     private final Cookies cookies = new Cookies();
@@ -14,7 +14,7 @@ public class CookieRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public String extract(HttpRequest request) {
+    public String extract(FullHttpRequest request) {
         return cookies.decodeCookie(request.headers().get("Cookie"), key);
     }
 }

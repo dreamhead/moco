@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.extractor;
 
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,12 +11,12 @@ import static org.mockito.Mockito.when;
 
 public class UriRequestExtractorTest {
     private UriRequestExtractor extractor;
-    private HttpRequest request;
+    private FullHttpRequest request;
 
     @Before
     public void setUp() throws Exception {
         extractor = new UriRequestExtractor();
-        request = mock(HttpRequest.class);
+        request = mock(FullHttpRequest.class);
     }
 
     @Test
@@ -27,7 +27,6 @@ public class UriRequestExtractorTest {
 
     @Test
     public void should_return_path_part_while_uri_has_parameters() {
-        HttpRequest request = mock(HttpRequest.class);
         when(request.getUri()).thenReturn("/foo?param=bar");
         assertThat(extractor.extract(request), is("/foo"));
     }

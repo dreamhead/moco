@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
 import com.jayway.jsonpath.JsonPath;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 	}
 
 	@Override
-	public String[] extract(HttpRequest request) {
+	public String[] extract(FullHttpRequest request) {
 		return toStringArray(jsonPath.read(extractor.extract(request)));
 	}
 
