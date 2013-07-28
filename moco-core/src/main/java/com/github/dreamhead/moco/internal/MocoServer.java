@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class MocoServer {
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
+    private ChannelFuture future;
 
     public MocoServer() {
         bossGroup = new NioEventLoopGroup();
@@ -21,7 +23,11 @@ public class MocoServer {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(pipelineFactory);
 
-        bootstrap.bind(port);
+        try {
+            future = bootstrap.bind(port).sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void stop() {
@@ -29,6 +35,10 @@ public class MocoServer {
     }
 
     private void doStop() {
+        if (future != null) {
+            future.channel().closeFuture();
+        }
+
         if (bossGroup != null) {
             bossGroup.shutdownGracefully();
             workerGroup = null;
