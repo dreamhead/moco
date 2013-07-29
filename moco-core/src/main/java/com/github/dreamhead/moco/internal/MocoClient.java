@@ -9,8 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MocoClient {
-
     private EventLoopGroup group;
+    private ChannelFuture future;
 
     public MocoClient() {
         this.group = new NioEventLoopGroup();
@@ -25,15 +25,22 @@ public class MocoClient {
                 .handler(pipelineFactory);
 
         try {
-            ChannelFuture f = bootstrap.connect("127.0.0.1", port).sync();
-            f.channel().closeFuture().sync();
+            future = bootstrap.connect("127.0.0.1", port).sync();
+            stop();
         } catch (InterruptedException e) {
-            group.shutdownGracefully();
             throw new RuntimeException(e);
         }
     }
 
     public void stop() {
+        try {
+            if (future != null) {
+                future.channel().closeFuture().sync();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if (group != null) {
             group.shutdownGracefully();
             group = null;
