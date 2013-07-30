@@ -5,12 +5,16 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.ConnectException;
 
 import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
 
 public class ShutdownTask implements BootstrapTask {
+    private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
+
     private final int defaultShutdownPort;
     private final String defaultShutdownKey;
     private final MocoClient client = new MocoClient();
@@ -50,11 +54,12 @@ public class ShutdownTask implements BootstrapTask {
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+            ctx.close();
+
             if (ConnectException.class.isInstance(cause)) {
-                System.err.println("fail to shutdown, please specify correct shutdown port.");
+                logger.error("fail to shutdown, please specify correct shutdown port.");
                 return;
             }
-
             throw new RuntimeException(cause);
         }
     }
