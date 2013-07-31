@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.eventbus.EventBus;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
@@ -30,12 +32,11 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         httpRequestReceived(ctx, message);
     }
 
-    private void httpRequestReceived(ChannelHandlerContext ctx, FullHttpRequest request) {
+    private void httpRequestReceived(final ChannelHandlerContext ctx, FullHttpRequest request) {
         HttpResponse response = getResponse(request);
         eventBus.post(response);
-        ctx.writeAndFlush(response);
-        ctx.disconnect();
-        ctx.close();
+        ChannelFuture future = ctx.writeAndFlush(response);
+        future.addListener(ChannelFutureListener.CLOSE);
     }
 
     private FullHttpResponse getResponse(FullHttpRequest request) {
