@@ -6,7 +6,10 @@ import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
 import org.junit.Test;
@@ -258,6 +261,19 @@ public class MocoProxyTest extends AbstractMocoTest {
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+            }
+        });
+    }
+
+    @Test
+    public void should_be_able_to_connect_to_baidu() throws Exception {
+        server.response(proxy("http://www.baidu.com/"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusCode, is(200));
             }
         });
     }
