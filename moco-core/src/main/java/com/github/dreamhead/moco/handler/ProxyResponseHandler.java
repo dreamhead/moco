@@ -100,15 +100,17 @@ public class ProxyResponseHandler implements ResponseHandler {
     private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request);
         for (Map.Entry<String, String> entry : request.headers()) {
-            if (entry.getKey().equals("Host")) {
-                continue;
+            if (isRemoteHeader(entry)) {
+                remoteRequest.addHeader(entry.getKey(), entry.getValue());
             }
-
-            remoteRequest.addHeader(entry.getKey(), entry.getValue());
         }
 
         remoteRequest.removeHeaders("Content-Length");
         return remoteRequest;
+    }
+
+    private boolean isRemoteHeader(Map.Entry<String, String> entry) {
+        return !"Host".equalsIgnoreCase(entry.getKey());
     }
 
     @Override

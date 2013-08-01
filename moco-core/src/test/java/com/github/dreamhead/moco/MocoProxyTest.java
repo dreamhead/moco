@@ -263,7 +263,7 @@ public class MocoProxyTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_be_able_to_connect_to_baidu() throws Exception {
+    public void should_be_able_to_connect_to_external_website_successfully() throws Exception {
         server.response(proxy("http://www.baidu.com/"));
 
         running(server, new Runnable() {
