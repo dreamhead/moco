@@ -8,13 +8,16 @@
 
 Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.com/)
 
+## Latest Release
+* __0.8.1__
+
 ## Why
 Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most of our development.
 
 In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all know, it's so boring to develop a WAR and deploy it to any application server, even if we use an embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
 ## Quick Start
-* Download [Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.8/moco-runner-0.8-standalone.jar)
+* Download [Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.8.1/moco-runner-0.8.1-standalone.jar)
 * Write your own configuration file to describe your Moco server configuration as follow:
 ```json
 [

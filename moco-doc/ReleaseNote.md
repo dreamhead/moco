@@ -1,3 +1,7 @@
+# Release 0.8.1 (1-August-2013)
+* Upgrade to Netty 4
+* Fixed proxy bug
+
 # Release 0.8 (21-July-2013)
 
 ## Usage
