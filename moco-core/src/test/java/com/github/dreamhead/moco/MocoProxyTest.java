@@ -261,4 +261,17 @@ public class MocoProxyTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_be_able_to_connect_to_baidu() throws Exception {
+        server.response(proxy("http://www.baidu.com/"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                assertThat(statusCode, is(200));
+            }
+        });
+    }
 }
