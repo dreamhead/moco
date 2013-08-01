@@ -85,7 +85,7 @@ As the name suggests, file root setting will play as the file root for configura
 ```json
 [
     {
-        "file_root": "fileroot"
+        "file_root": "fileroot",
         "include": "fileroot.json"
     }
 ]
