@@ -16,6 +16,8 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,6 +28,7 @@ import java.util.Map;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class ProxyResponseHandler implements ResponseHandler {
+    private Logger logger = LoggerFactory.getLogger(ProxyResponseHandler.class);
     private final URL url;
     private final Failover failover;
 
@@ -51,6 +54,7 @@ public class ProxyResponseHandler implements ResponseHandler {
 
             setupResponse(request, response, httpclient.execute(remoteRequest));
         } catch (IOException e) {
+            logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
         }
     }
