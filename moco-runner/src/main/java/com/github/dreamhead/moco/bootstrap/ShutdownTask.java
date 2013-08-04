@@ -1,10 +1,9 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.internal.MocoClient;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelInitializer;
+import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +14,9 @@ import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
 public class ShutdownTask implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
 
+    private final MocoClient client = new MocoClient();
     private final int defaultShutdownPort;
     private final String defaultShutdownKey;
-    private final MocoClient client = new MocoClient();
 
     public ShutdownTask(int defaultShutdownPort, String defaultShutdownKey) {
         this.defaultShutdownPort = defaultShutdownPort;
@@ -30,7 +29,9 @@ public class ShutdownTask implements BootstrapTask {
         client.run(shutdownArgs.getShutdownPort(defaultShutdownPort), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
-                ch.pipeline().addLast(new ShutdownHandler());
+                ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast("encoder", new StringEncoder());
+                pipeline.addLast("handler", new ShutdownHandler());
             }
         });
     }
@@ -38,18 +39,7 @@ public class ShutdownTask implements BootstrapTask {
     private class ShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
-            ctx.writeAndFlush(defaultShutdownKey + "\r\n");
-
-        }
-
-        @Override
-        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    client.stop();
-                }
-            }).start();
+            ctx.writeAndFlush(defaultShutdownKey + "\r\n").addListener(ChannelFutureListener.CLOSE);
         }
 
         @Override
@@ -60,6 +50,7 @@ public class ShutdownTask implements BootstrapTask {
                 logger.error("fail to shutdown, please specify correct shutdown port.");
                 return;
             }
+
             throw new RuntimeException(cause);
         }
     }

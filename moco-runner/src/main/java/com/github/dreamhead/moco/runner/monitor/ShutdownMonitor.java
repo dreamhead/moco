@@ -3,17 +3,16 @@ package com.github.dreamhead.moco.runner.monitor;
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.io.CharStreams;
 import com.google.common.io.InputSupplier;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 
 public class ShutdownMonitor implements Monitor {
     private final MocoServer server = new MocoServer();
@@ -32,8 +31,8 @@ public class ShutdownMonitor implements Monitor {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast("decoder", new StringDecoder());
                 pipeline.addLast("handler", new ShutdownHandler());
-
             }
         });
     }
@@ -42,11 +41,10 @@ public class ShutdownMonitor implements Monitor {
         server.stop();
     }
 
-    private class ShutdownHandler extends ChannelInboundHandlerAdapter {
+    private class ShutdownHandler extends SimpleChannelInboundHandler<String> {
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf buffer = (ByteBuf)msg;
-            if (shouldShutdown(buffer.toString(Charset.defaultCharset()))) {
+        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+            if (shouldShutdown(msg)) {
                 shutdownListener.onShutdown();
                 shutdownMonitorSelf();
             }

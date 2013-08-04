@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.ShutdownTask;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.http.conn.HttpHostConnectException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,35 +20,31 @@ import static org.junit.Assert.fail;
 
 public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
 
+    private final String SHUTDOWN_MOCO_KEY = "_SHUTDOWN_MOCO_KEY";
+    private final int SHUTDOWN_PORT = 9527;
+
+    @Before
+    public void setup() {
+        RunnerFactory factory = new RunnerFactory(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
+        runner = factory.createRunner(new StartArgs(port(), SHUTDOWN_PORT, "src/test/resources/foo.json", null, null));
+        runner.run();
+    }
+
     @Test(expected = HttpHostConnectException.class)
     public void should_shutdown_runner_by_socket() throws IOException {
-        String shutdownMocoKey = "_SHUTDOWN_MOCO_KEY";
-        int shutdownPort = 9527;
-
-        RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
-        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null, null));
-        runner.run();
-
         try {
             assertThat(helper.get(root()), is("foo"));
         } catch (HttpHostConnectException e) {
             fail(e.getMessage());
         }
 
-        shutdownMoco(shutdownPort, shutdownMocoKey);
+        shutdownMoco(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
         waitChangeHappens();
         helper.get(root());
     }
 
     @Test(expected = ConnectException.class)
     public void should_stop_runner_directly() throws IOException {
-        String shutdownMocoKey = "_SHUTDOWN_MOCO_KEY";
-        int shutdownPort = 9527;
-
-        RunnerFactory factory = new RunnerFactory(shutdownPort, shutdownMocoKey);
-        runner = factory.createRunner(new StartArgs(port(), shutdownPort, "src/test/resources/foo.json", null, null));
-        runner.run();
-
         try {
             assertThat(helper.get(root()), is("foo"));
         } catch (HttpHostConnectException e) {
@@ -55,7 +53,22 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
 
         runner.stop();
 
-        shutdownMoco(shutdownPort, shutdownMocoKey);
+        shutdownMoco(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
+    }
+
+    @Test(expected = HttpHostConnectException.class)
+    public void should_stop_runner_via_shutdown_task() throws IOException {
+        try {
+            assertThat(helper.get(root()), is("foo"));
+        } catch (HttpHostConnectException e) {
+            fail(e.getMessage());
+        }
+
+        ShutdownTask task = new ShutdownTask(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
+        task.run(new String[0]);
+
+        waitChangeHappens();
+        helper.get(root());
     }
 
     private void shutdownMoco(int shutdownPort, String shutdownMocoKey) throws IOException {
