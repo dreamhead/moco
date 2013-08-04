@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.github.dreamhead.moco.MocoMount.to;
 import static java.lang.String.format;
 
 public class HttpServerParser {
@@ -61,16 +60,7 @@ public class HttpServerParser {
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 
-            if (session.isMount()) {
-                MountSetting mount = session.getMount();
-                server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
-            } else if (session.isAnyResponse()) {
-                server.response(session.getResponseHandler());
-            } else if (session.isRedirectResponse()) {
-                server.request(session.getRequestMatcher()).redirectTo(session.getRedirectTo());
-            } else {
-                server.request(session.getRequestMatcher()).response(session.getResponseHandler());
-            }
+            session.bindTo(server);
         }
 
         return server;

@@ -1,7 +1,10 @@
 package com.github.dreamhead.moco.parser.model;
 
+import static com.github.dreamhead.moco.MocoMount.to;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.base.Objects;
@@ -14,19 +17,19 @@ public class SessionSetting {
     private String redirectTo;
     private MountSetting mount;
 
-    public String getRedirectTo() {
+    private String getRedirectTo() {
         return redirectTo;
     }
 
-    public MountSetting getMount() {
+    private MountSetting getMount() {
         return mount;
     }
 
-    public boolean isMount() {
+    private boolean isMount() {
         return this.mount != null;
     }
 
-    public boolean isAnyResponse() {
+    private boolean isAnyResponse() {
         return request == null;
     }
 
@@ -35,11 +38,11 @@ public class SessionSetting {
         return Objects.toStringHelper(this).omitNullValues().add("request", request).add("response", response).toString();
     }
 
-    public boolean isRedirectResponse() {
+    private boolean isRedirectResponse() {
         return redirectTo != null;
     }
 
-    public ResponseHandler getResponseHandler() {
+    private ResponseHandler getResponseHandler() {
         if (response == null) {
             throw new RuntimeException("No response specified");
         }
@@ -47,11 +50,24 @@ public class SessionSetting {
         return response.getResponseHandler();
     }
 
-    public RequestMatcher getRequestMatcher() {
+    private RequestMatcher getRequestMatcher() {
         if (request == null) {
             throw new RuntimeException("No request specified");
         }
 
         return request.getRequestMatcher();
     }
+
+	public void bindTo(HttpServer server) {
+		if (isMount()) {
+		    MountSetting mount = getMount();
+		    server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
+		} else if (isAnyResponse()) {
+		    server.response(getResponseHandler());
+		} else if (isRedirectResponse()) {
+		    server.request(getRequestMatcher()).redirectTo(getRedirectTo());
+		} else {
+		    server.request(getRequestMatcher()).response(getResponseHandler());
+		}
+	}
 }
