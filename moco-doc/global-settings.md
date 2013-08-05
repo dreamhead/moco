@@ -75,7 +75,9 @@ We can put all responses for one service in a specified context:
 ]
 ```
 
-Now all configurations in foo.json must be accessed by /foo context.
+Now all configurations in foo.json must be accessed by /foo context. In this case, when you access http://localhost:12306/foo/foo, you will get "foo".
+
+On the other hand, bar.json will in /bar context which means http://localhost:12306/bar/bar will return "bar".
 
 ## File Root
 
@@ -118,19 +120,22 @@ Now, environment will help you to configure all related configurations in one se
 ```json
 [
     {
-        "env" : "remote"
-        "include": "remote.json",
+        "env" : "remote",
+        "include": "foo.json",
     },
     {
-        "env" : "local"
-        "include": "local.json",
+        "env" : "local",
+        "include": "bar.json",
     }
 ]
 ```
+(env.json)
 
 You can start your server with different environment from CLI.
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json -e remote
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -g env.json -e remote
 ```
 
 Now, when you access your server, all configurations with "remote" environment rocks!
+
+In this case, http://localhost:12306/foo will give you "foo", but http://localhost:12306/bar will return nothing.
