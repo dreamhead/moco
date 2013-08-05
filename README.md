@@ -1,7 +1,7 @@
-<img src="https://raw.github.com/dreamhead/moco/master/moco-doc/DukeChoice-960x90-lm.png">
+<img src="moco-doc/DukeChoice-960x90-lm.png?raw=true">
 
 <a href="https://github.com/dreamhead/moco">
-  <img src="https://raw.github.com/dreamhead/moco/master/moco-doc/moco.png" width="100px">
+  <img src="moco-doc/moco.png?raw=true" width="100px">
 </a>
 
 # [Moco](https://github.com/dreamhead/moco) [![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
@@ -38,9 +38,9 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 * Now, open your favorite browser to visit http://localhost:12306 and you will see "Hello, Moco".
 
 ## Documents
-* More [Usages](https://github.com/dreamhead/moco/blob/master/moco-doc/usage.md)
-* Detailed [APIs](https://github.com/dreamhead/moco/blob/master/moco-doc/apis.md)
-* [Global Settings](https://github.com/dreamhead/moco/blob/master/moco-doc/global-settings.md) for multiple configuration files.
+* More [Usages](moco-doc/usage.md)
+* Detailed [APIs](moco-doc/apis.md)
+* [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
 
 ## Build
 Make sure you have JDK and Gradle installed.
@@ -67,7 +67,7 @@ gradle check
 ```
 
 ## Contributing
-Check out what you can help [here](https://github.com/dreamhead/moco/blob/master/moco-doc/plan.md) if you do not have any existing idea.
+Check out what you can help [here](moco-doc/plan.md) if you do not have any existing idea.
 
 ## Copyright and license
 Copyright 2013 ZHENG Ye
