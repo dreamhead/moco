@@ -17,14 +17,6 @@ public class SessionSetting {
     private String redirectTo;
     private MountSetting mount;
 
-    private String getRedirectTo() {
-        return redirectTo;
-    }
-
-    private MountSetting getMount() {
-        return mount;
-    }
-
     private boolean isMount() {
         return this.mount != null;
     }
@@ -60,12 +52,11 @@ public class SessionSetting {
 
 	public void bindTo(HttpServer server) {
 		if (isMount()) {
-		    MountSetting mount = getMount();
-		    server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
+            server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
 		} else if (isAnyResponse()) {
 		    server.response(getResponseHandler());
 		} else if (isRedirectResponse()) {
-		    server.request(getRequestMatcher()).redirectTo(getRedirectTo());
+            server.request(getRequestMatcher()).redirectTo(redirectTo);
 		} else {
 		    server.request(getRequestMatcher()).response(getResponseHandler());
 		}
