@@ -810,11 +810,11 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
       "includes" :
         [
           "a.txt",
-          "b.txt"
+          "c.txt"
         ],
       "excludes" :
         [
-          "c.txt"
+          "b.txt"
         ]
     }
 }
