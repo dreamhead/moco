@@ -25,6 +25,7 @@
 * homebrew
 * IntelliJ IDEA plugin
 * Eclipse plugin
+* Runtime configuration change
 
 # Polyglot
 * Groovy
