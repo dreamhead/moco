@@ -189,7 +189,7 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url) {
-        return new ProxyResponseHandler(toUrl(url), Failover.EMPTY_FAILOVER);
+        return proxy(url, Failover.EMPTY_FAILOVER);
     }
 
     public static ResponseHandler proxy(final String url, Failover failover) {

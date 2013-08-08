@@ -6,12 +6,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MocoClient {
-    public void run(final int port, final ChannelHandler pipelineFactory) {
+    public void run(final String host, final int port, final ChannelHandler pipelineFactory) {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
-                .remoteAddress("127.0.0.1", port)
+                .remoteAddress(host, port)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .handler(pipelineFactory);
 
