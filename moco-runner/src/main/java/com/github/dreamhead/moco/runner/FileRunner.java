@@ -14,15 +14,6 @@ public abstract class FileRunner implements Runner {
     protected final int port;
     private Runner runner;
 
-    static FileRunner createSettingFileRunner(final File settingsFile, final StartArgs startArgs) {
-        return new FileRunner(settingsFile, startArgs.getPort()) {
-            @Override
-            protected Runner createRunner() {
-                return new SettingRunner(toInputStream(file), startArgs);
-            }
-        };
-    }
-
     protected abstract Runner createRunner();
 
     protected FileRunner(File file, int port) {
@@ -56,6 +47,15 @@ public abstract class FileRunner implements Runner {
             @Override
             protected Runner createRunner() {
                 return newJsonRunnerWithStreams(of(toInputStream(file)), port);
+            }
+        };
+    }
+
+    public static FileRunner createSettingFileRunner(final File settingsFile, final StartArgs startArgs) {
+        return new FileRunner(settingsFile, startArgs.getPort()) {
+            @Override
+            protected Runner createRunner() {
+                return new SettingRunner(toInputStream(file), startArgs);
             }
         };
     }
