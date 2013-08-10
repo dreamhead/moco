@@ -47,7 +47,6 @@ public class MocoServer {
             bossGroup = null;
         }
 
-
         if (workerGroup != null) {
             workerGroup.shutdownGracefully();
             workerGroup = null;
