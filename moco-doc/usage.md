@@ -111,7 +111,7 @@ https://github.com/silverjava/moco-gradle-plugin
 If you are using Mac or Linux, you may try the following approach:
 
 * Make sure you have JDK 6 or later.
-* [Download the script](https://raw.github.com/dreamhead/moco/master/moco-shell/moco).
+* [Download the script](/moco-shell/moco?raw=true).
 * Place it on your $PATH. (~/bin is a good choice if it is on your path.)
 * Set it to be executable. (chmod 755 ~/bin/moco)
 
