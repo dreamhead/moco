@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class ShutdownArgsTest {
 
-	final int DEFAULT_SHUTDOWN_PORT = 9527;
+	private final int DEFAULT_SHUTDOWN_PORT = 9527;
 
 	@Test
 	public void should_parse_shutdown_arguments() {
