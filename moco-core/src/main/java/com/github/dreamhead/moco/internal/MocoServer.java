@@ -37,6 +37,7 @@ public class MocoServer {
     private void doStop() {
         if (future != null) {
             future.channel().close().syncUninterruptibly();
+            future = null;
         }
 
         if (bossGroup != null) {
