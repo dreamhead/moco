@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
-import com.github.dreamhead.moco.model.MessageFactory;
+import com.github.dreamhead.moco.model.LazyRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
@@ -50,7 +50,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template template = cfg.getTemplate("template");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(of("req", MessageFactory.createRequest(request)), writer);
+            template.process(of("req", new LazyRequest(request)), writer);
             return stream.toByteArray();
         } catch (ParseException e) {
             logger.info("Template is {}", templateSource);
