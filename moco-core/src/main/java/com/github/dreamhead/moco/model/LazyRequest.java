@@ -66,12 +66,12 @@ public class LazyRequest extends Request {
         });
     }
 
-    private Supplier<Map<String, String>> headersSupplier(final HttpHeaders headers) {
+    private Supplier<Map<String, String>> headersSupplier(final HttpHeaders requestHeaders) {
         return Suppliers.memoize(new Supplier<Map<String, String>>() {
             @Override
             public Map<String, String> get() {
                 Map<String,String> headers = newHashMap();
-                for (Map.Entry<String, String> entry : request.headers()) {
+                for (Map.Entry<String, String> entry : requestHeaders) {
                     headers.put(entry.getKey(), entry.getValue());
                 }
                 return headers;
