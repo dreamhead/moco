@@ -1,14 +1,14 @@
 package com.github.dreamhead.moco.model;
 
 public class Session {
-    private Request request;
+    private DefaultRequest request;
     private Response response;
 
-    public Request getRequest() {
+    public DefaultRequest getRequest() {
         return request;
     }
 
-    public void setRequest(Request request) {
+    public void setRequest(DefaultRequest request) {
         this.request = request;
     }
 
@@ -20,7 +20,7 @@ public class Session {
         this.response = response;
     }
 
-    public static Session newSession(Request request, Response response) {
+    public static Session newSession(DefaultRequest request, Response response) {
         Session session = new Session();
         session.setRequest(request);
         session.setResponse(response);

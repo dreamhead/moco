@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Maps.newHashMap;
 
-public class LazyRequest extends Request {
+public class LazyRequest implements Request {
     private final FullHttpRequest request;
     private final Supplier<Map<String, String>> headersSupplier;
     private final Supplier<Map<String,String>> queriesSupplier;

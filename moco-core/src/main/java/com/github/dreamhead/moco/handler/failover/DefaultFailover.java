@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.github.dreamhead.moco.model.DefaultRequest;
 import com.github.dreamhead.moco.model.MessageFactory;
-import com.github.dreamhead.moco.model.Request;
 import com.github.dreamhead.moco.model.Response;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
@@ -77,7 +77,7 @@ public class DefaultFailover implements Failover {
     }
 
     private Response failoverResponse(FullHttpRequest request) {
-        final Request dumpedRequest = MessageFactory.createRequest(request);
+        final DefaultRequest dumpedRequest = MessageFactory.createRequest(request);
         List<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
         if (session.isPresent()) {
@@ -88,7 +88,7 @@ public class DefaultFailover implements Failover {
         throw new RuntimeException("no failover response found");
     }
 
-    private Predicate<Session> isForRequest(final Request dumpedRequest) {
+    private Predicate<Session> isForRequest(final DefaultRequest dumpedRequest) {
         return new Predicate<Session>() {
             @Override
             public boolean apply(Session session) {

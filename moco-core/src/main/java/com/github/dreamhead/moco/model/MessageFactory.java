@@ -15,8 +15,8 @@ public class MessageFactory {
         }
     }
 
-    public static Request createRequest(FullHttpRequest request) {
-        Request dumpedRequest = new Request();
+    public static DefaultRequest createRequest(FullHttpRequest request) {
+        DefaultRequest dumpedRequest = new DefaultRequest();
         dumpedRequest.setVersion(request.getProtocolVersion().text());
         setContent(request, dumpedRequest);
         dumpedRequest.setMethod(request.getMethod().name());
