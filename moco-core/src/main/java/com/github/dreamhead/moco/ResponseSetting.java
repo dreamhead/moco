@@ -8,7 +8,6 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
-    protected abstract void onResponseAttached(ResponseHandler handler);
     protected ResponseHandler handler;
 
     public void response(String content) {
@@ -25,8 +24,6 @@ public abstract class ResponseSetting {
         }
 
         this.handler = handler;
-
-        this.onResponseAttached(this.handler);
     }
 
     public void response(ResponseHandler... handler) {

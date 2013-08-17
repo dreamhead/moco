@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.setting;
 
-import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.ConfigApplier;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.Setting;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -9,11 +11,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import static com.google.common.collect.ImmutableList.of;
 
 public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
-    private final ActualHttpServer httpServer;
-
-    public BaseSetting(ActualHttpServer httpServer, RequestMatcher matcher) {
+    public BaseSetting(RequestMatcher matcher) {
         super(matcher);
-        this.httpServer = httpServer;
     }
 
     public boolean match(FullHttpRequest request) {
@@ -30,13 +29,8 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
             appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context(config.apply(""))));
         }
 
-        BaseSetting setting = new BaseSetting(this.httpServer, appliedMatcher);
+        BaseSetting setting = new BaseSetting(appliedMatcher);
         setting.handler = this.handler.apply(config);
         return setting;
-    }
-
-    @Override
-    protected void onResponseAttached(ResponseHandler handler) {
-        httpServer.addSetting(this);
     }
 }

@@ -58,7 +58,7 @@ public class ActualHttpServer extends HttpServer {
         return port;
     }
 
-    public void addSetting(final BaseSetting setting) {
+    private void addSetting(final BaseSetting setting) {
         this.settings.add(setting);
     }
 
@@ -79,11 +79,9 @@ public class ActualHttpServer extends HttpServer {
 
     @Override
     protected Setting onRequestAttached(RequestMatcher matcher) {
-        return new BaseSetting(this, matcher);
-    }
-
-    @Override
-    protected void onResponseAttached(ResponseHandler handler) {
+        BaseSetting baseSetting = new BaseSetting(matcher);
+        addSetting(baseSetting);
+        return baseSetting;
     }
 
     private static RequestMatcher anyRequest() {
