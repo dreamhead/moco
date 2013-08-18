@@ -1,17 +1,18 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.bootstrap.StartArgs;
-import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.apache.http.client.HttpResponseException;
-import org.junit.After;
-import org.junit.Test;
+import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.apache.http.client.HttpResponseException;
+import org.junit.After;
+import org.junit.Test;
+
+import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.helper.MocoTestHelper;
 
 public class SettingRunnerTest {
     private final MocoTestHelper helper = new MocoTestHelper();
@@ -24,7 +25,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting() throws IOException {
-        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/settings.json");
+        InputStream stream = getResourceAsStream("multiple/settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -34,7 +35,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_context() throws IOException {
-        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/context-settings.json");
+        InputStream stream = getResourceAsStream("multiple/context-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -44,7 +45,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_file_root() throws IOException {
-        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/fileroot-settings.json");
+        InputStream stream = getResourceAsStream("multiple/fileroot-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -53,7 +54,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_env() throws IOException {
-        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/env-settings.json");
+        InputStream stream = getResourceAsStream("multiple/env-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306, "foo"));
         runner.run();
 
@@ -62,7 +63,7 @@ public class SettingRunnerTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_run_without_env() throws IOException {
-        InputStream stream = SettingRunnerTest.class.getClassLoader().getResourceAsStream("multiple/env-settings.json");
+        InputStream stream = getResourceAsStream("multiple/env-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306, "bar"));
         runner.run();
 
@@ -75,5 +76,9 @@ public class SettingRunnerTest {
 
     private StartArgs createStartArgs(int port) {
         return new StartArgs(port, null, null, null, null);
+    }
+    
+    private InputStream getResourceAsStream(String filename) {
+        return SettingRunnerTest.class.getClassLoader().getResourceAsStream(filename);
     }
 }
