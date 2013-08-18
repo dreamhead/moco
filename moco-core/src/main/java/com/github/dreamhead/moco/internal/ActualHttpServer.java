@@ -46,12 +46,10 @@ public class ActualHttpServer extends HttpServer {
         return target;
     }
 
-    public RequestMatcher getAnyRequestMatcher() {
-        return configItem(this.matcher);
-    }
-
-    public ResponseHandler getAnyResponseHandler() {
-        return configItem(this.handler);
+    public BaseSetting getAnySetting() {
+        BaseSetting setting = new BaseSetting(configItem(this.matcher));
+        setting.response(configItem(this.handler));
+        return setting;
     }
 
     public int getPort() {

@@ -16,7 +16,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
     }
 
     public boolean match(FullHttpRequest request) {
-        return this.matcher.match(request);
+        return this.matcher.match(request) && this.handler != null;
     }
 
     public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
