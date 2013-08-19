@@ -30,7 +30,9 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         }
 
         BaseSetting setting = new BaseSetting(appliedMatcher);
-        setting.handler = this.handler.apply(config);
+        if (this.handler != null) {
+            setting.handler = this.handler.apply(config);
+        }
         return setting;
     }
 }
