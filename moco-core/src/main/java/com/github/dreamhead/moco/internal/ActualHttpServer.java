@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
+import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -22,33 +23,21 @@ public class ActualHttpServer extends HttpServer {
     }
 
     public List<BaseSetting> getSettings() {
-        return from(settings).transform(config()).toList();
+        return from(settings).transform(config(configs)).toList();
     }
 
-    private Function<BaseSetting, BaseSetting> config() {
+    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
         return new Function<BaseSetting, BaseSetting>() {
             @Override
             public BaseSetting apply(BaseSetting setting) {
-                return configItem(setting);
+                return configItem(setting, configs);
             }
         };
     }
 
-    private <T extends ConfigApplier<T>> T configItem(T source) {
-        if (source == null) {
-            return null;
-        }
-
-        T target = source;
-        for (MocoConfig config : configs) {
-            target = target.apply(config);
-        }
-        return target;
-    }
-
     public BaseSetting getAnySetting() {
-        BaseSetting setting = new BaseSetting(configItem(this.matcher));
-        setting.response(configItem(this.handler));
+        BaseSetting setting = new BaseSetting(configItem(this.matcher, configs));
+        setting.response(configItem(this.handler, configs));
         return setting;
     }
 

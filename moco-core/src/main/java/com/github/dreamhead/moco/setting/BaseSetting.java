@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
+import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.ImmutableList.of;
 
 public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
@@ -24,15 +25,13 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
     }
 
     public BaseSetting apply(final MocoConfig config) {
-        RequestMatcher appliedMatcher = this.matcher.apply(config);
+        RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
             appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context(config.apply(""))));
         }
 
         BaseSetting setting = new BaseSetting(appliedMatcher);
-        if (this.handler != null) {
-            setting.handler = this.handler.apply(config);
-        }
+        setting.handler = configItem(this.handler, config);
         return setting;
     }
 }
