@@ -53,8 +53,13 @@ public class ActualHttpServer extends HttpServer {
         ActualHttpServer newServer = new ActualHttpServer(this.port);
         newServer.addSettings(settings);
         newServer.addSettings(thatServer.getSettings());
+
         newServer.response(this.handler);
+        newServer.matcher = configItem(this.matcher, this.configs);
+
         newServer.response(thatServer.handler);
+        newServer.matcher = configItem(thatServer.matcher, thatServer.configs);
+
         return newServer;
     }
 
