@@ -7,9 +7,11 @@ import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.Moco.context;
-import static com.github.dreamhead.moco.Moco.httpserver;
+import java.io.IOException;
+
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -48,7 +50,6 @@ public class ActualHttpServerTest extends AbstractMocoTest {
         });
     }
 
-
     @Test
     public void should_merge_http_server_with_any_handler_other_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
@@ -67,6 +68,34 @@ public class ActualHttpServerTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 helper.get(remoteUrl("/bar/anything"));
+            }
+        });
+    }
+
+    @Test
+    public void should_config_handler_correctly_while_merging() throws Exception {
+        httpServer = httpserver(12306, fileRoot("src/test/resources"));
+        httpServer.response(file("foo.response"));
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+
+        running(mergedServer, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_config_handler_correctly_other_side_while_merging() throws Exception {
+        httpServer = httpserver(12306, fileRoot("src/test/resources"));
+        httpServer.response(file("foo.response"));
+        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
+
+        running(mergedServer, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(root()), is("foo.response"));
             }
         });
     }

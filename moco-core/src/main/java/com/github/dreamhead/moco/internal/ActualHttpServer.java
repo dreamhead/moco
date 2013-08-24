@@ -54,8 +54,8 @@ public class ActualHttpServer extends HttpServer {
         newServer.addSettings(settings);
         newServer.addSettings(thatServer.getSettings());
 
-        newServer.anySetting(configItem(this.matcher, this.configs), this.handler);
-        newServer.anySetting(configItem(thatServer.matcher, thatServer.configs), thatServer.handler);
+        newServer.anySetting(configItem(this.matcher, this.configs), configItem(this.handler, this.configs));
+        newServer.anySetting(configItem(thatServer.matcher, thatServer.configs), configItem(thatServer.handler, thatServer.configs));
 
         return newServer;
     }
