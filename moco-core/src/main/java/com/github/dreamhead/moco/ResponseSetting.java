@@ -19,6 +19,10 @@ public abstract class ResponseSetting {
     }
 
     public void response(ResponseHandler handler) {
+        if (handler == null) {
+            return;
+        }
+
         if (this.handler != null) {
             throw new RuntimeException("handler has already been set");
         }
@@ -35,6 +39,6 @@ public abstract class ResponseSetting {
     }
 
     protected static RequestMatcher context(String context) {
-        return match(uri(context + "\\w*"));
+        return match(uri(context + ".*"));
     }
 }

@@ -54,13 +54,17 @@ public class ActualHttpServer extends HttpServer {
         newServer.addSettings(settings);
         newServer.addSettings(thatServer.getSettings());
 
-        newServer.response(this.handler);
-        newServer.matcher = configItem(this.matcher, this.configs);
-
-        newServer.response(thatServer.handler);
-        newServer.matcher = configItem(thatServer.matcher, thatServer.configs);
+        newServer.anySetting(configItem(this.matcher, this.configs), this.handler);
+        newServer.anySetting(configItem(thatServer.matcher, thatServer.configs), thatServer.handler);
 
         return newServer;
+    }
+
+    private void anySetting(RequestMatcher matcher, ResponseHandler handler) {
+        this.response(handler);
+        if (handler != null) {
+            this.matcher = matcher;
+        }
     }
 
     private void addSettings(List<BaseSetting> thatSettings) {
