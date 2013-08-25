@@ -11,6 +11,9 @@ Moco is an easy setup stub framework, mainly focusing on testing and integration
 ## Latest Release
 * __0.8.1__
 
+## User Survey
+[Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
+
 ## Why
 Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most of our development.
 
