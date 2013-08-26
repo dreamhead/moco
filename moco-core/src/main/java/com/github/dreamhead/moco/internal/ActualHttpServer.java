@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ActualHttpServer extends HttpServer {
         this.configs = configs;
     }
 
-    public List<BaseSetting> getSettings() {
+    public ImmutableList<BaseSetting> getSettings() {
         return from(settings).transform(config(configs)).toList();
     }
 
@@ -51,7 +52,7 @@ public class ActualHttpServer extends HttpServer {
 
     public HttpServer mergeHttpServer(ActualHttpServer thatServer) {
         ActualHttpServer newServer = new ActualHttpServer(this.port);
-        newServer.addSettings(settings);
+        newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
         newServer.anySetting(configItem(this.matcher, this.configs), configItem(this.handler, this.configs));
@@ -67,7 +68,7 @@ public class ActualHttpServer extends HttpServer {
         }
     }
 
-    private void addSettings(List<BaseSetting> thatSettings) {
+    private void addSettings(ImmutableList<BaseSetting> thatSettings) {
         for (BaseSetting thatSetting : thatSettings) {
             addSetting(thatSetting);
         }
