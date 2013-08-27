@@ -10,7 +10,11 @@ import com.github.dreamhead.moco.model.Response;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import io.netty.handler.codec.http.*;
+import com.google.common.collect.ImmutableList;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +23,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultFailover implements Failover {
     private static final Logger logger = LoggerFactory.getLogger(DefaultFailover.class);
@@ -43,22 +48,25 @@ public class DefaultFailover implements Failover {
     }
 
     private List<Session> prepareTargetSessions(Session targetSession) {
-        List<Session> sessions = restoreSessions(this.file);
+        ImmutableList<Session> sessions = restoreSessions(this.file);
         Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
         if (session.isPresent()) {
             session.get().setResponse(targetSession.getResponse());
         } else {
-            sessions.add(targetSession);
+            ImmutableList.Builder<Session> builder = ImmutableList.builder();
+            return builder.addAll(sessions).add(targetSession).build();
         }
+
         return sessions;
     }
 
-    private List<Session> restoreSessions(File file) {
+    private ImmutableList<Session> restoreSessions(File file) {
         try {
-            return mapper.readValue(file, factory.constructCollectionType(List.class, Session.class));
+            List<Session> sessions = mapper.readValue(file, factory.constructCollectionType(List.class, Session.class));
+            return copyOf(sessions);
         } catch (JsonMappingException jme) {
             logger.error("exception found", jme);
-            return newArrayList();
+            return of();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,7 +86,7 @@ public class DefaultFailover implements Failover {
 
     private Response failoverResponse(FullHttpRequest request) {
         final DefaultRequest dumpedRequest = MessageFactory.createRequest(request);
-        List<Session> sessions = restoreSessions(this.file);
+        ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
         if (session.isPresent()) {
             return session.get().getResponse();
