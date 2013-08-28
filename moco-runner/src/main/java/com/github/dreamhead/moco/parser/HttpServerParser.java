@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.model.*;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static com.google.common.collect.ImmutableList.copyOf;
 import static java.lang.String.format;
 
 public class HttpServerParser {
@@ -41,9 +43,10 @@ public class HttpServerParser {
         return createHttpServer(readSessions(is), port, configs);
     }
 
-    private List<SessionSetting> readSessions(InputStream is) {
+    private ImmutableList<SessionSetting> readSessions(InputStream is) {
         try {
-            return mapper.readValue(is, factory.constructCollectionType(List.class, SessionSetting.class));
+            List<SessionSetting> sessionSettings = mapper.readValue(is, factory.constructCollectionType(List.class, SessionSetting.class));
+            return copyOf(sessionSettings);
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
             throw new RuntimeException(format("Unrecognized field [ %s ], please check!", e.getUnrecognizedPropertyName()));
@@ -55,7 +58,7 @@ public class HttpServerParser {
         }
     }
 
-    private HttpServer createHttpServer(List<SessionSetting> sessionSettings, int port, MocoConfig... configs) {
+    private HttpServer createHttpServer(ImmutableList<SessionSetting> sessionSettings, int port, MocoConfig... configs) {
         HttpServer server = new ActualHttpServer(port, configs);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);

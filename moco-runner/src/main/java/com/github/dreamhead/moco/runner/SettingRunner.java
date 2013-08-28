@@ -7,12 +7,12 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
 
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetting;
 import static com.google.common.collect.FluentIterable.from;
@@ -20,7 +20,7 @@ import static com.google.common.collect.FluentIterable.from;
 public class SettingRunner implements Runner {
     private static final GlobalSettingParser settingParser = new GlobalSettingParser();
     private final int port;
-    private final List<GlobalSetting> globalSettings;
+    private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
     private JsonRunner jsonRunner;
     private final FluentIterable<File> files;
