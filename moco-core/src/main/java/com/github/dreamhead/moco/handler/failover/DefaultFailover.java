@@ -47,17 +47,16 @@ public class DefaultFailover implements Failover {
         }
     }
 
-    private List<Session> prepareTargetSessions(Session targetSession) {
+    private ImmutableList<Session> prepareTargetSessions(Session targetSession) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
         Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
         if (session.isPresent()) {
             session.get().setResponse(targetSession.getResponse());
-        } else {
-            ImmutableList.Builder<Session> builder = ImmutableList.builder();
-            return builder.addAll(sessions).add(targetSession).build();
+            return sessions;
         }
 
-        return sessions;
+        ImmutableList.Builder<Session> builder = ImmutableList.builder();
+        return builder.addAll(sessions).add(targetSession).build();
     }
 
     private ImmutableList<Session> restoreSessions(File file) {

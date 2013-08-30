@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.setting.BaseSetting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -8,12 +9,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
-import java.util.List;
-
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final EventBus eventBus = new EventBus();
 
-    private final List<BaseSetting> settings;
+    private final ImmutableList<BaseSetting> settings;
     private final BaseSetting anySetting;
 
     public MocoHandler(ActualHttpServer server) {

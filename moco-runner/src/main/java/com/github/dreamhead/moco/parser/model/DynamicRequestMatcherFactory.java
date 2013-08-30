@@ -7,12 +7,11 @@ import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -33,7 +32,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         return wrapRequestMatcher(request, createRequestMatchers(request));
     }
 
-    private Collection<RequestMatcher> createRequestMatchers(final RequestSetting request) {
+    private ImmutableList<RequestMatcher> createRequestMatchers(final RequestSetting request) {
         return from(getFields(RequestSetting.class)).filter(isValidField(request)).transform(fieldToRequestMatcher(request)).toList();
     }
 
@@ -94,7 +93,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
-        List<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethodForCompositeMatcher(name))).toList();
+        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethodForCompositeMatcher(name))).toList();
         return wrapRequestMatcher(null, matchers);
     }
 
@@ -148,7 +147,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
     }
 
-    private static RequestMatcher wrapRequestMatcher(RequestSetting request, Collection<RequestMatcher> matchers) {
+    private static RequestMatcher wrapRequestMatcher(RequestSetting request, ImmutableList<RequestMatcher> matchers) {
         switch (matchers.size()) {
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);

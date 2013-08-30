@@ -10,12 +10,12 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
@@ -62,7 +62,7 @@ public class ResponseSetting extends Dynamics {
         return getResponseHandler(handlers.toList());
     }
 
-    private ResponseHandler getResponseHandler(List<ResponseHandler> list) {
+    private ResponseHandler getResponseHandler(ImmutableList<ResponseHandler> list) {
         if (list.size() == 1) {
             return list.get(0);
         }
@@ -115,7 +115,7 @@ public class ResponseSetting extends Dynamics {
     }
 
     private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {
-        List<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name)).toList();
+        ImmutableList<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name)).toList();
         return getResponseHandler(handlers);
     }
 
