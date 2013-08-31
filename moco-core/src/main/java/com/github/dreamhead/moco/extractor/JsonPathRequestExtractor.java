@@ -19,9 +19,10 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 		return toStringArray(jsonPath.read(extractor.extract(request)));
 	}
 
-    @SuppressWarnings("unchecked")
+
 	private String[] toStringArray(Object content){
 		if(content instanceof List){
+            @SuppressWarnings("unchecked")
             List<String> texts = (List<String>) content;
             return texts.toArray(new String[texts.size()]);
 		}

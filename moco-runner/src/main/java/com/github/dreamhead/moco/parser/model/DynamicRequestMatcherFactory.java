@@ -108,7 +108,6 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         };
     }
 
-    @SuppressWarnings("unchecked")
     private RequestExtractor createRequestExtractor(Method method, String key) {
         try {
             return RequestExtractor.class.cast(method.invoke(null, key));
