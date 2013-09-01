@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 public class SequenceContentHandler extends AbstractContentResponseHandler {
     private final Resource[] resources;
@@ -35,7 +35,7 @@ public class SequenceContentHandler extends AbstractContentResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
-        FluentIterable<Resource> transformedResources = from(newArrayList(resources)).transform(applyConfig(config));
+        FluentIterable<Resource> transformedResources = from(copyOf(resources)).transform(applyConfig(config));
         return new SequenceContentHandler(transformedResources.toArray(Resource.class));
     }
 

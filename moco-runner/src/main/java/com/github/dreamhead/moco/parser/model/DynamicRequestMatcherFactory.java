@@ -151,7 +151,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);
             case 1:
-                return matchers.iterator().next();
+                return matchers.get(0);
             default:
                 return new AndRequestMatcher(matchers);
         }

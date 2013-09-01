@@ -8,7 +8,8 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
-import com.github.dreamhead.moco.resource.*;
+import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
@@ -64,11 +65,11 @@ public class Moco {
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
-        return new AndRequestMatcher(newArrayList(matchers));
+        return new AndRequestMatcher(copyOf(matchers));
     }
 
     public static RequestMatcher or(final RequestMatcher... matchers) {
-        return new OrRequestMatcher(newArrayList(matchers));
+        return new OrRequestMatcher(copyOf(matchers));
     }
 
     public static ContentResource text(final String text) {
@@ -152,7 +153,7 @@ public class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
-        return seq(from(newArrayList(contents)).transform(textToResource()).toArray(Resource.class));
+        return seq(from(copyOf(contents)).transform(textToResource()).toArray(Resource.class));
     }
 
     private static Function<String, Resource> textToResource() {
