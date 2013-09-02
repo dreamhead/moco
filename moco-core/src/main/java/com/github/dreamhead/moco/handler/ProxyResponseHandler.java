@@ -109,12 +109,16 @@ public class ProxyResponseHandler implements ResponseHandler {
             }
         }
 
-        remoteRequest.removeHeaders("Content-Length");
         return remoteRequest;
     }
 
     private boolean isRemoteHeader(Map.Entry<String, String> entry) {
-        return !"Host".equalsIgnoreCase(entry.getKey());
+        return !isHeader(entry, "Host") && !isHeader(entry, "Content-Length");
+
+    }
+
+    private boolean isHeader(Map.Entry<String, String> entry, String key) {
+        return key.equalsIgnoreCase(entry.getKey());
     }
 
     @Override
