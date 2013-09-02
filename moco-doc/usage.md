@@ -121,3 +121,9 @@ moco start -p 12306 -c foo.json
 ```
 
 It will download the latest moco automatically if you don't have locally.
+
+## Scala
+
+Scala fans can find Scala wrapper in
+
+https://github.com/nicholasren/moco-scala
