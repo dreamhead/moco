@@ -18,7 +18,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     public MocoHandler(ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
-        this.eventBus.register(new MocoEventListener());
+        this.eventBus.register(server.getMonitor());
     }
 
     @Override
