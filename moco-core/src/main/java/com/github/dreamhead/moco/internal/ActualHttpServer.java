@@ -53,10 +53,6 @@ public class ActualHttpServer extends HttpServer {
     }
 
     public Object getMonitor() {
-        if (this.monitor == null) {
-            return new MocoEventListener();
-        }
-
         return monitor;
     }
 
