@@ -59,7 +59,7 @@ public class HttpServerParser {
     }
 
     private HttpServer createHttpServer(ImmutableList<SessionSetting> sessionSettings, int port, MocoConfig... configs) {
-        HttpServer server = new ActualHttpServer(port, configs);
+        HttpServer server = ActualHttpServer.createLogServer(port, configs);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 

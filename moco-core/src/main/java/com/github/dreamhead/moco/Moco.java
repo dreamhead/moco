@@ -25,7 +25,7 @@ import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
-        return new ActualHttpServer(port, configs);
+        return ActualHttpServer.createSilientServer(port, configs);
     }
 
     public static MocoConfig context(final String context) {

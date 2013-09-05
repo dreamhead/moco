@@ -38,7 +38,7 @@ public class JsonRunner implements Runner {
     }
 
     private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, int port) {
-        HttpServer server = new ActualHttpServer(port);
+        HttpServer server = ActualHttpServer.createLogServer(port);
 
         for (RunnerSetting setting : settings) {
             HttpServer parsedServer = httpServerParser.parseServer(setting.getStream(), port, toConfigs(setting));

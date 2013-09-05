@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal;
+package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
@@ -9,8 +9,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MocoEventListener {
-    private static Logger logger = LoggerFactory.getLogger(MocoEventListener.class);
+public class MocoEventMonitor {
+    private static Logger logger = LoggerFactory.getLogger(MocoEventMonitor.class);
     private final Dumper<FullHttpRequest> requestDumper = new HttpRequestDumper();
     private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
 

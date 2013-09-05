@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.monitor.MocoEventMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -19,11 +20,7 @@ public class ActualHttpServer extends HttpServer {
     private RequestMatcher matcher = anyRequest();
     private final Object monitor;
 
-    public ActualHttpServer(int port, MocoConfig... configs) {
-        this(port, new MocoEventListener(), configs);
-    }
-
-    public ActualHttpServer(int port, Object monitor, MocoConfig... configs) {
+    private ActualHttpServer(int port, Object monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -61,7 +58,7 @@ public class ActualHttpServer extends HttpServer {
     }
 
     public HttpServer mergeHttpServer(ActualHttpServer thatServer) {
-        ActualHttpServer newServer = new ActualHttpServer(this.port);
+        ActualHttpServer newServer = createLogServer(this.port);
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
@@ -107,5 +104,17 @@ public class ActualHttpServer extends HttpServer {
                 return this;
             }
         };
+    }
+
+    public static ActualHttpServer createHttpServerWithMonitor(int port, Object monitor, MocoConfig... configs) {
+        return new ActualHttpServer(port, monitor, configs);
+    }
+
+    public static ActualHttpServer createLogServer(int port, MocoConfig... configs) {
+        return new ActualHttpServer(port, new MocoEventMonitor(), configs);
+    }
+
+    public static ActualHttpServer createSilientServer(int port, MocoConfig... configs) {
+        return new ActualHttpServer(port, new Object(), configs);
     }
 }
