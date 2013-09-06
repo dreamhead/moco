@@ -114,7 +114,7 @@ public class ActualHttpServer extends HttpServer {
         return new ActualHttpServer(port, new MocoEventMonitor(), configs);
     }
 
-    public static ActualHttpServer createSilientServer(int port, MocoConfig... configs) {
+    public static ActualHttpServer createSilentServer(int port, MocoConfig... configs) {
         return new ActualHttpServer(port, new Object(), configs);
     }
 }
