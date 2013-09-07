@@ -19,9 +19,9 @@ public class ActualHttpServer extends HttpServer {
     private final MocoConfig[] configs;
     private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
-    private final Object monitor;
+    private final MocoEventMonitor monitor;
 
-    private ActualHttpServer(int port, Object monitor, MocoConfig... configs) {
+    private ActualHttpServer(int port, MocoEventMonitor monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -50,7 +50,7 @@ public class ActualHttpServer extends HttpServer {
         return port;
     }
 
-    public Object getMonitor() {
+    public MocoEventMonitor getMonitor() {
         return monitor;
     }
 
