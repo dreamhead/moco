@@ -1,31 +1,30 @@
 package com.github.dreamhead.moco.monitor;
 
-import com.github.dreamhead.moco.dumper.Dumper;
-import com.github.dreamhead.moco.dumper.HttpRequestDumper;
-import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.google.common.eventbus.Subscribe;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class MocoEventMonitor {
-    private static Logger logger = LoggerFactory.getLogger(MocoEventMonitor.class);
-    private final Dumper<FullHttpRequest> requestDumper = new HttpRequestDumper();
-    private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
+public interface MocoEventMonitor {
+    @Subscribe
+    void onMessageArrived(FullHttpRequest request);
 
     @Subscribe
-    public void onMessageArrived(FullHttpRequest request) {
-        logger.info("Request received:\n\n{}\n", requestDumper.dump(request));
-    }
+    void onException(Exception e);
 
     @Subscribe
-    public void onException(Exception e) {
-        logger.error("Exception thrown", e);
-    }
+    void onMessageLeave(FullHttpResponse response);
 
-    @Subscribe
-    public void onMessageLeave(FullHttpResponse response) {
-        logger.info("Response return:\n\n{}\n", responseDumper.dump(response));
-    }
+    MocoEventMonitor NO_OP_MONITOR = new MocoEventMonitor() {
+        @Override
+        public void onMessageArrived(FullHttpRequest request) {
+        }
+
+        @Override
+        public void onException(Exception e) {
+        }
+
+        @Override
+        public void onMessageLeave(FullHttpResponse response) {
+        }
+    };
 }

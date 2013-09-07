@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.monitor.MocoEventMonitor;
+import com.github.dreamhead.moco.monitor.Slf4jMocoEventMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -106,15 +107,15 @@ public class ActualHttpServer extends HttpServer {
         };
     }
 
-    public static ActualHttpServer createHttpServerWithMonitor(int port, Object monitor, MocoConfig... configs) {
+    public static ActualHttpServer createHttpServerWithMonitor(int port, MocoEventMonitor monitor, MocoConfig... configs) {
         return new ActualHttpServer(port, monitor, configs);
     }
 
     public static ActualHttpServer createLogServer(int port, MocoConfig... configs) {
-        return new ActualHttpServer(port, new MocoEventMonitor(), configs);
+        return createHttpServerWithMonitor(port, new Slf4jMocoEventMonitor(), configs);
     }
 
     public static ActualHttpServer createSilentServer(int port, MocoConfig... configs) {
-        return new ActualHttpServer(port, new Object(), configs);
+        return createHttpServerWithMonitor(port, MocoEventMonitor.NO_OP_MONITOR, configs);
     }
 }
