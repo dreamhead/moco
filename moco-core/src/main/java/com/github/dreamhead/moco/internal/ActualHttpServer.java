@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
@@ -31,15 +32,6 @@ public class ActualHttpServer extends HttpServer {
         return from(settings).transform(config(configs)).toList();
     }
 
-    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
-        return new Function<BaseSetting, BaseSetting>() {
-            @Override
-            public BaseSetting apply(BaseSetting setting) {
-                return configItem(setting, configs);
-            }
-        };
-    }
-
     public BaseSetting getAnySetting() {
         BaseSetting setting = new BaseSetting(configItem(this.matcher, configs));
         setting.response(configItem(this.handler, configs));
@@ -52,6 +44,19 @@ public class ActualHttpServer extends HttpServer {
 
     public MocoMonitor getMonitor() {
         return monitor;
+    }
+
+    public ImmutableList<MocoEventTrigger> getEventTriggers() {
+        return copyOf(this.eventTrigger);
+    }
+
+    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
+        return new Function<BaseSetting, BaseSetting>() {
+            @Override
+            public BaseSetting apply(BaseSetting setting) {
+                return configItem(setting, configs);
+            }
+        };
     }
 
     private void addSetting(final BaseSetting setting) {

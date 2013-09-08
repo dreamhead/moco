@@ -4,23 +4,27 @@ import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.util.List;
+
 import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
     protected ResponseHandler handler;
+    protected List<MocoEventTrigger> eventTrigger = newArrayList();
 
-    public void response(String content) {
-        this.response(text(content));
+    public ResponseSetting response(String content) {
+        return this.response(text(content));
     }
 
-    public void response(Resource resource) {
-        this.response(with(resource));
+    public ResponseSetting response(Resource resource) {
+        return this.response(with(resource));
     }
 
-    public void response(ResponseHandler handler) {
+    public ResponseSetting response(ResponseHandler handler) {
         if (handler == null) {
-            return;
+            return this;
         }
 
         if (this.handler != null) {
@@ -28,6 +32,7 @@ public abstract class ResponseSetting {
         }
 
         this.handler = handler;
+        return this;
     }
 
     public void response(ResponseHandler... handlers) {
@@ -36,6 +41,11 @@ public abstract class ResponseSetting {
 
     public void redirectTo(String url) {
         this.response(status(HttpResponseStatus.FOUND.code()), header("Location", url));
+    }
+
+    public ResponseSetting on(MocoEventTrigger trigger) {
+        this.eventTrigger.add(trigger);
+        return this;
     }
 
     protected static RequestMatcher context(String context) {

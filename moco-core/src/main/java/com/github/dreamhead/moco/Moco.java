@@ -209,6 +209,10 @@ public class Moco {
         return new DefaultFailover(new File(file));
     }
 
+    public static MocoEventTrigger complete(MocoEventAction action) {
+        return new MocoEventTrigger(MocoEvent.COMPLETE, action);
+    }
+
     private static URL toUrl(String url) {
         try {
             return new URL(checkNotNull(url, "Null url is not allowed"));
