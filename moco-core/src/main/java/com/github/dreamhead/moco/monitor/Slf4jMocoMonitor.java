@@ -8,8 +8,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Slf4jMocoEventMonitor implements MocoEventMonitor {
-    private static Logger logger = LoggerFactory.getLogger(Slf4jMocoEventMonitor.class);
+public class Slf4jMocoMonitor implements MocoMonitor {
+    private static Logger logger = LoggerFactory.getLogger(Slf4jMocoMonitor.class);
     private final Dumper<FullHttpRequest> requestDumper = new HttpRequestDumper();
     private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
 

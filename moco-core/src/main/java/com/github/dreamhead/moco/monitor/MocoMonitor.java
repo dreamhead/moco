@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-public interface MocoEventMonitor {
+public interface MocoMonitor {
     @Subscribe
     void onMessageArrived(FullHttpRequest request);
 
@@ -14,7 +14,7 @@ public interface MocoEventMonitor {
     @Subscribe
     void onMessageLeave(FullHttpResponse response);
 
-    MocoEventMonitor NO_OP_MONITOR = new MocoEventMonitor() {
+    MocoMonitor NO_OP_MONITOR = new MocoMonitor() {
         @Override
         public void onMessageArrived(FullHttpRequest request) {
         }

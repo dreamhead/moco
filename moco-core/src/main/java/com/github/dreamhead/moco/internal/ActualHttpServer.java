@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.monitor.MocoEventMonitor;
-import com.github.dreamhead.moco.monitor.Slf4jMocoEventMonitor;
+import com.github.dreamhead.moco.monitor.MocoMonitor;
+import com.github.dreamhead.moco.monitor.Slf4jMocoMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -19,9 +19,9 @@ public class ActualHttpServer extends HttpServer {
     private final MocoConfig[] configs;
     private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
-    private final MocoEventMonitor monitor;
+    private final MocoMonitor monitor;
 
-    private ActualHttpServer(int port, MocoEventMonitor monitor, MocoConfig... configs) {
+    private ActualHttpServer(int port, MocoMonitor monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -50,7 +50,7 @@ public class ActualHttpServer extends HttpServer {
         return port;
     }
 
-    public MocoEventMonitor getMonitor() {
+    public MocoMonitor getMonitor() {
         return monitor;
     }
 
@@ -107,15 +107,15 @@ public class ActualHttpServer extends HttpServer {
         };
     }
 
-    public static ActualHttpServer createHttpServerWithMonitor(int port, MocoEventMonitor monitor, MocoConfig... configs) {
+    public static ActualHttpServer createHttpServerWithMonitor(int port, MocoMonitor monitor, MocoConfig... configs) {
         return new ActualHttpServer(port, monitor, configs);
     }
 
     public static ActualHttpServer createLogServer(int port, MocoConfig... configs) {
-        return createHttpServerWithMonitor(port, new Slf4jMocoEventMonitor(), configs);
+        return createHttpServerWithMonitor(port, new Slf4jMocoMonitor(), configs);
     }
 
     public static ActualHttpServer createSilentServer(int port, MocoConfig... configs) {
-        return createHttpServerWithMonitor(port, MocoEventMonitor.NO_OP_MONITOR, configs);
+        return createHttpServerWithMonitor(port, MocoMonitor.NO_OP_MONITOR, configs);
     }
 }
