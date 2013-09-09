@@ -12,7 +12,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ResponseSetting {
     protected ResponseHandler handler;
-    protected List<MocoEventTrigger> eventTrigger = newArrayList();
+    protected List<MocoEventTrigger> eventTriggers = newArrayList();
 
     public ResponseSetting response(String content) {
         return this.response(text(content));
@@ -44,7 +44,7 @@ public abstract class ResponseSetting {
     }
 
     public ResponseSetting on(MocoEventTrigger trigger) {
-        this.eventTrigger.add(trigger);
+        this.eventTriggers.add(trigger);
         return this;
     }
 

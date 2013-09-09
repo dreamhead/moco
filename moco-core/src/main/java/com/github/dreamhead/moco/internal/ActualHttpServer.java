@@ -12,7 +12,6 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
@@ -35,6 +34,9 @@ public class ActualHttpServer extends HttpServer {
     public BaseSetting getAnySetting() {
         BaseSetting setting = new BaseSetting(configItem(this.matcher, configs));
         setting.response(configItem(this.handler, configs));
+        for (MocoEventTrigger trigger : eventTriggers) {
+            setting.on(trigger);
+        }
         return setting;
     }
 
@@ -44,10 +46,6 @@ public class ActualHttpServer extends HttpServer {
 
     public MocoMonitor getMonitor() {
         return monitor;
-    }
-
-    public ImmutableList<MocoEventTrigger> getEventTriggers() {
-        return copyOf(this.eventTrigger);
     }
 
     private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {

@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.MocoEvent;
-import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
@@ -16,29 +14,17 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private final ImmutableList<BaseSetting> settings;
     private final BaseSetting anySetting;
-    private final ImmutableList<MocoEventTrigger> eventTriggers;
 
     public MocoHandler(ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
         this.eventBus.register(server.getMonitor());
-        this.eventTriggers = server.getEventTriggers();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
         eventBus.post(message);
         httpRequestReceived(ctx, message);
-
-        fireCompleteEvent();
-    }
-
-    private void fireCompleteEvent() {
-        for (MocoEventTrigger eventTrigger : eventTriggers) {
-            if (eventTrigger.isFor(MocoEvent.COMPLETE)) {
-                eventTrigger.fireEvent();
-            }
-        }
     }
 
     private void httpRequestReceived(final ChannelHandlerContext ctx, FullHttpRequest request) {

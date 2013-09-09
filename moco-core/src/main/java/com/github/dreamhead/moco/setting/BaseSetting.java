@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.setting;
 
-import com.github.dreamhead.moco.ConfigApplier;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.Setting;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -22,6 +19,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
 
     public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         this.handler.writeToResponse(request, response);
+        this.fireCompleteEvent();
     }
 
     public BaseSetting apply(final MocoConfig config) {
@@ -33,5 +31,13 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         BaseSetting setting = new BaseSetting(appliedMatcher);
         setting.handler = configItem(this.handler, config);
         return setting;
+    }
+
+    public void fireCompleteEvent() {
+        for (MocoEventTrigger eventTrigger : eventTriggers) {
+            if (eventTrigger.isFor(MocoEvent.COMPLETE)) {
+                eventTrigger.fireEvent();
+            }
+        }
     }
 }
