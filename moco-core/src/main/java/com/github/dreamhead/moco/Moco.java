@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.config.MocoContextConfig;
+import com.github.dreamhead.moco.action.MocoRequestAction;import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
@@ -211,6 +211,10 @@ public class Moco {
 
     public static MocoEventTrigger complete(MocoEventAction action) {
         return new MocoEventTrigger(MocoEvent.COMPLETE, action);
+    }
+
+    public static MocoEventAction request(String url) {
+        return new MocoRequestAction(url);
     }
 
     private static URL toUrl(String url) {
