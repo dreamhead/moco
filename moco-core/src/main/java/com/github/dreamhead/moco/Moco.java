@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
+import io.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -215,6 +216,10 @@ public class Moco {
 
     public static MocoEventAction request(String url) {
         return new MocoRequestAction(url);
+    }
+
+    public static MocoEventAction get(String url) {
+        return request(url);
     }
 
     private static URL toUrl(String url) {
