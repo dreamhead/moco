@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.action.MocoRequestAction;import com.github.dreamhead.moco.config.MocoContextConfig;
+import com.github.dreamhead.moco.action.MocoRequestAction;
+import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
@@ -11,7 +12,6 @@ import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import io.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -215,11 +215,11 @@ public class Moco {
     }
 
     public static MocoEventAction request(String url) {
-        return new MocoRequestAction(url);
+        return get(url);
     }
 
     public static MocoEventAction get(String url) {
-        return request(url);
+        return new MocoRequestAction(url, "GET");
     }
 
     private static URL toUrl(String url) {
