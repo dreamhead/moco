@@ -48,6 +48,10 @@ public class DefaultFailover implements Failover {
     }
 
     private ImmutableList<Session> prepareTargetSessions(Session targetSession) {
+        if (file.length() == 0) {
+            return of(targetSession);
+        }
+
         ImmutableList<Session> sessions = restoreSessions(this.file);
         Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
         if (session.isPresent()) {
