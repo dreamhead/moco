@@ -10,15 +10,16 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.handler.ResponseStatusEvaluators.numberOfRequestsEvaluator;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class CountingResponseHandlerTest extends AbstractMocoTest {
+public class ConditionalResponseStatusHandlerTest extends AbstractMocoTest {
 
     @Test
     public void should_response_with_default_http_statuses() throws Exception {
         final int numberOfRequestsBeforeSuccessfulStatus = 5;
-        server.response(new CountingResponseHandler(numberOfRequestsBeforeSuccessfulStatus));
+        server.response(new ConditionalResponseStatusHandler(numberOfRequestsEvaluator(numberOfRequestsBeforeSuccessfulStatus)));
 
         running(server, new Runnable() {
             @Override
@@ -35,9 +36,9 @@ public class CountingResponseHandlerTest extends AbstractMocoTest {
         final HttpResponseStatus expectedSuccessStatus = HttpResponseStatus.ACCEPTED;
         final HttpResponseStatus expectedFailureStatus = HttpResponseStatus.REQUEST_TIMEOUT;
 
-        CountingResponseHandler handlerUnderTest = new CountingResponseHandler(numberOfRequestsBeforeSuccessfulStatus).
-                withSuccessStatus(expectedSuccessStatus).
-                withFailureStatus(expectedFailureStatus);
+        ConditionalResponseStatusHandler handlerUnderTest = new ConditionalResponseStatusHandler(numberOfRequestsEvaluator(numberOfRequestsBeforeSuccessfulStatus))
+                .withSuccessStatus(expectedSuccessStatus)
+                .withFailureStatus(expectedFailureStatus);
 
         server.response(handlerUnderTest);
 
@@ -51,7 +52,7 @@ public class CountingResponseHandlerTest extends AbstractMocoTest {
     }
 
     private void triggerRequestAndExpectDefaultSuccessStatus() throws IOException {
-        triggerRequestAndExpectSuccessStatus(CountingResponseHandler.successResponseStatus);
+        triggerRequestAndExpectSuccessStatus(ConditionalResponseStatusHandler.DEFAULT_SUCCESS_STATUS);
     }
 
     private void triggerRequestAndExpectSuccessStatus(HttpResponseStatus expectedSuccessStatus) throws IOException {
@@ -60,13 +61,13 @@ public class CountingResponseHandlerTest extends AbstractMocoTest {
     }
 
     private void triggerRequestAndExpectDefaultFailureStatus(int numberOfRequestsBeforeSuccessfulStatus) throws IOException {
-        triggerRequestAndExpectFailureStatus(numberOfRequestsBeforeSuccessfulStatus, CountingResponseHandler.failureResponseStatus);
+        triggerRequestAndExpectFailureStatus(numberOfRequestsBeforeSuccessfulStatus, ConditionalResponseStatusHandler.DEFAULT_FAILURE_STATUS);
     }
 
-    private void triggerRequestAndExpectFailureStatus(int numberOfRequestsBeforeSuccessfulStatus, HttpResponseStatus httpResponseStatus) throws IOException {
+    private void triggerRequestAndExpectFailureStatus(int numberOfRequestsBeforeSuccessfulStatus, HttpResponseStatus expectedResponseStatus) throws IOException {
         for (int i = 0; i < numberOfRequestsBeforeSuccessfulStatus; i++) {
             int actualResponseStatus = Request.Post("http://localhost:" + RemoteTestUtils.port()).execute().returnResponse().getStatusLine().getStatusCode();
-            assertThat(actualResponseStatus, is(CountingResponseHandler.failureResponseStatus.code()));
+            assertThat(actualResponseStatus, is(expectedResponseStatus.code()));
         }
     }
 }
