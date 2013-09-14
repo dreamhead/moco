@@ -219,7 +219,11 @@ public class Moco {
     }
 
     public static MocoEventAction get(String url) {
-        return new MocoRequestAction(url, "GET");
+        return new MocoRequestAction(url, "GET", null);
+    }
+
+    public static MocoEventAction post(String url, ContentResource content) {
+        return new MocoRequestAction(url, "POST", content);
     }
 
     private static URL toUrl(String url) {
