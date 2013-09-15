@@ -4,12 +4,12 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class MocoRequestAction implements MocoEventAction {
 
     @Override
     public void execute() {
-        HttpClient client = new DefaultHttpClient();
+        CloseableHttpClient client = HttpClients.createDefault();
         try {
             HttpRequestBase request = createRequest(url, method);
             if (request instanceof HttpEntityEnclosingRequest) {

@@ -9,13 +9,11 @@ import io.netty.handler.codec.http.*;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
-import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +40,12 @@ public class ProxyResponseHandler implements ResponseHandler {
         try {
             URL url = remoteUrl(request);
 
-            HttpClient httpclient = new DefaultHttpClient(createParams(request));
-
+            CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpRequestBase remoteRequest = createRemoteRequest(request, url);
+            RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
+            remoteRequest.setConfig(config);
+            remoteRequest.setProtocolVersion(createVersion(request));
+
 
             long contentLength = HttpHeaders.getContentLength(request, -1);
             if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
@@ -57,13 +58,6 @@ public class ProxyResponseHandler implements ResponseHandler {
             logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
         }
-    }
-
-    private BasicHttpParams createParams(HttpRequest request) {
-        BasicHttpParams params = new BasicHttpParams();
-        params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, createVersion(request));
-        params.setParameter(ClientPNames.HANDLE_REDIRECTS, false);
-        return params;
     }
 
     private org.apache.http.HttpVersion createVersion(HttpRequest request) {
