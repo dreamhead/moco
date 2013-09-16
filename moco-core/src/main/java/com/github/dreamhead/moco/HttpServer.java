@@ -38,6 +38,34 @@ public abstract class HttpServer extends ResponseSetting {
         return requestByHttpMethod(HttpMethod.DELETE, matcher);
     }
 
+    public Setting put(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.PUT.name())), matcher));
+    }
+
+    public Setting trace(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.TRACE.name())), matcher));
+    }
+
+    public Setting connect(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.CONNECT.name())), matcher));
+    }
+
+    public Setting patch(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.PATCH.name())), matcher));
+    }
+
+    public Setting delete(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.DELETE.name())), matcher));
+    }
+
+    public Setting head(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.HEAD.name())), matcher));
+    }
+
+    public Setting options(RequestMatcher matcher) {
+        return request(and(by(method(HttpMethod.OPTIONS.name())), matcher));
+    }
+
     public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(dir);
         this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
