@@ -192,18 +192,6 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_match_get_method() throws Exception {
-        server.get(by(uri("/foo"))).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
-    }
-
-    @Test
     public void should_match_get_method_by_method_api() throws Exception {
         server.request(and(by(uri("/foo")), by(method("get")))).response("bar");
 
@@ -249,18 +237,6 @@ public class MocoTest extends AbstractMocoTest {
             public void run() throws IOException {
                 String response = Request.Delete(remoteUrl("/foo")).execute().returnContent().toString();
                 assertThat(response, is("bar"));
-            }
-        });
-    }
-
-    @Test
-    public void should_match_post_method() throws Exception {
-        server.post(by("foo")).response("bar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), "foo"), is("bar"));
             }
         });
     }
