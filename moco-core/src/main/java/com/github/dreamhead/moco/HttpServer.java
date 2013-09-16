@@ -23,43 +23,27 @@ public abstract class HttpServer extends ResponseSetting {
     }
 
     public Setting get(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.GET.name())), matcher));
+        return requestByHttpMethod(HttpMethod.GET, matcher);
     }
 
     public Setting post(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.POST.name())), matcher));
+        return requestByHttpMethod(HttpMethod.POST, matcher);
     }
 
     public Setting put(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.PUT.name())), matcher));
-    }
-
-    public Setting trace(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.TRACE.name())), matcher));
-    }
-
-    public Setting connect(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.CONNECT.name())), matcher));
-    }
-
-    public Setting patch(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.PATCH.name())), matcher));
+        return requestByHttpMethod(HttpMethod.PUT, matcher);
     }
 
     public Setting delete(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.DELETE.name())), matcher));
-    }
-
-    public Setting head(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.HEAD.name())), matcher));
-    }
-
-    public Setting options(RequestMatcher matcher) {
-        return request(and(by(method(HttpMethod.OPTIONS.name())), matcher));
+        return requestByHttpMethod(HttpMethod.DELETE, matcher);
     }
 
     public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(dir);
         this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
+    }
+
+    private Setting requestByHttpMethod(HttpMethod method, RequestMatcher matcher) {
+        return request(and(by(method(method.name())), matcher));
     }
 }
