@@ -139,10 +139,8 @@ public class MocoTemplateTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                int statusBeforeLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusBeforeLogin, is(302));
-                int statusAfterLogin = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusAfterLogin, is(200));
+                assertThat(helper.getForStatus(root()), is(302));
+                assertThat(helper.getForStatus(root()), is(200));
             }
         });
     }

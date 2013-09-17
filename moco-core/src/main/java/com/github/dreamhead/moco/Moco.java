@@ -154,20 +154,33 @@ public class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
-        return seq(from(copyOf(contents)).transform(textToResource()).toArray(Resource.class));
+        return seq(from(copyOf(contents)).transform(textToResource()).toArray(ResponseHandler.class));
     }
 
-    private static Function<String, Resource> textToResource() {
-        return new Function<String, Resource>() {
+    private static Function<String, ResponseHandler> textToResource() {
+        return new Function<String, ResponseHandler>() {
             @Override
-            public Resource apply(String content) {
-                return text(content);
+            public ResponseHandler apply(String content) {
+                return with(text(content));
             }
         };
     }
 
     public static ResponseHandler seq(final Resource... contents) {
-        return new SequenceContentHandler(contents);
+        return seq(from(copyOf(contents)).transform(resourceToResource()).toArray(ResponseHandler.class));
+    }
+
+    private static Function<Resource, ResponseHandler> resourceToResource() {
+        return new Function<Resource, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(Resource content) {
+                return with(content);
+            }
+        };
+    }
+
+    public static ResponseHandler seq(final ResponseHandler... handlers) {
+        return new SequenceContentHandler(handlers);
     }
 
     public static ContentResource file(final String filename) {
