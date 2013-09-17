@@ -282,6 +282,21 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_return_response_one_by_one() throws Exception {
+        server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
+            }
+        });
+    }
+
+
+    @Test
     public void should_match() throws Exception {
         server.request(match(uri("/\\w*/foo"))).response(text("bar"));
 
@@ -380,8 +395,7 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusCode, is(200));
+                assertThat(helper.getForStatus(root()), is(200));
             }
         });
     }
@@ -425,7 +439,7 @@ public class MocoTest extends AbstractMocoTest {
             public void run() throws IOException {
                 long start = System.currentTimeMillis();
                 helper.get(root());
-                int code = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
+                int code = helper.getForStatus(root());
                 long stop = System.currentTimeMillis();
                 long gap = stop - start + delta;
                 assertThat(gap, greaterThan(latency));

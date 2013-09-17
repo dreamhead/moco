@@ -32,8 +32,7 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusCode, is(200));
+                assertThat(helper.getForStatus(root()), is(200));
             }
         });
     }
@@ -269,8 +268,7 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                int statusCode = Request.Get(root()).execute().returnResponse().getStatusLine().getStatusCode();
-                assertThat(statusCode, is(200));
+                assertThat(helper.getForStatus(root()), is(200));
             }
         });
     }

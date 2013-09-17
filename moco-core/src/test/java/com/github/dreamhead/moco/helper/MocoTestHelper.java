@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.helper;
 
 import com.google.common.io.Resources;
+import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 
@@ -30,5 +31,10 @@ public class MocoTestHelper {
         Content content = Request.Post(uri).bodyByteArray(toByteArray(is))
                 .execute().returnContent();
         return content.asString();
+    }
+
+    public int getForStatus(String uri) throws IOException {
+        StatusLine statusLine = Request.Get(uri).execute().returnResponse().getStatusLine();
+        return statusLine.getStatusCode();
     }
 }

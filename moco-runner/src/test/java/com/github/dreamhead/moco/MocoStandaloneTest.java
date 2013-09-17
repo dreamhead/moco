@@ -141,8 +141,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_expected_response_status_code() throws IOException {
         runWithConfiguration("foo.json");
-        int statusCode = Request.Get(remoteUrl("/status")).execute().returnResponse().getStatusLine().getStatusCode();
-        assertThat(statusCode, is(200));
+        assertThat(helper.getForStatus(remoteUrl("/status")), is(200));
     }
 
     @Test
@@ -183,7 +182,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
 
         runWithConfiguration("foo.json");
         long start = System.currentTimeMillis();
-        int code = Request.Get(remoteUrl("/latency")).execute().returnResponse().getStatusLine().getStatusCode();
+        int code = helper.getForStatus(remoteUrl("/latency"));
         long stop = System.currentTimeMillis();
         long gap = stop - start + delta;
         assertThat(gap, greaterThan(latency));
