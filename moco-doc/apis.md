@@ -721,6 +721,11 @@ We can do that by
 server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
 
+The other response settings are able to be set as well.
+```java
+server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
+```
+
 ## Mount
 
 Moco allows us to mount a directory to uri.

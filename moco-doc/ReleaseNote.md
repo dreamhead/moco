@@ -1,5 +1,6 @@
 # Release 0.9
 * Turned off log for API by default
+* seq API with response handler
 
 # Release 0.8.1 (1-August-2013)
 * Upgrade to Netty 4
