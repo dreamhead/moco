@@ -5,6 +5,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 public class MocoServer {
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
@@ -15,7 +18,7 @@ public class MocoServer {
         workerGroup = new NioEventLoopGroup();
     }
 
-    public void start(final int port, ChannelHandler pipelineFactory) {
+    public int start(final int port, ChannelHandler pipelineFactory) {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -25,6 +28,9 @@ public class MocoServer {
 
         try {
             future = bootstrap.bind(port).sync();
+            SocketAddress socketAddress = future.channel().localAddress();
+            InetSocketAddress address = (InetSocketAddress)socketAddress;
+            return address.getPort();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

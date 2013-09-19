@@ -15,7 +15,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
-    private final int port;
+    private int port;
     private final MocoConfig[] configs;
     private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
@@ -86,6 +86,15 @@ public class ActualHttpServer extends HttpServer {
     }
 
     @Override
+    public int port() {
+        if (port <= 0) {
+            throw new IllegalStateException("unbound port should not be returned");
+        }
+
+        return this.port;
+    }
+
+    @Override
     protected Setting onRequestAttached(RequestMatcher matcher) {
         BaseSetting baseSetting = new BaseSetting(matcher);
         addSetting(baseSetting);
@@ -120,5 +129,9 @@ public class ActualHttpServer extends HttpServer {
 
     public static ActualHttpServer createSilentServer(int port, MocoConfig... configs) {
         return createHttpServerWithMonitor(port, MocoMonitor.NO_OP_MONITOR, configs);
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

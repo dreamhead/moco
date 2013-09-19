@@ -12,6 +12,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpServer extends ResponseSetting {
+    public abstract int port();
     protected abstract Setting onRequestAttached(RequestMatcher matcher);
 
     public Setting request(RequestMatcher matcher) {
