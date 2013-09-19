@@ -29,6 +29,10 @@ public class Moco {
         return ActualHttpServer.createSilentServer(port, configs);
     }
 
+    public static HttpServer httpserver(final MocoConfig... configs) {
+        return ActualHttpServer.createSilentServer(0, configs);
+    }
+
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNull(context, "context should not be null"));
     }

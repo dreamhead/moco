@@ -16,7 +16,7 @@ public class MocoHttpServer {
     }
 
     public void start() {
-        server.start(serverSetting.getPort(), new ChannelInitializer<SocketChannel>() {
+        int port = server.start(serverSetting.getPort(), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
@@ -26,6 +26,7 @@ public class MocoHttpServer {
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
         });
+        serverSetting.setPort(port);
     }
 
     public void stop() {
