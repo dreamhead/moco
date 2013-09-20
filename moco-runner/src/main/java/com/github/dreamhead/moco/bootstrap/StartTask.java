@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.bootstrap;
 import com.github.dreamhead.moco.runner.*;
 
 import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
+import static com.google.common.base.Optional.of;
 
 public class StartTask implements BootstrapTask {
     private final int defaultShutdownPort;
@@ -33,6 +34,6 @@ public class StartTask implements BootstrapTask {
     }
 
     private boolean conflictWithDefaultShutdownPort(StartArgs startArgs, int defaultShutdownPort) {
-        return startArgs.getPort() == defaultShutdownPort && !startArgs.hasShutdonwPort();
+        return startArgs.getPort().equals(of(defaultShutdownPort)) && !startArgs.hasShutdonwPort();
     }
 }

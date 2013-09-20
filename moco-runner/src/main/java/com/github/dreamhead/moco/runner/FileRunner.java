@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.google.common.base.Optional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,12 +12,12 @@ import static com.google.common.collect.ImmutableList.of;
 
 public abstract class FileRunner implements Runner {
     protected final File file;
-    protected final int port;
+    protected final Optional<Integer> port;
     private Runner runner;
 
     protected abstract Runner createRunner();
 
-    protected FileRunner(File file, int port) {
+    protected FileRunner(File file, Optional<Integer> port) {
         this.file = file;
         this.port = port;
         this.runner = createRunner();
@@ -42,7 +43,7 @@ public abstract class FileRunner implements Runner {
         this.runner.stop();
     }
 
-    public static FileRunner createConfigurationFileRunner(final File file, final int port) {
+    public static FileRunner createConfigurationFileRunner(final File file, final Optional<Integer> port) {
         return new FileRunner(file, port) {
             @Override
             protected Runner createRunner() {

@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
@@ -10,7 +11,7 @@ public class StartArgsTest {
     @Test
     public void should_parse_start_arguments() {
         StartArgs args = parse("start", "-p", "12306", "-c", "foo.json");
-        assertThat(args.getPort(), is(12306));
+        assertThat(args.getPort().get(), is(12306));
         assertThat(args.getConfigurationFile().get(), is("foo.json"));
     }
 
@@ -44,5 +45,12 @@ public class StartArgsTest {
     @Test(expected = ParseArgException.class)
     public void should_not_set_environment_with_config() {
         parse("start", "-p", "12306", "-c", "foo.json", "-e", "foo");
+    }
+
+    @Test
+    public void should_parse_without_port() {
+        StartArgs args = parse("start", "-c", "foo.json");
+        assertThat(args.getPort(), is(Optional.<Integer>absent()));
+        assertThat(args.getConfigurationFile().get(), is("foo.json"));
     }
 }

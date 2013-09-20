@@ -5,23 +5,25 @@ import com.github.dreamhead.moco.monitor.MocoMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMocoMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
+import static com.google.common.base.Optional.of;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
-    private int port;
+    private Optional<Integer> port;
     private final MocoConfig[] configs;
     private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
     private final MocoMonitor monitor;
 
-    private ActualHttpServer(int port, MocoMonitor monitor, MocoConfig... configs) {
+    private ActualHttpServer(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -40,7 +42,7 @@ public class ActualHttpServer extends HttpServer {
         return setting;
     }
 
-    public int getPort() {
+    public Optional<Integer> getPort() {
         return port;
     }
 
@@ -87,11 +89,11 @@ public class ActualHttpServer extends HttpServer {
 
     @Override
     public int port() {
-        if (port <= 0) {
-            throw new IllegalStateException("unbound port should not be returned");
+        if (port.isPresent()) {
+            return port.get();
         }
 
-        return this.port;
+        throw new IllegalStateException("unbound port should not be returned");
     }
 
     @Override
@@ -119,19 +121,19 @@ public class ActualHttpServer extends HttpServer {
         };
     }
 
-    public static ActualHttpServer createHttpServerWithMonitor(int port, MocoMonitor monitor, MocoConfig... configs) {
+    public static ActualHttpServer createHttpServerWithMonitor(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
         return new ActualHttpServer(port, monitor, configs);
     }
 
-    public static ActualHttpServer createLogServer(int port, MocoConfig... configs) {
+    public static ActualHttpServer createLogServer(Optional<Integer> port, MocoConfig... configs) {
         return createHttpServerWithMonitor(port, new Slf4jMocoMonitor(), configs);
     }
 
-    public static ActualHttpServer createSilentServer(int port, MocoConfig... configs) {
+    public static ActualHttpServer createSilentServer(Optional<Integer> port, MocoConfig... configs) {
         return createHttpServerWithMonitor(port, MocoMonitor.NO_OP_MONITOR, configs);
     }
 
     public void setPort(int port) {
-        this.port = port;
+        this.port = of(port);
     }
 }
