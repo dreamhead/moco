@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -20,17 +21,18 @@ import java.net.URL;
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
+import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
-        return ActualHttpServer.createSilentServer(port, configs);
+        return ActualHttpServer.createSilentServer(of(port), configs);
     }
 
     public static HttpServer httpserver(final MocoConfig... configs) {
-        return ActualHttpServer.createSilentServer(0, configs);
+        return ActualHttpServer.createSilentServer(Optional.<Integer>absent(), configs);
     }
 
     public static MocoConfig context(final String context) {

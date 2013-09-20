@@ -19,7 +19,7 @@ import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
     private static final GlobalSettingParser settingParser = new GlobalSettingParser();
-    private final int port;
+    private final Optional<Integer> port;
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
     private JsonRunner jsonRunner;

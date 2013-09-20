@@ -6,20 +6,20 @@ import org.apache.commons.cli.*;
 import static com.google.common.base.Optional.fromNullable;
 
 public class StartArgs extends ShutdownPortOption {
-    private final int port;
+    private final Optional<Integer> port;
     private final Optional<String> configurationFile;
     private final Optional<String> settings;
     private final Optional<String> env;
 
-    public StartArgs(int port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
+    public StartArgs(Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
         super(shutdownPort);
-        this.port = port;
+        this.port = fromNullable(port);
         this.configurationFile = fromNullable(configurationFile);
         this.settings = fromNullable(globalSettings);
         this.env = fromNullable(env);
     }
 
-    public int getPort() {
+    public Optional<Integer> getPort() {
         return port;
     }
 
@@ -50,7 +50,7 @@ public class StartArgs extends ShutdownPortOption {
     private static StartArgs doParse(String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
-        long port = (Long)cmd.getParsedOptionValue("p");
+        String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String globalSettings = cmd.getOptionValue("g");
         String shutdownPort = cmd.getOptionValue("s");
@@ -72,7 +72,7 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs((int)port, getShutdownPort(shutdownPort), config, globalSettings, env);
+        return new StartArgs(getPort(port), getShutdownPort(shutdownPort), config, globalSettings, env);
     }
 
     private static Options createMocoOptions() {
@@ -88,7 +88,7 @@ public class StartArgs extends ShutdownPortOption {
     private static Option portOption() {
         Option opt = new Option("p", true, "port");
         opt.setType(Number.class);
-        opt.setRequired(true);
+        opt.setRequired(false);
         return opt;
     }
 
@@ -111,5 +111,9 @@ public class StartArgs extends ShutdownPortOption {
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;
+    }
+
+    public static Integer getPort(String port) {
+        return port == null ? null : Integer.valueOf(port);
     }
 }

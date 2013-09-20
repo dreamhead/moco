@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 
 import java.io.InputStream;
 import java.util.List;
@@ -19,7 +20,7 @@ public class JsonRunner implements Runner {
     private final StandaloneRunner runner = new StandaloneRunner();
     private final HttpServer httpServer;
 
-    private JsonRunner(Iterable<? extends RunnerSetting> settings, int port) {
+    private JsonRunner(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
         this.httpServer = createHttpServer(settings, port);
     }
 
@@ -31,13 +32,13 @@ public class JsonRunner implements Runner {
         runner.stop();
     }
 
-    private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, int port) {
+    private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
         HttpServer server = createBaseHttpServer(settings, port);
         server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header("Content-Type", "image/png"));
         return server;
     }
 
-    private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, int port) {
+    private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
         HttpServer server = ActualHttpServer.createLogServer(port);
 
         for (RunnerSetting setting : settings) {
@@ -66,7 +67,7 @@ public class JsonRunner implements Runner {
         return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 
-    public static JsonRunner newJsonRunnerWithStreams(Iterable<? extends InputStream> streams, int port) {
+    public static JsonRunner newJsonRunnerWithStreams(Iterable<? extends InputStream> streams, Optional<Integer> port) {
         return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), port);
     }
 
@@ -79,7 +80,7 @@ public class JsonRunner implements Runner {
         };
     }
 
-    public static JsonRunner newJsonRunnerWithSetting(Iterable<? extends RunnerSetting> settings, int port) {
+    public static JsonRunner newJsonRunnerWithSetting(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
         return new JsonRunner(settings, port);
     }
 }

@@ -14,8 +14,8 @@ public class StandaloneRunner {
     public void run(HttpServer httpServer) {
         ActualHttpServer actualHttpServer = (ActualHttpServer) httpServer;
         server = new MocoHttpServer(actualHttpServer);
-        logger.info("Server is started at {}", actualHttpServer.getPort());
         server.start();
+        logger.info("Server is started at {}", actualHttpServer.port());
     }
 
     public void stop() {

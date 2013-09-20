@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.model.*;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class HttpServerParser {
         mapper.registerModule(proxyContainerModule);
     }
 
-    public HttpServer parseServer(InputStream is, int port, MocoConfig... configs) {
+    public HttpServer parseServer(InputStream is, Optional<Integer> port, MocoConfig... configs) {
         return createHttpServer(readSessions(is), port, configs);
     }
 
@@ -58,7 +59,7 @@ public class HttpServerParser {
         }
     }
 
-    private HttpServer createHttpServer(ImmutableList<SessionSetting> sessionSettings, int port, MocoConfig... configs) {
+    private HttpServer createHttpServer(ImmutableList<SessionSetting> sessionSettings, Optional<Integer> port, MocoConfig... configs) {
         HttpServer server = ActualHttpServer.createLogServer(port, configs);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
