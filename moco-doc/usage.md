@@ -1,7 +1,7 @@
 # Usage
 You have several ways to use Moco. One is API, which you can use in your unit test. The other is that run Moco as standalone. Currently, you put all your configuration in JSON file.
 
-On the other hand, Moco has serveral different ways to integrate with some tools: Maven plugin, Gradle plugin and shell support.
+On the other hand, Moco has several different ways to integrate with some tools: Maven plugin, Gradle plugin and shell support.
 
 ## API
 
