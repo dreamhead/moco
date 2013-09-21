@@ -23,7 +23,7 @@ public class RunnerFactory {
 
     public Runner createRunner(StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
-        return monitorFactory.createShutdownMonitor(dynamicRunner, startArgs.getShutdownPort(defaultShutdownPort), defaultShutdownKey);
+        return monitorFactory.createShutdownMonitor(dynamicRunner, startArgs.getShutdownPort().or(defaultShutdownPort), defaultShutdownKey);
     }
 
     private Runner createDynamicRunner(StartArgs startArgs) {
