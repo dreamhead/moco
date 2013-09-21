@@ -34,6 +34,6 @@ public class StartTask implements BootstrapTask {
     }
 
     private boolean conflictWithDefaultShutdownPort(StartArgs startArgs, int defaultShutdownPort) {
-        return startArgs.getPort().equals(of(defaultShutdownPort)) && !startArgs.hasShutdonwPort();
+        return startArgs.getPort().equals(of(defaultShutdownPort)) && !startArgs.hasShutdownPort();
     }
 }

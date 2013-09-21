@@ -10,7 +10,7 @@ public class ShutdownPortOption {
         this.shutdownPort = Optional.fromNullable(shutdownPort);
     }
 
-    public boolean hasShutdonwPort() {
+    public boolean hasShutdownPort() {
         return shutdownPort.isPresent();
     }
 
