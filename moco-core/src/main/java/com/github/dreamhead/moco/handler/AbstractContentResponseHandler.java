@@ -1,12 +1,11 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.ResponseHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-public abstract class AbstractContentResponseHandler implements ResponseHandler {
+public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final ContentTypeDetector detector = new ContentTypeDetector();
 
     protected abstract void writeContentResponse(FullHttpRequest request, ByteBuf buffer);
