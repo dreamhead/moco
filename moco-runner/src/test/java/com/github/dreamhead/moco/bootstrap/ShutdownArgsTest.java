@@ -1,26 +1,23 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
+import com.google.common.base.Optional;
 import org.junit.Test;
 
+import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 public class ShutdownArgsTest {
-
-	private final int DEFAULT_SHUTDOWN_PORT = 9527;
-
 	@Test
 	public void should_parse_shutdown_arguments() {
 		ShutdownArgs args = parse(new String[] { "shutdown", "-s", "12305" });
-		assertThat(12305, is(args.getShutdownPort(DEFAULT_SHUTDOWN_PORT)));
+		assertThat(12305, is(args.getShutdownPort().get()));
 	}
 
 	@Test
 	public void should_parse_shutdown_default_arguments() {
 		ShutdownArgs args = parse(new String[] { "shutdown" });
-		assertThat(DEFAULT_SHUTDOWN_PORT,
-				is(args.getShutdownPort(DEFAULT_SHUTDOWN_PORT)));
+		assertThat(Optional.<Integer>absent(), is(args.getShutdownPort()));
 	}
 
 	@Test(expected = ParseArgException.class)

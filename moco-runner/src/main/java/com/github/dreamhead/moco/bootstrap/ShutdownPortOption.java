@@ -14,8 +14,8 @@ public class ShutdownPortOption {
         return shutdownPort.isPresent();
     }
 
-    public int getShutdownPort(int defaultShutDownPort) {
-        return shutdownPort.or(defaultShutDownPort);
+    public Optional<Integer> getShutdownPort() {
+        return shutdownPort;
     }
 
     public static Option shutdownPortOption() {
