@@ -18,7 +18,7 @@ public class ShutdownPortOption {
         return shutdownPort;
     }
 
-    public static Option shutdownPortOption() {
+    protected static Option shutdownPortOption() {
         Option opt = new Option("s", true, "shutdown port");
         opt.setType(String.class);
         opt.setRequired(false);
