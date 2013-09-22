@@ -9,12 +9,15 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
 public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
+    private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerMonitor.class);
     private final MocoServer server = new MocoServer();
     private final int shutdownPort;
     private final String shutdownKey;
@@ -27,7 +30,7 @@ public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
     }
 
     public void startMonitor() {
-        server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
+        int port = server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
@@ -35,6 +38,8 @@ public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
                 pipeline.addLast("handler", new ShutdownHandler());
             }
         });
+
+        logger.info("Shutdown port is {}", port);
     }
 
     public void stopMonitor() {
