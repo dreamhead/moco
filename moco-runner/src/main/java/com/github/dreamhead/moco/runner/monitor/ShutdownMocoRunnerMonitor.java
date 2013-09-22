@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-public class ShutdownMonitor implements Monitor {
+public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
     private final MocoServer server = new MocoServer();
     private final int shutdownPort;
     private final String shutdownKey;
     private final ShutdownListener shutdownListener;
 
-    public ShutdownMonitor(int shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
+    public ShutdownMocoRunnerMonitor(int shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
         this.shutdownKey = shutdownKey;
         this.shutdownListener = shutdownListener;

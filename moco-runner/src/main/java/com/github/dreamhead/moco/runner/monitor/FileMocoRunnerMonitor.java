@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 
-public class FileMonitor implements Monitor {
+public class FileMocoRunnerMonitor implements MocoRunnerMonitor {
     public static final int INTERVAL = 1000;
-    private static Logger logger = LoggerFactory.getLogger(FileMonitor.class);
+    private static Logger logger = LoggerFactory.getLogger(FileMocoRunnerMonitor.class);
 
     private final FileAlterationMonitor monitor;
     private boolean running = false;
 
-    public FileMonitor(File file, FileAlterationListener listener) {
+    public FileMocoRunnerMonitor(File file, FileAlterationListener listener) {
         this.monitor = monitorFile(file, listener);
     }
 
