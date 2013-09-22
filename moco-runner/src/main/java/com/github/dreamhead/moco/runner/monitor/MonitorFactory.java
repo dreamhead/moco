@@ -14,7 +14,7 @@ public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
 
     public Runner createShutdownMonitor(final Runner runner, final int shutdownPort, final String shutdownKey) {
-        return new MonitorRunner(runner, new ShutdownMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
+        return new MonitorRunner(runner, new ShutdownMocoRunnerMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override
             public void onShutdown() {
                 runner.stop();
@@ -22,13 +22,13 @@ public class MonitorFactory {
         }));
     }
 
-    public FileMonitor createConfigurationMonitor(final File configuration, final FileRunner fileRunner) {
-        return new FileMonitor(configuration, createListener(fileRunner));
+    public FileMocoRunnerMonitor createConfigurationMonitor(final File configuration, final FileRunner fileRunner) {
+        return new FileMocoRunnerMonitor(configuration, createListener(fileRunner));
     }
 
-    public Monitor createSettingMonitor(final File settingsFile, final Iterable<File> configurationFiles, final FileRunner fileRunner) {
+    public MocoRunnerMonitor createSettingMonitor(final File settingsFile, final Iterable<File> configurationFiles, final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
-        return new FilesMonitor(files, createListener(fileRunner));
+        return new FilesMocoRunnerMonitor(files, createListener(fileRunner));
     }
 
     private FileAlterationListenerAdaptor createListener(final FileRunner fileRunner) {
