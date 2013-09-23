@@ -46,7 +46,6 @@ public class ProxyResponseHandler implements ResponseHandler {
             remoteRequest.setConfig(config);
             remoteRequest.setProtocolVersion(createVersion(request));
 
-
             long contentLength = HttpHeaders.getContentLength(request, -1);
             if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
