@@ -13,18 +13,4 @@ public interface MocoMonitor {
 
     @Subscribe
     void onMessageLeave(FullHttpResponse response);
-
-    MocoMonitor NO_OP_MONITOR = new MocoMonitor() {
-        @Override
-        public void onMessageArrived(FullHttpRequest request) {
-        }
-
-        @Override
-        public void onException(Exception e) {
-        }
-
-        @Override
-        public void onMessageLeave(FullHttpResponse response) {
-        }
-    };
 }
