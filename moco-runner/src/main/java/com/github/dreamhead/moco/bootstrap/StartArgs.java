@@ -3,6 +3,9 @@ package com.github.dreamhead.moco.bootstrap;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+
 import static com.google.common.base.Optional.fromNullable;
 
 public class StartArgs extends ShutdownPortOption {
@@ -115,5 +118,14 @@ public class StartArgs extends ShutdownPortOption {
 
     public static Integer getPort(String port) {
         return port == null ? null : Integer.valueOf(port);
+    }
+
+    public static String help() {
+        HelpFormatter formatter = new HelpFormatter();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PrintWriter writer = new PrintWriter(os);
+        formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "moco start [options]", null, createMocoOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
+        writer.flush();
+        return new String(os.toByteArray());
     }
 }

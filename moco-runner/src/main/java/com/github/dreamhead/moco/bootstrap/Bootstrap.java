@@ -28,7 +28,7 @@ public class Bootstrap implements BootstrapTask {
                 return;
             }
 
-            help();
+            throw new ParseArgException("unknown task");
         } catch (ParseArgException e) {
             help();
         } catch (Exception e) {
@@ -37,8 +37,6 @@ public class Bootstrap implements BootstrapTask {
     }
 
     private void help() {
-        System.out.println("moco start {-p port} -c [configuration file] {-s [shutdown port]}");
-        System.out.println("or");
-        System.out.println("moco start {-p port} -g [global settings file] {-e [environment]} {-s [shutdown port]}");
+        System.out.println(StartArgs.help());
     }
 }
