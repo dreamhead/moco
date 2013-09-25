@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.runner.monitor;
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.MonitorRunner;
 import com.github.dreamhead.moco.runner.Runner;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import java.io.File;
 public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
 
-    public Runner createShutdownMonitor(final Runner runner, final int shutdownPort, final String shutdownKey) {
+    public Runner createShutdownMonitor(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
         return new MonitorRunner(runner, new ShutdownMocoRunnerMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override
             public void onShutdown() {

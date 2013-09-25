@@ -19,7 +19,9 @@ public class ShutdownArgs extends ShutdownPortOption {
 
     private static Options createShutdownOptions() {
         Options options = new Options();
-        options.addOption(shutdownPortOption());
+        Option option = shutdownPortOption();
+        option.setRequired(true);
+        options.addOption(option);
         return options;
     }
 }

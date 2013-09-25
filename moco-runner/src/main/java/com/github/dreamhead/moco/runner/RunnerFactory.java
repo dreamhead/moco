@@ -13,17 +13,15 @@ public class RunnerFactory {
 
     private final MonitorFactory monitorFactory = new MonitorFactory();
 
-    private final int defaultShutdownPort;
     private final String defaultShutdownKey;
 
-    public RunnerFactory(int defaultShutdownPort, String defaultShutdownKey) {
-        this.defaultShutdownPort = defaultShutdownPort;
+    public RunnerFactory(String defaultShutdownKey) {
         this.defaultShutdownKey = defaultShutdownKey;
     }
 
     public Runner createRunner(StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
-        return monitorFactory.createShutdownMonitor(dynamicRunner, startArgs.getShutdownPort().or(defaultShutdownPort), defaultShutdownKey);
+        return monitorFactory.createShutdownMonitor(dynamicRunner, startArgs.getShutdownPort(), defaultShutdownKey);
     }
 
     private Runner createDynamicRunner(StartArgs startArgs) {
