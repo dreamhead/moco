@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.runner.monitor;
 
 import com.github.dreamhead.moco.internal.MocoServer;
+import com.google.common.base.Optional;
 import com.google.common.io.CharStreams;
 import com.google.common.io.InputSupplier;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,18 +20,18 @@ import java.io.StringReader;
 public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerMonitor.class);
     private final MocoServer server = new MocoServer();
-    private final int shutdownPort;
+    private final Optional<Integer> shutdownPort;
     private final String shutdownKey;
     private final ShutdownListener shutdownListener;
 
-    public ShutdownMocoRunnerMonitor(int shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
+    public ShutdownMocoRunnerMonitor(Optional<Integer> shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
         this.shutdownKey = shutdownKey;
         this.shutdownListener = shutdownListener;
     }
 
     public void startMonitor() {
-        int port = server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
+        int port = server.start(this.shutdownPort.or(0), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();

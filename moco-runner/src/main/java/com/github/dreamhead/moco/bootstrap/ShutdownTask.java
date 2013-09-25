@@ -15,18 +15,16 @@ public class ShutdownTask implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
 
     private final MocoClient client = new MocoClient();
-    private final int defaultShutdownPort;
     private final String defaultShutdownKey;
 
-    public ShutdownTask(int defaultShutdownPort, String defaultShutdownKey) {
-        this.defaultShutdownPort = defaultShutdownPort;
+    public ShutdownTask(String defaultShutdownKey) {
         this.defaultShutdownKey = defaultShutdownKey;
     }
 
     @Override
     public void run(String[] args) {
         ShutdownArgs shutdownArgs = parse(args);
-        client.run("127.0.0.1", shutdownArgs.getShutdownPort().or(defaultShutdownPort), new ChannelInitializer<SocketChannel>() {
+        client.run("127.0.0.1", shutdownArgs.getShutdownPort().get(), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();

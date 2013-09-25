@@ -24,7 +24,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "\"include\" : \"" + config.getAbsolutePath() + "\"" +
                 "}]");
 
-        RunnerFactory factory = new RunnerFactory(9090, "SHUTDOWN");
+        RunnerFactory factory = new RunnerFactory("SHUTDOWN");
         runner = factory.createRunner(new StartArgs(port(), 9090, null, setting.getAbsolutePath(), null));
         runner.run();
         assertThat(helper.get(root()), is("foo"));

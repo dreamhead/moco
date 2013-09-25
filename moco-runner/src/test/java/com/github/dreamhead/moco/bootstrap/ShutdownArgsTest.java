@@ -14,7 +14,7 @@ public class ShutdownArgsTest {
 		assertThat(12305, is(args.getShutdownPort().get()));
 	}
 
-	@Test
+	@Test(expected = ParseArgException.class)
 	public void should_parse_shutdown_default_arguments() {
 		ShutdownArgs args = parse(new String[] { "shutdown" });
 		assertThat(Optional.<Integer>absent(), is(args.getShutdownPort()));

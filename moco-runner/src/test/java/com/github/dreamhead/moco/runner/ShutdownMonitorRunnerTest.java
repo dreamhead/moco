@@ -25,7 +25,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
 
     @Before
     public void setup() {
-        RunnerFactory factory = new RunnerFactory(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
+        RunnerFactory factory = new RunnerFactory(SHUTDOWN_MOCO_KEY);
         runner = factory.createRunner(new StartArgs(port(), SHUTDOWN_PORT, "src/test/resources/foo.json", null, null));
         runner.run();
     }
@@ -64,8 +64,8 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
             fail(e.getMessage());
         }
 
-        ShutdownTask task = new ShutdownTask(SHUTDOWN_PORT, SHUTDOWN_MOCO_KEY);
-        task.run(new String[0]);
+        ShutdownTask task = new ShutdownTask(SHUTDOWN_MOCO_KEY);
+        task.run(new String[]{"-s", Integer.toString(SHUTDOWN_PORT)});
 
         waitChangeHappens();
         helper.get(root());
