@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.runner.monitor;
 
 import com.github.dreamhead.moco.runner.FileRunner;
-import com.github.dreamhead.moco.runner.MonitorRunner;
 import com.github.dreamhead.moco.runner.Runner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -14,13 +13,13 @@ import java.io.File;
 public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
 
-    public Runner createShutdownMonitor(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
-        return new MonitorRunner(runner, new ShutdownMocoRunnerMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
+    public ShutdownMocoRunnerMonitor createShutdownMonitor(final Runner runner, Optional<Integer> shutdownPort, String shutdownKey) {
+        return new ShutdownMocoRunnerMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override
             public void onShutdown() {
                 runner.stop();
             }
-        }));
+        });
     }
 
     public FileMocoRunnerMonitor createConfigurationMonitor(final File configuration, final FileRunner fileRunner) {
