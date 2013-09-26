@@ -18,13 +18,13 @@ public class RunnerFactory {
         this.shutdownKey = shutdownKey;
     }
 
-    public Runner createRunner(StartArgs startArgs) {
+    public ShutdownRunner createRunner(StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
         return createShutdownRunner(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
     }
 
-    public Runner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
-        return new MonitorRunner(runner, monitorFactory.createShutdownMonitor(runner, shutdownPort, shutdownKey));
+    public ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
+        return new ShutdownRunner(runner, monitorFactory.createShutdownMonitor(runner, shutdownPort, shutdownKey));
     }
 
     private Runner createDynamicRunner(StartArgs startArgs) {

@@ -23,6 +23,7 @@ public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
     private final Optional<Integer> shutdownPort;
     private final String shutdownKey;
     private final ShutdownListener shutdownListener;
+    private int port;
 
     public ShutdownMocoRunnerMonitor(Optional<Integer> shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
@@ -40,11 +41,17 @@ public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
             }
         });
 
+        this.port = port;
+
         logger.info("Shutdown port is {}", port);
     }
 
     public void stopMonitor() {
         server.stop();
+    }
+
+    public int port() {
+        return port;
     }
 
     private class ShutdownHandler extends SimpleChannelInboundHandler<String> {
