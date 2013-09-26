@@ -1,6 +1,7 @@
 # Release 0.9
 * Turned off log for API by default
 * seq API with response handler
+* Server can select available port(start/shutdown) if no port providing
 
 # Release 0.8.1 (1-August-2013)
 * Upgrade to Netty 4
