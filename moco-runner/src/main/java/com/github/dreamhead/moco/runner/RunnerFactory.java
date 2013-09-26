@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.runner;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.runner.monitor.MocoRunnerMonitor;
 import com.github.dreamhead.moco.runner.monitor.MonitorFactory;
+import com.google.common.base.Optional;
 
 import java.io.File;
 
@@ -10,18 +11,20 @@ import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFil
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
 
 public class RunnerFactory {
-
     private final MonitorFactory monitorFactory = new MonitorFactory();
+    private final String shutdownKey;
 
-    private final String defaultShutdownKey;
-
-    public RunnerFactory(String defaultShutdownKey) {
-        this.defaultShutdownKey = defaultShutdownKey;
+    public RunnerFactory(String shutdownKey) {
+        this.shutdownKey = shutdownKey;
     }
 
     public Runner createRunner(StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
-        return monitorFactory.createShutdownMonitor(dynamicRunner, startArgs.getShutdownPort(), defaultShutdownKey);
+        return createShutdownRunner(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
+    }
+
+    public Runner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
+        return new MonitorRunner(runner, monitorFactory.createShutdownMonitor(runner, shutdownPort, shutdownKey));
     }
 
     private Runner createDynamicRunner(StartArgs startArgs) {
