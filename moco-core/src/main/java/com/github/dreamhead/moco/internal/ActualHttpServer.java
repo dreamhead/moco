@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.monitor.MocoMonitor;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
