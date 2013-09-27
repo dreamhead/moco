@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
+import com.github.dreamhead.moco.MocoMonitor;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;

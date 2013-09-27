@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
+import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;

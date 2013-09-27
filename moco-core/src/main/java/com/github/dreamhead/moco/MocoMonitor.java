@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.monitor;
+package com.github.dreamhead.moco;
 
 import com.google.common.eventbus.Subscribe;
 import io.netty.handler.codec.http.FullHttpRequest;
