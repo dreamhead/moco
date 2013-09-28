@@ -12,6 +12,6 @@ public class MountPathExtractor {
     }
 
     public String extract(FullHttpRequest request) {
-        return target.extract(extractor.extract(request));
+        return target.extract(extractor.extract(request).get());
     }
 }

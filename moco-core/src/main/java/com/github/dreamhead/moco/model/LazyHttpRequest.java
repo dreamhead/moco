@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.model;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -13,13 +14,13 @@ import java.util.Map;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Maps.newHashMap;
 
-public class LazyRequest implements Request {
+public class LazyHttpRequest implements HttpRequest {
     private final FullHttpRequest request;
     private final Supplier<Map<String, String>> headersSupplier;
     private final Supplier<Map<String,String>> queriesSupplier;
     private final Supplier<String> contentSupplier;
 
-    public LazyRequest(FullHttpRequest request) {
+    public LazyHttpRequest(FullHttpRequest request) {
         this.request = request;
         this.queriesSupplier = queriesSupplier(request.getUri());
         this.headersSupplier = headersSupplier(request.headers());
