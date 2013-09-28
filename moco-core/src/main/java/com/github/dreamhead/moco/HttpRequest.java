@@ -1,8 +1,8 @@
-package com.github.dreamhead.moco.model;
+package com.github.dreamhead.moco;
 
 import java.util.Map;
 
-public interface Request {
+public interface HttpRequest {
     Map<String, String> getQueries();
 
     String getMethod();

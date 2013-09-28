@@ -22,18 +22,18 @@ public class HttpMethodExtractorTest {
 	@Test
 	public void should_return_get_with_get_method() {
 		request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, "/foo");
-		assertThat(extractor.extract(request), is(HttpMethod.GET.toString()));
+		assertThat(extractor.extract(request).get(), is(HttpMethod.GET.toString()));
 	}
 
 	@Test
 	public void should_return_post_with_post_method() {
 		request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.POST, "/foo");
-		assertThat(extractor.extract(request), is(HttpMethod.POST.toString()));
+		assertThat(extractor.extract(request).get(), is(HttpMethod.POST.toString()));
 	}
 	
 	@Test
 	public void should_return_delete_with_delete_method() {
 		request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.DELETE, "/foo");
-		assertThat(extractor.extract(request), is(HttpMethod.DELETE.toString()));
+		assertThat(extractor.extract(request).get(), is(HttpMethod.DELETE.toString()));
 	}
 }

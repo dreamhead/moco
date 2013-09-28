@@ -22,12 +22,12 @@ public class UriRequestExtractorTest {
     @Test
     public void should_return_all_uri_while_uri_has_no_parameter() {
         when(request.getUri()).thenReturn("/foo");
-        assertThat(extractor.extract(request), is("/foo"));
+        assertThat(extractor.extract(request).get(), is("/foo"));
     }
 
     @Test
     public void should_return_path_part_while_uri_has_parameters() {
         when(request.getUri()).thenReturn("/foo?param=bar");
-        assertThat(extractor.extract(request), is("/foo"));
+        assertThat(extractor.extract(request).get(), is("/foo"));
     }
 }

@@ -23,7 +23,7 @@ public class VersionExtractorTest {
 	public void shoud_get_right_version_with_HTTP_1_0() {
 		request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0,
 				HttpMethod.GET, "/foo");
-		assertThat(extractor.extract(request),
+		assertThat(extractor.extract(request).get(),
 				is(HttpVersion.HTTP_1_0.toString()));
 	}
 
@@ -31,7 +31,7 @@ public class VersionExtractorTest {
 	public void shoud_get_right_version_with_HTTP_1_1() {
 		request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
 				HttpMethod.GET, "/foo");
-		assertThat(extractor.extract(request),
+		assertThat(extractor.extract(request).get(),
 				is(HttpVersion.HTTP_1_1.toString()));
 	}
 }

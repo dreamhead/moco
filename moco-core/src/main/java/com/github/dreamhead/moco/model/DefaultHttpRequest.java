@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Objects;
 
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class DefaultRequest extends Message implements Request {
+public class DefaultHttpRequest extends Message implements HttpRequest {
     private Map<String, String> queries = newHashMap();
     private String method;
 
@@ -28,7 +29,7 @@ public class DefaultRequest extends Message implements Request {
         return method;
     }
 
-    public boolean match(DefaultRequest that) {
+    public boolean match(DefaultHttpRequest that) {
         return super.match(that) && doMatch(method, that.method)
                 && doMatch(queries, that.queries);
     }
@@ -40,7 +41,7 @@ public class DefaultRequest extends Message implements Request {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(DefaultRequest.class)
+        return Objects.toStringHelper(DefaultHttpRequest.class)
                 .omitNullValues()
                 .add("version", version)
                 .add("queries", queries)

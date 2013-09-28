@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
+import com.google.common.base.Optional;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 public class HeaderRequestExtractor implements RequestExtractor<String> {
@@ -11,7 +12,7 @@ public class HeaderRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public String extract(FullHttpRequest request) {
-        return request.headers().get(name);
+    public Optional<String> extract(FullHttpRequest request) {
+        return Optional.fromNullable(request.headers().get(name));
     }
 }

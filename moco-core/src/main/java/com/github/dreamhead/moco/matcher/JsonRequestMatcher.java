@@ -25,7 +25,7 @@ public class JsonRequestMatcher implements RequestMatcher {
     @Override
     public boolean match(FullHttpRequest request) {
         try {
-            JsonNode requestNode = mapper.readTree(extractor.extract(request));
+            JsonNode requestNode = mapper.readTree(extractor.extract(request).get());
             JsonNode resourceNode = mapper.readTree(resource.readFor(request));
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
