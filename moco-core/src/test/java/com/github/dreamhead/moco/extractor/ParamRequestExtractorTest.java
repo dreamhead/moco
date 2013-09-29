@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +20,7 @@ public class ParamRequestExtractorTest {
     }
 
     @Test
-    public void should_return_null_if_uri_has_no_parameter() {
+    public void should_return_nothing_if_uri_has_no_parameter() {
         when(request.getUri()).thenReturn("/foo");
         assertThat(extractor.extract(request).isPresent(), is(false));
     }
@@ -39,8 +38,20 @@ public class ParamRequestExtractorTest {
     }
 
     @Test
-    public void should_return_null_if_uri_has_no_same_parameter() {
+    public void should_return_nothing_if_uri_has_no_same_parameter() {
         when(request.getUri()).thenReturn("/foo?param2=bar");
         assertThat(extractor.extract(request).isPresent(), is(false));
+    }
+
+    @Test
+    public void should_return_nothing_if_uri_has_no_parameter_with_value() {
+        when(request.getUri()).thenReturn("/foo?param=");
+        assertThat(extractor.extract(request).get(), is(""));
+    }
+
+    @Test
+    public void should_return_nothing_if_uri_has_no_parameter_with_value_from_multiple_part() {
+        when(request.getUri()).thenReturn("/foo?param=&param2=value");
+        assertThat(extractor.extract(request).get(), is(""));
     }
 }
