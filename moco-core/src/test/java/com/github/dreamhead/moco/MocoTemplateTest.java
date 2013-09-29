@@ -144,4 +144,17 @@ public class MocoTemplateTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_generate_uri() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.uri}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String response = helper.get(remoteUrl("/template"));
+                assertThat(response, is("/template"));
+            }
+        });
+    }
 }

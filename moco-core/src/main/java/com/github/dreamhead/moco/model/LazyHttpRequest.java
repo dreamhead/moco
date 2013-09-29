@@ -28,6 +28,11 @@ public class LazyHttpRequest implements HttpRequest {
     }
 
     @Override
+    public String getUri() {
+        return this.request.getUri();
+    }
+
+    @Override
     public Map<String, String> getQueries() {
         return this.queriesSupplier.get();
     }

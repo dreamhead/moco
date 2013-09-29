@@ -12,9 +12,19 @@ import static com.google.common.collect.Maps.newHashMap;
 public class DefaultHttpRequest extends Message implements HttpRequest {
     private Map<String, String> queries = newHashMap();
     private String method;
+    private String uri;
 
     public void addQuery(String key, String value) {
         this.queries.put(key, value);
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    @Override
+    public String getUri() {
+        return uri;
     }
 
     public Map<String, String> getQueries() {
