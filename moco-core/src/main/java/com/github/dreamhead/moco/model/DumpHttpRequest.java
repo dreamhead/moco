@@ -9,7 +9,7 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class DefaultHttpRequest extends Message implements HttpRequest {
+public class DumpHttpRequest extends Message implements HttpRequest {
     private Map<String, String> queries = newHashMap();
     private String method;
     private String uri;
@@ -39,7 +39,7 @@ public class DefaultHttpRequest extends Message implements HttpRequest {
         return method;
     }
 
-    public boolean match(DefaultHttpRequest that) {
+    public boolean match(DumpHttpRequest that) {
         return super.match(that) && doMatch(method, that.method)
                 && doMatch(queries, that.queries);
     }
@@ -51,7 +51,7 @@ public class DefaultHttpRequest extends Message implements HttpRequest {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(DefaultHttpRequest.class)
+        return Objects.toStringHelper(DumpHttpRequest.class)
                 .omitNullValues()
                 .add("uri", uri)
                 .add("version", version)
