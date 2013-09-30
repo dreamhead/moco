@@ -53,6 +53,7 @@ public class DefaultHttpRequest extends Message implements HttpRequest {
     public String toString() {
         return Objects.toStringHelper(DefaultHttpRequest.class)
                 .omitNullValues()
+                .add("uri", uri)
                 .add("version", version)
                 .add("queries", queries)
                 .add("method", method)
