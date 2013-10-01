@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.dreamhead.moco.model.DumpHttpRequest;
-import com.github.dreamhead.moco.model.MessageFactory;
-import com.github.dreamhead.moco.model.Response;
-import com.github.dreamhead.moco.model.Session;
+import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.model.*;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -88,7 +86,7 @@ public class DefaultFailover implements Failover {
     }
 
     private Response failoverResponse(FullHttpRequest request) {
-        final DumpHttpRequest dumpedRequest = MessageFactory.createRequest(request);
+        final HttpRequest dumpedRequest = MessageFactory.createRequest(request);
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
         if (session.isPresent()) {
@@ -99,11 +97,12 @@ public class DefaultFailover implements Failover {
         throw new RuntimeException("no failover response found");
     }
 
-    private Predicate<Session> isForRequest(final DumpHttpRequest dumpedRequest) {
+    private Predicate<Session> isForRequest(final HttpRequest dumpedRequest) {
         return new Predicate<Session>() {
             @Override
             public boolean apply(Session session) {
-                return session.getRequest().match(dumpedRequest);
+                HttpRequest request = session.getRequest();
+                return new HttpRequestFailoverMatcher(request).match(dumpedRequest);
             }
         };
     }

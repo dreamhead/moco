@@ -1,10 +1,12 @@
 package com.github.dreamhead.moco.model;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Strings;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.FullHttpMessage;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Map;
 
 public class MessageFactory {
@@ -15,23 +17,8 @@ public class MessageFactory {
         }
     }
 
-    public static DumpHttpRequest createRequest(FullHttpRequest request) {
-        DumpHttpRequest dumpedRequest = new DumpHttpRequest();
-        dumpedRequest.setVersion(request.getProtocolVersion().text());
-        dumpedRequest.setUri(request.getUri());
-        setContent(request, dumpedRequest);
-        dumpedRequest.setMethod(request.getMethod().name());
-
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            dumpedRequest.addQuery(entry.getKey(), entry.getValue().get(0));
-        }
-
-        for (Map.Entry<String, String> entry : request.headers()) {
-            dumpedRequest.addHeader(entry.getKey(), entry.getValue());
-        }
-
-        return dumpedRequest;
+    public static HttpRequest createRequest(FullHttpRequest request) {
+        return new LazyHttpRequest(request);
     }
 
     public static Response createResponse(FullHttpResponse response) {

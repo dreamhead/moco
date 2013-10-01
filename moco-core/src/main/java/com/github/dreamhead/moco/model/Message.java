@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 
 import java.util.Map;
 
@@ -34,30 +33,6 @@ public abstract class Message {
 
     public Map<String, String> getHeaders() {
         return this.headers;
-    }
-
-    public boolean match(Message that) {
-        return doMatch(version, that.version)
-                && doMatch(content, that.content)
-                && doMatch(headers, that.headers);
-    }
-
-    protected boolean doMatch(Map<String, String> thisField, Map<String, String> thatField) {
-        if (thisField == null || thisField.isEmpty()) {
-            return true;
-        }
-
-        for (Map.Entry<String, String> entry : thisField.entrySet()) {
-            if (!doMatch(entry.getValue(), thatField.get(entry.getKey()))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    protected boolean doMatch(String thisField, String thatField) {
-        return Strings.isNullOrEmpty(thisField) || thisField.equals(thatField);
     }
 
     @Override
