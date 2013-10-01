@@ -154,6 +154,54 @@ server.post(by("foo")).response("bar");
 }
 ```
 
+and PUT method:
+
+* Java API
+
+```java
+server.put(by("foo")).response("bar");
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "method" : "put",
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "text" : "bar"
+    }
+}
+```
+
+and DELETE method:
+
+* Java API
+
+```java
+server.delete(by(uri("/foo"))).response(status(200));
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "method" : "delete",
+      "uri" : "/foo"
+    },
+  "response" :
+    {
+      "status" : "200"
+    }
+}
+```
+
 ### Version
 We can return different response for different HTTP version:
 
