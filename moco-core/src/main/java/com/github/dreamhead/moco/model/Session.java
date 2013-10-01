@@ -1,14 +1,18 @@
 package com.github.dreamhead.moco.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.HttpRequest;
+
 public class Session {
-    private DumpHttpRequest request;
+    @JsonDeserialize(as = DumpHttpRequest.class)
+    private HttpRequest request;
     private Response response;
 
-    public DumpHttpRequest getRequest() {
+    public HttpRequest getRequest() {
         return request;
     }
 
-    public void setRequest(DumpHttpRequest request) {
+    public void setRequest(HttpRequest request) {
         this.request = request;
     }
 
@@ -20,7 +24,7 @@ public class Session {
         this.response = response;
     }
 
-    public static Session newSession(DumpHttpRequest request, Response response) {
+    public static Session newSession(HttpRequest request, Response response) {
         Session session = new Session();
         session.setRequest(request);
         session.setResponse(response);
