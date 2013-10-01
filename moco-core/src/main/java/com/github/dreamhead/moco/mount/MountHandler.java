@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
 
@@ -34,8 +35,8 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     private File targetFile(FullHttpRequest request) {
-        String relativePath = extractor.extract(request);
-        return new File(dir, relativePath);
+        Optional<String> relativePath = extractor.extract(request);
+        return new File(dir, relativePath.get());
     }
 
     @Override
