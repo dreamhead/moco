@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
 
@@ -12,22 +14,15 @@ public class Session {
         return request;
     }
 
-    public void setRequest(HttpRequest request) {
-        this.request = request;
-    }
-
     public Response getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
-        this.response = response;
-    }
-
-    public static Session newSession(HttpRequest request, Response response) {
+    @JsonCreator
+    public static Session newSession(@JsonProperty("request") HttpRequest request, @JsonProperty("response") Response response) {
         Session session = new Session();
-        session.setRequest(request);
-        session.setResponse(response);
+        session.request = request;
+        session.response = response;
         return session;
     }
 }
