@@ -37,7 +37,7 @@ public class DumpHttpRequest extends Message implements HttpRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), queries, method);
+        return Objects.hashCode(super.hashCode(), queries, method, uri);
     }
 
     @Override
