@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.model.*;
+import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
+import com.github.dreamhead.moco.model.MessageFactory;
+import com.github.dreamhead.moco.model.Response;
+import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
@@ -50,15 +55,16 @@ public class DefaultFailover implements Failover {
             return of(targetSession);
         }
 
-        ImmutableList<Session> sessions = restoreSessions(this.file);
+        return ImmutableList.<Session>builder().addAll(toUniqueSessions(targetSession, restoreSessions(this.file))).add(targetSession).build();
+    }
+
+    private Iterable<Session> toUniqueSessions(Session targetSession, ImmutableList<Session> sessions) {
         Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
         if (session.isPresent()) {
-            session.get().setResponse(targetSession.getResponse());
-            return sessions;
+            return from(sessions).filter(not(isForRequest(targetSession.getRequest())));
         }
 
-        ImmutableList.Builder<Session> builder = ImmutableList.builder();
-        return builder.addAll(sessions).add(targetSession).build();
+        return sessions;
     }
 
     private ImmutableList<Session> restoreSessions(File file) {
