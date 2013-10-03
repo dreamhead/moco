@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
+import com.github.dreamhead.moco.model.HttpResponse;
 import com.github.dreamhead.moco.model.MessageFactory;
-import com.github.dreamhead.moco.model.Response;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -81,17 +81,17 @@ public class DefaultFailover implements Failover {
 
     @Override
     public void failover(FullHttpRequest request, FullHttpResponse response) {
-        Response dumpedResponse = failoverResponse(request);
-        response.setProtocolVersion(HttpVersion.valueOf(dumpedResponse.getVersion()));
-        response.setStatus(HttpResponseStatus.valueOf(dumpedResponse.getStatusCode()));
-        for (Map.Entry<String, String> entry : dumpedResponse.getHeaders().entrySet()) {
+        HttpResponse dumpedHttpResponse = failoverResponse(request);
+        response.setProtocolVersion(HttpVersion.valueOf(dumpedHttpResponse.getVersion()));
+        response.setStatus(HttpResponseStatus.valueOf(dumpedHttpResponse.getStatusCode()));
+        for (Map.Entry<String, String> entry : dumpedHttpResponse.getHeaders().entrySet()) {
             response.headers().add(entry.getKey(), entry.getValue());
         }
 
-        response.content().writeBytes(dumpedResponse.getContent().getBytes());
+        response.content().writeBytes(dumpedHttpResponse.getContent().getBytes());
     }
 
-    private Response failoverResponse(FullHttpRequest request) {
+    private HttpResponse failoverResponse(FullHttpRequest request) {
         final HttpRequest dumpedRequest = MessageFactory.createRequest(request);
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
