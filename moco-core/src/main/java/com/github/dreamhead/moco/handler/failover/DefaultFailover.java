@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
-import com.github.dreamhead.moco.model.HttpResponse;
+import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public abstract class Message {
+public abstract class DumpMessage {
     protected String version;
     protected String content;
     protected Map<String, String> headers = newHashMap();
