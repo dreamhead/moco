@@ -8,18 +8,18 @@ import com.github.dreamhead.moco.HttpRequest;
 public class Session {
     @JsonDeserialize(as = DumpHttpRequest.class)
     private HttpRequest request;
-    private Response response;
+    private HttpResponse response;
 
     public HttpRequest getRequest() {
         return request;
     }
 
-    public Response getResponse() {
+    public HttpResponse getResponse() {
         return response;
     }
 
     @JsonCreator
-    public static Session newSession(@JsonProperty("request") HttpRequest request, @JsonProperty("response") Response response) {
+    public static Session newSession(@JsonProperty("request") HttpRequest request, @JsonProperty("response") HttpResponse response) {
         Session session = new Session();
         session.request = request;
         session.response = response;

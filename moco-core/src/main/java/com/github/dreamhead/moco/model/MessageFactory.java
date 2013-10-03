@@ -21,8 +21,8 @@ public class MessageFactory {
         return new LazyHttpRequest(request);
     }
 
-    public static Response createResponse(FullHttpResponse response) {
-        Response dumpedResponse = new Response();
+    public static HttpResponse createResponse(FullHttpResponse response) {
+        HttpResponse dumpedResponse = new HttpResponse();
         dumpedResponse.setStatusCode(response.getStatus().code());
         dumpedResponse.setVersion(response.getProtocolVersion().text());
         for (Map.Entry<String, String> entry : response.headers()) {
