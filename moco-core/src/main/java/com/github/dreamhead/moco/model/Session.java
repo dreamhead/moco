@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.HttpResponse;
 
 public class Session {
     @JsonDeserialize(as = DumpHttpRequest.class)
     private HttpRequest request;
+    @JsonDeserialize(as = DumpHttpResponse.class)
     private HttpResponse response;
 
     public HttpRequest getRequest() {

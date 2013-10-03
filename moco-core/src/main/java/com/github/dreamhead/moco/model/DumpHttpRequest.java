@@ -9,7 +9,7 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class DumpHttpRequest extends Message implements HttpRequest {
+public class DumpHttpRequest extends DumpMessage implements HttpRequest {
     private Map<String, String> queries = newHashMap();
     private String method;
     private String uri;
