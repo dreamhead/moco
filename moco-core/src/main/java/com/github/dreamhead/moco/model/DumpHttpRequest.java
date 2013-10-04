@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Objects;
 
@@ -8,14 +8,20 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonDeserialize(builder=DumpHttpRequest.Builder.class)
 public class DumpHttpRequest extends DumpMessage implements HttpRequest {
     private Map<String, String> queries = newHashMap();
     private String method;
     private String uri;
 
-    public void setUri(String uri) {
+    private DumpHttpRequest(String version, String content, String method, String uri,
+                            Map<String, String> headers, Map<String, String> queries) {
+        this.version = version;
+        this.content = content;
+        this.method = method;
         this.uri = uri;
+        this.headers = headers;
+        this.queries = queries;
     }
 
     @Override
@@ -25,10 +31,6 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
 
     public Map<String, String> getQueries() {
         return queries;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
     }
 
     public String getMethod() {
@@ -51,5 +53,52 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
                 .add("headers", headers)
                 .add("content", content)
                 .toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String version;
+        private String content;
+        private Map<String, String> headers = newHashMap();
+        private Map<String, String> queries = newHashMap();
+        private String method;
+        private String uri;
+
+        public Builder withVersion(String version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder withContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder withHeaders(Map<String, String> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder withQueries(Map<String, String> queries) {
+            this.queries = queries;
+            return this;
+        }
+
+        public Builder withMethod(String method) {
+            this.method = method;
+            return this;
+        }
+
+        public Builder withUri(String uri) {
+            this.uri = uri;
+            return this;
+        }
+
+        public DumpHttpRequest build() {
+            return new DumpHttpRequest(version, content, method, uri, headers, queries);
+        }
     }
 }
