@@ -4,12 +4,16 @@ import com.google.common.base.Objects;
 
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 public abstract class DumpMessage {
-    protected String version;
-    protected String content;
-    protected Map<String, String> headers = newHashMap();
+    protected final String version;
+    protected final String content;
+    protected final Map<String, String> headers;
+
+    protected DumpMessage(String version, String content, Map<String, String> headers) {
+        this.version = version;
+        this.headers = headers;
+        this.content = content;
+    }
 
     public String getVersion() {
         return version;
