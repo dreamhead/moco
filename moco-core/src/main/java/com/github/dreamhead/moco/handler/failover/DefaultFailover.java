@@ -14,16 +14,14 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
+import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
@@ -81,14 +79,7 @@ public class DefaultFailover implements Failover {
 
     @Override
     public void failover(FullHttpRequest request, FullHttpResponse response) {
-        HttpResponse dumpedHttpResponse = failoverResponse(request);
-        response.setProtocolVersion(HttpVersion.valueOf(dumpedHttpResponse.getVersion()));
-        response.setStatus(HttpResponseStatus.valueOf(dumpedHttpResponse.getStatusCode()));
-        for (Map.Entry<String, String> entry : dumpedHttpResponse.getHeaders().entrySet()) {
-            response.headers().add(entry.getKey(), entry.getValue());
-        }
-
-        response.content().writeBytes(dumpedHttpResponse.getContent().getBytes());
+        writeResponse(response, failoverResponse(request));
     }
 
     private HttpResponse failoverResponse(FullHttpRequest request) {
