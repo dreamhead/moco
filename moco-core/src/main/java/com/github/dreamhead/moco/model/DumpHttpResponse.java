@@ -1,35 +1,76 @@
 package com.github.dreamhead.moco.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpResponse;
-import com.google.common.base.Strings;
-import io.netty.handler.codec.http.FullHttpMessage;
+import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import static com.google.common.collect.Maps.newHashMap;
+
+@JsonDeserialize(builder=DumpHttpResponse.Builder.class)
 public class DumpHttpResponse extends DumpMessage implements HttpResponse {
-    private int statusCode;
+    private final int statusCode;
+
+    public DumpHttpResponse(String version, int statusCode, Map<String, String> headers, String content) {
+        super(version, content, headers);
+        this.statusCode = statusCode;
+    }
 
     public int getStatusCode() {
         return statusCode;
     }
 
     public static DumpHttpResponse newResponse(FullHttpResponse response) {
-        DumpHttpResponse httpResponse = new DumpHttpResponse();
-        httpResponse.statusCode = response.getStatus().code();
-        httpResponse.version = response.getProtocolVersion().text();
+        ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : response.headers()) {
-            httpResponse.headers.put(entry.getKey(), entry.getValue());
+            headerBuilder.put(entry);
         }
-        setContent(response, httpResponse);
-        return httpResponse;
+
+        return builder()
+                .withVersion(response.getProtocolVersion().text())
+                .withStatusCode(response.getStatus().code())
+                .withHeaders(headerBuilder.build())
+                .withContent(response.content().toString(Charset.defaultCharset()))
+                .build();
     }
 
-    private static void setContent(FullHttpMessage message, DumpMessage dumpedDumpMessage) {
-        String text = message.content().toString(Charset.defaultCharset());
-        if (!Strings.isNullOrEmpty(text)) {
-            dumpedDumpMessage.content = text;
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String version;
+        private String content;
+        private Map<String, String> headers = newHashMap();
+        private int statusCode;
+
+        public Builder withVersion(String version) {
+            this.version = version;
+            return this;
         }
+
+        public Builder withContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder withHeaders(Map<String, String> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder withStatusCode(int code) {
+            this.statusCode = code;
+            return this;
+        }
+
+        public DumpHttpResponse build() {
+            return new DumpHttpResponse(version, statusCode, headers, content);
+        }
+
+
     }
 }

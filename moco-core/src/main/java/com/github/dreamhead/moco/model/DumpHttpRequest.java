@@ -10,17 +10,15 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @JsonDeserialize(builder=DumpHttpRequest.Builder.class)
 public class DumpHttpRequest extends DumpMessage implements HttpRequest {
-    private Map<String, String> queries = newHashMap();
-    private String method;
-    private String uri;
+    private final Map<String, String> queries;
+    private final String method;
+    private final String uri;
 
     private DumpHttpRequest(String version, String content, String method, String uri,
                             Map<String, String> headers, Map<String, String> queries) {
-        this.version = version;
-        this.content = content;
+        super(version, content, headers);
         this.method = method;
         this.uri = uri;
-        this.headers = headers;
         this.queries = queries;
     }
 
