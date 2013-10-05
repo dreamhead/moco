@@ -1,8 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public interface HttpResponse {
@@ -10,7 +9,7 @@ public interface HttpResponse {
 
     String getContent();
 
-    Map<String, String> getHeaders();
+    ImmutableMap<String, String> getHeaders();
 
     int getStatusCode();
 }

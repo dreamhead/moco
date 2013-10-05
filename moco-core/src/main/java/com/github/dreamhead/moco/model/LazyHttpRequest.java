@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -12,12 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Maps.newHashMap;
 
 public class LazyHttpRequest implements HttpRequest {
     private final FullHttpRequest request;
-    private final Supplier<Map<String, String>> headersSupplier;
-    private final Supplier<Map<String,String>> queriesSupplier;
+    private final Supplier<ImmutableMap<String, String>> headersSupplier;
+    private final Supplier<ImmutableMap<String,String>> queriesSupplier;
     private final Supplier<String> contentSupplier;
 
     public LazyHttpRequest(FullHttpRequest request) {
@@ -33,7 +33,7 @@ public class LazyHttpRequest implements HttpRequest {
     }
 
     @Override
-    public Map<String, String> getQueries() {
+    public ImmutableMap<String, String> getQueries() {
         return this.queriesSupplier.get();
     }
 
@@ -53,34 +53,34 @@ public class LazyHttpRequest implements HttpRequest {
     }
 
     @Override
-    public Map<String, String> getHeaders() {
+    public ImmutableMap<String, String> getHeaders() {
         return headersSupplier.get();
     }
 
-    private Supplier<Map<String, String>> queriesSupplier(final String uri) {
-        return Suppliers.memoize(new Supplier<Map<String, String>>() {
+    private Supplier<ImmutableMap<String, String>> queriesSupplier(final String uri) {
+        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
-            public Map<String, String> get() {
-                Map<String, String> queries = newHashMap();
+            public ImmutableMap<String, String> get() {
+                ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 
                 QueryStringDecoder decoder = new QueryStringDecoder(uri);
                 for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-                    queries.put(entry.getKey(), entry.getValue().get(0));
+                    builder.put(entry.getKey(), entry.getValue().get(0));
                 }
-                return queries;
+                return builder.build();
             }
         });
     }
 
-    private Supplier<Map<String, String>> headersSupplier(final HttpHeaders requestHeaders) {
-        return Suppliers.memoize(new Supplier<Map<String, String>>() {
+    private Supplier<ImmutableMap<String, String>> headersSupplier(final HttpHeaders requestHeaders) {
+        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
-            public Map<String, String> get() {
-                Map<String,String> headers = newHashMap();
+            public ImmutableMap<String, String> get() {
+                ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
                 for (Map.Entry<String, String> entry : requestHeaders) {
-                    headers.put(entry.getKey(), entry.getValue());
+                    builder.put(entry.getKey(), entry.getValue());
                 }
-                return headers;
+                return builder.build();
             }
         });
     }

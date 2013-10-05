@@ -3,19 +3,20 @@ package com.github.dreamhead.moco.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.ImmutableMap.copyOf;
 
-@JsonDeserialize(builder=DumpHttpRequest.Builder.class)
+@JsonDeserialize(builder = DumpHttpRequest.Builder.class)
 public class DumpHttpRequest extends DumpMessage implements HttpRequest {
-    private final Map<String, String> queries;
+    private final ImmutableMap<String, String> queries;
     private final String method;
     private final String uri;
 
     private DumpHttpRequest(String version, String content, String method, String uri,
-                            Map<String, String> headers, Map<String, String> queries) {
+                            ImmutableMap<String, String> headers, ImmutableMap<String, String> queries) {
         super(version, content, headers);
         this.method = method;
         this.uri = uri;
@@ -27,7 +28,7 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
         return uri;
     }
 
-    public Map<String, String> getQueries() {
+    public ImmutableMap<String, String> getQueries() {
         return queries;
     }
 
@@ -60,8 +61,8 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
     public static final class Builder {
         private String version;
         private String content;
-        private Map<String, String> headers = newHashMap();
-        private Map<String, String> queries = newHashMap();
+        private ImmutableMap<String, String> headers;
+        private ImmutableMap<String, String> queries;
         private String method;
         private String uri;
 
@@ -76,12 +77,18 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
         }
 
         public Builder withHeaders(Map<String, String> headers) {
-            this.headers = headers;
+            if (headers != null) {
+                this.headers = copyOf(headers);
+            }
+
             return this;
         }
 
         public Builder withQueries(Map<String, String> queries) {
-            this.queries = queries;
+            if (queries != null) {
+                this.queries = copyOf(queries);
+            }
+
             return this;
         }
 

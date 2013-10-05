@@ -8,13 +8,13 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder=DumpHttpResponse.Builder.class)
 public class DumpHttpResponse extends DumpMessage implements HttpResponse {
     private final int statusCode;
 
-    public DumpHttpResponse(String version, int statusCode, Map<String, String> headers, String content) {
+    public DumpHttpResponse(String version, int statusCode, ImmutableMap<String, String> headers, String content) {
         super(version, content, headers);
         this.statusCode = statusCode;
     }
@@ -44,7 +44,7 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
     public static final class Builder {
         private String version;
         private String content;
-        private Map<String, String> headers = newHashMap();
+        private ImmutableMap<String, String> headers;
         private int statusCode;
 
         public Builder withVersion(String version) {
@@ -58,7 +58,10 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
         }
 
         public Builder withHeaders(Map<String, String> headers) {
-            this.headers = headers;
+            if (headers != null) {
+                this.headers = copyOf(headers);
+            }
+
             return this;
         }
 
@@ -70,7 +73,5 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
         public DumpHttpResponse build() {
             return new DumpHttpResponse(version, statusCode, headers, content);
         }
-
-
     }
 }

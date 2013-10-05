@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco;
 
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 
 public interface HttpRequest {
     String getUri();
 
-    Map<String, String> getQueries();
+    ImmutableMap<String, String> getQueries();
 
     String getMethod();
 
@@ -13,5 +13,5 @@ public interface HttpRequest {
 
     String getContent();
 
-    Map<String, String> getHeaders();
+    ImmutableMap<String, String> getHeaders();
 }
