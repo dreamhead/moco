@@ -61,16 +61,24 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
     private HttpEntity createEntity(ByteBuf content) {
-        if (content.hasArray()) {
-            new ByteArrayEntity(content.array());
+        return new ByteArrayEntity(readBuf(content));
+    }
 
+    private byte[] readBuf(ByteBuf content) {
+        if (content.hasArray()) {
+            return content.array();
         }
 
-        ByteBuffer byteBuffer = content.nioBuffer();
-        byte[] bytes = new byte[byteBuffer.capacity()];
-        byteBuffer.get(bytes);
-        return new ByteArrayEntity(bytes);
+        if (content.nioBufferCount() > 0) {
+            ByteBuffer byteBuffer = content.nioBuffer();
+            byte[] bytes = new byte[byteBuffer.capacity()];
+            byteBuffer.get(bytes);
+            return bytes;
+        }
+
+        throw new IllegalArgumentException("unknown content");
     }
+
 
     private org.apache.http.HttpVersion createVersion(HttpRequest request) {
         HttpVersion protocolVersion = request.getProtocolVersion();
