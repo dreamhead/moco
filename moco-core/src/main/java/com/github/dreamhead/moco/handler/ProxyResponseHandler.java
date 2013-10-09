@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class ProxyResponseHandler implements ResponseHandler {
             long contentLength = HttpHeaders.getContentLength(request, -1);
             if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-                entityRequest.setEntity(new ByteArrayEntity(request.content().array()));
+                entityRequest.setEntity(createEntity(request.content()));
             }
 
             setupResponse(request, response, httpclient.execute(remoteRequest));
@@ -57,6 +58,18 @@ public class ProxyResponseHandler implements ResponseHandler {
             logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
         }
+    }
+
+    private HttpEntity createEntity(ByteBuf content) {
+        if (content.hasArray()) {
+            new ByteArrayEntity(content.array());
+
+        }
+
+        ByteBuffer byteBuffer = content.nioBuffer();
+        byte[] bytes = new byte[byteBuffer.capacity()];
+        byteBuffer.get(bytes);
+        return new ByteArrayEntity(bytes);
     }
 
     private org.apache.http.HttpVersion createVersion(HttpRequest request) {
