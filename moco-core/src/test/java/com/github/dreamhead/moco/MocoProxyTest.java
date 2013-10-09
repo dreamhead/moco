@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.google.common.io.Files;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -11,7 +9,6 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,25 +16,15 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.httpserver;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.google.common.base.Optional.of;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoProxyTest extends AbstractMocoTest {
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        server = ActualHttpServer.createLogServer(of(port()));
-    }
-
     @Test
     public void should_fetch_remote_url() throws Exception {
         server.response(proxy("https://github.com/"));
