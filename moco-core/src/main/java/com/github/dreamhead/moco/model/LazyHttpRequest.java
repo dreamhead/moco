@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.model;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class LazyHttpRequest extends AbstractHttpRequest {
+public class LazyHttpRequest implements HttpRequest {
     private final FullHttpRequest request;
     private final Supplier<ImmutableMap<String, String>> headersSupplier;
     private final Supplier<ImmutableMap<String,String>> queriesSupplier;
@@ -92,5 +93,10 @@ public class LazyHttpRequest extends AbstractHttpRequest {
                 return isNullOrEmpty(text) ? null : text;
             }
         });
+    }
+
+    @Override
+    public String toString() {
+        return new HttpRequestDelegate(this).toString();
     }
 }
