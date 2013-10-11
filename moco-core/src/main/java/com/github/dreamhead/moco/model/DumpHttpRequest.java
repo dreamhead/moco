@@ -43,15 +43,7 @@ public class DumpHttpRequest extends DumpMessage implements HttpRequest {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(DumpHttpRequest.class)
-                .omitNullValues()
-                .add("uri", uri)
-                .add("version", version)
-                .add("queries", queries)
-                .add("method", method)
-                .add("headers", headers)
-                .add("content", content)
-                .toString();
+        return new HttpRequestDelegate(this).toString();
     }
 
     public static Builder builder() {
