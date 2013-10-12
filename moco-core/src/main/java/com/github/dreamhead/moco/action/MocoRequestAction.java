@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.action;
 
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.google.common.base.Optional;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.methods.HttpGet;
@@ -18,9 +19,9 @@ import static java.lang.String.format;
 public class MocoRequestAction implements MocoEventAction {
     private final String url;
     private final String method;
-    private final ContentResource content;
+    private final Optional<ContentResource> content;
 
-    public MocoRequestAction(String url, String method, ContentResource content) {
+    public MocoRequestAction(String url, String method, Optional<ContentResource> content) {
         this.url = url;
         this.method = method;
         this.content = content;
@@ -31,8 +32,8 @@ public class MocoRequestAction implements MocoEventAction {
         CloseableHttpClient client = HttpClients.createDefault();
         try {
             HttpRequestBase request = createRequest(url, method);
-            if (request instanceof HttpEntityEnclosingRequest) {
-                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.readFor(null)));
+            if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
+                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(null)));
             }
 
             client.execute(request);
