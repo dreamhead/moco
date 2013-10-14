@@ -16,7 +16,7 @@
       "Content-Length" : "9",
       "Content-Type" : "text/plain; charset=UTF-8"
     },
-    "statusCode" : 200
+    "status" : 200
   }
 }, {
   "request" : {
@@ -37,6 +37,6 @@
       "Content-Length" : "10",
       "Content-Type" : "text/plain; charset=UTF-8"
     },
-    "statusCode" : 200
+    "status" : 200
   }
 } ]
