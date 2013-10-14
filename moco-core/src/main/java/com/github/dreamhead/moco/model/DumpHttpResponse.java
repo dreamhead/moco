@@ -12,15 +12,15 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder=DumpHttpResponse.Builder.class)
 public class DumpHttpResponse extends DumpMessage implements HttpResponse {
-    private final int statusCode;
+    private final int status;
 
-    public DumpHttpResponse(String version, int statusCode, ImmutableMap<String, String> headers, String content) {
+    public DumpHttpResponse(String version, int status, ImmutableMap<String, String> headers, String content) {
         super(version, content, headers);
-        this.statusCode = statusCode;
+        this.status = status;
     }
 
-    public int getStatusCode() {
-        return statusCode;
+    public int getStatus() {
+        return status;
     }
 
     public static DumpHttpResponse newResponse(FullHttpResponse response) {
@@ -31,7 +31,7 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
 
         return builder()
                 .withVersion(response.getProtocolVersion().text())
-                .withStatusCode(response.getStatus().code())
+                .withStatus(response.getStatus().code())
                 .withHeaders(headerBuilder.build())
                 .withContent(response.content().toString(Charset.defaultCharset()))
                 .build();
@@ -45,7 +45,7 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
         private String version;
         private String content;
         private ImmutableMap<String, String> headers;
-        private int statusCode;
+        private int status;
 
         public Builder withVersion(String version) {
             this.version = version;
@@ -65,13 +65,13 @@ public class DumpHttpResponse extends DumpMessage implements HttpResponse {
             return this;
         }
 
-        public Builder withStatusCode(int code) {
-            this.statusCode = code;
+        public Builder withStatus(int code) {
+            this.status = code;
             return this;
         }
 
         public DumpHttpResponse build() {
-            return new DumpHttpResponse(version, statusCode, headers, content);
+            return new DumpHttpResponse(version, status, headers, content);
         }
     }
 }

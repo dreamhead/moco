@@ -3,6 +3,7 @@
 * seq API with response handler
 * Added shortcut for put and delete in API
 * Server can select available port(start/shutdown) if no port providing
+* Changed "statusCode" in failover to "status"
 
 # Release 0.8.1 (1-August-2013)
 * Upgrade to Netty 4

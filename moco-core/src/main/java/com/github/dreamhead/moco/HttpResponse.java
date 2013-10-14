@@ -9,5 +9,5 @@ public interface HttpResponse {
 
     ImmutableMap<String, String> getHeaders();
 
-    int getStatusCode();
+    int getStatus();
 }

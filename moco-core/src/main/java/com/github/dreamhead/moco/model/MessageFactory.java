@@ -20,7 +20,7 @@ public class MessageFactory {
 
     public static void writeResponse(FullHttpResponse response, HttpResponse targetHttpResponse) {
         response.setProtocolVersion(HttpVersion.valueOf(targetHttpResponse.getVersion()));
-        response.setStatus(HttpResponseStatus.valueOf(targetHttpResponse.getStatusCode()));
+        response.setStatus(HttpResponseStatus.valueOf(targetHttpResponse.getStatus()));
         for (Map.Entry<String, String> entry : targetHttpResponse.getHeaders().entrySet()) {
             response.headers().add(entry.getKey(), entry.getValue());
         }
