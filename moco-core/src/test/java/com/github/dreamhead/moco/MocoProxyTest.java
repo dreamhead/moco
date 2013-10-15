@@ -9,7 +9,9 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoProxyTest extends AbstractMocoTest {
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
+
     @Test
     public void should_fetch_remote_url() throws Exception {
         server.response(proxy("https://github.com/"));
@@ -161,7 +166,7 @@ public class MocoProxyTest extends AbstractMocoTest {
     @Test
     public void should_failover_with_response_content() throws Exception {
         server.post(and(by(uri("/target")), by("proxy"))).response("proxy");
-        final File tempFile = File.createTempFile("temp", ".json");
+        final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, new Runnable() {
@@ -178,7 +183,7 @@ public class MocoProxyTest extends AbstractMocoTest {
         server.get(by(uri("/target"))).response("get_proxy");
         server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
 
-        final File tempFile = File.createTempFile("temp", ".json");
+        final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, new Runnable() {
@@ -196,7 +201,7 @@ public class MocoProxyTest extends AbstractMocoTest {
     @Test
     public void should_failover_with_same_response_once() throws Exception {
         server.post(and(by(uri("/target")), by("proxy"))).response("0XCAFEBABE");
-        final File tempFile = File.createTempFile("temp", ".json");
+        final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, new Runnable() {
