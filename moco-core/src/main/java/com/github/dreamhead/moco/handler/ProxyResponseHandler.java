@@ -39,10 +39,8 @@ public class ProxyResponseHandler implements ResponseHandler {
     @Override
     public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         try {
-            URL url = remoteUrl(request);
-
             CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpRequestBase remoteRequest = createRemoteRequest(request, url);
+            HttpRequestBase remoteRequest = createRemoteRequest(request);
             RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
             remoteRequest.setConfig(config);
             remoteRequest.setProtocolVersion(createVersion(request));
@@ -58,6 +56,17 @@ public class ProxyResponseHandler implements ResponseHandler {
             logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
         }
+    }
+
+    private HttpRequestBase createRemoteRequest(FullHttpRequest request) throws MalformedURLException {
+        HttpRequestBase remoteRequest = createBaseRequest(remoteUrl(request), request.getMethod());
+        for (Map.Entry<String, String> entry : request.headers()) {
+            if (isRemoteHeader(entry)) {
+                remoteRequest.addHeader(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return remoteRequest;
     }
 
     private HttpEntity createEntity(ByteBuf content) {
@@ -115,20 +124,8 @@ public class ProxyResponseHandler implements ResponseHandler {
         }
     }
 
-    private HttpRequestBase createRemoteRequest(HttpRequest request, URL url) {
-        HttpRequestBase remoteRequest = createBaseRequest(url, request);
-        for (Map.Entry<String, String> entry : request.headers()) {
-            if (isRemoteHeader(entry)) {
-                remoteRequest.addHeader(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return remoteRequest;
-    }
-
     private boolean isRemoteHeader(Map.Entry<String, String> entry) {
         return !isHeader(entry, "Host") && !isHeader(entry, "Content-Length");
-
     }
 
     private boolean isHeader(Map.Entry<String, String> entry, String key) {
@@ -138,10 +135,6 @@ public class ProxyResponseHandler implements ResponseHandler {
     @Override
     public ResponseHandler apply(final MocoConfig config) {
         return this;
-    }
-
-    private HttpRequestBase createBaseRequest(URL url, HttpRequest request) {
-        return createBaseRequest(url, request.getMethod());
     }
 
     private HttpRequestBase createBaseRequest(URL url, HttpMethod method) {
