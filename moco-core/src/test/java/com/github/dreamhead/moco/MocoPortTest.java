@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,7 +27,7 @@ public class MocoPortTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.get("http://localhost:" + server.port()), is("foo"));
+                assertThat(helper.get(root(server.port())), is("foo"));
             }
         });
     }

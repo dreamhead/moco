@@ -31,8 +31,16 @@ public class Moco {
         return ActualHttpServer.createQuietServer(of(port), configs);
     }
 
+    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
+        return ActualHttpServer.createHttpServerWithMonitor(of(port), monitor, configs);
+    }
+
     public static HttpServer httpserver(final MocoConfig... configs) {
         return ActualHttpServer.createQuietServer(Optional.<Integer>absent(), configs);
+    }
+
+    public static HttpServer httpserver(final MocoMonitor monitor, final MocoConfig... configs) {
+        return ActualHttpServer.createHttpServerWithMonitor(Optional.<Integer>absent(), monitor, configs);
     }
 
     public static MocoConfig context(final String context) {
