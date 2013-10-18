@@ -4,6 +4,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.junit.Test;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
@@ -57,7 +58,7 @@ public class MocoEventTest extends AbstractMocoTest {
             }
         });
 
-        verify(action, never()).execute();
+        verify(action, Mockito.never()).execute();
     }
 
     @Test
