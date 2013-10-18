@@ -9,6 +9,8 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
+import com.github.dreamhead.moco.monitor.DefaultRequestHit;
+import com.github.dreamhead.moco.monitor.TimesVerification;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -162,9 +164,9 @@ public class Moco {
     public static RequestMatcher json(final Resource resource) {
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
-    
+
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
-    	return new JsonPathRequestExtractor(checkNotNull(jsonPath, "Null JsonPath is not allowed"));
+        return new JsonPathRequestExtractor(checkNotNull(jsonPath, "Null JsonPath is not allowed"));
     }
 
     public static ResponseHandler seq(final String... contents) {
@@ -253,6 +255,18 @@ public class Moco {
         return new MocoRequestAction(url, "POST", of(content));
     }
 
+    public static RequestHit requestHit() {
+        return new DefaultRequestHit();
+    }
+
+    public static UnexpectedRequestMatcher unexpected() {
+        return new UnexpectedRequestMatcher() {};
+    }
+
+    public static VerificationMode never() {
+        return new TimesVerification(0);
+    }
+
     private static URL toUrl(String url) {
         try {
             return new URL(checkNotNull(url, "Null url is not allowed"));
@@ -261,5 +275,6 @@ public class Moco {
         }
     }
 
-    private Moco() {}
+    private Moco() {
+    }
 }
