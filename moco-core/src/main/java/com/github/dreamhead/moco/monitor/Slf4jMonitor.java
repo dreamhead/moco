@@ -28,4 +28,8 @@ public class Slf4jMonitor implements MocoMonitor {
     public void onMessageLeave(FullHttpResponse response) {
         logger.info("Response return:\n\n{}\n", responseDumper.dump(response));
     }
+
+    @Override
+    public void onUnexpectedMessage(FullHttpRequest request) {
+    }
 }

@@ -52,6 +52,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(request, response);
+//                this.eventBus.post();
                 return response;
             }
         }
