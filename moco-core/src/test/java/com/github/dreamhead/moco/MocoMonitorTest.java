@@ -62,7 +62,32 @@ public class MocoMonitorTest {
     }
 
     @Test
-    public void should_verify_unexpected_request() throws Exception {
+    public void should_verify_expected_request() throws Exception {
+        RequestHit hit = requestHit();
+
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), times(1));
+    }
+
+    @Test(expected = VerificationException.class)
+    public void should_fail_to_verify_while_expectation_can_not_be_met() throws Exception {
+        RequestHit hit = requestHit();
+
+        final HttpServer server = httpserver(port(), hit);
+        hit.verify(by(uri("/foo")), times(1));
+    }
+
+    @Test
+    public void should_verify_unexpected_request_without_unexpected_request() throws Exception {
         RequestHit hit = requestHit();
 
         final HttpServer server = httpserver(port(), hit);

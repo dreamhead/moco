@@ -264,7 +264,11 @@ public class Moco {
     }
 
     public static VerificationMode never() {
-        return new TimesVerification(0);
+        return times(0);
+    }
+
+    public static VerificationMode times(int count) {
+        return new TimesVerification(count);
     }
 
     private static URL toUrl(String url) {

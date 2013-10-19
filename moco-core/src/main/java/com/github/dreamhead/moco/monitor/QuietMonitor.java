@@ -21,4 +21,8 @@ public class QuietMonitor implements MocoMonitor {
     @Override
     public void onMessageLeave(FullHttpResponse response) {
     }
+
+    @Override
+    public void onUnexpectedMessage(FullHttpRequest request) {
+    }
 }

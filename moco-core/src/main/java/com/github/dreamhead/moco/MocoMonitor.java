@@ -13,4 +13,7 @@ public interface MocoMonitor {
 
     @Subscribe
     void onMessageLeave(FullHttpResponse response);
+
+    @Subscribe
+    void onUnexpectedMessage(FullHttpRequest request);
 }
