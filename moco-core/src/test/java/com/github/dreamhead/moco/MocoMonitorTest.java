@@ -82,7 +82,7 @@ public class MocoMonitorTest {
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_expectation_can_not_be_met() throws Exception {
         final RequestHit hit = requestHit();
-        final HttpServer server = httpserver(port(), hit);
+        httpserver(port(), hit);
         hit.verify(by(uri("/foo")), times(1));
     }
 
@@ -112,7 +112,7 @@ public class MocoMonitorTest {
             public void run() throws Exception {
                 try {
                     helper.get(remoteUrl("/foo"));
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         });
@@ -130,11 +130,16 @@ public class MocoMonitorTest {
             public void run() throws Exception {
                 try {
                     helper.get(remoteUrl("/foo"));
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         });
 
         hit.verify(unexpected(), never());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_negative_number_for_times() {
+        times(-1);
     }
 }

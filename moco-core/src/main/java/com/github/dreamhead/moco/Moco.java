@@ -24,6 +24,7 @@ import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.google.common.base.Optional.of;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
@@ -268,6 +269,7 @@ public class Moco {
     }
 
     public static VerificationMode times(int count) {
+        checkArgument(count >= 0, "Times count must not be less than zero");
         return new TimesVerification(count);
     }
 
