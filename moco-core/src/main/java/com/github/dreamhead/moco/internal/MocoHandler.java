@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,26 +10,25 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private final EventBus eventBus = new EventBus();
-
     private final ImmutableList<BaseSetting> settings;
     private final BaseSetting anySetting;
+    private final MocoMonitor monitor;
 
     public MocoHandler(ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
-        this.eventBus.register(server.getMonitor());
+        this.monitor = server.getMonitor();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
-        eventBus.post(message);
+        monitor.onMessageArrived(message);
         httpRequestReceived(ctx, message);
     }
 
     private void httpRequestReceived(final ChannelHandlerContext ctx, FullHttpRequest request) {
-        HttpResponse response = getResponse(request);
-        eventBus.post(response);
+        FullHttpResponse response = getResponse(request);
+        monitor.onMessageLeave(response);
         ChannelFuture future = ctx.writeAndFlush(response);
         future.addListener(ChannelFutureListener.CLOSE);
     }
@@ -38,10 +37,10 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         try {
             return doGetHttpResponse(request);
         } catch (RuntimeException e) {
-            eventBus.post(e);
+            monitor.onException(e);
             return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
         } catch (Exception e) {
-            eventBus.post(e);
+            monitor.onException(e);
             return defaultResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -52,7 +51,6 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(request, response);
-//                this.eventBus.post();
                 return response;
             }
         }
@@ -62,6 +60,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             return response;
         }
 
+        monitor.onUnexpectedMessage(request);
         return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
     }
 

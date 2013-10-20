@@ -1,7 +1,12 @@
 # Release 0.9
+
+## APIs
 * Turned off log for API by default
 * seq API with response handler
 * Added shortcut for put and delete in API
+* Request Hit as verifier
+
+## Details
 * Server can select available port(start/shutdown) if no port providing
 * Changed "statusCode" in failover to "status"
 
