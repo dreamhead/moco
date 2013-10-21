@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.monitor;
+package com.github.dreamhead.moco.monitor.verification;
 
 import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationException;
@@ -9,17 +9,19 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import static com.google.common.collect.FluentIterable.from;
 import static java.lang.String.format;
 
-public class TimesVerification implements VerificationMode {
-    private final int count;
+public abstract class AbstractVerification implements VerificationMode {
+    protected abstract boolean meet(int size);
 
-    public TimesVerification(int count) {
+    protected final int count;
+
+    public AbstractVerification(int count) {
         this.count = count;
     }
 
     @Override
     public void verify(final VerificationData data) {
         int size = from(data.getRequests()).filter(matched(data)).size();
-        if (size != count) {
+        if (!meet(size)) {
             throw new VerificationException(format("expect request hit %d times but %d times", count, size));
         }
     }
