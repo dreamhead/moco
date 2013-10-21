@@ -9,8 +9,8 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
-import com.github.dreamhead.moco.monitor.DefaultRequestHit;
-import com.github.dreamhead.moco.monitor.TimesVerification;
+import com.github.dreamhead.moco.monitor.verification.AtLeastVerification;import com.github.dreamhead.moco.monitor.DefaultRequestHit;
+import com.github.dreamhead.moco.monitor.verification.AtMostVerification;import com.github.dreamhead.moco.monitor.verification.TimesVerification;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -271,6 +271,16 @@ public class Moco {
     public static VerificationMode times(int count) {
         checkArgument(count >= 0, "Times count must not be less than zero");
         return new TimesVerification(count);
+    }
+
+    public static VerificationMode atLeast(int count) {
+        checkArgument(count >= 0, "Times count must not be less than zero");
+        return new AtLeastVerification(count);
+    }
+
+    public static VerificationMode atMost(int count) {
+        checkArgument(count >= 0, "Times count must not be less than zero");
+        return new AtMostVerification(count);
     }
 
     private static URL toUrl(String url) {

@@ -21,10 +21,12 @@ import static org.mockito.Mockito.verify;
 
 public class MocoMonitorTest {
     private MocoTestHelper helper;
+    private RequestHit hit;
 
     @Before
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
+        hit = requestHit();
     }
 
     @Test
@@ -65,7 +67,6 @@ public class MocoMonitorTest {
 
     @Test
     public void should_verify_expected_request() throws Exception {
-        final RequestHit hit = requestHit();
         final HttpServer server = httpserver(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
@@ -81,14 +82,65 @@ public class MocoMonitorTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_expectation_can_not_be_met() throws Exception {
-        final RequestHit hit = requestHit();
         httpserver(port(), hit);
         hit.verify(by(uri("/foo")), times(1));
     }
 
     @Test
+    public void should_verify_expected_request_for_at_least() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), atLeast(1));
+    }
+
+    @Test(expected = VerificationException.class)
+    public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        hit.verify(by(uri("/foo")), atLeast(1));
+    }
+
+    @Test
+    public void should_verify_expected_request_for_at_most() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), atMost(2));
+    }
+
+    @Test(expected = VerificationException.class)
+    public void should_fail_to_verify_at_most_expected_request_while_expectation_can_not_be_met() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), atMost(1));
+    }
+
+    @Test
     public void should_verify_unexpected_request_without_unexpected_request() throws Exception {
-        final RequestHit hit = requestHit();
         final HttpServer server = httpserver(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
@@ -104,7 +156,6 @@ public class MocoMonitorTest {
 
     @Test
     public void should_verify_unexpected_request_with_unexpected_request() throws Exception {
-        final RequestHit hit = requestHit();
         final HttpServer server = httpserver(port(), hit);
 
         running(server, new Runnable() {
@@ -122,7 +173,6 @@ public class MocoMonitorTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_unexpected_request_expectation_can_not_be_met() throws Exception {
-        final RequestHit hit = requestHit();
         final HttpServer server = httpserver(port(), hit);
 
         running(server, new Runnable() {
