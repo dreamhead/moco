@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 public class VerificationData {
-    private ImmutableList<FullHttpRequest> requests;
+    private final ImmutableList<FullHttpRequest> requests;
     private final RequestMatcher matcher;
 
     public VerificationData(ImmutableList<FullHttpRequest> requests, RequestMatcher matcher) {
