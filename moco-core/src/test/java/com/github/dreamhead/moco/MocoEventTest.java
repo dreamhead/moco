@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.util.Idles;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.junit.Test;
@@ -121,17 +122,10 @@ public class MocoEventTest extends AbstractMocoTest {
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
                 verify(handler, never()).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
-                waitForAsync();
+                Idles.idle(2000);
             }
         });
 
         verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
-    }
-
-    private void waitForAsync() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
     }
 }
