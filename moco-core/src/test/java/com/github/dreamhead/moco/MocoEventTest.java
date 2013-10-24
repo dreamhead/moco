@@ -128,4 +128,22 @@ public class MocoEventTest extends AbstractMocoTest {
 
         verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
     }
+
+    @Test
+    public void should_send_post_request_to_target_on_complete_asyc_after_awhile() throws Exception {
+        final ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")), latency(1000))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+                verify(handler, never()).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+                Idles.idle(2000);
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+    }
 }

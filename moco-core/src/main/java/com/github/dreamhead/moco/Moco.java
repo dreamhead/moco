@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.verification.AtLeastVerification;import com.github.dreamhead.moco.monitor.DefaultRequestHit;
 import com.github.dreamhead.moco.monitor.verification.AtMostVerification;import com.github.dreamhead.moco.monitor.verification.TimesVerification;
+import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -31,6 +32,8 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
+    private static final int DEFAULT_LATENCY = 1000;
+
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
         return ActualHttpServer.createQuietServer(of(port), configs);
     }
@@ -95,12 +98,16 @@ public class Moco {
         return textResource(checkNotNull(text, "Null text is not allowed"));
     }
 
-    public static ResponseHandler with(String text) {
+    public static ResponseHandler with(final String text) {
         return with(text(text));
     }
 
     public static ResponseHandler with(final Resource resource) {
         return responseHandler(resource);
+    }
+
+    public static ResponseHandler with(final MocoProcedure procedure) {
+        return new ProcedureResponseHandler(procedure);
     }
 
     public static Resource uri(final String uri) {
@@ -147,8 +154,8 @@ public class Moco {
         return new FormRequestExtractor(checkNotNull(key, "Null form name is not allowed"));
     }
 
-    public static ResponseHandler latency(final long millis) {
-        return new LatencyResponseHandler(millis);
+    public static LatencyProcedure latency(final long millis) {
+        return new LatencyProcedure(millis);
     }
 
     public static RequestExtractor<String> query(final String param) {
@@ -246,7 +253,11 @@ public class Moco {
     }
 
     public static MocoEventAction async(MocoEventAction action) {
-        return new MocoAsyncAction(action);
+        return async(action, latency(DEFAULT_LATENCY));
+    }
+
+    public static MocoEventAction async(MocoEventAction action, LatencyProcedure procedure) {
+        return new MocoAsyncAction(action, procedure);
     }
 
     public static MocoEventAction request(String url) {

@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -104,7 +105,7 @@ public class ResponseSetting extends Dynamics {
         }
 
         if ("latency".equalsIgnoreCase(name)) {
-            return invokeTarget(name, Long.parseLong(value.toString()), ResponseHandler.class);
+            return with(invokeTarget(name, Long.parseLong(value.toString()), MocoProcedure.class));
         }
 
         if (ProxyContainer.class.isInstance(value)) {
