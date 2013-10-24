@@ -1,13 +1,15 @@
 package com.github.dreamhead.moco.action;
 
 import com.github.dreamhead.moco.MocoEventAction;
+import com.github.dreamhead.moco.procedure.LatencyProcedure;
 
 public class MocoAsyncAction implements MocoEventAction {
-    private static int DEFAULT_LATENCY = 1000;;
     private final MocoEventAction action;
+    private final LatencyProcedure procedure;
 
-    public MocoAsyncAction(MocoEventAction action) {
+    public MocoAsyncAction(MocoEventAction action, LatencyProcedure procedure) {
         this.action = action;
+        this.procedure = procedure;
     }
 
     @Override
@@ -15,16 +17,9 @@ public class MocoAsyncAction implements MocoEventAction {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                waitForAwhile(DEFAULT_LATENCY);
+                procedure.execute();
                 action.execute();
             }
         }).start();
-    }
-
-    private void waitForAwhile(int latency) {
-        try {
-            Thread.sleep(latency);
-        } catch (InterruptedException ignored) {
-        }
     }
 }

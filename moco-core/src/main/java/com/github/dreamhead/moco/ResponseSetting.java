@@ -35,6 +35,10 @@ public abstract class ResponseSetting {
         return this;
     }
 
+    public void response(MocoProcedure procedure) {
+        this.response(with(procedure));
+    }
+
     public void response(ResponseHandler... handlers) {
         this.response(new AndResponseHandler(copyOf(handlers)));
     }
