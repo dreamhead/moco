@@ -35,10 +35,12 @@ public class Moco {
     private static final int DEFAULT_LATENCY = 1000;
 
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
+        checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createQuietServer(of(port), configs);
     }
 
     public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
+        checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port), monitor, configs);
     }
 
@@ -63,6 +65,7 @@ public class Moco {
     }
 
     public static RequestMatcher by(final Resource resource) {
+        checkNotNull(resource, "resource should not be null");
         return eq(extractor(resource.id()), resource);
     }
 
@@ -71,11 +74,12 @@ public class Moco {
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final Resource expected) {
-        return new EqRequestMatcher<T>(extractor, expected);
+        return new EqRequestMatcher<T>(checkNotNull(extractor, "extractor should not be null"), expected);
     }
 
-    public static RequestMatcher match(final Resource patternResource) {
-        return match(extractor(patternResource.id()), patternResource);
+    public static RequestMatcher match(final Resource resource) {
+        checkNotNull(resource, "resource should not be null");
+        return match(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final String expected) {
@@ -83,7 +87,8 @@ public class Moco {
     }
 
     private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
-        return new MatchMatcher<T>(extractor, expected);
+        return new MatchMatcher<T>(checkNotNull(extractor, "extractor should not be null"),
+                checkNotNull(expected, "expected resource should not be null"));
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
@@ -103,11 +108,11 @@ public class Moco {
     }
 
     public static ResponseHandler with(final Resource resource) {
-        return responseHandler(resource);
+        return responseHandler(checkNotNull(resource, "Null procedure is not allowed"));
     }
 
     public static ResponseHandler with(final MocoProcedure procedure) {
-        return new ProcedureResponseHandler(procedure);
+        return new ProcedureResponseHandler(checkNotNull(procedure, "Null procedure is not allowed"));
     }
 
     public static Resource uri(final String uri) {
@@ -155,6 +160,7 @@ public class Moco {
     }
 
     public static LatencyProcedure latency(final long millis) {
+        checkArgument(millis > 0, "Latency must be greater than zero");
         return new LatencyProcedure(millis);
     }
 
@@ -167,10 +173,12 @@ public class Moco {
     }
 
     public static RequestMatcher xml(final Resource resource) {
+        checkNotNull(resource, "Null resource is not allowed");
         return new XmlRequestMatcher(extractor(resource.id()), resource);
     }
 
     public static RequestMatcher json(final Resource resource) {
+        checkNotNull(resource, "Null resource is not allowed");
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
@@ -233,7 +241,7 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url, Failover failover) {
-        return new ProxyResponseHandler(toUrl(url), checkNotNull(failover, "Null failover is not allowed"));
+        return new ProxyResponseHandler(toUrl(checkNotNull(url, "Null URL is not allowed")), checkNotNull(failover, "Null failover is not allowed"));
     }
 
     public static Resource template(final String template) {
