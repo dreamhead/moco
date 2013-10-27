@@ -64,8 +64,7 @@ public class SessionSetting {
 
     private com.github.dreamhead.moco.ResponseSetting bindToSession(HttpServer server) {
         if (isMount()) {
-            server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
-            return null;
+            return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
         }
 
         if (isAnyResponse()) {

@@ -39,9 +39,10 @@ public abstract class HttpServer extends ResponseSetting {
         return requestByHttpMethod(HttpMethod.DELETE, matcher);
     }
 
-    public void mount(final String dir, final MountTo target, final MountPredicate... predicates) {
+    public ResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(dir);
         this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
+        return this;
     }
 
     private Setting requestByHttpMethod(HttpMethod method, RequestMatcher matcher) {
