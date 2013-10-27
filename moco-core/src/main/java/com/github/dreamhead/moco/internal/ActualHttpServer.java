@@ -71,7 +71,14 @@ public class ActualHttpServer extends HttpServer {
         newServer.anySetting(configItem(this.matcher, this.configs), configItem(this.handler, this.configs));
         newServer.anySetting(configItem(thatServer.matcher, thatServer.configs), configItem(thatServer.handler, thatServer.configs));
 
+        newServer.addEvents(this.eventTriggers);
+        newServer.addEvents(thatServer.eventTriggers);
+
         return newServer;
+    }
+
+    private void addEvents(List<MocoEventTrigger> eventTriggers) {
+        this.eventTriggers.addAll(eventTriggers);
     }
 
     private void anySetting(RequestMatcher matcher, ResponseHandler handler) {

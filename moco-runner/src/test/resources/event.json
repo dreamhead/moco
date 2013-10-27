@@ -1,0 +1,28 @@
+[
+    {
+        "request": {
+            "uri" : "/event"
+        },
+        "response": {
+            "text": "foo"
+        },
+        "on": {
+            "complete": {
+                "async" : "true",
+                "latency" : 1000,
+                "post" : {
+                    "url" : "http://localhost:12306/target",
+                    "content": "content"
+                }
+            }
+        }
+    },
+    {
+        "request": {
+            "uri" : "/target"
+        },
+        "response": {
+            "text": "success"
+        }
+    }
+]
