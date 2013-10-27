@@ -35,16 +35,19 @@ public abstract class ResponseSetting {
         return this;
     }
 
-    public void response(MocoProcedure procedure) {
+    public ResponseSetting response(MocoProcedure procedure) {
         this.response(with(procedure));
+        return this;
     }
 
-    public void response(ResponseHandler... handlers) {
+    public ResponseSetting response(ResponseHandler... handlers) {
         this.response(new AndResponseHandler(copyOf(handlers)));
+        return this;
     }
 
-    public void redirectTo(String url) {
+    public ResponseSetting redirectTo(String url) {
         this.response(status(HttpResponseStatus.FOUND.code()), header("Location", url));
+        return this;
     }
 
     public ResponseSetting on(MocoEventTrigger trigger) {

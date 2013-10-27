@@ -20,19 +20,25 @@ public class AbstractMocoStandaloneTest {
 
     @After
     public void teardown() {
-        runner.stop();
+        if (runner != null) {
+            runner.stop();
+        }
     }
 
     protected void runWithConfiguration(String... resourceNames) {
         try {
-            List<InputStream> streams = newArrayList();
-            for (String resourceName : resourceNames) {
-                streams.add(Resources.getResource(resourceName).openStream());
-            }
-            runner = newJsonRunnerWithStreams(streams, of(port()));
+            runner = newRunner(resourceNames);
             runner.run();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private JsonRunner newRunner(String[] resourceNames) throws IOException {
+        List<InputStream> streams = newArrayList();
+        for (String resourceName : resourceNames) {
+            streams.add(Resources.getResource(resourceName).openStream());
+        }
+        return newJsonRunnerWithStreams(streams, of(port()));
     }
 }
