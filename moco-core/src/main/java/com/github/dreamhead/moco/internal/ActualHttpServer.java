@@ -35,7 +35,10 @@ public class ActualHttpServer extends HttpServer {
 
     public BaseSetting getAnySetting() {
         BaseSetting setting = new BaseSetting(configItem(this.matcher, configs));
-        setting.response(configItem(this.handler, configs));
+        ResponseHandler configuredHandler = configItem(this.handler, configs);
+        if (configuredHandler != null) {
+            setting.response(configuredHandler);
+        }
         for (MocoEventTrigger trigger : eventTriggers) {
             setting.on(trigger);
         }
@@ -82,8 +85,8 @@ public class ActualHttpServer extends HttpServer {
     }
 
     private void anySetting(RequestMatcher matcher, ResponseHandler handler) {
-        this.response(handler);
         if (handler != null) {
+            this.response(handler);
             this.matcher = matcher;
         }
     }
