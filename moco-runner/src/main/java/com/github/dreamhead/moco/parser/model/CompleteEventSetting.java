@@ -9,6 +9,7 @@ public class CompleteEventSetting {
     private boolean async;
     private long latency;
     private PostSetting post;
+    private GetSetting get;
 
     public MocoEventAction createTrigger() {
         MocoEventAction action = doCreateAction();
@@ -22,6 +23,10 @@ public class CompleteEventSetting {
     }
 
     private MocoEventAction doCreateAction() {
+        if (get != null) {
+            return get.createAction();
+        }
+
         if (post != null) {
             return post.createAction();
         }
