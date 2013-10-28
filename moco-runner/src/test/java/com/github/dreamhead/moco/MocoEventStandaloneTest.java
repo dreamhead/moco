@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.runner.monitor.FileMocoRunnerMonitor;
 import com.github.dreamhead.moco.util.Idles;
 import com.google.common.io.Files;
 import org.junit.Rule;
@@ -19,6 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
+    private static final int IDLE = 1200;
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
@@ -27,9 +27,20 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("event.json");
         File file = folder.newFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
-        assertThat(helper.get(remoteUrl("/event")), is("foo"));
-        Idles.idle(2000);
+        assertThat(helper.get(remoteUrl("/event")), is("post_foo"));
+        Idles.idle(IDLE);
 
-        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("success"));
+        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
+    }
+
+    @Test
+    public void should_fire_get_event() throws IOException {
+        runWithConfiguration("event.json");
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+        assertThat(helper.get(remoteUrl("/get_event")), is("get_foo"));
+        Idles.idle(IDLE);
+
+        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
     }
 }

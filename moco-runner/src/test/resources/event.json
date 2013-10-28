@@ -4,12 +4,12 @@
             "uri" : "/event"
         },
         "response": {
-            "text": "foo"
+            "text": "post_foo"
         },
         "on": {
             "complete": {
                 "async" : "true",
-                "latency" : 1000,
+                "latency" : 500,
                 "post" : {
                     "url" : "http://localhost:12306/target",
                     "content": "content"
@@ -17,12 +17,31 @@
             }
         }
     },
+
+    {
+        "request": {
+            "uri" : "/get_event"
+        },
+        "response": {
+            "text": "get_foo"
+        },
+        "on": {
+            "complete": {
+                "async" : "true",
+                "latency" : 1000,
+                "get" : {
+                    "url" : "http://localhost:12306/target"
+                }
+            }
+        }
+    },
+
     {
         "request": {
             "uri" : "/target"
         },
         "response": {
-            "text": "success"
+            "text": "0XCAFEBABE"
         }
     }
 ]
