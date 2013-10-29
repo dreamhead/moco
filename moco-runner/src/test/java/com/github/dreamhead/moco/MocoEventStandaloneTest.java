@@ -19,6 +19,7 @@ import static org.junit.Assert.assertThat;
 
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     private static final int IDLE = 1200;
+
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
