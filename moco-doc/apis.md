@@ -996,3 +996,120 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
     }
 }
 ```
+
+## Event
+You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
+
+### Complete
+Complete event will be fired after your request has been handled completely.
+
+* Java
+```java
+server.request(by(uri("/event"))).response("event").on(complete(get("http://another_site")));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "get" : {
+                "url" : "http://another_site"
+            }
+        }
+    }
+}
+```
+
+You can post some content as well.
+
+* Java
+```java
+server.request(by(uri("/event"))).response("event").on(complete(post("http://another_site", "content")));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "post" : {
+                "url" : "http://another_site",
+                "content": "content"
+            }
+        }
+    }
+}
+```
+
+### Asynchronous
+Synchronized request is used by default, which means response won't be returned to client until event handler is finished.
+
+If it is not your expected behavior, you can changed with async API which will fire event asynchronously.
+
+* Java
+```java
+server.request(by(uri("/event"))).response("event").on(complete(async(post("http://another_site", "content"))));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "async" : "true",
+            "post" : {
+                "url" : "http://another_site",
+                "content": "content"
+            }
+        }
+    }
+}
+```
+
+You can specify latency for this asynchronous request as well to wait a while.
+
+* Java
+```java
+server.request(by(uri("/event"))).response("event").on(complete(async(post("http://another_site", "content"), latency(1000))));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "async" : "true",
+            "latency" : 1000,
+            "post" : {
+                "url" : "http://another_site",
+                "content": "content"
+            }
+        }
+    }
+}
+```

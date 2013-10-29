@@ -5,6 +5,9 @@
 * seq API with response handler
 * Added shortcut for put and delete in API
 * Request Hit as verifier
+* Event API
+** Event: Complete
+** Event Action: Get/Post URL
 
 ## Details
 * Server can select available port(start/shutdown) if no port providing

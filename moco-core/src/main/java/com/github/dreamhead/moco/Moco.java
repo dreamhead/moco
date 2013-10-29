@@ -262,6 +262,10 @@ public class Moco {
         return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "POST", of(checkNotNull(content, "Content should not be null")));
     }
 
+    public static MocoEventAction post(String url, String content) {
+        return post(url, text(checkNotNull(content, "Content should not be null")));
+    }
+
     public static RequestHit requestHit() {
         return new DefaultRequestHit();
     }
