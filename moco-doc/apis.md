@@ -202,6 +202,28 @@ server.delete(by(uri("/foo"))).response(status(200));
 }
 ```
 
+If you do need other method, feel free to specify method directly:
+* Java API
+
+```java
+server.request(method("HEAD")).response("bar");
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "method" : "HEAD"
+    },
+  "response" :
+    {
+      "text" : "bar"
+    }
+}
+```
+
 ### Version
 We can return different response for different HTTP version:
 
@@ -1053,6 +1075,8 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://ano
     }
 }
 ```
+
+Let me know if you need more method.
 
 ### Asynchronous
 Synchronized request is used by default, which means response won't be returned to client until event handler is finished.
