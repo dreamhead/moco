@@ -250,10 +250,6 @@ public class Moco {
         return new MocoAsyncAction(checkNotNull(action, "Action should not be null"), checkNotNull(procedure, "Procedure should not be null"));
     }
 
-    public static MocoEventAction request(String url) {
-        return get(checkNotNull(url, "URL should not be null"));
-    }
-
     public static MocoEventAction get(String url) {
         return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "GET", Optional.<ContentResource>absent());
     }
