@@ -1137,3 +1137,34 @@ server.request(by(uri("/event"))).response("event").on(complete(async(post("http
     }
 }
 ```
+
+# Verify
+Someone may want to verify what kind of request has been sent to server in testing framework.
+
+You can verify request like this:
+
+```java
+RequestHit hit = requestHit();
+final HttpServer server = httpserver(12306, hit);
+server.get(by(uri("/foo"))).response("bar");
+
+running(server, new Runnable() {
+  @Override
+  public void run() throws Exception {
+    assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+  }
+});
+
+hit.verify(by(uri("/foo")), times(1));
+```
+
+You can also verify unexpected request like this:
+```java
+hit.verify(unexpected(), never());
+```
+
+Many verification can be used:
+* **never**: none of this kind of request has been sent.
+* **time**: how many times this kind of request has been sent.
+* **atLeast**: at least how many time this kind of request has been sent.
+* **atMost**: at least how many time this kind of request has been sent.
