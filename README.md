@@ -9,7 +9,7 @@
 Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.com/)
 
 ## Latest Release
-* __0.8.1__
+* __0.9__
 
 ## User Survey
 [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
