@@ -9,7 +9,7 @@
 ** Event: Complete
 ** Event Action: Get/Post URL
 
-## Details
+## Implementation Details
 * Server can select available port(start/shutdown) if no port providing
 * Changed "statusCode" in failover to "status"
 
