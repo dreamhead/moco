@@ -9,7 +9,10 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.MocoRequestHit.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
@@ -104,7 +107,7 @@ public class MocoMonitorTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        httpserver(port(), hit);
         hit.verify(by(uri("/foo")), atLeast(1));
     }
 
