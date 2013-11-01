@@ -1,17 +1,17 @@
-# Release 0.9
+# Release 0.9 (1-Nov-2013)
 
 ## APIs
-* Turned off log for API by default
-* seq API with response handler
-* Added shortcut for put and delete in API
 * Request Hit as verifier
 * Event API
 ** Event: Complete
 ** Event Action: Get/Post URL
+* Turned off log for API by default
+* seq API with response handler
+* Added shortcut for PUT and DELETE method
 
 ## Implementation Details
-* Server can select available port(start/shutdown) if no port providing
-* Changed "statusCode" in failover to "status"
+* Server can select available port(start/shutdown) without providing no port.
+* Changed "statusCode" in failover to "status". Please changed your failover file if your tests failed.
 
 # Release 0.8.1 (1-August-2013)
 * Upgrade to Netty 4
