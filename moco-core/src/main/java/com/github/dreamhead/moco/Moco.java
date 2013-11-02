@@ -30,8 +30,6 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
-    private static final int DEFAULT_LATENCY = 1000;
-
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createQuietServer(of(port), configs);
@@ -241,7 +239,7 @@ public class Moco {
     }
 
     public static MocoEventAction async(MocoEventAction action) {
-        return async(checkNotNull(action, "Action should not be null"), latency(DEFAULT_LATENCY));
+        return async(checkNotNull(action, "Action should not be null"), latency(LatencyProcedure.DEFAULT_LATENCY));
     }
 
     public static MocoEventAction async(MocoEventAction action, LatencyProcedure procedure) {
