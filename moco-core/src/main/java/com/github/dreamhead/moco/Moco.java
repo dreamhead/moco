@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
+import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
@@ -54,6 +55,10 @@ public class Moco {
 
     public static MocoConfig fileRoot(final String fileRoot) {
         return new MocoFileRootConfig(checkNotNull(fileRoot, "File root should not be null"));
+    }
+
+    public static MocoMonitor log() {
+        return new Slf4jMonitor();
     }
 
     public static RequestMatcher by(final String content) {
