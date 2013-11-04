@@ -1155,7 +1155,7 @@ running(server, new Runnable() {
   }
 });
 
-hit.verify(by(uri("/foo")), times(1));
+hit.verify(by(uri("/foo"))), times(1));
 ```
 
 You can also verify unexpected request like this:

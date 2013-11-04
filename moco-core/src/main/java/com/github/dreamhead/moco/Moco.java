@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
+import com.github.dreamhead.moco.monitor.FileMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -18,6 +19,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -59,6 +63,10 @@ public class Moco {
 
     public static MocoMonitor log() {
         return new Slf4jMonitor();
+    }
+
+    public static MocoMonitor log(String filename) {
+        return new FileMonitor(filename);
     }
 
     public static RequestMatcher by(final String content) {
