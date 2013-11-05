@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.mockito.Matchers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,6 +22,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
@@ -79,7 +79,7 @@ public class MocoLogTest {
         File file = folder.newFile();
         HttpServer server = httpserver(port(), log(file.getAbsolutePath()));
         ResponseHandler mock = mock(ResponseHandler.class);
-        doThrow(RuntimeException.class).when(mock).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        doThrow(RuntimeException.class).when(mock).writeToResponse(any(FullHttpRequest.class), any(FullHttpResponse.class));
 
         server.request(by("0XCAFE")).response(mock);
 
@@ -88,7 +88,7 @@ public class MocoLogTest {
             public void run() throws Exception {
                 try {
                     helper.postContent(root(), "0XCAFE");
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         });
