@@ -1168,3 +1168,32 @@ Many verification can be used:
 * **time**: how many times this kind of request has been sent.
 * **atLeast**: at least how many time this kind of request has been sent.
 * **atMost**: at least how many time this kind of request has been sent.
+
+# Port
+
+If you specify a port for your stub server, it means the port must be available when you start server. This is not case sometimes.
+
+Moco provides you another way to start your server: specify no port, and it will look up an available port. The port can be got by port() method. The example is as follow:
+
+```java
+final HttpServer server = httpserver();
+server.response("foo");
+
+running(server, new Runnable() {
+  @Override
+  public void run() throws Exception {
+    Content content = Request.Get("http://localhost:" + server.port()).execute().returnContent();
+    assertThat(content.asString(), is("foo"));
+  }
+});
+```
+
+The port will be returned only when server is started, otherwise the exception will be thrown.
+
+For standalone server, if you need this behaviour, simply don't give port argument.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar start -c foo.json
+```
+
+The port information will shown on screen.
