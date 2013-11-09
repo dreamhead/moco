@@ -38,8 +38,7 @@ public class MocoTemplateTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String response = Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
-                assertThat(response, is("HTTP/1.0"));
+                assertThat(helper.getWithVersion(remoteUrl("/template"), HttpVersion.HTTP_1_0), is("HTTP/1.0"));
             }
         });
     }

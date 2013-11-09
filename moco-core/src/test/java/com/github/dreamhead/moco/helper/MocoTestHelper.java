@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.helper;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
+import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
@@ -24,6 +25,10 @@ public class MocoTestHelper {
         }
 
         return get(request);
+    }
+
+    public String getWithVersion(String url, HttpVersion version) throws IOException {
+        return get(Request.Get(url).version(version));
     }
 
     private String get(Request request) throws IOException {
