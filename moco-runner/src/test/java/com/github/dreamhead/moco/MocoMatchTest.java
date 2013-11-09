@@ -1,12 +1,11 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -36,10 +35,8 @@ public class MocoMatchTest extends AbstractMocoStandaloneTest {
     public void should_match_header() throws IOException {
         runWithConfiguration("match.json");
 
-        Content jsonContent = Request.Get(remoteUrl("/header-match")).addHeader("Content-type", "application/json").execute().returnContent();
-        assertThat(jsonContent.asString(), is("header_match"));
-        Content xmlContent = Request.Get(remoteUrl("/header-match")).addHeader("Content-type", "application/xml").execute().returnContent();
-        assertThat(xmlContent.asString(), is("header_match"));
+        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of("Content-type", "application/json")), is("header_match"));
+        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of("Content-type", "application/xml")), is("header_match"));
     }
 
     @Test

@@ -17,6 +17,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
@@ -316,10 +317,8 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Content barRequest = Request.Get(root()).addHeader("foo", "bar").execute().returnContent();
-                assertThat(barRequest.asString(), is("header"));
-                Content blahRequest = Request.Get(root()).addHeader("foo", "blah").execute().returnContent();
-                assertThat(blahRequest.asString(), is("header"));
+                assertThat(helper.getWithHeader(root(), of("foo", "bar")), is("header"));
+                assertThat(helper.getWithHeader(root(), of("foo", "blah")), is("header"));
             }
         });
     }
@@ -331,8 +330,7 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                Content content = Request.Get(remoteUrl("/foo")).addHeader("foo", "bar").execute().returnContent();
-                assertThat(content.asString(), is("blah"));
+                assertThat(helper.getWithHeader(root(), of("foo", "bar")), is("blah"));
             }
         });
     }
