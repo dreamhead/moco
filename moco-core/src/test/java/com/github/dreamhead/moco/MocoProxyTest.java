@@ -21,6 +21,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.google.common.collect.ImmutableMap.of;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -87,8 +88,7 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                Content content = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnContent();
-                assertThat(content.asString(), is("foo_proxy"));
+                assertThat(helper.getWithHeader(remoteUrl("/proxy"), of("foo", "foo")), is("foo_proxy"));
             }
         });
     }
@@ -117,7 +117,7 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String fooHeader = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnResponse().getHeaders("foo")[0].getValue();
+                String fooHeader = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnResponse().getFirstHeader("foo").getValue();
                 assertThat(fooHeader, is("foo_header"));
             }
         });

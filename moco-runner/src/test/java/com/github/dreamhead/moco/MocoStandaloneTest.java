@@ -3,14 +3,15 @@ package com.github.dreamhead.moco;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
-import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.greaterThan;
@@ -110,8 +111,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_specified_header_request() throws IOException {
         runWithConfiguration("header.json");
-        Content content = Request.Get(remoteUrl("/header")).addHeader("content-type", "application/json").execute().returnContent();
-        assertThat(content.asString(), is("response_for_header_request"));
+        assertThat(helper.getWithHeader(remoteUrl("/header"), of("content-type", "application/json")), is("response_for_header_request"));
     }
 
     @Test(expected = IOException.class)

@@ -13,6 +13,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -62,8 +63,7 @@ public class MocoTemplateTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String response = Request.Get(remoteUrl("/template")).addHeader("foo", "bar").execute().returnContent().asString();
-                assertThat(response, is("bar"));
+                assertThat(helper.getWithHeader(remoteUrl("/template"), of("foo", "bar")), is("bar"));
             }
         });
     }
