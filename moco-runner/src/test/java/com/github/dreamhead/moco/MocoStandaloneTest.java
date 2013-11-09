@@ -95,8 +95,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_specified_version() throws IOException {
         runWithConfiguration("foo.json");
-        String response = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnContent().toString();
-        assertThat(response, is("version"));
+        assertThat(helper.getWithVersion(root(), HttpVersion.HTTP_1_0), is("version"));
     }
 
     @Test
@@ -148,15 +147,15 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_expected_response_header() throws IOException {
         runWithConfiguration("foo.json");
         HttpResponse response = Request.Get(remoteUrl("/response_header")).execute().returnResponse();
-        assertThat(response.getHeaders("content-type")[0].getValue(), is("application/json"));
-        assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
+        assertThat(response.getFirstHeader("content-type").getValue(), is("application/json"));
+        assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
 
     @Test
     public void should_run_as_proxy() throws IOException {
         runWithConfiguration("foo.json");
         HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
-        String value = response.getHeaders("Content-Type")[0].getValue();
+        String value = response.getFirstHeader("Content-Type").getValue();
         assertThat(value, startsWith("text/html"));
     }
 
@@ -165,7 +164,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("foo.json");
         HttpResponse response = Request.Get(remoteUrl("/composite-response")).execute().returnResponse();
         assertThat(response.getStatusLine().getStatusCode(), is(200));
-        assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
+        assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
 
     @Test
@@ -200,7 +199,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_have_favicon() throws IOException {
         runWithConfiguration("foo.json");
-        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getHeaders("Content-Type")[0].getValue();
+        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getFirstHeader("Content-Type").getValue();
         assertThat(header, is("image/png"));
     }
 }

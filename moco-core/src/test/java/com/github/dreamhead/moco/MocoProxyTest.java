@@ -132,11 +132,8 @@ public class MocoProxyTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                Content content10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnContent();
-                assertThat(content10.asString(), is("1.0"));
-
-                Content content11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnContent();
-                assertThat(content11.asString(), is("1.1"));
+                assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_0), is("1.0"));
+                assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_1), is("1.1"));
             }
         });
     }

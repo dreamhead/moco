@@ -5,7 +5,6 @@ import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
@@ -366,8 +365,7 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String content = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnContent().asString();
-                assertThat(content, is("foo"));
+                assertThat(helper.getWithVersion(root(), HttpVersion.HTTP_1_0), is("foo"));
             }
         });
     }
@@ -405,7 +403,7 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String value = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
+                String value = Request.Get(root()).execute().returnResponse().getFirstHeader("content-type").getValue();
                 assertThat(value, is("application/json"));
             }
         });
@@ -418,9 +416,9 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String json = Request.Get(root()).execute().returnResponse().getHeaders("content-type")[0].getValue();
+                String json = Request.Get(root()).execute().returnResponse().getFirstHeader("content-type").getValue();
                 assertThat(json, is("application/json"));
-                String bar = Request.Get(root()).execute().returnResponse().getHeaders("foo")[0].getValue();
+                String bar = Request.Get(root()).execute().returnResponse().getFirstHeader("foo").getValue();
                 assertThat(bar, is("bar"));
             }
         });
