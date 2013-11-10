@@ -4,9 +4,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpHeaders.addHeader;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
-    private final ContentTypeDetector detector = new ContentTypeDetector();
+    private final HeaderDetector detector = new HeaderDetector();
 
     protected abstract void writeContentResponse(FullHttpRequest request, ByteBuf buffer);
 
@@ -15,9 +19,9 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         ByteBuf buffer = Unpooled.buffer();
         writeContentResponse(request, buffer);
         response.content().writeBytes(buffer);
-        response.headers().set("Content-Length", buffer.writerIndex());
+        addHeader(response, CONTENT_LENGTH, buffer.writerIndex());
         if (!detector.hasContentType(response)) {
-            response.headers().set("Content-Type", getContentType(request));
+            addHeader(response, CONTENT_TYPE, getContentType(request));
         }
     }
 

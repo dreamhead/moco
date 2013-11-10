@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.*;
 
 public class HeaderResponseHandler implements ResponseHandler {
-    private final ContentTypeDetector detector = new ContentTypeDetector();
+    private final HeaderDetector detector = new HeaderDetector();
 
     private final String name;
     private final Resource resource;
