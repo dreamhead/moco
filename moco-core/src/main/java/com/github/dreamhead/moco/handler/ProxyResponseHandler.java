@@ -38,24 +38,33 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpRequestBase remoteRequest = createRemoteRequest(request);
-            RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
-            remoteRequest.setConfig(config);
-            remoteRequest.setProtocolVersion(createVersion(request));
-
-            long contentLength = HttpHeaders.getContentLength(request, -1);
-            if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
-                HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-                entityRequest.setEntity(createEntity(request.content()));
-            }
-
-            setupResponse(request, response, httpclient.execute(remoteRequest));
+            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(request)));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
+        } finally {
+            try {
+                httpclient.close();
+            } catch (IOException ignored) {
+            }
         }
+    }
+
+    private HttpRequestBase prepareRemoteRequest(FullHttpRequest request) throws MalformedURLException {
+        HttpRequestBase remoteRequest = createRemoteRequest(request);
+        RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
+        remoteRequest.setConfig(config);
+        remoteRequest.setProtocolVersion(createVersion(request));
+
+        long contentLength = HttpHeaders.getContentLength(request, -1);
+        if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
+            HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
+            entityRequest.setEntity(createEntity(request.content()));
+        }
+
+        return remoteRequest;
     }
 
     private HttpRequestBase createRemoteRequest(FullHttpRequest request) throws MalformedURLException {
