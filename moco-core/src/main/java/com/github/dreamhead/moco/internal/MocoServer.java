@@ -22,9 +22,7 @@ public class MocoServer {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(pipelineFactory)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .childOption(ChannelOption.SO_KEEPALIVE, true);
+                .childHandler(pipelineFactory);
 
         try {
             future = bootstrap.bind(port).sync();
