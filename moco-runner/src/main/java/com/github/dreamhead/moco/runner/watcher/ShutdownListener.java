@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner.monitor;
+package com.github.dreamhead.moco.runner.watcher;
 
 public interface ShutdownListener {
     void onShutdown();

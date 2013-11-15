@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner.monitor;
+package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.base.Optional;
@@ -17,15 +17,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-public class ShutdownMocoRunnerMonitor implements MocoRunnerMonitor {
-    private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerMonitor.class);
+public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
+    private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
     private final MocoServer server = new MocoServer();
     private final Optional<Integer> shutdownPort;
     private final String shutdownKey;
     private final ShutdownListener shutdownListener;
     private int port;
 
-    public ShutdownMocoRunnerMonitor(Optional<Integer> shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
+    public ShutdownMocoRunnerWatcher(Optional<Integer> shutdownPort, String shutdownKey, ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
         this.shutdownKey = shutdownKey;
         this.shutdownListener = shutdownListener;

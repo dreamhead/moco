@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.runner.monitor.ShutdownMocoRunnerMonitor;
+import com.github.dreamhead.moco.runner.watcher.ShutdownMocoRunnerWatcher;
 
 public class ShutdownRunner extends MonitorRunner {
-    private final ShutdownMocoRunnerMonitor monitor;
+    private final ShutdownMocoRunnerWatcher monitor;
 
-    public ShutdownRunner(Runner runner, ShutdownMocoRunnerMonitor mocoRunnerMonitor) {
+    public ShutdownRunner(Runner runner, ShutdownMocoRunnerWatcher mocoRunnerMonitor) {
         super(runner, mocoRunnerMonitor);
         this.monitor = mocoRunnerMonitor;
     }
