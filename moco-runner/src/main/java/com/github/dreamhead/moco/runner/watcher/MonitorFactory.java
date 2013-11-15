@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner.monitor;
+package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
@@ -13,8 +13,8 @@ import java.io.File;
 public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
 
-    public ShutdownMocoRunnerMonitor createShutdownMonitor(final Runner runner, Optional<Integer> shutdownPort, String shutdownKey) {
-        return new ShutdownMocoRunnerMonitor(shutdownPort, shutdownKey, new ShutdownListener() {
+    public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner, Optional<Integer> shutdownPort, String shutdownKey) {
+        return new ShutdownMocoRunnerWatcher(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override
             public void onShutdown() {
                 runner.stop();
@@ -22,13 +22,13 @@ public class MonitorFactory {
         });
     }
 
-    public FileMocoRunnerMonitor createConfigurationMonitor(final File configuration, final FileRunner fileRunner) {
-        return new FileMocoRunnerMonitor(configuration, createListener(fileRunner));
+    public FileMocoRunnerWatcher createConfigurationWatcher(final File configuration, final FileRunner fileRunner) {
+        return new FileMocoRunnerWatcher(configuration, createListener(fileRunner));
     }
 
-    public MocoRunnerMonitor createSettingMonitor(final File settingsFile, final Iterable<File> configurationFiles, final FileRunner fileRunner) {
+    public MocoRunnerWatcher createSettingWatcher(final File settingsFile, final Iterable<File> configurationFiles, final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
-        return new FilesMocoRunnerMonitor(files, createListener(fileRunner));
+        return new FilesMocoRunnerWatcher(files, createListener(fileRunner));
     }
 
     private FileAlterationListenerAdaptor createListener(final FileRunner fileRunner) {

@@ -1,25 +1,25 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.runner.monitor.MocoRunnerMonitor;
+import com.github.dreamhead.moco.runner.watcher.MocoRunnerWatcher;
 
 public class MonitorRunner implements Runner {
     private final Runner runner;
-    private final MocoRunnerMonitor mocoRunnerMonitor;
+    private final MocoRunnerWatcher mocoRunnerWatcher;
 
-    public MonitorRunner(Runner runner, MocoRunnerMonitor mocoRunnerMonitor) {
+    public MonitorRunner(Runner runner, MocoRunnerWatcher mocoRunnerWatcher) {
         this.runner = runner;
-        this.mocoRunnerMonitor = mocoRunnerMonitor;
+        this.mocoRunnerWatcher = mocoRunnerWatcher;
     }
 
     @Override
     public void run() {
         this.runner.run();
-        this.mocoRunnerMonitor.startMonitor();
+        this.mocoRunnerWatcher.startMonitor();
     }
 
     @Override
     public void stop() {
-        this.mocoRunnerMonitor.stopMonitor();
+        this.mocoRunnerWatcher.stopMonitor();
         this.runner.stop();
     }
 }

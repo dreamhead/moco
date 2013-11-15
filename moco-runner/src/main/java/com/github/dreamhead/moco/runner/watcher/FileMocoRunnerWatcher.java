@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.runner.monitor;
+package com.github.dreamhead.moco.runner.watcher;
 
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 
-public class FileMocoRunnerMonitor implements MocoRunnerMonitor {
+public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
     public static final int INTERVAL = 1000;
-    private static Logger logger = LoggerFactory.getLogger(FileMocoRunnerMonitor.class);
+    private static Logger logger = LoggerFactory.getLogger(FileMocoRunnerWatcher.class);
 
     private final FileAlterationMonitor monitor;
     private boolean running = false;
 
-    public FileMocoRunnerMonitor(File file, FileAlterationListener listener) {
+    public FileMocoRunnerWatcher(File file, FileAlterationListener listener) {
         this.monitor = monitorFile(file, listener);
     }
 
