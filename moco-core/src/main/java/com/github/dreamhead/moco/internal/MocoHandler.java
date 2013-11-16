@@ -9,6 +9,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
+import static io.netty.handler.codec.http.HttpHeaders.*;
+
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final ImmutableList<BaseSetting> settings;
     private final BaseSetting anySetting;
@@ -28,9 +30,28 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private void httpRequestReceived(final ChannelHandlerContext ctx, FullHttpRequest request) {
         FullHttpResponse response = getResponse(request);
+        prepareForKeepAlive(request, response);
         monitor.onMessageLeave(response);
-        ChannelFuture future = ctx.writeAndFlush(response);
-        future.addListener(ChannelFutureListener.CLOSE);
+        closeIfNotKeepAlive(request, ctx.writeAndFlush(response));
+    }
+
+    private void closeIfNotKeepAlive(FullHttpRequest request, ChannelFuture future) {
+        if (!isKeepAlive(request)) {
+            future.addListener(ChannelFutureListener.CLOSE);
+        }
+    }
+
+    private void prepareForKeepAlive(FullHttpRequest request, FullHttpResponse response) {
+        if (isKeepAlive(request)) {
+            setKeepAlive(response, true);
+            setContentLengthForKeepAlive(response);
+        }
+    }
+
+    private void setContentLengthForKeepAlive(FullHttpResponse response) {
+        if (!isContentLengthSet(response)) {
+            setContentLength(response, response.content().writerIndex());
+        }
     }
 
     private FullHttpResponse getResponse(FullHttpRequest request) {
