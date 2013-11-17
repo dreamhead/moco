@@ -25,14 +25,10 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
         monitor.onMessageArrived(message);
-        httpRequestReceived(ctx, message);
-    }
-
-    private void httpRequestReceived(final ChannelHandlerContext ctx, FullHttpRequest request) {
-        FullHttpResponse response = getResponse(request);
-        prepareForKeepAlive(request, response);
+        FullHttpResponse response = getResponse(message);
+        prepareForKeepAlive(message, response);
         monitor.onMessageLeave(response);
-        closeIfNotKeepAlive(request, ctx.writeAndFlush(response));
+        closeIfNotKeepAlive(message, ctx.writeAndFlush(response));
     }
 
     private void closeIfNotKeepAlive(FullHttpRequest request, ChannelFuture future) {
