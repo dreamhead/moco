@@ -6,14 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-public class FileMonitor extends OutputMonitor {
+public class FileLogWriter implements LogWriter {
     private final File file;
 
-    public FileMonitor(String filename) {
+    public FileLogWriter(String filename) {
         this.file = new File(filename);
     }
 
-    protected void log(String content) {
+    @Override
+    public void write(String content) {
         try {
             Files.append(content, file, Charset.defaultCharset());
         } catch (IOException e) {

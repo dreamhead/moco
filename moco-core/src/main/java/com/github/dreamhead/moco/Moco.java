@@ -10,8 +10,7 @@ import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
-import com.github.dreamhead.moco.monitor.FileMonitor;
-import com.github.dreamhead.moco.monitor.StdoutMonitor;
+import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
@@ -59,11 +58,11 @@ public class Moco {
     }
 
     public static MocoMonitor log() {
-        return new StdoutMonitor();
+        return new LogMonitor(new DefaultLogFormatter(), new StdLogWriter());
     }
 
     public static MocoMonitor log(String filename) {
-        return new FileMonitor(filename);
+        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(filename));
     }
 
     public static RequestMatcher by(final String content) {
