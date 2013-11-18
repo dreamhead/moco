@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.monitor;
 
-public class StdoutMonitor extends OutputMonitor {
+public class StdLogWriter implements LogWriter {
     @Override
-    protected void log(String content) {
+    public void write(String content) {
         System.out.println(content);
     }
 }
