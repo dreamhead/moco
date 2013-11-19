@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.monitor.verification;
+package com.github.dreamhead.moco.verification;
 
 public class AtMostVerification extends AbstractVerification {
 

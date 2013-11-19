@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.monitor.verification;
+package com.github.dreamhead.moco.verification;
 
 import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationException;

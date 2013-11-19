@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.DefaultRequestHit;
-import com.github.dreamhead.moco.monitor.verification.AtLeastVerification;
-import com.github.dreamhead.moco.monitor.verification.AtMostVerification;
-import com.github.dreamhead.moco.monitor.verification.TimesVerification;
+import com.github.dreamhead.moco.verification.AtLeastVerification;
+import com.github.dreamhead.moco.verification.AtMostVerification;
+import com.github.dreamhead.moco.verification.TimesVerification;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
