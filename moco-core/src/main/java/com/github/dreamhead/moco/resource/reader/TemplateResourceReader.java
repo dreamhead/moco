@@ -47,7 +47,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         cfg.setTemplateLoader(templateLoader);
 
         try {
-            Template template = cfg.getTemplate("template");
+            Template template = cfg.getTemplate(TEMPLATE_NAME);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
             template.process(of("req", new LazyHttpRequest(request)), writer);
