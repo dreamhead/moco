@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
@@ -55,6 +57,8 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     }
 
     private class ShutdownHandler extends SimpleChannelInboundHandler<String> {
+        private final ExecutorService service = Executors.newCachedThreadPool();
+
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
             if (shouldShutdown(msg)) {
@@ -64,12 +68,12 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
         }
 
         private void shutdownMonitorSelf() {
-            new Thread(new Runnable() {
+            service.execute(new Runnable() {
                 @Override
                 public void run() {
                     stopMonitor();
                 }
-            }).start();
+            });
         }
 
         private boolean shouldShutdown(String message) {
