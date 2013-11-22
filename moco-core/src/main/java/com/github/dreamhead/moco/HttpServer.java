@@ -14,29 +14,30 @@ import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpServer extends ResponseSetting {
     public abstract int port();
+
     protected abstract Setting onRequestAttached(RequestMatcher matcher);
 
-    public Setting request(RequestMatcher matcher) {
+    public Setting request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public Setting request(RequestMatcher... matchers) {
+    public Setting request(final RequestMatcher... matchers) {
         return request(or(matchers));
     }
 
-    public Setting get(RequestMatcher matcher) {
+    public Setting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public Setting post(RequestMatcher matcher) {
+    public Setting post(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.POST, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public Setting put(RequestMatcher matcher) {
+    public Setting put(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.PUT, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public Setting delete(RequestMatcher matcher) {
+    public Setting delete(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.DELETE, checkNotNull(matcher, "Matcher should not be null"));
     }
 
@@ -47,7 +48,7 @@ public abstract class HttpServer extends ResponseSetting {
         return this;
     }
 
-    private Setting requestByHttpMethod(HttpMethod method, RequestMatcher matcher) {
+    private Setting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {
         return request(and(by(method(method.name())), matcher));
     }
 }

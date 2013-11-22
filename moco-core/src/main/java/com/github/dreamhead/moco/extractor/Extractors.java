@@ -14,7 +14,7 @@ public class Extractors {
             .put("method", new HttpMethodExtractor())
             .put("version", new VersionExtractor()).build();
 
-    public static RequestExtractor<String> extractor(String id) {
+    public static RequestExtractor<String> extractor(final String id) {
         if (extractors.containsKey(id)) {
             return extractors.get(id);
         }

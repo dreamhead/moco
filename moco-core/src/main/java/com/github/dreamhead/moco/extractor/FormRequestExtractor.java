@@ -14,7 +14,7 @@ import static com.google.common.base.Optional.of;
 public class FormRequestExtractor implements RequestExtractor<String> {
     private final String key;
 
-    public FormRequestExtractor(String key) {
+    public FormRequestExtractor(final String key) {
         this.key = key;
     }
 

@@ -61,7 +61,7 @@ public class Moco {
         return new LogMonitor(new DefaultLogFormatter(), new StdLogWriter());
     }
 
-    public static MocoMonitor log(String filename) {
+    public static MocoMonitor log(final String filename) {
         return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(filename));
     }
 
@@ -227,7 +227,7 @@ public class Moco {
         return proxy(url, Failover.EMPTY_FAILOVER);
     }
 
-    public static ResponseHandler proxy(final String url, Failover failover) {
+    public static ResponseHandler proxy(final String url, final Failover failover) {
         return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")), checkNotNull(failover, "Failover should not be null"));
     }
 
@@ -243,27 +243,27 @@ public class Moco {
         return new DefaultFailover(new File(checkNotNull(file, "Filename should not be null")));
     }
 
-    public static MocoEventTrigger complete(MocoEventAction action) {
+    public static MocoEventTrigger complete(final MocoEventAction action) {
         return new MocoEventTrigger(MocoEvent.COMPLETE, checkNotNull(action, "Action should not be null"));
     }
 
-    public static MocoEventAction async(MocoEventAction action) {
+    public static MocoEventAction async(final MocoEventAction action) {
         return async(checkNotNull(action, "Action should not be null"), latency(LatencyProcedure.DEFAULT_LATENCY));
     }
 
-    public static MocoEventAction async(MocoEventAction action, LatencyProcedure procedure) {
+    public static MocoEventAction async(final MocoEventAction action, final LatencyProcedure procedure) {
         return new MocoAsyncAction(checkNotNull(action, "Action should not be null"), checkNotNull(procedure, "Procedure should not be null"));
     }
 
-    public static MocoEventAction get(String url) {
+    public static MocoEventAction get(final String url) {
         return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "GET", Optional.<ContentResource>absent());
     }
 
-    public static MocoEventAction post(String url, ContentResource content) {
+    public static MocoEventAction post(final String url, final ContentResource content) {
         return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "POST", of(checkNotNull(content, "Content should not be null")));
     }
 
-    public static MocoEventAction post(String url, String content) {
+    public static MocoEventAction post(final String url, final String content) {
         return post(url, text(checkNotNull(content, "Content should not be null")));
     }
 
@@ -285,7 +285,7 @@ public class Moco {
         };
     }
 
-    private static URL toUrl(String url) {
+    private static URL toUrl(final String url) {
         try {
             return new URL(checkNotNull(url, "URL should not be null"));
         } catch (MalformedURLException e) {

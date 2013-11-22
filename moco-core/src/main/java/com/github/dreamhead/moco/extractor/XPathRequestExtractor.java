@@ -17,7 +17,7 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
     private final ContentRequestExtractor extractor = new ContentRequestExtractor();
     private final XPathExpression xPathExpression;
 
-    public XPathRequestExtractor(String xpath) {
+    public XPathRequestExtractor(final String xpath) {
         XPathFactory xPathfactory = XPathFactory.newInstance();
         XPath target = xPathfactory.newXPath();
         try {

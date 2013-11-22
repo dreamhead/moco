@@ -13,7 +13,7 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 	private final ContentRequestExtractor extractor = new ContentRequestExtractor();
 	private final JsonPath jsonPath;
 
-	public JsonPathRequestExtractor(String jsonPath) {
+	public JsonPathRequestExtractor(final String jsonPath) {
 		this.jsonPath = JsonPath.compile(jsonPath);
 	}
 

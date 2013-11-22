@@ -10,7 +10,7 @@ public class CookieRequestExtractor implements RequestExtractor<String> {
 
     private final String key;
 
-    public CookieRequestExtractor(String key) {
+    public CookieRequestExtractor(final String key) {
         this.key = key;
     }
 

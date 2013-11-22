@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 public class HeaderRequestExtractor implements RequestExtractor<String> {
     private final String name;
 
-    public HeaderRequestExtractor(String name) {
+    public HeaderRequestExtractor(final String name) {
         this.name = name;
     }
 

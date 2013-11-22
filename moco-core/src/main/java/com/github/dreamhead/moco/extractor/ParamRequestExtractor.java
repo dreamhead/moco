@@ -12,7 +12,7 @@ import static com.google.common.base.Optional.of;
 public class ParamRequestExtractor implements RequestExtractor<String> {
     private final String param;
 
-    public ParamRequestExtractor(String param) {
+    public ParamRequestExtractor(final String param) {
         this.param = param;
     }
 
