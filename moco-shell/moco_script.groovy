@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.internal.*
 import static com.github.dreamhead.moco.Moco.*
 
 SERVER_PORT = this.args[0] as Integer
-SCRIPT_CONFIGURATION = "${this.args[1]}.groovy"
+SCRIPT_CONFIGURATION = "${this.args[1]}"
 
 println "Starting Moco on port [$SERVER_PORT] and configuration defined in script [$SCRIPT_CONFIGURATION]"
 println "Grabbing necessary dependencies. Please wait patiently"
