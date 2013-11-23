@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-public class MocoEventTrigger {
+public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger>{
     private final MocoEvent event;
     private final MocoEventAction action;
 
@@ -15,5 +15,10 @@ public class MocoEventTrigger {
 
     public void fireEvent() {
         action.execute();
+    }
+
+    @Override
+    public MocoEventTrigger apply(MocoConfig config) {
+        return this;
     }
 }

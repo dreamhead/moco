@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
+import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.collect.ImmutableList.of;
 
 public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
@@ -30,6 +31,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
 
         BaseSetting setting = new BaseSetting(appliedMatcher);
         setting.handler = configItem(this.handler, config);
+        setting.eventTriggers = configItems(eventTriggers, config);
         return setting;
     }
 
