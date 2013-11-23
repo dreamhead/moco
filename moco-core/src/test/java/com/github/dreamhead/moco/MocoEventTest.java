@@ -8,13 +8,11 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.never;
 
 public class MocoEventTest extends AbstractMocoTest {
     @Test
@@ -145,5 +143,21 @@ public class MocoEventTest extends AbstractMocoTest {
         });
 
         verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+    }
+
+    @Test
+    public void should_fire_event_for_context_configuration() throws Exception {
+        MocoEventAction action = mock(MocoEventAction.class);
+        server = httpserver(port(), context("/context"));
+        server.get(by(uri("/foo"))).response("foo").on(complete(action));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/context/foo")), is("foo"));
+            }
+        });
+
+        verify(action).execute();
     }
 }

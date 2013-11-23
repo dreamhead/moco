@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -12,8 +11,8 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import java.util.List;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
+import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ActualHttpServer extends HttpServer {
@@ -30,7 +29,7 @@ public class ActualHttpServer extends HttpServer {
     }
 
     public ImmutableList<BaseSetting> getSettings() {
-        return from(settings).transform(config(configs)).toList();
+        return configItems(settings, configs);
     }
 
     public BaseSetting getAnySetting() {
@@ -53,14 +52,14 @@ public class ActualHttpServer extends HttpServer {
         return monitor;
     }
 
-    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
-        return new Function<BaseSetting, BaseSetting>() {
-            @Override
-            public BaseSetting apply(BaseSetting setting) {
-                return configItem(setting, configs);
-            }
-        };
-    }
+//    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
+//        return new Function<BaseSetting, BaseSetting>() {
+//            @Override
+//            public BaseSetting apply(BaseSetting setting) {
+//                return configItem(setting, configs);
+//            }
+//        };
+//    }
 
     private void addSetting(final BaseSetting setting) {
         this.settings.add(setting);
