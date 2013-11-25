@@ -13,7 +13,7 @@ public class MocoRequestHit {
     }
 
     public static UnexpectedRequestMatcher unexpected() {
-        return new UnexpectedRequestMatcher() {};
+        return new UnexpectedRequestMatcher();
     }
 
     public static VerificationMode never() {
