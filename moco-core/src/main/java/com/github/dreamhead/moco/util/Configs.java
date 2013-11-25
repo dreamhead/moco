@@ -22,10 +22,9 @@ public class Configs {
         return target;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends ConfigApplier> ImmutableList<T> configItems(List<T> items, MocoConfig... configs) {
-        @SuppressWarnings("unchecked")
-        Function<T, T> config = config(configs);
-        return from(items).transform(config).toList();
+        return from(items).transform(Configs.<T>config(configs)).toList();
     }
 
     private static <T extends ConfigApplier<T>> Function<T, T> config(final MocoConfig... configs) {
