@@ -52,15 +52,6 @@ public class ActualHttpServer extends HttpServer {
         return monitor;
     }
 
-//    private Function<BaseSetting, BaseSetting> config(final MocoConfig[] configs) {
-//        return new Function<BaseSetting, BaseSetting>() {
-//            @Override
-//            public BaseSetting apply(BaseSetting setting) {
-//                return configItem(setting, configs);
-//            }
-//        };
-//    }
-
     private void addSetting(final BaseSetting setting) {
         this.settings.add(setting);
     }

@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.action;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -14,6 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
+import static com.google.common.base.Optional.of;
 import static java.lang.String.format;
 
 public class MocoRequestAction implements MocoEventAction {
@@ -52,5 +55,23 @@ public class MocoRequestAction implements MocoEventAction {
         }
 
         throw new RuntimeException(format("unknown HTTP method: %s", method));
+    }
+
+    @Override
+    public MocoEventAction apply(MocoConfig config) {
+        if (this.content.isPresent()) {
+            return applyContent(config, this.content.get());
+        }
+
+        return this;
+    }
+
+    private MocoEventAction applyContent(MocoConfig config, ContentResource originalContent) {
+        Resource content = originalContent.apply(config);
+        if (content != originalContent) {
+            return new MocoRequestAction(this.url, this.method, of((ContentResource) content));
+        }
+
+        return this;
     }
 }

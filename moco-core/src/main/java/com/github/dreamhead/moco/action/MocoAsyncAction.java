@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.action;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 
@@ -25,5 +26,15 @@ public class MocoAsyncAction implements MocoEventAction {
                 action.execute();
             }
         });
+    }
+
+    @Override
+    public MocoEventAction apply(MocoConfig config) {
+        MocoEventAction action = this.action.apply(config);
+        if (this.action != action) {
+            return new MocoAsyncAction(action, procedure);
+        }
+
+        return this;
     }
 }

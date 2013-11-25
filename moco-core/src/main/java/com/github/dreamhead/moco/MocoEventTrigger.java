@@ -19,6 +19,11 @@ public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger>{
 
     @Override
     public MocoEventTrigger apply(MocoConfig config) {
+        MocoEventAction action = this.action.apply(config);
+        if (action != this.action) {
+            return new MocoEventTrigger(event, action);
+        }
+
         return this;
     }
 }
