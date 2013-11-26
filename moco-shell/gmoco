@@ -1,51 +1,51 @@
 #!/bin/bash
 
 function download_groovy {
-	mkdir $GROOVY_DOWNLOAD_DIR
-	echo "Downloading groovy binary to $GROOVY_DOWNLOAD_DIR"
-	wget http://dist.groovy.codehaus.org/distributions/groovy-binary-$GROOVY_VERSION.zip -P $GROOVY_DOWNLOAD_DIR
-	unzip $GROOVY_DOWNLOAD_DIR/groovy-binary-$GROOVY_VERSION.zip -d $GROOVY_DOWNLOAD_DIR/
+        mkdir $GROOVY_DOWNLOAD_DIR
+        echo "Downloading groovy binary to $GROOVY_DOWNLOAD_DIR"
+        wget http://dist.groovy.codehaus.org/distributions/groovy-binary-$GROOVY_VERSION.zip -P $GROOVY_DOWNLOAD_DIR
+        unzip $GROOVY_DOWNLOAD_DIR/groovy-binary-$GROOVY_VERSION.zip -d $GROOVY_DOWNLOAD_DIR/
 }
 
 function check_if_groovy_is_installed {
-	if env | grep -q ^GROOVY_HOME=
-	then
-		echo "Groovy is already installed here $GROOVY_HOME"
-	elif [ -f /usr/bin/groovy ]
-	then
-		GROOVY_HOME="/usr"
-		echo "Groovy is already installed here $GROOVY_HOME"
-	else
-		echo "Groovy not found - will have to download it"
-		GROOVY_DOWNLOAD_DIR="/home/$USER/.groovy" 
-		GROOVY_VERSION="2.1.9"
+        if env | grep -q ^GROOVY_HOME=
+        then
+                echo "Groovy is already installed here $GROOVY_HOME"
+        elif [ -f /usr/bin/groovy ]
+        then
+                GROOVY_HOME="/usr"
+                echo "Groovy is already installed here $GROOVY_HOME"
+        else
+                echo "Groovy not found - will have to download it"
+                GROOVY_DOWNLOAD_DIR="/home/$USER/.groovy" 
+                GROOVY_VERSION="2.1.9"
 
-		#Check if Groovy binary has not already been downloaded
-		if [ ! -d $GROOVY_DOWNLOAD_DIR ]
-		then
-			download_groovy	
-		fi
-		GROOVY_HOME="$GROOVY_DOWNLOAD_DIR/groovy-$GROOVY_VERSION"
-		echo "Binding GROOVY_HOME to $GROOVY_HOME"  
-	fi
+                #Check if Groovy binary has not already been downloaded
+                if [ ! -d $GROOVY_DOWNLOAD_DIR ]
+                then
+                        download_groovy        
+                fi
+                GROOVY_HOME="$GROOVY_DOWNLOAD_DIR/groovy-$GROOVY_VERSION"
+                echo "Binding GROOVY_HOME to $GROOVY_HOME"  
+        fi
 }
 
 function run_moco {
-	echo "Trying to run moco with port [$PORT] and config file [$CONFIG]"
-	nohup $GROOVY_HOME/bin/groovy moco_script.groovy $PORT $CONFIG > moco.log 2>&1&
-	echo "Moco started with PID [$!]"
-	echo "$!" > moco_pid
+        echo "Trying to run moco with port [$PORT] and config file [$CONFIG]"
+        nohup $GROOVY_HOME/bin/groovy moco_script.groovy $PORT $CONFIG > moco.log 2>&1&
+        echo "Moco started with PID [$!]"
+        echo "$!" > moco_pid
 }
 
 function start_moco {
-	check_if_groovy_is_installed
-	run_moco
+        check_if_groovy_is_installed
+        run_moco
 }
 
 function check_args {
     if [[ -z $PORT ]] || [[ -z $CONFIG ]]; then
-	usage
-	exit 1
+        usage
+        exit 1
     fi
 }
 
@@ -53,38 +53,38 @@ function usage {
   printf "
 options:
        help      show help
-       start     start server, e.g. gmoco start -p 12306 -c moco_config_script.groovy
+       start     start server, e.g. gmoco start -p 8888 -c pl_config_script.groovy
 "
 }
 
 if [ "$1" = "start" ]; then
-	if [ $# -lt 4 ]; then
-		usage
-	else	
-	    echo "Starting..."
-		PORT=
-		CONFIG=
-		while test $# -gt 0
-		do
-			case $1 in
-			    -p)		      
-			      shift
-			      PORT=$1
-			      ;;
-			    -c)
-			      shift
-			      CONFIG=$1
-			      ;;
-			    :)
-			      usage
-			      exit 1
-			      ;;
-			  esac	    
-			shift
-		done
-	    check_args
-	    start_moco
-	fi
+        if [ $# -lt 4 ]; then
+                usage
+        else        
+            echo "Starting..."
+                PORT=
+                CONFIG=
+                while test $# -gt 0
+                do
+                        case $1 in
+                            -p)                      
+                              shift
+                              PORT=$1
+                              ;;
+                            -c)
+                              shift
+                              CONFIG=$1
+                              ;;
+                            :)
+                              usage
+                              exit 1
+                              ;;
+                          esac            
+                        shift
+                done
+            check_args
+            start_moco
+        fi
 elif [ "$1" = "help" ]; then
     usage
 else
