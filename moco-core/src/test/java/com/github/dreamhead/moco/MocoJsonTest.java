@@ -24,7 +24,7 @@ public class MocoJsonTest extends AbstractMocoTest {
 	}
 	
     @Test
-    public void should_match_extact_json() throws Exception {
+    public void should_match_exact_json() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(json(text(jsonContent))).response("foo");
         running(server, new Runnable() {
