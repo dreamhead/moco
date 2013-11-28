@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 
@@ -12,11 +14,16 @@ public class VerificationData {
         this.matcher = matcher;
     }
 
-    public ImmutableList<FullHttpRequest> getRequests() {
-        return requests;
+    public int matchedSize() {
+        return FluentIterable.from(requests).filter(matched()).size();
     }
 
-    public RequestMatcher getMatcher() {
-        return matcher;
+    private Predicate<FullHttpRequest> matched() {
+        return new Predicate<FullHttpRequest>() {
+            @Override
+            public boolean apply(FullHttpRequest request) {
+                return matcher.match(request);
+            }
+        };
     }
 }

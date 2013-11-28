@@ -8,5 +8,4 @@ public class TimesVerification extends AbstractVerification {
     protected boolean meet(int size) {
         return size == count;
     }
-
 }
