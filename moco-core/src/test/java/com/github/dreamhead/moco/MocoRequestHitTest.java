@@ -143,6 +143,27 @@ public class MocoRequestHitTest {
     }
 
     @Test
+    public void should_verify_expected_request_for_once() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), once());
+    }
+
+    @Test(expected = VerificationException.class)
+    public void should_fail_to_verify_while_once_expectation_can_not_be_met() throws Exception {
+        httpserver(port(), hit);
+        hit.verify(by(uri("/foo")), times(1));
+    }
+
+    @Test
     public void should_verify_unexpected_request_without_unexpected_request() throws Exception {
         final HttpServer server = httpserver(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
