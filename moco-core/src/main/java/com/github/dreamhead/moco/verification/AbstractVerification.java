@@ -4,8 +4,6 @@ import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationException;
 import com.github.dreamhead.moco.VerificationMode;
 
-import static java.lang.String.format;
-
 public abstract class AbstractVerification implements VerificationMode {
     protected abstract boolean meet(int size);
 
@@ -17,9 +15,9 @@ public abstract class AbstractVerification implements VerificationMode {
 
     @Override
     public void verify(final VerificationData data) {
-        int size = data.matchedSize();
-        if (!meet(size)) {
-            throw new VerificationException(format("expect request hit %d times but %d times", count, size));
+        int actualSize = data.matchedSize();
+        if (!meet(actualSize)) {
+            throw new VerificationException(data.mismatchDescription(actualSize, count));
         }
     }
 }
