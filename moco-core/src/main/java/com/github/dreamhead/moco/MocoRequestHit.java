@@ -20,6 +20,10 @@ public class MocoRequestHit {
         return times(0);
     }
 
+    public static VerificationMode once() {
+        return times(1);
+    }
+
     public static VerificationMode times(int count) {
         checkArgument(count >= 0, "Times count must not be less than zero");
         return new TimesVerification(count);
