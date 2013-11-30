@@ -5,13 +5,21 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.FullHttpRequest;
 
+import static java.lang.String.format;
+
 public class VerificationData {
     private final ImmutableList<FullHttpRequest> requests;
     private final RequestMatcher matcher;
+    private final String mismatchFormat;
 
-    public VerificationData(ImmutableList<FullHttpRequest> requests, RequestMatcher matcher) {
+    public VerificationData(ImmutableList<FullHttpRequest> requests, RequestMatcher matcher, String mismatchFormat) {
         this.requests = requests;
         this.matcher = matcher;
+        this.mismatchFormat = mismatchFormat;
+    }
+
+    public String mismatchDescription(int actualSize, int expectedCount) {
+        return format(mismatchFormat, expectedCount, actualSize);
     }
 
     public int matchedSize() {
