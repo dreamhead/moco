@@ -2,7 +2,8 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
-import io.netty.handler.codec.http.*;
+import com.github.dreamhead.moco.internal.SessionContext;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 public class StatusCodeResponseHandler implements ResponseHandler {
     private final HttpResponseStatus status;
@@ -12,8 +13,8 @@ public class StatusCodeResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
-        response.setStatus(status);
+    public void writeToResponse(SessionContext context) {
+        context.getResponse().setStatus(status);
     }
 
     @Override

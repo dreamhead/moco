@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.setting;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
@@ -18,8 +18,8 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         return this.matcher.match(request) && this.handler != null;
     }
 
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
-        this.handler.writeToResponse(request, response);
+    public void writeToResponse(SessionContext context) {
+        this.handler.writeToResponse(context);
         this.fireCompleteEvent();
     }
 

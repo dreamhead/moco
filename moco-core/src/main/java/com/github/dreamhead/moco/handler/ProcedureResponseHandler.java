@@ -3,8 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseHandler;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
+import com.github.dreamhead.moco.internal.SessionContext;
 
 public class ProcedureResponseHandler implements ResponseHandler {
     private MocoProcedure procedure;
@@ -14,7 +13,7 @@ public class ProcedureResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+    public void writeToResponse(SessionContext context) {
         this.procedure.execute();
     }
 

@@ -1,9 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.io.Files;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -79,7 +78,7 @@ public class MocoLogTest {
         File file = folder.newFile();
         HttpServer server = httpserver(port(), log(file.getAbsolutePath()));
         ResponseHandler mock = mock(ResponseHandler.class);
-        doThrow(RuntimeException.class).when(mock).writeToResponse(any(FullHttpRequest.class), any(FullHttpResponse.class));
+        doThrow(RuntimeException.class).when(mock).writeToResponse(any(SessionContext.class));
 
         server.request(by("0XCAFE")).response(mock);
 
