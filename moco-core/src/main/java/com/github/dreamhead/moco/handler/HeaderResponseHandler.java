@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.*;
 
@@ -17,7 +18,11 @@ public class HeaderResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+    public void writeToResponse(SessionContext context) {
+        this.writeToResponse(context.getRequest(), context.getResponse());
+    }
+
+    private void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         if (detector.hasHeader(response, name)) {
             response.headers().remove(name);
         }

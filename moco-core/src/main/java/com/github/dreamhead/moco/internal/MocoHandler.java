@@ -64,16 +64,17 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private FullHttpResponse doGetHttpResponse(FullHttpRequest request) {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
+        SessionContext context = new SessionContext(request, response);
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
-                setting.writeToResponse(request, response);
+                setting.writeToResponse(context);
                 return response;
             }
         }
 
         if (anySetting.match(request)) {
-            anySetting.writeToResponse(request, response);
+            anySetting.writeToResponse(context);
             return response;
         }
 

@@ -1,8 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Idles;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -74,7 +73,7 @@ public class MocoEventTest extends AbstractMocoTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
     @Test
@@ -90,7 +89,7 @@ public class MocoEventTest extends AbstractMocoTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
     @Test
@@ -106,7 +105,7 @@ public class MocoEventTest extends AbstractMocoTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
     @Test
@@ -119,12 +118,12 @@ public class MocoEventTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+                verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
                 Idles.idle(2000);
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
     @Test
@@ -137,12 +136,12 @@ public class MocoEventTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+                verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
                 Idles.idle(2000);
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
     @Test
@@ -178,6 +177,6 @@ public class MocoEventTest extends AbstractMocoTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<FullHttpRequest>anyObject(), Matchers.<FullHttpResponse>anyObject());
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 }

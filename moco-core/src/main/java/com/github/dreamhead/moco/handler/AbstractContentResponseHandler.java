@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.internal.SessionContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -15,7 +16,11 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     protected abstract void writeContentResponse(FullHttpRequest request, ByteBuf buffer);
 
     @Override
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+    public void writeToResponse(SessionContext context) {
+        this.writeToResponse(context.getRequest(), context.getResponse());
+    }
+
+    protected void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         ByteBuf buffer = Unpooled.buffer();
         writeContentResponse(request, buffer);
         response.content().writeBytes(buffer);

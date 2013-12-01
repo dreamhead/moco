@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
+import com.github.dreamhead.moco.internal.SessionContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
@@ -37,7 +38,11 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+    public void writeToResponse(SessionContext context) {
+        this.writeToResponse(context.getRequest(), context.getResponse());
+    }
+
+    private void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             setupResponse(request, response, httpclient.execute(prepareRemoteRequest(request)));
