@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
@@ -131,21 +130,7 @@ public class MocoTemplateTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_set_and_recognize_cookie() throws Exception {
-        server.request(eq(cookie("loggedIn"), "GET")).response(status(200));
-        server.response(cookie("loggedIn", template("${req.method}")), status(302));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getForStatus(root()), is(302));
-                assertThat(helper.getForStatus(root()), is(200));
-            }
-        });
-    }
-
-    @Test
-    public void should_generate_uri() throws Exception {
+    public void should_generate_response_with_uri() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.uri}"));
 
         running(server, new Runnable() {
