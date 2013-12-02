@@ -19,15 +19,12 @@ public class HeaderResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(SessionContext context) {
-        this.writeToResponse(context.getRequest(), context.getResponse());
-    }
-
-    private void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+        FullHttpResponse response = context.getResponse();
         if (detector.hasHeader(response, name)) {
             response.headers().remove(name);
         }
 
-        HttpHeaders.addHeader(response, name, new String(resource.readFor(request)));
+        HttpHeaders.addHeader(response, name, new String(resource.readFor(context.getRequest())));
     }
 
     @Override
