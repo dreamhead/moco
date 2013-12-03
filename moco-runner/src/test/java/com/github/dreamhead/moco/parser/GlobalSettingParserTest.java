@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.List;
 
+import static com.github.dreamhead.moco.util.Files.join;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,12 +25,8 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("multiple/settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
-        assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
-    }
-
-    private InputStream getResourceAsStream(String filename) {
-        return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
     }
 
     @Test
@@ -37,9 +34,9 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("multiple/context-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
-        assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
     }
 
@@ -48,9 +45,9 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("multiple/fileroot-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/fileroot.json"));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "fileroot.json")));
         assertThat(globalSettings.get(0).getContext(), is("/fileroot"));
-        assertThat(globalSettings.get(0).getFileRoot(), is("src/test/resources/"));
+        assertThat(globalSettings.get(0).getFileRoot(), is("src/test/resources"));
     }
 
     @Test
@@ -58,11 +55,15 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("multiple/env-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is("src/test/resources/multiple/foo.json"));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
         assertThat(globalSettings.get(0).getEnv(), is("foo"));
-        assertThat(globalSettings.get(1).getInclude(), is("src/test/resources/multiple/bar.json"));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
         assertThat(globalSettings.get(1).getEnv(), is("bar"));
+    }
+
+    private InputStream getResourceAsStream(String filename) {
+        return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
     }
 }

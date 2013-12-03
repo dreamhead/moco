@@ -1,7 +1,7 @@
 [
     {
         "context": "/fileroot",
-        "file_root": "src/test/resources/",
+        "file_root": "src/test/resources",
         "include": "multiple/fileroot.json"
     }
 ]
