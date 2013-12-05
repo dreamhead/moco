@@ -1,5 +1,9 @@
 #!/bin/bash
 
+GMOCO_SCRIPT_FILE_NAME="gmoco_script.groovy"
+GMOCO_LOG_FILE_NAME="gmoco.log"
+GMOCO_PID_FILE_NAME=".gmoco_pid"
+
 function download_groovy {
         mkdir $GROOVY_DOWNLOAD_DIR
         echo "Downloading groovy binary to $GROOVY_DOWNLOAD_DIR"
@@ -30,11 +34,24 @@ function check_if_groovy_is_installed {
         fi
 }
 
+function run_moco_in_normal_mode {        
+        $GROOVY_HOME/bin/groovy $GMOCO_SCRIPT_FILE_NAME $PORT $CONFIG        
+}
+
+function run_moco_in_deamon_mode {        
+        echo "Starting moco... please wait" > $GMOCO_LOG_FILE_NAME
+        nohup $GROOVY_HOME/bin/groovy $GMOCO_SCRIPT_FILE_NAME $PORT $CONFIG $GMOCO_PID_FILE_NAME >> $GMOCO_LOG_FILE_NAME 2>&1&
+        echo "Moco started with PID [$!], pid has been saved to [$GMOCO_PID_FILE_NAME] file, logs can be found in the [$GMOCO_LOG_FILE_NAME] file"
+        echo "$!" > $GMOCO_PID_FILE_NAME
+}
+
 function run_moco {
         echo "Trying to run moco with port [$PORT] and config file [$CONFIG]"
-        nohup $GROOVY_HOME/bin/groovy moco_script.groovy $PORT $CONFIG > moco.log 2>&1&
-        echo "Moco started with PID [$!]"
-        echo "$!" > moco_pid
+        if [ $DEAMON ]; then
+            run_moco_in_deamon_mode        
+        else
+            run_moco_in_normal_mode
+        fi
 }
 
 function start_moco {
@@ -53,7 +70,8 @@ function usage {
   printf "
 options:
        help      show help
-       start     start server, e.g. gmoco start -p 8888 -c moco_config_script.groovy
+       start     start server, e.g. gmoco start -p 8888 -c gmoco_config_example.groovy
+                 start server in deamon mode, e.g. gmoco start -p 8888 -c gmoco_config_example.groovy -d
 "
 }
 
@@ -64,6 +82,7 @@ if [ "$1" = "start" ]; then
             echo "Starting..."
                 PORT=
                 CONFIG=
+                DEAMON=
                 while test $# -gt 0
                 do
                         case $1 in
@@ -74,6 +93,10 @@ if [ "$1" = "start" ]; then
                             -c)
                               shift
                               CONFIG=$1
+                              ;;
+                            -d)
+                              shift
+                              DEAMON=true
                               ;;
                             :)
                               usage
