@@ -12,7 +12,7 @@ public class GlobalSetting {
     private String env;
 
     public String getInclude() {
-        return fileRoot != null ? join(fileRoot, include) : include;
+        return join(fileRoot, include);
     }
 
     public String getContext() {
