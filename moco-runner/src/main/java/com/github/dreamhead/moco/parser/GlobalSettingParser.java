@@ -26,7 +26,7 @@ public class GlobalSettingParser {
             return copyOf(settings);
         } catch (UnrecognizedPropertyException upe) {
             logger.info("Unrecognized field: {}", upe.getMessage());
-            throw new RuntimeException(format("Unrecognized field [ %s ], please check!", upe.getUnrecognizedPropertyName()));
+            throw new RuntimeException(format("Unrecognized field [ %s ], please check!", upe.getPropertyName()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

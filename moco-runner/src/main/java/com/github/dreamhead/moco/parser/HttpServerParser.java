@@ -50,7 +50,7 @@ public class HttpServerParser {
             return copyOf(sessionSettings);
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
-            throw new RuntimeException(format("Unrecognized field [ %s ], please check!", e.getUnrecognizedPropertyName()));
+            throw new RuntimeException(format("Unrecognized field [ %s ], please check!", e.getPropertyName()));
         } catch (JsonMappingException e) {
             logger.info("{} {}", e.getMessage(), e.getPathReference());
             throw new RuntimeException(e);
