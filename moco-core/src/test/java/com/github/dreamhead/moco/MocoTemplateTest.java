@@ -5,12 +5,15 @@ import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
@@ -138,6 +141,20 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws IOException {
                 String response = helper.get(remoteUrl("/template"));
                 assertThat(response, is("/template"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_form() throws Exception {
+        HttpServer server = httpserver(port(), log());
+        server.request(by(uri("/template"))).response(template("${req.forms['name']}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                String content = Request.Post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                assertThat(content, is("dreamhead"));
             }
         });
     }
