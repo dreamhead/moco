@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -19,12 +21,14 @@ public class LazyHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> headersSupplier;
     private final Supplier<ImmutableMap<String,String>> queriesSupplier;
     private final Supplier<String> contentSupplier;
+    private final Supplier<ImmutableMap<String, String>> formSupplier;
 
     public LazyHttpRequest(FullHttpRequest request) {
         this.request = request;
         this.queriesSupplier = queriesSupplier(request.getUri());
         this.headersSupplier = headersSupplier(request.headers());
         this.contentSupplier = contentSupplier(request);
+        this.formSupplier = formSupplier(request);
     }
 
     @Override
@@ -55,6 +59,11 @@ public class LazyHttpRequest implements HttpRequest {
     @Override
     public ImmutableMap<String, String> getHeaders() {
         return headersSupplier.get();
+    }
+
+    @JsonIgnore
+    public ImmutableMap<String, String> getForms() {
+        return formSupplier.get();
     }
 
     private Supplier<ImmutableMap<String, String>> queriesSupplier(final String uri) {
@@ -91,6 +100,15 @@ public class LazyHttpRequest implements HttpRequest {
             public String get() {
                 String text = request.content().toString(Charset.defaultCharset());
                 return isNullOrEmpty(text) ? null : text;
+            }
+        });
+    }
+
+    private Supplier<ImmutableMap<String, String>> formSupplier(final FullHttpRequest request) {
+        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
+            @Override
+            public ImmutableMap<String, String> get() {
+                return new FormsRequestExtractor().extract(request).get();
             }
         });
     }
