@@ -16,6 +16,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -155,7 +156,7 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource) {
-        return header("Set-Cookie", cookieResource(
+        return header(HttpHeaders.Names.SET_COOKIE, cookieResource(
                 checkNotNull(key, "Cookie key should not be null"),
                 checkNotNull(resource, "Cookie value should not be null")));
     }

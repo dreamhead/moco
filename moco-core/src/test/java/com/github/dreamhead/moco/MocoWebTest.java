@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
@@ -14,6 +16,7 @@ import static org.junit.Assert.assertThat;
 public class MocoWebTest extends AbstractMocoTest {
     @Test
     public void should_set_and_recognize_cookie() throws Exception {
+        HttpServer server = httpserver(port(), log());
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true"), status(302));
 

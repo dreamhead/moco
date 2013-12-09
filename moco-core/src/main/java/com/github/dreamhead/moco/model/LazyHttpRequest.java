@@ -2,7 +2,9 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
+import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -22,6 +24,7 @@ public class LazyHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String,String>> queriesSupplier;
     private final Supplier<String> contentSupplier;
     private final Supplier<ImmutableMap<String, String>> formSupplier;
+    private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 
     public LazyHttpRequest(FullHttpRequest request) {
         this.request = request;
@@ -29,6 +32,7 @@ public class LazyHttpRequest implements HttpRequest {
         this.headersSupplier = headersSupplier(request.headers());
         this.contentSupplier = contentSupplier(request);
         this.formSupplier = formSupplier(request);
+        this.cookieSupplier = cookieSupplier(request);
     }
 
     @Override
@@ -64,6 +68,11 @@ public class LazyHttpRequest implements HttpRequest {
     @JsonIgnore
     public ImmutableMap<String, String> getForms() {
         return formSupplier.get();
+    }
+
+    @JsonIgnore
+    public ImmutableMap<String, String> getCookies() {
+        return cookieSupplier.get();
     }
 
     private Supplier<ImmutableMap<String, String>> queriesSupplier(final String uri) {
@@ -108,7 +117,18 @@ public class LazyHttpRequest implements HttpRequest {
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                return new FormsRequestExtractor().extract(request).get();
+                Optional<ImmutableMap<String,String>> forms = new FormsRequestExtractor().extract(request);
+                return forms.isPresent() ? forms.get() : ImmutableMap.<String, String>of();
+            }
+        });
+    }
+
+    private Supplier<ImmutableMap<String, String>> cookieSupplier(final FullHttpRequest request) {
+        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
+            @Override
+            public ImmutableMap<String, String> get() {
+                Optional<ImmutableMap<String, String>> cookies = new CookiesRequestExtractor().extract(request);
+                return cookies.isPresent() ? cookies.get() : ImmutableMap.<String, String>of();
             }
         });
     }

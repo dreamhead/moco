@@ -147,7 +147,6 @@ public class MocoTemplateTest extends AbstractMocoTest {
 
     @Test
     public void should_generate_response_with_form() throws Exception {
-        HttpServer server = httpserver(port(), log());
         server.request(by(uri("/template"))).response(template("${req.forms['name']}"));
 
         running(server, new Runnable() {
@@ -155,6 +154,20 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws IOException {
                 String content = Request.Post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
                 assertThat(content, is("dreamhead"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_cookie() throws Exception {
+        server.request(and(by(uri("/cookie")), eq(cookie("templateLoggedIn"), "true"))).response(template("${req.cookies['templateLoggedIn']}"));
+        server.request(by(uri("/cookie"))).response(cookie("templateLoggedIn", "true"), status(302));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getForStatus(remoteUrl("/cookie")), is(302));
+                assertThat(helper.get(remoteUrl("/cookie")), is("true"));
             }
         });
     }
