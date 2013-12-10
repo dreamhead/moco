@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
@@ -64,16 +65,17 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private FullHttpResponse doGetHttpResponse(FullHttpRequest request) {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
+        LazyHttpRequest httpRequest = new LazyHttpRequest(request);
         SessionContext context = new SessionContext(request, response);
 
         for (BaseSetting setting : settings) {
-            if (setting.match(request)) {
+            if (setting.match(httpRequest)) {
                 setting.writeToResponse(context);
                 return response;
             }
         }
 
-        if (anySetting.match(request)) {
+        if (anySetting.match(httpRequest)) {
             anySetting.writeToResponse(context);
             return response;
         }

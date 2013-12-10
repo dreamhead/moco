@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -16,8 +18,9 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     }
 
     @Override
-    public boolean match(FullHttpRequest request) {
-        Optional<T> extractContent = extractor.extract(request);
+    public boolean match(HttpRequest request) {
+        FullHttpRequest httpRequest = ((LazyHttpRequest)request).getRawRequest();
+        Optional<T> extractContent = extractor.extract(httpRequest);
         if (!extractContent.isPresent()) {
             return false;
         }

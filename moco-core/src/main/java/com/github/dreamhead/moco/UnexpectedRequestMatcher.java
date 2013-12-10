@@ -1,10 +1,8 @@
 package com.github.dreamhead.moco;
 
-import io.netty.handler.codec.http.FullHttpRequest;
-
 public class UnexpectedRequestMatcher implements RequestMatcher {
     @Override
-    public boolean match(FullHttpRequest request) {
+    public boolean match(HttpRequest request) {
         return true;
     }
 

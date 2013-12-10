@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.mount;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.io.File;
@@ -24,8 +26,9 @@ public class MountMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(FullHttpRequest request) {
-        String relativePath = extractor.extract(request).get();
+    public boolean match(HttpRequest request) {
+        FullHttpRequest httpRequest = ((LazyHttpRequest)request).getRawRequest();
+        String relativePath = extractor.extract(httpRequest).get();
         return isTarget(relativePath) && new File(dir, relativePath).exists();
     }
 

@@ -35,6 +35,11 @@ public class LazyHttpRequest implements HttpRequest {
         this.cookieSupplier = cookieSupplier(request);
     }
 
+    @JsonIgnore
+    public FullHttpRequest getRawRequest() {
+        return request;
+    }
+
     @Override
     public String getUri() {
         return this.request.getUri();
