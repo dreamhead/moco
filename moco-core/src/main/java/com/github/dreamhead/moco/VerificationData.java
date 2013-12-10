@@ -8,11 +8,11 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import static java.lang.String.format;
 
 public class VerificationData {
-    private final ImmutableList<FullHttpRequest> requests;
+    private final ImmutableList<HttpRequest> requests;
     private final RequestMatcher matcher;
     private final String mismatchFormat;
 
-    public VerificationData(ImmutableList<FullHttpRequest> requests, RequestMatcher matcher, String mismatchFormat) {
+    public VerificationData(ImmutableList<HttpRequest> requests, RequestMatcher matcher, String mismatchFormat) {
         this.requests = requests;
         this.matcher = matcher;
         this.mismatchFormat = mismatchFormat;
@@ -26,10 +26,10 @@ public class VerificationData {
         return FluentIterable.from(requests).filter(matched()).size();
     }
 
-    private Predicate<FullHttpRequest> matched() {
-        return new Predicate<FullHttpRequest>() {
+    private Predicate<HttpRequest> matched() {
+        return new Predicate<HttpRequest>() {
             @Override
-            public boolean apply(FullHttpRequest request) {
+            public boolean apply(HttpRequest request) {
                 return matcher.match(request);
             }
         };

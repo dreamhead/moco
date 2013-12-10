@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
@@ -9,17 +10,17 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
-    private List<FullHttpRequest> unexpectedRequests = newArrayList();
-    private List<FullHttpRequest> requests = newArrayList();
+    private List<HttpRequest> unexpectedRequests = newArrayList();
+    private List<HttpRequest> requests = newArrayList();
 
     @Override
     public void onMessageArrived(FullHttpRequest request) {
-        this.requests.add(request);
+        this.requests.add(new LazyHttpRequest(request));
     }
 
     @Override
     public void onUnexpectedMessage(FullHttpRequest request) {
-        this.unexpectedRequests.add(request);
+        this.unexpectedRequests.add(new LazyHttpRequest(request));
     }
 
     @Override

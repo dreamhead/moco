@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
@@ -106,7 +105,7 @@ public class ActualHttpServer extends HttpServer {
     private static RequestMatcher anyRequest() {
         return new RequestMatcher() {
             @Override
-            public boolean match(FullHttpRequest request) {
+            public boolean match(HttpRequest request) {
                 return true;
             }
 
