@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.extractor;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.FullHttpRequest;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -28,7 +28,7 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
     }
 
     @Override
-    public Optional<String[]> extract(FullHttpRequest request) {
+    public Optional<String[]> extract(HttpRequest request) {
         try {
             NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
             List<String> values = newArrayList();

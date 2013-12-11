@@ -1,8 +1,12 @@
 package com.github.dreamhead.moco.extractor;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.FullHttpRequest;
+import com.google.common.collect.ImmutableMap;
+
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
 
 public class HeaderRequestExtractor implements RequestExtractor<String> {
     private final String name;
@@ -12,7 +16,14 @@ public class HeaderRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(FullHttpRequest request) {
-        return Optional.fromNullable(request.headers().get(name));
+    public Optional<String> extract(HttpRequest request) {
+        ImmutableMap<String,String> headers = request.getHeaders();
+        for (String key : headers.keySet()) {
+            if (key.equalsIgnoreCase(name)) {
+                return of(headers.get(key));
+            }
+        }
+
+        return absent();
     }
 }

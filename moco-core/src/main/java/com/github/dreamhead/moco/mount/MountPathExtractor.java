@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.mount;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.extractor.UriRequestExtractor;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.FullHttpRequest;
 
 import static com.google.common.base.Optional.of;
 
@@ -15,7 +15,7 @@ public class MountPathExtractor implements RequestExtractor {
         this.target = target;
     }
 
-    public Optional<String> extract(FullHttpRequest request) {
+    public Optional<String> extract(HttpRequest request) {
         return of(target.extract(extractor.extract(request).get()));
     }
 }
