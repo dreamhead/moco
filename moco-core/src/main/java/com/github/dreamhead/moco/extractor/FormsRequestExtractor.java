@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.extractor;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -18,10 +20,12 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class FormsRequestExtractor implements RequestExtractor {
-    public Optional<ImmutableMap<String, String>> extract(FullHttpRequest request) {
+    public Optional<ImmutableMap<String, String>> extract(HttpRequest request) {
+
         HttpPostRequestDecoder decoder = null;
         try {
-            decoder = new HttpPostRequestDecoder(request);
+            FullHttpRequest httpRequest = ((LazyHttpRequest)request).getRawRequest();
+            decoder = new HttpPostRequestDecoder(httpRequest);
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
             return absent();

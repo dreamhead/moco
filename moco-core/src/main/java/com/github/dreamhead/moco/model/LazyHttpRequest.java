@@ -31,8 +31,8 @@ public class LazyHttpRequest implements HttpRequest {
         this.queriesSupplier = queriesSupplier(request.getUri());
         this.headersSupplier = headersSupplier(request.headers());
         this.contentSupplier = contentSupplier(request);
-        this.formSupplier = formSupplier(request);
-        this.cookieSupplier = cookieSupplier(request);
+        this.formSupplier = formSupplier();
+        this.cookieSupplier = cookieSupplier();
     }
 
     @JsonIgnore
@@ -118,21 +118,21 @@ public class LazyHttpRequest implements HttpRequest {
         });
     }
 
-    private Supplier<ImmutableMap<String, String>> formSupplier(final FullHttpRequest request) {
+    private Supplier<ImmutableMap<String, String>> formSupplier() {
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String,String>> forms = new FormsRequestExtractor().extract(request);
+                Optional<ImmutableMap<String,String>> forms = new FormsRequestExtractor().extract(LazyHttpRequest.this);
                 return forms.isPresent() ? forms.get() : ImmutableMap.<String, String>of();
             }
         });
     }
 
-    private Supplier<ImmutableMap<String, String>> cookieSupplier(final FullHttpRequest request) {
+    private Supplier<ImmutableMap<String, String>> cookieSupplier() {
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> cookies = new CookiesRequestExtractor().extract(request);
+                Optional<ImmutableMap<String, String>> cookies = new CookiesRequestExtractor().extract(LazyHttpRequest.this);
                 return cookies.isPresent() ? cookies.get() : ImmutableMap.<String, String>of();
             }
         });

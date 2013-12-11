@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.mount;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
+import com.github.dreamhead.moco.model.LazyHttpRequest;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
@@ -28,6 +29,7 @@ public class MountHandler extends AbstractContentResponseHandler {
     @Override
     protected void writeContentResponse(FullHttpRequest request, ByteBuf buffer) {
         try {
+
             buffer.writeBytes(toByteArray(targetFile(request)));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -35,7 +37,7 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     private File targetFile(FullHttpRequest request) {
-        Optional<String> relativePath = extractor.extract(request);
+        Optional<String> relativePath = extractor.extract(new LazyHttpRequest(request));
         return new File(dir, relativePath.get());
     }
 

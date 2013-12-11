@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
-import com.github.dreamhead.moco.model.LazyHttpRequest;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.FullHttpRequest;
 import org.w3c.dom.*;
@@ -35,8 +34,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     @Override
     public boolean match(HttpRequest request) {
         try {
-            FullHttpRequest httpRequest = ((LazyHttpRequest)request).getRawRequest();
-            Document requestDocument = extractDocument(httpRequest, extractor);
+            Document requestDocument = extractDocument(request, extractor);
             Document resourceDocument = getResourceDocument(null, this.resource);
             return requestDocument.isEqualNode(resourceDocument);
         } catch (SAXException e) {
@@ -58,7 +56,7 @@ public class XmlRequestMatcher implements RequestMatcher {
         return extractDocument(new InputSource(stream), this);
     }
 
-    private Document extractDocument(FullHttpRequest request, RequestExtractor<String> extractor) throws SAXException {
+    private Document extractDocument(HttpRequest request, RequestExtractor<String> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 
