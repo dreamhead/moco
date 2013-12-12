@@ -9,7 +9,7 @@ import static com.google.common.base.Optional.of;
 
 public class MountPathExtractor implements RequestExtractor {
     private final MountTo target;
-    private final UriRequestExtractor extractor = new UriRequestExtractor();
+    private final RequestExtractor<String> extractor = new UriRequestExtractor();
 
     public MountPathExtractor(MountTo target) {
         this.target = target;
