@@ -17,13 +17,15 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class CookiesRequestExtractor implements RequestExtractor<ImmutableMap<String, String>> {
+    private final RequestExtractor<String> extractor = new HeaderRequestExtractor(HttpHeaders.Names.COOKIE);
+
     public Optional<ImmutableMap<String, String>> extract(HttpRequest request) {
-        String cookieString = request.getHeaders().get(HttpHeaders.Names.COOKIE);
-        if (cookieString == null) {
+        Optional<String> cookieString = extractor.extract(request);
+        if (!cookieString.isPresent()) {
             return absent() ;
         }
 
-        return of(doExtract(cookieString));
+        return of(doExtract(cookieString.get()));
     }
 
     private static ImmutableMap<String, String> doExtract(String cookieString) {
