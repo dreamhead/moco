@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.resource.reader;
 
-import com.github.dreamhead.moco.model.LazyHttpRequest;
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
-import io.netty.handler.codec.http.FullHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +39,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(FullHttpRequest request) {
+    public byte[] readFor(HttpRequest request) {
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         String templateSource = new String(this.template.readFor(request));
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
@@ -50,7 +49,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template template = cfg.getTemplate(TEMPLATE_NAME);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(of("req", new LazyHttpRequest(request)), writer);
+            template.process(of("req", request), writer);
             return stream.toByteArray();
         } catch (ParseException e) {
             logger.info("Template is {}", templateSource);
