@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
-import io.netty.handler.codec.http.FullHttpRequest;
+import com.github.dreamhead.moco.HttpRequest;
 
 public interface ResourceReader {
-    byte[] readFor(FullHttpRequest request);
+    byte[] readFor(HttpRequest request);
 }

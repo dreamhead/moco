@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.ConfigApplier;
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
-import io.netty.handler.codec.http.FullHttpRequest;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
     private Identifiable identifiable;
@@ -26,7 +26,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
     }
 
     @Override
-    public byte[] readFor(FullHttpRequest request) {
+    public byte[] readFor(HttpRequest request) {
         return reader.readFor(request);
     }
 }

@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
-import io.netty.handler.codec.http.FullHttpRequest;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -51,7 +50,7 @@ public class XmlRequestMatcher implements RequestMatcher {
         return this;
     }
 
-    private Document getResourceDocument(FullHttpRequest request, Resource resource) throws SAXException {
+    private Document getResourceDocument(HttpRequest request, Resource resource) throws SAXException {
         ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(request));
         return extractDocument(new InputSource(stream), this);
     }

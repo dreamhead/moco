@@ -39,7 +39,7 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(SessionContext context) {
-        this.writeToResponse(context.getRequest(), context.getResponse());
+        this.writeToResponse(context.getFullHttpRequest(), context.getResponse());
     }
 
     private void writeToResponse(FullHttpRequest request, FullHttpResponse response) {

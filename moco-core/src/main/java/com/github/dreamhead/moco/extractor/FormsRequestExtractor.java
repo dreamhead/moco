@@ -28,8 +28,7 @@ public class FormsRequestExtractor implements RequestExtractor {
 
         HttpPostRequestDecoder decoder = null;
         try {
-            FullHttpRequest httpRequest = wrapRequest(request);
-            decoder = new HttpPostRequestDecoder(httpRequest);
+            decoder = new HttpPostRequestDecoder(wrapRequest(request));
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
             return absent();
@@ -44,9 +43,11 @@ public class FormsRequestExtractor implements RequestExtractor {
 
     private FullHttpRequest wrapRequest(HttpRequest request) {
         ByteBuf buffer = Unpooled.buffer();
-        if (request.getContent() != null) {
-            buffer.writeBytes(request.getContent().getBytes());
+        String content = request.getContent();
+        if (content != null) {
+            buffer.writeBytes(content.getBytes());
         }
+
         return new DefaultFullHttpRequest(HttpVersion.valueOf(request.getVersion()),
                 HttpMethod.valueOf(request.getMethod()), request.getUri(), buffer);
     }

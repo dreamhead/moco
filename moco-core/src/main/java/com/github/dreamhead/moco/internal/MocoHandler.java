@@ -51,7 +51,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
         LazyHttpRequest httpRequest = new LazyHttpRequest(request);
         monitor.onMessageArrived(httpRequest);
-        SessionContext context = new SessionContext(request, response);
+        SessionContext context = new SessionContext(httpRequest, request, response);
 
         for (BaseSetting setting : settings) {
             if (setting.match(httpRequest)) {
