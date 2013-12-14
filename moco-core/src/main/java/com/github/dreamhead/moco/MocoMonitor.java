@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface MocoMonitor {
     @Subscribe
-    void onMessageArrived(FullHttpRequest request);
+    void onMessageArrived(HttpRequest request);
 
     @Subscribe
     void onException(Exception e);
