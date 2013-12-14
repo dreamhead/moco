@@ -1,19 +1,19 @@
 package com.github.dreamhead.moco.handler.failover;
 
-import io.netty.handler.codec.http.FullHttpRequest;
+import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface Failover {
-    void onCompleteResponse(FullHttpRequest request, FullHttpResponse response);
-    void failover(FullHttpRequest request, FullHttpResponse response);
+    void onCompleteResponse(HttpRequest request, FullHttpResponse response);
+    void failover(HttpRequest request, FullHttpResponse response);
 
     Failover EMPTY_FAILOVER = new Failover() {
         @Override
-        public void onCompleteResponse(FullHttpRequest request, FullHttpResponse response) {
+        public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
         }
 
         @Override
-        public void failover(FullHttpRequest request, FullHttpResponse response) {
+        public void failover(HttpRequest request, FullHttpResponse response) {
             throw new RuntimeException("no failover response found");
         }
     };

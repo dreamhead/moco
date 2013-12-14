@@ -5,14 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +37,10 @@ public class DefaultFailover implements Failover {
         this.file = file;
     }
 
-    public void onCompleteResponse(FullHttpRequest request, FullHttpResponse response) {
+    public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-            Session targetSession = Session.newSession(MessageFactory.createRequest(request), MessageFactory.createResponse(response));
+            Session targetSession = Session.newSession(request, MessageFactory.createResponse(response));
             writer.writeValue(this.file, prepareTargetSessions(targetSession));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -78,19 +77,18 @@ public class DefaultFailover implements Failover {
     }
 
     @Override
-    public void failover(FullHttpRequest request, FullHttpResponse response) {
+    public void failover(HttpRequest request, FullHttpResponse response) {
         writeResponse(response, failoverResponse(request));
     }
 
-    private HttpResponse failoverResponse(FullHttpRequest request) {
-        final HttpRequest dumpedRequest = MessageFactory.createRequest(request);
+    private HttpResponse failoverResponse(HttpRequest request) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
-        final Optional<Session> session = tryFind(sessions, isForRequest(dumpedRequest));
+        final Optional<Session> session = tryFind(sessions, isForRequest(request));
         if (session.isPresent()) {
             return session.get().getResponse();
         }
 
-        logger.error("No match request found: {}", dumpedRequest);
+        logger.error("No match request found: {}", request);
         throw new RuntimeException("no failover response found");
     }
 
