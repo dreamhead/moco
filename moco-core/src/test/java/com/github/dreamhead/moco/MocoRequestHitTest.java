@@ -47,7 +47,7 @@ public class MocoRequestHitTest {
             }
         });
 
-        verify(monitor).onMessageArrived(any(FullHttpRequest.class));
+        verify(monitor).onMessageArrived(any(HttpRequest.class));
         verify(monitor).onMessageLeave(any(FullHttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
@@ -65,7 +65,7 @@ public class MocoRequestHitTest {
             }
         });
 
-        verify(monitor).onMessageArrived(any(FullHttpRequest.class));
+        verify(monitor).onMessageArrived(any(HttpRequest.class));
         verify(monitor).onMessageLeave(any(FullHttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
@@ -217,5 +217,21 @@ public class MocoRequestHitTest {
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_for_negative_number_for_times() {
         times(-1);
+    }
+
+    @Test
+    public void should_verify_form_data() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.post(eq(form("name"), "dreamhead")).response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                assertThat(content, is("foobar"));
+            }
+        });
+
+        hit.verify(eq(form("name"), "dreamhead"), once());
     }
 }

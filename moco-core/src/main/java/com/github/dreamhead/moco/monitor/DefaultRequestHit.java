@@ -14,8 +14,8 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     private List<HttpRequest> requests = newArrayList();
 
     @Override
-    public void onMessageArrived(FullHttpRequest request) {
-        this.requests.add(new LazyHttpRequest(request));
+    public void onMessageArrived(HttpRequest request) {
+        this.requests.add(request);
     }
 
     @Override

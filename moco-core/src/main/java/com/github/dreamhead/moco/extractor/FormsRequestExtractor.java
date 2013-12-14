@@ -6,8 +6,10 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.DecoderResult;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
@@ -26,7 +28,7 @@ public class FormsRequestExtractor implements RequestExtractor {
 
         HttpPostRequestDecoder decoder = null;
         try {
-            FullHttpRequest httpRequest = new NettyHttpRequestWrapper(request);
+            FullHttpRequest httpRequest = wrapRequest(request);
             decoder = new HttpPostRequestDecoder(httpRequest);
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
@@ -40,6 +42,15 @@ public class FormsRequestExtractor implements RequestExtractor {
         }
     }
 
+    private FullHttpRequest wrapRequest(HttpRequest request) {
+        ByteBuf buffer = Unpooled.buffer();
+        if (request.getContent() != null) {
+            buffer.writeBytes(request.getContent().getBytes());
+        }
+        return new DefaultFullHttpRequest(HttpVersion.valueOf(request.getVersion()),
+                HttpMethod.valueOf(request.getMethod()), request.getUri(), buffer);
+    }
+
     private ImmutableMap<String, String> doExtractForms(HttpPostRequestDecoder decoder) throws IOException {
         List<InterfaceHttpData> bodyHttpDatas = decoder.getBodyHttpDatas();
         Map<String, String> forms = newHashMap();
@@ -51,109 +62,5 @@ public class FormsRequestExtractor implements RequestExtractor {
         }
 
         return copyOf(forms);
-    }
-
-    private static class NettyHttpRequestWrapper implements FullHttpRequest {
-
-        private HttpRequest request;
-
-        private NettyHttpRequestWrapper(HttpRequest request) {
-            this.request = request;
-        }
-
-        @Override
-        public HttpHeaders trailingHeaders() {
-            return null;
-        }
-
-        @Override
-        public ByteBuf content() {
-            ByteBuf buffer = Unpooled.buffer();
-            buffer.writeBytes(request.getContent().getBytes());
-            return buffer;
-        }
-
-        @Override
-        public FullHttpRequest copy() {
-            return null;
-        }
-
-        @Override
-        public HttpContent duplicate() {
-            return null;
-        }
-
-        @Override
-        public FullHttpRequest retain(int increment) {
-            return null;
-        }
-
-        @Override
-        public boolean release() {
-            return false;
-        }
-
-        @Override
-        public boolean release(int decrement) {
-            return false;
-        }
-
-        @Override
-        public int refCnt() {
-            return 0;
-        }
-
-        @Override
-        public FullHttpRequest retain() {
-            return null;
-        }
-
-        @Override
-        public HttpVersion getProtocolVersion() {
-            return null;
-        }
-
-        @Override
-        public FullHttpRequest setProtocolVersion(HttpVersion version) {
-            return null;
-        }
-
-        @Override
-        public HttpHeaders headers() {
-            DefaultHttpHeaders headers = new DefaultHttpHeaders();
-            for (Map.Entry<String, String> header : request.getHeaders().entrySet()) {
-                headers.add(header.getKey(), header.getValue());
-            }
-            return headers;
-        }
-
-        @Override
-        public HttpMethod getMethod() {
-            return HttpMethod.valueOf(request.getMethod());
-        }
-
-        @Override
-        public FullHttpRequest setMethod(HttpMethod method) {
-            return null;
-        }
-
-        @Override
-        public String getUri() {
-            return null;
-        }
-
-        @Override
-        public FullHttpRequest setUri(String uri) {
-            return null;
-        }
-
-        @Override
-        public DecoderResult getDecoderResult() {
-            return null;
-        }
-
-        @Override
-        public void setDecoderResult(DecoderResult result) {
-        }
     }
 }

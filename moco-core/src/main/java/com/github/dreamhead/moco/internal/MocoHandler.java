@@ -25,11 +25,48 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
-        monitor.onMessageArrived(message);
-        FullHttpResponse response = getResponse(message);
+        closeIfNotKeepAlive(message, ctx.writeAndFlush(handleRequest(message)));
+    }
+
+    private FullHttpResponse handleRequest(FullHttpRequest message) {
+        FullHttpResponse response = getHttpResponse(message);
         prepareForKeepAlive(message, response);
         monitor.onMessageLeave(response);
-        closeIfNotKeepAlive(message, ctx.writeAndFlush(response));
+        return response;
+    }
+
+    private FullHttpResponse getHttpResponse(FullHttpRequest message) {
+        try {
+            return doGetFullHttpResponse(message);
+        } catch (RuntimeException e) {
+            monitor.onException(e);
+            return defaultResponse(message, HttpResponseStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            monitor.onException(e);
+            return defaultResponse(message, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private FullHttpResponse doGetFullHttpResponse(FullHttpRequest request) {
+        FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
+        LazyHttpRequest httpRequest = new LazyHttpRequest(request);
+        monitor.onMessageArrived(httpRequest);
+        SessionContext context = new SessionContext(request, response);
+
+        for (BaseSetting setting : settings) {
+            if (setting.match(httpRequest)) {
+                setting.writeToResponse(context);
+                return response;
+            }
+        }
+
+        if (anySetting.match(httpRequest)) {
+            anySetting.writeToResponse(context);
+            return response;
+        }
+
+        monitor.onUnexpectedMessage(request);
+        return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
     }
 
     private void closeIfNotKeepAlive(FullHttpRequest request, ChannelFuture future) {
@@ -49,39 +86,6 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         if (!isContentLengthSet(response)) {
             setContentLength(response, response.content().writerIndex());
         }
-    }
-
-    private FullHttpResponse getResponse(FullHttpRequest request) {
-        try {
-            return doGetHttpResponse(request);
-        } catch (RuntimeException e) {
-            monitor.onException(e);
-            return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            monitor.onException(e);
-            return defaultResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private FullHttpResponse doGetHttpResponse(FullHttpRequest request) {
-        FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
-        LazyHttpRequest httpRequest = new LazyHttpRequest(request);
-        SessionContext context = new SessionContext(request, response);
-
-        for (BaseSetting setting : settings) {
-            if (setting.match(httpRequest)) {
-                setting.writeToResponse(context);
-                return response;
-            }
-        }
-
-        if (anySetting.match(httpRequest)) {
-            anySetting.writeToResponse(context);
-            return response;
-        }
-
-        monitor.onUnexpectedMessage(request);
-        return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
     }
 
     private FullHttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
