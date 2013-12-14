@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -39,16 +40,14 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(SessionContext context) {
-        this.writeToResponse(context.getFullHttpRequest(), context.getResponse());
-    }
-
-    private void writeToResponse(FullHttpRequest request, FullHttpResponse response) {
+        FullHttpRequest request = context.getFullHttpRequest();
+        FullHttpResponse response = context.getResponse();
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(request)));
+            setupResponse(context.getRequest(), response, httpclient.execute(prepareRemoteRequest(request)));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
-            failover.failover(request, response);
+            failover.failover(context.getRequest(), response);
         } finally {
             try {
                 httpclient.close();
@@ -103,12 +102,12 @@ public class ProxyResponseHandler implements ResponseHandler {
     }
 
 
-    private org.apache.http.HttpVersion createVersion(HttpRequest request) {
+    private org.apache.http.HttpVersion createVersion(FullHttpRequest request) {
         HttpVersion protocolVersion = request.getProtocolVersion();
         return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
-    private void setupResponse(FullHttpRequest request,
+    private void setupResponse(HttpRequest request,
                                FullHttpResponse response,
                                org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
@@ -183,7 +182,7 @@ public class ProxyResponseHandler implements ResponseHandler {
         throw new RuntimeException("unknown HTTP method");
     }
 
-    private URL remoteUrl(HttpRequest request) throws MalformedURLException {
+    private URL remoteUrl(FullHttpRequest request) throws MalformedURLException {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         QueryStringEncoder encoder = new QueryStringEncoder(this.url.getPath());
 
