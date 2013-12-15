@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.model.DumpHttpRequest;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class HttpRequestMatcherTest {
     @Test
     public void should_be_match_if_request_is_same() {
-        HttpRequest request = DumpHttpRequest.builder()
+        HttpRequest request = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -24,14 +24,14 @@ public class HttpRequestMatcherTest {
 
     @Test
     public void should_not_be_match_if_request_is_different() {
-        HttpRequest request = DumpHttpRequest.builder()
+        HttpRequest request = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
-        HttpRequest another = DumpHttpRequest.builder()
+        HttpRequest another = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("different")
@@ -43,7 +43,7 @@ public class HttpRequestMatcherTest {
 
     @Test
     public void should_not_be_match_if_uri_is_different() {
-        HttpRequest request = DumpHttpRequest.builder()
+        HttpRequest request = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -51,7 +51,7 @@ public class HttpRequestMatcherTest {
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
-        HttpRequest another = DumpHttpRequest.builder()
+        HttpRequest another = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -64,14 +64,14 @@ public class HttpRequestMatcherTest {
 
     @Test
     public void should_be_match_if_failover_field_is_null() {
-        HttpRequest request = DumpHttpRequest.builder()
+        HttpRequest request = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
-        HttpRequest failover = DumpHttpRequest.builder()
+        HttpRequest failover = DefaultHttpRequest.builder()
                 .withMethod("POST")
                 .withContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
@@ -82,14 +82,14 @@ public class HttpRequestMatcherTest {
 
     @Test
     public void should_be_match_even_if_target_request_has_more_headers() {
-        HttpRequest request = DumpHttpRequest.builder()
+        HttpRequest request = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
-        HttpRequest failover = DumpHttpRequest.builder()
+        HttpRequest failover = DefaultHttpRequest.builder()
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")

@@ -234,4 +234,20 @@ public class MocoRequestHitTest {
 
         hit.verify(eq(form("name"), "dreamhead"), once());
     }
+
+    @Test
+    public void should_verify_form_data_even_if_no_server_expectation() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                assertThat(content, is("foobar"));
+            }
+        });
+
+        hit.verify(eq(form("name"), "dreamhead"), once());
+    }
 }
