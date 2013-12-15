@@ -6,7 +6,6 @@
       "Host" : "localhost:12306",
       "Connection" : "Keep-Alive"
     },
-    "queries" : null,
     "method" : "GET"
   },
   "response" : {
@@ -27,7 +26,6 @@
       "Content-Length" : "5",
       "Connection" : "Keep-Alive"
     },
-    "queries" : null,
     "method" : "POST"
   },
   "response" : {

@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.eventbus.Subscribe;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface MocoMonitor {
@@ -15,5 +14,5 @@ public interface MocoMonitor {
     void onMessageLeave(FullHttpResponse response);
 
     @Subscribe
-    void onUnexpectedMessage(FullHttpRequest request);
+    void onUnexpectedMessage(HttpRequest request);
 }

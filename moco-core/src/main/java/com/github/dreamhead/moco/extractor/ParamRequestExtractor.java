@@ -3,13 +3,12 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.QueryStringDecoder;
+import com.google.common.collect.ImmutableMap;
 
-import java.util.List;
-
-import static com.google.common.base.Optional.of;
+import static com.google.common.base.Optional.fromNullable;
 
 public class ParamRequestExtractor implements RequestExtractor<String> {
+    private final ParamsRequestExtractor extractor = new ParamsRequestExtractor();
     private final String param;
 
     public ParamRequestExtractor(final String param) {
@@ -18,8 +17,8 @@ public class ParamRequestExtractor implements RequestExtractor<String> {
 
     @Override
     public Optional<String> extract(HttpRequest request) {
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        List<String> values = decoder.parameters().get(param);
-        return values == null ? Optional.<String>absent() : of(values.get(0));
+        Optional<ImmutableMap<String,String>> params = extractor.extract(request);
+        return params.isPresent() ? fromNullable(params.get().get(this.param)) : Optional.<String>absent();
+
     }
 }

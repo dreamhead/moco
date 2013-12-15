@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.model.LazyHttpRequest;
-import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.List;
 
@@ -19,8 +17,8 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     }
 
     @Override
-    public void onUnexpectedMessage(FullHttpRequest request) {
-        this.unexpectedRequests.add(new LazyHttpRequest(request));
+    public void onUnexpectedMessage(HttpRequest request) {
+        this.unexpectedRequests.add(request);
     }
 
     @Override

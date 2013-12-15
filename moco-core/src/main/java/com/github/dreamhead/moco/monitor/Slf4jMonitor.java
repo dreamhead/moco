@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +30,6 @@ public class Slf4jMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onUnexpectedMessage(FullHttpRequest request) {
+    public void onUnexpectedMessage(HttpRequest request) {
     }
 }

@@ -2,6 +2,9 @@
 ## APIs
 * log to record request
 
+## Implementation Details
+* Removed "queries" from failover. Please remove queries from failover file if your tests failed.
+
 # Release 0.9 (1-Nov-2013)
 
 ## APIs
