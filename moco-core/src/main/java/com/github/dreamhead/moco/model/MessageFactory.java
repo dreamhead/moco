@@ -8,10 +8,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import java.util.Map;
 
 public class MessageFactory {
-    public static HttpResponse createResponse(FullHttpResponse response) {
-        return DumpHttpResponse.newResponse(response);
-    }
-
     public static void writeResponse(FullHttpResponse response, HttpResponse targetHttpResponse) {
         response.setProtocolVersion(HttpVersion.valueOf(targetHttpResponse.getVersion()));
         response.setStatus(HttpResponseStatus.valueOf(targetHttpResponse.getStatus()));

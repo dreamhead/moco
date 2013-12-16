@@ -2,14 +2,9 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
@@ -28,7 +23,7 @@ public class FormsRequestExtractor implements RequestExtractor {
 
         HttpPostRequestDecoder decoder = null;
         try {
-            decoder = new HttpPostRequestDecoder(wrapRequest(request));
+            decoder = new HttpPostRequestDecoder(((DefaultHttpRequest)request).toFullHttpRequest());
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
             return absent();
@@ -39,17 +34,6 @@ public class FormsRequestExtractor implements RequestExtractor {
                 decoder.destroy();
             }
         }
-    }
-
-    private FullHttpRequest wrapRequest(HttpRequest request) {
-        ByteBuf buffer = Unpooled.buffer();
-        String content = request.getContent();
-        if (content != null) {
-            buffer.writeBytes(content.getBytes());
-        }
-
-        return new DefaultFullHttpRequest(HttpVersion.valueOf(request.getVersion()),
-                HttpMethod.valueOf(request.getMethod()), request.getUri(), buffer);
     }
 
     private ImmutableMap<String, String> doExtractForms(HttpPostRequestDecoder decoder) throws IOException {

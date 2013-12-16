@@ -6,12 +6,15 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
 import com.github.dreamhead.moco.extractor.ParamsRequestExtractor;
+import com.github.dreamhead.moco.util.ByteBufs;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.*;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -124,14 +127,38 @@ public class DefaultHttpRequest implements HttpRequest {
         return new Builder();
     }
 
-    public static HttpRequest newRequest(FullHttpRequest response) {
+    private static String contentToString(FullHttpRequest request) {
+        long contentLength = HttpHeaders.getContentLength(request, -1);
+        if (contentLength <= 0) {
+            return "";
+        }
+
+        return new String(ByteBufs.asBytes(request.content()), 0, (int)contentLength, Charset.defaultCharset());
+    }
+
+    public static HttpRequest newRequest(FullHttpRequest request) {
+
         return builder()
-                .withVersion(response.getProtocolVersion().text())
-                .withHeaders(collectHeaders(response.headers()))
-                .withMethod(response.getMethod().toString().toUpperCase())
-                .withUri(response.getUri())
-                .withContent(response.content().toString(Charset.defaultCharset()))
+                .withVersion(request.getProtocolVersion().text())
+                .withHeaders(collectHeaders(request.headers()))
+                .withMethod(request.getMethod().toString().toUpperCase())
+                .withUri(request.getUri())
+                .withContent(contentToString(request))
                 .build();
+    }
+
+    public FullHttpRequest toFullHttpRequest() {
+        ByteBuf buffer = Unpooled.buffer();
+        if (content != null) {
+            buffer.writeBytes(content.getBytes());
+        }
+
+        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version), HttpMethod.valueOf(method), uri, buffer);
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            request.headers().add(entry.getKey(), entry.getValue());
+        }
+
+        return request;
     }
 
     private static ImmutableMap<String, String> collectHeaders(Iterable<Map.Entry<String, String>> httpHeaders) {

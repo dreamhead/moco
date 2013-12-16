@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
-import com.github.dreamhead.moco.model.MessageFactory;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -20,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.FluentIterable.from;
@@ -40,7 +40,7 @@ public class DefaultFailover implements Failover {
     public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-            Session targetSession = Session.newSession(request, MessageFactory.createResponse(response));
+            Session targetSession = Session.newSession(request, newResponse(response));
             writer.writeValue(this.file, prepareTargetSessions(targetSession));
         } catch (IOException e) {
             throw new RuntimeException(e);

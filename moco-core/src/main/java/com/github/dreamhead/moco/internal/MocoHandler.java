@@ -51,7 +51,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
         com.github.dreamhead.moco.HttpRequest httpRequest = DefaultHttpRequest.newRequest(request);
         monitor.onMessageArrived(httpRequest);
-        SessionContext context = new SessionContext(httpRequest, request, response);
+        SessionContext context = new SessionContext(httpRequest, response);
 
         for (BaseSetting setting : settings) {
             if (setting.match(httpRequest)) {

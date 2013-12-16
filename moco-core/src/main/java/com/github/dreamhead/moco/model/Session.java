@@ -9,7 +9,7 @@ import com.github.dreamhead.moco.HttpResponse;
 public class Session {
     @JsonDeserialize(as = DefaultHttpRequest.class)
     private HttpRequest request;
-    @JsonDeserialize(as = DumpHttpResponse.class)
+    @JsonDeserialize(as = DefaultHttpResponse.class)
     private HttpResponse response;
 
     public HttpRequest getRequest() {

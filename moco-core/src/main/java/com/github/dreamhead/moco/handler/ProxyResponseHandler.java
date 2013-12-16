@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
@@ -22,10 +23,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.util.ByteBufs.asBytes;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class ProxyResponseHandler implements ResponseHandler {
@@ -40,14 +41,14 @@ public class ProxyResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(SessionContext context) {
-        FullHttpRequest request = context.getFullHttpRequest();
+        HttpRequest request = context.getRequest();
         FullHttpResponse response = context.getResponse();
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            setupResponse(context.getRequest(), response, httpclient.execute(prepareRemoteRequest(request)));
+            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(context)));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
-            failover.failover(context.getRequest(), response);
+            failover.failover(request, response);
         } finally {
             try {
                 httpclient.close();
@@ -56,7 +57,8 @@ public class ProxyResponseHandler implements ResponseHandler {
         }
     }
 
-    private HttpRequestBase prepareRemoteRequest(FullHttpRequest request) throws MalformedURLException {
+    private HttpRequestBase prepareRemoteRequest(SessionContext context) throws MalformedURLException {
+        FullHttpRequest request = ((DefaultHttpRequest)context.getRequest()).toFullHttpRequest();
         HttpRequestBase remoteRequest = createRemoteRequest(request);
         RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
         remoteRequest.setConfig(config);
@@ -65,7 +67,7 @@ public class ProxyResponseHandler implements ResponseHandler {
         long contentLength = HttpHeaders.getContentLength(request, -1);
         if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
             HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-            entityRequest.setEntity(createEntity(request.content()));
+            entityRequest.setEntity(createEntity(request.content(), contentLength));
         }
 
         return remoteRequest;
@@ -82,25 +84,9 @@ public class ProxyResponseHandler implements ResponseHandler {
         return remoteRequest;
     }
 
-    private HttpEntity createEntity(ByteBuf content) {
-        return new ByteArrayEntity(readBuf(content));
+    private HttpEntity createEntity(ByteBuf content, long contentLength) {
+        return new ByteArrayEntity(asBytes(content), 0, (int)contentLength);
     }
-
-    private byte[] readBuf(ByteBuf content) {
-        if (content.hasArray()) {
-            return content.array();
-        }
-
-        if (content.nioBufferCount() > 0) {
-            ByteBuffer byteBuffer = content.nioBuffer();
-            byte[] bytes = new byte[byteBuffer.capacity()];
-            byteBuffer.get(bytes);
-            return bytes;
-        }
-
-        throw new IllegalArgumentException("unknown content");
-    }
-
 
     private org.apache.http.HttpVersion createVersion(FullHttpRequest request) {
         HttpVersion protocolVersion = request.getProtocolVersion();
