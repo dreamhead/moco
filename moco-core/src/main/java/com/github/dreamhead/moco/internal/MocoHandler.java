@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.setting.BaseSetting;
@@ -11,6 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
 import static io.netty.handler.codec.http.HttpHeaders.*;
+
 
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final ImmutableList<BaseSetting> settings;
@@ -29,43 +31,43 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     private FullHttpResponse handleRequest(FullHttpRequest message) {
-        FullHttpResponse response = getHttpResponse(message);
+        HttpRequest request = DefaultHttpRequest.newRequest(message);
+        FullHttpResponse response = getHttpResponse(request);
         prepareForKeepAlive(message, response);
         monitor.onMessageLeave(response);
         return response;
     }
 
-    private FullHttpResponse getHttpResponse(FullHttpRequest message) {
+    private FullHttpResponse getHttpResponse(HttpRequest request) {
         try {
-            return doGetFullHttpResponse(message);
+            monitor.onMessageArrived(request);
+            return doGetResponse(request);
         } catch (RuntimeException e) {
             monitor.onException(e);
-            return defaultResponse(message, HttpResponseStatus.BAD_REQUEST);
+            return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
         } catch (Exception e) {
             monitor.onException(e);
-            return defaultResponse(message, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            return defaultResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    private FullHttpResponse doGetFullHttpResponse(FullHttpRequest request) {
+    private FullHttpResponse doGetResponse(HttpRequest request) {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
-        com.github.dreamhead.moco.HttpRequest httpRequest = DefaultHttpRequest.newRequest(request);
-        monitor.onMessageArrived(httpRequest);
-        SessionContext context = new SessionContext(httpRequest, response);
+        SessionContext context = new SessionContext(request, response);
 
         for (BaseSetting setting : settings) {
-            if (setting.match(httpRequest)) {
+            if (setting.match(request)) {
                 setting.writeToResponse(context);
                 return response;
             }
         }
 
-        if (anySetting.match(httpRequest)) {
+        if (anySetting.match(request)) {
             anySetting.writeToResponse(context);
             return response;
         }
 
-        monitor.onUnexpectedMessage(httpRequest);
+        monitor.onUnexpectedMessage(request);
         return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
     }
 
@@ -89,6 +91,6 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     private FullHttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
-        return new DefaultFullHttpResponse(request.getProtocolVersion(), status);
+        return new DefaultFullHttpResponse(HttpVersion.valueOf(request.getVersion()), status);
     }
 }
