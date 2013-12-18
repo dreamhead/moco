@@ -1,28 +1,31 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
+import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.Runner.*;
+import static com.google.common.collect.ImmutableMap.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.running;
-import static com.google.common.collect.ImmutableMap.of;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
+import com.google.common.io.ByteStreams;
 
 public class MocoTest extends AbstractMocoTest {
-    @Test
+
+	public static final boolean SHUT_DOWN_IMMEDIATELY = false;
+
+	@Test
     public void should_return_expected_response() throws Exception {
         server.response("foo");
 
@@ -68,6 +71,27 @@ public class MocoTest extends AbstractMocoTest {
                 assertThat(helper.get(root()), is("foo.response"));
             }
         });
+    }
+	
+    @Test
+    public void should_return_expected_response_from_a_large_file_and_run_a_new_server_without_exceptions() throws Exception {
+	    server.response(file("src/test/resources/large.response"));
+		
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(root()), Matchers.notNullValue());
+            }
+        });
+	    
+	    server = httpserver(port());
+	    server.response(file("src/test/resources/large.response"));
+	    running(server, new Runnable() {
+		    @Override
+		    public void run() throws IOException {
+			    assertThat(helper.get(root()), Matchers.notNullValue());
+		    }
+	    });
     }
 
     @Test
@@ -542,4 +566,5 @@ public class MocoTest extends AbstractMocoTest {
             }
         });
     }
+	
 }

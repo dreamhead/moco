@@ -29,7 +29,11 @@ public class MocoHttpServer {
         serverSetting.setPort(port);
     }
 
-    public void stop() {
-        server.stop();
-    }
+	public void stop() {
+		server.stop();
+	}
+
+	public void stop(boolean shutDownGracefully) {
+		server.stop(shutDownGracefully);
+	}
 }

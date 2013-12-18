@@ -1,12 +1,14 @@
 package com.github.dreamhead.moco.internal;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class MocoServer {
     private EventLoopGroup bossGroup;
@@ -35,24 +37,53 @@ public class MocoServer {
     }
 
     public void stop() {
-        doStop();
+        doStopGracefully();
     }
+	
+	public void stop(boolean shutDownGracefully) {
+		if (shutDownGracefully) {
+			doStopGracefully();
+		} else {
+			doStopImmediately();
+		}
+	}
+	private void doStopGracefully() {
+		closeChannel();
 
-    private void doStop() {
-        if (future != null) {
-            future.channel().close().syncUninterruptibly();
-            future = null;
+		if (bossGroup != null) {
+			bossGroup.shutdownGracefully();
+			bossGroup = null;
+		}
+
+
+		if (workerGroup != null) {
+			workerGroup.shutdownGracefully();
+			workerGroup = null;
+		}
+	}
+
+	private void doStopImmediately() {
+		closeChannel();
+
+		if (bossGroup != null) {
+	        terminateSilently(bossGroup);
+	        bossGroup = null;
         }
-
-        if (bossGroup != null) {
-            bossGroup.shutdownGracefully();
-            bossGroup = null;
-        }
-
 
         if (workerGroup != null) {
-            workerGroup.shutdownGracefully();
+	        terminateSilently(workerGroup);
             workerGroup = null;
-        }
+        }	    	    
     }
+
+	private void closeChannel() {
+		if (future != null) {
+			future.channel().flush().closeFuture();
+			future = null;
+		}
+	}
+
+	private void terminateSilently(EventLoopGroup eventLoopGroup){
+		eventLoopGroup.shutdownGracefully().syncUninterruptibly();	
+	}
 }

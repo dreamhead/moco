@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.internal;
 
-import org.junit.Test;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
+import static com.google.common.base.Optional.*;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.google.common.base.Optional.of;
+import org.junit.Test;
 
 public class MocoHttpServerTest {
     @Test
@@ -17,6 +17,16 @@ public class MocoHttpServerTest {
         MocoHttpServer server = new MocoHttpServer(ActualHttpServer.createLogServer(of(port())));
         server.start();
         server.stop();
+        server.stop();
+    } 
+	
+	@Test	
+    public void should_start_stoped_server_without_exception() {
+        MocoHttpServer server = new MocoHttpServer(ActualHttpServer.createLogServer(of(port())));
+        server.start();
+        server.stop();
+		server = new MocoHttpServer(ActualHttpServer.createLogServer(of(port())));
+		server.start();
         server.stop();
     }
 }
