@@ -9,6 +9,8 @@ import com.google.common.base.Predicate;
 import java.util.regex.Pattern;
 
 public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
+    private final Resource expected;
+
     public MatchMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, new Predicate<String>() {
 
@@ -18,10 +20,16 @@ public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
                 return pattern.matcher(input).matches();
             }
         });
+        this.expected = expected;
     }
 
     @Override
     public RequestMatcher apply(final MocoConfig config) {
-        return this;
+        Resource appliedResource = expected.apply(config);
+        if (appliedResource == expected) {
+            return this;
+        }
+
+        return new MatchMatcher<T>(extractor, appliedResource);
     }
 }
