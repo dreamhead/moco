@@ -1,6 +1,7 @@
 # Release 1.0
 ## APIs
 * log to record request
+* once for verifier
 
 ## Implementation Details
 * Removed "queries" from failover. Please remove queries from failover file if your tests failed.

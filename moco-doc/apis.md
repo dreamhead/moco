@@ -1165,12 +1165,12 @@ hit.verify(unexpected(), never());
 
 Many verification can be used:
 * **never**: none of this kind of request has been sent.
+* **once**: only once this kind of request has been sent.
 * **time**: how many times this kind of request has been sent.
 * **atLeast**: at least how many time this kind of request has been sent.
 * **atMost**: at least how many time this kind of request has been sent.
 
 # Port
-
 If you specify a port for your stub server, it means the port must be available when you start server. This is not case sometimes.
 
 Moco provides you another way to start your server: specify no port, and it will look up an available port. The port can be got by port() method. The example is as follow:
@@ -1197,3 +1197,19 @@ java -jar moco-runner-<version>-standalone.jar start -c foo.json
 ```
 
 The port information will shown on screen.
+
+# Log
+If you want to know more about how your Moco server running, log will be your helper.
+
+```java
+final HttpServer server = httpserver(log());
+```
+
+The Moco server will log all your requests and responses in your console.
+
+It you want to keep log, you can use log interface as following:
+```java
+final HttpServer server = httpserver(log("path/to/log.log"));
+```
+
+The log will be saved in your log file.
