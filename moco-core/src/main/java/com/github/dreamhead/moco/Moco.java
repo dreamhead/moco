@@ -221,11 +221,12 @@ public class Moco {
     }
 
     public static ResponseHandler status(final int code) {
+        checkArgument(code > 0, "Status code must be greater than zero");
         return new StatusCodeResponseHandler(code);
     }
 
     public static ResponseHandler proxy(final String url) {
-        return proxy(url, Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(url, "URL should not be null"), Failover.EMPTY_FAILOVER);
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
