@@ -171,6 +171,8 @@ project(':moco-runner') {
 
     task uberjar(type: Jar, dependsOn: jar) {
         classifier = 'standalone'
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        exclude('META-INF/maven/**')
 
         from files(project(':moco-core').sourceSets.main.output.classesDir)
         from files(project(':moco-core').sourceSets.main.output.resourcesDir)
