@@ -56,17 +56,17 @@ git clone git@github.com:dreamhead/moco.git
 * Build Moco
 
 ```shell
-gradle build
+./gradlew build
 ```
 * Build uberjar
 
 ```shell
-gradle uberjar
+./gradlew uberjar
 ```
 * Check code before commit
 
 ```shell
-gradle check
+./gradlew check
 ```
 
 ## Contributing
