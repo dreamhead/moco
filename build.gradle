@@ -198,4 +198,12 @@ project(':moco-runner') {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.10'
+    def jvmOpts = "-Xmx512m"
+    inputs.property("jvmOpts", jvmOpts)
+
+    doLast {
+        def optsEnvVar = "DEFAULT_JVM_OPTS"
+        scriptFile.write scriptFile.text.replace("$optsEnvVar=\"\"", "$optsEnvVar=\"$jvmOpts\"")
+        batchScript.write batchScript.text.replace("set $optsEnvVar=", "set $optsEnvVar=$jvmOpts")
+    }
 }
