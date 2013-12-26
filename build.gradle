@@ -209,8 +209,19 @@ project(':moco-runner') {
             injar= jar.archivePath
             jar.classifier="proguard"
             outJar= jar.archivePath
+            javaBase=System.properties["java.home"];
+            javaRt="/lib/rt.jar"
+            if(System.properties["os.name"].toLowerCase().contains("mac"))
+            {
+                if(!new File(javaBase+javaRt).exists())
+                {
+                    javaRt="/../Classes/classes.jar"
+                }
+            }
         }
         injars injar
+        libraryjars javaBase+javaRt
+        println(javaBase+javaRt)
         outjars outJar
         configuration '../proguard.pro'
     }
@@ -221,7 +232,7 @@ project(':moco-runner') {
             outJar= jar.archivePath
         }
         testLogging { exceptionFormat "full" }
-        classpath = classpath-files(sourceSets.main.output.classesDir)-files(configurations.compile)+files(outJar)
+        classpath = classpath-files(sourceSets.main.output.classesDir)-files(configurations.runtime)+files(outJar)
     }
 
     artifacts {

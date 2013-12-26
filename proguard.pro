@@ -1,5 +1,3 @@
--libraryjars <java.home>/lib/rt.jar
--libraryjars <java.home>/lib/jce.jar
 -printusage shrinking.output
 
 -dontobfuscate
@@ -11,7 +9,19 @@
     public static void main(java.lang.String[]);
 }
 
--keep public class com.github.dreamhead.moco.** {*;}
+
+-keep public class com.github.dreamhead.moco.parser.model.*{*;}
+-keep public class com.github.dreamhead.moco.Moco{*;}
+-keep public class com.github.dreamhead.moco.handler.*{*;}
+-keep public class com.github.dreamhead.moco.runner.ShutdownRunner{
+    public int shutdownPort();
+}
+-keepclassmembers enum com.jayway.jsonpath.Option {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+
 -keep public class org.apache.http.**{*;}
 -keep public class com.google.common.io.Files{*;}
 -keep public class org.apache.commons.io.FilenameUtils{*;}
@@ -20,14 +30,17 @@
 -keep public class ch.** {*;}
 -keep public class org.apache.commons.logging.impl.**{*;}
 -keep public class com.fasterxml.jackson.databind.**{*;}
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
+
+#jce.jar
+-dontwarn org.apache.http.impl.auth.**
+#jsse.jar
+-dontwarn org.apache.http.conn.**
+-dontwarn org.apache.http.impl.**
 
 -dontwarn io.netty.**
--dontwarn com.jayway.jsonpath.**
--dontwarn ch.qos.logback.**
+-dontwarn com.jayway.jsonpath.spi.impl.JacksonProvider
+-dontwarn ch.qos.logback.core.**
+-dontwarn ch.qos.logback.classic.**
 -dontwarn freemarker.**
 -dontwarn org.slf4j.**
 -dontwarn org.apache.log4j.**
