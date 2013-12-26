@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:4.10'
+    }
+}
+
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
@@ -111,7 +120,7 @@ subprojects {
                 "commons-io:commons-io:$commonsIoVersion",
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
-				"com.jayway.jsonpath:json-path:$jsonpathVersion",
+                "com.jayway.jsonpath:json-path:$jsonpathVersion",
                 "org.freemarker:freemarker:$freemarkerVersion"
         )
 
@@ -151,15 +160,6 @@ subprojects {
 
     tasks.withType(Compile) {
         options.compilerArgs << "-Xlint:unchecked"
-    }
-}
-
-buildscript{
-    repositories{
-        mavenCentral()
-    }
-    dependencies{
-        classpath 'net.sf.proguard:proguard-gradle:4.10'
     }
 }
 
@@ -203,36 +203,33 @@ project(':moco-runner') {
         }
     }
 
-    task proguard(type: proguard.gradle.ProGuardTask,dependsOn:uberjar) {
-        ext{
-            jar.classifier="standalone"
-            injar= jar.archivePath
-            jar.classifier="proguard"
-            outJar= jar.archivePath
-            javaBase=System.properties["java.home"];
-            javaRt="/lib/rt.jar"
-            if(System.properties["os.name"].toLowerCase().contains("mac"))
-            {
-                if(!new File(javaBase+javaRt).exists())
-                {
-                    javaRt="/../Classes/classes.jar"
+    task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
+        ext {
+            jar.classifier = "standalone"
+            injar = jar.archivePath
+            jar.classifier = "proguard"
+            outJar = jar.archivePath
+            javaBase = System.properties["java.home"];
+            javaRt = "/lib/rt.jar"
+            if (System.properties["os.name"].toLowerCase().contains("mac")) {
+                if (!new File(javaBase + javaRt).exists()) {
+                    javaRt = "/../Classes/classes.jar"
                 }
             }
         }
         injars injar
-        libraryjars javaBase+javaRt
-        println(javaBase+javaRt)
+        libraryjars javaBase + javaRt
         outjars outJar
         configuration '../proguard.pro'
     }
 
-    task proguardCheck(type:Test,dependsOn:proguard){
-        ext{
-            jar.classifier="proguard"
-            outJar= jar.archivePath
+    task proguardCheck(type: Test, dependsOn: proguard) {
+        ext {
+            jar.classifier = "proguard"
+            outJar = jar.archivePath
         }
         testLogging { exceptionFormat "full" }
-        classpath = classpath-files(sourceSets.main.output.classesDir)-files(configurations.runtime)+files(outJar)
+        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(outJar)
     }
 
     artifacts {

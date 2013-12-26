@@ -21,7 +21,6 @@
 
 # Tools Support
 * JUnit better support
-* Proguard to reduce uberjar size
 * homebrew
 * IntelliJ IDEA plugin
 * Eclipse plugin

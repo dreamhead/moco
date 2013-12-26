@@ -9,3 +9,4 @@ reports
 .DS_Store
 .idea
 .gradletasknamecache
+*.output
