@@ -154,7 +154,17 @@ subprojects {
     }
 }
 
+buildscript{
+    repositories{
+        mavenCentral()
+    }
+    dependencies{
+        classpath 'net.sf.proguard:proguard-gradle:4.10'
+    }
+}
+
 project(':moco-runner') {
+
     dependencies {
         compile(
                 project(':moco-core'),
@@ -171,6 +181,8 @@ project(':moco-runner') {
 
     task uberjar(type: Jar, dependsOn: jar) {
         classifier = 'standalone'
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        exclude('META-INF/maven/**')
 
         from files(project(':moco-core').sourceSets.main.output.classesDir)
         from files(project(':moco-core').sourceSets.main.output.resourcesDir)
@@ -189,6 +201,38 @@ project(':moco-runner') {
                     'Built-With': "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
                     'Created-By': 'Java ' + System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
         }
+    }
+
+    task proguard(type: proguard.gradle.ProGuardTask,dependsOn:uberjar) {
+        ext{
+            jar.classifier="standalone"
+            injar= jar.archivePath
+            jar.classifier="proguard"
+            outJar= jar.archivePath
+            javaBase=System.properties["java.home"];
+            javaRt="/lib/rt.jar"
+            if(System.properties["os.name"].toLowerCase().contains("mac"))
+            {
+                if(!new File(javaBase+javaRt).exists())
+                {
+                    javaRt="/../Classes/classes.jar"
+                }
+            }
+        }
+        injars injar
+        libraryjars javaBase+javaRt
+        println(javaBase+javaRt)
+        outjars outJar
+        configuration '../proguard.pro'
+    }
+
+    task proguardCheck(type:Test,dependsOn:proguard){
+        ext{
+            jar.classifier="proguard"
+            outJar= jar.archivePath
+        }
+        testLogging { exceptionFormat "full" }
+        classpath = classpath-files(sourceSets.main.output.classesDir)-files(configurations.runtime)+files(outJar)
     }
 
     artifacts {
