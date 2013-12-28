@@ -180,7 +180,7 @@ project(':moco-runner') {
     }
 
     task uberjar(type: Jar, dependsOn: jar) {
-        classifier = 'standalone'
+        classifier = 'uber'
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         exclude('META-INF/maven/**')
 
@@ -205,10 +205,8 @@ project(':moco-runner') {
 
     task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
         ext {
-            jar.classifier = "standalone"
-            injar = jar.archivePath
-            jar.classifier = "proguard"
-            outJar = jar.archivePath
+            injar = uberjar.archivePath
+            outJar = uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
             javaBase = System.properties["java.home"];
             javaRt = "/lib/rt.jar"
             if (System.properties["os.name"].toLowerCase().contains("mac")) {
@@ -221,15 +219,6 @@ project(':moco-runner') {
         libraryjars javaBase + javaRt
         outjars outJar
         configuration '../proguard.pro'
-    }
-
-    task proguardCheck(type: Test, dependsOn: proguard) {
-        ext {
-            jar.classifier = "proguard"
-            outJar = jar.archivePath
-        }
-        testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(outJar)
     }
 
     artifacts {
