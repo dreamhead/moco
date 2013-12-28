@@ -205,8 +205,6 @@ project(':moco-runner') {
 
     task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
         ext {
-            injar = uberjar.archivePath
-            outJar = uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
             javaBase = System.properties["java.home"];
             javaRt = "/lib/rt.jar"
             if (System.properties["os.name"].toLowerCase().contains("mac")) {
@@ -215,14 +213,16 @@ project(':moco-runner') {
                 }
             }
         }
-        injars injar
+        injars uberjar.archivePath
+        outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
         libraryjars javaBase + javaRt
-        outjars outJar
         configuration '../proguard.pro'
     }
 
+    uploadArchives.dependsOn proguard
+
     artifacts {
-        archives uberjar
+        archives proguard.outputs.files.singleFile
     }
 }
 
