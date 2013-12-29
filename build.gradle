@@ -89,7 +89,7 @@ subprojects {
         nettyVersion = '4.0.14.Final'
         slf4jVersion = '1.7.5'
         commonsIoVersion = '2.4'
-        jacksonVersion = '2.3.0'
+        jacksonVersion = '2.3.1'
         logbackVersion = '1.0.13'
         junitVersion = '4.11'
         hamcrestVersion = '1.3'
