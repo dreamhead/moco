@@ -2,11 +2,11 @@
     {
         "context": "/foo",
         "env": "foo",
-        "include": "src/test/resources/multiple/foo.json"
+        "include": "src/test/resources/settings/foo.json"
     },
     {
         "context": "/bar",
         "env": "bar",
-        "include": "src/test/resources/multiple/bar.json"
+        "include": "src/test/resources/settings/bar.json"
     }
 ]

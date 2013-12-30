@@ -25,7 +25,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting() throws IOException {
-        InputStream stream = getResourceAsStream("multiple/settings.json");
+        InputStream stream = getResourceAsStream("settings/settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -35,7 +35,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_context() throws IOException {
-        InputStream stream = getResourceAsStream("multiple/context-settings.json");
+        InputStream stream = getResourceAsStream("settings/context-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -45,7 +45,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_file_root() throws IOException {
-        InputStream stream = getResourceAsStream("multiple/fileroot-settings.json");
+        InputStream stream = getResourceAsStream("settings/fileroot-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -54,7 +54,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_env() throws IOException {
-        InputStream stream = getResourceAsStream("multiple/env-settings.json");
+        InputStream stream = getResourceAsStream("settings/env-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306, "foo"));
         runner.run();
 
@@ -63,7 +63,7 @@ public class SettingRunnerTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_run_without_env() throws IOException {
-        InputStream stream = getResourceAsStream("multiple/env-settings.json");
+        InputStream stream = getResourceAsStream("settings/env-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306, "bar"));
         runner.run();
 

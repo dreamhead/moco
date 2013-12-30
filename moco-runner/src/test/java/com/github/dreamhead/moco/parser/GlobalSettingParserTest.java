@@ -22,43 +22,43 @@ public class GlobalSettingParserTest {
 
     @Test
     public void should_parse_settings_file() {
-        InputStream stream = getResourceAsStream("multiple/settings.json");
+        InputStream stream = getResourceAsStream("settings/settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
-        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "settings", "bar.json")));
     }
 
     @Test
     public void should_parse_settings_file_with_context() {
-        InputStream stream = getResourceAsStream("multiple/context-settings.json");
+        InputStream stream = getResourceAsStream("settings/context-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
-        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "settings", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
     }
 
     @Test
     public void should_parse_setting_file_with_file_root() {
-        InputStream stream = getResourceAsStream("multiple/fileroot-settings.json");
+        InputStream stream = getResourceAsStream("settings/fileroot-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "fileroot.json")));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "fileroot.json")));
         assertThat(globalSettings.get(0).getContext(), is("/fileroot"));
         assertThat(globalSettings.get(0).getFileRoot(), is("src/test/resources"));
     }
 
     @Test
     public void should_parse_setting_file_with_env() {
-        InputStream stream = getResourceAsStream("multiple/env-settings.json");
+        InputStream stream = getResourceAsStream("settings/env-settings.json");
         List<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "multiple", "foo.json")));
+        assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
         assertThat(globalSettings.get(0).getEnv(), is("foo"));
-        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "multiple", "bar.json")));
+        assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "settings", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
         assertThat(globalSettings.get(1).getEnv(), is("bar"));
     }

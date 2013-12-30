@@ -1,8 +1,0 @@
-[
-    {
-        "include" : "src/test/resources/multiple/foo.json"
-    },
-    {
-        "include" : "src/test/resources/multiple/bar.json"
-    }
-]

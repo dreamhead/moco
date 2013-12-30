@@ -1,0 +1,10 @@
+[
+    {
+        "context": "/foo",
+        "include": "src/test/resources/settings/foo.json"
+    },
+    {
+        "context": "/bar",
+        "include": "src/test/resources/settings/bar.json"
+    }
+]
