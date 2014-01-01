@@ -1019,6 +1019,52 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 }
 ```
 
+### Form
+
+"req.forms" can extract form value from request.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.forms['foo']}"
+        }
+    }
+}
+```
+
+### Cookie
+
+Cookie from request can extracted by "req.cookies".
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.cookies['foo']}"
+        }
+    }
+}
+```
+
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 

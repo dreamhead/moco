@@ -4,6 +4,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -50,6 +51,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template.json");
         Request.Get(remoteUrl("/cookie_template")).execute();
         String content = helper.get(remoteUrl("/cookie_template"));
-        assertThat(content, is("OK"));
+        assertThat(content, is("GET"));
+    }
+
+    @Test
+    public void should_return_form_value_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        String content = Request.Post(remoteUrl("/form_template")).bodyForm(new BasicNameValuePair("foo", "dreamhead")).execute().returnContent().asString();
+        assertThat(content, is("dreamhead"));
     }
 }

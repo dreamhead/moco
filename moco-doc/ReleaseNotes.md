@@ -6,6 +6,10 @@
 * log to record request
 * once for verifier
 
+### template
+* cookie
+* form
+
 ## Implementation Details
 * Removed "queries" from failover. Please remove queries from failover file if your tests failed.
 * Used Proguard to minimize standalone jar
@@ -52,6 +56,13 @@
 
 #### Misc Response
 * removed cache
+
+#### template
+* version
+* method
+* content
+* header
+* query
 
 ## Settings
 * context

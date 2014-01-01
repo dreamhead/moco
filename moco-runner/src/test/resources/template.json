@@ -46,7 +46,7 @@
         "response": {
             "headers": {
                 "foo": {
-                    "template" : "${req.headers['foo']}"
+                    "template": "${req.headers['foo']}"
                 }
             }
         }
@@ -55,11 +55,13 @@
         "request": {
             "uri": "/cookie_template",
             "cookies": {
-                "foo" : "GET"
+                "foo": "GET"
             }
         },
         "response": {
-            "text" : "OK"
+            "text": {
+                "template": "${req.cookies['foo']}"
+            }
         }
     },
     {
@@ -69,10 +71,20 @@
         "response": {
             "cookies": {
                 "foo": {
-                    "template" : "${req.method}"
+                    "template": "${req.method}"
                 }
             },
-            "status" : 302
+            "status": 302
+        }
+    },
+    {
+        "request": {
+            "uri": "/form_template"
+        },
+        "response": {
+            "text": {
+                "template": "${req.forms['foo']}"
+            }
         }
     }
 ]
