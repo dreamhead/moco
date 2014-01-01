@@ -9,7 +9,6 @@
     public static void main(java.lang.String[]);
 }
 
-
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
 -keep public class com.github.dreamhead.moco.Moco{*;}
 -keep public class com.github.dreamhead.moco.handler.*{*;}
@@ -20,7 +19,6 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
-
 
 -keep public class org.apache.http.**{*;}
 -keep public class com.google.common.io.Files{*;}
