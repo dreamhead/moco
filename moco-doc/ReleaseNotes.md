@@ -1,10 +1,19 @@
-# Release 1.0
+# Release 0.9.1
+## Usage
+* (Beta) gmoco, moco groovy shell
+
 ## APIs
 * log to record request
 * once for verifier
 
 ## Implementation Details
 * Removed "queries" from failover. Please remove queries from failover file if your tests failed.
+* Used Proguard to minimize standalone jar
+
+## Fixes
+* Keep connect alive if request wants to keep alive
+* NPE for validating form/content in request hit
+* NPE for XPath matcher
 
 # Release 0.9 (1-Nov-2013)
 
