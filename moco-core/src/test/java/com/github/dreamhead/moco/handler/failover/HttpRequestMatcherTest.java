@@ -13,6 +13,7 @@ public class HttpRequestMatcherTest {
     @Test
     public void should_be_match_if_request_is_same() {
         HttpRequest request = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -25,6 +26,7 @@ public class HttpRequestMatcherTest {
     @Test
     public void should_not_be_match_if_request_is_different() {
         HttpRequest request = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -32,6 +34,7 @@ public class HttpRequestMatcherTest {
                 .build();
 
         HttpRequest another = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("different")
@@ -44,6 +47,7 @@ public class HttpRequestMatcherTest {
     @Test
     public void should_not_be_match_if_uri_is_different() {
         HttpRequest request = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -52,6 +56,7 @@ public class HttpRequestMatcherTest {
                 .build();
 
         HttpRequest another = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -65,6 +70,7 @@ public class HttpRequestMatcherTest {
     @Test
     public void should_be_match_if_failover_field_is_null() {
         HttpRequest request = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -72,6 +78,7 @@ public class HttpRequestMatcherTest {
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withMethod("POST")
                 .withContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
@@ -83,6 +90,7 @@ public class HttpRequestMatcherTest {
     @Test
     public void should_be_match_even_if_target_request_has_more_headers() {
         HttpRequest request = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")
@@ -90,6 +98,7 @@ public class HttpRequestMatcherTest {
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
+                .withUri("/uri")
                 .withVersion("HTTP/1.1")
                 .withMethod("POST")
                 .withContent("proxy")

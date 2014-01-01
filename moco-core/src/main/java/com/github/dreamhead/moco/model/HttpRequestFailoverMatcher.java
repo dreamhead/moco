@@ -17,7 +17,8 @@ public class HttpRequestFailoverMatcher {
                 && doMatch(failover.getVersion(), target.getVersion())
                 && doMatch(failover.getContent(), target.getContent())
                 && doMatch(failover.getHeaders(), target.getHeaders())
-                && doMatch(failover.getMethod(), target.getMethod());
+                && doMatch(failover.getMethod(), target.getMethod())
+                && doMatch(failover.getQueries(), target.getQueries());
     }
 
     protected boolean doMatch(Map<String, String> thisField, Map<String, String> thatField) {

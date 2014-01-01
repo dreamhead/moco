@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.google.common.collect.ImmutableMap;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;

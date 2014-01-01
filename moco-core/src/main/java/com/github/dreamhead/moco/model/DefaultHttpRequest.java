@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
-import com.github.dreamhead.moco.extractor.ParamsRequestExtractor;
 import com.github.dreamhead.moco.util.ByteBufs;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -17,15 +16,16 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.copyOf;
+import static com.google.common.collect.Maps.newHashMap;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
 public class DefaultHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> formSupplier;
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
-    private final Supplier<ImmutableMap<String, String>> querySupplier;
 
     private final String version;
     private final String content;
@@ -33,17 +33,18 @@ public class DefaultHttpRequest implements HttpRequest {
     private final String method;
 
     private final String uri;
+    private final ImmutableMap<String, String> queries;
 
     private DefaultHttpRequest(String version, String content, String method, String uri,
-                            ImmutableMap<String, String> headers) {
+                               ImmutableMap<String, String> headers, ImmutableMap<String, String> queries) {
         this.version = version;
         this.content = content;
         this.headers = headers;
         this.method = method;
         this.uri = uri;
+        this.queries = queries;
         this.formSupplier = formSupplier();
         this.cookieSupplier = cookieSupplier();
-        this.querySupplier = querySupplier();
     }
 
     public String getVersion() {
@@ -76,19 +77,8 @@ public class DefaultHttpRequest implements HttpRequest {
         return cookieSupplier.get();
     }
 
-    @JsonIgnore
     public ImmutableMap<String, String> getQueries() {
-        return querySupplier.get();
-    }
-
-    private Supplier<ImmutableMap<String, String>> querySupplier() {
-        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
-            @Override
-            public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> queries = new ParamsRequestExtractor().extract(DefaultHttpRequest.this);
-                return queries.isPresent() ? queries.get() : ImmutableMap.<String, String>of();
-            }
-        });
+        return queries;
     }
 
     private Supplier<ImmutableMap<String, String>> formSupplier() {
@@ -137,12 +127,18 @@ public class DefaultHttpRequest implements HttpRequest {
     }
 
     public static HttpRequest newRequest(FullHttpRequest request) {
+        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+        Map<String, String> queries = newHashMap();
+        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
+            queries.put(entry.getKey(), entry.getValue().get(0));
+        }
 
         return builder()
                 .withVersion(request.getProtocolVersion().text())
                 .withHeaders(collectHeaders(request.headers()))
                 .withMethod(request.getMethod().toString().toUpperCase())
-                .withUri(request.getUri())
+                .withUri(decoder.path())
+                .withQueries(queries)
                 .withContent(contentToString(request))
                 .build();
     }
@@ -153,7 +149,12 @@ public class DefaultHttpRequest implements HttpRequest {
             buffer.writeBytes(content.getBytes());
         }
 
-        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version), HttpMethod.valueOf(method), uri, buffer);
+        QueryStringEncoder encoder = new QueryStringEncoder(uri);
+        for (Map.Entry<String, String> entry : queries.entrySet()) {
+            encoder.addParam(entry.getKey(), entry.getValue());
+        }
+
+        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version), HttpMethod.valueOf(method), encoder.toString(), buffer);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             request.headers().add(entry.getKey(), entry.getValue());
         }
@@ -176,6 +177,7 @@ public class DefaultHttpRequest implements HttpRequest {
         private ImmutableMap<String, String> headers;
         private String method;
         private String uri;
+        private ImmutableMap<String, String> queries;
 
         public Builder withVersion(String version) {
             this.version = version;
@@ -205,8 +207,16 @@ public class DefaultHttpRequest implements HttpRequest {
             return this;
         }
 
+        public Builder withQueries(Map<String, String> queries) {
+            if (queries != null) {
+                this.queries = copyOf(queries);
+            }
+
+            return this;
+        }
+
         public DefaultHttpRequest build() {
-            return new DefaultHttpRequest(version, content, method, uri, headers);
+            return new DefaultHttpRequest(version, content, method, this.uri, headers, this.queries);
         }
     }
 }

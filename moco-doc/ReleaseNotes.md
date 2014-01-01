@@ -11,7 +11,7 @@
 * form
 
 ## Implementation Details
-* Removed "queries" from failover. Please remove queries from failover file if your tests failed.
+* Fixed "uri" in failover to remove query parameter.
 * Used Proguard to minimize standalone jar
 
 ## Fixes

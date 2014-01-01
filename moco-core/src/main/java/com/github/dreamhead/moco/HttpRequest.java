@@ -12,4 +12,6 @@ public interface HttpRequest {
     String getContent();
 
     ImmutableMap<String, String> getHeaders();
+
+    ImmutableMap<String, String> getQueries();
 }

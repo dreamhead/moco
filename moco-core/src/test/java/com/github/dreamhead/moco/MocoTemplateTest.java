@@ -81,13 +81,13 @@ public class MocoTemplateTest extends AbstractMocoTest {
 
     @Test
     public void should_generate_response_with_http_query() throws Exception {
-        server.request(by(uri("/template"))).response(template("${req.queries['foo']}"));
+        server.request(by(uri("/template"))).response(template("${req.uri} ${req.queries['foo']}"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
                 String response = helper.get(remoteUrl("/template?foo=bar"));
-                assertThat(response, is("bar"));
+                assertThat(response, is("/template bar"));
             }
         });
     }

@@ -60,4 +60,11 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String content = Request.Post(remoteUrl("/form_template")).bodyForm(new BasicNameValuePair("foo", "dreamhead")).execute().returnContent().asString();
         assertThat(content, is("dreamhead"));
     }
+
+    @Test
+    public void should_return_query_value_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        String content = helper.get(remoteUrl("/query_template?foo=dreamhead"));
+        assertThat(content, is("dreamhead"));
+    }
 }
