@@ -220,7 +220,7 @@ project(':moco-runner') {
         classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(uberjar.outputs.files.singleFile)
     }
 
-    uploadArchives.dependsOn proguard
+    uploadArchives.dependsOn proguardCheck
 
     artifacts {
         archives proguard.outputs.files.singleFile
