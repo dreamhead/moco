@@ -108,6 +108,7 @@ public class DefaultHttpRequest implements HttpRequest {
                 .add("uri", this.uri)
                 .add("version", this.version)
                 .add("method", this.method)
+                .add("queries", this.queries)
                 .add("headers", this.headers)
                 .add("content", this.content)
                 .toString();
