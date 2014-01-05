@@ -1,17 +1,21 @@
 # Functionality
 
-## Configuration
+## APIs
 
 ### Matcher
 * Marshal support
 
 ### Handler
 * Template function
+* Mount specified URL to local URI
 
 ## More
 * Async
 * REST
 * HTTPS
+
+## Settings
+* Global response settings
 
 ## Client
 * Socket
