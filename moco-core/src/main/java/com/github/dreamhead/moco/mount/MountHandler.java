@@ -28,7 +28,6 @@ public class MountHandler extends AbstractContentResponseHandler {
     @Override
     protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
         try {
-
             buffer.writeBytes(toByteArray(targetFile(request)));
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -24,6 +24,6 @@ public class MountTo {
             return new MountTo(config.apply(this.target));
         }
 
-        return null;
+        return this;
     }
 }
