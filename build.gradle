@@ -163,6 +163,12 @@ subprojects {
     }
 }
 
+project(':moco-core') {
+    jar {
+        exclude('logback.xml')
+    }
+}
+
 project(':moco-runner') {
 
     dependencies {
