@@ -273,4 +273,20 @@ public class MocoProxyTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_proxy_a_batch_of_urls() throws Exception {
+        server.get(by(uri("/target/1"))).response("target_1");
+        server.get(by(uri("/target/2"))).response("target_2");
+
+        server.get(match(uri("/proxy/.*"))).response(proxy(base("/proxy").to(remoteUrl("/target"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/proxy/1")), is("target_1"));
+                assertThat(helper.get(remoteUrl("/proxy/2")), is("target_2"));
+            }
+        });
+    }
 }

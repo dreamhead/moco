@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.handler.failover.DefaultFailover;
 import com.github.dreamhead.moco.handler.failover.Failover;
+import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.*;
@@ -231,6 +232,14 @@ public class Moco {
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
         return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")), checkNotNull(failover, "Failover should not be null"));
+    }
+
+    public static ResponseHandler proxy(ProxyConfig proxyConfig) {
+        return new ProxyBatchResponseHandler(proxyConfig);
+    }
+
+    public static ProxyConfig base(String localBase) {
+        return new ProxyConfig(localBase);
     }
 
     public static Resource template(final String template) {
