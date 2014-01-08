@@ -2,17 +2,14 @@ package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.MocoConfig;
 
+import static com.github.dreamhead.moco.util.URLs.toBase;
 import static com.google.common.base.Strings.nullToEmpty;
 
 public class MountTo {
     private final String target;
 
     public MountTo(String target) {
-        if (!target.endsWith("/")) {
-            this.target = target + "/";
-        } else {
-            this.target = target;
-        }
+        this.target = toBase(target);
     }
 
     public String extract(String uri) {

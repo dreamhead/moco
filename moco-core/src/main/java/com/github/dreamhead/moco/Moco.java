@@ -17,6 +17,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.FluentIterable;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
@@ -194,11 +195,11 @@ public class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
-        return seq(from(copyOf(contents)).transform(textToResource()).toArray(ResponseHandler.class));
+        return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toArray(ResponseHandler.class));
     }
 
     public static ResponseHandler seq(final Resource... contents) {
-        return seq(from(copyOf(contents)).transform(resourceToResourceHandler()).toArray(ResponseHandler.class));
+        return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toArray(ResponseHandler.class));
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
@@ -238,8 +239,8 @@ public class Moco {
         return new ProxyBatchResponseHandler(proxyConfig);
     }
 
-    public static ProxyConfig base(String localBase) {
-        return new ProxyConfig(localBase);
+    public static ProxyConfig.Builder from(String localBase) {
+        return ProxyConfig.builder(localBase);
     }
 
     public static Resource template(final String template) {
