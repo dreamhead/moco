@@ -171,6 +171,10 @@ public class ResponseSetting extends Dynamics {
     }
 
     private ResponseHandler createProxy(ProxyContainer proxy) {
+        if (proxy.getFrom() != null && proxy.getTo() != null) {
+            return proxy(Moco.from(proxy.getFrom()).to(proxy.getTo()));
+        }
+
         if (proxy.getFailover() != null) {
             return proxy(proxy.getUrl(), failover(proxy.getFailover()));
         }

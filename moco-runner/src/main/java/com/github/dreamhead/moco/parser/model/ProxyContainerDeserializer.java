@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -13,10 +12,10 @@ import static com.google.common.collect.Maps.newHashMap;
 
 public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override
-    public ProxyContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public ProxyContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return new ProxyContainer(jp.getText().trim(), null);
+            return new ProxyContainer(jp.getText().trim(), null, null, null);
         } else if (currentToken == JsonToken.START_OBJECT) {
             JsonToken jsonToken = jp.nextToken();
             if (jsonToken == JsonToken.FIELD_NAME) {
@@ -29,16 +28,17 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
 
     private ProxyContainer createFailoverProxy(JsonParser jp) throws IOException {
         Map<String, String> fields = newHashMap();
-        fetchField(fields, jp);
-        fetchField(fields, jp);
-        return new ProxyContainer(fields.get("url"), fields.get("failover"));
+        while (fetchField(fields, jp)) {}
+        return new ProxyContainer(fields.get("url"), fields.get("failover"), fields.get("from"), fields.get("to"));
     }
 
-    private void fetchField(Map<String, String> fields, JsonParser jp) throws IOException {
+    private boolean fetchField(Map<String, String> fields, JsonParser jp) throws IOException {
         String fieldName = jp.getText().trim();
         jp.nextToken();
         String fieldValue = jp.getText().trim();
         jp.nextToken();
         fields.put(fieldName.toLowerCase(), fieldValue);
+
+        return jp.getCurrentToken() != JsonToken.END_OBJECT;
     }
 }
