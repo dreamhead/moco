@@ -12,8 +12,8 @@ import static com.google.common.base.Optional.of;
 public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     private final ProxyConfig proxyConfig;
 
-    public ProxyBatchResponseHandler(ProxyConfig proxyConfig) {
-        super(Failover.EMPTY_FAILOVER);
+    public ProxyBatchResponseHandler(ProxyConfig proxyConfig, Failover failover) {
+        super(failover);
         this.proxyConfig = proxyConfig;
     }
 

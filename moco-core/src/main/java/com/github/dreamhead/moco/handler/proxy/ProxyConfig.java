@@ -33,7 +33,7 @@ public class ProxyConfig {
             this.localBase = localBase;
         }
 
-        public ProxyConfig to(String remoteBase) {
+        public ProxyConfig to(final String remoteBase) {
             return new ProxyConfig(toBase(localBase), toBase(remoteBase));
         }
     }

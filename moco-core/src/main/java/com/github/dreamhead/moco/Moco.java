@@ -11,7 +11,10 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
-import com.github.dreamhead.moco.monitor.*;
+import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
+import com.github.dreamhead.moco.monitor.FileLogWriter;
+import com.github.dreamhead.moco.monitor.LogMonitor;
+import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
@@ -30,7 +33,6 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Moco {
@@ -235,11 +237,15 @@ public class Moco {
         return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")), checkNotNull(failover, "Failover should not be null"));
     }
 
-    public static ResponseHandler proxy(ProxyConfig proxyConfig) {
-        return new ProxyBatchResponseHandler(proxyConfig);
+    public static ResponseHandler proxy(final ProxyConfig proxyConfig) {
+        return new ProxyBatchResponseHandler(proxyConfig, Failover.EMPTY_FAILOVER);
     }
 
-    public static ProxyConfig.Builder from(String localBase) {
+    public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover) {
+        return new ProxyBatchResponseHandler(proxyConfig, failover);
+    }
+
+    public static ProxyConfig.Builder from(final String localBase) {
         return ProxyConfig.builder(localBase);
     }
 

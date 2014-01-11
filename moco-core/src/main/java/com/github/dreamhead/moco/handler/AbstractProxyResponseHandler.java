@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -159,7 +160,7 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
         FullHttpResponse response = context.getResponse();
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            FullHttpRequest httpRequest = ((com.github.dreamhead.moco.model.DefaultHttpRequest) context.getRequest()).toFullHttpRequest();
+            FullHttpRequest httpRequest = ((DefaultHttpRequest) context.getRequest()).toFullHttpRequest();
             Optional<URL> url = remoteUrl(httpRequest);
             if (!url.isPresent()) {
                 return;
