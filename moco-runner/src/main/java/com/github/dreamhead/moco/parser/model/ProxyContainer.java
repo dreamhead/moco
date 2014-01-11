@@ -40,7 +40,47 @@ public class ProxyContainer {
                 .toString();
     }
 
-    public static ProxyContainer batchProxy(String from, String to) {
-        return new ProxyContainer(null, null, from, to);
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String url;
+        private String failover;
+
+        private String from;
+        private String to;
+
+        public Builder withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder withFrom(String from) {
+            this.from = from;
+            return this;
+        }
+
+        public Builder withTo(String to) {
+            this.to = to;
+            return this;
+        }
+
+        public Builder withFailover(String failover) {
+            this.failover = failover;
+            return this;
+        }
+
+        public ProxyContainer build() {
+            if (this.url != null && (this.from != null || this.to != null)) {
+                throw new IllegalArgumentException("Proxy cannot be set in multiple mode");
+            }
+
+            if (this.url == null && (this.from == null || this.to == null)) {
+                throw new IllegalArgumentException("Batch proxy needs both 'from' and 'to'");
+            }
+
+            return new ProxyContainer(this.url, this.failover, this.from, this.to);
+        }
     }
 }

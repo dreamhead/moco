@@ -29,7 +29,12 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
     private ProxyContainer createFailoverProxy(JsonParser jp) throws IOException {
         Map<String, String> fields = newHashMap();
         while (fetchField(fields, jp)) {}
-        return new ProxyContainer(fields.get("url"), fields.get("failover"), fields.get("from"), fields.get("to"));
+        return ProxyContainer.builder()
+                .withUrl(fields.get("url"))
+                .withFailover(fields.get("failover"))
+                .withFrom(fields.get("from"))
+                .withTo(fields.get("to"))
+                .build();
     }
 
     private boolean fetchField(Map<String, String> fields, JsonParser jp) throws IOException {

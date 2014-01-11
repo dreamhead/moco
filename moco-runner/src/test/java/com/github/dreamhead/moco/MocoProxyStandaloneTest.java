@@ -31,4 +31,19 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
         String content2 = helper.get(remoteUrl("/proxy/2"));
         assertThat(content2, is("target_2"));
     }
+
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_if_proxy_has_both_url_and_batch() {
+        runWithConfiguration("proxy_error_multiple_mode.json");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_if_from_is_missing() {
+        runWithConfiguration("proxy_error_from_missing.json");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_if_to_is_missing() {
+        runWithConfiguration("proxy_error_to_missing.json");
+    }
 }
