@@ -33,6 +33,22 @@
                 "to" : "http://localhost:12306/target"
             }
         }
+    },
+    {
+        "request" :
+        {
+            "uri" : {
+                "match" : "/failover/.*"
+            }
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : "http://localhost:12306/unknown",
+                "failover" : "src/test/resources/standalone_failover.json"
+            }
+        }
     }
 ]
 

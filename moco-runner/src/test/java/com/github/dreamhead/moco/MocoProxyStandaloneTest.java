@@ -46,4 +46,11 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_throw_exception_if_to_is_missing() {
         runWithConfiguration("proxy_error_to_missing.json");
     }
+
+    @Test
+    public void should_failover_for_batch_proxy() throws IOException {
+        runWithConfiguration("proxy_batch.json");
+        String content = helper.postContent(remoteUrl("/failover/1"), "proxy");
+        assertThat(content, is("proxy"));
+    }
 }
