@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.hamcrest.Matcher;
@@ -298,6 +299,33 @@ public class MocoProxyTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.postContent(remoteUrl("/proxy/1"), "proxy"), is("proxy"));
+            }
+        });
+    }
+
+    @Test
+    public void should_batch_proxy_from_server() throws Exception {
+        server.get(by(uri("/target/1"))).response("target_1");
+        server.get(by(uri("/target/2"))).response("target_2");
+        server.proxy(from("/proxy").to(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/proxy/1")), is("target_1"));
+                assertThat(helper.get(remoteUrl("/proxy/2")), is("target_2"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_not_proxy_url_for_unmatching_url_for_batch_proxy_from_server() throws Exception {
+        server.proxy(from("/proxy").to(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.get(remoteUrl("/proxy1/1"));
             }
         });
     }

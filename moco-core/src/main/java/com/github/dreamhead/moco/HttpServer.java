@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
@@ -50,5 +51,9 @@ public abstract class HttpServer extends ResponseSetting {
 
     private Setting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {
         return request(and(by(method(method.name())), matcher));
+    }
+
+    public void proxy(ProxyConfig config) {
+        this.request(context(config.localBase())).response(Moco.proxy(config));
     }
 }
