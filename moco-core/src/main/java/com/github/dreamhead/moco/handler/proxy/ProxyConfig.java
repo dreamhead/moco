@@ -17,6 +17,10 @@ public class ProxyConfig {
         return this.localBase;
     }
 
+    public String remoteBase() {
+        return this.remoteBase;
+    }
+
     public boolean canAccessedBy(String uri) {
         return uri.startsWith(localBase);
     }

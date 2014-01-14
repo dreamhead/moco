@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
@@ -326,6 +328,22 @@ public class MocoProxyTest extends AbstractMocoTest {
             @Override
             public void run() throws Exception {
                 helper.get(remoteUrl("/proxy1/1"));
+            }
+        });
+    }
+
+    @Test
+    public void should_batch_proxy_from_server_with_context_server() throws Exception {
+        server = httpserver(port(), context("/proxy"));
+        server.get(by(uri("/target/1"))).response("target_1");
+        server.get(by(uri("/target/2"))).response("target_2");
+        server.proxy(from("/proxy").to(remoteUrl("/proxy/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/proxy/proxy/1")), is("target_1"));
+                assertThat(helper.get(remoteUrl("/proxy/proxy/2")), is("target_2"));
             }
         });
     }
