@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
@@ -55,5 +56,9 @@ public abstract class HttpServer extends ResponseSetting {
 
     public void proxy(ProxyConfig config) {
         this.request(context(config.localBase())).response(Moco.proxy(config));
+    }
+
+    public void proxy(ProxyConfig config, Failover failover) {
+        this.request(context(config.localBase())).response(Moco.proxy(config, failover));
     }
 }
