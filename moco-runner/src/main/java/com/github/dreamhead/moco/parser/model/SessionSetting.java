@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import static com.github.dreamhead.moco.Moco.from;
 import static com.github.dreamhead.moco.MocoMount.to;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -18,6 +19,7 @@ public class SessionSetting {
     private String redirectTo;
     private MountSetting mount;
     private EventSetting on;
+    private ProxyContainer proxy;
 
     private boolean isMount() {
         return this.mount != null;
@@ -67,6 +69,10 @@ public class SessionSetting {
             return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
         }
 
+        if (isProxy()) {
+            return server.proxy(from(proxy.getFrom()).to(proxy.getTo()));
+        }
+
         if (isAnyResponse()) {
             return server.response(getResponseHandler());
         }
@@ -76,6 +82,10 @@ public class SessionSetting {
         }
 
         return server.request(getRequestMatcher()).response(getResponseHandler());
+    }
+
+    private boolean isProxy() {
+        return this.proxy != null;
     }
 
     private boolean hasEvent() {

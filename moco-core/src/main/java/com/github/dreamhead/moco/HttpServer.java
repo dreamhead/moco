@@ -54,11 +54,12 @@ public abstract class HttpServer extends ResponseSetting {
         return request(and(by(method(method.name())), matcher));
     }
 
-    public void proxy(ProxyConfig config) {
-        this.request(context(config.localBase())).response(Moco.proxy(config));
+    public ResponseSetting proxy(ProxyConfig config) {
+        return proxy(config, Failover.EMPTY_FAILOVER);
     }
 
-    public void proxy(ProxyConfig config, Failover failover) {
+    public ResponseSetting proxy(ProxyConfig config, Failover failover) {
         this.request(context(config.localBase())).response(Moco.proxy(config, failover));
+        return this;
     }
 }
