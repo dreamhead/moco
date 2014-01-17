@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
+import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -171,14 +172,13 @@ public class ResponseSetting extends Dynamics {
     }
 
     private ResponseHandler createProxy(ProxyContainer proxy) {
-        if (proxy.getFrom() != null && proxy.getTo() != null) {
-            return proxy(Moco.from(proxy.getFrom()).to(proxy.getTo()));
+        Failover failover = proxy.getFailover();
+
+        if (proxy.hasProxyConfig()) {
+            return proxy(proxy.getProxyConfig(), failover);
         }
 
-        if (proxy.getFailover() != null) {
-            return proxy(proxy.getUrl(), failover(proxy.getFailover()));
-        }
-
-        return proxy(proxy.getUrl());
+        return proxy(proxy.getUrl(), failover);
     }
+
 }

@@ -1,6 +1,11 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.handler.failover.Failover;
+import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.google.common.base.Objects;
+
+import static com.github.dreamhead.moco.Moco.failover;
+import static com.github.dreamhead.moco.Moco.from;
 
 public class ProxyContainer {
     private final String url;
@@ -20,18 +25,6 @@ public class ProxyContainer {
         return url;
     }
 
-    public String getFailover() {
-        return failover;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
     @Override
     public String toString() {
         return Objects.toStringHelper(ProxyContainer.class)
@@ -42,6 +35,18 @@ public class ProxyContainer {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public Failover getFailover() {
+        return (failover != null) ? failover(failover) : Failover.EMPTY_FAILOVER;
+    }
+
+    public ProxyConfig getProxyConfig() {
+        return from(from).to(to);
+    }
+
+    public boolean hasProxyConfig() {
+        return from != null && to != null;
     }
 
     public static class Builder {

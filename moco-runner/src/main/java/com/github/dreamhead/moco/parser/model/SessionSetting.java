@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.parser.model;
 
-import static com.github.dreamhead.moco.Moco.from;
 import static com.github.dreamhead.moco.MocoMount.to;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -70,7 +69,7 @@ public class SessionSetting {
         }
 
         if (isProxy()) {
-            return server.proxy(from(proxy.getFrom()).to(proxy.getTo()));
+            return server.proxy(proxy.getProxyConfig(), proxy.getFailover());
         }
 
         if (isAnyResponse()) {

@@ -24,6 +24,14 @@
             "from" : "/proxy",
             "to" : "http://localhost:12306/target"
         }
+    },
+    {
+        "proxy" :
+        {
+            "from" : "/failover",
+            "to" : "http://localhost:12306/unknown",
+            "failover" : "src/test/resources/standalone_failover.json"
+        }
     }
 ]
 
