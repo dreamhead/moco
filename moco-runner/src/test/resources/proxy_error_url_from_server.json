@@ -1,0 +1,8 @@
+[
+    {
+        "proxy" : {
+            "url" : "http://localhost:12306/target"
+        }
+    }
+]
+

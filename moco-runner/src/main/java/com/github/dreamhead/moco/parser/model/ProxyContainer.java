@@ -25,6 +25,10 @@ public class ProxyContainer {
         return url;
     }
 
+    public boolean hasUrl() {
+        return url != null;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(ProxyContainer.class)

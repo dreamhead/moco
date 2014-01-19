@@ -69,4 +69,9 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
         String content = helper.postContent(remoteUrl("/failover/1"), "proxy");
         assertThat(content, is("proxy"));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_not_proxy_from_server_with_url() throws IOException {
+        runWithConfiguration("proxy_error_url_from_server.json");
+    }
 }

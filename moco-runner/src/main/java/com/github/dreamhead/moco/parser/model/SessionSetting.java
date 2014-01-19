@@ -69,6 +69,10 @@ public class SessionSetting {
         }
 
         if (isProxy()) {
+            if (proxy.hasUrl()) {
+                throw new IllegalArgumentException("It's not allowed to have URL in proxy from server");
+            }
+
             return server.proxy(proxy.getProxyConfig(), proxy.getFailover());
         }
 
