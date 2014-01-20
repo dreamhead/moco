@@ -85,7 +85,7 @@ subprojects {
     }
 
     project.ext {
-        guavaVersion = '15.0'
+        guavaVersion = '16.0'
         nettyVersion = '4.0.14.Final'
         slf4jVersion = '1.7.5'
         commonsIoVersion = '2.4'
@@ -160,6 +160,7 @@ subprojects {
 
     tasks.withType(Compile) {
         options.compilerArgs << "-Xlint:unchecked"
+        options.compilerArgs << "-Xlint:deprecation"
     }
 }
 

@@ -2,8 +2,7 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.base.Optional;
-import com.google.common.io.CharStreams;
-import com.google.common.io.InputSupplier;
+import com.google.common.io.CharSource;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -78,16 +77,16 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
 
         private boolean shouldShutdown(String message) {
             try {
-                return shutdownKey.equals(CharStreams.readFirstLine(toSuppiler(message)));
+                return shutdownKey.equals(toSource(message).readFirstLine());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        private InputSupplier<Reader> toSuppiler(final String content) {
-            return new InputSupplier<Reader>() {
+        private CharSource toSource(final String content) {
+            return new CharSource() {
                 @Override
-                public Reader getInput() throws IOException {
+                public Reader openStream() throws IOException {
                     return new StringReader(content);
                 }
             };
