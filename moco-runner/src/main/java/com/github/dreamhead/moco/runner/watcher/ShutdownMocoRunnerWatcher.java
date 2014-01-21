@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.base.Optional;
-import com.google.common.io.CharSource;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -13,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.google.common.io.CharSource.wrap;
 
 public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
@@ -77,19 +76,10 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
 
         private boolean shouldShutdown(String message) {
             try {
-                return shutdownKey.equals(toSource(message).readFirstLine());
+                return shutdownKey.equals(wrap(message).readFirstLine());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        private CharSource toSource(final String content) {
-            return new CharSource() {
-                @Override
-                public Reader openStream() throws IOException {
-                    return new StringReader(content);
-                }
-            };
         }
     }
 }
