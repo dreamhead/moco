@@ -1,17 +1,27 @@
 package com.github.dreamhead.moco.internal;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
+import static com.jayway.awaitility.Awaitility.await;
 
 public class MocoServer {
+    private static final int DEFAULT_TIMEOUT = 3;
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
     private ChannelFuture future;
+    private InetSocketAddress address;
 
     public MocoServer() {
         bossGroup = new NioEventLoopGroup();
@@ -27,7 +37,7 @@ public class MocoServer {
         try {
             future = bootstrap.bind(port).sync();
             SocketAddress socketAddress = future.channel().localAddress();
-            InetSocketAddress address = (InetSocketAddress)socketAddress;
+            address = (InetSocketAddress) socketAddress;
             return address.getPort();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -36,6 +46,10 @@ public class MocoServer {
 
     public void stop() {
         doStop();
+        if (address != null) {
+            await().atMost(DEFAULT_TIMEOUT, TimeUnit.SECONDS).until(serverIsClosed(address));
+            address = null;
+        }
     }
 
     private void doStop() {
@@ -54,5 +68,22 @@ public class MocoServer {
             workerGroup.shutdownGracefully();
             workerGroup = null;
         }
+    }
+
+    private Callable<Boolean> serverIsClosed(final InetSocketAddress address) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    Socket socket = new Socket();
+                    socket.connect(address);
+                    return false;
+                } catch (ConnectException e) {
+                    return true;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 }

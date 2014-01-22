@@ -97,6 +97,7 @@ subprojects {
         httpComponentVersion = '4.3.2'
         jsonpathVersion = '0.9.1'
         freemarkerVersion = '2.3.20'
+        awaitilityVersion = '1.4.0'
     }
 
     jar {
@@ -121,7 +122,8 @@ subprojects {
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
-                "org.freemarker:freemarker:$freemarkerVersion"
+                "org.freemarker:freemarker:$freemarkerVersion",
+                "com.jayway.awaitility:awaitility:$awaitilityVersion"
         )
 
         runtime(
