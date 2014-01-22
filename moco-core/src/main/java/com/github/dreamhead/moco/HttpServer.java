@@ -55,11 +55,12 @@ public abstract class HttpServer extends ResponseSetting {
     }
 
     public ResponseSetting proxy(ProxyConfig config) {
-        return proxy(config, Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(config), Failover.EMPTY_FAILOVER);
     }
 
-    public ResponseSetting proxy(ProxyConfig config, Failover failover) {
-        this.request(context(config.localBase())).response(Moco.proxy(config, failover));
+    public ResponseSetting proxy(ProxyConfig proxyConfig, Failover failover) {
+        ProxyConfig config = checkNotNull(proxyConfig);
+        this.request(context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover)));
         return this;
     }
 }

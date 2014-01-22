@@ -238,11 +238,11 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig) {
-        return new ProxyBatchResponseHandler(proxyConfig, Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(proxyConfig), Failover.EMPTY_FAILOVER);
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover) {
-        return new ProxyBatchResponseHandler(proxyConfig, failover);
+        return new ProxyBatchResponseHandler(checkNotNull(proxyConfig), checkNotNull(failover));
     }
 
     public static ProxyConfig.Builder from(final String localBase) {
