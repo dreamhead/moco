@@ -21,6 +21,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
@@ -253,8 +254,46 @@ public class Moco {
         return template(text(checkNotNull(template, "Template should not be null")));
     }
 
+    public static Resource template(final String template, final String name, final Object value) {
+        return template(text(checkNotNull(template, "Template should not be null")),
+                ImmutableMap.<String, Object>of(checkNotNull(name, "Template variable name should not be null"),
+                        checkNotNull(value, "Template variable value should not be null")));
+    }
+
+    public static Resource template(final String template, final String name1, final Object value1, final String name2, final Object value2) {
+        return template(text(checkNotNull(template, "Template should not be null")),
+                ImmutableMap.<String, Object>of(checkNotNull(name1, "Template variable name should not be null"),
+                        checkNotNull(value1, "Template variable value should not be null"),
+                        checkNotNull(name2, "Template variable name should not be null"),
+                        checkNotNull(value2, "Template variable value should not be null")));
+    }
+
+    public static Resource template(final String template, final ImmutableMap<String, Object> variables) {
+        return template(text(checkNotNull(template, "Template should not be null")),
+                checkNotNull(variables, "Template variable should not be null"));
+    }
+
+    public static Resource template(final ContentResource template, final ImmutableMap<String, Object> variables) {
+        return templateResource(checkNotNull(template, "Template should not be null"),
+                checkNotNull(variables, "Template variable should not be null"));
+    }
+
     public static Resource template(final ContentResource resource) {
-        return templateResource(checkNotNull(resource, "Template should not be null"));
+        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, Object>of());
+    }
+
+    public static Resource template(final ContentResource template, final String name, final Object value) {
+        return template(checkNotNull(template, "Template should not be null"),
+                ImmutableMap.<String, Object>of(checkNotNull(name, "Template variable name should not be null"),
+                        checkNotNull(value, "Template variable value should not be null")));
+    }
+
+    public static Resource template(final ContentResource template, final String name1, final Object value1, final String name2, final Object value2) {
+        return template(checkNotNull(template, "Template should not be null"),
+                ImmutableMap.<String, Object>of(checkNotNull(name1, "Template variable name should not be null"),
+                        checkNotNull(value1, "Template variable value should not be null"),
+                        checkNotNull(name2, "Template variable name should not be null"),
+                        checkNotNull(value2, "Template variable value should not be null")));
     }
 
     public static Failover failover(final String file) {

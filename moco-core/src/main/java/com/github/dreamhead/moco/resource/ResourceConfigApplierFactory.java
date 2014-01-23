@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
 
@@ -32,11 +33,11 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier templateConfigApplier(final ContentResource template) {
+    public static ResourceConfigApplier templateConfigApplier(final ContentResource template, final ImmutableMap<String, Object> variables) {
         return new EmbeddedResourceConfigApplier(template) {
             @Override
             protected Resource newResource(MocoConfig config) {
-                return templateResource((ContentResource) template.apply(config));
+                return templateResource((ContentResource) template.apply(config), variables);
             }
         };
     }

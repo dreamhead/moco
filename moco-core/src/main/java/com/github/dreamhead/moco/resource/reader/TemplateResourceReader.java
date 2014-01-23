@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.google.common.collect.ImmutableMap;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
@@ -12,8 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
-import static com.google.common.collect.ImmutableMap.of;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
@@ -28,10 +27,12 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private final ContentResource template;
+    private final ImmutableMap<String, Object> variables;
     private final Configuration cfg;
 
-    public TemplateResourceReader(ContentResource template) {
+    public TemplateResourceReader(ContentResource template, ImmutableMap<String, Object> variables) {
         this.template = template;
+        this.variables = variables;
         this.cfg = new Configuration();
         this.cfg.setObjectWrapper(new DefaultObjectWrapper());
         this.cfg.setDefaultEncoding("UTF-8");
@@ -49,7 +50,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template template = cfg.getTemplate(TEMPLATE_NAME);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(of("req", request), writer);
+            template.process(variables(request), writer);
             return stream.toByteArray();
         } catch (ParseException e) {
             logger.info("Template is {}", templateSource);
@@ -59,6 +60,10 @@ public class TemplateResourceReader implements ContentResourceReader {
         } catch (TemplateException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private ImmutableMap<String, Object> variables(HttpRequest request) {
+        return ImmutableMap.<String, Object>builder().putAll(this.variables).put("req", request).build();
     }
 
     @Override

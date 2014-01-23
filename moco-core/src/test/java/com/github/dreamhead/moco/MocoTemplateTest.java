@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -166,6 +167,80 @@ public class MocoTemplateTest extends AbstractMocoTest {
             public void run() throws IOException {
                 assertThat(helper.getForStatus(remoteUrl("/cookie")), is(302));
                 assertThat(helper.get(remoteUrl("/cookie")), is("true"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_variable() throws Exception {
+        server.request(by(uri("/template"))).response(template("${var}", "var", "TEMPLATE"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_two_variables() throws Exception {
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", "ANOTHER", "bar", "TEMPLATE"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("ANOTHER TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_variable_map() throws Exception {
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}",
+                ImmutableMap.<String, Object>of("foo", "ANOTHER", "bar", "TEMPLATE")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("ANOTHER TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file_with_variable() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), "var", "TEMPLATE"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file_with_two_variables() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/two_vars.template"),
+                "foo", "ANOTHER", "bar", "TEMPLATE"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("ANOTHER TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file_with_variable_map() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), ImmutableMap.<String, Object>of("var", "TEMPLATE")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
             }
         });
     }

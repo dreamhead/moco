@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
 
@@ -64,8 +65,8 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource templateResource(final ContentResource template) {
-        return contentResource(id("template"), templateConfigApplier(template), new TemplateResourceReader(template));
+    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, Object> variables) {
+        return contentResource(id("template"), templateConfigApplier(template, variables), new TemplateResourceReader(template, variables));
     }
 
     public static Resource uriResource(final String uri) {
