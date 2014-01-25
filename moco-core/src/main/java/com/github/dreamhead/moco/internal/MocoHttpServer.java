@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.Runner;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -7,11 +8,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 
-import java.util.concurrent.TimeUnit;
-
-import static com.jayway.awaitility.Awaitility.await;
-
-public class MocoHttpServer {
+public class MocoHttpServer extends Runner {
     private final MocoServer server = new MocoServer();
     private final ActualHttpServer serverSetting;
 
