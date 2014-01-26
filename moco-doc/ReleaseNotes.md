@@ -5,6 +5,7 @@
 ## APIs
 * log to record request
 * once for verifier
+* batch proxy
 
 ### template
 * cookie

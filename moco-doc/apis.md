@@ -649,6 +649,7 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 
 ### Proxy
 
+#### Single URL
 We can also response with the specified url, just like a proxy.
 
 * Java API
@@ -682,6 +683,7 @@ Besides the basic functionality, proxy also support failover, for example:
 server.request(by("foo")).response(proxy("http://www.github.com", failover("failover.json")));
 ```
 
+* JSON
 ```json
 {
   "request" :
@@ -701,7 +703,97 @@ server.request(by("foo")).response(proxy("http://www.github.com", failover("fail
 
 Proxy will save request/response pair into your failover file. If the proxy target is not reachable, proxy will failover from the file. This feature is very useful for development environment, especially for the case the integration server is not stable.
 
-As the file suffix suggests, this failover file is actually a JSON file, which means you can read/edit it to return whatever you want.
+As the file suffix suggests, this failover file is actually a JSON file, which means we can read/edit it to return whatever we want.
+
+#### Batch URLs
+If we want to proxy with a batch of URLs in the same context, proxy can also help us.
+
+* Java API
+```java
+server.get(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to("http://localhost:12306/target")));
+```
+
+* JSON
+```json
+{
+    "request" :
+    {
+        "uri" : {
+            "match" : "/proxy/.*"
+        }
+    },
+    "response" :
+    {
+        "proxy" : {
+            "from" : "/proxy",
+            "to" : "http://localhost:12306/target"
+        }
+    }
+}
+```
+
+Same with single url, you can also specify a failover.
+* Java API
+```java
+server.request(match(uri("/proxy/.*")))
+      .response(proxy("http://localhost:12306/unknown"), failover("failover.response")));
+```
+
+* JSON
+```json
+{
+    "request" :
+    {
+        "uri" : {
+            "match" : "/failover/.*"
+        }
+    },
+    "response" :
+    {
+        "proxy" :
+        {
+            "from" : "/failover",
+            "to" : "http://localhost:12306/unknown",
+            "failover" : "failover.response"
+        }
+    }
+}
+```
+
+As you may find, we often set request match same context with response, so Moco gives us a shortcut to do that.
+* Java API
+```java
+server.proxy(from("/proxy").to("http://localhost:12306/target"));
+```
+
+* JSON
+```json
+{
+    "proxy" : {
+        "from" : "/proxy",
+        "to" : "http://localhost:12306/target"
+    }
+}
+```
+
+Same with failover
+* Java API
+```java
+server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("failover.response"));
+```
+
+* JSON
+```json
+{
+    "proxy" :
+    {
+        "from" : "/failover",
+        "to" : "http://localhost:12306/unknown",
+        "failover" : "failover.response"
+    }
+}
+```
+
 
 ### Redirect
 
