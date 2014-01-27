@@ -1,0 +1,18 @@
+[
+    {
+        "request": {
+            "uri": "/var_template"
+        },
+        "response": {
+            "text": {
+                "template": {
+                    "with" : "${foo} ${bar}",
+                    "vars" : {
+                        "foo" : "another",
+                        "bar" : "template"
+                    }
+                }
+            }
+        }
+    }
+]

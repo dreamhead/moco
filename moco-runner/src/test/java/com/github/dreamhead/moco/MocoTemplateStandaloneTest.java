@@ -67,4 +67,11 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String content = helper.get(remoteUrl("/query_template?foo=dreamhead"));
         assertThat(content, is("dreamhead"));
     }
+
+    @Test
+    public void should_return_template_with_vars() throws IOException {
+        runWithConfiguration("var_template.json");
+        String content = helper.get(remoteUrl("/var_template"));
+        assertThat(content, is("another template"));
+    }
 }
