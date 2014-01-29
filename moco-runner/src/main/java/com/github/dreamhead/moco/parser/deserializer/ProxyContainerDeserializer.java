@@ -1,9 +1,11 @@
-package com.github.dreamhead.moco.parser.model;
+package com.github.dreamhead.moco.parser.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.github.dreamhead.moco.parser.model.ProxyContainer;
+import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 import java.util.Map;

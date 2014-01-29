@@ -165,9 +165,9 @@ public class ResponseSetting extends Dynamics {
                 return version(template(container.getText()));
             }
 
-            if (container.hasVars()) {
-                ImmutableMap<String, Object> vars = container.getVars();
-                return template(invokeTarget(name, container.getText(), ContentResource.class), vars);
+            if (container.hasProperties()) {
+                return template(invokeTarget(name, container.getText(), ContentResource.class),
+                        container.getProps());
             }
 
             return template(invokeTarget(name, container.getText(), ContentResource.class));

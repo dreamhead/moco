@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
+import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
 import com.github.dreamhead.moco.parser.model.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
