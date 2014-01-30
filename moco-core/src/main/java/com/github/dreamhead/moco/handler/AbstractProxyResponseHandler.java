@@ -35,7 +35,7 @@ import static com.google.common.io.ByteStreams.toByteArray;
 
 public abstract class AbstractProxyResponseHandler implements ResponseHandler {
 
-    protected abstract Optional<String> remoteUrl(String uri) throws MalformedURLException;
+    protected abstract Optional<String> remoteUrl(String uri);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
@@ -161,24 +161,32 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
     }
 
     private void writeToResponse(HttpRequest request, FullHttpResponse response) {
+        Optional<URL> url = remoteUrl(((DefaultHttpRequest) request).toFullHttpRequest());
+        if (!url.isPresent()) {
+            return;
+        }
+
+        doProxy(request, response, url.get());
+    }
+
+    private void doProxy(final HttpRequest request, final FullHttpResponse response, final URL remoteUrl) {
+        if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
+            try {
+                failover.failover(request, response);
+                return;
+            } catch (RuntimeException e) {
+
+            }
+        }
+
+        doForward(request, response, remoteUrl);
+    }
+
+    private void doForward(HttpRequest request, FullHttpResponse response, URL remoteUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
-            Optional<URL> url = remoteUrl(httpRequest);
-            if (!url.isPresent()) {
-                return;
-            }
-
-            if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
-                try {
-                    failover.failover(request, response);
-                    return;
-                } catch (RuntimeException e) {
-
-                }
-            }
-
-            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(httpRequest, url.get())));
+            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(httpRequest, remoteUrl)));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             failover.failover(request, response);
@@ -190,7 +198,7 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
         }
     }
 
-    protected Optional<URL> remoteUrl(FullHttpRequest request) throws MalformedURLException {
+    protected Optional<URL> remoteUrl(FullHttpRequest request) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         Optional<String> remoteUrl = this.remoteUrl(decoder.path());
         if (!remoteUrl.isPresent()) {
@@ -203,6 +211,10 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
             encoder.addParam(entry.getKey(), entry.getValue().get(0));
         }
 
-        return of(new URL(encoder.toString()));
+        try {
+            return of(new URL(encoder.toString()));
+        } catch (MalformedURLException e) {
+            return absent();
+        }
     }
 }

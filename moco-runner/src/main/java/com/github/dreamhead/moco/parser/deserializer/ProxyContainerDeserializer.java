@@ -17,7 +17,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
     public ProxyContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return new ProxyContainer(jp.getText().trim(), null, null, null);
+            return ProxyContainer.builder().withUrl(jp.getText().trim()).build();
         } else if (currentToken == JsonToken.START_OBJECT) {
             JsonToken jsonToken = jp.nextToken();
             if (jsonToken == JsonToken.FIELD_NAME) {
@@ -36,6 +36,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
                 .withFailover(fields.get("failover"))
                 .withFrom(fields.get("from"))
                 .withTo(fields.get("to"))
+                .withPlayback(fields.get("playback"))
                 .build();
     }
 

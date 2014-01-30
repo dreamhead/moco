@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.google.common.base.Optional;
 
-import java.net.MalformedURLException;
-
 import static com.github.dreamhead.moco.Moco.from;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
@@ -21,7 +19,7 @@ public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     }
 
     @Override
-    protected Optional<String> remoteUrl(String uri) throws MalformedURLException {
+    protected Optional<String> remoteUrl(String uri) {
         if (!proxyConfig.canAccessedBy(uri)) {
             return absent();
         }

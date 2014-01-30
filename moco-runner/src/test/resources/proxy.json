@@ -32,5 +32,19 @@
                 "failover" : "src/test/resources/standalone_failover.json"
             }
         }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/playback"
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : "http://localhost:12306/unknown",
+                "playback" : "src/test/resources/standalone_failover.json"
+            }
+        }
     }
 ]

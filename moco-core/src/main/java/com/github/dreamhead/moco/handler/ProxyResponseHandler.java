@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.google.common.base.Optional;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.google.common.base.Optional.of;
@@ -18,7 +17,7 @@ public class ProxyResponseHandler extends AbstractProxyResponseHandler implement
     }
 
     @Override
-    protected Optional<String> remoteUrl(String uri) throws MalformedURLException {
+    protected Optional<String> remoteUrl(String uri) {
         return of(this.url.toString());
     }
 }

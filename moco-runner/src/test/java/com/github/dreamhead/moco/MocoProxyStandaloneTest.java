@@ -24,6 +24,13 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_playback() throws IOException {
+        runWithConfiguration("proxy.json");
+        String content = helper.postContent(remoteUrl("/playback"), "proxy");
+        assertThat(content, is("proxy"));
+    }
+
+    @Test
     public void should_batch_proxy() throws IOException {
         runWithConfiguration("proxy_batch.json");
         String content1 = helper.get(remoteUrl("/proxy/1"));

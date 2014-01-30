@@ -6,20 +6,15 @@ import com.google.common.base.Objects;
 
 import static com.github.dreamhead.moco.Moco.failover;
 import static com.github.dreamhead.moco.Moco.from;
+import static com.github.dreamhead.moco.Moco.playback;
 
 public class ProxyContainer {
-    private final String url;
-    private final String failover;
+    private String url;
+    private String from;
+    private String to;
 
-    private final String from;
-    private final String to;
-
-    public ProxyContainer(String url, String failover, String from, String to) {
-        this.url = url;
-        this.failover = failover;
-        this.from = from;
-        this.to = to;
-    }
+    private String failover;
+    private String playback;
 
     public String getUrl() {
         return url;
@@ -42,7 +37,15 @@ public class ProxyContainer {
     }
 
     public Failover getFailover() {
-        return (failover != null) ? failover(failover) : Failover.DEFAULT_FAILOVER;
+        if (failover != null) {
+            return failover(failover);
+        }
+
+        if (playback != null) {
+            return playback(playback);
+        }
+
+        return Failover.DEFAULT_FAILOVER;
     }
 
     public ProxyConfig getProxyConfig() {
@@ -56,6 +59,7 @@ public class ProxyContainer {
     public static class Builder {
         private String url;
         private String failover;
+        private String playback;
 
         private String from;
         private String to;
@@ -80,6 +84,11 @@ public class ProxyContainer {
             return this;
         }
 
+        public Builder withPlayback(String playback) {
+            this.playback = playback;
+            return this;
+        }
+
         public ProxyContainer build() {
             if (this.url != null && (this.from != null || this.to != null)) {
                 throw new IllegalArgumentException("Proxy cannot be set in multiple mode");
@@ -89,7 +98,14 @@ public class ProxyContainer {
                 throw new IllegalArgumentException("Batch proxy needs both 'from' and 'to'");
             }
 
-            return new ProxyContainer(this.url, this.failover, this.from, this.to);
+
+            ProxyContainer container = new ProxyContainer();
+            container.url = url;
+            container.from = from;
+            container.to = to;
+            container.failover = failover;
+            container.playback = playback;
+            return container;
         }
     }
 }
