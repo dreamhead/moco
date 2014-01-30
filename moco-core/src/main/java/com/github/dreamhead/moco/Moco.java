@@ -6,8 +6,9 @@ import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
-import com.github.dreamhead.moco.handler.failover.DefaultFailover;
+import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
+import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.matcher.*;
@@ -231,15 +232,16 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url) {
-        return proxy(checkNotNull(url, "URL should not be null"), Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
-        return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")), checkNotNull(failover, "Failover should not be null"));
+        return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")),
+                checkNotNull(failover, "Failover should not be null"));
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig) {
-        return proxy(checkNotNull(proxyConfig), Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(proxyConfig), Failover.DEFAULT_FAILOVER);
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover) {
@@ -297,7 +299,15 @@ public class Moco {
     }
 
     public static Failover failover(final String file) {
-        return new DefaultFailover(new File(checkNotNull(file, "Filename should not be null")));
+        return new Failover(failoverExecutor(file), FailoverStrategy.FAILOVER);
+    }
+
+    private static DefaultFailoverExecutor failoverExecutor(String file) {
+        return new DefaultFailoverExecutor(new File(checkNotNull(file, "Filename should not be null")));
+    }
+
+    public static Failover playback(final String file) {
+        return new Failover(failoverExecutor(file), FailoverStrategy.PLAYBACK);
     }
 
     public static MocoEventTrigger complete(final MocoEventAction action) {

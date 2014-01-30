@@ -3,18 +3,26 @@ package com.github.dreamhead.moco.handler.failover;
 import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-public interface Failover {
-    void onCompleteResponse(HttpRequest request, FullHttpResponse response);
-    void failover(HttpRequest request, FullHttpResponse response);
+public class Failover {
+    public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER, FailoverStrategy.FAILOVER);
 
-    Failover EMPTY_FAILOVER = new Failover() {
-        @Override
-        public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
-        }
+    private FailoverExecutor executor;
+    private FailoverStrategy strategy;
 
-        @Override
-        public void failover(HttpRequest request, FullHttpResponse response) {
-            throw new RuntimeException("no failover response found");
-        }
-    };
+    public Failover(FailoverExecutor executor, FailoverStrategy strategy) {
+        this.executor = executor;
+        this.strategy = strategy;
+    }
+
+    public FailoverStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void failover(HttpRequest request, FullHttpResponse response) {
+        executor.failover(request, response);
+    }
+
+    public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
+        executor.onCompleteResponse(request, response);
+    }
 }

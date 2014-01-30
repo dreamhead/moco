@@ -27,13 +27,13 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
 
-public class DefaultFailover implements Failover {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultFailover.class);
+public class DefaultFailoverExecutor implements FailoverExecutor {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
     private final TypeFactory factory = TypeFactory.defaultInstance();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File file;
 
-    public DefaultFailover(File file) {
+    public DefaultFailoverExecutor(File file) {
         this.file = file;
     }
 

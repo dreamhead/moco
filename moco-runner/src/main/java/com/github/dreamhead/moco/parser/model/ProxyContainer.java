@@ -42,7 +42,7 @@ public class ProxyContainer {
     }
 
     public Failover getFailover() {
-        return (failover != null) ? failover(failover) : Failover.EMPTY_FAILOVER;
+        return (failover != null) ? failover(failover) : Failover.DEFAULT_FAILOVER;
     }
 
     public ProxyConfig getProxyConfig() {

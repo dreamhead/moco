@@ -19,6 +19,8 @@ import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.MocoRequestHit.once;
+import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
@@ -358,5 +360,38 @@ public class MocoProxyTest extends AbstractMocoTest {
                 assertThat(helper.postContent(remoteUrl("/proxy/1"), "proxy"), is("proxy"));
             }
         });
+    }
+
+    @Test
+    public void should_proxy_with_playback() throws Exception {
+        server.request(by(uri("/target"))).response("proxy");
+        final File file = tempFolder.newFile();
+        server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy"));
+            }
+        });
+    }
+
+    @Test
+    public void should_proxy_with_playback_to_access_remote_only_once() throws Exception {
+        RequestHit hit = requestHit();
+        server = httpserver(port(), hit);
+        server.request(by(uri("/target"))).response("proxy");
+        final File file = tempFolder.newFile();
+        server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy"));
+                assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy"));
+            }
+        });
+
+        hit.verify(by(uri("/target")), once());
     }
 }

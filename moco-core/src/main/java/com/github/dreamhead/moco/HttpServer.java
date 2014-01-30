@@ -55,7 +55,7 @@ public abstract class HttpServer extends ResponseSetting {
     }
 
     public ResponseSetting proxy(ProxyConfig config) {
-        return proxy(checkNotNull(config), Failover.EMPTY_FAILOVER);
+        return proxy(checkNotNull(config), Failover.DEFAULT_FAILOVER);
     }
 
     public ResponseSetting proxy(ProxyConfig proxyConfig, Failover failover) {

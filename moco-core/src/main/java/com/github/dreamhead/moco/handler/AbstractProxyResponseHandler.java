@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
+import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
@@ -156,14 +157,25 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
 
     @Override
     public void writeToResponse(SessionContext context) {
-        HttpRequest request = context.getRequest();
-        FullHttpResponse response = context.getResponse();
+        writeToResponse(context.getRequest(), context.getResponse());
+    }
+
+    private void writeToResponse(HttpRequest request, FullHttpResponse response) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            FullHttpRequest httpRequest = ((DefaultHttpRequest) context.getRequest()).toFullHttpRequest();
+            FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
             Optional<URL> url = remoteUrl(httpRequest);
             if (!url.isPresent()) {
                 return;
+            }
+
+            if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
+                try {
+                    failover.failover(request, response);
+                    return;
+                } catch (RuntimeException e) {
+
+                }
             }
 
             setupResponse(request, response, httpclient.execute(prepareRemoteRequest(httpRequest, url.get())));
