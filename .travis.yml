@@ -5,4 +5,4 @@ jdk:
   - openjdk6
 
 script:
-  "gradle check -i"
+  "./gradlew check -i"

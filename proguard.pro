@@ -45,3 +45,4 @@
 -dontwarn org.apache.log4j.**
 -dontwarn org.apache.commons.logging.**
 -dontwarn com.google.**
+-dontwarn net.sf.cglib.**

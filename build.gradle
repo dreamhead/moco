@@ -215,12 +215,7 @@ project(':moco-runner') {
 
     task proguardCheck(type: Test, dependsOn: proguard) {
         testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile)
-    }
-
-    task uberCheck(type: Test, dependsOn: uberjar) {
-        testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(uberjar.outputs.files.singleFile)
+        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(configurations.testCompile) + files(proguard.outputs.files.singleFile)
     }
 
     uploadArchives.dependsOn proguardCheck
