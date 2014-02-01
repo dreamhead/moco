@@ -11,7 +11,7 @@
                 "async" : "true",
                 "latency" : 500,
                 "post" : {
-                    "url" : "http://localhost:12306/target",
+                    "url" : "http://localhost:2587/target",
                     "content": "content"
                 }
             }
@@ -30,18 +30,9 @@
                 "async" : "true",
                 "latency" : 1000,
                 "get" : {
-                    "url" : "http://localhost:12306/target"
+                    "url" : "http://localhost:2587/target"
                 }
             }
-        }
-    },
-
-    {
-        "request": {
-            "uri" : "/target"
-        },
-        "response": {
-            "text": "0XCAFEBABE"
         }
     }
 ]
