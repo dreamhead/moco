@@ -1,5 +1,6 @@
 # Release 0.9.1 (1-Feb-2014)
 ## Usage
+* Runner API
 * (Beta) gmoco, moco groovy shell
 
 ## APIs

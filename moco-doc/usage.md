@@ -68,6 +68,46 @@ As shown above, we created a new server and configure it as expected. And then r
 
 Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fluent.html) to request our testing server.
 
+#### Runner API
+If you want to setup server in your Before (or setup) method, runner API could be used.
+
+```java
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Runner.runner;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+public class MocoRunnerTest {
+    private Runner runner;
+
+    @Before
+    public void setup() {
+        HttpServer server = httpserver(port());
+        server.response("foo");
+        runner = runner(server);
+        runner.start();
+        helper = new MocoTestHelper();
+    }
+
+    @After
+    public void tearDown() {
+        runner.stop();
+    }
+
+    @Test
+    public void should_response_as_expected() throws IOException {
+        Content content = Request.Get("http://localhost:12306").execute().returnContent();
+        assertThat(content.asString(), is("foo"));
+    }
+}
+```
+
 ## Standalone
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
