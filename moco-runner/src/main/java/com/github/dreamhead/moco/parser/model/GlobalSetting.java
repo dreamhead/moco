@@ -10,6 +10,7 @@ public class GlobalSetting {
     @JsonProperty("file_root")
     private String fileRoot;
     private String env;
+    private ResponseSetting response;
 
     public String getInclude() {
         return join(fileRoot, include);
@@ -25,5 +26,9 @@ public class GlobalSetting {
 
     public String getEnv() {
         return env;
+    }
+
+    public ResponseSetting getResponse() {
+        return response;
     }
 }

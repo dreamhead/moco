@@ -58,7 +58,10 @@ public class SettingRunner implements Runner {
             @Override
             public RunnerSetting apply(GlobalSetting setting) {
                 try {
-                    return new RunnerSetting(new FileInputStream(setting.getInclude()), setting.getContext(), setting.getFileRoot());
+                    return new RunnerSetting(new FileInputStream(setting.getInclude()),
+                            setting.getContext(),
+                            setting.getFileRoot(),
+                            setting.getResponse());
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

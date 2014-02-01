@@ -7,7 +7,9 @@ import static org.junit.Assert.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.http.Header;
 import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.fluent.Request;
 import org.junit.After;
 import org.junit.Test;
 
@@ -20,7 +22,9 @@ public class SettingRunnerTest {
 
     @After
     public void tearDown() {
-        runner.stop();
+        if (runner != null) {
+            runner.stop();
+        }
     }
 
     @Test
@@ -35,7 +39,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_context() throws IOException {
-        InputStream stream = getResourceAsStream("settings/context-settings.json");
+        InputStream stream = getResourceAsStream("settings/context-settingss.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
@@ -68,6 +72,16 @@ public class SettingRunnerTest {
         runner.run();
 
         helper.get(remoteUrl("/foo/foo"));
+    }
+
+    @Test
+    public void should_run_with_global_response_settings() throws IOException {
+        InputStream stream = getResourceAsStream("settings/response-settings.json");
+        runner = new SettingRunner(stream, createStartArgs(12306));
+        runner.run();
+
+        Header header = Request.Get(remoteUrl("/foo")).execute().returnResponse().getFirstHeader("foo");
+        assertThat(header.getValue(), is("bar"));
     }
 
     private StartArgs createStartArgs(int port, String env) {

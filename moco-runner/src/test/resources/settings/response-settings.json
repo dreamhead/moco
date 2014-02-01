@@ -1,0 +1,10 @@
+[
+    {
+        "response" : {
+            "headers" : {
+                "foo" : "bar"
+            }
+        },
+        "include": "src/test/resources/settings/foo.json"
+    }
+]

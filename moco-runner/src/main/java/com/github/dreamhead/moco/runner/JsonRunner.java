@@ -6,13 +6,13 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
-import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Iterables.toArray;
 
 public class JsonRunner implements Runner {
 
@@ -50,16 +50,19 @@ public class JsonRunner implements Runner {
     }
 
     private MocoConfig[] toConfigs(RunnerSetting setting) {
-        List<MocoConfig> configs = newArrayList();
-        if (setting.getContext().isPresent()) {
-            configs.add(context(setting.getContext().get()));
-        }
+        ImmutableList.Builder<MocoConfig> builder = ImmutableList.builder();
 
-        if (setting.getFileRoot().isPresent()) {
-            configs.add(fileRoot(setting.getFileRoot().get()));
-        }
+        addConfig(builder, setting.context());
+        addConfig(builder, setting.fileRoot());
+        addConfig(builder, setting.response());
 
-        return configs.toArray(new MocoConfig[configs.size()]);
+        return toArray(builder.build(), MocoConfig.class);
+    }
+
+    private void addConfig(ImmutableList.Builder<MocoConfig> builder, Optional<MocoConfig> config) {
+        if (config.isPresent()) {
+            builder.add(config.get());
+        }
     }
 
     private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {
@@ -75,7 +78,7 @@ public class JsonRunner implements Runner {
         return new Function<InputStream, RunnerSetting>() {
             @Override
             public RunnerSetting apply(InputStream input) {
-                return new RunnerSetting(input, null, null);
+                return new RunnerSetting(input, null, null, null);
             }
         };
     }
