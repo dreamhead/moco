@@ -10,3 +10,5 @@ reports
 .idea
 .gradletasknamecache
 *.output
+.gmoco_pid
+gmoco.log

@@ -1,10 +1,52 @@
 #!/bin/bash
 
+GMOCO_SCRIPT_FILE_NAME="moco_script.groovy"
+GMOCO_LOG_FILE_NAME="gmoco.log"
+GMOCO_PID_FILE_NAME=".gmoco_pid"
+
+if [ "$HTTP_CLIENT" = "" ]; then
+    if type -p curl >/dev/null 2>&1; then
+        if [ "$https_proxy" != "" ]; then
+            CURL_PROXY="-x $https_proxy"
+        fi
+        HTTP_CLIENT="curl $CURL_PROXY -f -L -o"
+    else
+        HTTP_CLIENT="wget -O"
+    fi
+fi
+
+function download_failed_message {
+    echo "Failed to download $1"
+    echo "It's possible your HTTP client's certificate store does not have the"
+    echo "correct certificate authority needed. This is often caused by an"
+    echo "out-of-date version of libssl. Either upgrade it or set HTTP_CLIENT"
+    echo "to turn off certificate checks:"
+    echo "  export HTTP_CLIENT=\"wget --no-check-certificate -O\" # or"
+    echo "  export HTTP_CLIENT=\"curl --insecure -f -L -o\""
+    echo "It's also possible that you're behind a firewall haven't yet"
+    echo "set HTTP_PROXY and HTTPS_PROXY."
+}
+
+function download {
+        $HTTP_CLIENT "$2.pending" "$1"
+        if [ $? == 0 ]; then
+            # TODO: checksum
+            mv -f "$2.pending" "$2"
+        else
+            rm "$2.pending" 2> /dev/null
+            download_failed_message "$1"
+            exit 1
+        fi
+}
+
 function download_groovy {
-        mkdir $GROOVY_DOWNLOAD_DIR
+        echo "Groovy not found - will have to download it"
+        GROOVY_LOCAL_FILE=$GROOVY_DOWNLOAD_DIR/groovy-binary-$GROOVY_VERSION.zip
+        mkdir -p $GROOVY_DOWNLOAD_DIR
         echo "Downloading groovy binary to $GROOVY_DOWNLOAD_DIR"
-        wget http://dist.groovy.codehaus.org/distributions/groovy-binary-$GROOVY_VERSION.zip -P $GROOVY_DOWNLOAD_DIR
-        unzip $GROOVY_DOWNLOAD_DIR/groovy-binary-$GROOVY_VERSION.zip -d $GROOVY_DOWNLOAD_DIR/
+        GROOVY_URL=http://dist.groovy.codehaus.org/distributions/groovy-binary-$GROOVY_VERSION.zip
+        download $GROOVY_URL $GROOVY_LOCAL_FILE
+        unzip $GROOVY_LOCAL_FILE -d $GROOVY_DOWNLOAD_DIR/
 }
 
 function check_if_groovy_is_installed {
@@ -16,8 +58,7 @@ function check_if_groovy_is_installed {
                 GROOVY_HOME="/usr"
                 echo "Groovy is already installed here $GROOVY_HOME"
         else
-                echo "Groovy not found - will have to download it"
-                GROOVY_DOWNLOAD_DIR="/home/$USER/.groovy" 
+                GROOVY_DOWNLOAD_DIR="$HOME/.groovy"
                 GROOVY_VERSION="2.1.9"
 
                 #Check if Groovy binary has not already been downloaded
@@ -30,11 +71,24 @@ function check_if_groovy_is_installed {
         fi
 }
 
+function run_moco_in_normal_mode {        
+        $GROOVY_HOME/bin/groovy $GMOCO_SCRIPT_FILE_NAME $PORT $CONFIG        
+}
+
+function run_moco_in_deamon_mode {        
+        echo "Starting moco... please wait" > $GMOCO_LOG_FILE_NAME
+        nohup $GROOVY_HOME/bin/groovy $GMOCO_SCRIPT_FILE_NAME $PORT $CONFIG $GMOCO_PID_FILE_NAME >> $GMOCO_LOG_FILE_NAME 2>&1&
+        echo "Moco started with PID [$!], pid has been saved to [$GMOCO_PID_FILE_NAME] file, logs can be found in the [$GMOCO_LOG_FILE_NAME] file"
+        echo "$!" > $GMOCO_PID_FILE_NAME
+}
+
 function run_moco {
         echo "Trying to run moco with port [$PORT] and config file [$CONFIG]"
-        nohup $GROOVY_HOME/bin/groovy moco_script.groovy $PORT $CONFIG > moco.log 2>&1&
-        echo "Moco started with PID [$!]"
-        echo "$!" > moco_pid
+        if [ $DEAMON ]; then
+            run_moco_in_deamon_mode        
+        else
+            run_moco_in_normal_mode
+        fi
 }
 
 function start_moco {
@@ -53,17 +107,20 @@ function usage {
   printf "
 options:
        help      show help
-       start     start server, e.g. gmoco start -p 8888 -c moco_config_script.groovy
+       start     start server, e.g. gmoco start -p 8888 -c gmoco_config_example.groovy
+                 start server in deamon mode, e.g. gmoco start -p 8888 -c gmoco_config_example.groovy -d
 "
 }
 
 if [ "$1" = "start" ]; then
+
         if [ $# -lt 4 ]; then
                 usage
         else        
             echo "Starting..."
                 PORT=
                 CONFIG=
+                DEAMON=
                 while test $# -gt 0
                 do
                         case $1 in
@@ -74,6 +131,10 @@ if [ "$1" = "start" ]; then
                             -c)
                               shift
                               CONFIG=$1
+                              ;;
+                            -d)
+                              shift
+                              DEAMON=true
                               ;;
                             :)
                               usage
