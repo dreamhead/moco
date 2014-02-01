@@ -90,7 +90,6 @@ subprojects {
         slf4jVersion = '1.7.5'
         commonsIoVersion = '2.4'
         jacksonVersion = '2.3.1'
-        logbackVersion = '1.1.0'
         junitVersion = '4.11'
         hamcrestVersion = '1.3'
         mockitoVersion = '1.9.5'
@@ -117,17 +116,13 @@ subprojects {
         compile(
                 "com.google.guava:guava:$guavaVersion",
                 "io.netty:netty-codec-http:$nettyVersion",
-                "org.slf4j:slf4j-api:$slf4jVersion",
                 "commons-io:commons-io:$commonsIoVersion",
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
                 "org.freemarker:freemarker:$freemarkerVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion",
                 "com.jayway.awaitility:awaitility:$awaitilityVersion"
-        )
-
-        runtime(
-                "ch.qos.logback:logback-classic:$logbackVersion"
         )
 
         testCompile(
@@ -166,13 +161,31 @@ subprojects {
     }
 }
 
+project(':moco-core') {
+
+    dependencies {
+        runtime(
+                "org.slf4j:slf4j-simple:$slf4jVersion"
+        )
+    }
+}
+
 project(':moco-runner') {
+
+    project.ext {
+        logbackVersion = '1.1.0'
+        commonsCliVersion = '1.2'
+    }
 
     dependencies {
         compile(
                 project(':moco-core'),
-                'commons-cli:commons-cli:1.2'
+                "commons-cli:commons-cli:$commonsCliVersion"
         )
+
+        runtime("ch.qos.logback:logback-classic:$logbackVersion") {
+            exclude group: "org.slf4j", module: "slf4j-simple"
+        }
 
         testCompile project(':moco-core').sourceSets.test.output
 
