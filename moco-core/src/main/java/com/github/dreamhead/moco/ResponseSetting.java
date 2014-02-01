@@ -7,7 +7,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.util.URLs.join;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;

@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -33,7 +31,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public abstract class AbstractProxyResponseHandler implements ResponseHandler {
+public abstract class AbstractProxyResponseHandler extends AbstractResponseHandler {
 
     protected abstract Optional<String> remoteUrl(String uri);
 
@@ -148,11 +146,6 @@ public abstract class AbstractProxyResponseHandler implements ResponseHandler {
             ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
             response.content().writeBytes(buffer);
         }
-    }
-
-    @Override
-    public ResponseHandler apply(final MocoConfig config) {
-        return this;
     }
 
     @Override

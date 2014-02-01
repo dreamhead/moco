@@ -7,7 +7,7 @@ import com.google.common.base.Function;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public class AndResponseHandler implements ResponseHandler {
+public class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
 
     public AndResponseHandler(Iterable<ResponseHandler> handlers) {
@@ -23,6 +23,10 @@ public class AndResponseHandler implements ResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.RESPONSE_ID)) {
+            return super.apply(config);
+        }
+
         return new AndResponseHandler(from(handlers).transform(applyConfig(config)));
     }
 

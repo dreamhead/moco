@@ -3,11 +3,12 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
 
-public class HeaderResponseHandler implements ResponseHandler {
+public class HeaderResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
     private final String name;
@@ -30,8 +31,14 @@ public class HeaderResponseHandler implements ResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
-        if (config.isFor(resource.id())) {
-            return new HeaderResponseHandler(name, resource.apply(config));
+        ResponseHandler handler = super.apply(config);
+        if (handler != this) {
+            return handler;
+        }
+
+        Resource resource = this.resource.apply(config);
+        if (resource != this.resource) {
+            return new HeaderResponseHandler(name, resource);
         }
 
         return this;

@@ -18,8 +18,9 @@ public class ResourceConfigApplierFactory {
     public static ResourceConfigApplier fileConfigApplier(final String id, final File file) {
         return new SelfResourceConfigApplier(id) {
             @Override
+            @SuppressWarnings("unchecked")
             protected Resource newResource(MocoConfig config) {
-                return fileResource(new File(config.apply(file.getName())));
+                return fileResource(new File((String)config.apply(file.getName())));
             }
         };
     }
@@ -42,11 +43,12 @@ public class ResourceConfigApplierFactory {
         };
     }
 
+    @SuppressWarnings("unchecked")
     public static ResourceConfigApplier uriConfigApplier(final String id, final String uri) {
         return new SelfResourceConfigApplier(id) {
             @Override
             protected Resource newResource(MocoConfig config) {
-                return uriResource(config.apply(uri));
+                return uriResource((String)config.apply(uri));
             }
         };
     }

@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.action.MocoAsyncAction;
 import com.github.dreamhead.moco.action.MocoRequestAction;
 import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
-import com.github.dreamhead.moco.extractor.*;
+import com.github.dreamhead.moco.config.MocoResponseConfig;import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -58,6 +58,10 @@ public class Moco {
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNull(context, "Context should not be null"));
+    }
+
+    public static MocoConfig response(final ResponseHandler handler) {
+        return new MocoResponseConfig(checkNotNull(handler, "Response should not be null"));
     }
 
     public static MocoConfig fileRoot(final String fileRoot) {

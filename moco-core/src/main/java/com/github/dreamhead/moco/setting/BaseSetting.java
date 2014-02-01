@@ -22,10 +22,12 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         this.fireCompleteEvent();
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public BaseSetting apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
-            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context(config.apply(""))));
+            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context((String)config.apply(""))));
         }
 
         BaseSetting setting = new BaseSetting(appliedMatcher);

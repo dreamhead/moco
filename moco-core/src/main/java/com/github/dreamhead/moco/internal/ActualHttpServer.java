@@ -110,9 +110,10 @@ public class ActualHttpServer extends HttpServer {
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             public RequestMatcher apply(MocoConfig config) {
-                if (config.isFor("uri")) {
-                    return context(config.apply(""));
+                if (config.isFor(MocoConfig.URI_ID)) {
+                    return context((String)config.apply(""));
                 }
 
                 return this;

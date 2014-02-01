@@ -9,7 +9,7 @@ import com.google.common.collect.FluentIterable;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public class SequenceContentHandler implements ResponseHandler {
+public class SequenceContentHandler extends AbstractResponseHandler {
     private final ResponseHandler[] handlers;
     private int index;
 
@@ -33,6 +33,10 @@ public class SequenceContentHandler implements ResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.RESPONSE_ID)) {
+            return super.apply(config);
+        }
+
         FluentIterable<ResponseHandler> transformedResources = from(copyOf(handlers)).transform(applyConfig(config));
         return new SequenceContentHandler(transformedResources.toArray(ResponseHandler.class));
     }

@@ -45,13 +45,18 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ResponseHandler apply(final MocoConfig config) {
-        if (config.isFor("uri")) {
+        if (config.isFor(MocoConfig.RESPONSE_ID)) {
+            return super.apply(config);
+        }
+
+        if (config.isFor(MocoConfig.URI_ID)) {
             return new MountHandler(this.dir, this.target.apply(config));
         }
 
-        if (config.isFor("file")) {
-            return new MountHandler(new File(config.apply(this.dir.getName())), this.target);
+        if (config.isFor(MocoConfig.FILE_ID)) {
+            return new MountHandler(new File((String)config.apply(this.dir.getName())), this.target);
         }
 
         return this;

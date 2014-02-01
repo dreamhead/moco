@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.config;
 
 import com.github.dreamhead.moco.MocoConfig;
 
-public class MocoContextConfig implements MocoConfig {
+public class MocoContextConfig implements MocoConfig<String> {
     private final String context;
 
     public MocoContextConfig(String context) {
@@ -11,7 +11,7 @@ public class MocoContextConfig implements MocoConfig {
 
     @Override
     public boolean isFor(String id) {
-        return "uri".equalsIgnoreCase(id);
+        return URI_ID.equalsIgnoreCase(id);
     }
 
     @Override

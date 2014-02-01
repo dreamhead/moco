@@ -53,6 +53,19 @@ public class MocoFileRootTest {
     }
 
     @Test
+    public void should_return_template_header_from_file_root() throws Exception {
+        server.response(header("foo", template(file("foo.response"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("foo");
+                assertThat(header.getValue(), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
     public void should_return_template_from_file_root() throws Exception {
         server.response(template(file("foo.response")));
 

@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 import io.netty.buffer.ByteBuf;
 
 public class ContentHandler extends AbstractContentResponseHandler {
@@ -25,6 +26,16 @@ public class ContentHandler extends AbstractContentResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
-        return new ContentHandler((ContentResource)this.resource.apply(config));
+        ResponseHandler handler = super.apply(config);
+        if (handler != this) {
+            return handler;
+        }
+
+        Resource resource = this.resource.apply(config);
+        if (resource != this.resource) {
+            return new ContentHandler((ContentResource) resource);
+        }
+
+        return this;
     }
 }

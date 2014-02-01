@@ -8,9 +8,6 @@ public class TextContainer {
     private String operation;
     private ImmutableMap<String, Object> props;
 
-    public TextContainer() {
-    }
-
     public boolean isRawText() {
         return this.operation == null;
     }
@@ -72,6 +69,5 @@ public class TextContainer {
             container.props = (props != null) ? props : ImmutableMap.<String, Object>of();
             return container;
         }
-
     }
 }

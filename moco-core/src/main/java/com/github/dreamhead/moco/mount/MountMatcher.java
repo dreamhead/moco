@@ -30,13 +30,14 @@ public class MountMatcher implements RequestMatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor("uri")) {
+        if (config.isFor(MocoConfig.URI_ID)) {
             return new MountMatcher(this.dir, this.target.apply(config), this.predicates);
         }
 
-        if (config.isFor("file")) {
-            return new MountMatcher(new File(config.apply(this.dir.getName())), this.target, this.predicates);
+        if (config.isFor(MocoConfig.FILE_ID)) {
+            return new MountMatcher(new File((String)config.apply(this.dir.getName())), this.target, this.predicates);
         }
 
         return this;

@@ -1,6 +1,10 @@
 package com.github.dreamhead.moco;
 
-public interface MocoConfig {
+public interface MocoConfig<T> {
     boolean isFor(String id);
-    String apply(String target);
+    T apply(T target);
+
+    String FILE_ID = "file";
+    String URI_ID = "uri";
+    String RESPONSE_ID = "response";
 }

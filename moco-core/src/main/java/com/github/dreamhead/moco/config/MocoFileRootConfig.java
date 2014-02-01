@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 
 import java.io.File;
 
-public class MocoFileRootConfig implements MocoConfig {
+public class MocoFileRootConfig implements MocoConfig<String> {
     private final String fileRoot;
 
     public MocoFileRootConfig(String fileRoot) {
@@ -13,7 +13,7 @@ public class MocoFileRootConfig implements MocoConfig {
 
     @Override
     public boolean isFor(String id) {
-        return "file".equals(id);
+        return FILE_ID.equals(id);
     }
 
     @Override
