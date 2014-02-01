@@ -1,4 +1,4 @@
-# Release 0.9.1
+# Release 0.9.1 (1-Feb-2014)
 ## Usage
 * (Beta) gmoco, moco groovy shell
 
@@ -6,10 +6,15 @@
 * log to record request
 * once for verifier
 * batch proxy
+* proxy playback
 
-### template
+### Template
 * cookie
 * form
+* template variables
+
+### Global Settings
+* Response
 
 ## Implementation Details
 * Fixed "uri" in failover to remove query parameter.
@@ -19,6 +24,7 @@
 * Keep connect alive if request wants to keep alive
 * NPE for validating form/content in request hit
 * NPE for XPath matcher
+* Wait server to shutdown completely
 
 # Release 0.9 (1-Nov-2013)
 
@@ -47,6 +53,7 @@
 ## APIs
 ### Request
 * JSONPath
+
 ### Response
 #### Integration
 * proxy
@@ -58,14 +65,14 @@
 #### Misc Response
 * removed cache
 
-#### template
+#### Template
 * version
 * method
 * content
 * header
 * query
 
-## Settings
+## Global Settings
 * context
 * file root
 * environment

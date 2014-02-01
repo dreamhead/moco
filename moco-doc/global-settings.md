@@ -139,3 +139,22 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -g env.json -e rem
 Now, when you access your server, all configurations with "remote" environment rocks!
 
 In this case, http://localhost:12306/foo will give you "foo", but http://localhost:12306/bar will return nothing.
+
+## Response
+
+In some cases, you may want to setup a global response for all response, for example, HTTP version, or HTTP header, so you don't have to setup it for every single response.
+
+```json
+[
+    {
+        "response" : {
+            "headers" : {
+                "foo" : "bar"
+            }
+        },
+        "include": "blah.json"
+    }
+]
+```
+
+When you issue any request to server, it will return response with "foo", "bar" header.

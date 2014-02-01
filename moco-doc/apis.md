@@ -675,7 +675,8 @@ server.request(by("foo")).response(proxy("http://www.github.com"));
 
 Actually, proxy is more powerful than that. It can forward the whole request to the target url, including HTTP method, version, header, content etc.
 
-Besides the basic functionality, proxy also support failover, for example:
+# Failover
+Besides the basic functionality, proxy also support failover, which means if remote server is not available temporarily, the server will know recovery from local configuration.
 
 * Java API
 
@@ -705,6 +706,33 @@ Proxy will save request/response pair into your failover file. If the proxy targ
 
 As the file suffix suggests, this failover file is actually a JSON file, which means we can read/edit it to return whatever we want.
 
+# Playback
+Moco also supports playback which also save remote request and response into local file. The difference between failover and playback is that playback only accesses remote server when local request and response are not available.
+
+* Java API
+
+```java
+server.request(by("foo")).response(proxy("http://www.github.com", playback("playback.json")));
+```
+
+* JSON
+```json
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "proxy" :
+        {
+          "url" : "http://localhost:12306/unknown",
+          "playback" : "playback.json"
+        }
+    }
+}
+```
+
 #### Batch URLs
 If we want to proxy with a batch of URLs in the same context, proxy can also help us.
 
@@ -732,7 +760,7 @@ server.get(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to("http://loc
 }
 ```
 
-Same with single url, you can also specify a failover.
+Same with single url, you can also specify a failover
 * Java API
 ```java
 server.request(match(uri("/proxy/.*")))
@@ -755,6 +783,35 @@ server.request(match(uri("/proxy/.*")))
             "from" : "/failover",
             "to" : "http://localhost:12306/unknown",
             "failover" : "failover.response"
+        }
+    }
+}
+```
+
+and playback.
+
+* Java API
+```java
+server.request(match(uri("/proxy/.*")))
+      .response(proxy("http://localhost:12306/unknown"), playback("playback.response")));
+```
+
+* JSON
+```json
+{
+    "request" :
+    {
+        "uri" : {
+            "match" : "/failover/.*"
+        }
+    },
+    "response" :
+    {
+        "proxy" :
+        {
+            "from" : "/failover",
+            "to" : "http://localhost:12306/unknown",
+            "playback" : "playback.response"
         }
     }
 }
@@ -794,6 +851,23 @@ server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("fail
 }
 ```
 
+and playback
+* Java API
+```java
+server.proxy(from("/proxy").to("http://localhost:12306/unknown"), playback("playback.response"));
+```
+
+* JSON
+```json
+{
+    "proxy" :
+    {
+        "from" : "/failover",
+        "to" : "http://localhost:12306/unknown",
+        "playback" : "playback.response"
+    }
+}
+```
 
 ### Redirect
 
@@ -1152,6 +1226,34 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
     "response": {
         "text": {
             "template": "${req.cookies['foo']}"
+        }
+    }
+}
+```
+
+### Custom Variable
+
+You can provide your own variables in your template.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar"));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": {
+                "with" : "${'foo'}",
+                "vars" : {
+                    "foo" : "bar"
+                }
+            }
         }
     }
 }
