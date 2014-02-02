@@ -11,7 +11,7 @@ Moco is an easy setup stub framework, mainly focusing on testing and integration
 ## Latest Release
 * __0.9.1__
 
-[Release Notes](https://github.com/dreamhead/moco/blob/master/moco-doc/ReleaseNotes.md)
+More details in [Release Notes](https://github.com/dreamhead/moco/blob/master/moco-doc/ReleaseNotes.md)
 
 ## User Survey
 [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.

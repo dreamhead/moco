@@ -69,7 +69,7 @@ As shown above, we created a new server and configure it as expected. And then r
 Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fluent.html) to request our testing server.
 
 #### Runner API
-If you want to setup server in your Before (or setup) method, runner API could be used.
+You may need to control server start/stop by yourself, for example, in your Before (or setup) method, runner API could be used.
 
 ```java
 import org.junit.After;
@@ -88,7 +88,7 @@ public class MocoRunnerTest {
 
     @Before
     public void setup() {
-        HttpServer server = httpserver(port());
+        HttpServer server = httpserver(12306);
         server.response("foo");
         runner = runner(server);
         runner.start();
