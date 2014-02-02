@@ -10,7 +10,7 @@ println "Starting Moco on port [$SERVER_PORT] and configuration defined in scrip
 println "Grabbing necessary dependencies. Please wait patiently"
 
 @Grapes(
-@Grab(group='com.github.dreamhead', module='moco-core', version='[0.9,)')
+@Grab(group='com.github.dreamhead', module='moco-core', version='[0.9.1,)')
 )
 configureServer = { HttpServer server ->
     evaluate(new File(SCRIPT_CONFIGURATION)).each { it server }
