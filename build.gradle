@@ -228,7 +228,7 @@ project(':moco-runner') {
 
     task proguardCheck(type: Test, dependsOn: proguard) {
         testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(configurations.testCompile) + files(proguard.outputs.files.singleFile)
+        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile) + files(configurations.testCompile.findAll { it.name.startsWith('hamcrest-')})
     }
 
     uploadArchives.dependsOn proguardCheck
