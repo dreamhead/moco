@@ -170,6 +170,12 @@ project(':moco-core') {
     }
 }
 
+project(':moco-core') {
+    jar {
+        exclude('logback.xml')
+    }
+}
+
 project(':moco-runner') {
 
     project.ext {
