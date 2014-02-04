@@ -675,7 +675,7 @@ server.request(by("foo")).response(proxy("http://www.github.com"));
 
 Actually, proxy is more powerful than that. It can forward the whole request to the target url, including HTTP method, version, header, content etc.
 
-# Failover
+#### Failover
 Besides the basic functionality, proxy also support failover, which means if remote server is not available temporarily, the server will know recovery from local configuration.
 
 * Java API
@@ -706,7 +706,7 @@ Proxy will save request/response pair into your failover file. If the proxy targ
 
 As the file suffix suggests, this failover file is actually a JSON file, which means we can read/edit it to return whatever we want.
 
-# Playback
+#### Playback
 Moco also supports playback which also save remote request and response into local file. The difference between failover and playback is that playback only accesses remote server when local request and response are not available.
 
 * Java API
