@@ -5,13 +5,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.Maps.newHashMap;
 
 public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
     @Override
@@ -41,55 +41,22 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
             }
 
             if ("template".equals(operation) && token == JsonToken.START_OBJECT) {
+                Iterator<Template> iterator = jp.readValuesAs(Template.class);
+                Template template = Iterators.get(iterator, 0);
                 jp.nextToken();
-                return template(jp, ctxt, builder);
+                return TextContainer.builder().withOperation("template").withText(template.with).withProps(copyOf(template.vars)).build();
             }
         }
 
         throw ctxt.mappingException(TextContainer.class, jp.getCurrentToken());
     }
 
-    private TextContainer template(JsonParser jp, DeserializationContext ctxt, TextContainer.Builder builder) throws IOException {
-        String with = jp.getText().trim();
-        if ("with".equals(with)) {
-            jp.nextToken();
-            builder.withText(jp.getText().trim());
-
-            jp.nextToken();
-            String vars = jp.getText().trim();
-
-            if ("vars".equals(vars)) {
-                JsonToken startTemplateVars = jp.nextToken();
-                if (startTemplateVars == JsonToken.START_OBJECT) {
-                    jp.nextToken();
-                    ImmutableMap<String, Object> fields = getProps(jp);
-                    jp.nextToken();
-                    jp.nextToken();
-                    return builder.withProps(copyOf(fields)).build();
-                }
-            }
-        }
-
-        throw ctxt.mappingException(TextContainer.class, jp.getCurrentToken());
+    private static class Template {
+        public String with;
+        public Map<String, Object> vars;
     }
 
     private TextContainer text(JsonParser jp) throws IOException {
         return TextContainer.builder().withText(jp.getText().trim()).build();
-    }
-
-    private ImmutableMap<String, Object> getProps(JsonParser jp) throws IOException {
-        Map<String, Object> fields = newHashMap();
-        while (fetchField(fields, jp)) {}
-        return copyOf(fields);
-    }
-
-    private boolean fetchField(Map<String, Object> fields, JsonParser jp) throws IOException {
-        String fieldName = jp.getText().trim();
-        jp.nextToken();
-        String fieldValue = jp.getText().trim();
-        jp.nextToken();
-        fields.put(fieldName.toLowerCase(), fieldValue);
-
-        return jp.getCurrentToken() != JsonToken.END_OBJECT;
     }
 }
