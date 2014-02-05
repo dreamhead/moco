@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 
 public class TextContainer {
+    public static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
     private ImmutableMap<String, Object> props;
@@ -27,6 +28,15 @@ public class TextContainer {
     public ImmutableMap<String, Object> getProps() {
         return props;
     }
+
+    public static boolean isForTemplate(String operation) {
+        return TEMPLATE_NAME.equalsIgnoreCase(operation);
+    }
+
+    public boolean isForTemplate() {
+        return isForTemplate(this.operation);
+    }
+
 
     @Override
     public String toString() {

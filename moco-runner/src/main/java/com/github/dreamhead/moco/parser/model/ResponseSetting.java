@@ -138,7 +138,7 @@ public class ResponseSetting extends Dynamics {
     private ResponseHandler createResponseHandler(Map.Entry<String, TextContainer> pair, String targetMethodName) {
         TextContainer container = pair.getValue();
         try {
-            if ("template".equalsIgnoreCase(container.getOperation())) {
+            if (container.isForTemplate()) {
                 Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
                 return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()));
             }
@@ -160,7 +160,7 @@ public class ResponseSetting extends Dynamics {
             return invokeTarget(name, container.getText(), Resource.class);
         }
 
-        if ("template".equalsIgnoreCase(container.getOperation())) {
+        if (container.isForTemplate()) {
             if ("version".equalsIgnoreCase(name)) {
                 return version(template(container.getText()));
             }

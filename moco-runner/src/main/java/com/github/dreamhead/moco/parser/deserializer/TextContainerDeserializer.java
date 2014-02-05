@@ -40,11 +40,11 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
                 return builder.withText(text).build();
             }
 
-            if ("template".equals(operation) && token == JsonToken.START_OBJECT) {
+            if (TextContainer.isForTemplate(operation) && token == JsonToken.START_OBJECT) {
                 Iterator<Template> iterator = jp.readValuesAs(Template.class);
                 Template template = Iterators.get(iterator, 0);
                 jp.nextToken();
-                return TextContainer.builder().withOperation("template").withText(template.with).withProps(copyOf(template.vars)).build();
+                return builder.withText(template.with).withProps(copyOf(template.vars)).build();
             }
         }
 
