@@ -12,9 +12,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
-import static com.jayway.awaitility.Awaitility.await;
+import static com.github.dreamhead.moco.internal.Awaiter.awaitUntil;
 
 public class MocoServer {
     private static final int DEFAULT_TIMEOUT = 3;
@@ -47,7 +46,7 @@ public class MocoServer {
     public void stop() {
         doStop();
         if (address != null) {
-            await().atMost(DEFAULT_TIMEOUT, TimeUnit.SECONDS).until(serverIsClosed(address));
+            awaitUntil(serverIsClosed(address), DEFAULT_TIMEOUT);
             address = null;
         }
     }

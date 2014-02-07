@@ -96,7 +96,6 @@ subprojects {
         httpComponentVersion = '4.3.2'
         jsonpathVersion = '0.9.1'
         freemarkerVersion = '2.3.20'
-        awaitilityVersion = '1.5.0'
     }
 
     jar {
@@ -122,7 +121,6 @@ subprojects {
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
                 "org.freemarker:freemarker:$freemarkerVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion",
-                "com.jayway.awaitility:awaitility:$awaitilityVersion"
         )
 
         testCompile(
@@ -228,7 +226,7 @@ project(':moco-runner') {
 
     task proguardCheck(type: Test, dependsOn: proguard) {
         testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile) + files(configurations.testCompile.findAll { it.name.startsWith('hamcrest-')})
+        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile)
     }
 
     uploadArchives.dependsOn proguardCheck
