@@ -2,8 +2,13 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
+    ext {
+        proguardVersion = '4.11'
+    }
+
     dependencies {
-        classpath 'net.sf.proguard:proguard-gradle:4.10'
+        classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
     }
 }
 
