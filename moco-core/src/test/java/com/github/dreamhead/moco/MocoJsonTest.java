@@ -68,4 +68,16 @@ public class MocoJsonTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_content_based_on_jsonpath_existing() throws Exception {
+        server.request(exist(jsonPath("$.book[*].price"))).response("jsonpath match success");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"),
+                        is("jsonpath match success"));
+            }
+        });
+    }
 }

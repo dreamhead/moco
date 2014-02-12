@@ -107,6 +107,10 @@ public class Moco {
                 checkNotNull(expected, "Expected resource should not be null"));
     }
 
+    public static <T> RequestMatcher exist(final RequestExtractor<T> extractor) {
+        return new ExistMatcher<T>(checkNotNull(extractor, "Extractor should not be null"));
+    }
+
     public static RequestMatcher and(final RequestMatcher... matchers) {
         return new AndRequestMatcher(copyOf(matchers));
     }

@@ -323,6 +323,19 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_exist_header() throws Exception {
+        server.request(exist(header("foo"))).response(text("header"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(root(), of("foo", "bar")), is("header"));
+                assertThat(helper.getWithHeader(root(), of("foo", "blah")), is("header"));
+            }
+        });
+    }
+
+    @Test
     public void should_eq_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
