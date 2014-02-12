@@ -4,9 +4,11 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 
 import java.util.List;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
@@ -19,7 +21,12 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 
 	@Override
 	public Optional<String[]> extract(HttpRequest request) {
-		return of(toStringArray(jsonPath.read(extractor.extract(request).get())));
+        try {
+            Object read = jsonPath.read(extractor.extract(request).get());
+            return of(toStringArray(read));
+        } catch (PathNotFoundException e) {
+            return absent();
+        }
 	}
 
 	private String[] toStringArray(Object content){

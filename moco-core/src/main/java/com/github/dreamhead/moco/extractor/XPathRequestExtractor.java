@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.xpath.*;
 import java.util.List;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -31,14 +32,23 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
     public Optional<String[]> extract(HttpRequest request) {
         try {
             NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
-            List<String> values = newArrayList();
-            for (int i = 0; i < list.getLength(); i++) {
-                Node node = list.item(i);
-                values.add(node.getNodeValue());
+            if (list.getLength() == 0) {
+                return absent();
             }
-            return of(values.toArray(new String[values.size()]));
+
+            return doExtract(list);
         } catch (XPathExpressionException e) {
-            return of(new String[0]);
+            return absent();
         }
+    }
+
+    private Optional<String[]> doExtract(NodeList list) {
+        List<String> values = newArrayList();
+        for (int i = 0; i < list.getLength(); i++) {
+            Node node = list.item(i);
+            values.add(node.getNodeValue());
+        }
+
+        return of(values.toArray(new String[values.size()]));
     }
 }

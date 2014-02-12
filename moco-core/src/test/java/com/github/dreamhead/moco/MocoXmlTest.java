@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -21,6 +22,28 @@ public class MocoXmlTest extends AbstractMocoTest {
             public void run() throws IOException {
                 assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
                 assertThat(helper.postFile(root(), "bar.xml"), is("bar"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_not_return_anything_for_mismatch_xpath() throws Exception {
+        server.request(eq(xpath("/request/parameters/id/text()"), "3")).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.postFile(root(), "foo.xml");
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_not_return_anything_for_unknown_xpath() throws Exception {
+        server.request(eq(xpath("/response/parameters/id/text()"), "3")).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.postFile(root(), "foo.xml");
             }
         });
     }
