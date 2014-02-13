@@ -95,4 +95,16 @@ public class MocoXmlTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_content_based_on_xpath_existing() throws Exception {
+        server.request(exist(xpath("/request/parameters/id/text()"))).response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
+            }
+        });
+    }
 }
