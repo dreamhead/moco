@@ -264,43 +264,43 @@ public class Moco {
         return template(text(checkNotNull(template, "Template should not be null")));
     }
 
-    public static Resource template(final String template, final String name, final Object value) {
+    public static Resource template(final String template, final String name, final String value) {
         return template(text(checkNotNull(template, "Template should not be null")),
-                ImmutableMap.<String, Object>of(checkNotNull(name, "Template variable name should not be null"),
+                ImmutableMap.of(checkNotNull(name, "Template variable name should not be null"),
                         checkNotNull(value, "Template variable value should not be null")));
     }
 
-    public static Resource template(final String template, final String name1, final Object value1, final String name2, final Object value2) {
+    public static Resource template(final String template, final String name1, final String value1, final String name2, final String value2) {
         return template(text(checkNotNull(template, "Template should not be null")),
-                ImmutableMap.<String, Object>of(checkNotNull(name1, "Template variable name should not be null"),
+                ImmutableMap.of(checkNotNull(name1, "Template variable name should not be null"),
                         checkNotNull(value1, "Template variable value should not be null"),
                         checkNotNull(name2, "Template variable name should not be null"),
                         checkNotNull(value2, "Template variable value should not be null")));
     }
 
-    public static Resource template(final String template, final ImmutableMap<String, Object> variables) {
+    public static Resource template(final String template, final ImmutableMap<String, String> variables) {
         return template(text(checkNotNull(template, "Template should not be null")),
                 checkNotNull(variables, "Template variable should not be null"));
     }
 
-    public static Resource template(final ContentResource template, final ImmutableMap<String, Object> variables) {
+    public static Resource template(final ContentResource template, final ImmutableMap<String, String> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 checkNotNull(variables, "Template variable should not be null"));
     }
 
     public static Resource template(final ContentResource resource) {
-        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, Object>of());
+        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, String>of());
     }
 
-    public static Resource template(final ContentResource template, final String name, final Object value) {
+    public static Resource template(final ContentResource template, final String name, final String value) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.<String, Object>of(checkNotNull(name, "Template variable name should not be null"),
+                ImmutableMap.of(checkNotNull(name, "Template variable name should not be null"),
                         checkNotNull(value, "Template variable value should not be null")));
     }
 
-    public static Resource template(final ContentResource template, final String name1, final Object value1, final String name2, final Object value2) {
+    public static Resource template(final ContentResource template, final String name1, final String value1, final String name2, final String value2) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.<String, Object>of(checkNotNull(name1, "Template variable name should not be null"),
+                ImmutableMap.of(checkNotNull(name1, "Template variable name should not be null"),
                         checkNotNull(value1, "Template variable value should not be null"),
                         checkNotNull(name2, "Template variable name should not be null"),
                         checkNotNull(value2, "Template variable value should not be null")));

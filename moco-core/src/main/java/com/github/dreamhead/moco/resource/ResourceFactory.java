@@ -65,7 +65,7 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, Object> variables) {
+    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, String> variables) {
         return contentResource(id("template"), templateConfigApplier(template, variables), new TemplateResourceReader(template, variables));
     }
 

@@ -198,7 +198,7 @@ public class MocoTemplateTest extends AbstractMocoTest {
     @Test
     public void should_generate_response_with_variable_map() throws Exception {
         server.request(by(uri("/template"))).response(template("${foo} ${bar}",
-                ImmutableMap.<String, Object>of("foo", "ANOTHER", "bar", "TEMPLATE")));
+                ImmutableMap.of("foo", "ANOTHER", "bar", "TEMPLATE")));
 
         running(server, new Runnable() {
             @Override
@@ -235,7 +235,7 @@ public class MocoTemplateTest extends AbstractMocoTest {
 
     @Test
     public void should_generate_response_from_file_with_variable_map() throws Exception {
-        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), ImmutableMap.<String, Object>of("var", "TEMPLATE")));
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), ImmutableMap.of("var", "TEMPLATE")));
 
         running(server, new Runnable() {
             @Override

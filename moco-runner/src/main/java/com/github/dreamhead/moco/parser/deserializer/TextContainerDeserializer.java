@@ -53,7 +53,7 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
 
     private static class Template {
         public String with;
-        public Map<String, Object> vars;
+        public Map<String, String> vars;
     }
 
     private TextContainer text(JsonParser jp) throws IOException {

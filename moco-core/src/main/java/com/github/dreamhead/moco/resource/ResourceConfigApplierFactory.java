@@ -34,7 +34,7 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier templateConfigApplier(final ContentResource template, final ImmutableMap<String, Object> variables) {
+    public static ResourceConfigApplier templateConfigApplier(final ContentResource template, final ImmutableMap<String, String> variables) {
         return new EmbeddedResourceConfigApplier(template) {
             @Override
             protected Resource newResource(MocoConfig config) {

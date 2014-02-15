@@ -27,10 +27,10 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private final ContentResource template;
-    private final ImmutableMap<String, Object> variables;
+    private final ImmutableMap<String, String> variables;
     private final Configuration cfg;
 
-    public TemplateResourceReader(ContentResource template, ImmutableMap<String, Object> variables) {
+    public TemplateResourceReader(ContentResource template, ImmutableMap<String, String> variables) {
         this.template = template;
         this.variables = variables;
         this.cfg = new Configuration();

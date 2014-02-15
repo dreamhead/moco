@@ -1,3 +1,11 @@
+# Release
+
+## APIs
+
+### Template
+* change template variables from Object to String.
+  (API users have to decide how to display their vars).
+
 # Release 0.9.1 (1-Feb-2014)
 ## Usage
 * Runner API
