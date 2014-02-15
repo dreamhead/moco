@@ -36,6 +36,17 @@ public class MocoJsonTest extends AbstractMocoTest {
     }
 
     @Test(expected = HttpResponseException.class)
+    public void should_not_return_anything_if_no_json_path_found() throws Exception {
+        server.request(eq(jsonPath("anything"), "1")).response("jsonpath match success");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                helper.postContent(root(), "{}");
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_if_no_json_found() throws Exception {
         server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
         running(server, new Runnable() {
@@ -45,7 +56,8 @@ public class MocoJsonTest extends AbstractMocoTest {
             }
         });
     }
-	
+
+
     @Test
     public void should_match_exact_json() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";

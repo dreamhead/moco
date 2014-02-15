@@ -22,8 +22,11 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 	@Override
 	public Optional<String[]> extract(HttpRequest request) {
         try {
-            Object read = jsonPath.read(extractor.extract(request).get());
-            return of(toStringArray(read));
+            Object content = jsonPath.read(extractor.extract(request).get());
+            if (content == null) {
+                return absent();
+            }
+            return of(toStringArray(content));
         } catch (PathNotFoundException e) {
             return absent();
         }
