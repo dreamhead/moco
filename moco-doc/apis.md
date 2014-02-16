@@ -8,6 +8,8 @@ That means if we get the expected request and then return our response. Now, you
 ## Request
 
 ### Content
+**@Since 0.7**
+
 If you want to response according to request content, Moco server can be configured as following:
 
 * Java API
@@ -55,6 +57,8 @@ server.request(by(file("foo.request"))).response("bar");
 ```
 
 ### URI
+**@Since 0.7**
+
 If request uri is your major focus, Moco server could be like this:
 
 * Java API
@@ -78,6 +82,8 @@ server.request(by(uri("/foo"))).response("bar");
 }
 ```
 ### Query parameter
+**@Since 0.7**
+
 Sometimes, your request has parameters in query:
 
 * Java API
@@ -106,6 +112,8 @@ server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 ```
 
 ### HTTP method
+**@Since 0.7**
+
 It's easy to response based on specified HTTP method:
 
 * Java API
@@ -225,6 +233,8 @@ server.request(method("HEAD")).response("bar");
 ```
 
 ### Version
+**@Since 0.7**
+
 We can return different response for different HTTP version:
 
 * Java API
@@ -249,6 +259,8 @@ server.request(by(version("HTTP/1.0"))).response("version");
 ```
 
 ### Header
+**@Since 0.7**
+
 We will focus HTTP header at times:
 
 * Java API
@@ -277,6 +289,8 @@ server.request(eq(header("foo"), "bar")).response("blah")
 ```
 
 ### Cookie
+**@Since 0.7**
+
 Cookie is widely used in web development.
 
 * Java API
@@ -305,6 +319,8 @@ server.request(eq(cookie("loggedIn"), "true")).response(status(200));
 ```
 
 ### Form
+**@Since 0.7**
+
 In web development, form is often used to submit information to server side.
 
 * Java API
@@ -334,6 +350,8 @@ server.post(eq(form("name"), "foo")).response("bar");
 ```
 
 ### XML
+**@Since 0.7**
+
 XML is a popular format for Web Services. When a request is in XML, only the XML structure is important in most cases and whitespace can be ignored. The `xml` operator can be used for this case.
 
 * Java API
@@ -383,6 +401,7 @@ The large request can be put into a file:
 ```
 
 ### XPath
+**@Since 0.7**
 
 For the XML/HTML request, Moco allows us to match request with XPath.
 
@@ -412,6 +431,8 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ```
 
 ### JSON Request
+**@Since 0.7**
+
 Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
 * Java API
@@ -461,6 +482,7 @@ The large request can be put into a file:
 ```
 
 ### JSONPath
+**@Since 0.7**
 
 For the JSON/HTML request, Moco allows us to match request with JSONPath.
 
@@ -490,6 +512,7 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match su
 ```
 
 ### Match
+**@Since 0.7**
 
 match is not a functionality, it is an operator. You match your request with regular expression:
 
@@ -522,6 +545,7 @@ Moco is implemented by Java regular expression, you can refer [here](http://docs
 ## Response
 
 ### Content
+**@Since 0.7**
 
 As you have seen in previous example, response with content is pretty easy.
 
@@ -570,6 +594,8 @@ server.request(by("foo")).response(file("bar.response"));
 ```
 
 ### Status Code
+**@Since 0.7**
+
 Moco also supports HTTP status code response.
 
 * Java API
@@ -594,6 +620,7 @@ server.request(by("foo")).response(status(200));
 ```
 
 ### Version
+**@Since 0.7**
 
 By default, response HTTP version is supposed to request HTTP version, but you can set your own HTTP version:
 
@@ -619,8 +646,9 @@ server.response(version("HTTP/1.0"));
 }
 ```
 
-
 ### Header
+**@Since 0.7**
+
 We can also specify HTTP header in response.
 
 * Java API
@@ -650,6 +678,8 @@ server.request(by("foo")).response(header("content-type", "application/json"));
 ### Proxy
 
 #### Single URL
+**@Since 0.8**
+
 We can also response with the specified url, just like a proxy.
 
 * Java API
@@ -676,6 +706,8 @@ server.request(by("foo")).response(proxy("http://www.github.com"));
 Actually, proxy is more powerful than that. It can forward the whole request to the target url, including HTTP method, version, header, content etc.
 
 #### Failover
+**@Since 0.7**
+
 Besides the basic functionality, proxy also support failover, which means if remote server is not available temporarily, the server will know recovery from local configuration.
 
 * Java API
@@ -707,6 +739,8 @@ Proxy will save request/response pair into your failover file. If the proxy targ
 As the file suffix suggests, this failover file is actually a JSON file, which means we can read/edit it to return whatever we want.
 
 #### Playback
+**@Since 0.9.1**
+
 Moco also supports playback which also save remote request and response into local file. The difference between failover and playback is that playback only accesses remote server when local request and response are not available.
 
 * Java API
@@ -734,6 +768,8 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 ```
 
 #### Batch URLs
+**@Since 0.9.1**
+
 If we want to proxy with a batch of URLs in the same context, proxy can also help us.
 
 * Java API
@@ -870,6 +906,7 @@ server.proxy(from("/proxy").to("http://localhost:12306/unknown"), playback("play
 ```
 
 ### Redirect
+**@Since 0.7**
 
 Redirect is a common case for normal web development. We can simply redirect a request to different url.
 
@@ -892,6 +929,7 @@ server.get(by(uri("/redirect"))).redirectTo("http://www.github.com");
 ```
 
 ### Cookie
+**@Since 0.7**
 
 Cookie can also be in the response.
 
@@ -921,6 +959,7 @@ server.response(cookie("loggedIn", "true"), status(302));
 
 
 ### Latency
+**@Since 0.7**
 
 Sometimes, we need a latency to simulate slow server side operation.
 
@@ -946,6 +985,7 @@ server.request(by("foo")).response(latency(5000));
 ```
 
 ### Sequence
+**@Since 0.7**
 
 Sometimes, we want to simulate a real-world operation which change server side resource. For example:
 * First time you request a resource and "foo" is returned
@@ -963,6 +1003,7 @@ server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(20
 ```
 
 ## Mount
+**@Since 0.7**
 
 Moco allows us to mount a directory to uri.
 
@@ -1069,6 +1110,7 @@ Sometimes, we need to customize our response based on something, e.g. response s
 The goal can be reached by template:
 
 ### Version
+**@Since 0.8**
 
 With "req.version", request version can be retrieved in template.
 
@@ -1094,6 +1136,7 @@ server.request(by(uri("/template"))).response(template("${req.version}"));
 ```
 
 ### Method
+**@Since 0.8**
 
 Request method is identified by "req.method"
 
@@ -1117,6 +1160,7 @@ server.request(by(uri("/template"))).response(template("${req.method}"));
 ```
 
 ### Content
+**@Since 0.8**
 
 All request content can be used in template with "req.content"
 
@@ -1140,6 +1184,7 @@ server.request(by(uri("/template"))).response(template("${req.content}"));
 ```
 
 ### Header
+**@Since 0.8**
 
 Header is another important element in template and we can use "req.headers" for headers.
 
@@ -1163,6 +1208,7 @@ server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
 ```
 
 ### Query
+**@Since 0.8**
 
 "req.queries" helps us to extract request query.
 
@@ -1186,6 +1232,7 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 ```
 
 ### Form
+**@Since 0.9.1**
 
 "req.forms" can extract form value from request.
 
@@ -1209,6 +1256,7 @@ server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
 ```
 
 ### Cookie
+**@Since 0.9.1**
 
 Cookie from request can extracted by "req.cookies".
 
@@ -1232,6 +1280,7 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
 ```
 
 ### Custom Variable
+**@Since 0.9.1**
 
 You can provide your own variables in your template.
 
@@ -1263,6 +1312,7 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar")
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 
 ### Complete
+**@Since 0.9**
 Complete event will be fired after your request has been handled completely.
 
 * Java
@@ -1319,6 +1369,8 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://ano
 Let me know if you need more method.
 
 ### Asynchronous
+**@Since 0.9**
+
 Synchronized request is used by default, which means response won't be returned to client until event handler is finished.
 
 If it is not your expected behavior, you can changed with async API which will fire event asynchronously.
@@ -1379,6 +1431,8 @@ server.request(by(uri("/event"))).response("event").on(complete(async(post("http
 ```
 
 # Verify
+**@Since 0.9**
+
 Someone may want to verify what kind of request has been sent to server in testing framework.
 
 You can verify request like this:
@@ -1411,6 +1465,8 @@ Many verification can be used:
 * **atMost**: at least how many time this kind of request has been sent.
 
 # Port
+**@Since 0.9**
+
 If you specify a port for your stub server, it means the port must be available when you start server. This is not case sometimes.
 
 Moco provides you another way to start your server: specify no port, and it will look up an available port. The port can be got by port() method. The example is as follow:
@@ -1439,6 +1495,8 @@ java -jar moco-runner-<version>-standalone.jar start -c foo.json
 The port information will shown on screen.
 
 # Log
+**@Since 0.9.1**
+
 If you want to know more about how your Moco server running, log will be your helper.
 
 ```java

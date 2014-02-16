@@ -131,9 +131,6 @@ the first public release of Moco
 * status code
 * header
 
-#### Web
-* cookie
-
 #### Integration
 * url
 
