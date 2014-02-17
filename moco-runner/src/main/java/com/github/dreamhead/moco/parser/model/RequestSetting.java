@@ -19,6 +19,7 @@ public class RequestSetting {
     private TextContainer pathResource;
     private TextContainer method;
     private TextContainer version;
+    private Object json;
 
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> xpaths;

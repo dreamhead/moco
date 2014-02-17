@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -14,8 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
@@ -51,6 +51,10 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
+        if ("json".equalsIgnoreCase(name)) {
+            return json(text(Jsons.toJson(value)));
+        }
+
         if (Map.class.isInstance(value)) {
             return createCompositeMatcher(name, castToMap(value));
         }

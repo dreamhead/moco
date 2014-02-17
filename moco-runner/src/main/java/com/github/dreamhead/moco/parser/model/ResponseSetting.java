@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.util.Jsons.toJson;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
@@ -43,6 +44,7 @@ public class ResponseSetting extends Dynamics {
     @JsonProperty("path_resource")
     private TextContainer pathResource;
     private TextContainer version;
+    private Object json;
 
     @Override
     public String toString() {
@@ -91,6 +93,10 @@ public class ResponseSetting extends Dynamics {
     }
 
     private ResponseHandler createResponseHandler(String name, Object value) {
+        if ("json".equalsIgnoreCase(name)) {
+            return new AndResponseHandler(of(with(text(toJson(value))), header("Content-Type", "application/json")));
+        }
+
         if (isResource(name) && TextContainer.class.isInstance(value)) {
             TextContainer container = TextContainer.class.cast(value);
             return with(resourceFrom(name, container));
