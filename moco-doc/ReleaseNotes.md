@@ -5,6 +5,7 @@
 ### Template
 * change template variables from Object to String.
   (API users have to decide how to display their vars).
+* JSON request/response shortcut in JSON configuration.
 
 # Release 0.9.1 (1-Feb-2014)
 ## Usage

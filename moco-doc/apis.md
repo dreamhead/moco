@@ -433,6 +433,7 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ### JSON Request
 **@Since 0.7**
 
+#### JSON Text
 Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
 * Java API
@@ -461,6 +462,27 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 ```
 
 **NOTE**: Please escape the quote in text.
+
+#### JSON Text Shortcut
+As you have seen, it is so boring to write json with escape character, especially in json configuration. So you can try the json shortcut. The upper case could be rewritten as following:
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/json",
+        "json": {
+            "foo": "bar"
+        }
+    },
+    "response": {
+        "text": "foo"
+    }
+}
+```
+
+#### JSON File
 
 The large request can be put into a file:
 
@@ -1000,6 +1022,23 @@ server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 The other response settings are able to be set as well.
 ```java
 server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
+```
+
+### JSON Response
+
+JSON response is the API without Java API, so if response is json, we don't have to write json with escape character. Hint, json api will setup Content-Type header as well.
+
+```json
+{
+    "request": {
+        "uri": "/json"
+    },
+    "response": {
+        "json": {
+            "foo" : "bar"
+        }
+    }
+}
 ```
 
 ## Mount
