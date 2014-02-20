@@ -431,9 +431,9 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 ```
 
 ### JSON Request
-**@Since 0.7**
 
 #### JSON Text
+**@Since 0.7**
 Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
 * Java API
@@ -483,8 +483,16 @@ As you have seen, it is so boring to write json with escape character, especiall
 ```
 
 #### JSON File
+**@Since 0.7**
 
 The large request can be put into a file:
+
+* Java API
+
+```java
+server.request(json(file("your_file.json"))).response("foo");
+
+* JSON
 
 ```json
 {
@@ -511,7 +519,7 @@ For the JSON/HTML request, Moco allows us to match request with JSONPath.
 * Java API
 
 ```java
-server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
+server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json_path_request");
 ```
 
 * JSON
@@ -524,7 +532,7 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match su
       "json_paths": 
         {
           "$.book[*].price": "1"
-	}
+	    }
     },
   "response": 
     {
