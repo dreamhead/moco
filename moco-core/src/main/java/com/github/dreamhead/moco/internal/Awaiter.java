@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import java.util.concurrent.*;
 
 public class Awaiter {
+    private static final int DELAY = 20;
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private final CountDownLatch latch;
     private final int timeout;
@@ -25,7 +26,7 @@ public class Awaiter {
             }
         };
 
-        executor.scheduleWithFixedDelay(runner, -1, 100, TimeUnit.MILLISECONDS);
+        executor.scheduleWithFixedDelay(runner, -1, DELAY, TimeUnit.MILLISECONDS);
     }
 
     public void await() {
