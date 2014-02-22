@@ -1,10 +1,9 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoMonitor;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-public class LogMonitor implements MocoMonitor {
+public class LogMonitor extends AbstractMonitor {
     private LogWriter writer;
     private LogFormatter formatter;
 
@@ -26,9 +25,5 @@ public class LogMonitor implements MocoMonitor {
     @Override
     public void onMessageLeave(FullHttpResponse response) {
         writer.write(formatter.format(response));
-    }
-
-    @Override
-    public void onUnexpectedMessage(HttpRequest request) {
     }
 }
