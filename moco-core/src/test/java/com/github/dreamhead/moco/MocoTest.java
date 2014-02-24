@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
@@ -373,7 +374,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_match_version() throws Exception {
-        server.request(by(version("HTTP/1.0"))).response("foo");
+        server.request(by(version(VERSION_1_0))).response("foo");
 
         running(server, new Runnable() {
             @Override
@@ -385,7 +386,21 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_expected_version() throws Exception {
-        server.response(version("HTTP/1.0"));
+        server.response(version(VERSION_1_0));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                ProtocolVersion version = Request.Get(root()).execute().returnResponse().getProtocolVersion();
+                assertThat(version.getMajor(), is(1));
+                assertThat(version.getMinor(), is(0));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_excepted_version_with_version_api() throws Exception {
+        server.response(version(VERSION_1_0));
 
         running(server, new Runnable() {
             @Override

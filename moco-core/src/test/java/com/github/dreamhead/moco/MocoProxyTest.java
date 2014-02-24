@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_1;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
@@ -129,8 +132,8 @@ public class MocoProxyTest extends AbstractMocoTest {
 
     @Test
     public void should_proxy_with_request_version() throws Exception {
-        server.request(and(by(uri("/target")), by(version("HTTP/1.0")))).response("1.0");
-        server.request(and(by(uri("/target")), by(version("HTTP/1.1")))).response("1.1");
+        server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response("1.0");
+        server.request(and(by(uri("/target")), by(version(VERSION_1_1)))).response("1.1");
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, new Runnable() {
@@ -144,9 +147,9 @@ public class MocoProxyTest extends AbstractMocoTest {
 
     @Test
     public void should_proxy_with_response_version() throws Exception {
-        server.request(and(by(uri("/target")), by(version("HTTP/1.0")))).response(version("HTTP/1.0"));
-        server.request(and(by(uri("/target")), by(version("HTTP/1.1")))).response(version("HTTP/1.1"));
-        server.request(and(by(uri("/target")), by(version("HTTP/0.9")))).response(version("HTTP/1.0"));
+        server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(version(VERSION_1_0));
+        server.request(and(by(uri("/target")), by(version(VERSION_1_1)))).response(version(VERSION_1_1));
+        server.request(and(by(uri("/target")), by(version(VERSION_0_9)))).response(version(VERSION_1_0));
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, new Runnable() {

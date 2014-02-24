@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.MocoMount.to;
@@ -24,7 +25,7 @@ public class MocoGlobalResponseTest {
     @Test
     public void should_return_all_response_for_version_with_header() throws Exception {
         server = httpserver(port(), response(header("Content-Type", "text/plain")));
-        server.response(version("HTTP/1.0"));
+        server.response(version(VERSION_1_0));
 
         running(server, new Runnable() {
             @Override
@@ -87,7 +88,7 @@ public class MocoGlobalResponseTest {
     @Test
     public void should_return_all_response_for_and_response_handler_with_header() throws Exception {
         server = httpserver(port(), response(header("foo", "bar")));
-        server.response(status(200), with(version("HTTP/1.0")));
+        server.response(status(200), with(version(VERSION_1_0)));
 
         running(server, new Runnable() {
             @Override

@@ -234,6 +234,10 @@ public class Moco {
         return version(text(checkNotNull(version, "Version should not be null")));
     }
 
+    public static Resource version(final HttpProtocolVersion version) {
+        return version(text((checkNotNull(version, "Version should not be null")).text()));
+    }
+
     public static ResponseHandler status(final int code) {
         checkArgument(code > 0, "Status code must be greater than zero");
         return new StatusCodeResponseHandler(code);
