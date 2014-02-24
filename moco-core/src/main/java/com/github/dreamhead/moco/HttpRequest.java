@@ -7,7 +7,7 @@ public interface HttpRequest {
 
     String getMethod();
 
-    String getVersion();
+    HttpProtocolVersion getVersion();
 
     String getContent();
 

@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
@@ -27,7 +28,7 @@ public class DefaultHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> formSupplier;
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 
-    private final String version;
+    private final HttpProtocolVersion version;
     private final String content;
     private final ImmutableMap<String, String> headers;
     private final String method;
@@ -35,7 +36,7 @@ public class DefaultHttpRequest implements HttpRequest {
     private final String uri;
     private final ImmutableMap<String, String> queries;
 
-    private DefaultHttpRequest(String version, String content, String method, String uri,
+    private DefaultHttpRequest(HttpProtocolVersion version, String content, String method, String uri,
                                ImmutableMap<String, String> headers, ImmutableMap<String, String> queries) {
         this.version = version;
         this.content = content;
@@ -47,7 +48,7 @@ public class DefaultHttpRequest implements HttpRequest {
         this.cookieSupplier = cookieSupplier();
     }
 
-    public String getVersion() {
+    public HttpProtocolVersion getVersion() {
         return version;
     }
 
@@ -135,7 +136,7 @@ public class DefaultHttpRequest implements HttpRequest {
         }
 
         return builder()
-                .withVersion(request.getProtocolVersion().text())
+                .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().text()))
                 .withHeaders(collectHeaders(request.headers()))
                 .withMethod(request.getMethod().toString().toUpperCase())
                 .withUri(decoder.path())
@@ -155,7 +156,7 @@ public class DefaultHttpRequest implements HttpRequest {
             encoder.addParam(entry.getKey(), entry.getValue());
         }
 
-        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version), HttpMethod.valueOf(method), encoder.toString(), buffer);
+        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version.text()), HttpMethod.valueOf(method), encoder.toString(), buffer);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             request.headers().add(entry.getKey(), entry.getValue());
         }
@@ -173,14 +174,14 @@ public class DefaultHttpRequest implements HttpRequest {
     }
 
     public static final class Builder {
-        private String version;
+        private HttpProtocolVersion version;
         private String content;
         private ImmutableMap<String, String> headers;
         private String method;
         private String uri;
         private ImmutableMap<String, String> queries;
 
-        public Builder withVersion(String version) {
+        public Builder withVersion(HttpProtocolVersion version) {
             this.version = version;
             return this;
         }

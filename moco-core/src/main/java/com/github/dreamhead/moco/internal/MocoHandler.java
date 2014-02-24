@@ -91,6 +91,6 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     private FullHttpResponse defaultResponse(HttpRequest request, HttpResponseStatus status) {
-        return new DefaultFullHttpResponse(HttpVersion.valueOf(request.getVersion()), status);
+        return new DefaultFullHttpResponse(HttpVersion.valueOf(request.getVersion().text()), status);
     }
 }

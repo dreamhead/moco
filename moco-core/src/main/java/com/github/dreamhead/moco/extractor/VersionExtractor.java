@@ -9,6 +9,6 @@ import static com.google.common.base.Optional.of;
 public class VersionExtractor implements RequestExtractor<String> {
     @Override
     public Optional<String> extract(HttpRequest request) {
-        return of(request.getVersion());
+        return of(request.getVersion().text());
     }
 }

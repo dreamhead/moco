@@ -26,7 +26,7 @@ public class HttpRequestDumper extends HttpMessageBaseDumper<HttpRequest> {
         buf.append(' ');
         buf.append(request.getUri());
         buf.append(' ');
-        buf.append(request.getVersion());
+        buf.append(request.getVersion().text());
     }
 
     private long getContentLength(HttpRequest request, long defaultValue) {

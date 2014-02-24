@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -26,7 +27,7 @@ public class VersionExtractorTest {
 
 	@Test
 	public void shoud_extract_version() {
-        when(request.getVersion()).thenReturn(HttpVersion.HTTP_1_0.toString());
+        when(request.getVersion()).thenReturn(HttpProtocolVersion.VERSION_1_0);
 		assertThat(extractor.extract(request).get(),
 				is(HttpVersion.HTTP_1_0.toString()));
 	}
