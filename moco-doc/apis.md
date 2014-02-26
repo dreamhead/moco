@@ -657,7 +657,7 @@ By default, response HTTP version is supposed to request HTTP version, but you c
 * Java API
 
 ```java
-server.response(version("HTTP/1.0"));
+server.response(version(HttpProtocolVersion.VERSION_1_0));
 ```
 
 * JSON

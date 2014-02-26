@@ -1,6 +1,7 @@
 # Release
 
 ## APIs
+* Http Protocol Version in Java API.
 
 ### Template
 * change template variables from Object to String.
