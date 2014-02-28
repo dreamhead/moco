@@ -312,7 +312,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_match_header() throws Exception {
-        server.request(match(header("foo"), "bar|blah")).response(text("header"));
+        server.request(match(header("foo"), "bar|blah")).response("header");
 
         running(server, new Runnable() {
             @Override
@@ -332,6 +332,32 @@ public class MocoTest extends AbstractMocoTest {
             public void run() throws Exception {
                 assertThat(helper.getWithHeader(root(), of("foo", "bar")), is("header"));
                 assertThat(helper.getWithHeader(root(), of("foo", "blah")), is("header"));
+            }
+        });
+    }
+
+    @Test
+    public void should_starts_with() throws Exception {
+        server.request(startsWith(uri("/foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo/a")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo/b")), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_starts_with_for_header() throws Exception {
+        server.request(startsWith(header("foo"), "bar")).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(root(), of("foo", "barA")), is("bar"));
+                assertThat(helper.getWithHeader(root(), of("foo", "barB")), is("bar"));
             }
         });
     }
