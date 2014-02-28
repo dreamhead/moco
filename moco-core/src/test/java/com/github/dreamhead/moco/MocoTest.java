@@ -350,8 +350,34 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
-    public void should_starts_with_for_header() throws Exception {
+    public void should_starts_with_for_resource() throws Exception {
         server.request(startsWith(header("foo"), "bar")).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(root(), of("foo", "barA")), is("bar"));
+                assertThat(helper.getWithHeader(root(), of("foo", "barB")), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_ends_with() throws Exception {
+        server.request(endsWith(uri("foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/a/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/b/foo")), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_ends_with_for_resource() throws Exception {
+        server.request(endsWith(header("foo"), "bar")).response(text("bar"));
 
         running(server, new Runnable() {
             @Override
