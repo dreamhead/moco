@@ -1,18 +1,24 @@
 package com.github.dreamhead.moco.matcher;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
-    protected final RequestExtractor<T> extractor;
+    protected abstract RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource);
+
+    private final RequestExtractor<T> extractor;
+    private final Resource expected;
     private final Predicate<String> predicate;
 
-    protected AbstractOperatorMatcher(RequestExtractor<T> extractor, Predicate<String> predicate) {
+    protected AbstractOperatorMatcher(final RequestExtractor<T> extractor, final Resource expected, final Predicate<String> predicate) {
         this.extractor = extractor;
         this.predicate = predicate;
+        this.expected = expected;
     }
 
     @Override
@@ -37,5 +43,15 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
         }
 
         return false;
+    }
+
+    @Override
+    public RequestMatcher apply(final MocoConfig config) {
+        Resource appliedResource = expected.apply(config);
+        if (appliedResource == expected) {
+            return this;
+        }
+
+        return newMatcher(extractor, appliedResource);
     }
 }
