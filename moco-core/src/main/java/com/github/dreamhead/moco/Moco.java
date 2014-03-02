@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.action.MocoAsyncAction;
 import com.github.dreamhead.moco.action.MocoRequestAction;
 import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
-import com.github.dreamhead.moco.config.MocoResponseConfig;import com.github.dreamhead.moco.extractor.*;
+import com.github.dreamhead.moco.config.MocoResponseConfig;
+import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -145,6 +146,10 @@ public class Moco {
 
     public static RequestMatcher or(final RequestMatcher... matchers) {
         return new OrRequestMatcher(copyOf(matchers));
+    }
+
+    public static RequestMatcher not(final RequestMatcher matcher) {
+        return new NotRequestMatcher(matcher);
     }
 
     public static ContentResource text(final String text) {

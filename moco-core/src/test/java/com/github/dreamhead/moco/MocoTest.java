@@ -180,6 +180,18 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_match_request_based_on_not_matcher() throws Exception {
+        server.request(not(by(uri("/foo")))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/bar")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_request_based_on_simplified_either_matcher() throws Exception {
         server.request(by("foo"), by(uri("/foo"))).response(text("bar"));
 
