@@ -132,7 +132,7 @@ public class Moco {
     }
 
     public static <T> RequestMatcher endsWith(RequestExtractor<T> extractor, String expected) {
-        return startsWith(checkNotNull(extractor, "Extractor should not be null"),
+        return endsWith(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNull(expected, "Expected resource should not be null")));
     }
 

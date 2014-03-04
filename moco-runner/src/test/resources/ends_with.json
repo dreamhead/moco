@@ -1,0 +1,49 @@
+[
+    {
+        "request": {
+            "uri": {
+                "endsWith": "foo"
+            }
+        },
+        "response": {
+            "text": "uri_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/text-match",
+            "text": {
+                "endsWith": "foo"
+            }
+        },
+        "response": {
+            "text": "text_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/header-match",
+            "headers": {
+                "content-type": {
+                    "endsWith" : "json"
+                }
+            }
+        },
+        "response": {
+            "text": "header_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query-match",
+            "queries": {
+                "foo": {
+                    "endsWith" : "r"
+                }
+            }
+        },
+        "response": {
+            "text": "query_match"
+        }
+    }
+]
