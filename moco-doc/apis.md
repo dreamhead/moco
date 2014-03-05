@@ -541,10 +541,14 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
 }
 ```
 
-### Match
+### Operator
+
+Moco also supports some operators which helps you write your expectation easily.
+
+#### Match
 **@Since 0.7**
 
-match is not a functionality, it is an operator. You match your request with regular expression:
+You may want to match your request with regular expression:
 
 * Java API
 
@@ -571,6 +575,62 @@ server.request(match(uri("/\\w*/foo"))).response(text("bar"));
 ```
 
 Moco is implemented by Java regular expression, you can refer [here](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html) for more details.
+
+#### Starts With
+
+Stars with operator can help you decide the request information starts with a piece of text.
+
+* Java API
+
+```java
+server.request(startsWith(uri("/foo"))).response(text("bar"));
+```
+
+* JSON
+
+```json
+{
+  "request":
+    {
+      "uri":
+        {
+          "startsWith": "/foo"
+        }
+    },
+  "response":
+    {
+      "text": "bar"
+    }
+}
+```
+
+#### Ends With
+
+Ends with operator can help you decide the request information ends with a piece of text.
+
+* Java API
+
+```java
+server.request(endsWith(uri("foo"))).response(text("bar"));
+```
+
+* JSON
+
+```json
+{
+  "request":
+    {
+      "uri":
+        {
+          "endsWith": "foo"
+        }
+    },
+  "response":
+    {
+      "text": "bar"
+    }
+}
+```
 
 ## Response
 
