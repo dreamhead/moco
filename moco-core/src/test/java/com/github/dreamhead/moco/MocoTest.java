@@ -394,8 +394,8 @@ public class MocoTest extends AbstractMocoTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getWithHeader(root(), of("foo", "barA")), is("bar"));
-                assertThat(helper.getWithHeader(root(), of("foo", "barB")), is("bar"));
+                assertThat(helper.getWithHeader(root(), of("foo", "Abar")), is("bar"));
+                assertThat(helper.getWithHeader(root(), of("foo", "Bbar")), is("bar"));
             }
         });
     }
