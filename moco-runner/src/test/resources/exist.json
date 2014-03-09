@@ -1,0 +1,39 @@
+[
+    {
+        "request": {
+            "uri": "/text-match",
+            "text": {
+                "exist": "true"
+            }
+        },
+        "response": {
+            "text": "text_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/header-match",
+            "headers": {
+                "content-type": {
+                    "exist" : "true"
+                }
+            }
+        },
+        "response": {
+            "text": "header_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query-match",
+            "queries": {
+                "foo": {
+                    "exist" : "true"
+                }
+            }
+        },
+        "response": {
+            "text": "query_match"
+        }
+    }
+]

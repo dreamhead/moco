@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.extractor.Extractors;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.Resource;
@@ -84,10 +85,19 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             return createSingleMatcher(name, container.getText());
         }
 
-        return createRequestMatcher(container.getOperation(), createResource(name, container.getText()));
+        if ("exist".equals(container.getOperation())) {
+            if ("true".equals(container.getText())) {
+                RequestExtractor<String> extractor = Extractors.extractor(name);
+                return exist(extractor);
+            }
+
+            throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
+        }
+
+        return createRequestMatcherWithResource(container.getOperation(), createResource(name, container.getText()));
     }
 
-    private RequestMatcher createRequestMatcher(String operation, Resource resource) {
+    private RequestMatcher createRequestMatcherWithResource(String operation, Resource resource) {
         try {
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             return RequestMatcher.class.cast(operationMethod.invoke(null, resource));
@@ -97,7 +107,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
-        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethodForCompositeMatcher(name))).toList();
+        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethod(name))).toList();
         return wrapRequestMatcher(null, matchers);
     }
 
@@ -133,6 +143,14 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             return eq(extractor, container.getText());
         }
 
+        if ("exist".equals(container.getOperation())) {
+            if ("true".equals(container.getText())) {
+                return exist(extractor);
+            }
+
+            throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
+        }
+
         try {
             Method operationMethod = Moco.class.getMethod(container.getOperation(), RequestExtractor.class, String.class);
             Object result = operationMethod.invoke(null, extractor, container.getText());
@@ -142,7 +160,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
     }
 
-    private Method getMethodForCompositeMatcher(String name) {
+    private Method getMethod(String name) {
         try {
             return Moco.class.getMethod(methods.get(name), String.class);
         } catch (NoSuchMethodException e) {
