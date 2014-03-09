@@ -23,7 +23,7 @@ public class MocoServer {
     private InetSocketAddress address;
 
     public MocoServer() {
-        bossGroup = new NioEventLoopGroup();
+        bossGroup = new NioEventLoopGroup(1);
         workerGroup = new NioEventLoopGroup();
     }
 
