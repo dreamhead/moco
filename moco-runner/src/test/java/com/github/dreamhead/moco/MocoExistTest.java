@@ -18,6 +18,12 @@ public class MocoExistTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_not_exist_text() throws IOException {
+        runWithConfiguration("exist.json");
+        assertThat(helper.get(remoteUrl("/text-not-match")), is("text_not_match"));
+    }
+
+    @Test
     public void should_match_header() throws IOException {
         runWithConfiguration("exist.json");
 
@@ -26,10 +32,16 @@ public class MocoExistTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_not_match_header() throws IOException {
+        runWithConfiguration("exist.json");
+
+        assertThat(helper.get(remoteUrl("/header-not-match")), is("header_not_match"));
+    }
+
+    @Test
     public void should_match_query() throws IOException {
         runWithConfiguration("exist.json");
 
-        assertThat(helper.get(remoteUrl("/query-match?foo=bar")), is("query_match"));
-        assertThat(helper.get(remoteUrl("/query-match?foo=blah")), is("query_match"));
+        assertThat(helper.get(remoteUrl("/query-not-match")), is("query_not_match"));
     }
 }

@@ -12,6 +12,17 @@
     },
     {
         "request": {
+            "uri": "/text-not-match",
+            "text": {
+                "exist": "false"
+            }
+        },
+        "response": {
+            "text": "text_not_match"
+        }
+    },
+    {
+        "request": {
             "uri": "/header-match",
             "headers": {
                 "content-type": {
@@ -25,6 +36,19 @@
     },
     {
         "request": {
+            "uri": "/header-not-match",
+            "headers": {
+                "foo": {
+                    "exist" : "false"
+                }
+            }
+        },
+        "response": {
+            "text": "header_not_match"
+        }
+    },
+    {
+        "request": {
             "uri": "/query-match",
             "queries": {
                 "foo": {
@@ -34,6 +58,19 @@
         },
         "response": {
             "text": "query_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query-not-match",
+            "queries": {
+                "foo": {
+                    "exist" : "false"
+                }
+            }
+        },
+        "response": {
+            "text": "query_not_match"
         }
     }
 ]

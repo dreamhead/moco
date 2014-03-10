@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.base.Optional;
 
 import java.io.IOException;
 
@@ -24,8 +25,13 @@ public class JsonRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean match(HttpRequest request) {
+        Optional<String> content = extractor.extract(request);
+        return content.isPresent() && doMatch(request, content.get());
+    }
+
+    private boolean doMatch(HttpRequest request, String content) {
         try {
-            JsonNode requestNode = mapper.readTree(extractor.extract(request).get());
+            JsonNode requestNode = mapper.readTree(content);
             JsonNode resourceNode = mapper.readTree(resource.readFor(request));
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {

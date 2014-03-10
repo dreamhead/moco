@@ -86,12 +86,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
 
         if ("exist".equals(container.getOperation())) {
-            if ("true".equals(container.getText())) {
-                RequestExtractor<String> extractor = Extractors.extractor(name);
-                return exist(extractor);
-            }
-
-            throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
+            return existMatcher(Extractors.extractor(name), container);
         }
 
         return createRequestMatcherWithResource(container.getOperation(), createResource(name, container.getText()));
@@ -144,11 +139,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
 
         if ("exist".equals(container.getOperation())) {
-            if ("true".equals(container.getText())) {
-                return exist(extractor);
-            }
-
-            throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
+            return existMatcher(extractor, container);
         }
 
         try {
@@ -158,6 +149,18 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private <T> RequestMatcher existMatcher(RequestExtractor<T> extractor, TextContainer container) {
+        if ("true".equals(container.getText())) {
+            return exist(extractor);
+        }
+
+        if ("false".equals(container.getText())) {
+            return not(exist(extractor));
+        }
+
+        throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
     }
 
     private Method getMethod(String name) {
