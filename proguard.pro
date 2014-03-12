@@ -13,6 +13,7 @@
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
 -keep public class com.github.dreamhead.moco.Moco{*;}
 -keep public class com.github.dreamhead.moco.handler.*{*;}
+-keep public class com.github.dreamhead.moco.dumper.*{*;}
 -keep public class com.github.dreamhead.moco.runner.ShutdownRunner{
     public int shutdownPort();
 }
