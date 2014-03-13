@@ -434,6 +434,7 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 
 #### JSON Text
 **@Since 0.7**
+
 Json is rising with RESTful style architecture. Just like XML, in the most case, only JSON structure is important, so `json` operator can be used.
 
 * Java API
@@ -491,6 +492,7 @@ The large request can be put into a file:
 
 ```java
 server.request(json(file("your_file.json"))).response("foo");
+```
 
 * JSON
 
@@ -548,7 +550,7 @@ Moco also supports some operators which helps you write your expectation easily.
 #### Match
 **@Since 0.7**
 
-You may want to match your request with regular expression:
+You may want to match your request with regular expression, **match** could be your helper:
 
 * Java API
 
@@ -1468,6 +1470,7 @@ You may need to request another site when you receive a request, e.g. OAuth. Eve
 
 ### Complete
 **@Since 0.9**
+
 Complete event will be fired after your request has been handled completely.
 
 * Java
