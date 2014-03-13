@@ -578,7 +578,7 @@ Moco is implemented by Java regular expression, you can refer [here](http://docs
 
 #### Starts With
 
-Stars with operator can help you decide the request information starts with a piece of text.
+**starsWith** operator can help you decide if the request information starts with a piece of text.
 
 * Java API
 
@@ -606,7 +606,7 @@ server.request(startsWith(uri("/foo"))).response(text("bar"));
 
 #### Ends With
 
-Ends with operator can help you decide the request information ends with a piece of text.
+**endsWith** operator can help you decide if the request information ends with a piece of text.
 
 * Java API
 
@@ -623,6 +623,54 @@ server.request(endsWith(uri("foo"))).response(text("bar"));
       "uri":
         {
           "endsWith": "foo"
+        }
+    },
+  "response":
+    {
+      "text": "bar"
+    }
+}
+```
+
+#### Exist
+
+**exist** operator is used to decide whether the request information exists.
+
+* Java API
+
+```java
+server.request(exist(header("foo"))).response(text("bar"));
+```
+
+* JSON
+
+```json
+{
+  "request":
+    {
+      "headers": {
+        "foo": {
+          "exist" : "true"
+        }
+    },
+  "response":
+    {
+      "text": "bar"
+    }
+}
+```
+
+For JSON API, you can decide whether the information does not exist.
+
+* JSON
+
+```json
+{
+  "request":
+    {
+      "headers": {
+        "foo": {
+          "exist" : "not"
         }
     },
   "response":
