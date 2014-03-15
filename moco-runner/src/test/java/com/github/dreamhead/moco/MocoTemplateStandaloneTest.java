@@ -49,7 +49,9 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_cookie_from_template() throws IOException {
         runWithConfiguration("template.json");
-        Request.Get(remoteUrl("/cookie_template")).execute();
+        int status = helper.getForStatus(remoteUrl("/cookie_template"));
+        assertThat(status, is(302));
+
         String content = helper.get(remoteUrl("/cookie_template"));
         assertThat(content, is("GET"));
     }
