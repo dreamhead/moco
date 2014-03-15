@@ -140,6 +140,20 @@ public class Moco {
         return new EndsWithMatcher<T>(extractor, resource);
     }
 
+    public static RequestMatcher contain(final Resource resource) {
+        checkNotNull(resource, "Resource should not be null");
+        return contain(extractor(resource.id()), resource);
+    }
+
+    public static <T> RequestMatcher contain(RequestExtractor<T> extractor, String expected) {
+        return contain(checkNotNull(extractor, "Extractor should not be null"),
+                text(checkNotNull(expected, "Expected resource should not be null")));
+    }
+
+    private static <T> RequestMatcher contain(RequestExtractor<T> extractor, Resource resource) {
+        return new ContainMatcher<T>(extractor, resource);
+    }
+
     public static RequestMatcher and(final RequestMatcher... matchers) {
         return new AndRequestMatcher(copyOf(matchers));
     }

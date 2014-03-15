@@ -401,6 +401,32 @@ public class MocoTest extends AbstractMocoTest {
     }
 
     @Test
+    public void should_contain() throws Exception {
+        server.request(contain(uri("foo"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/a/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo/a")), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_contain_for_resource() throws Exception {
+        server.request(contain(header("foo"), "bar")).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(root(), of("foo", "Abar")), is("bar"));
+                assertThat(helper.getWithHeader(root(), of("foo", "barA")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_eq_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");
 
