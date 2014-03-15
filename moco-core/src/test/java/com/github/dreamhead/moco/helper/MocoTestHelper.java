@@ -1,12 +1,22 @@
 package com.github.dreamhead.moco.helper;
 
+import com.github.dreamhead.moco.internal.MocoSslContextFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.fluent.Content;
+import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,12 +25,25 @@ import java.util.Map;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
+
+    private static final Executor EXECUTOR;
+
+    static {
+        // make fluent HC accept any certificates so we can test HTTPS calls as well
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.getSocketFactory())
+                .register("https", new SSLConnectionSocketFactory(MocoSslContextFactory.getClientContext()))
+                .build();
+        HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        EXECUTOR = Executor.newInstance(HttpClients.custom().setConnectionManager(cm).build());
+    }
+
     public String get(String url) throws IOException {
         return get(Request.Get(url));
     }
 
     public HttpResponse getResponse(String url) throws IOException {
-        return Request.Get(url).execute().returnResponse();
+        return EXECUTOR.execute(Request.Get(url)).returnResponse();
     }
 
     public String getWithHeader(String url, ImmutableMap<String, String> headers) throws IOException {
@@ -37,7 +60,7 @@ public class MocoTestHelper {
     }
 
     private String get(Request request) throws IOException {
-        return request.execute().returnContent().asString();
+        return EXECUTOR.execute(request).returnContent().asString();
     }
 
     public String postContent(String url, String postContent) throws IOException {
@@ -45,20 +68,15 @@ public class MocoTestHelper {
     }
 
     public String postBytes(String url, byte[] bytes) throws IOException {
-        Content content = Request.Post(url).bodyByteArray(bytes)
-                .execute().returnContent();
-        return content.asString();
+        return EXECUTOR.execute(Request.Post(url).bodyByteArray(bytes)).returnContent().asString();
     }
 
     public String postFile(String url, String file) throws IOException {
         InputStream is = Resources.getResource(file).openStream();
-        Content content = Request.Post(url).bodyByteArray(toByteArray(is))
-                .execute().returnContent();
-        return content.asString();
+        return EXECUTOR.execute(Request.Post(url).bodyByteArray(toByteArray(is))).returnContent().asString();
     }
 
     public int getForStatus(String url) throws IOException {
-        StatusLine statusLine = Request.Get(url).execute().returnResponse().getStatusLine();
-        return statusLine.getStatusCode();
+        return EXECUTOR.execute(Request.Get(url)).returnResponse().getStatusLine().getStatusCode();
     }
 }
