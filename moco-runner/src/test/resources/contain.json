@@ -1,0 +1,49 @@
+[
+    {
+        "request": {
+            "uri": {
+                "contain": "foo"
+            }
+        },
+        "response": {
+            "text": "uri_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/text-match",
+            "text": {
+                "contain": "foo"
+            }
+        },
+        "response": {
+            "text": "text_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/header-match",
+            "headers": {
+                "foo": {
+                    "contain" : "bar"
+                }
+            }
+        },
+        "response": {
+            "text": "header_match"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query-match",
+            "queries": {
+                "foo": {
+                    "contain" : "bar"
+                }
+            }
+        },
+        "response": {
+            "text": "query_match"
+        }
+    }
+]
