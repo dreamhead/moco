@@ -4,8 +4,6 @@ import com.github.dreamhead.moco.Runner;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
@@ -17,9 +15,11 @@ public class MocoHttpsServer extends Runner {
 
     private final MocoServer server = new MocoServer();
     private final ActualHttpServer serverSetting;
+    private final HttpsCertificate certificate;
 
-    public MocoHttpsServer(ActualHttpServer serverSetting) {
+    public MocoHttpsServer(ActualHttpServer serverSetting, HttpsCertificate certificate) {
         this.serverSetting = serverSetting;
+        this.certificate = certificate;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class MocoHttpsServer extends Runner {
         int port = server.start(serverSetting.getPort().or(0), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
-                SSLEngine sslEngine = MocoSslContextFactory.getServerContext().createSSLEngine();
+                SSLEngine sslEngine = MocoSslContextFactory.createServerContext(certificate).createSSLEngine();
                 sslEngine.setUseClientMode(false);
 
                 ChannelPipeline pipeline = ch.pipeline();

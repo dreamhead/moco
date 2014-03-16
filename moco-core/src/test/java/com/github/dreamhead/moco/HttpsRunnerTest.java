@@ -22,7 +22,7 @@ public class HttpsRunnerTest {
     public void setup() {
         HttpServer server = httpserver(port());
         server.response("foo");
-        runner = httpsRunner(server);
+        runner = httpsRunner(server, MocoTestHelper.CERTIFICATE);
         runner.start();
         helper = new MocoTestHelper();
     }
