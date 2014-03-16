@@ -1,12 +1,11 @@
 package com.github.dreamhead.moco.helper;
 
+import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.github.dreamhead.moco.internal.MocoSslContextFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.StatusLine;
-import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.config.Registry;
@@ -22,9 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.internal.HttpsCertificate.classpathCertificate;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
+
+    public static final HttpsCertificate CERTIFICATE = classpathCertificate("/cert.jks", "mocohttps", "mocohttps");
 
     private static final Executor EXECUTOR;
 
@@ -32,7 +34,7 @@ public class MocoTestHelper {
         // make fluent HC accept any certificates so we can test HTTPS calls as well
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", new SSLConnectionSocketFactory(MocoSslContextFactory.getClientContext()))
+                .register("https", new SSLConnectionSocketFactory(MocoSslContextFactory.createClientContext()))
                 .build();
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
         EXECUTOR = Executor.newInstance(HttpClients.custom().setConnectionManager(cm).build());

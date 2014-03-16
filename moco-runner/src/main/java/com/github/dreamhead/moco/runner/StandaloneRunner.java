@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.Runner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.github.dreamhead.moco.Runner.runner;
+import static com.github.dreamhead.moco.Runner.httpRunner;
 
 public class StandaloneRunner {
     private static Logger logger = LoggerFactory.getLogger(StandaloneRunner.class);
@@ -13,7 +13,7 @@ public class StandaloneRunner {
     private Runner runner;
 
     public void run(HttpServer httpServer) {
-        runner = runner(httpServer);
+        runner = httpRunner(httpServer);
         runner.start();
         logger.info("Server is started at {}", httpServer.port());
     }
