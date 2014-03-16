@@ -555,7 +555,7 @@ You may want to match your request with regular expression, **match** could be y
 * Java API
 
 ```java
-server.request(match(uri("/\\w*/foo"))).response(text("bar"));
+server.request(match(uri("/\\w*/foo"))).response("bar");
 ```
 
 * JSON
@@ -585,7 +585,7 @@ Moco is implemented by Java regular expression, you can refer [here](http://docs
 * Java API
 
 ```java
-server.request(startsWith(uri("/foo"))).response(text("bar"));
+server.request(startsWith(uri("/foo"))).response("bar");
 ```
 
 * JSON
@@ -613,7 +613,7 @@ server.request(startsWith(uri("/foo"))).response(text("bar"));
 * Java API
 
 ```java
-server.request(endsWith(uri("foo"))).response(text("bar"));
+server.request(endsWith(uri("foo"))).response("bar");
 ```
 
 * JSON
@@ -634,6 +634,34 @@ server.request(endsWith(uri("foo"))).response(text("bar"));
 }
 ```
 
+#### Contain
+
+**contain** operator helps you know whether the request information contains a piece of text.
+
+* Java API
+
+```java
+server.request(contain(uri("foo"))).response("bar");
+```
+
+* JSON
+
+```json
+{
+  "request":
+    {
+      "uri":
+        {
+          "contain": "foo"
+        }
+    },
+  "response":
+    {
+      "text": "bar"
+    }
+}
+```
+
 #### Exist
 
 **exist** operator is used to decide whether the request information exists.
@@ -641,7 +669,7 @@ server.request(endsWith(uri("foo"))).response(text("bar"));
 * Java API
 
 ```java
-server.request(exist(header("foo"))).response(text("bar"));
+server.request(exist(header("foo"))).response("bar");
 ```
 
 * JSON

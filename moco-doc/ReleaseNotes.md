@@ -2,6 +2,11 @@
 
 ## APIs
 * Http Protocol Version in Java API.
+* More operators:
+** startsWith
+** endsWith
+** contain
+** exist
 
 ### Template
 * change template variables from Object to String.
