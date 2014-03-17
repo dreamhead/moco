@@ -22,6 +22,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -58,7 +59,7 @@ public class Moco {
     }
 
     public static MocoConfig context(final String context) {
-        return new MocoContextConfig(checkNotNull(context, "Context should not be null"));
+        return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
     }
 
     public static MocoConfig response(final ResponseHandler handler) {
@@ -66,7 +67,7 @@ public class Moco {
     }
 
     public static MocoConfig fileRoot(final String fileRoot) {
-        return new MocoFileRootConfig(checkNotNull(fileRoot, "File root should not be null"));
+        return new MocoFileRootConfig(checkNotNullOrEmpty(fileRoot, "File root should not be null"));
     }
 
     public static MocoMonitor log() {
@@ -78,7 +79,7 @@ public class Moco {
     }
 
     public static RequestMatcher by(final String content) {
-        return by(text(checkNotNull(content, "Content should not be null")));
+        return by(text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
     public static RequestMatcher by(final Resource resource) {
@@ -87,7 +88,7 @@ public class Moco {
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {
-        return eq(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNull(expected, "Expected content should not be null")));
+        return eq(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final Resource expected) {
@@ -100,7 +101,7 @@ public class Moco {
     }
 
     public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final String expected) {
-        return match(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNull(expected, "Expected content should not be null")));
+        return match(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
     }
 
     private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
@@ -119,7 +120,7 @@ public class Moco {
 
     public static <T> RequestMatcher startsWith(RequestExtractor<T> extractor, String expected) {
         return startsWith(checkNotNull(extractor, "Extractor should not be null"),
-                text(checkNotNull(expected, "Expected resource should not be null")));
+                text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
     private static <T> RequestMatcher startsWith(RequestExtractor<T> extract, Resource resource) {
@@ -133,7 +134,7 @@ public class Moco {
 
     public static <T> RequestMatcher endsWith(RequestExtractor<T> extractor, String expected) {
         return endsWith(checkNotNull(extractor, "Extractor should not be null"),
-                text(checkNotNull(expected, "Expected resource should not be null")));
+                text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
     private static <T> RequestMatcher endsWith(RequestExtractor<T> extractor, Resource resource) {
@@ -147,7 +148,7 @@ public class Moco {
 
     public static <T> RequestMatcher contain(RequestExtractor<T> extractor, String expected) {
         return contain(checkNotNull(extractor, "Extractor should not be null"),
-                text(checkNotNull(expected, "Expected resource should not be null")));
+                text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
     private static <T> RequestMatcher contain(RequestExtractor<T> extractor, Resource resource) {
@@ -167,11 +168,11 @@ public class Moco {
     }
 
     public static ContentResource text(final String text) {
-        return textResource(checkNotNull(text, "Text should not be null"));
+        return textResource(checkNotNullOrEmpty(text, "Text should not be null"));
     }
 
     public static ResponseHandler with(final String text) {
-        return with(text(checkNotNull(text, "Text should not be null")));
+        return with(text(checkNotNullOrEmpty(text, "Text should not be null")));
     }
 
     public static ResponseHandler with(final Resource resource) {
@@ -187,43 +188,38 @@ public class Moco {
     }
 
     public static Resource method(final String httpMethod) {
-        return methodResource(checkNotNull(httpMethod, "HTTP method should not be null"));
+        return methodResource(checkNotNullOrEmpty(httpMethod, "HTTP method should not be null"));
     }
 
     public static RequestExtractor<String> header(final String header) {
-        return new HeaderRequestExtractor(checkNotNull(header, "Header name should not be null"));
+        return new HeaderRequestExtractor(checkNotNullOrEmpty(header, "Header name should not be null"));
     }
 
     public static ResponseHandler header(final String name, final String value) {
-        return header(checkNotNull(name, "Header name should not be null"), text(checkNotNull(value, "Header value should not be null")));
+        return header(checkNotNullOrEmpty(name, "Header name should not be null"), text(checkNotNullOrEmpty(value, "Header value should not be null")));
     }
 
     public static ResponseHandler header(final String name, final Resource value) {
-        String key = checkNotNull(name, "Header name should not be null");
-        if (key.trim().isEmpty()) {
-            throw new IllegalArgumentException("Header name should not be empty");
-        }
-
-        return new HeaderResponseHandler(key,
+        return new HeaderResponseHandler(checkNotNullOrEmpty(name, "Header name should not be null"),
                 checkNotNull(value, "Header value should not be null"));
     }
 
     public static RequestExtractor<String> cookie(final String key) {
-        return new CookieRequestExtractor(checkNotNull(key, "Cookie key should not be null"));
+        return new CookieRequestExtractor(checkNotNullOrEmpty(key, "Cookie key should not be null"));
     }
 
     public static ResponseHandler cookie(final String key, final String value) {
-        return cookie(checkNotNull(key, "Cookie key should not be null"), text(checkNotNull(value, "Cookie value should not be null")));
+        return cookie(checkNotNullOrEmpty(key, "Cookie key should not be null"), text(checkNotNullOrEmpty(value, "Cookie value should not be null")));
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource) {
         return header(HttpHeaders.Names.SET_COOKIE, cookieResource(
-                checkNotNull(key, "Cookie key should not be null"),
+                checkNotNullOrEmpty(key, "Cookie key should not be null"),
                 checkNotNull(resource, "Cookie value should not be null")));
     }
 
     public static RequestExtractor<String> form(final String key) {
-        return new FormRequestExtractor(checkNotNull(key, "Form key should not be null"));
+        return new FormRequestExtractor(checkNotNullOrEmpty(key, "Form key should not be null"));
     }
 
     public static LatencyProcedure latency(final long millis) {
@@ -232,11 +228,11 @@ public class Moco {
     }
 
     public static RequestExtractor<String> query(final String param) {
-        return new ParamRequestExtractor(checkNotNull(param, "Query parameter should not be null"));
+        return new ParamRequestExtractor(checkNotNullOrEmpty(param, "Query parameter should not be null"));
     }
 
     public static XPathRequestExtractor xpath(final String xpath) {
-        return new XPathRequestExtractor(checkNotNull(xpath, "XPath should not be null"));
+        return new XPathRequestExtractor(checkNotNullOrEmpty(xpath, "XPath should not be null"));
     }
 
     public static RequestMatcher xml(final Resource resource) {
@@ -250,7 +246,7 @@ public class Moco {
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
-        return new JsonPathRequestExtractor(checkNotNull(jsonPath, "JsonPath should not be null"));
+        return new JsonPathRequestExtractor(checkNotNullOrEmpty(jsonPath, "JsonPath should not be null"));
     }
 
     public static ResponseHandler seq(final String... contents) {
@@ -266,11 +262,11 @@ public class Moco {
     }
 
     public static ContentResource file(final String filename) {
-        return fileResource(new File(checkNotNull(filename, "Filename should not be null")));
+        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")));
     }
 
     public static ContentResource pathResource(final String filename) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"));
+        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"));
     }
 
     public static Resource version(final Resource resource) {
@@ -278,7 +274,7 @@ public class Moco {
     }
 
     public static Resource version(final String version) {
-        return version(text(checkNotNull(version, "Version should not be null")));
+        return version(text(checkNotNullOrEmpty(version, "Version should not be null")));
     }
 
     public static Resource version(final HttpProtocolVersion version) {
@@ -291,11 +287,11 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url) {
-        return proxy(checkNotNull(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
+        return proxy(checkNotNullOrEmpty(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
-        return new ProxyResponseHandler(toUrl(checkNotNull(url, "URL should not be null")),
+        return new ProxyResponseHandler(toUrl(checkNotNullOrEmpty(url, "URL should not be null")),
                 checkNotNull(failover, "Failover should not be null"));
     }
 
@@ -308,29 +304,29 @@ public class Moco {
     }
 
     public static ProxyConfig.Builder from(final String localBase) {
-        return ProxyConfig.builder(localBase);
+        return ProxyConfig.builder(checkNotNullOrEmpty(localBase, "Local base should not be null"));
     }
 
     public static Resource template(final String template) {
-        return template(text(checkNotNull(template, "Template should not be null")));
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")));
     }
 
     public static Resource template(final String template, final String name, final String value) {
-        return template(text(checkNotNull(template, "Template should not be null")),
-                ImmutableMap.of(checkNotNull(name, "Template variable name should not be null"),
-                        checkNotNull(value, "Template variable value should not be null")));
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
+                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value, "Template variable value should not be null")));
     }
 
     public static Resource template(final String template, final String name1, final String value1, final String name2, final String value2) {
-        return template(text(checkNotNull(template, "Template should not be null")),
-                ImmutableMap.of(checkNotNull(name1, "Template variable name should not be null"),
-                        checkNotNull(value1, "Template variable value should not be null"),
-                        checkNotNull(name2, "Template variable name should not be null"),
-                        checkNotNull(value2, "Template variable value should not be null")));
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
+                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value1, "Template variable value should not be null"),
+                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value2, "Template variable value should not be null")));
     }
 
     public static Resource template(final String template, final ImmutableMap<String, String> variables) {
-        return template(text(checkNotNull(template, "Template should not be null")),
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNull(variables, "Template variable should not be null"));
     }
 
@@ -345,28 +341,28 @@ public class Moco {
 
     public static Resource template(final ContentResource template, final String name, final String value) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNull(name, "Template variable name should not be null"),
-                        checkNotNull(value, "Template variable value should not be null")));
+                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value, "Template variable value should not be null")));
     }
 
     public static Resource template(final ContentResource template, final String name1, final String value1, final String name2, final String value2) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNull(name1, "Template variable name should not be null"),
-                        checkNotNull(value1, "Template variable value should not be null"),
-                        checkNotNull(name2, "Template variable name should not be null"),
-                        checkNotNull(value2, "Template variable value should not be null")));
+                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value1, "Template variable value should not be null"),
+                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                        checkNotNullOrEmpty(value2, "Template variable value should not be null")));
     }
 
     public static Failover failover(final String file) {
-        return new Failover(failoverExecutor(file), FailoverStrategy.FAILOVER);
+        return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
     }
 
     private static DefaultFailoverExecutor failoverExecutor(String file) {
-        return new DefaultFailoverExecutor(new File(checkNotNull(file, "Filename should not be null")));
+        return new DefaultFailoverExecutor(new File(checkNotNullOrEmpty(file, "Filename should not be null")));
     }
 
     public static Failover playback(final String file) {
-        return new Failover(failoverExecutor(file), FailoverStrategy.PLAYBACK);
+        return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
     }
 
     public static MocoEventTrigger complete(final MocoEventAction action) {
@@ -382,15 +378,15 @@ public class Moco {
     }
 
     public static MocoEventAction get(final String url) {
-        return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "GET", Optional.<ContentResource>absent());
+        return new MocoRequestAction(checkNotNullOrEmpty(url, "URL should not be null"), "GET", Optional.<ContentResource>absent());
     }
 
     public static MocoEventAction post(final String url, final ContentResource content) {
-        return new MocoRequestAction(checkNotNull(url, "URL should not be null"), "POST", of(checkNotNull(content, "Content should not be null")));
+        return new MocoRequestAction(checkNotNullOrEmpty(url, "URL should not be null"), "POST", of(checkNotNull(content, "Content should not be null")));
     }
 
     public static MocoEventAction post(final String url, final String content) {
-        return post(url, text(checkNotNull(content, "Content should not be null")));
+        return post(url, text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
     private static Function<String, ResponseHandler> textToResource() {
@@ -413,10 +409,18 @@ public class Moco {
 
     private static URL toUrl(final String url) {
         try {
-            return new URL(checkNotNull(url, "URL should not be null"));
+            return new URL(checkNotNullOrEmpty(url, "URL should not be null"));
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public static String checkNotNullOrEmpty(String reference, Object errorMessage) {
+        if (Strings.isNullOrEmpty(reference)) {
+            throw new NullPointerException(String.valueOf(errorMessage));
+        }
+
+        return reference;
     }
 
     private Moco() {
