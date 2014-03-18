@@ -8,13 +8,13 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.httpRunner;
+import static com.github.dreamhead.moco.Runner.httpsRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoRunnerTest {
+public class HttpsRunnerTest {
     private Runner runner;
     private MocoTestHelper helper;
 
@@ -22,7 +22,7 @@ public class MocoRunnerTest {
     public void setup() {
         HttpServer server = httpserver(port());
         server.response("foo");
-        runner = httpRunner(server);
+        runner = httpsRunner(server, MocoTestHelper.CERTIFICATE);
         runner.start();
         helper = new MocoTestHelper();
     }
@@ -34,6 +34,6 @@ public class MocoRunnerTest {
 
     @Test
     public void should_work_well() throws IOException {
-        assertThat(helper.get(root()), is("foo"));
+        assertThat(helper.get(httpsRoot()), is("foo"));
     }
 }
