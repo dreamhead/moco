@@ -36,7 +36,7 @@ public class HttpsCertificate {
         try {
             return new HttpsCertificate(new FileInputStream(fileName), keyStorePassword, certPassword);
         } catch (FileNotFoundException e) {
-            throw new Error("Cannot load certificate from file " + fileName);
+            throw new RuntimeException("Cannot load certificate from file " + fileName);
         }
     }
 }
