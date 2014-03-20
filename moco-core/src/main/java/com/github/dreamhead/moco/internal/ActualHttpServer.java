@@ -96,7 +96,7 @@ public class ActualHttpServer extends HttpServer {
     }
 
     @Override
-    protected Setting onRequestAttached(RequestMatcher matcher) {
+    protected Setting onRequestAttached(final RequestMatcher matcher) {
         BaseSetting baseSetting = new BaseSetting(matcher);
         addSetting(baseSetting);
         return baseSetting;

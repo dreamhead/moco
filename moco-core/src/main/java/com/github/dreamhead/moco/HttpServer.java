@@ -17,7 +17,7 @@ import static com.google.common.collect.ImmutableList.copyOf;
 public abstract class HttpServer extends ResponseSetting {
     public abstract int port();
 
-    protected abstract Setting onRequestAttached(RequestMatcher matcher);
+    protected abstract Setting onRequestAttached(final RequestMatcher matcher);
 
     public Setting request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
@@ -54,13 +54,13 @@ public abstract class HttpServer extends ResponseSetting {
         return request(and(by(method(method.name())), matcher));
     }
 
-    public ResponseSetting proxy(ProxyConfig config) {
-        return proxy(checkNotNull(config), Failover.DEFAULT_FAILOVER);
+    public ResponseSetting proxy(final ProxyConfig config) {
+        return proxy(checkNotNull(config, "Proxy config should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
-    public ResponseSetting proxy(ProxyConfig proxyConfig, Failover failover) {
-        ProxyConfig config = checkNotNull(proxyConfig);
-        this.request(context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover)));
+    public ResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
+        ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
+        this.request(context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
         return this;
     }
 }

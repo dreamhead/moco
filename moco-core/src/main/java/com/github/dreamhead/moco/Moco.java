@@ -415,7 +415,7 @@ public class Moco {
         }
     }
 
-    public static String checkNotNullOrEmpty(String reference, Object errorMessage) {
+    public static String checkNotNullOrEmpty(final String reference, final Object errorMessage) {
         if (Strings.isNullOrEmpty(reference)) {
             throw new NullPointerException(String.valueOf(errorMessage));
         }
