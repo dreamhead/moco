@@ -2,12 +2,12 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
+
 import static io.netty.handler.codec.http.HttpHeaders.addHeader;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
@@ -21,9 +21,9 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         ByteBuf buffer = Unpooled.buffer();
         writeContentResponse(context.getRequest(), buffer);
         response.content().writeBytes(buffer);
-        addHeader(response, CONTENT_LENGTH, buffer.writerIndex());
+        addHeader(response, HttpHeaders.CONTENT_LENGTH, buffer.writerIndex());
         if (!detector.hasContentType(response)) {
-            addHeader(response, CONTENT_TYPE, getContentType(context.getRequest()));
+            addHeader(response, HttpHeaders.CONTENT_TYPE, getContentType(context.getRequest()));
         }
     }
 

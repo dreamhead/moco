@@ -15,6 +15,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.net.HttpHeaders;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -94,7 +95,7 @@ public class ResponseSetting extends Dynamics {
 
     private ResponseHandler createResponseHandler(String name, Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return new AndResponseHandler(of(with(text(toJson(value))), header("Content-Type", "application/json")));
+            return new AndResponseHandler(of(with(text(toJson(value))), header(HttpHeaders.CONTENT_TYPE, "application/json")));
         }
 
         if (isResource(name) && TextContainer.class.isInstance(value)) {
