@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class ActualHttpServer extends HttpServer {
+public class ActualHttpServer extends HttpConfiguration {
     private Optional<Integer> port;
     private final MocoConfig[] configs;
     private final List<BaseSetting> settings = newArrayList();

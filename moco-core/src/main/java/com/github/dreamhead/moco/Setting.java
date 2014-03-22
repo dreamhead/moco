@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco;
 
-public abstract class Setting extends ResponseSetting {
+import com.github.dreamhead.moco.internal.ResponseSettingConfiguration;
+
+public abstract class Setting extends ResponseSettingConfiguration {
     protected final RequestMatcher matcher;
 
     protected Setting(RequestMatcher matcher) {
