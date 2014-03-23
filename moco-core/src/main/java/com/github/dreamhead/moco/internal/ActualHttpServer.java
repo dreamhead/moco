@@ -20,15 +20,21 @@ public class ActualHttpServer extends HttpConfiguration {
     private final List<BaseSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
     private final MocoMonitor monitor;
+    protected final Optional<HttpsCertificate> certificate;
 
-    protected ActualHttpServer(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
+    protected ActualHttpServer(Optional<Integer> port, Optional<HttpsCertificate> certificate, MocoMonitor monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
+        this.certificate = certificate;
     }
 
     public boolean isSecure() {
-        return false;
+        return certificate.isPresent();
+    }
+
+    public HttpsCertificate getCertificate() {
+        return certificate.orNull();
     }
 
     public ImmutableList<BaseSetting> getSettings() {
@@ -126,7 +132,7 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public static ActualHttpServer createHttpServerWithMonitor(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
-        return new ActualHttpServer(port, monitor, configs);
+        return new ActualHttpServer(port, Optional.<HttpsCertificate>absent(), monitor, configs);
     }
 
     public static ActualHttpServer createLogServer(Optional<Integer> port, MocoConfig... configs) {
@@ -135,6 +141,18 @@ public class ActualHttpServer extends HttpConfiguration {
 
     public static ActualHttpServer createQuietServer(Optional<Integer> port, MocoConfig... configs) {
         return createHttpServerWithMonitor(port, new QuietMonitor(), configs);
+    }
+
+    public static ActualHttpServer createHttpsServerWithMonitor(Optional<Integer> port, HttpsCertificate certificate, MocoMonitor monitor, MocoConfig... configs) {
+        return new ActualHttpServer(port, of(certificate), monitor, configs);
+    }
+
+    public static ActualHttpServer createHttpsLogServer(Optional<Integer> port, HttpsCertificate certificate, MocoConfig... configs) {
+        return createHttpsServerWithMonitor(port, certificate, new Slf4jMonitor(), configs);
+    }
+
+    public static ActualHttpServer createHttpsQuietServer(Optional<Integer> port, HttpsCertificate certificate, MocoConfig... configs) {
+        return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
     }
 
     public void setPort(int port) {

@@ -26,7 +26,7 @@ public class MocoHttpServer extends Runner {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
-                    SSLEngine sslEngine = MocoSslContextFactory.createServerContext(((ActualHttpsServer)serverSetting).getCertificate()).createSSLEngine();
+                    SSLEngine sslEngine = MocoSslContextFactory.createServerContext(serverSetting.getCertificate()).createSSLEngine();
                     sslEngine.setUseClientMode(false);
                     pipeline.addLast("ssl", new SslHandler(sslEngine));
                 }

@@ -15,7 +15,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public abstract class HttpConfiguration extends ResponseSettingConfiguration implements HttpServer {
+public abstract class HttpConfiguration extends ResponseSettingConfiguration implements HttpsServer {
     protected abstract Setting onRequestAttached(final RequestMatcher matcher);
 
     public Setting request(final RequestMatcher matcher) {

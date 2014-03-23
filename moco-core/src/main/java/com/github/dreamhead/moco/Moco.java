@@ -12,7 +12,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
-import com.github.dreamhead.moco.internal.ActualHttpsServer;
 import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
@@ -62,7 +61,7 @@ public class Moco {
 
     public static HttpsServer httpsServer(final int port, HttpsCertificate certificate, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpsServer.createQuietServer(of(port), certificate, configs);
+        return ActualHttpServer.createHttpsQuietServer(of(port), certificate, configs);
     }
 
     public static MocoConfig context(final String context) {
