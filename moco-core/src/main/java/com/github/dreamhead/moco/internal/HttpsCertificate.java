@@ -28,7 +28,7 @@ public class HttpsCertificate {
         return certPassword;
     }
 
-    public static HttpsCertificate classpathCertificate(String fileName, String keyStorePassword, String certPassword) {
+    public static HttpsCertificate pathCertificate(String fileName, String keyStorePassword, String certPassword) {
         return new HttpsCertificate(HttpsCertificate.class.getResourceAsStream(fileName), keyStorePassword, certPassword);
     }
 

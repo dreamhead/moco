@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
-import com.github.dreamhead.moco.internal.ResponseSettingConfiguration;
 import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;

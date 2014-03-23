@@ -21,7 +21,7 @@ public class ActualHttpServer extends HttpConfiguration {
     private RequestMatcher matcher = anyRequest();
     private final MocoMonitor monitor;
 
-    private ActualHttpServer(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
+    protected ActualHttpServer(Optional<Integer> port, MocoMonitor monitor, MocoConfig... configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;

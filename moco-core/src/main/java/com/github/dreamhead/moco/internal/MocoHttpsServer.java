@@ -14,12 +14,10 @@ import javax.net.ssl.SSLEngine;
 public class MocoHttpsServer extends Runner {
 
     private final MocoServer server = new MocoServer();
-    private final ActualHttpServer serverSetting;
-    private final HttpsCertificate certificate;
+    private final ActualHttpsServer serverSetting;
 
-    public MocoHttpsServer(ActualHttpServer serverSetting, HttpsCertificate certificate) {
+    public MocoHttpsServer(ActualHttpsServer serverSetting) {
         this.serverSetting = serverSetting;
-        this.certificate = certificate;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class MocoHttpsServer extends Runner {
         int port = server.start(serverSetting.getPort().or(0), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
-                SSLEngine sslEngine = MocoSslContextFactory.createServerContext(certificate).createSSLEngine();
+                SSLEngine sslEngine = MocoSslContextFactory.createServerContext(serverSetting.getCertificate()).createSSLEngine();
                 sslEngine.setUseClientMode(false);
 
                 ChannelPipeline pipeline = ch.pipeline();

@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.httpsServer;
 import static com.github.dreamhead.moco.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.Runner.httpsRunner;
+import static com.github.dreamhead.moco.internal.HttpsCertificate.pathCertificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,9 +20,9 @@ public class HttpsRunnerTest {
 
     @Before
     public void setup() {
-        HttpServer server = httpserver(port());
+        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"));
         server.response("foo");
-        runner = httpsRunner(server, MocoTestHelper.CERTIFICATE);
+        this.runner = Runner.runner(server);
         runner.start();
         helper = new MocoTestHelper();
     }

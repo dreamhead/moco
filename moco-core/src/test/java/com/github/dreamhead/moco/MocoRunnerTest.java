@@ -10,7 +10,6 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.httpRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,7 +21,7 @@ public class MocoRunnerTest {
     public void setup() {
         HttpServer server = httpserver(port());
         server.response("foo");
-        runner = httpRunner(server);
+        runner = Runner.runner(server);
         runner.start();
         helper = new MocoTestHelper();
     }
