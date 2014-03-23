@@ -15,6 +15,10 @@ public class ActualHttpsServer extends ActualHttpServer implements HttpsServer {
         this.certificate = certificate;
     }
 
+    public boolean isSecure() {
+        return true;
+    }
+
     public HttpsCertificate getCertificate() {
         return certificate;
     }

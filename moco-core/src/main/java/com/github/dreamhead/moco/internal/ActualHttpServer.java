@@ -27,6 +27,10 @@ public class ActualHttpServer extends HttpConfiguration {
         this.configs = configs;
     }
 
+    public boolean isSecure() {
+        return false;
+    }
+
     public ImmutableList<BaseSetting> getSettings() {
         return configItems(settings, configs);
     }

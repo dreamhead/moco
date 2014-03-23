@@ -25,7 +25,7 @@ public abstract class Runner {
     }
 
     public static Runner runner(HttpsServer server) {
-        return new MocoHttpsServer((ActualHttpsServer) server);
+        return new MocoHttpServer((ActualHttpsServer) server);
     }
 
     public abstract void start();

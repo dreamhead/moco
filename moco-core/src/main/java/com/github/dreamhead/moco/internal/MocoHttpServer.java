@@ -7,6 +7,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.ssl.SslHandler;
+
+import javax.net.ssl.SSLEngine;
 
 public class MocoHttpServer extends Runner {
     private final MocoServer server = new MocoServer();
@@ -21,6 +24,13 @@ public class MocoHttpServer extends Runner {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
+
+                if (serverSetting.isSecure()) {
+                    SSLEngine sslEngine = MocoSslContextFactory.createServerContext(((ActualHttpsServer)serverSetting).getCertificate()).createSSLEngine();
+                    sslEngine.setUseClientMode(false);
+                    pipeline.addLast("ssl", new SslHandler(sslEngine));
+                }
+
                 pipeline.addLast("decoder", new HttpRequestDecoder());
                 pipeline.addLast("aggregator", new HttpObjectAggregator(1048576));
                 pipeline.addLast("encoder", new HttpResponseEncoder());
