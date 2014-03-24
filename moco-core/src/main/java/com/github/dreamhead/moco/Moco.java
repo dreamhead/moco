@@ -48,7 +48,8 @@ public class Moco {
 
     public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpServerWithMonitor(of(port), monitor, configs);
+        return ActualHttpServer.createHttpServerWithMonitor(of(port),
+                checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static HttpServer httpserver(final MocoConfig... configs) {
@@ -59,9 +60,16 @@ public class Moco {
         return ActualHttpServer.createHttpServerWithMonitor(Optional.<Integer>absent(), checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
-    public static HttpsServer httpsServer(final int port, HttpsCertificate certificate, final MocoConfig... configs) {
+    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpsQuietServer(of(port), certificate, configs);
+        return ActualHttpServer.createHttpsQuietServer(of(port), checkNotNull(certificate, "Certificate should not be null"), configs);
+    }
+
+    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        return ActualHttpServer.createHttpsServerWithMonitor(of(port),
+                checkNotNull(certificate, "Certificate should not be null"),
+                checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static MocoConfig context(final String context) {
