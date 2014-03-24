@@ -6,11 +6,9 @@ import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.httpsServer;
-import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
-import static com.github.dreamhead.moco.RemoteTestUtils.httpsRoot;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.internal.HttpsCertificate.pathCertificate;
 import static org.hamcrest.CoreMatchers.is;
@@ -60,6 +58,35 @@ public class MocoHttpsTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
+            }
+        });
+
+        hit.verify(by("foo"), once());
+    }
+
+    @Test
+    public void should_return_expected_result_without_port() throws Exception {
+        final HttpsServer server = httpsServer(pathCertificate("/cert.jks", "mocohttps", "mocohttps"));
+        server.request(by("foo")).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_result_with_monitor_without_port() throws Exception {
+        RequestHit hit = requestHit();
+        final HttpsServer server = httpsServer(pathCertificate("/cert.jks", "mocohttps", "mocohttps"), hit);
+        server.request(by("foo")).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
             }
         });
 

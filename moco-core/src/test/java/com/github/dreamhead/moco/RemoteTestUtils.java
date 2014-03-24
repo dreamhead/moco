@@ -17,11 +17,15 @@ public class RemoteTestUtils {
         return root(PORT, true);
     }
 
+    public static String httpsRoot(int port) {
+        return root(port, true);
+    }
+
     public static String root(int port) {
         return root(port, false);
     }
 
-    public static String root(int port, boolean https) {
+    private static String root(int port, boolean https) {
         return (https ? HTTPS_ROOT_URL : ROOT_URL) + port;
     }
 

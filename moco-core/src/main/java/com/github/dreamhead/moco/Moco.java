@@ -35,6 +35,7 @@ import java.net.URL;
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -68,6 +69,16 @@ public class Moco {
     public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(of(port),
+                checkNotNull(certificate, "Certificate should not be null"),
+                checkNotNull(monitor, "Monitor should not be null"), configs);
+    }
+
+    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoConfig... configs) {
+        return ActualHttpServer.createHttpsQuietServer(Optional.<Integer>absent(), checkNotNull(certificate, "Certificate should not be null"), configs);
+    }
+
+    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
+        return ActualHttpServer.createHttpsServerWithMonitor(Optional.<Integer>absent(),
                 checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
