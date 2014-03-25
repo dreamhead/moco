@@ -36,4 +36,8 @@ public class RemoteTestUtils {
     public static String remoteUrl(int port, String uri) {
         return root(port) + uri;
     }
+
+    public static String remoteHttpsUrl(String uri) {
+        return httpsRoot() + uri;
+    }
 }

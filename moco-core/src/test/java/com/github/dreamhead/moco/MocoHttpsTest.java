@@ -4,8 +4,7 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.httpsServer;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
@@ -91,5 +90,18 @@ public class MocoHttpsTest {
         });
 
         hit.verify(by("foo"), once());
+    }
+
+    @Test
+    public void should_return_expected_result_with_global_config() throws Exception {
+        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"), context("/foo"));
+        server.request(by(uri("/bar"))).response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteHttpsUrl("/foo/bar")), is("foo"));
+            }
+        });
     }
 }
