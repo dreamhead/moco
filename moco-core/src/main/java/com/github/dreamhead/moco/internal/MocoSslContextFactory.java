@@ -13,9 +13,9 @@ public class MocoSslContextFactory {
 
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(certificate.getKeyStore(), certificate.getKeyStorePassword().toCharArray());
+            keyStore.load(certificate.getKeyStore(), certificate.getKeyStorePassword());
             KeyManagerFactory factory = KeyManagerFactory.getInstance(getAlgorithm());
-            factory.init(keyStore, certificate.getCertPassword().toCharArray());
+            factory.init(keyStore, certificate.getCertPassword());
 
             SSLContext serverContext = SSLContext.getInstance(PROTOCOL);
             serverContext.init(factory.getKeyManagers(), null, null);

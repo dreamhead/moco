@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import com.github.dreamhead.moco.internal.HttpsCertificate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,11 +10,12 @@ import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.internal.HttpsCertificate.pathCertificate;
+import static com.github.dreamhead.moco.internal.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoHttpsTest {
+    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
     protected MocoTestHelper helper;
 
     @Before
@@ -23,7 +25,7 @@ public class MocoHttpsTest {
 
     @Test
     public void should_return_expected_result() throws Exception {
-        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"));
+        HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.response("foo");
 
         running(server, new Runnable() {
@@ -36,7 +38,7 @@ public class MocoHttpsTest {
 
     @Test
     public void should_return_expected_result_for_specified_request() throws Exception {
-        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"));
+        HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
@@ -50,7 +52,7 @@ public class MocoHttpsTest {
     @Test
     public void should_return_expected_result_with_monitor() throws Exception {
         RequestHit hit = requestHit();
-        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"), hit);
+        HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
@@ -65,7 +67,7 @@ public class MocoHttpsTest {
 
     @Test
     public void should_return_expected_result_without_port() throws Exception {
-        final HttpsServer server = httpsServer(pathCertificate("/cert.jks", "mocohttps", "mocohttps"));
+        final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
@@ -79,7 +81,7 @@ public class MocoHttpsTest {
     @Test
     public void should_return_expected_result_with_monitor_without_port() throws Exception {
         RequestHit hit = requestHit();
-        final HttpsServer server = httpsServer(pathCertificate("/cert.jks", "mocohttps", "mocohttps"), hit);
+        final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
         running(server, new Runnable() {
@@ -94,7 +96,7 @@ public class MocoHttpsTest {
 
     @Test
     public void should_return_expected_result_with_global_config() throws Exception {
-        HttpsServer server = httpsServer(port(), pathCertificate("/cert.jks", "mocohttps", "mocohttps"), context("/foo"));
+        HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE, context("/foo"));
         server.request(by(uri("/bar"))).response("foo");
 
         running(server, new Runnable() {

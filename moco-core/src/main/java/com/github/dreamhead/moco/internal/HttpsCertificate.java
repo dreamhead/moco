@@ -1,7 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import com.github.dreamhead.moco.resource.ContentResource;
+
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class HttpsCertificate {
@@ -20,23 +21,15 @@ public class HttpsCertificate {
         return keyStore;
     }
 
-    public String getKeyStorePassword() {
-        return keyStorePassword;
+    public char[] getKeyStorePassword() {
+        return keyStorePassword.toCharArray();
     }
 
-    public String getCertPassword() {
-        return certPassword;
+    public char[] getCertPassword() {
+        return certPassword.toCharArray();
     }
 
-    public static HttpsCertificate pathCertificate(String fileName, String keyStorePassword, String certPassword) {
-        return new HttpsCertificate(HttpsCertificate.class.getResourceAsStream(fileName), keyStorePassword, certPassword);
-    }
-
-    public static HttpsCertificate fileCertificate(String fileName, String keyStorePassword, String certPassword) {
-        try {
-            return new HttpsCertificate(new FileInputStream(fileName), keyStorePassword, certPassword);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Cannot load certificate from file " + fileName);
-        }
+    public static HttpsCertificate certificate(ContentResource resource, String keyStorePassword, String certPassword) {
+        return new HttpsCertificate(new ByteArrayInputStream(resource.readFor(null)), keyStorePassword, certPassword);
     }
 }

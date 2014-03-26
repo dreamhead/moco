@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.helper;
 
-import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.github.dreamhead.moco.internal.MocoSslContextFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
@@ -21,13 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.internal.HttpsCertificate.pathCertificate;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
-
-    public static final HttpsCertificate CERTIFICATE = pathCertificate("/cert.jks", "mocohttps", "mocohttps");
-
     private static final Executor EXECUTOR;
 
     static {
