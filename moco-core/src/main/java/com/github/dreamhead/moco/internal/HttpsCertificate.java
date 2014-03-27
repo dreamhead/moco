@@ -7,18 +7,18 @@ import java.io.InputStream;
 
 public class HttpsCertificate {
 
-    private final InputStream keyStore;
+    private final ContentResource resource;
     private final String keyStorePassword;
     private final String certPassword;
 
-    public HttpsCertificate(InputStream keyStore, String keyStorePassword, String certPassword) {
-        this.keyStore = keyStore;
+    public HttpsCertificate(ContentResource resource, String keyStorePassword, String certPassword) {
+        this.resource = resource;
         this.keyStorePassword = keyStorePassword;
         this.certPassword = certPassword;
     }
 
     public InputStream getKeyStore() {
-        return keyStore;
+        return new ByteArrayInputStream(resource.readFor(null));
     }
 
     public char[] getKeyStorePassword() {
@@ -30,6 +30,6 @@ public class HttpsCertificate {
     }
 
     public static HttpsCertificate certificate(ContentResource resource, String keyStorePassword, String certPassword) {
-        return new HttpsCertificate(new ByteArrayInputStream(resource.readFor(null)), keyStorePassword, certPassword);
+        return new HttpsCertificate(resource, keyStorePassword, certPassword);
     }
 }
