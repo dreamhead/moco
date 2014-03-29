@@ -226,6 +226,7 @@ project(':moco-runner') {
         injars uberjar.archivePath
         outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
         libraryjars javaRtLib()
+        libraryjars jsseLib()
         configuration file("$rootDir/proguard.pro")
     }
 
@@ -250,6 +251,17 @@ def javaRtLib() {
         }
     }
     javaBase + javaRt
+}
+
+def jsseLib() {
+    def javaBase = System.properties["java.home"];
+    def javaLib = "/lib/jsse.jar"
+    if (System.properties["os.name"].toLowerCase().contains("mac")) {
+        if (!new File(javaBase + javaLib).exists()) {
+            javaLib = "/../Classes/jsse.jar"
+        }
+    }
+    javaBase + javaLib
 }
 
 task wrapper(type: Wrapper) {
