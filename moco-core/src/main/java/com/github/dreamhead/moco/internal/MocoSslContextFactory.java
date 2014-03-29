@@ -25,15 +25,6 @@ public class MocoSslContextFactory {
         }
     }
 
-    private static String getAlgorithm() {
-        String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
-        if (algorithm == null) {
-            return DEFAULT_ALGORITHM;
-        }
-
-        return algorithm;
-    }
-
     public static SSLContext createClientContext() {
         try {
             SSLContext clientContext = SSLContext.getInstance(PROTOCOL);
@@ -42,6 +33,15 @@ public class MocoSslContextFactory {
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize the client-side SSLContext", e);
         }
+    }
+
+    private static String getAlgorithm() {
+        String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
+        if (algorithm == null) {
+            return DEFAULT_ALGORITHM;
+        }
+
+        return algorithm;
     }
 
     private MocoSslContextFactory() {}

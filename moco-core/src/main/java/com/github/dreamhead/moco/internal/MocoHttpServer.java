@@ -26,9 +26,7 @@ public class MocoHttpServer extends Runner {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
-                    SSLEngine sslEngine = MocoSslContextFactory.createServerContext(serverSetting.getCertificate()).createSSLEngine();
-                    sslEngine.setUseClientMode(false);
-                    pipeline.addLast("ssl", new SslHandler(sslEngine));
+                    pipeline.addLast("ssl", sslHandler());
                 }
 
                 pipeline.addLast("decoder", new HttpRequestDecoder());
@@ -38,6 +36,12 @@ public class MocoHttpServer extends Runner {
             }
         });
         serverSetting.setPort(port);
+    }
+
+    private SslHandler sslHandler() {
+        SSLEngine sslEngine = MocoSslContextFactory.createServerContext(serverSetting.getCertificate()).createSSLEngine();
+        sslEngine.setUseClientMode(false);
+        return new SslHandler(sslEngine);
     }
 
     public void stop() {
