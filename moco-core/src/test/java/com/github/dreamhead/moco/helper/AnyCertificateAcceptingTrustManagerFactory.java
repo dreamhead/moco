@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal;
+package com.github.dreamhead.moco.helper;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;

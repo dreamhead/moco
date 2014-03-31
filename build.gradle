@@ -243,25 +243,22 @@ project(':moco-runner') {
 }
 
 def javaRtLib() {
-    def javaBase = System.properties["java.home"];
-    def javaRt = "/lib/rt.jar"
-    if (System.properties["os.name"].toLowerCase().contains("mac")) {
-        if (!new File(javaBase + javaRt).exists()) {
-            javaRt = "/../Classes/classes.jar"
-        }
-    }
-    javaBase + javaRt
+    javaLibPath("/lib/rt.jar", "/../Classes/classes.jar")
 }
 
 def jsseLib() {
+    javaLibPath("/lib/jsse.jar", "/../Classes/jsse.jar")
+}
+
+def javaLibPath(lib, osLib) {
     def javaBase = System.properties["java.home"];
-    def javaLib = "/lib/jsse.jar"
+    def target = lib
     if (System.properties["os.name"].toLowerCase().contains("mac")) {
-        if (!new File(javaBase + javaLib).exists()) {
-            javaLib = "/../Classes/jsse.jar"
+        if (!new File(javaBase + target).exists()) {
+            target = osLib
         }
     }
-    javaBase + javaLib
+    javaBase + target
 }
 
 task wrapper(type: Wrapper) {

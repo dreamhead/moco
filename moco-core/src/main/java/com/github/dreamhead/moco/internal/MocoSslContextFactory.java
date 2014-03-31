@@ -25,16 +25,6 @@ public class MocoSslContextFactory {
         }
     }
 
-    public static SSLContext createClientContext() {
-        try {
-            SSLContext clientContext = SSLContext.getInstance(PROTOCOL);
-            clientContext.init(null, AnyCertificateAcceptingTrustManagerFactory.getTrustManagers(), null);
-            return clientContext;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize the client-side SSLContext", e);
-        }
-    }
-
     private static String getAlgorithm() {
         String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
         if (algorithm == null) {

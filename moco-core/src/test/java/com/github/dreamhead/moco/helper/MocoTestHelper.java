@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.helper;
 
-import com.github.dreamhead.moco.internal.MocoSslContextFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
@@ -16,6 +15,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -23,13 +23,13 @@ import java.util.Map;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
-    private static final Executor EXECUTOR;
+    private final Executor EXECUTOR;
 
-    static {
+    public MocoTestHelper() {
         // make fluent HC accept any certificates so we can test HTTPS calls as well
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", new SSLConnectionSocketFactory(MocoSslContextFactory.createClientContext()))
+                .register("https", new SSLConnectionSocketFactory(createClientContext()))
                 .build();
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
         EXECUTOR = Executor.newInstance(HttpClients.custom().setConnectionManager(cm).build());
@@ -75,5 +75,17 @@ public class MocoTestHelper {
 
     public int getForStatus(String url) throws IOException {
         return EXECUTOR.execute(Request.Get(url)).returnResponse().getStatusLine().getStatusCode();
+    }
+
+    private static final String PROTOCOL = "TLS";
+
+    private static SSLContext createClientContext() {
+        try {
+            SSLContext clientContext = SSLContext.getInstance(PROTOCOL);
+            clientContext.init(null, AnyCertificateAcceptingTrustManagerFactory.getTrustManagers(), null);
+            return clientContext;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize the client-side SSLContext", e);
+        }
     }
 }
