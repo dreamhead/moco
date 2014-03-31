@@ -2,11 +2,18 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.resource.ContentResource;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.Security;
 
 public class HttpsCertificate {
 
+    private static final String PROTOCOL = "TLS";
+    private static final String DEFAULT_ALGORITHM = "SunX509";
     private final ContentResource resource;
     private final String keyStorePassword;
     private final String certPassword;
@@ -17,15 +24,43 @@ public class HttpsCertificate {
         this.certPassword = certPassword;
     }
 
-    public InputStream getKeyStore() {
+    public SSLEngine createSSLEngine() {
+        return createServerContext().createSSLEngine();
+    }
+
+    private SSLContext createServerContext() {
+        try {
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            keyStore.load(this.getKeyStore(), this.getKeyStorePassword());
+            KeyManagerFactory factory = KeyManagerFactory.getInstance(getAlgorithm());
+            factory.init(keyStore, this.getCertPassword());
+
+            SSLContext serverContext = SSLContext.getInstance(PROTOCOL);
+            serverContext.init(factory.getKeyManagers(), null, null);
+            return serverContext;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize the server-side SSLContext", e);
+        }
+    }
+
+    private static String getAlgorithm() {
+        String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
+        if (algorithm == null) {
+            return DEFAULT_ALGORITHM;
+        }
+
+        return algorithm;
+    }
+
+    private InputStream getKeyStore() {
         return new ByteArrayInputStream(resource.readFor(null));
     }
 
-    public char[] getKeyStorePassword() {
+    private char[] getKeyStorePassword() {
         return keyStorePassword.toCharArray();
     }
 
-    public char[] getCertPassword() {
+    private char[] getCertPassword() {
         return certPassword.toCharArray();
     }
 

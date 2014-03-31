@@ -41,7 +41,7 @@ project(':') {
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
-    version = '0.9.1-SNAPSHOT'
+    version = '0.9.2-SNAPSHOT'
     sourceCompatibility = '1.6'
     targetCompatibility = '1.6'
 
@@ -175,7 +175,7 @@ project(':moco-core') {
 
 project(':moco-runner') {
 
-    project.ext {
+    ext {
         logbackVersion = '1.1.1'
         commonsCliVersion = '1.2'
     }

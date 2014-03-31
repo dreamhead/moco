@@ -39,7 +39,8 @@ public class MocoHttpServer extends Runner {
     }
 
     private SslHandler sslHandler() {
-        SSLEngine sslEngine = MocoSslContextFactory.createServerContext(serverSetting.getCertificate()).createSSLEngine();
+        HttpsCertificate certificate = serverSetting.getCertificate();
+        SSLEngine sslEngine = certificate.createSSLEngine();
         sslEngine.setUseClientMode(false);
         return new SslHandler(sslEngine);
     }
