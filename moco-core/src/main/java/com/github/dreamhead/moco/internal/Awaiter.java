@@ -9,7 +9,7 @@ public class Awaiter {
     private final int timeout;
     private Throwable throwable;
 
-    public Awaiter(final Callable<Boolean> condition, int timeout) {
+    private Awaiter(final Callable<Boolean> condition, int timeout) {
         this.timeout = timeout;
         this.latch = new CountDownLatch(1);
         Runnable runner = new Runnable() {
@@ -29,7 +29,7 @@ public class Awaiter {
         executor.scheduleWithFixedDelay(runner, -1, DELAY, TimeUnit.MILLISECONDS);
     }
 
-    public void await() {
+    private void await() {
         try {
             doAwait();
         } catch (Throwable e) {
