@@ -9,9 +9,7 @@
 * Template function
 
 ## More
-* Async
 * REST
-* HTTPS
 
 ## Client
 * Socket
