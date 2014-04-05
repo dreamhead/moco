@@ -11,6 +11,7 @@ public class GlobalSetting {
     private String fileRoot;
     private String env;
     private ResponseSetting response;
+    private HttpsSetting https;
 
     public String getInclude() {
         return join(fileRoot, include);
@@ -30,5 +31,9 @@ public class GlobalSetting {
 
     public ResponseSetting getResponse() {
         return response;
+    }
+
+    public HttpsSetting getHttps() {
+        return https;
     }
 }

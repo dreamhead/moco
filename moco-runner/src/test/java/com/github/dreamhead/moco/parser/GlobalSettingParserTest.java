@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.parser;
 
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.List;
 
 import static com.github.dreamhead.moco.util.Files.join;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,7 +23,7 @@ public class GlobalSettingParserTest {
     @Test
     public void should_parse_settings_file() {
         InputStream stream = getResourceAsStream("settings/settings.json");
-        List<GlobalSetting> globalSettings = parser.parse(stream);
+        ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
         assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
         assertThat(globalSettings.get(1).getInclude(), is(join("src", "test", "resources", "settings", "bar.json")));
@@ -32,7 +32,7 @@ public class GlobalSettingParserTest {
     @Test
     public void should_parse_settings_file_with_context() {
         InputStream stream = getResourceAsStream("settings/context-settingss.json");
-        List<GlobalSetting> globalSettings = parser.parse(stream);
+        ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
         assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
@@ -43,7 +43,7 @@ public class GlobalSettingParserTest {
     @Test
     public void should_parse_setting_file_with_file_root() {
         InputStream stream = getResourceAsStream("settings/fileroot-settings.json");
-        List<GlobalSetting> globalSettings = parser.parse(stream);
+        ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
         assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "fileroot.json")));
         assertThat(globalSettings.get(0).getContext(), is("/fileroot"));
@@ -53,7 +53,7 @@ public class GlobalSettingParserTest {
     @Test
     public void should_parse_setting_file_with_env() {
         InputStream stream = getResourceAsStream("settings/env-settings.json");
-        List<GlobalSetting> globalSettings = parser.parse(stream);
+        ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
         assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
