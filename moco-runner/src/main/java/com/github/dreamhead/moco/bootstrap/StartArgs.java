@@ -75,7 +75,7 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs(getPort(port), getShutdownPort(shutdownPort), config, globalSettings, env);
+        return new StartArgs(getPort(port), getPort(shutdownPort), config, globalSettings, env);
     }
 
     private static Options createMocoOptions() {

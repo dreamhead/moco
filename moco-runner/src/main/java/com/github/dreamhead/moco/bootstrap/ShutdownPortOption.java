@@ -20,8 +20,4 @@ public class ShutdownPortOption {
         opt.setRequired(false);
         return opt;
     }
-
-    public static Integer getShutdownPort(String shutdownPort) {
-        return shutdownPort == null ? null : Integer.valueOf(shutdownPort);
-    }
 }
