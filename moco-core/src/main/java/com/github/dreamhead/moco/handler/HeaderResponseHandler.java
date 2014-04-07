@@ -20,7 +20,7 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         FullHttpResponse response = context.getResponse();
         if (detector.hasHeader(response, name)) {
             response.headers().remove(name);

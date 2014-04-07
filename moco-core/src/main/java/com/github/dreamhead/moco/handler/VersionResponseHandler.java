@@ -12,7 +12,7 @@ public class VersionResponseHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         HttpVersion httpVersion = HttpVersion.valueOf(new String(resource.readFor(context.getRequest())));
         context.getResponse().setProtocolVersion(httpVersion);
     }

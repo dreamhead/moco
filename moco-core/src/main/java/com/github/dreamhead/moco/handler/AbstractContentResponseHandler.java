@@ -13,10 +13,10 @@ import static io.netty.handler.codec.http.HttpHeaders.addHeader;
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
-    protected abstract void writeContentResponse(HttpRequest request, ByteBuf buffer);
+    protected abstract void writeContentResponse(final HttpRequest request, ByteBuf buffer);
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         FullHttpResponse response = context.getResponse();
         ByteBuf buffer = Unpooled.buffer();
         writeContentResponse(context.getRequest(), buffer);
@@ -27,7 +27,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         }
     }
 
-    protected String getContentType(HttpRequest request) {
+    protected String getContentType(final HttpRequest request) {
         return "text/html; charset=UTF-8";
     }
 }

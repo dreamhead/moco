@@ -15,12 +15,12 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(HttpRequest request, ByteBuf buffer) {
+    protected void writeContentResponse(final HttpRequest request, ByteBuf buffer) {
         buffer.writeBytes(this.resource.readFor(request));
     }
 
     @Override
-    protected String getContentType(HttpRequest request) {
+    protected String getContentType(final HttpRequest request) {
         return resource.getContentType();
     }
 

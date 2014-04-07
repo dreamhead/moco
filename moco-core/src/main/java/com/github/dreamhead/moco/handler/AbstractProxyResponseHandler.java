@@ -149,7 +149,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         writeToResponse(context.getRequest(), context.getResponse());
     }
 

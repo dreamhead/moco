@@ -15,7 +15,7 @@ public class AndResponseHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         for (ResponseHandler handler : handlers) {
             handler.writeToResponse(context);
         }

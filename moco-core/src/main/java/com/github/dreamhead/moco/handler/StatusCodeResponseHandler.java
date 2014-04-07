@@ -11,7 +11,7 @@ public class StatusCodeResponseHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         context.getResponse().setStatus(status);
     }
 }

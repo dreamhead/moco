@@ -12,7 +12,7 @@ public class ProcedureResponseHandler extends AbstractResponseHandler implements
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         this.procedure.execute();
     }
 }
