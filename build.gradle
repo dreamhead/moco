@@ -176,7 +176,7 @@ project(':moco-core') {
 project(':moco-runner') {
 
     ext {
-        logbackVersion = '1.1.1'
+        logbackVersion = '1.1.2'
         commonsCliVersion = '1.2'
     }
 
