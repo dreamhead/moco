@@ -3,17 +3,17 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.resource.Resource;
 
 public interface ResponseSetting {
-    ResponseSetting response(String content);
+    ResponseSetting response(final String content);
 
-    ResponseSetting response(Resource resource);
+    ResponseSetting response(final Resource resource);
 
-    ResponseSetting response(ResponseHandler handler);
+    ResponseSetting response(final ResponseHandler handler);
 
-    ResponseSetting response(MocoProcedure procedure);
+    ResponseSetting response(final MocoProcedure procedure);
 
-    ResponseSetting response(ResponseHandler... handlers);
+    ResponseSetting response(final ResponseHandler... handlers);
 
-    ResponseSetting redirectTo(String url);
+    ResponseSetting redirectTo(final String url);
 
-    ResponseSetting on(MocoEventTrigger trigger);
+    ResponseSetting on(final MocoEventTrigger trigger);
 }

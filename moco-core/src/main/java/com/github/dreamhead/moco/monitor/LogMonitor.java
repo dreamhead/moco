@@ -13,17 +13,17 @@ public class LogMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onMessageArrived(HttpRequest request) {
+    public void onMessageArrived(final HttpRequest request) {
         writer.write(formatter.format(request));
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(final Exception e) {
         writer.write(formatter.format(e));
     }
 
     @Override
-    public void onMessageLeave(FullHttpResponse response) {
+    public void onMessageLeave(final FullHttpResponse response) {
         writer.write(formatter.format(response));
     }
 }

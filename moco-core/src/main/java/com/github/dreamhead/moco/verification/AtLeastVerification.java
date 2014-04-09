@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco.verification;
 
 public class AtLeastVerification extends AbstractVerification {
-    public AtLeastVerification(int count) {
+    public AtLeastVerification(final int count) {
         super(count);
     }
 
     @Override
-    protected boolean meet(int size) {
+    protected boolean meet(final int size) {
         return size >= count;
     }
 }

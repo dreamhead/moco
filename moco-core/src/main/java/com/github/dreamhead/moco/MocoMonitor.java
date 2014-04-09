@@ -5,14 +5,14 @@ import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface MocoMonitor {
     @Subscribe
-    void onMessageArrived(HttpRequest request);
+    void onMessageArrived(final HttpRequest request);
 
     @Subscribe
-    void onException(Exception e);
+    void onException(final Exception e);
 
     @Subscribe
-    void onMessageLeave(FullHttpResponse response);
+    void onMessageLeave(final FullHttpResponse response);
 
     @Subscribe
-    void onUnexpectedMessage(HttpRequest request);
+    void onUnexpectedMessage(final HttpRequest request);
 }

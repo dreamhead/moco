@@ -1,5 +1,5 @@
 package com.github.dreamhead.moco;
 
 public interface VerificationMode {
-    void verify(VerificationData data);
+    void verify(final VerificationData data);
 }

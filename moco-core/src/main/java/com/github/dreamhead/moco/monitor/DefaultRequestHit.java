@@ -12,22 +12,22 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     private List<HttpRequest> requests = newArrayList();
 
     @Override
-    public void onMessageArrived(HttpRequest request) {
+    public void onMessageArrived(final HttpRequest request) {
         this.requests.add(request);
     }
 
     @Override
-    public void onUnexpectedMessage(HttpRequest request) {
+    public void onUnexpectedMessage(final HttpRequest request) {
         this.unexpectedRequests.add(request);
     }
 
     @Override
-    public void verify(UnexpectedRequestMatcher matcher, VerificationMode mode) {
+    public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
         mode.verify(new VerificationData(copyOf(unexpectedRequests), matcher, "expect unexpected request hit %d times but %d times"));
     }
 
     @Override
-    public void verify(RequestMatcher matcher, VerificationMode mode) {
+    public void verify(final RequestMatcher matcher, final VerificationMode mode) {
         mode.verify(new VerificationData(copyOf(requests), matcher, "expect request hit %d times but %d times"));
     }
 }

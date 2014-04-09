@@ -6,18 +6,18 @@ import io.netty.handler.codec.http.FullHttpResponse;
 
 public abstract class AbstractMonitor implements MocoMonitor {
     @Override
-    public void onMessageArrived(HttpRequest request) {
+    public void onMessageArrived(final HttpRequest request) {
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(final Exception e) {
     }
 
     @Override
-    public void onMessageLeave(FullHttpResponse response) {
+    public void onMessageLeave(final FullHttpResponse response) {
     }
 
     @Override
-    public void onUnexpectedMessage(HttpRequest request) {
+    public void onUnexpectedMessage(final HttpRequest request) {
     }
 }

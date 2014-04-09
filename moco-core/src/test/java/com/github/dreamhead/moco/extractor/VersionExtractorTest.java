@@ -26,7 +26,7 @@ public class VersionExtractorTest {
     }
 
 	@Test
-	public void shoud_extract_version() {
+	public void should_extract_version() {
         when(request.getVersion()).thenReturn(HttpProtocolVersion.VERSION_1_0);
 		assertThat(extractor.extract(request).get(),
 				is(HttpVersion.HTTP_1_0.toString()));
