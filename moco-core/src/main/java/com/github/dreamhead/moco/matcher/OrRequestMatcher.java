@@ -10,7 +10,7 @@ public class OrRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         for (RequestMatcher matcher : matchers) {
             if (matcher.match(request)) {
                 return true;

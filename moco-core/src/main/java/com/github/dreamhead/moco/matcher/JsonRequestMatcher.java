@@ -17,19 +17,19 @@ public class JsonRequestMatcher implements RequestMatcher {
     private final Resource resource;
     private final ObjectMapper mapper;
 
-    public JsonRequestMatcher(RequestExtractor<String> extractor, Resource resource) {
+    public JsonRequestMatcher(final RequestExtractor<String> extractor, final Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.mapper = new ObjectMapper();
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         Optional<String> content = extractor.extract(request);
         return content.isPresent() && doMatch(request, content.get());
     }
 
-    private boolean doMatch(HttpRequest request, String content) {
+    private boolean doMatch(final HttpRequest request, final String content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
             JsonNode resourceNode = mapper.readTree(resource.readFor(request));

@@ -5,9 +5,9 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 
 public class ProcedureResponseHandler extends AbstractResponseHandler implements ResponseHandler {
-    private MocoProcedure procedure;
+    private final MocoProcedure procedure;
 
-    public ProcedureResponseHandler(MocoProcedure procedure) {
+    public ProcedureResponseHandler(final MocoProcedure procedure) {
         this.procedure = procedure;
     }
 

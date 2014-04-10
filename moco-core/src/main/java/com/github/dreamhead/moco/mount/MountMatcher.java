@@ -24,7 +24,7 @@ public class MountMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         String relativePath = extractor.extract(request).get();
         return isTarget(relativePath) && new File(dir, relativePath).exists();
     }

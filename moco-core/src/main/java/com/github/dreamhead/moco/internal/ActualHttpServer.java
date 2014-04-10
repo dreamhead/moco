@@ -115,13 +115,13 @@ public class ActualHttpServer extends HttpConfiguration {
     private static RequestMatcher anyRequest() {
         return new RequestMatcher() {
             @Override
-            public boolean match(HttpRequest request) {
+            public boolean match(final HttpRequest request) {
                 return true;
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            public RequestMatcher apply(MocoConfig config) {
+            public RequestMatcher apply(final MocoConfig config) {
                 if (config.isFor(MocoConfig.URI_ID)) {
                     return context((String)config.apply(""));
                 }

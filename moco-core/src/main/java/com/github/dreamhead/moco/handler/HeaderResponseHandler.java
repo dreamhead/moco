@@ -14,7 +14,7 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
     private final String name;
     private final Resource resource;
 
-    public HeaderResponseHandler(String name, Resource resource) {
+    public HeaderResponseHandler(final String name, final Resource resource) {
         this.name = name;
         this.resource = resource;
     }

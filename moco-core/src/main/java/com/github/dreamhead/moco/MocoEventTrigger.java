@@ -4,12 +4,12 @@ public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger>{
     private final MocoEvent event;
     private final MocoEventAction action;
 
-    public MocoEventTrigger(MocoEvent event, MocoEventAction action) {
+    public MocoEventTrigger(final MocoEvent event, final MocoEventAction action) {
         this.event = event;
         this.action = action;
     }
 
-    public boolean isFor(MocoEvent event) {
+    public boolean isFor(final MocoEvent event) {
         return this.event == event;
     }
 
@@ -18,7 +18,7 @@ public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger>{
     }
 
     @Override
-    public MocoEventTrigger apply(MocoConfig config) {
+    public MocoEventTrigger apply(final MocoConfig config) {
         MocoEventAction action = this.action.apply(config);
         if (action != this.action) {
             return new MocoEventTrigger(event, action);

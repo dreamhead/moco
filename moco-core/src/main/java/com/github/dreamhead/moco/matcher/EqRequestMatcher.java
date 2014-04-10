@@ -18,7 +18,7 @@ public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     }
 
     @Override
-    protected RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource) {
+    protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
         return new EqRequestMatcher<T>(extractor, resource);
     }
 }

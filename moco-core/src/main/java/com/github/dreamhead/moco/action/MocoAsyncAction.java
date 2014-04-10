@@ -29,7 +29,7 @@ public class MocoAsyncAction implements MocoEventAction {
     }
 
     @Override
-    public MocoEventAction apply(MocoConfig config) {
+    public MocoEventAction apply(final MocoConfig config) {
         MocoEventAction action = this.action.apply(config);
         if (this.action != action) {
             return new MocoAsyncAction(action, procedure);

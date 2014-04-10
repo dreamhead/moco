@@ -24,7 +24,7 @@ public class MocoRequestAction implements MocoEventAction {
     private final String method;
     private final Optional<ContentResource> content;
 
-    public MocoRequestAction(String url, String method, Optional<ContentResource> content) {
+    public MocoRequestAction(final String url, final String method, final Optional<ContentResource> content) {
         this.url = url;
         this.method = method;
         this.content = content;
@@ -58,7 +58,7 @@ public class MocoRequestAction implements MocoEventAction {
     }
 
     @Override
-    public MocoEventAction apply(MocoConfig config) {
+    public MocoEventAction apply(final MocoConfig config) {
         if (this.content.isPresent()) {
             return applyContent(config, this.content.get());
         }
@@ -66,7 +66,7 @@ public class MocoRequestAction implements MocoEventAction {
         return this;
     }
 
-    private MocoEventAction applyContent(MocoConfig config, ContentResource originalContent) {
+    private MocoEventAction applyContent(final MocoConfig config, final ContentResource originalContent) {
         Resource content = originalContent.apply(config);
         if (content != originalContent) {
             return new MocoRequestAction(this.url, this.method, of((ContentResource) content));

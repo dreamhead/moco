@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 public class StatusCodeResponseHandler extends AbstractResponseHandler {
     private final HttpResponseStatus status;
 
-    public StatusCodeResponseHandler(int code) {
+    public StatusCodeResponseHandler(final int code) {
         status = HttpResponseStatus.valueOf(code);
     }
 

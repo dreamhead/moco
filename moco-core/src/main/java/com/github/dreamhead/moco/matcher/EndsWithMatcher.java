@@ -16,7 +16,7 @@ public class EndsWithMatcher<T> extends AbstractOperatorMatcher<T> {
     }
 
     @Override
-    protected RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource) {
+    protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
         return new StartsWithMatcher<T>(extractor, resource);
     }
 }

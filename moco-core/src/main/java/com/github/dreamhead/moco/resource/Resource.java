@@ -9,14 +9,14 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
     private ResourceConfigApplier configApplier;
     protected ResourceReader reader;
 
-    public Resource(Identifiable identifiable, ResourceConfigApplier configApplier, ResourceReader reader) {
+    public Resource(final Identifiable identifiable, final ResourceConfigApplier configApplier, final ResourceReader reader) {
         this.identifiable = identifiable;
         this.configApplier = configApplier;
         this.reader = reader;
     }
 
     @Override
-    public Resource apply(MocoConfig config) {
+    public Resource apply(final MocoConfig config) {
         return configApplier.apply(config, this);
     }
 

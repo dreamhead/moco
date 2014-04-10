@@ -24,14 +24,14 @@ public class XmlRequestMatcher implements RequestMatcher {
     private final RequestExtractor<String> extractor;
     private final Resource resource;
 
-    public XmlRequestMatcher(RequestExtractor<String> extractor, Resource resource) {
+    public XmlRequestMatcher(final RequestExtractor<String> extractor, final Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.documentBuilder = documentBuilder();
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
             Document resourceDocument = getResourceDocument(null, this.resource);

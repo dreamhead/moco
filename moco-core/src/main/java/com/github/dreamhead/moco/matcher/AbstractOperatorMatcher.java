@@ -9,7 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
-    protected abstract RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource);
+    protected abstract RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource);
 
     private final RequestExtractor<T> extractor;
     private final Resource expected;
@@ -22,7 +22,7 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         Optional<T> extractContent = extractor.extract(request);
         if (!extractContent.isPresent()) {
             return false;

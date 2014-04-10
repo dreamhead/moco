@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.HttpVersion;
 public class VersionResponseHandler extends AbstractResponseHandler {
     private final Resource resource;
 
-    public VersionResponseHandler(Resource resource) {
+    public VersionResponseHandler(final Resource resource) {
         this.resource = resource;
     }
 

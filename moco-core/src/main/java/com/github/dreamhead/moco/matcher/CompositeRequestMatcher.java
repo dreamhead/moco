@@ -14,7 +14,7 @@ public abstract class CompositeRequestMatcher implements RequestMatcher {
         this.matchers = matchers;
     }
 
-    protected Iterable<RequestMatcher> applyToMatchers(MocoConfig config) {
+    protected Iterable<RequestMatcher> applyToMatchers(final MocoConfig config) {
         FluentIterable<RequestMatcher> appliedMatchers = from(matchers).transform(applyConfig(config));
         if (matchers.equals(appliedMatchers)) {
             return this.matchers;

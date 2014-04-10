@@ -7,17 +7,17 @@ import com.github.dreamhead.moco.RequestMatcher;
 public class NotRequestMatcher implements RequestMatcher {
     private final RequestMatcher matcher;
 
-    public NotRequestMatcher(RequestMatcher matcher) {
+    public NotRequestMatcher(final RequestMatcher matcher) {
         this.matcher = matcher;
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         return !matcher.match(request);
     }
 
     @Override
-    public RequestMatcher apply(MocoConfig config) {
+    public RequestMatcher apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = matcher.apply(config);
         if (appliedMatcher == this.matcher) {
             return this;
