@@ -7,8 +7,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-
 import static io.netty.handler.codec.http.HttpHeaders.addHeader;
+import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
@@ -21,7 +21,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         ByteBuf buffer = Unpooled.buffer();
         writeContentResponse(context.getRequest(), buffer);
         response.content().writeBytes(buffer);
-        addHeader(response, HttpHeaders.CONTENT_LENGTH, buffer.writerIndex());
+        setContentLength(response, response.content().writerIndex());
         if (!detector.hasContentType(response)) {
             addHeader(response, HttpHeaders.CONTENT_TYPE, getContentType(context.getRequest()));
         }
