@@ -10,7 +10,7 @@ import static com.google.common.collect.FluentIterable.from;
 public abstract class CompositeRequestMatcher implements RequestMatcher {
     protected final Iterable<RequestMatcher> matchers;
 
-    public CompositeRequestMatcher(Iterable<RequestMatcher> matchers) {
+    public CompositeRequestMatcher(final Iterable<RequestMatcher> matchers) {
         this.matchers = matchers;
     }
 

@@ -5,12 +5,12 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 
 public class AndRequestMatcher extends CompositeRequestMatcher {
-    public AndRequestMatcher(Iterable<RequestMatcher> matchers) {
+    public AndRequestMatcher(final Iterable<RequestMatcher> matchers) {
         super(matchers);
     }
 
     @Override
-    public boolean match(HttpRequest request) {
+    public boolean match(final HttpRequest request) {
         for (RequestMatcher matcher : matchers) {
             if (!matcher.match(request)) {
                 return false;
