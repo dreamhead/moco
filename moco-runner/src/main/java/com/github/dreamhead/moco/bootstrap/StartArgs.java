@@ -85,6 +85,9 @@ public class StartArgs extends ShutdownPortOption {
         options.addOption(shutdownPortOption());
         options.addOption(settingsOption());
         options.addOption(envOption());
+        options.addOption(httpsCertificate());
+        options.addOption(keyStore());
+        options.addOption(cert());
         return options;
     }
 
@@ -114,6 +117,27 @@ public class StartArgs extends ShutdownPortOption {
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;
+    }
+
+    private static Option httpsCertificate() {
+        Option option = new Option(null, "https", true, "Https certificate filename");
+        option.setType(String.class);
+        option.setRequired(false);
+        return option;
+    }
+
+    private static Option keyStore() {
+        Option option = new Option(null, "keystore", true, "Key store password");
+        option.setType(String.class);
+        option.setRequired(false);
+        return option;
+    }
+
+    private static Option cert() {
+        Option option = new Option(null, "cert", true, "Cert password");
+        option.setType(String.class);
+        option.setRequired(false);
+        return option;
     }
 
     public static Integer getPort(String port) {
