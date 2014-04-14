@@ -32,7 +32,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "}]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
-        runner = factory.createRunner(new StartArgs(port(), 9090, null, setting.getAbsolutePath(), null));
+        runner = factory.createRunner(new StartArgs(port(), 9090, null, setting.getAbsolutePath(), null, null));
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 

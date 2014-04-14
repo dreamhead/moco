@@ -85,11 +85,11 @@ public class SettingRunnerTest {
     }
 
     private StartArgs createStartArgs(int port, String env) {
-        return new StartArgs(port, null, null, null, env);
+        return new StartArgs(port, null, null, null, env, null);
     }
 
     private StartArgs createStartArgs(int port) {
-        return new StartArgs(port, null, null, null, null);
+        return new StartArgs(port, null, null, null, null, null);
     }
     
     private InputStream getResourceAsStream(String filename) {

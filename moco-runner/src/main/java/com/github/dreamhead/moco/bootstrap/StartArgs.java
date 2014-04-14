@@ -13,13 +13,15 @@ public class StartArgs extends ShutdownPortOption {
     private final Optional<String> configurationFile;
     private final Optional<String> settings;
     private final Optional<String> env;
+    private final Optional<HttpsArg> httpsArg;
 
-    public StartArgs(Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
+    public StartArgs(Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
         super(shutdownPort);
         this.port = fromNullable(port);
         this.configurationFile = fromNullable(configurationFile);
         this.settings = fromNullable(globalSettings);
         this.env = fromNullable(env);
+        this.httpsArg = fromNullable(httpsArg);
     }
 
     public Optional<Integer> getPort() {
@@ -40,6 +42,10 @@ public class StartArgs extends ShutdownPortOption {
 
     public Optional<String> getEnv() {
         return env;
+    }
+
+    public boolean isHttps() {
+        return httpsArg.isPresent();
     }
 
     public static StartArgs parse(String... args) {
@@ -75,7 +81,22 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs(getPort(port), getPort(shutdownPort), config, globalSettings, env);
+        return new StartArgs(getPort(port), getPort(shutdownPort), config, globalSettings, env, httpsArg(cmd));
+    }
+
+    private static HttpsArg httpsArg(CommandLine cmd) {
+        String https = cmd.getOptionValue("https");
+        String keystore = cmd.getOptionValue("keystore");
+        String cert = cmd.getOptionValue("cert");
+        if (https != null) {
+            if (keystore == null || cert == null) {
+                throw new ParseArgException("keystore and cert must be set for HTTPS");
+            }
+
+            return new HttpsArg(https, keystore, cert);
+        }
+
+        return null;
     }
 
     private static Options createMocoOptions() {
