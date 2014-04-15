@@ -21,8 +21,8 @@ allprojects {
 project(':') {
     idea {
         project {
-            jdkName = '1.6'
-            languageLevel = '1.6'
+            jdkName = JavaVersion.VERSION_1_6
+            languageLevel = JavaVersion.VERSION_1_6
 
             ipr.withXml { xml ->
                 def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping
@@ -42,8 +42,8 @@ subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
     version = '0.9.2-SNAPSHOT'
-    sourceCompatibility = '1.6'
-    targetCompatibility = '1.6'
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
 
     repositories {
         mavenCentral()
