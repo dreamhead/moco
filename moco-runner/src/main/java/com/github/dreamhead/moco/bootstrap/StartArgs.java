@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
@@ -46,6 +47,10 @@ public class StartArgs extends ShutdownPortOption {
 
     public boolean isHttps() {
         return httpsArg.isPresent();
+    }
+
+    public HttpsCertificate getHttpsCertificate() {
+        return httpsArg.get().getCertificate();
     }
 
     public static StartArgs parse(String... args) {

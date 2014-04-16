@@ -45,7 +45,7 @@ public class RunnerFactory {
 
     private Runner createDynamicConfigurationRunner(StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
-        final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs.getPort());
+        final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs);
         MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createConfigurationWatcher(configuration, fileRunner);
         return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
     }

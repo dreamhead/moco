@@ -22,6 +22,7 @@ public class SettingRunner implements Runner {
     private final Optional<Integer> port;
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
+    private final StartArgs startArgs;
     private JsonRunner jsonRunner;
     private final FluentIterable<File> files;
 
@@ -30,6 +31,7 @@ public class SettingRunner implements Runner {
         this.env = args.getEnv();
         this.globalSettings = settingParser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
+        this.startArgs = args;
     }
 
     public Iterable<File> getFiles() {
@@ -37,7 +39,7 @@ public class SettingRunner implements Runner {
     }
 
     public void run() {
-        jsonRunner = newJsonRunnerWithSetting(from(globalSettings).filter(byEnv(this.env)).transform(toRunnerSetting()), port);
+        jsonRunner = newJsonRunnerWithSetting(from(globalSettings).filter(byEnv(this.env)).transform(toRunnerSetting()), startArgs);
         jsonRunner.run();
     }
 

@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.google.common.base.Function;
@@ -20,8 +21,8 @@ public class JsonRunner implements Runner {
     private final StandaloneRunner runner = new StandaloneRunner();
     private final HttpServer httpServer;
 
-    private JsonRunner(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
-        this.httpServer = createHttpServer(settings, port);
+    private JsonRunner(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        this.httpServer = createHttpServer(settings, startArgs);
     }
 
     public void run() {
@@ -32,21 +33,28 @@ public class JsonRunner implements Runner {
         runner.stop();
     }
 
-    private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
-        HttpServer server = createBaseHttpServer(settings, port);
+    private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        HttpServer server = createBaseHttpServer(settings, startArgs);
         server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header("Content-Type", "image/png"));
         return server;
     }
 
-    private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
-        HttpServer server = ActualHttpServer.createLogServer(port);
+    private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        HttpServer server = createServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = httpServerParser.parseServer(setting.getStream(), port, toConfigs(setting));
+            HttpServer parsedServer = httpServerParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
             server = mergeServer(server, parsedServer);
         }
 
         return server;
+    }
+
+    private HttpServer createServer(StartArgs startArgs) {
+        if (startArgs.isHttps()) {
+            ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate());
+        }
+        return ActualHttpServer.createLogServer(startArgs.getPort());
     }
 
     private MocoConfig[] toConfigs(RunnerSetting setting) {
@@ -70,8 +78,8 @@ public class JsonRunner implements Runner {
         return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 
-    public static JsonRunner newJsonRunnerWithStreams(Iterable<? extends InputStream> streams, Optional<Integer> port) {
-        return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), port);
+    public static JsonRunner newJsonRunnerWithStreams(Iterable<? extends InputStream> streams, StartArgs startArgs) {
+        return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), startArgs);
     }
 
     private static Function<InputStream, RunnerSetting> toRunnerSetting() {
@@ -83,7 +91,7 @@ public class JsonRunner implements Runner {
         };
     }
 
-    public static JsonRunner newJsonRunnerWithSetting(Iterable<? extends RunnerSetting> settings, Optional<Integer> port) {
-        return new JsonRunner(settings, port);
+    public static JsonRunner newJsonRunnerWithSetting(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        return new JsonRunner(settings, startArgs);
     }
 }

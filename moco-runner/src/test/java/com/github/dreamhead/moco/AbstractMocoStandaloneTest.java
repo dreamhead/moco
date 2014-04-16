@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.io.Resources;
@@ -11,7 +12,6 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
-import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class AbstractMocoStandaloneTest {
@@ -39,6 +39,6 @@ public class AbstractMocoStandaloneTest {
         for (String resourceName : resourceNames) {
             streams.add(Resources.getResource(resourceName).openStream());
         }
-        return newJsonRunnerWithStreams(streams, of(port()));
+        return newJsonRunnerWithStreams(streams, new StartArgs(port(), null, null, null, null, null));
     }
 }
