@@ -66,7 +66,7 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public HttpServer mergeHttpServer(ActualHttpServer thatServer) {
-        ActualHttpServer newServer = createLogServer(this.port);
+        ActualHttpServer newServer = createBaseServer(this);
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
@@ -77,6 +77,14 @@ public class ActualHttpServer extends HttpConfiguration {
         newServer.addEvents(thatServer.eventTriggers);
 
         return newServer;
+    }
+
+    private ActualHttpServer createBaseServer(ActualHttpServer actualHttpServer) {
+        if (actualHttpServer.isSecure()) {
+            return createHttpsLogServer(actualHttpServer.port, actualHttpServer.certificate.get());
+        }
+
+        return createLogServer(actualHttpServer.port);
     }
 
     private void addEvents(List<MocoEventTrigger> eventTriggers) {

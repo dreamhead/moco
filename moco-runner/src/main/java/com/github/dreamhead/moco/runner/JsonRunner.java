@@ -52,7 +52,7 @@ public class JsonRunner implements Runner {
 
     private HttpServer createServer(StartArgs startArgs) {
         if (startArgs.isHttps()) {
-            ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate());
+            return ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate());
         }
         return ActualHttpServer.createLogServer(startArgs.getPort());
     }
@@ -75,6 +75,7 @@ public class JsonRunner implements Runner {
 
     private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {
         ActualHttpServer thisServer = (ActualHttpServer) server;
+        System.out.println("Merge Server :" + thisServer.isSecure());
         return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 
