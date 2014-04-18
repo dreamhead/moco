@@ -1,5 +1,8 @@
 # Release
 
+## Usage
+* HTTPS support
+
 ## APIs
 * Http Protocol Version in Java API.
 * More operators:
