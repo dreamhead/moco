@@ -134,6 +134,22 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.
 
+## HTTPS
+
+HTTPS is also a mainstream usage for HTTP protocol. Moco supports HTTPS as well. The main difference in API is that a certificate is required for HTTPS.
+On the other hand, **httpsServer** should be used.
+
+```java
+final HttpsCertificate certificate = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+final HttpsServer server = httpsServer(certificate, hit);
+```
+
+If you want to use HTTPS for standalone server. certificate information could be provided as CLI arguments.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
+```
+
 ## Maven Plugin
 
 Moco also can be used as Maven plugin.
