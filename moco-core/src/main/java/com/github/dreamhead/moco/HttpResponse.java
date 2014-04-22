@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.collect.ImmutableMap;
 
 public interface HttpResponse {
-    String getVersion();
+    HttpProtocolVersion getVersion();
 
     String getContent();
 
