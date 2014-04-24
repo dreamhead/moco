@@ -5,6 +5,12 @@ That means if we get the expected request and then return our response. Now, you
 
 **WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
+## Composite Java API design
+Moco Java API is designed in functional fashion which means you can composite any request or response easily.
+```java
+server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(with(text("foo")), header("Content-Type", "text/html"));
+```
+
 ## Request
 
 ### Content
