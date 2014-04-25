@@ -5,7 +5,7 @@ That means if we get the expected request and then return our response. Now, you
 
 **WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
-## Composite Java API design
+## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
 ```java
 server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(with(text("foo")), header("Content-Type", "text/html"));
@@ -970,7 +970,8 @@ server.get(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to("http://loc
 }
 ```
 
-Same with single url, you can also specify a failover
+Same with single url, you can also specify a failover.
+
 * Java API
 ```java
 server.request(match(uri("/proxy/.*")))
@@ -1028,6 +1029,7 @@ server.request(match(uri("/proxy/.*")))
 ```
 
 As you may find, we often set request match same context with response, so Moco gives us a shortcut to do that.
+
 * Java API
 ```java
 server.proxy(from("/proxy").to("http://localhost:12306/target"));
@@ -1044,6 +1046,7 @@ server.proxy(from("/proxy").to("http://localhost:12306/target"));
 ```
 
 Same with failover
+
 * Java API
 ```java
 server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("failover.response"));
@@ -1062,6 +1065,7 @@ server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("fail
 ```
 
 and playback
+
 * Java API
 ```java
 server.proxy(from("/proxy").to("http://localhost:12306/unknown"), playback("playback.response"));
