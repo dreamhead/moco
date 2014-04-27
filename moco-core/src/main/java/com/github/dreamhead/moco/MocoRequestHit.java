@@ -24,17 +24,17 @@ public class MocoRequestHit {
         return times(1);
     }
 
-    public static VerificationMode times(int count) {
+    public static VerificationMode times(final int count) {
         checkArgument(count >= 0, "Times count must not be less than zero");
         return new TimesVerification(count);
     }
 
-    public static VerificationMode atLeast(int count) {
+    public static VerificationMode atLeast(final int count) {
         checkArgument(count > 0, "Times count must be greater than zero");
         return new AtLeastVerification(count);
     }
 
-    public static VerificationMode atMost(int count) {
+    public static VerificationMode atMost(final int count) {
         checkArgument(count > 0, "Times count must be greater than zero");
         return new AtMostVerification(count);
     }

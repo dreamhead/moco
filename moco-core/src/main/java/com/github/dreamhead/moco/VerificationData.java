@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import io.netty.handler.codec.http.FullHttpRequest;
 
 import static java.lang.String.format;
 
@@ -18,7 +17,7 @@ public class VerificationData {
         this.mismatchFormat = mismatchFormat;
     }
 
-    public String mismatchDescription(int actualSize, int expectedCount) {
+    public String mismatchDescription(final int actualSize, final int expectedCount) {
         return format(mismatchFormat, expectedCount, actualSize);
     }
 

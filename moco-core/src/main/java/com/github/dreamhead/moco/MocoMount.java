@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.mount.MountTo;
 import static org.apache.commons.io.FilenameUtils.wildcardMatch;
 
 public class MocoMount {
-    public static MountTo to(String target) {
+    public static MountTo to(final String target) {
         return new MountTo(target);
     }
 
@@ -19,7 +19,7 @@ public class MocoMount {
         };
     }
 
-    public static MountPredicate exclude(String wildcard) {
+    public static MountPredicate exclude(final String wildcard) {
         return not(include(wildcard));
     }
 

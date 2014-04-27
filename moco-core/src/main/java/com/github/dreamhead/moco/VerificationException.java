@@ -5,15 +5,15 @@ public class VerificationException extends RuntimeException {
         super();
     }
 
-    public VerificationException(String s) {
-        super(s);
+    public VerificationException(final String message) {
+        super(message);
     }
 
-    public VerificationException(String s, Throwable throwable) {
-        super(s, throwable);
+    public VerificationException(final String message, final Throwable throwable) {
+        super(message, throwable);
     }
 
-    public VerificationException(Throwable throwable) {
+    public VerificationException(final Throwable throwable) {
         super(throwable);
     }
 }

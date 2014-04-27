@@ -3,15 +3,15 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.internal.*;
 
 public abstract class Runner {
-    public static void running(HttpServer httpServer, Runnable runnable) throws Exception {
+    public static void running(final HttpServer httpServer, final Runnable runnable) throws Exception {
         doRunning(runner(httpServer), runnable);
     }
 
-    public static void running(HttpsServer httpServer, Runnable runnable) throws Exception {
+    public static void running(final HttpsServer httpServer, final Runnable runnable) throws Exception {
         doRunning(runner(httpServer), runnable);
     }
 
-    private static void doRunning(Runner server, Runnable runnable) throws Exception {
+    private static void doRunning(final Runner server, final Runnable runnable) throws Exception {
         try {
             server.start();
             runnable.run();
@@ -20,7 +20,7 @@ public abstract class Runner {
         }
     }
 
-    public static Runner runner(HttpServer server) {
+    public static Runner runner(final HttpServer server) {
         return new MocoHttpServer((ActualHttpServer) server);
     }
 
