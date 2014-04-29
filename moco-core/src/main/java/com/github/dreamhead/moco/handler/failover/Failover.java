@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 
+import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
+
 public class Failover {
     public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER, FailoverStrategy.FAILOVER);
 
@@ -20,7 +22,11 @@ public class Failover {
     }
 
     public void failover(HttpRequest request, FullHttpResponse response) {
-        executor.failover(request, response);
+        writeResponse(response, failover(request));
+    }
+
+    public HttpResponse failover(HttpRequest request) {
+        return executor.failover(request);
     }
 
     public void onCompleteResponse(HttpRequest request, HttpResponse httpResponse) {

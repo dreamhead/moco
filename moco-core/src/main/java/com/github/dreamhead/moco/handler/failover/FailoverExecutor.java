@@ -2,11 +2,10 @@ package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface FailoverExecutor {
     void onCompleteResponse(HttpRequest request, HttpResponse response);
-    void failover(HttpRequest request, FullHttpResponse response);
+    HttpResponse failover(HttpRequest request);
 
     FailoverExecutor EMPTY_FAILOVER = new FailoverExecutor() {
         @Override
@@ -14,7 +13,7 @@ public interface FailoverExecutor {
         }
 
         @Override
-        public void failover(HttpRequest request, FullHttpResponse response) {
+        public HttpResponse failover(HttpRequest request) {
             throw new RuntimeException("no failover response found");
         }
     };

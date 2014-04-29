@@ -11,7 +11,6 @@ import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
@@ -77,11 +75,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     @Override
-    public void failover(HttpRequest request, FullHttpResponse response) {
-        writeResponse(response, failoverResponse(request));
-    }
-
-    private HttpResponse failoverResponse(HttpRequest request) {
+    public HttpResponse failover(HttpRequest request) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(request));
         if (session.isPresent()) {
