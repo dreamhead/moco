@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.HttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public class Failover {
@@ -22,7 +23,7 @@ public class Failover {
         executor.failover(request, response);
     }
 
-    public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
-        executor.onCompleteResponse(request, response);
+    public void onCompleteResponse(HttpRequest request, HttpResponse httpResponse) {
+        executor.onCompleteResponse(request, httpResponse);
     }
 }

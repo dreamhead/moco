@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.ByteBufs.asBytes;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
@@ -129,7 +130,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
         setupNormalResponse(response, remoteResponse);
 
-        failover.onCompleteResponse(request, response);
+        failover.onCompleteResponse(request, newResponse(response));
     }
 
     private void setupNormalResponse(FullHttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {

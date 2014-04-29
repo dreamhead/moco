@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.FluentIterable.from;
@@ -37,10 +36,11 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         this.file = file;
     }
 
-    public void onCompleteResponse(HttpRequest request, FullHttpResponse response) {
+    @Override
+    public void onCompleteResponse(HttpRequest request, HttpResponse httpResponse) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-            Session targetSession = Session.newSession(request, newResponse(response));
+            Session targetSession = Session.newSession(request, httpResponse);
             writer.writeValue(this.file, prepareTargetSessions(targetSession));
         } catch (IOException e) {
             throw new RuntimeException(e);
