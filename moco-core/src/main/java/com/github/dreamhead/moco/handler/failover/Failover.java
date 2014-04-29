@@ -21,10 +21,6 @@ public class Failover {
         return strategy;
     }
 
-    public void failover(HttpRequest request, FullHttpResponse response) {
-        writeResponse(response, failover(request));
-    }
-
     public HttpResponse failover(HttpRequest request) {
         return executor.failover(request);
     }

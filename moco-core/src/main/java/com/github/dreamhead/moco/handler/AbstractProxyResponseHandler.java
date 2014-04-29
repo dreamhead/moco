@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
+import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.github.dreamhead.moco.util.ByteBufs.asBytes;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
@@ -119,23 +121,24 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         throw new RuntimeException("unknown HTTP method");
     }
 
-    protected void setupResponse(HttpRequest request,
-                                 FullHttpResponse response,
-                                 org.apache.http.HttpResponse remoteResponse) throws IOException {
+    protected HttpResponse setupResponse(HttpRequest request,
+                                         org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
-            failover.failover(request, response);
-            return;
+            return failover.failover(request);
         }
 
-        setupNormalResponse(response, remoteResponse);
+        HttpResponse httpResponse = setupNormalResponse(remoteResponse);
 
-        failover.onCompleteResponse(request, newResponse(response));
+        failover.onCompleteResponse(request, httpResponse);
+        return httpResponse;
     }
 
-    private void setupNormalResponse(FullHttpResponse response, org.apache.http.HttpResponse remoteResponse) throws IOException {
-        response.setProtocolVersion(HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString()));
-        response.setStatus(HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode()));
+    private HttpResponse setupNormalResponse(org.apache.http.HttpResponse remoteResponse) throws IOException {
+        HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString());
+        HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode());
+        FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
+        response.setStatus(status);
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
@@ -147,6 +150,8 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
             ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
             response.content().writeBytes(buffer);
         }
+
+        return newResponse(response);
     }
 
     @Override
@@ -160,30 +165,29 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
             return;
         }
 
-        doProxy(request, response, url.get());
+        writeResponse(response, doProxy(request, url.get()));
     }
 
-    private void doProxy(final HttpRequest request, final FullHttpResponse response, final URL remoteUrl) {
+    private HttpResponse doProxy(final HttpRequest request, final URL remoteUrl) {
         if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
             try {
-                failover.failover(request, response);
-                return;
+                return failover.failover(request);
             } catch (RuntimeException e) {
 
             }
         }
 
-        doForward(request, response, remoteUrl);
+        return doForward(request, remoteUrl);
     }
 
-    private void doForward(HttpRequest request, FullHttpResponse response, URL remoteUrl) {
+    private HttpResponse doForward(HttpRequest request, URL remoteUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
-            setupResponse(request, response, httpclient.execute(prepareRemoteRequest(httpRequest, remoteUrl)));
+            return setupResponse(request, httpclient.execute(prepareRemoteRequest(httpRequest, remoteUrl)));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
-            failover.failover(request, response);
+            return failover.failover(request);
         } finally {
             try {
                 httpclient.close();
