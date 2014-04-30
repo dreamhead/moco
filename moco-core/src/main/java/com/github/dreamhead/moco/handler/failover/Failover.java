@@ -2,9 +2,6 @@ package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-
-import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 
 public class Failover {
     public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER, FailoverStrategy.FAILOVER);

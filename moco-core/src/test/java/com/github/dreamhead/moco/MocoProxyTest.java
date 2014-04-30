@@ -17,21 +17,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
-import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
-import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_1;
+import static com.github.dreamhead.moco.HttpProtocolVersion.*;
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class MocoProxyTest extends AbstractMocoTest {
@@ -396,5 +390,20 @@ public class MocoProxyTest extends AbstractMocoTest {
         });
 
         hit.verify(by(uri("/target")), once());
+    }
+
+    @Test
+    public void should_ignore_some_header_from_remote_server() throws Exception {
+        server.request(by(uri("/target"))).response(with("proxy"), header("Date", "2014-5-1"), header("Server", "moco"));
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
+                assertThat(response.getFirstHeader("Date"), nullValue());
+                assertThat(response.getFirstHeader("Server"), nullValue());
+            }
+        });
     }
 }

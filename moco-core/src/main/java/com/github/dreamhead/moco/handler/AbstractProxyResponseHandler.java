@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
@@ -26,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
@@ -142,7 +144,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
-            response.headers().set(header.getName(), header.getValue());
+            if (isHeaderForClient(header)) {
+                response.headers().set(header.getName(), header.getValue());
+            }
         }
 
         HttpEntity entity = remoteResponse.getEntity();
@@ -152,6 +156,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         }
 
         return newResponse(response);
+    }
+
+    private Set<String> IGNORED_HEADERS = ImmutableSet.of("Date", "Server");
+
+    private boolean isHeaderForClient(Header header) {
+        return !IGNORED_HEADERS.contains(header.getName());
     }
 
     @Override
@@ -172,8 +182,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
             try {
                 return failover.failover(request);
-            } catch (RuntimeException e) {
-
+            } catch (RuntimeException ignored) {
             }
         }
 
