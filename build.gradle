@@ -93,7 +93,7 @@ subprojects {
 
     project.ext {
         guavaVersion = '17.0'
-        nettyVersion = '4.0.18.Final'
+        nettyVersion = '4.0.19.Final'
         slf4jVersion = '1.7.7'
         commonsIoVersion = '2.4'
         jacksonVersion = '2.3.3'
@@ -264,5 +264,5 @@ def javaLibPath(lib, osLib) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '1.12'
 }
