@@ -206,7 +206,6 @@ project(':moco-runner') {
         exclude('META-INF/maven/**')
 
         from files(project(':moco-core').sourceSets.main.output.classesDir)
-        from files(project(':moco-core').sourceSets.main.output.resourcesDir)
         from files(sourceSets.main.output.classesDir)
         from files(sourceSets.main.output.resourcesDir)
         from configurations.runtime.asFileTree.files.collect { zipTree(it) }
