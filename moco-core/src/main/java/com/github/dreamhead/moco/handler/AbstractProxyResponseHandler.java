@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
@@ -37,6 +36,9 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractResponseHandler {
+
+    private static ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of("Host", "Content-Length");
+    private static ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of("Date", "Server");
 
     protected abstract Optional<String> remoteUrl(String uri);
 
@@ -66,7 +68,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     private HttpRequestBase createRemoteRequest(FullHttpRequest request, URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request.getMethod());
         for (Map.Entry<String, String> entry : request.headers()) {
-            if (isRemoteHeader(entry)) {
+            if (isRequestHeader(entry)) {
                 remoteRequest.addHeader(entry.getKey(), entry.getValue());
             }
         }
@@ -83,12 +85,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
-    private boolean isRemoteHeader(Map.Entry<String, String> entry) {
-        return !isHeader(entry, "Host") && !isHeader(entry, "Content-Length");
+    private boolean isRequestHeader(Map.Entry<String, String> entry) {
+        return !IGNORED_REQUEST_HEADERS.contains(entry.getKey());
     }
 
-    private boolean isHeader(Map.Entry<String, String> entry, String key) {
-        return key.equalsIgnoreCase(entry.getKey());
+    private boolean isResponseHeader(Header header) {
+        return !IGNORED_RESPONSE_HEADERS.contains(header.getName());
     }
 
     private HttpRequestBase createBaseRequest(URL url, HttpMethod method) {
@@ -144,7 +146,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
         Header[] allHeaders = remoteResponse.getAllHeaders();
         for (Header header : allHeaders) {
-            if (isHeaderForClient(header)) {
+            if (isResponseHeader(header)) {
                 response.headers().set(header.getName(), header.getValue());
             }
         }
@@ -156,12 +158,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         }
 
         return newResponse(response);
-    }
-
-    private Set<String> IGNORED_HEADERS = ImmutableSet.of("Date", "Server");
-
-    private boolean isHeaderForClient(Header header) {
-        return !IGNORED_HEADERS.contains(header.getName());
     }
 
     @Override
