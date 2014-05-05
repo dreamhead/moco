@@ -8,6 +8,9 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
+import static com.google.common.collect.Iterables.any;
+import static com.google.common.collect.Lists.newArrayList;
+
 public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     protected abstract RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource);
 
@@ -35,11 +38,7 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
 
         if (target instanceof String[]) {
             String[] contents = (String[])target;
-            for (String content : contents) {
-                if (predicate.apply(content)) {
-                    return true;
-                }
-            }
+            return any(newArrayList(contents), predicate);
         }
 
         return false;
