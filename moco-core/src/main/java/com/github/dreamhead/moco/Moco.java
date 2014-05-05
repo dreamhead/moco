@@ -99,7 +99,7 @@ public class Moco {
     }
 
     public static MocoMonitor log(final String filename) {
-        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(filename));
+        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty")));
     }
 
     public static RequestMatcher by(final String content) {
