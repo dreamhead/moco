@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.Maps.newHashMap;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
 public class DefaultHttpRequest implements HttpRequest {
@@ -86,7 +85,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String,String>> forms = new FormsRequestExtractor().extract(DefaultHttpRequest.this);
+                Optional<ImmutableMap<String, String>> forms = new FormsRequestExtractor().extract(DefaultHttpRequest.this);
                 return forms.isPresent() ? forms.get() : ImmutableMap.<String, String>of();
             }
         });
@@ -125,15 +124,12 @@ public class DefaultHttpRequest implements HttpRequest {
             return "";
         }
 
-        return new String(ByteBufs.asBytes(request.content()), 0, (int)contentLength, Charset.defaultCharset());
+        return new String(ByteBufs.asBytes(request.content()), 0, (int) contentLength, Charset.defaultCharset());
     }
 
     public static HttpRequest newRequest(FullHttpRequest request) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        Map<String, String> queries = newHashMap();
-        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            queries.put(entry.getKey(), entry.getValue().get(0));
-        }
+        ImmutableMap<String, String> queries = toQueries(decoder);
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().text()))
@@ -143,6 +139,14 @@ public class DefaultHttpRequest implements HttpRequest {
                 .withQueries(queries)
                 .withContent(contentToString(request))
                 .build();
+    }
+
+    private static ImmutableMap<String, String> toQueries(QueryStringDecoder decoder) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
+            builder.put(entry.getKey(), entry.getValue().get(0));
+        }
+        return builder.build();
     }
 
     public FullHttpRequest toFullHttpRequest() {
