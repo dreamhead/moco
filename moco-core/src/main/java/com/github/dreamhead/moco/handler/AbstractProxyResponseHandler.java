@@ -162,16 +162,13 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        writeToResponse(context.getRequest(), context.getResponse());
-    }
-
-    private void writeToResponse(HttpRequest request, FullHttpResponse response) {
+        HttpRequest request = context.getRequest();
         Optional<URL> url = remoteUrl(((DefaultHttpRequest) request).toFullHttpRequest());
         if (!url.isPresent()) {
             return;
         }
 
-        writeResponse(response, doProxy(request, url.get()));
+        writeResponse(context.getResponse(), doProxy(request, url.get()));
     }
 
     private HttpResponse doProxy(final HttpRequest request, final URL remoteUrl) {
