@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler.proxy;
 
+import static com.github.dreamhead.moco.Moco.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.toBase;
 import static com.google.common.base.Strings.nullToEmpty;
@@ -42,7 +43,7 @@ public class ProxyConfig {
         }
 
         public ProxyConfig to(final String remoteBase) {
-            return new ProxyConfig(toBase(localBase), toBase(remoteBase));
+            return new ProxyConfig(toBase(localBase), toBase(checkNotNullOrEmpty(remoteBase, "Remote base should not be null")));
         }
     }
 }
