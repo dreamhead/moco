@@ -23,7 +23,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Strings;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -35,6 +34,7 @@ import java.net.URL;
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -437,14 +437,6 @@ public class Moco {
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    public static String checkNotNullOrEmpty(final String reference, final Object errorMessage) {
-        if (Strings.isNullOrEmpty(reference)) {
-            throw new NullPointerException(String.valueOf(errorMessage));
-        }
-
-        return reference;
     }
 
     private Moco() {
