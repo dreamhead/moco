@@ -19,4 +19,6 @@ public class ByteBufs {
 
         throw new IllegalArgumentException("unknown content");
     }
+
+    private ByteBufs() {}
 }

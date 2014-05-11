@@ -8,4 +8,6 @@ public class Idles {
             throw new RuntimeException(e);
         }
     }
+
+    private Idles() {}
 }
