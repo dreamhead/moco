@@ -8,8 +8,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.match;
-import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
@@ -19,7 +18,7 @@ public class ResponseSettingConfiguration implements ResponseSetting {
     protected List<MocoEventTrigger> eventTriggers = newArrayList();
 
     public ResponseSetting response(String content) {
-        return this.response(text(checkNotNull(content, "Content should not be null")));
+        return this.response(text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
     public ResponseSetting response(Resource resource) {
@@ -46,7 +45,7 @@ public class ResponseSettingConfiguration implements ResponseSetting {
     }
 
     public ResponseSetting redirectTo(String url) {
-        this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNull(url, "URL should not be null")));
+        this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
         return this;
     }
 

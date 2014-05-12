@@ -12,6 +12,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
@@ -43,7 +44,7 @@ public abstract class HttpConfiguration extends ResponseSettingConfiguration imp
     }
 
     public ResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
-        File mountedDir = new File(checkNotNull(dir, "Directory should not be null"));
+        File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
         checkNotNull(target, "Target should not be null");
         this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
         return this;
