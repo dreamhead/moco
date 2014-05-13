@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
 
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class HttpsCertificate {
 
     private static final String PROTOCOL = "TLS";
@@ -65,6 +68,8 @@ public class HttpsCertificate {
     }
 
     public static HttpsCertificate certificate(ContentResource resource, String keyStorePassword, String certPassword) {
-        return new HttpsCertificate(resource, keyStorePassword, certPassword);
+        return new HttpsCertificate(checkNotNull(resource),
+                checkNotNullOrEmpty(keyStorePassword, "Key store password should not be null"),
+                checkNotNullOrEmpty(certPassword, "Cert password should not be null"));
     }
 }
