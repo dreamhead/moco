@@ -410,7 +410,7 @@ public class Moco {
     }
 
     public static MocoEventAction post(final String url, final String content) {
-        return post(url, text(checkNotNullOrEmpty(content, "Content should not be null")));
+        return post(checkNotNullOrEmpty(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
     private static Function<String, ResponseHandler> textToResource() {
