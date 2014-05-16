@@ -160,14 +160,13 @@ subprojects {
         sign configurations.archives
     }
 
-    tasks.withType(Compile) {
+    tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:unchecked"
         options.compilerArgs << "-Xlint:deprecation"
     }
 }
 
 project(':moco-core') {
-
     dependencies {
         runtime(
                 "org.slf4j:slf4j-simple:$slf4jVersion"
@@ -176,7 +175,6 @@ project(':moco-core') {
 }
 
 project(':moco-runner') {
-
     ext {
         logbackVersion = '1.1.2'
         commonsCliVersion = '1.2'
