@@ -14,7 +14,7 @@ public class FileLogWriter implements LogWriter {
     }
 
     @Override
-    public void write(String content) {
+    public void write(final String content) {
         try {
             Files.append(content, file, Charset.defaultCharset());
         } catch (IOException e) {

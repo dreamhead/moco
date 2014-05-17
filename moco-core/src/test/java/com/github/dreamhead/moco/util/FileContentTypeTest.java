@@ -6,8 +6,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class FileContentTypeTest {
-	private final String DEFAULT_CONTENT_TYPE = "text/plain; charset=UTF-8";
-	private final String PNG_CONTENT_TYPE = "image/png";
+	private static final String DEFAULT_CONTENT_TYPE = "text/plain; charset=UTF-8";
+	private static final String PNG_CONTENT_TYPE = "image/png";
 
 	@Test
 	public void should_get_type_from_filename() {

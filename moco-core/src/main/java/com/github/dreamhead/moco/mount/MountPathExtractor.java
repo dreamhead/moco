@@ -11,7 +11,7 @@ public class MountPathExtractor implements RequestExtractor {
     private final MountTo target;
     private final RequestExtractor<String> extractor = new UriRequestExtractor();
 
-    public MountPathExtractor(MountTo target) {
+    public MountPathExtractor(final MountTo target) {
         this.target = target;
     }
 

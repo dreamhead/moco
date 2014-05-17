@@ -19,7 +19,7 @@ public class MountHandler extends AbstractContentResponseHandler {
     private final File dir;
     private final MountTo target;
 
-    public MountHandler(File dir, MountTo target) {
+    public MountHandler(final File dir, final MountTo target) {
         this.dir = dir;
         this.target = target;
         this.extractor = new MountPathExtractor(target);
