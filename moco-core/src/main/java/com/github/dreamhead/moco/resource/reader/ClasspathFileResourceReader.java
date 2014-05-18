@@ -8,7 +8,7 @@ import java.io.IOException;
 import static com.google.common.io.ByteStreams.toByteArray;
 
 public class ClasspathFileResourceReader implements ContentResourceReader {
-    private String filename;
+    private final String filename;
 
     public ClasspathFileResourceReader(String filename) {
         this.filename = filename;

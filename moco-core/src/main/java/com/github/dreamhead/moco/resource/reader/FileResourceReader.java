@@ -9,7 +9,7 @@ import java.io.IOException;
 import static com.google.common.io.Files.toByteArray;
 
 public class FileResourceReader implements ContentResourceReader {
-    private File file;
+    private final File file;
 
     public FileResourceReader(File file) {
         this.file = file;
