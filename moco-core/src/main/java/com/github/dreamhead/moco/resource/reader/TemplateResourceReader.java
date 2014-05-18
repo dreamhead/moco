@@ -28,15 +28,10 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private final ContentResource template;
     private final ImmutableMap<String, String> variables;
-    private final Configuration cfg;
 
     public TemplateResourceReader(ContentResource template, ImmutableMap<String, String> variables) {
         this.template = template;
         this.variables = variables;
-        this.cfg = new Configuration();
-        this.cfg.setObjectWrapper(new DefaultObjectWrapper());
-        this.cfg.setDefaultEncoding("UTF-8");
-        this.cfg.setIncompatibleImprovements(new Version(2, 3, 20));
     }
 
     @Override
@@ -44,7 +39,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         String templateSource = new String(this.template.readFor(request));
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
-        cfg.setTemplateLoader(templateLoader);
+        Configuration cfg = createConfiguration(templateLoader);
 
         try {
             Template template = cfg.getTemplate(TEMPLATE_NAME);
@@ -60,6 +55,15 @@ public class TemplateResourceReader implements ContentResourceReader {
         } catch (TemplateException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Configuration createConfiguration(StringTemplateLoader templateLoader) {
+        Configuration cfg = new Configuration();
+        cfg.setObjectWrapper(new DefaultObjectWrapper());
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+        cfg.setTemplateLoader(templateLoader);
+        return cfg;
     }
 
     private ImmutableMap<String, Object> variables(HttpRequest request) {
