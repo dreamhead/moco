@@ -3,16 +3,15 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import org.junit.After;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
-import static com.google.common.collect.Lists.newArrayList;
 
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
@@ -35,10 +34,10 @@ public class AbstractMocoStandaloneTest {
     }
 
     private JsonRunner newRunner(String[] resourceNames) throws IOException {
-        List<InputStream> streams = newArrayList();
+        ImmutableList.Builder<InputStream> builder = ImmutableList.builder();
         for (String resourceName : resourceNames) {
-            streams.add(Resources.getResource(resourceName).openStream());
+            builder.add(Resources.getResource(resourceName).openStream());
         }
-        return newJsonRunnerWithStreams(streams, new StartArgs(port(), null, null, null, null, null));
+        return newJsonRunnerWithStreams(builder.build(), new StartArgs(port(), null, null, null, null, null));
     }
 }
