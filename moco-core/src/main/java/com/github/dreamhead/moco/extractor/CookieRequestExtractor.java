@@ -17,7 +17,7 @@ public class CookieRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(HttpRequest request) {
+    public Optional<String> extract(final HttpRequest request) {
         Optional<ImmutableMap<String,String>> cookies = extractor.extract(request);
         return cookies.isPresent() ? fromNullable(cookies.get().get(this.key)) : Optional.<String>absent();
     }

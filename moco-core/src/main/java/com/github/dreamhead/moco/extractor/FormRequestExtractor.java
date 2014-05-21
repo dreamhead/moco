@@ -16,7 +16,7 @@ public class FormRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(HttpRequest request) {
+    public Optional<String> extract(final HttpRequest request) {
         Optional<ImmutableMap<String,String>> forms = extractor.extract(request);
         return forms.isPresent() ? fromNullable(forms.get().get(key)) : Optional.<String>absent();
     }

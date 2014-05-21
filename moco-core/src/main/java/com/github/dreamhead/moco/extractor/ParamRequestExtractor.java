@@ -14,7 +14,7 @@ public class ParamRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(HttpRequest request) {
+    public Optional<String> extract(final HttpRequest request) {
         return fromNullable(request.getQueries().get(this.param));
     }
 }

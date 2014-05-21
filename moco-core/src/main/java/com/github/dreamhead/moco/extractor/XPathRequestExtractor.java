@@ -29,7 +29,7 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
     }
 
     @Override
-    public Optional<String[]> extract(HttpRequest request) {
+    public Optional<String[]> extract(final HttpRequest request) {
         try {
             NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
             if (list.getLength() == 0) {

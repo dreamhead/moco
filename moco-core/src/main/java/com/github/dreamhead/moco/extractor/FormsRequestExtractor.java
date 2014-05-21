@@ -19,7 +19,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class FormsRequestExtractor implements RequestExtractor<ImmutableMap<String, String>> {
-    public Optional<ImmutableMap<String, String>> extract(HttpRequest request) {
+    public Optional<ImmutableMap<String, String>> extract(final HttpRequest request) {
 
         HttpPostRequestDecoder decoder = null;
         try {

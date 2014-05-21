@@ -9,7 +9,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class ContentRequestExtractor implements RequestExtractor<String> {
     @Override
-    public Optional<String> extract(HttpRequest request) {
+    public Optional<String> extract(final HttpRequest request) {
         String content = request.getContent();
         return isNullOrEmpty(content) ? Optional.<String>absent() : of(content);
     }

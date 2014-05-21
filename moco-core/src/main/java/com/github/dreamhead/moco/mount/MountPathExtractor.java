@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.of;
 
-public class MountPathExtractor implements RequestExtractor {
+public class MountPathExtractor implements RequestExtractor<String> {
     private final MountTo target;
     private final RequestExtractor<String> extractor = new UriRequestExtractor();
 
@@ -15,7 +15,7 @@ public class MountPathExtractor implements RequestExtractor {
         this.target = target;
     }
 
-    public Optional<String> extract(HttpRequest request) {
+    public Optional<String> extract(final HttpRequest request) {
         return of(target.extract(extractor.extract(request).get()));
     }
 }
