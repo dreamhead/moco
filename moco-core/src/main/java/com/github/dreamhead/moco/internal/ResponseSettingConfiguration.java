@@ -17,15 +17,15 @@ public class ResponseSettingConfiguration implements ResponseSetting {
     protected ResponseHandler handler;
     protected List<MocoEventTrigger> eventTriggers = newArrayList();
 
-    public ResponseSetting response(String content) {
+    public ResponseSetting response(final String content) {
         return this.response(text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
-    public ResponseSetting response(Resource resource) {
+    public ResponseSetting response(final Resource resource) {
         return this.response(with(checkNotNull(resource, "Resource should not be null")));
     }
 
-    public ResponseSetting response(ResponseHandler handler) {
+    public ResponseSetting response(final ResponseHandler handler) {
         if (this.handler != null) {
             throw new RuntimeException("handler has already been set");
         }
@@ -34,27 +34,27 @@ public class ResponseSettingConfiguration implements ResponseSetting {
         return this;
     }
 
-    public ResponseSetting response(MocoProcedure procedure) {
+    public ResponseSetting response(final MocoProcedure procedure) {
         this.response(with(checkNotNull(procedure, "Procedure should not be null")));
         return this;
     }
 
-    public ResponseSetting response(ResponseHandler... handlers) {
+    public ResponseSetting response(final ResponseHandler... handlers) {
         this.response(new AndResponseHandler(copyOf(handlers)));
         return this;
     }
 
-    public ResponseSetting redirectTo(String url) {
+    public ResponseSetting redirectTo(final String url) {
         this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
         return this;
     }
 
-    public ResponseSetting on(MocoEventTrigger trigger) {
+    public ResponseSetting on(final MocoEventTrigger trigger) {
         this.eventTriggers.add(checkNotNull(trigger, "Trigger should not be null"));
         return this;
     }
 
-    protected static RequestMatcher context(String context) {
+    protected static RequestMatcher context(final String context) {
         return match(uri(context + ".*"));
     }
 }
