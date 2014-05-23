@@ -46,6 +46,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 * More [Usages](moco-doc/usage.md)
 * Detailed [APIs](moco-doc/apis.md)
 * [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
+* [Command Line Usages](moco-doc/cmd.md)
 
 ## Build
 Make sure you have JDK and Gradle installed.
