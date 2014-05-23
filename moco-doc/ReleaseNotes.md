@@ -1,7 +1,7 @@
 # Release
 
 ## Usage
-* HTTPS support
+* (Beta) HTTPS support
 
 ## APIs
 * Http Protocol Version in Java API.
