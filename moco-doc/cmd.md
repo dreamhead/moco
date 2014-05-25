@@ -31,3 +31,11 @@ A HTTPS server can be started by the following command:
 ```shell
 java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
 ```
+
+## Port
+
+If you don't need any specified port, you run run moco without port. An available port will picked up by Moco and you can see the port in console.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar start -c foo.json
+```
