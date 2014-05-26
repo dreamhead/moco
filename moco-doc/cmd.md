@@ -34,8 +34,25 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json --http
 
 ## Port
 
-If you don't need any specified port, you run run moco without port. An available port will picked up by Moco and you can see the port in console.
+If you don't need any specified port, you run run Moco without port. An available port will picked up by Moco and you can see the port in console.
 
 ```shell
 java -jar moco-runner-<version>-standalone.jar start -c foo.json
 ```
+
+## Shutdown
+
+You can shutdown a running Moco instance by shutdown command and shutdown port. A shutdown port can be specified when start Moco instance.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json -s 9527
+```
+
+Or leave Moco choose by default, the shutdown port will be shown on console.
+
+Then you can use the shutdown port to shutdown the running Moco instance.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar shutdown -s 9527
+```
+
