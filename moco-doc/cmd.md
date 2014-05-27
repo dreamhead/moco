@@ -40,6 +40,14 @@ If you don't need any specified port, you run run Moco without port. An availabl
 java -jar moco-runner-<version>-standalone.jar start -c foo.json
 ```
 
+## Global Settings
+
+You can run Moco instance with [global settings](global-settings.md).
+
+```shell
+java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
+```
+
 ## Shutdown
 
 You can shutdown a running Moco instance by shutdown command and shutdown port. A shutdown port can be specified when start Moco instance.
