@@ -58,7 +58,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -g env.json -e rem
 
 ## Shutdown
 
-You can shutdown a running Moco instance by shutdown command and shutdown port. A shutdown port can be specified when start Moco instance.
+You can start many Moco instance in one machine. Different Moco instance can ben shutdown by shutdown command and its shutdown port. A shutdown port can be specified when start Moco instance.
 
 ```shell
 java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json -s 9527
