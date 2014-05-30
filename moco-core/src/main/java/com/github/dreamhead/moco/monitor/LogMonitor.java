@@ -4,10 +4,10 @@ import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public class LogMonitor extends AbstractMonitor {
-    private LogWriter writer;
-    private LogFormatter formatter;
+    private final LogWriter writer;
+    private final LogFormatter formatter;
 
-    public LogMonitor(LogFormatter formatter, LogWriter writer) {
+    public LogMonitor(final LogFormatter formatter, final LogWriter writer) {
         this.writer = writer;
         this.formatter = formatter;
     }

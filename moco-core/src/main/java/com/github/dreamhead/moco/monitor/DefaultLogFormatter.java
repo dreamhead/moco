@@ -14,17 +14,17 @@ public class DefaultLogFormatter implements LogFormatter {
     private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
 
     @Override
-    public String format(HttpRequest request) {
+    public String format(final HttpRequest request) {
         return String.format("Request received:\n\n%s\n", requestDumper.dump(request));
     }
 
     @Override
-    public String format(FullHttpResponse response) {
+    public String format(final FullHttpResponse response) {
         return String.format("Response return:\n\n%s\n", responseDumper.dump(response));
     }
 
     @Override
-    public String format(Exception e) {
+    public String format(final Exception e) {
         return String.format("Exception thrown:\n\n%s\n", stackTraceToString(e));
     }
 

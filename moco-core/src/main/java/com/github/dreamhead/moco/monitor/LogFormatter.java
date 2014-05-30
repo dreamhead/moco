@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public interface LogFormatter {
-    String format(HttpRequest request);
-    String format(FullHttpResponse response);
-    String format(Exception e);
+    String format(final HttpRequest request);
+    String format(final FullHttpResponse response);
+    String format(final Exception e);
 }
