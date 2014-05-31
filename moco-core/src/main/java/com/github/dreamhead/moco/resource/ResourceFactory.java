@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class ResourceFactory {
             }
 
             @Override
-            public byte[] readFor(HttpRequest request) {
+            public byte[] readFor(final Optional<HttpRequest> request) {
                 return text.getBytes();
             }
         });
@@ -41,7 +42,7 @@ public class ResourceFactory {
     public static Resource methodResource(final String method) {
         return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public byte[] readFor(HttpRequest request) {
+            public byte[] readFor(Optional<HttpRequest> request) {
                 return method.toUpperCase().getBytes();
             }
         });
@@ -50,7 +51,7 @@ public class ResourceFactory {
     public static Resource versionResource(final Resource version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public byte[] readFor(HttpRequest request) {
+            public byte[] readFor(Optional<HttpRequest> request) {
                 return version.readFor(request);
             }
         });
@@ -59,7 +60,7 @@ public class ResourceFactory {
     public static Resource cookieResource(final String key, final Resource resource) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
-            public byte[] readFor(HttpRequest request) {
+            public byte[] readFor(Optional<HttpRequest> request) {
                 return new Cookies().encodeCookie(key, new String(resource.readFor(request))).getBytes();
             }
         });
@@ -72,7 +73,7 @@ public class ResourceFactory {
     public static Resource uriResource(final String uri) {
         return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
             @Override
-            public byte[] readFor(HttpRequest request) {
+            public byte[] readFor(Optional<HttpRequest> request) {
                 return uri.getBytes();
             }
         });

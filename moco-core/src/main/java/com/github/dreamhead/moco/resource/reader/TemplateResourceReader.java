@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
@@ -35,7 +36,11 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(HttpRequest request) {
+    public byte[] readFor(Optional<HttpRequest> request) {
+        if (!request.isPresent()) {
+            throw new IllegalArgumentException("Request is required to read template");
+        }
+
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         String templateSource = new String(this.template.readFor(request));
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
@@ -45,7 +50,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template template = cfg.getTemplate(TEMPLATE_NAME);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(variables(request), writer);
+            template.process(variables(request.get()), writer);
             return stream.toByteArray();
         } catch (ParseException e) {
             logger.info("Template is {}", templateSource);

@@ -16,6 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static java.lang.String.format;
 
@@ -36,7 +37,7 @@ public class MocoRequestAction implements MocoEventAction {
         try {
             HttpRequestBase request = createRequest(url, method);
             if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(null)));
+                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(Optional.<com.github.dreamhead.moco.HttpRequest>absent())));
             }
 
             client.execute(request);

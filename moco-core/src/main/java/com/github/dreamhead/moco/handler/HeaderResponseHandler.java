@@ -3,10 +3,11 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
+
+import static com.google.common.base.Optional.of;
 
 public class HeaderResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
@@ -26,7 +27,7 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
             response.headers().remove(name);
         }
 
-        HttpHeaders.addHeader(response, name, new String(resource.readFor(context.getRequest())));
+        HttpHeaders.addHeader(response, name, new String(resource.readFor(of(context.getRequest()))));
     }
 
     @Override

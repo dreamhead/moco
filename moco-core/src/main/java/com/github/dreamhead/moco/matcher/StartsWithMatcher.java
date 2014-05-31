@@ -1,8 +1,10 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
@@ -10,7 +12,7 @@ public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input.startsWith(new String(expected.readFor(null)));
+                return input.startsWith(new String(expected.readFor(Optional.<HttpRequest>absent())));
             }
         });
     }

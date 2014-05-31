@@ -12,6 +12,8 @@ import com.google.common.base.Optional;
 
 import java.io.IOException;
 
+import static com.google.common.base.Optional.of;
+
 public class JsonRequestMatcher implements RequestMatcher {
     private final RequestExtractor<String> extractor;
     private final Resource resource;
@@ -32,7 +34,7 @@ public class JsonRequestMatcher implements RequestMatcher {
     private boolean doMatch(final HttpRequest request, final String content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
-            JsonNode resourceNode = mapper.readTree(resource.readFor(request));
+            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)));
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;

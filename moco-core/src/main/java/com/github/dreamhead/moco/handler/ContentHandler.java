@@ -7,6 +7,8 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.buffer.ByteBuf;
 
+import static com.google.common.base.Optional.of;
+
 public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;
 
@@ -16,7 +18,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
 
     @Override
     protected void writeContentResponse(final HttpRequest request, ByteBuf buffer) {
-        buffer.writeBytes(this.resource.readFor(request));
+        buffer.writeBytes(this.resource.readFor(of(request)));
     }
 
     @Override

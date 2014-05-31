@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class XmlRequestMatcher implements RequestMatcher {
@@ -34,7 +35,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     public boolean match(final HttpRequest request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
-            Document resourceDocument = getResourceDocument(null, this.resource);
+            Document resourceDocument = getResourceDocument(request, this.resource);
             return requestDocument.isEqualNode(resourceDocument);
         } catch (SAXException e) {
             return false;
@@ -51,7 +52,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     private Document getResourceDocument(HttpRequest request, Resource resource) throws SAXException {
-        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(request));
+        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(of(request)));
         return extractDocument(new InputSource(stream), this);
     }
 

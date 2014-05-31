@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource;
 import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
+import com.google.common.base.Optional;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
     private Identifiable identifiable;
@@ -26,7 +27,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
     }
 
     @Override
-    public byte[] readFor(HttpRequest request) {
+    public byte[] readFor(Optional<HttpRequest> request) {
         return reader.readFor(request);
     }
 }
