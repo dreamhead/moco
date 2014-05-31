@@ -14,7 +14,7 @@ public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input != null && Arrays.equals(input.getBytes(), expected.readFor(Optional.<HttpRequest>absent()));
+                return Arrays.equals(input.getBytes(), expected.readFor(Optional.<HttpRequest>absent()));
             }
         });
     }
