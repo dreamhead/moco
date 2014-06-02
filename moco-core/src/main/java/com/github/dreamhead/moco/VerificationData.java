@@ -11,7 +11,7 @@ public class VerificationData {
     private final RequestMatcher matcher;
     private final String mismatchFormat;
 
-    public VerificationData(ImmutableList<HttpRequest> requests, RequestMatcher matcher, String mismatchFormat) {
+    public VerificationData(final ImmutableList<HttpRequest> requests, final RequestMatcher matcher, final String mismatchFormat) {
         this.requests = requests;
         this.matcher = matcher;
         this.mismatchFormat = mismatchFormat;

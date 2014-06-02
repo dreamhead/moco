@@ -12,7 +12,7 @@ public enum HttpProtocolVersion {
     VERSION_1_0("HTTP/1.0"),
     VERSION_1_1("HTTP/1.1");
 
-    private String text;
+    private final String text;
 
     private HttpProtocolVersion(String text) {
         this.text = text;
