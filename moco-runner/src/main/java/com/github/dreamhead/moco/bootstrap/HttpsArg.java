@@ -4,11 +4,11 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.internal.HttpsCertificate;
 
 public class HttpsArg {
-    private String filename;
-    private String keystore;
-    private String cert;
+    private final String filename;
+    private final String keystore;
+    private final String cert;
 
-    public HttpsArg(String filename, String keystore, String cert) {
+    public HttpsArg(final String filename, final String keystore, final String cert) {
         this.filename = filename;
         this.keystore = keystore;
         this.cert = cert;
