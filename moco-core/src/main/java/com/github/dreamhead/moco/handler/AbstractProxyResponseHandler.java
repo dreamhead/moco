@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 import org.apache.http.Header;
@@ -16,7 +17,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -30,7 +31,6 @@ import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
-import static com.github.dreamhead.moco.util.ByteBufs.asBytes;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.io.ByteStreams.toByteArray;
@@ -77,7 +77,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     }
 
     private HttpEntity createEntity(ByteBuf content, long contentLength) {
-        return new ByteArrayEntity(asBytes(content), 0, (int) contentLength);
+        return new InputStreamEntity(new ByteBufInputStream(content), contentLength);
     }
 
     private org.apache.http.HttpVersion createVersion(FullHttpRequest request) {

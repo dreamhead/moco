@@ -6,16 +6,19 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
-import com.github.dreamhead.moco.util.ByteBufs;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.CharStreams;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +127,11 @@ public class DefaultHttpRequest implements HttpRequest {
             return "";
         }
 
-        return new String(ByteBufs.asBytes(request.content()), 0, (int) contentLength, Charset.defaultCharset());
+        try {
+            return CharStreams.toString(new InputStreamReader(new ByteBufInputStream(request.content()), Charset.defaultCharset()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static HttpRequest newRequest(FullHttpRequest request) {
