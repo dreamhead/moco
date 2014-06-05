@@ -29,7 +29,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     		.put("forms", "form").build();
 
     @Override
-    public RequestMatcher createRequestMatcher(RequestSetting request) {
+    public RequestMatcher createRequestMatcher(final RequestSetting request) {
         return wrapRequestMatcher(request, createRequestMatchers(request));
     }
 

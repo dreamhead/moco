@@ -4,5 +4,5 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 
 public interface RequestMatcherFactory {
-    RequestMatcher createRequestMatcher(RequestSetting request);
+    RequestMatcher createRequestMatcher(final RequestSetting request);
 }

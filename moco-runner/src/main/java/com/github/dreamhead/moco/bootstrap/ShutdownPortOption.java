@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.cli.Option;
 
 public class ShutdownPortOption {
-    private Optional<Integer> shutdownPort;
+    private final Optional<Integer> shutdownPort;
 
     public ShutdownPortOption(Integer shutdownPort) {
         this.shutdownPort = Optional.fromNullable(shutdownPort);

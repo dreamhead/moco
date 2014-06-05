@@ -18,7 +18,7 @@ import java.io.InputStream;
 
 public class HttpServerParser {
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
-    private CollectionReader reader;
+    private final CollectionReader reader;
 
     public HttpServerParser() {
         Module textContainerModule = new SimpleModule("TextContainerModule",
