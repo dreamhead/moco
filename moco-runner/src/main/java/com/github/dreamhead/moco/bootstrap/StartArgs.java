@@ -6,6 +6,7 @@ import org.apache.commons.cli.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static com.google.common.base.Optional.fromNullable;
 
@@ -172,10 +173,10 @@ public class StartArgs extends ShutdownPortOption {
 
     public static String help() {
         HelpFormatter formatter = new HelpFormatter();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(os);
+        StringWriter textWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(textWriter);
         formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "moco start [options]", null, createMocoOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
         writer.flush();
-        return new String(os.toByteArray());
+        return textWriter.toString();
     }
 }

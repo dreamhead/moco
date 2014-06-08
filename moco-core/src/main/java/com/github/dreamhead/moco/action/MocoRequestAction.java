@@ -16,7 +16,6 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
-import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static java.lang.String.format;
 
