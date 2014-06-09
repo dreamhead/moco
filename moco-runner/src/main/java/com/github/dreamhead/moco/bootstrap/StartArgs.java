@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

@@ -21,6 +21,7 @@ import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
@@ -28,8 +29,6 @@ import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
@@ -315,7 +314,7 @@ public class Moco {
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
-        return new ProxyResponseHandler(toUrl(checkNotNullOrEmpty(url, "URL should not be null")),
+        return new ProxyResponseHandler(URLs.toUrl(checkNotNullOrEmpty(url, "URL should not be null")),
                 checkNotNull(failover, "Failover should not be null"));
     }
 
@@ -429,14 +428,6 @@ public class Moco {
                 return with(content);
             }
         };
-    }
-
-    private static URL toUrl(final String url) {
-        try {
-            return new URL(checkNotNullOrEmpty(url, "URL should not be null"));
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     private Moco() {
