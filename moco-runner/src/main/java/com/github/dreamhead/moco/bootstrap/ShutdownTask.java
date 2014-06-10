@@ -15,10 +15,10 @@ public class ShutdownTask implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
 
     private final MocoClient client = new MocoClient();
-    private final String defaultShutdownKey;
+    private final String shutdownKey;
 
-    public ShutdownTask(String defaultShutdownKey) {
-        this.defaultShutdownKey = defaultShutdownKey;
+    public ShutdownTask(String shutdownKey) {
+        this.shutdownKey = shutdownKey;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ShutdownTask implements BootstrapTask {
     private class ShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
-            ctx.writeAndFlush(defaultShutdownKey + "\r\n").addListener(ChannelFutureListener.CLOSE);
+            ctx.writeAndFlush(shutdownKey + "\r\n").addListener(ChannelFutureListener.CLOSE);
         }
 
         @Override

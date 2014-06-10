@@ -13,8 +13,8 @@ public class StartTask implements BootstrapTask {
 
     private final RunnerFactory factory;
 
-    public StartTask(String defaultShutdownKey) {
-        this.factory = new RunnerFactory(defaultShutdownKey);
+    public StartTask(String shutdownKey) {
+        this.factory = new RunnerFactory(shutdownKey);
     }
 
     @Override

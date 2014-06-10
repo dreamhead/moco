@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,8 +8,10 @@ public class Bootstrap implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
-    private final BootstrapTask startTask = new StartTask(DEFAULT_SHUTDOWN_KEY);
-    private final BootstrapTask shutdownTask = new ShutdownTask(DEFAULT_SHUTDOWN_KEY);
+    private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.of(
+            "start", new StartTask(DEFAULT_SHUTDOWN_KEY),
+            "shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY)
+    );
 
     @Override
     public void run(String[] args) {
@@ -17,17 +20,12 @@ public class Bootstrap implements BootstrapTask {
                 throw new ParseArgException("task name needs to be specified");
             }
 
-            if ("start".equals(args[0])) {
-                startTask.run(args);
-                return;
+            BootstrapTask task = tasks.get(args[0]);
+            if (task == null) {
+                throw new ParseArgException("unknown task");
             }
 
-            if ("shutdown".equals(args[0])) {
-                shutdownTask.run(args);
-                return;
-            }
-
-            throw new ParseArgException("unknown task");
+            task.run(args);
         } catch (ParseArgException e) {
             help();
         } catch (Exception e) {

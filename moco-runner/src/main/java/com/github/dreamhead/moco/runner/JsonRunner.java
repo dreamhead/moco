@@ -76,7 +76,6 @@ public class JsonRunner implements Runner {
 
     private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {
         ActualHttpServer thisServer = (ActualHttpServer) server;
-        System.out.println("Merge Server :" + thisServer.isSecure());
         return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 
