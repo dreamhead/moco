@@ -19,7 +19,6 @@ import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
     private static final GlobalSettingParser settingParser = new GlobalSettingParser();
-    private final Optional<Integer> port;
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
     private final StartArgs startArgs;
@@ -27,7 +26,6 @@ public class SettingRunner implements Runner {
     private final FluentIterable<File> files;
 
     public SettingRunner(InputStream stream, StartArgs args) {
-        this.port = args.getPort();
         this.env = args.getEnv();
         this.globalSettings = settingParser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
@@ -44,7 +42,6 @@ public class SettingRunner implements Runner {
     }
 
     private Predicate<? super GlobalSetting> byEnv(final Optional<String> env) {
-
         return new Predicate<GlobalSetting>() {
             @Override
             public boolean apply(GlobalSetting globalSetting) {
