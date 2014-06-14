@@ -42,6 +42,11 @@ public class MocoRequestAction implements MocoEventAction {
             client.execute(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                client.close();
+            } catch (IOException ignored) {
+            }
         }
     }
 

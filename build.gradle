@@ -249,12 +249,12 @@ def jsseLib() {
     javaLibPath("/lib/jsse.jar", "/../Classes/jsse.jar")
 }
 
-def javaLibPath(lib, osLib) {
+def javaLibPath(lib, osxLib) {
     def javaBase = System.properties["java.home"];
     def target = lib
     if (OperatingSystem.current().isMacOsX()) {
         if (!new File(javaBase + target).exists()) {
-            target = osLib
+            target = osxLib
         }
     }
     javaBase + target
