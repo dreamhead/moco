@@ -14,10 +14,7 @@ import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.github.dreamhead.moco.matcher.*;
-import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
-import com.github.dreamhead.moco.monitor.FileLogWriter;
-import com.github.dreamhead.moco.monitor.LogMonitor;
-import com.github.dreamhead.moco.monitor.StdLogWriter;
+import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
@@ -49,6 +46,16 @@ public class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
+    }
+
+    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
+        targetMonitors[0] = checkNotNull(monitor, "Monitor should not be null");
+        targetMonitors[1] = checkNotNull(monitor2, "Monitor should not be null");
+        System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
+        return ActualHttpServer.createHttpServerWithMonitor(of(port),
+                new CompositeMonitor(targetMonitors));
     }
 
     public static HttpServer httpserver(final MocoConfig... configs) {

@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
@@ -12,11 +11,8 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.form;
 import static com.github.dreamhead.moco.MocoRequestHit.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -249,5 +245,20 @@ public class MocoRequestHitTest {
         });
 
         hit.verify(eq(form("name"), "dreamhead"), once());
+    }
+
+    @Test
+    public void should_verify_expected_request_and_log_at_same_time() throws Exception {
+        final HttpServer server = httpserver(port(), hit, log());
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), times(1));
     }
 }
