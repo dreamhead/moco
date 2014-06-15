@@ -53,7 +53,10 @@ public class Moco {
         MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
         targetMonitors[0] = checkNotNull(monitor, "Monitor should not be null");
         targetMonitors[1] = checkNotNull(monitor2, "Monitor should not be null");
-        System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
+        if (monitors.length > 0) {
+            System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
+        }
+
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 new CompositeMonitor(targetMonitors));
     }
