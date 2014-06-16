@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
+import com.github.dreamhead.moco.internal.HttpsCertificate;
 import io.netty.handler.codec.http.FullHttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
@@ -14,6 +15,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoRequestHit.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.internal.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -21,6 +23,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class MocoRequestHitTest {
+    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+
     private MocoTestHelper helper;
     private RequestHit hit;
 
@@ -256,6 +260,21 @@ public class MocoRequestHitTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), times(1));
+    }
+
+    @Test
+    public void should_verify_expected_request_and_log_at_same_time_for_https() throws Exception {
+        final HttpServer server = httpsServer(port(), DEFAULT_CERTIFICATE, hit, log());
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteHttpsUrl("/foo")), is("bar"));
             }
         });
 

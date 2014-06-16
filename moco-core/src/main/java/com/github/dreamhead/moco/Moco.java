@@ -50,6 +50,10 @@ public class Moco {
 
     public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
+        return ActualHttpServer.createHttpServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
+    }
+
+    private static MocoMonitor mergeMonitor(MocoMonitor monitor, MocoMonitor monitor2, MocoMonitor[] monitors) {
         MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
         targetMonitors[0] = checkNotNull(monitor, "Monitor should not be null");
         targetMonitors[1] = checkNotNull(monitor2, "Monitor should not be null");
@@ -57,8 +61,7 @@ public class Moco {
             System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
         }
 
-        return ActualHttpServer.createHttpServerWithMonitor(of(port),
-                new CompositeMonitor(targetMonitors));
+        return new CompositeMonitor(targetMonitors);
     }
 
     public static HttpServer httpserver(final MocoConfig... configs) {
@@ -89,6 +92,12 @@ public class Moco {
         return ActualHttpServer.createHttpsServerWithMonitor(Optional.<Integer>absent(),
                 checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
+    }
+
+    public static HttpServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        return ActualHttpServer.createHttpsServerWithMonitor(of(port), checkNotNull(certificate, "Certificate should not be null"),
+                mergeMonitor(monitor, monitor2, monitors));
     }
 
     public static MocoConfig context(final String context) {
