@@ -1660,7 +1660,8 @@ Many verification can be used:
 * **atLeast**: at least how many time this kind of request has been sent.
 * **atMost**: at least how many time this kind of request has been sent.
 
-# Port
+## Miscellaneous
+### Port
 **@Since 0.9**
 
 If you specify a port for your stub server, it means the port must be available when you start server. This is not case sometimes.
@@ -1690,7 +1691,7 @@ java -jar moco-runner-<version>-standalone.jar start -c foo.json
 
 The port information will shown on screen.
 
-# Log
+### Log
 **@Since 0.9.1**
 
 If you want to know more about how your Moco server running, log will be your helper.
@@ -1707,3 +1708,12 @@ final HttpServer server = httpserver(log("path/to/log.log"));
 ```
 
 The log will be saved in your log file.
+
+#### Log with verifier
+
+Log will help you for some legacy system to know what detailed request/response looks like. You also need to do some verification work. Here is the case.
+
+```java
+RequestHit hit = requestHit();
+final HttpServer server = httpserver(port(), hit, log());
+```
