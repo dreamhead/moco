@@ -53,7 +53,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             template.process(variables(request.get()), writer);
             return stream.toByteArray();
         } catch (ParseException e) {
-            logger.info("Template is {}", templateSource);
+            logger.error("Fail to parse template: {}", templateSource);
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
