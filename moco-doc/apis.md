@@ -87,7 +87,7 @@ server.request(by(uri("/foo"))).response("bar");
     }
 }
 ```
-### Query parameter
+### Query Parameter
 **@Since 0.7**
 
 Sometimes, your request has parameters in query:
@@ -95,7 +95,7 @@ Sometimes, your request has parameters in query:
 * Java API
 
 ```java
-server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
+server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar");a
 ```
 
 * JSON
@@ -117,7 +117,7 @@ server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar")
 }
 ```
 
-### HTTP method
+### HTTP Method
 **@Since 0.7**
 
 It's easy to response based on specified HTTP method:
