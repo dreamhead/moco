@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.monitor.DefaultRequestHit;
 import com.github.dreamhead.moco.verification.AtLeastVerification;
 import com.github.dreamhead.moco.verification.AtMostVerification;
+import com.github.dreamhead.moco.verification.BetweenVerification;
 import com.github.dreamhead.moco.verification.TimesVerification;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -37,6 +38,10 @@ public class MocoRequestHit {
     public static VerificationMode atMost(final int count) {
         checkArgument(count > 0, "Times count must be greater than zero");
         return new AtMostVerification(count);
+    }
+
+    public static VerificationMode between(final int min, final int max) {
+        return new BetweenVerification(min, max);
     }
 
     private MocoRequestHit() {}

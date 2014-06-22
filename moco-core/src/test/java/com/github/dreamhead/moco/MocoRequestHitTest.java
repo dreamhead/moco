@@ -107,6 +107,23 @@ public class MocoRequestHitTest {
         hit.verify(by(uri("/foo")), atLeast(1));
     }
 
+    @Test
+    public void should_verify_expected_request_for_between() throws Exception {
+        final HttpServer server = httpserver(port(), hit);
+        server.get(by(uri("/foo"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+
+        hit.verify(by(uri("/foo")), between(1, 3));
+    }
+
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() throws Exception {
         httpserver(port(), hit);

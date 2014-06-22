@@ -37,7 +37,6 @@ public class TextContainer {
         return isForTemplate(this.operation);
     }
 
-
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
