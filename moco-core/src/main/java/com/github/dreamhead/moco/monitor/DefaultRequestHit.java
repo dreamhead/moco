@@ -23,11 +23,11 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
 
     @Override
     public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
-        mode.verify(new VerificationData(copyOf(unexpectedRequests), matcher, "expect unexpected request hit %d times but %d times"));
+        mode.verify(new VerificationData(copyOf(unexpectedRequests), matcher, "expect unexpected request hit %s times but %d times"));
     }
 
     @Override
     public void verify(final RequestMatcher matcher, final VerificationMode mode) {
-        mode.verify(new VerificationData(copyOf(requests), matcher, "expect request hit %d times but %d times"));
+        mode.verify(new VerificationData(copyOf(requests), matcher, "expect request hit %s times but %d times"));
     }
 }

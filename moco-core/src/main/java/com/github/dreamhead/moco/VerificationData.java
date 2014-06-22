@@ -17,8 +17,8 @@ public class VerificationData {
         this.mismatchFormat = mismatchFormat;
     }
 
-    public String mismatchDescription(final int actualSize, final int expectedCount) {
-        return format(mismatchFormat, expectedCount, actualSize);
+    public String mismatchDescription(final int actualSize, final String expected) {
+        return format(mismatchFormat, expected, actualSize);
     }
 
     public int matchedSize() {

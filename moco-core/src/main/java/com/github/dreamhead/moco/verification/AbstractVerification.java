@@ -17,7 +17,7 @@ public abstract class AbstractVerification implements VerificationMode {
     public void verify(final VerificationData data) {
         int actualSize = data.matchedSize();
         if (!meet(actualSize)) {
-            throw new VerificationException(data.mismatchDescription(actualSize, count));
+            throw new VerificationException(data.mismatchDescription(actualSize, Integer.toString(count)));
         }
     }
 }
