@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.verification;
 
-public class AtMostVerification extends AbstractVerification {
+public class AtMostVerification extends UnaryTimesVerification {
 
     public AtMostVerification(final int count) {
         super(count);

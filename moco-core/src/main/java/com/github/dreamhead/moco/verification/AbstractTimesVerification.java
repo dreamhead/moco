@@ -4,20 +4,15 @@ import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationException;
 import com.github.dreamhead.moco.VerificationMode;
 
-public abstract class AbstractVerification implements VerificationMode {
+public abstract class AbstractTimesVerification implements VerificationMode {
     protected abstract boolean meet(int size);
-
-    protected final int count;
-
-    public AbstractVerification(int count) {
-        this.count = count;
-    }
+    protected abstract String expectedTip();
 
     @Override
     public void verify(final VerificationData data) {
         int actualSize = data.matchedSize();
         if (!meet(actualSize)) {
-            throw new VerificationException(data.mismatchDescription(actualSize, Integer.toString(count)));
+            throw new VerificationException(data.mismatchDescription(actualSize, expectedTip()));
         }
     }
 }
