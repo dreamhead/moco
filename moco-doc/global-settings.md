@@ -121,11 +121,11 @@ Now, environment will help you to configure all related configurations in one se
 [
     {
         "env" : "remote",
-        "include": "foo.json",
+        "include": "foo.json"
     },
     {
         "env" : "local",
-        "include": "bar.json",
+        "include": "bar.json"
     }
 ]
 ```
