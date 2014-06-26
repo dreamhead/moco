@@ -27,7 +27,8 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
-        closeIfNotKeepAlive(message, ctx.writeAndFlush(handleRequest(message)));
+    	FullHttpResponse response = handleRequest(message);
+        closeIfNotKeepAlive(message, ctx.writeAndFlush(response));
     }
 
     private FullHttpResponse handleRequest(FullHttpRequest message) {
