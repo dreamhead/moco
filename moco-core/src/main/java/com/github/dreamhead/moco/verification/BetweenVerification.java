@@ -12,7 +12,7 @@ public class BetweenVerification extends AbstractTimesVerification {
     }
 
     @Override
-    protected boolean meet(int size) {
+    protected boolean meet(final int size) {
         return size >= min || size <= max;
     }
 
