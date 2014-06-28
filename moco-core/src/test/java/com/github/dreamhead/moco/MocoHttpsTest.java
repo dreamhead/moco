@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.internal.HttpsCertificate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +9,7 @@ import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.internal.HttpsCertificate.certificate;
+import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

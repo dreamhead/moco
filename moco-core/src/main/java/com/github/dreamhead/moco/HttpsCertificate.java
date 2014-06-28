@@ -1,6 +1,5 @@
-package com.github.dreamhead.moco.internal;
+package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 

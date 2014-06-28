@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.Runner;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

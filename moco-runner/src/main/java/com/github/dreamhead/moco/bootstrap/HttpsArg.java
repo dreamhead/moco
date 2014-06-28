@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.Moco;
-import com.github.dreamhead.moco.internal.HttpsCertificate;
+import com.github.dreamhead.moco.HttpsCertificate;
 
 public class HttpsArg {
     private final String filename;

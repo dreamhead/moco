@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.Moco.httpsServer;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.internal.HttpsCertificate.certificate;
+import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

@@ -12,7 +12,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
-import com.github.dreamhead.moco.internal.HttpsCertificate;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;

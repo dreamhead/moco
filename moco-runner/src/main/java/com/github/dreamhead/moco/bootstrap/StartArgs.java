@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.github.dreamhead.moco.internal.HttpsCertificate;
+import com.github.dreamhead.moco.HttpsCertificate;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
 
