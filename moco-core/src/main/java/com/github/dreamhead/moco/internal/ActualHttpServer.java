@@ -33,8 +33,8 @@ public class ActualHttpServer extends HttpConfiguration {
         return certificate.isPresent();
     }
 
-    public HttpsCertificate getCertificate() {
-        return certificate.orNull();
+    public Optional<HttpsCertificate> getCertificate() {
+        return certificate;
     }
 
     public ImmutableList<BaseSetting> getSettings() {

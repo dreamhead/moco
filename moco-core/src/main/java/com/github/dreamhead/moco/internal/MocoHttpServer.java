@@ -2,6 +2,8 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.Runner;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -27,7 +29,7 @@ public class MocoHttpServer extends Runner {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
-                    pipeline.addLast("ssl", sslHandler());
+                    pipeline.addLast("ssl", sslHandler().get());
                 }
 
                 pipeline.addLast("decoder", new HttpRequestDecoder());
@@ -39,11 +41,19 @@ public class MocoHttpServer extends Runner {
         serverSetting.setPort(port);
     }
 
-    private SslHandler sslHandler() {
-        HttpsCertificate certificate = serverSetting.getCertificate();
-        SSLEngine sslEngine = certificate.createSSLEngine();
-        sslEngine.setUseClientMode(false);
-        return new SslHandler(sslEngine);
+    private Optional<SslHandler> sslHandler() {
+        return serverSetting.getCertificate().transform(toSslHandler());
+    }
+
+    private Function<HttpsCertificate, SslHandler> toSslHandler() {
+        return new Function<HttpsCertificate, SslHandler>() {
+            @Override
+            public SslHandler apply(HttpsCertificate certificate) {
+                SSLEngine sslEngine = certificate.createSSLEngine();
+                sslEngine.setUseClientMode(false);
+                return new SslHandler(sslEngine);
+            }
+        };
     }
 
     public void stop() {
