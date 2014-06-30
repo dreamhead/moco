@@ -315,7 +315,7 @@ public class Moco {
     }
 
     public static Resource version(final String version) {
-        return version(text(checkNotNullOrEmpty(version, "Version should not be null")));
+        return version(HttpProtocolVersion.versionOf(checkNotNullOrEmpty(version, "Version should not be null")));
     }
 
     public static Resource version(final HttpProtocolVersion version) {
