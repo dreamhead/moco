@@ -471,6 +471,8 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 **NOTE**: Please escape the quote in text.
 
 #### JSON Text Shortcut
+**@Since 0.9.2**
+
 As you have seen, it is so boring to write json with escape character, especially in json configuration. So you can try the json shortcut. The upper case could be rewritten as following:
 
 * JSON
@@ -585,6 +587,7 @@ server.request(match(uri("/\\w*/foo"))).response("bar");
 Moco is implemented by Java regular expression, you can refer [here](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html) for more details.
 
 #### Starts With
+**@Since 0.9.2**
 
 **starsWith** operator can help you decide if the request information starts with a piece of text.
 
@@ -613,6 +616,7 @@ server.request(startsWith(uri("/foo"))).response("bar");
 ```
 
 #### Ends With
+**@Since 0.9.2**
 
 **endsWith** operator can help you decide if the request information ends with a piece of text.
 
@@ -641,6 +645,7 @@ server.request(endsWith(uri("foo"))).response("bar");
 ```
 
 #### Contain
+**@Since 0.9.2**
 
 **contain** operator helps you know whether the request information contains a piece of text.
 
@@ -669,6 +674,7 @@ server.request(contain(uri("foo"))).response("bar");
 ```
 
 #### Exist
+**@Since 0.9.2**
 
 **exist** operator is used to decide whether the request information exists.
 
