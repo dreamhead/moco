@@ -21,6 +21,7 @@ import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.HttpHeaders;
 
@@ -291,15 +292,19 @@ public class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
-        return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toArray(ResponseHandler.class));
+        return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toList());
     }
 
     public static ResponseHandler seq(final Resource... contents) {
-        return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toArray(ResponseHandler.class));
+        return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toList());
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
-        return new SequenceContentHandler(handlers);
+        return seq(copyOf(handlers));
+    }
+
+    private static ResponseHandler seq(ImmutableList<ResponseHandler> list) {
+        return new SequenceContentHandler(list);
     }
 
     public static ContentResource file(final String filename) {

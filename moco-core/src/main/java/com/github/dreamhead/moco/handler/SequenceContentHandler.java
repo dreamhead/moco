@@ -5,27 +5,28 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public class SequenceContentHandler extends AbstractResponseHandler {
-    private final ResponseHandler[] handlers;
+    private final ImmutableList<ResponseHandler> handlers;
     private int index;
 
-    public SequenceContentHandler(final ResponseHandler[] handlers) {
+    public SequenceContentHandler(final ImmutableList<ResponseHandler> handlers) {
         this.handlers = handlers;
     }
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        handlers[current()].writeToResponse(context);
+        handlers.get(current()).writeToResponse(context);
     }
 
     private int current() {
         int current = this.index;
-        if (++index >= handlers.length) {
-            index = handlers.length - 1;
+        if (++index >= handlers.size()) {
+            index = handlers.size() - 1;
         }
 
         return current;
@@ -38,7 +39,7 @@ public class SequenceContentHandler extends AbstractResponseHandler {
         }
 
         FluentIterable<ResponseHandler> transformedResources = from(copyOf(handlers)).transform(applyConfig(config));
-        return new SequenceContentHandler(transformedResources.toArray(ResponseHandler.class));
+        return new SequenceContentHandler(transformedResources.toList());
     }
 
     private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
