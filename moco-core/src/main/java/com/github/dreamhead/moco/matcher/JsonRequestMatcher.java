@@ -3,10 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestExtractor;
-import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
@@ -26,15 +23,16 @@ public class JsonRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         Optional<String> content = extractor.extract(request);
         return content.isPresent() && doMatch(request, content.get());
     }
 
-    private boolean doMatch(final HttpRequest request, final String content) {
+    private boolean doMatch(final Request request, final String content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
-            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)));
+            // TODO: for further extension
+            JsonNode resourceNode = mapper.readTree(resource.readFor(of((HttpRequest)request)));
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;

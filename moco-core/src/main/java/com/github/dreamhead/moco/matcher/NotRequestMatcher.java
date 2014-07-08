@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
 public class NotRequestMatcher implements RequestMatcher {
@@ -12,7 +12,7 @@ public class NotRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         return !matcher.match(request);
     }
 

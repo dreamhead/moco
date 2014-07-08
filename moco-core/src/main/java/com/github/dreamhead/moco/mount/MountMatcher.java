@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.mount;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
 import java.io.File;
@@ -24,7 +24,7 @@ public class MountMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         String relativePath = extractor.extract(request).get();
         return isTarget(relativePath) && new File(dir, relativePath).exists();
     }

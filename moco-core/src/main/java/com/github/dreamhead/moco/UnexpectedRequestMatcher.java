@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 public class UnexpectedRequestMatcher implements RequestMatcher {
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         return true;
     }
 

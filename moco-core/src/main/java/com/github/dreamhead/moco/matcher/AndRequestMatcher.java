@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
 public class AndRequestMatcher extends CompositeRequestMatcher {
@@ -10,7 +10,7 @@ public class AndRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         for (RequestMatcher matcher : matchers) {
             if (!matcher.match(request)) {
                 return false;

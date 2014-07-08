@@ -123,7 +123,7 @@ public class ActualHttpServer extends HttpConfiguration {
     private static RequestMatcher anyRequest() {
         return new RequestMatcher() {
             @Override
-            public boolean match(final HttpRequest request) {
+            public boolean match(final Request request) {
                 return true;
             }
 

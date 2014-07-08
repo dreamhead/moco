@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestExtractor;
-import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.*;
@@ -32,7 +29,7 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
             Document resourceDocument = getResourceDocument(request, this.resource);
@@ -51,12 +48,13 @@ public class XmlRequestMatcher implements RequestMatcher {
         return this;
     }
 
-    private Document getResourceDocument(HttpRequest request, Resource resource) throws SAXException {
-        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(of(request)));
+    private Document getResourceDocument(Request request, Resource resource) throws SAXException {
+        // TODO: for further extension
+        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(of((HttpRequest)request)));
         return extractDocument(new InputSource(stream), this);
     }
 
-    private Document extractDocument(HttpRequest request, RequestExtractor<String> extractor) throws SAXException {
+    private Document extractDocument(Request request, RequestExtractor<String> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 

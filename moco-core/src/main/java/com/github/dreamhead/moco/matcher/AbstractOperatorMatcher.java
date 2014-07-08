@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestExtractor;
-import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -26,7 +23,7 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final HttpRequest request) {
+    public boolean match(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
         if (!extractContent.isPresent()) {
             return false;
