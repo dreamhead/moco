@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Optional;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -11,7 +11,7 @@ import java.util.List;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
+public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
 	private final ContentRequestExtractor extractor = new ContentRequestExtractor();
 	private final JsonPath jsonPath;
 
@@ -19,8 +19,8 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
 		this.jsonPath = JsonPath.compile(jsonPath);
 	}
 
-	@Override
-	public Optional<String[]> extract(final HttpRequest request) {
+    @Override
+    protected Optional<String[]> doExtract(HttpRequest request) {
         try {
             Object content = jsonPath.read(extractor.extract(request).get());
             if (content == null) {
@@ -30,7 +30,7 @@ public class JsonPathRequestExtractor implements RequestExtractor<String[]> {
         } catch (PathNotFoundException e) {
             return absent();
         }
-	}
+    }
 
 	private String[] toStringArray(Object content){
 		if(content instanceof List){

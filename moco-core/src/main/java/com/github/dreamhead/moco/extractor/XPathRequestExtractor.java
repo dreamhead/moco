@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Optional;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -13,7 +13,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class XPathRequestExtractor implements RequestExtractor<String[]> {
+public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor = new ContentRequestExtractor();
     private final XPathExpression xPathExpression;
@@ -29,7 +29,7 @@ public class XPathRequestExtractor implements RequestExtractor<String[]> {
     }
 
     @Override
-    public Optional<String[]> extract(final HttpRequest request) {
+    protected Optional<String[]> doExtract(HttpRequest request) {
         try {
             NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
             if (list.getLength() == 0) {

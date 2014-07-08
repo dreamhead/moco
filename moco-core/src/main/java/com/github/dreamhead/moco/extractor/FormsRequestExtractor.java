@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -18,9 +18,9 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
 
-public class FormsRequestExtractor implements RequestExtractor<ImmutableMap<String, String>> {
-    public Optional<ImmutableMap<String, String>> extract(final HttpRequest request) {
-
+public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
+    @Override
+    protected Optional<ImmutableMap<String, String>> doExtract(HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
             decoder = new HttpPostRequestDecoder(((DefaultHttpRequest)request).toFullHttpRequest());

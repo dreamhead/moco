@@ -1,13 +1,13 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class FormRequestExtractor implements RequestExtractor<String> {
+public class FormRequestExtractor extends HttpRequestExtractor<String> {
     private final FormsRequestExtractor extractor = new FormsRequestExtractor();
     private final String key;
 
@@ -16,7 +16,7 @@ public class FormRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(final HttpRequest request) {
+    protected Optional<String> doExtract(HttpRequest request) {
         Optional<ImmutableMap<String,String>> forms = extractor.extract(request);
         return forms.isPresent() ? fromNullable(forms.get().get(key)) : Optional.<String>absent();
     }

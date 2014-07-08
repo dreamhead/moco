@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class ParamRequestExtractor implements RequestExtractor<String> {
+public class ParamRequestExtractor extends HttpRequestExtractor<String> {
     private final String param;
 
     public ParamRequestExtractor(final String param) {
@@ -14,7 +14,7 @@ public class ParamRequestExtractor implements RequestExtractor<String> {
     }
 
     @Override
-    public Optional<String> extract(final HttpRequest request) {
+    protected Optional<String> doExtract(HttpRequest request) {
         return fromNullable(request.getQueries().get(this.param));
     }
 }
