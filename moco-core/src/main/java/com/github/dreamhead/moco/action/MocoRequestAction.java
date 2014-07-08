@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.action;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
@@ -36,7 +37,7 @@ public class MocoRequestAction implements MocoEventAction {
         try {
             HttpRequestBase request = createRequest(url, method);
             if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(Optional.<com.github.dreamhead.moco.HttpRequest>absent())));
+                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(Optional.<Request>absent())));
             }
 
             client.execute(request);

@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -36,7 +36,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(Optional<HttpRequest> request) {
+    public byte[] readFor(Optional<? extends Request> request) {
         if (!request.isPresent()) {
             throw new IllegalArgumentException("Request is required to read template");
         }
@@ -71,7 +71,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         return cfg;
     }
 
-    private ImmutableMap<String, Object> variables(HttpRequest request) {
+    private ImmutableMap<String, Object> variables(Request request) {
         return ImmutableMap.<String, Object>builder().putAll(this.variables).put("req", request).build();
     }
 

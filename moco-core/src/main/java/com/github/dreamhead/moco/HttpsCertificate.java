@@ -57,7 +57,7 @@ public class HttpsCertificate {
     }
 
     private InputStream getKeyStore() {
-        return new ByteArrayInputStream(resource.readFor(Optional.<HttpRequest>absent()));
+        return new ByteArrayInputStream(resource.readFor(Optional.<Request>absent()));
     }
 
     private char[] getKeyStorePassword() {

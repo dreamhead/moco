@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 
@@ -22,7 +22,7 @@ public class FileResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(Optional<HttpRequest> request) {
+    public byte[] readFor(Optional<? extends Request> request) {
         try {
             return toByteArray(file);
         } catch (IOException e) {

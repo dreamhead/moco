@@ -31,8 +31,7 @@ public class JsonRequestMatcher implements RequestMatcher {
     private boolean doMatch(final Request request, final String content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
-            // TODO: for further extension
-            JsonNode resourceNode = mapper.readTree(resource.readFor(of((HttpRequest)request)));
+            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)));
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;

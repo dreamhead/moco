@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -15,7 +15,7 @@ public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
 
             @Override
             public boolean apply(String input) {
-                Pattern pattern = Pattern.compile(new String(expected.readFor(Optional.<HttpRequest>absent())));
+                Pattern pattern = Pattern.compile(new String(expected.readFor(Optional.<Request>absent())));
                 return pattern.matcher(input).matches();
             }
         });

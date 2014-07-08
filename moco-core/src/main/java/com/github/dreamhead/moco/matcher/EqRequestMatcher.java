@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -14,7 +14,7 @@ public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return Arrays.equals(input.getBytes(), expected.readFor(Optional.<HttpRequest>absent()));
+                return Arrays.equals(input.getBytes(), expected.readFor(Optional.<Request>absent()));
             }
         });
     }

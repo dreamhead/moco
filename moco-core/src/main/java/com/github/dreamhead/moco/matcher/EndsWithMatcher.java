@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -12,7 +12,7 @@ public class EndsWithMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input.endsWith(new String(expected.readFor(Optional.<HttpRequest>absent())));
+                return input.endsWith(new String(expected.readFor(Optional.<Request>absent())));
             }
         });
     }
