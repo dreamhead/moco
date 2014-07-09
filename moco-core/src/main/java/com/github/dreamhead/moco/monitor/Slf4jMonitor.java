@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
@@ -14,8 +15,8 @@ public class Slf4jMonitor extends AbstractMonitor {
     private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
 
     @Override
-    public void onMessageArrived(final HttpRequest request) {
-        logger.info("Request received:\n\n{}\n", requestDumper.dump(request));
+    public void onMessageArrived(final Request request) {
+        logger.info("Request received:\n\n{}\n", requestDumper.dump((HttpRequest)request));
     }
 
     @Override

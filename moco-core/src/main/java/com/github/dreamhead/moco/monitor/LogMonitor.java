@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public class LogMonitor extends AbstractMonitor {
@@ -13,8 +14,8 @@ public class LogMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onMessageArrived(final HttpRequest request) {
-        writer.write(formatter.format(request));
+    public void onMessageArrived(final Request request) {
+        writer.write(formatter.format((HttpRequest)request));
     }
 
     @Override

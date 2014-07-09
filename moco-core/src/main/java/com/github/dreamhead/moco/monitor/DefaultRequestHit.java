@@ -8,16 +8,16 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
-    private List<HttpRequest> unexpectedRequests = newArrayList();
-    private List<HttpRequest> requests = newArrayList();
+    private List<Request> unexpectedRequests = newArrayList();
+    private List<Request> requests = newArrayList();
 
     @Override
-    public void onMessageArrived(final HttpRequest request) {
+    public void onMessageArrived(final Request request) {
         this.requests.add(request);
     }
 
     @Override
-    public void onUnexpectedMessage(final HttpRequest request) {
+    public void onUnexpectedMessage(final Request request) {
         this.unexpectedRequests.add(request);
     }
 

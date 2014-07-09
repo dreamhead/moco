@@ -7,11 +7,11 @@ import com.google.common.collect.ImmutableList;
 import static java.lang.String.format;
 
 public class VerificationData {
-    private final ImmutableList<HttpRequest> requests;
+    private final ImmutableList<Request> requests;
     private final RequestMatcher matcher;
     private final String mismatchFormat;
 
-    public VerificationData(final ImmutableList<HttpRequest> requests, final RequestMatcher matcher, final String mismatchFormat) {
+    public VerificationData(final ImmutableList<Request> requests, final RequestMatcher matcher, final String mismatchFormat) {
         this.requests = requests;
         this.matcher = matcher;
         this.mismatchFormat = mismatchFormat;
@@ -25,10 +25,10 @@ public class VerificationData {
         return FluentIterable.from(requests).filter(matched()).size();
     }
 
-    private Predicate<HttpRequest> matched() {
-        return new Predicate<HttpRequest>() {
+    private Predicate<Request> matched() {
+        return new Predicate<Request>() {
             @Override
-            public boolean apply(HttpRequest request) {
+            public boolean apply(Request request) {
                 return matcher.match(request);
             }
         };

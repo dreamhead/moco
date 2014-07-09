@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.monitor;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.Request;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public class CompositeMonitor implements MocoMonitor {
@@ -12,7 +12,7 @@ public class CompositeMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onMessageArrived(HttpRequest request) {
+    public void onMessageArrived(Request request) {
         for (MocoMonitor monitor : monitors) {
             monitor.onMessageArrived(request);
         }
@@ -33,7 +33,7 @@ public class CompositeMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onUnexpectedMessage(HttpRequest request) {
+    public void onUnexpectedMessage(Request request) {
         for (MocoMonitor monitor : monitors) {
             monitor.onUnexpectedMessage(request);
         }

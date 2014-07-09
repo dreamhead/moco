@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco.monitor;
 
-import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.Request;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 public abstract class AbstractMonitor implements MocoMonitor {
     @Override
-    public void onMessageArrived(final HttpRequest request) {
+    public void onMessageArrived(final Request request) {
     }
 
     @Override
@@ -18,6 +18,6 @@ public abstract class AbstractMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onUnexpectedMessage(final HttpRequest request) {
+    public void onUnexpectedMessage(final Request request) {
     }
 }
