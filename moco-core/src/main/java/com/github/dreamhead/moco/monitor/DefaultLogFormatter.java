@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
-import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
@@ -10,11 +10,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class DefaultLogFormatter implements LogFormatter {
-    private final Dumper<HttpRequest> requestDumper = new HttpRequestDumper();
+    private final Dumper<Request> requestDumper = new HttpRequestDumper();
     private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
 
     @Override
-    public String format(final HttpRequest request) {
+    public String format(final Request request) {
         return String.format("Request received:\n\n%s\n", requestDumper.dump(request));
     }
 

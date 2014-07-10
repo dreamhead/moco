@@ -1,17 +1,20 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.Request;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 
-public class HttpRequestDumper extends HttpMessageBaseDumper<HttpRequest> {
-    public String dump(HttpRequest request) {
+public class HttpRequestDumper extends HttpMessageBaseDumper<Request> {
+    @Override
+    public String dump(Request request) {
+        HttpRequest httpRequest = (HttpRequest)request;
         StringBuilder buf = new StringBuilder();
-        appendRequestProtocolLine(request, buf);
+        appendRequestProtocolLine(httpRequest, buf);
         buf.append(StringUtil.NEWLINE);
-        headerJoiner.appendTo(buf, request.getHeaders());
+        headerJoiner.appendTo(buf, httpRequest.getHeaders());
 
-        long contentLength = getContentLength(request, -1);
+        long contentLength = getContentLength(httpRequest, -1);
         if (contentLength > 0) {
             buf.append(StringUtil.NEWLINE);
             buf.append(StringUtil.NEWLINE);
