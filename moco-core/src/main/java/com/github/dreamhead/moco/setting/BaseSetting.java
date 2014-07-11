@@ -13,7 +13,7 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
         super(matcher);
     }
 
-    public boolean match(HttpRequest request) {
+    public boolean match(Request request) {
         return this.matcher.match(request) && this.handler != null;
     }
 
