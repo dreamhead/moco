@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
@@ -163,7 +162,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     @Override
     public void writeToResponse(final SessionContext context) {
         HttpRequest request = context.getRequest();
-        Optional<URL> url = remoteUrl(((DefaultHttpRequest) request).toFullHttpRequest());
+        Optional<URL> url = remoteUrl(request);
         if (!url.isPresent()) {
             return;
         }
@@ -198,17 +197,15 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
         }
     }
 
-    protected Optional<URL> remoteUrl(FullHttpRequest request) {
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        Optional<String> remoteUrl = this.remoteUrl(decoder.path());
+    protected Optional<URL> remoteUrl(HttpRequest request) {
+        Optional<String> remoteUrl = this.remoteUrl(request.getUri());
         if (!remoteUrl.isPresent()) {
             return absent();
         }
 
         QueryStringEncoder encoder = new QueryStringEncoder(remoteUrl.get());
-
-        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            encoder.addParam(entry.getKey(), entry.getValue().get(0));
+        for (Map.Entry<String, String> entry : request.getQueries().entrySet()) {
+            encoder.addParam(entry.getKey(), entry.getValue());
         }
 
         try {
