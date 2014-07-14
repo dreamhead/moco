@@ -11,6 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
+import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static io.netty.handler.codec.http.HttpHeaders.*;
 
 
@@ -54,7 +55,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private FullHttpResponse doGetResponse(HttpRequest request) {
         FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
-        SessionContext context = new SessionContext(request, response);
+        SessionContext context = new SessionContext(request, response, newResponse());
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
