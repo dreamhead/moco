@@ -13,13 +13,13 @@ import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
-    protected abstract void writeContentResponse(final HttpRequest request, ByteBuf buffer);
+    protected abstract String responseContent(final HttpRequest request);
 
     @Override
     public void writeToResponse(final SessionContext context) {
         FullHttpResponse response = context.getResponse();
         ByteBuf buffer = Unpooled.buffer();
-        writeContentResponse(context.getRequest(), buffer);
+        buffer.writeBytes(responseContent(context.getRequest()).getBytes());
         response.content().writeBytes(buffer);
         setContentLength(response, response.content().writerIndex());
         if (!detector.hasContentType(response)) {

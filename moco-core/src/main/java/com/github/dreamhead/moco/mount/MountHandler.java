@@ -6,12 +6,11 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
-import io.netty.buffer.ByteBuf;
+import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
-
-import static com.google.common.io.Files.toByteArray;
+import java.nio.charset.Charset;
 
 public class MountHandler extends AbstractContentResponseHandler {
     private final MountPathExtractor extractor;
@@ -26,9 +25,9 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected void writeContentResponse(final HttpRequest request, ByteBuf buffer) {
+    protected String responseContent(final HttpRequest request) {
         try {
-            buffer.writeBytes(toByteArray(targetFile(request)));
+            return Files.toString(targetFile(request), Charset.defaultCharset());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

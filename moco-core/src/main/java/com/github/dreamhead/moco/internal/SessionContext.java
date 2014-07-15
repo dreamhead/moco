@@ -23,7 +23,7 @@ public class SessionContext {
         return response;
     }
 
-    public HttpRequest getHttpRequest() {
-        return httpRequest;
+    public MutableHttpResponse getHttpResponse() {
+        return httpResponse;
     }
 }
