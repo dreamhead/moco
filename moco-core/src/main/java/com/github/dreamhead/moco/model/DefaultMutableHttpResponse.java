@@ -3,10 +3,13 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 public class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
-    private ImmutableMap<String, String> headers;
+    private Map<String, String> headers = Maps.newHashMap();
     private int status;
     private String content;
 
@@ -16,11 +19,6 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     @Override
     public void setVersion(HttpProtocolVersion version) {
         this.version = version;
-    }
-
-    @Override
-    public void setHeaders(ImmutableMap<String, String> headers) {
-        this.headers = headers;
     }
 
     @Override
@@ -34,13 +32,18 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
+    public void addHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
+
+    @Override
     public HttpProtocolVersion getVersion() {
         return this.version;
     }
 
     @Override
     public ImmutableMap<String, String> getHeaders() {
-        return this.headers;
+        return ImmutableMap.copyOf(this.headers);
     }
 
     @Override
