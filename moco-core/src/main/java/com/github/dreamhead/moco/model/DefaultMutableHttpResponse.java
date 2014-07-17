@@ -4,6 +4,10 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.Map;
 
@@ -58,5 +62,11 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     public static MutableHttpResponse newResponse() {
         return new DefaultMutableHttpResponse();
+    }
+
+    public FullHttpResponse toFullResponse() {
+        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.valueOf(this.version.text()), HttpResponseStatus.valueOf(this.status));
+        MessageFactory.writeResponse(response, this);
+        return response;
     }
 }
