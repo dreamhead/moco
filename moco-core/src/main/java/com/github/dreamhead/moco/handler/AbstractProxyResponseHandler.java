@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -167,7 +168,19 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
             return;
         }
 
-        writeResponse(context.getResponse(), doProxy(request, url.get()));
+        HttpResponse response = doProxy(request, url.get());
+        writeHttpResponse(context, response);
+        writeResponse(context.getResponse(), response);
+    }
+
+    private void writeHttpResponse(SessionContext context, HttpResponse response) {
+        MutableHttpResponse httpResponse = context.getHttpResponse();
+        httpResponse.setVersion(response.getVersion());
+        httpResponse.setStatus(response.getStatus());
+        for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
+            httpResponse.addHeader(entry.getKey(), entry.getValue());
+        }
+        httpResponse.setContent(response.getContent());
     }
 
     private HttpResponse doProxy(final HttpRequest request, final URL remoteUrl) {
