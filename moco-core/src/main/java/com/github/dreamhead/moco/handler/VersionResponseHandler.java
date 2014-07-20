@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.resource.Resource;
 import io.netty.handler.codec.http.HttpVersion;
@@ -15,7 +16,9 @@ public class VersionResponseHandler extends AbstractResponseHandler {
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        HttpVersion httpVersion = HttpVersion.valueOf(new String(resource.readFor(of(context.getRequest()))));
+        String version = new String(resource.readFor(of(context.getRequest())));
+        HttpVersion httpVersion = HttpVersion.valueOf(version);
         context.getResponse().setProtocolVersion(httpVersion);
+        context.getHttpResponse().setVersion(HttpProtocolVersion.versionOf(version));
     }
 }

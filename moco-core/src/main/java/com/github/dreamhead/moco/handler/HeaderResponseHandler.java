@@ -27,7 +27,10 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
             response.headers().remove(name);
         }
 
-        HttpHeaders.addHeader(response, name, new String(resource.readFor(of(context.getRequest()))));
+        String value = new String(resource.readFor(of(context.getRequest())));
+        HttpHeaders.addHeader(response, name, value);
+
+        context.getHttpResponse().addHeader(name, value);
     }
 
     @Override

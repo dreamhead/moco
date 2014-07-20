@@ -36,8 +36,8 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public void addHeader(String name, String value) {
-        this.headers.put(name, value);
+    public void addHeader(String name, Object value) {
+        this.headers.put(name, value.toString());
     }
 
     @Override

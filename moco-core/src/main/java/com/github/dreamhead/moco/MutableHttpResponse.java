@@ -7,5 +7,5 @@ public interface MutableHttpResponse extends HttpResponse {
 
     void setContent(String content);
 
-    void addHeader(String name, String value);
+    void addHeader(String name, Object value);
 }
