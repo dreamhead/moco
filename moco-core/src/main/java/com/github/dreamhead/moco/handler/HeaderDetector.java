@@ -1,14 +1,14 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpResponse;
 import com.google.common.net.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponse;
 
 public class HeaderDetector {
-    public boolean hasContentType(HttpResponse response) {
-        return hasHeader(response, HttpHeaders.CONTENT_TYPE);
+    public boolean hasContentType(HttpResponse httpResponse) {
+        return hasHeader(httpResponse, HttpHeaders.CONTENT_TYPE);
     }
 
-    public boolean hasHeader(HttpResponse response, String headerName) {
-        return response.headers().contains(headerName);
+    public boolean hasHeader(HttpResponse httpResponse, String name) {
+        return httpResponse.getHeaders().containsKey(name);
     }
 }

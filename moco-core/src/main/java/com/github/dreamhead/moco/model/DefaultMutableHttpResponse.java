@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.HttpProtocolVersion;
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -41,6 +42,11 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
+    public void removeHeader(String name) {
+        this.headers.remove(name);
+    }
+
+    @Override
     public HttpProtocolVersion getVersion() {
         return this.version;
     }
@@ -60,8 +66,11 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
         return this.content;
     }
 
-    public static MutableHttpResponse newResponse() {
-        return new DefaultMutableHttpResponse();
+    public static DefaultMutableHttpResponse newResponse(HttpRequest request, int status) {
+        DefaultMutableHttpResponse httpResponse = new DefaultMutableHttpResponse();
+        httpResponse.version = request.getVersion();
+        httpResponse.status = status;
+        return httpResponse;
     }
 
     public FullHttpResponse toFullResponse() {
@@ -70,7 +79,10 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
             response.headers().add(entry.getKey(), entry.getValue());
         }
 
-        response.content().writeBytes(this.content.getBytes());
+        if (this.content != null) {
+            response.content().writeBytes(this.content.getBytes());
+        }
+
         return response;
     }
 }

@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
+import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
@@ -54,19 +55,19 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     private FullHttpResponse doGetResponse(HttpRequest request) {
-        FullHttpResponse response = defaultResponse(request, HttpResponseStatus.OK);
-        SessionContext context = new SessionContext(request, response, newResponse());
+        DefaultMutableHttpResponse httpResponse = newResponse(request, 200);
+        SessionContext context = new SessionContext(request, httpResponse);
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(context);
-                return response;
+                return httpResponse.toFullResponse();
             }
         }
 
         if (anySetting.match(request)) {
             anySetting.writeToResponse(context);
-            return response;
+            return httpResponse.toFullResponse();
         }
 
         monitor.onUnexpectedMessage(request);

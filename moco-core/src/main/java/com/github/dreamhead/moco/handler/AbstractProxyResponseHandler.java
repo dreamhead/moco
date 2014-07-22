@@ -30,7 +30,6 @@ import java.net.URL;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
-import static com.github.dreamhead.moco.model.MessageFactory.writeResponse;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.io.ByteStreams.toByteArray;
@@ -170,7 +169,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
         HttpResponse response = doProxy(request, url.get());
         writeHttpResponse(context, response);
-        writeResponse(context.getResponse(), response);
     }
 
     private void writeHttpResponse(SessionContext context, HttpResponse response) {

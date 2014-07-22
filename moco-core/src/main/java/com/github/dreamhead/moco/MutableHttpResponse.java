@@ -8,4 +8,6 @@ public interface MutableHttpResponse extends HttpResponse {
     void setContent(String content);
 
     void addHeader(String name, Object value);
+
+    void removeHeader(String name);
 }

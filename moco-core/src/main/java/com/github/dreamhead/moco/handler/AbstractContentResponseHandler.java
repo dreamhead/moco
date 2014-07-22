@@ -4,12 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.net.HttpHeaders;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.FullHttpResponse;
-
-import static io.netty.handler.codec.http.HttpHeaders.addHeader;
-import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
@@ -18,27 +12,16 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        FullHttpResponse response = context.getResponse();
         String content = responseContent(context.getRequest());
 
         MutableHttpResponse httpResponse = context.getHttpResponse();
         httpResponse.setContent(content);
 
-        ByteBuf buffer = Unpooled.buffer();
-        buffer.writeBytes(content.getBytes());
-        response.content().writeBytes(buffer);
-
-        setContentLength(response, response.content().writerIndex());
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getBytes().length);
 
-        if (!detector.hasContentType(response)) {
-            addHeader(response, HttpHeaders.CONTENT_TYPE, getContentType(context.getRequest()));
+        if (!detector.hasContentType(httpResponse)) {
             httpResponse.addHeader(HttpHeaders.CONTENT_TYPE, getContentType(context.getRequest()));
         }
-
-
-
-
     }
 
     protected String getContentType(final HttpRequest request) {

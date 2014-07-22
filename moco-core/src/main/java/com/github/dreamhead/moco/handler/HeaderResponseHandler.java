@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.resource.Resource;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
 
 import static com.google.common.base.Optional.of;
 
@@ -22,15 +21,14 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        FullHttpResponse response = context.getResponse();
-        if (detector.hasHeader(response, name)) {
-            response.headers().remove(name);
+        MutableHttpResponse httpResponse = context.getHttpResponse();
+
+        if (detector.hasHeader(httpResponse, name)) {
+            httpResponse.removeHeader(name);
         }
 
         String value = new String(resource.readFor(of(context.getRequest())));
-        HttpHeaders.addHeader(response, name, value);
-
-        context.getHttpResponse().addHeader(name, value);
+        httpResponse.addHeader(name, value);
     }
 
     @Override
