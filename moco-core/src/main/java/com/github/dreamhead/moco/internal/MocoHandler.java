@@ -44,7 +44,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private FullHttpResponse getHttpResponse(HttpRequest request) {
         try {
             monitor.onMessageArrived(request);
-            return doGetResponse(request);
+            return doGetHttpResponse(request).toFullResponse();
         } catch (RuntimeException e) {
             monitor.onException(e);
             return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
@@ -54,24 +54,24 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
     }
 
-    private FullHttpResponse doGetResponse(HttpRequest request) {
+    private DefaultMutableHttpResponse doGetHttpResponse(HttpRequest request) {
         DefaultMutableHttpResponse httpResponse = newResponse(request, 200);
         SessionContext context = new SessionContext(request, httpResponse);
 
         for (BaseSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(context);
-                return httpResponse.toFullResponse();
+                return httpResponse;
             }
         }
 
         if (anySetting.match(request)) {
             anySetting.writeToResponse(context);
-            return httpResponse.toFullResponse();
+            return httpResponse;
         }
 
         monitor.onUnexpectedMessage(request);
-        return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
+        return newResponse(request, 400);
     }
 
     private void closeIfNotKeepAlive(FullHttpRequest request, ChannelFuture future) {
