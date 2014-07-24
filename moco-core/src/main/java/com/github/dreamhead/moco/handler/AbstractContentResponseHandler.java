@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.net.HttpHeaders;
 
@@ -12,15 +13,25 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        String content = responseContent(context.getRequest());
-
+        Request request = context.getRequest();
         MutableHttpResponse httpResponse = context.getHttpResponse();
+
+        if (HttpRequest.class.isInstance(request)) {
+            doWriteToResponse(request, httpResponse);
+        }
+    }
+
+    private void doWriteToResponse(Request request, MutableHttpResponse httpResponse) {
+        HttpRequest httpRequest = HttpRequest.class.cast(request);
+        String content = responseContent(httpRequest);
+
+
         httpResponse.setContent(content);
 
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getBytes().length);
 
         if (!detector.hasContentType(httpResponse)) {
-            httpResponse.addHeader(HttpHeaders.CONTENT_TYPE, getContentType(context.getRequest()));
+            httpResponse.addHeader(HttpHeaders.CONTENT_TYPE, getContentType(httpRequest));
         }
     }
 

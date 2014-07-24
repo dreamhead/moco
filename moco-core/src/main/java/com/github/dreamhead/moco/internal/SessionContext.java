@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.Request;
 
 public class SessionContext {
     private HttpRequest httpRequest;
@@ -12,7 +13,7 @@ public class SessionContext {
         this.httpResponse = httpResponse;
     }
 
-    public HttpRequest getRequest() {
+    public Request getRequest() {
         return this.httpRequest;
     }
 

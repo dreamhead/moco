@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.resource.Resource;
@@ -21,13 +22,14 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
 
     @Override
     public void writeToResponse(final SessionContext context) {
+        Request request = context.getRequest();
         MutableHttpResponse httpResponse = context.getHttpResponse();
 
         if (detector.hasHeader(httpResponse, name)) {
             httpResponse.removeHeader(name);
         }
 
-        String value = new String(resource.readFor(of(context.getRequest())));
+        String value = new String(resource.readFor(of(request)));
         httpResponse.addHeader(name, value);
     }
 

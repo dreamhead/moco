@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -161,18 +162,25 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        HttpRequest request = context.getRequest();
-        Optional<URL> url = remoteUrl(request);
+        Request request = context.getRequest();
+        MutableHttpResponse httpResponse = context.getHttpResponse();
+        if (HttpRequest.class.isInstance(request)) {
+            doWriteToResponse(request, httpResponse);
+        }
+    }
+
+    private void doWriteToResponse(Request request, MutableHttpResponse httpResponse) {
+        HttpRequest httpRequest = HttpRequest.class.cast(request);
+        Optional<URL> url = remoteUrl(httpRequest);
         if (!url.isPresent()) {
             return;
         }
 
-        HttpResponse response = doProxy(request, url.get());
-        writeHttpResponse(context, response);
+        HttpResponse response = doProxy(httpRequest, url.get());
+        doWritHttpResponse(response, httpResponse);
     }
 
-    private void writeHttpResponse(SessionContext context, HttpResponse response) {
-        MutableHttpResponse httpResponse = context.getHttpResponse();
+    private void doWritHttpResponse(HttpResponse response, MutableHttpResponse httpResponse) {
         httpResponse.setVersion(response.getVersion());
         httpResponse.setStatus(response.getStatus());
         for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
