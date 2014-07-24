@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.httpserver;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -30,17 +30,22 @@ public class MocoRunnerBeforeClassTest {
     private static MocoTestHelper helper;
 
     @BeforeClass
-    public static void setup() {
+    public static void init() {
         server = httpserver(port());
         runner = Runner.runner(server);
+        helper = new MocoTestHelper();
+        setUpMockServices();
         runner.start();
+    }
+
+    protected static void setUpMockServices() {
         server.response(ROOT_RESPONSE);
         server.request(by(uri(LEVEL_ONE_URL))).response(LEVEL_ONE_RESPONSE);
-        helper = new MocoTestHelper();
+        server.request(by(uri(LEVEL_TWO_URL))).response(LEVEL_TWO_RESPONSE);
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void clean() {
         runner.stop();
     }
 
@@ -57,7 +62,6 @@ public class MocoRunnerBeforeClassTest {
 
     @Test
     public void should_work_for_level_two_url_in_test() throws IOException {
-        server.request(by(uri(LEVEL_TWO_URL))).response(LEVEL_TWO_RESPONSE);
         assertThat(helper.get(remoteUrl(port(), LEVEL_TWO_URL)),
                 is(LEVEL_TWO_RESPONSE));
     }

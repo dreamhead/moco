@@ -20,14 +20,12 @@ import static org.junit.Assert.assertThat;
 public class MocoRunnerTest {
     private Runner runner;
     private MocoTestHelper helper;
+    private HttpServer server;
 
     @Before
     public void setup() {
-        HttpServer server = httpserver(port());
-        server.response("foo");
-        server.request(by(uri("/test"))).response("bar");
+        server = httpserver(port());
         runner = Runner.runner(server);
-        runner.start();
         helper = new MocoTestHelper();
     }
 
@@ -38,11 +36,15 @@ public class MocoRunnerTest {
 
     @Test
     public void should_work_well() throws IOException {
+        server.response("foo");
+        runner.start();
         assertThat(helper.get(root()), is("foo"));
     }
 
     @Test
     public void should_work_well_for_sub_url() throws IOException {
+        server.request(by(uri("/test"))).response("bar");
+        runner.start();
         assertThat(helper.get(remoteUrl(port(), "/test")), is("bar"));
     }
 }
