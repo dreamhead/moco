@@ -1,9 +1,8 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
-import com.github.dreamhead.moco.MutableHttpResponse;
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -163,14 +162,15 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     @Override
     public void writeToResponse(final SessionContext context) {
         Request request = context.getRequest();
-        MutableHttpResponse httpResponse = context.getHttpResponse();
-        if (HttpRequest.class.isInstance(request)) {
-            doWriteToResponse(request, httpResponse);
+        Response response = context.getResponse();
+        if (HttpRequest.class.isInstance(request) && MutableHttpResponse.class.isInstance(response)) {
+            HttpRequest httpRequest = HttpRequest.class.cast(request);
+            MutableHttpResponse httpResponse = MutableHttpResponse.class.cast(response);
+            doWriteToResponse(httpRequest, httpResponse);
         }
     }
 
-    private void doWriteToResponse(Request request, MutableHttpResponse httpResponse) {
-        HttpRequest httpRequest = HttpRequest.class.cast(request);
+    private void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
         if (!url.isPresent()) {
             return;

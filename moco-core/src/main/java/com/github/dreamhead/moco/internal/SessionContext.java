@@ -1,23 +1,22 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.Response;
 
 public class SessionContext {
-    private HttpRequest httpRequest;
-    private MutableHttpResponse httpResponse;
+    private Request request;
+    private Response response;
 
-    public SessionContext(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
-        this.httpRequest = httpRequest;
-        this.httpResponse = httpResponse;
+    public SessionContext(Request request, Response response) {
+        this.request = request;
+        this.response = response;
     }
 
     public Request getRequest() {
-        return this.httpRequest;
+        return this.request;
     }
 
-    public MutableHttpResponse getHttpResponse() {
-        return httpResponse;
+    public Response getResponse() {
+        return response;
     }
 }
