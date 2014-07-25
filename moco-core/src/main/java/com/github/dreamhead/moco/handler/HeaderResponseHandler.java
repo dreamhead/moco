@@ -1,12 +1,14 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 
 import static com.google.common.base.Optional.of;
 
-public class HeaderResponseHandler extends AbstractResponseHandler {
+public class HeaderResponseHandler extends AbstractHttpResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
     private final String name;
@@ -17,19 +19,9 @@ public class HeaderResponseHandler extends AbstractResponseHandler {
         this.resource = resource;
     }
 
+
     @Override
-    public void writeToResponse(final SessionContext context) {
-        Request request = context.getRequest();
-        Response response = context.getResponse();
-
-        if (HttpRequest.class.isInstance(request) && MutableHttpResponse.class.isInstance(response)) {
-            HttpRequest httpRequest = HttpRequest.class.cast(request);
-            MutableHttpResponse httpResponse = MutableHttpResponse.class.cast(response);
-            doWriteToResponse(httpRequest, httpResponse);
-        }
-    }
-
-    private void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         if (detector.hasHeader(httpResponse, name)) {
             httpResponse.removeHeader(name);
         }

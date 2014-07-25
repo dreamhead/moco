@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
-import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
@@ -34,7 +33,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public abstract class AbstractProxyResponseHandler extends AbstractResponseHandler {
+public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
     private static ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of("Host", "Content-Length");
     private static ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of("Date", "Server");
@@ -160,17 +159,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractResponseHandl
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
-        Request request = context.getRequest();
-        Response response = context.getResponse();
-        if (HttpRequest.class.isInstance(request) && MutableHttpResponse.class.isInstance(response)) {
-            HttpRequest httpRequest = HttpRequest.class.cast(request);
-            MutableHttpResponse httpResponse = MutableHttpResponse.class.cast(response);
-            doWriteToResponse(httpRequest, httpResponse);
-        }
-    }
-
-    private void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
         if (!url.isPresent()) {
             return;
