@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
-import com.github.dreamhead.moco.setting.BaseSetting;
+import com.github.dreamhead.moco.setting.BaseHttpSetting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
@@ -17,7 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ActualHttpServer extends HttpConfiguration {
     private Optional<Integer> port;
     private final MocoConfig[] configs;
-    private final List<BaseSetting> settings = newArrayList();
+    private final List<BaseHttpSetting> settings = newArrayList();
     private RequestMatcher matcher = anyRequest();
     private final MocoMonitor monitor;
     protected final Optional<HttpsCertificate> certificate;
@@ -37,12 +37,12 @@ public class ActualHttpServer extends HttpConfiguration {
         return certificate;
     }
 
-    public ImmutableList<BaseSetting> getSettings() {
+    public ImmutableList<BaseHttpSetting> getSettings() {
         return configItems(settings, configs);
     }
 
-    public BaseSetting getAnySetting() {
-        BaseSetting setting = new BaseSetting(configItem(this.matcher, configs));
+    public BaseHttpSetting getAnySetting() {
+        BaseHttpSetting setting = new BaseHttpSetting(configItem(this.matcher, configs));
         ResponseHandler configuredHandler = configItem(this.handler, configs);
         if (configuredHandler != null) {
             setting.response(configuredHandler);
@@ -61,7 +61,7 @@ public class ActualHttpServer extends HttpConfiguration {
         return monitor;
     }
 
-    private void addSetting(final BaseSetting setting) {
+    private void addSetting(final BaseHttpSetting setting) {
         this.settings.add(setting);
     }
 
@@ -98,8 +98,8 @@ public class ActualHttpServer extends HttpConfiguration {
         }
     }
 
-    private void addSettings(ImmutableList<BaseSetting> thatSettings) {
-        for (BaseSetting thatSetting : thatSettings) {
+    private void addSettings(ImmutableList<BaseHttpSetting> thatSettings) {
+        for (BaseHttpSetting thatSetting : thatSettings) {
             addSetting(thatSetting);
         }
     }
@@ -114,8 +114,8 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     @Override
-    protected Setting onRequestAttached(final RequestMatcher matcher) {
-        BaseSetting baseSetting = new BaseSetting(matcher);
+    protected HttpSetting onRequestAttached(final RequestMatcher matcher) {
+        BaseHttpSetting baseSetting = new BaseHttpSetting(matcher);
         addSetting(baseSetting);
         return baseSetting;
     }

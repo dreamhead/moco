@@ -4,10 +4,7 @@ import static com.github.dreamhead.moco.MocoMount.to;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.github.dreamhead.moco.HttpServer;
-import com.github.dreamhead.moco.MocoEventTrigger;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.*;
 import com.google.common.base.Objects;
 
 @JsonIgnoreProperties({"description"})
@@ -54,7 +51,7 @@ public class SessionSetting {
     }
 
     public void bindTo(HttpServer server) {
-        com.github.dreamhead.moco.ResponseSetting setting = bindToSession(server);
+        HttpResponseSetting setting = bindToSession(server);
 
         if (hasEvent()) {
             for (MocoEventTrigger trigger : on.createTriggers()) {
@@ -63,7 +60,7 @@ public class SessionSetting {
         }
     }
 
-    private com.github.dreamhead.moco.ResponseSetting bindToSession(HttpServer server) {
+    private HttpResponseSetting bindToSession(HttpServer server) {
         if (isMount()) {
             return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
         }
@@ -77,7 +74,7 @@ public class SessionSetting {
         }
 
         if (isAnyResponse()) {
-            return server.response(getResponseHandler());
+            return (HttpResponseSetting)server.response(getResponseHandler());
         }
 
         if (isRedirectResponse()) {

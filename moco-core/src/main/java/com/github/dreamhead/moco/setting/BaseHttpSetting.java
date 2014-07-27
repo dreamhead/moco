@@ -8,8 +8,8 @@ import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.collect.ImmutableList.of;
 
-public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
-    public BaseSetting(RequestMatcher matcher) {
+public class BaseHttpSetting extends HttpSetting implements ConfigApplier<BaseHttpSetting> {
+    public BaseHttpSetting(RequestMatcher matcher) {
         super(matcher);
     }
 
@@ -24,13 +24,13 @@ public class BaseSetting extends Setting implements ConfigApplier<BaseSetting> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public BaseSetting apply(final MocoConfig config) {
+    public BaseHttpSetting apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
             appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context((String)config.apply(""))));
         }
 
-        BaseSetting setting = new BaseSetting(appliedMatcher);
+        BaseHttpSetting setting = new BaseHttpSetting(appliedMatcher);
         setting.handler = configItem(this.handler, config);
         setting.eventTriggers = configItems(eventTriggers, config);
         return setting;
