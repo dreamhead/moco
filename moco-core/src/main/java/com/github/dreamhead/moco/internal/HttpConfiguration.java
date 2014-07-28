@@ -17,29 +17,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpConfiguration extends HttpResponseSettingConfiguration implements HttpsServer {
-    protected abstract HttpSetting onRequestAttached(final RequestMatcher matcher);
+    protected abstract HttpResponseSetting onRequestAttached(final RequestMatcher matcher);
 
-    public HttpSetting request(final RequestMatcher matcher) {
+    public HttpResponseSetting request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public HttpSetting request(final RequestMatcher... matchers) {
+    public HttpResponseSetting request(final RequestMatcher... matchers) {
         return request(or(matchers));
     }
 
-    public HttpSetting get(final RequestMatcher matcher) {
+    public HttpResponseSetting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public HttpSetting post(final RequestMatcher matcher) {
+    public HttpResponseSetting post(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.POST, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public HttpSetting put(final RequestMatcher matcher) {
+    public HttpResponseSetting put(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.PUT, checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public HttpSetting delete(final RequestMatcher matcher) {
+    public HttpResponseSetting delete(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.DELETE, checkNotNull(matcher, "Matcher should not be null"));
     }
 
@@ -50,7 +50,7 @@ public abstract class HttpConfiguration extends HttpResponseSettingConfiguration
         return this;
     }
 
-    private HttpSetting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {
+    private HttpResponseSetting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {
         return request(and(by(method(method.name())), matcher));
     }
 

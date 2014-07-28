@@ -74,14 +74,14 @@ public class SessionSetting {
         }
 
         if (isAnyResponse()) {
-            return (HttpResponseSetting)server.response(getResponseHandler());
+            return (HttpResponseSetting) server.response(getResponseHandler());
         }
 
         if (isRedirectResponse()) {
-            return  server.request(getRequestMatcher()).redirectTo(redirectTo);
+            return server.request(getRequestMatcher()).redirectTo(redirectTo);
         }
 
-        return server.request(getRequestMatcher()).response(getResponseHandler());
+        return (HttpResponseSetting) server.request(getRequestMatcher()).response(getResponseHandler());
     }
 
     private boolean isProxy() {

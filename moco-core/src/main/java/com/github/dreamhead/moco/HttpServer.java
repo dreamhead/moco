@@ -8,17 +8,17 @@ import com.github.dreamhead.moco.mount.MountTo;
 public interface HttpServer extends HttpResponseSetting {
     int port();
 
-    HttpSetting request(final RequestMatcher matcher);
+    HttpResponseSetting request(final RequestMatcher matcher);
 
-    HttpSetting request(final RequestMatcher... matchers);
+    HttpResponseSetting request(final RequestMatcher... matchers);
 
-    HttpSetting get(final RequestMatcher matcher);
+    HttpResponseSetting get(final RequestMatcher matcher);
 
-    HttpSetting post(final RequestMatcher matcher);
+    HttpResponseSetting post(final RequestMatcher matcher);
 
-    HttpSetting put(final RequestMatcher matcher);
+    HttpResponseSetting put(final RequestMatcher matcher);
 
-    HttpSetting delete(final RequestMatcher matcher);
+    HttpResponseSetting delete(final RequestMatcher matcher);
 
     HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates);
 

@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
-import com.github.dreamhead.moco.setting.BaseHttpSetting;
+import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -17,8 +17,8 @@ import static io.netty.handler.codec.http.HttpHeaders.*;
 
 
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private final ImmutableList<BaseHttpSetting> settings;
-    private final BaseHttpSetting anySetting;
+    private final ImmutableList<HttpSetting> settings;
+    private final HttpSetting anySetting;
     private final MocoMonitor monitor;
 
     public MocoHandler(ActualHttpServer server) {
@@ -58,7 +58,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         DefaultMutableHttpResponse httpResponse = newResponse(request, 200);
         SessionContext context = new SessionContext(request, httpResponse);
 
-        for (BaseHttpSetting setting : settings) {
+        for (HttpSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(context);
                 return httpResponse;
