@@ -35,22 +35,22 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private FullHttpResponse handleRequest(FullHttpRequest message) {
         HttpRequest request = DefaultHttpRequest.newRequest(message);
-        FullHttpResponse response = getHttpResponse(request);
+        FullHttpResponse response = getHttpResponse(request).toFullResponse();
         prepareForKeepAlive(message, response);
         monitor.onMessageLeave(response);
         return response;
     }
 
-    private FullHttpResponse getHttpResponse(HttpRequest request) {
+    private DefaultMutableHttpResponse getHttpResponse(HttpRequest request) {
         try {
             monitor.onMessageArrived(request);
-            return doGetHttpResponse(request).toFullResponse();
+            return doGetHttpResponse(request);
         } catch (RuntimeException e) {
             monitor.onException(e);
-            return defaultResponse(request, HttpResponseStatus.BAD_REQUEST);
+            return newResponse(request, 400);
         } catch (Exception e) {
             monitor.onException(e);
-            return defaultResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            return newResponse(request, 500);
         }
     }
 
