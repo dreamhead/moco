@@ -1,9 +1,12 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.resource.*;
+import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
+import com.google.common.base.Optional;
 import com.google.common.io.ByteStreams;
-import org.apache.http.Header;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
+import org.apache.http.*;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
@@ -660,4 +663,41 @@ public class MocoTest extends AbstractMocoTest {
             }
         });
     }
+
+    @Test
+    public void should_return_custom_content() throws Exception {
+        CustomResourceReader reader = new CustomResourceReader("text/plain");
+        ContentResource resource = new ContentResource(
+                IdFactory.id("template"),
+                ResourceConfigApplierFactory.DO_NOTHING_APPLIER,
+                reader);
+        server.response(resource);
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(root()), is("foo"));
+            }
+        });
+
+    }
+    private class CustomResourceReader implements ContentResourceReader {
+        private final String contentType;
+
+        public CustomResourceReader(String contentType) {
+            this.contentType = contentType;
+        }
+
+        //f: HttpRequest => Array[Byte]
+        @Override
+        public byte[] readFor(Optional<? extends com.github.dreamhead.moco.Request> request) {
+          return "fo".getBytes();
+        }
+
+        public String getContentType() {
+            return this.contentType;
+        }
+
+    }
+
 }
