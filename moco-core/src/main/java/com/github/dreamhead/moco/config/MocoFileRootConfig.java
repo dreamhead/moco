@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.MocoConfig;
 
 import java.io.File;
 
+import static com.github.dreamhead.moco.util.Files.join;
+
 public class MocoFileRootConfig implements MocoConfig<String> {
     private final String fileRoot;
 
@@ -18,6 +20,6 @@ public class MocoFileRootConfig implements MocoConfig<String> {
 
     @Override
     public String apply(String filename) {
-        return this.fileRoot + File.separator + filename;
+        return join(this.fileRoot, filename);
     }
 }
