@@ -1,17 +1,17 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
-import io.netty.handler.codec.http.FullHttpResponse;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class DefaultLogFormatter implements LogFormatter {
     private final Dumper<Request> requestDumper = new HttpRequestDumper();
-    private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
+    private final Dumper<Response> responseDumper = new HttpResponseDumper();
 
     @Override
     public String format(final Request request) {
@@ -19,7 +19,7 @@ public class DefaultLogFormatter implements LogFormatter {
     }
 
     @Override
-    public String format(final FullHttpResponse response) {
+    public String format(final Response response) {
         return String.format("Response return:\n\n%s\n", responseDumper.dump(response));
     }
 

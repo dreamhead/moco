@@ -1,17 +1,17 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
-import io.netty.handler.codec.http.FullHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Slf4jMonitor extends AbstractMonitor {
     private static Logger logger = LoggerFactory.getLogger(Slf4jMonitor.class);
     private final Dumper<Request> requestDumper = new HttpRequestDumper();
-    private final Dumper<FullHttpResponse> responseDumper = new HttpResponseDumper();
+    private final Dumper<Response> responseDumper = new HttpResponseDumper();
 
     @Override
     public void onMessageArrived(final Request request) {
@@ -24,7 +24,7 @@ public class Slf4jMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onMessageLeave(final FullHttpResponse response) {
+    public void onMessageLeave(final Response response) {
         logger.info("Response return:\n\n{}\n", responseDumper.dump(response));
     }
 }

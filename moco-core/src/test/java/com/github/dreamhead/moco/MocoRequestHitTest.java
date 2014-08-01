@@ -47,7 +47,7 @@ public class MocoRequestHitTest {
         });
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
-        verify(monitor).onMessageLeave(any(FullHttpResponse.class));
+        verify(monitor).onMessageLeave(any(HttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
 
@@ -65,7 +65,7 @@ public class MocoRequestHitTest {
         });
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
-        verify(monitor).onMessageLeave(any(FullHttpResponse.class));
+        verify(monitor).onMessageLeave(any(HttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
 
