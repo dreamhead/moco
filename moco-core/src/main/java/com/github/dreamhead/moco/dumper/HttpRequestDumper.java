@@ -2,10 +2,13 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
+import com.google.common.base.Joiner;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 
-public class HttpRequestDumper extends HttpMessageBaseDumper<Request> {
+public class HttpRequestDumper implements Dumper<Request> {
+    private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
+
     @Override
     public String dump(Request request) {
         HttpRequest httpRequest = (HttpRequest)request;
