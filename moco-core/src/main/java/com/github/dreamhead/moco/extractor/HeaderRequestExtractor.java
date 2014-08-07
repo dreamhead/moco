@@ -16,7 +16,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String> {
     }
 
     @Override
-    protected Optional<String> doExtract(HttpRequest request) {
+    protected Optional<String> doExtract(final HttpRequest request) {
         ImmutableMap<String,String> headers = request.getHeaders();
         for (String key : headers.keySet()) {
             if (key.equalsIgnoreCase(name)) {

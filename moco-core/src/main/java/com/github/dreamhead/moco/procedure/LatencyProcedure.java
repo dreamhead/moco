@@ -8,7 +8,7 @@ public class LatencyProcedure implements MocoProcedure {
 
     private final long millis;
 
-    public LatencyProcedure(long millis) {
+    public LatencyProcedure(final long millis) {
         this.millis = millis;
     }
 

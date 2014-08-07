@@ -48,7 +48,7 @@ public class MountMatcher implements RequestMatcher {
         return this;
     }
 
-    private boolean isTarget(String relativePath) {
+    private boolean isTarget(final String relativePath) {
         return !isNullOrEmpty(relativePath) && and(predicates).apply(relativePath);
     }
 }
