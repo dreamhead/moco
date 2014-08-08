@@ -174,12 +174,12 @@ public class Moco {
         return endsWith(extractor(resource.id()), resource);
     }
 
-    public static <T> RequestMatcher endsWith(RequestExtractor<T> extractor, String expected) {
+    public static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final String expected) {
         return endsWith(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
-    private static <T> RequestMatcher endsWith(RequestExtractor<T> extractor, Resource resource) {
+    private static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final Resource resource) {
         return new EndsWithMatcher<T>(extractor, resource);
     }
 
@@ -188,12 +188,12 @@ public class Moco {
         return contain(extractor(resource.id()), resource);
     }
 
-    public static <T> RequestMatcher contain(RequestExtractor<T> extractor, String expected) {
+    public static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final String expected) {
         return contain(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
-    private static <T> RequestMatcher contain(RequestExtractor<T> extractor, Resource resource) {
+    private static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
         return new ContainMatcher<T>(extractor, resource);
     }
 

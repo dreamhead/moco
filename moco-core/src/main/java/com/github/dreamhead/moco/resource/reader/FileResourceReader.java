@@ -22,7 +22,7 @@ public class FileResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(Optional<? extends Request> request) {
+    public byte[] readFor(final Optional<? extends Request> request) {
         try {
             return toByteArray(file);
         } catch (IOException e) {

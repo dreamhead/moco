@@ -22,7 +22,7 @@ public class HttpsCertificate {
     private final String keyStorePassword;
     private final String certPassword;
 
-    public HttpsCertificate(ContentResource resource, String keyStorePassword, String certPassword) {
+    private HttpsCertificate(final ContentResource resource, final String keyStorePassword, final String certPassword) {
         this.resource = resource;
         this.keyStorePassword = keyStorePassword;
         this.certPassword = certPassword;
@@ -68,7 +68,7 @@ public class HttpsCertificate {
         return certPassword.toCharArray();
     }
 
-    public static HttpsCertificate certificate(ContentResource resource, String keyStorePassword, String certPassword) {
+    public static HttpsCertificate certificate(final ContentResource resource, final String keyStorePassword, String certPassword) {
         return new HttpsCertificate(checkNotNull(resource),
                 checkNotNullOrEmpty(keyStorePassword, "Key store password should not be null"),
                 checkNotNullOrEmpty(certPassword, "Cert password should not be null"));
