@@ -165,8 +165,9 @@ public class Moco {
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
-    private static <T> RequestMatcher startsWith(RequestExtractor<T> extract, Resource resource) {
-        return new StartsWithMatcher<T>(extract, resource);
+    private static <T> RequestMatcher startsWith(RequestExtractor<T> extractor, Resource resource) {
+        return new StartsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
+                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher endsWith(final Resource resource) {
@@ -180,7 +181,8 @@ public class Moco {
     }
 
     private static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new EndsWithMatcher<T>(extractor, resource);
+        return new EndsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
+                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher contain(final Resource resource) {
@@ -194,7 +196,8 @@ public class Moco {
     }
 
     private static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
-        return new ContainMatcher<T>(extractor, resource);
+        return new ContainMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
+                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
