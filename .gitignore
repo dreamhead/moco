@@ -12,3 +12,7 @@ reports
 *.output
 .gmoco_pid
 gmoco.log
+.project
+.classpath
+.settings/
+bin/
