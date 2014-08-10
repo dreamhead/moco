@@ -209,7 +209,7 @@ public class Moco {
     }
 
     public static RequestMatcher not(final RequestMatcher matcher) {
-        return new NotRequestMatcher(matcher);
+        return new NotRequestMatcher(checkNotNull(matcher, "Expected matcher should not be null"));
     }
 
     public static ContentResource text(final String text) {
