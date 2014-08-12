@@ -3,15 +3,15 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.resource.Resource;
 
 public interface ResponseSetting<T extends ResponseSetting> {
-    T response(String content);
+    T response(final String content);
 
-    T response(Resource resource);
+    T response(final Resource resource);
 
-    T response(ResponseHandler handler);
+    T response(final ResponseHandler handler);
 
-    T response(MocoProcedure procedure);
+    T response(final MocoProcedure procedure);
 
-    T response(ResponseHandler... handlers);
+    T response(final ResponseHandler... handlers);
 
-    T on(MocoEventTrigger trigger);
+    T on(final MocoEventTrigger trigger);
 }

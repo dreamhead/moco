@@ -1,13 +1,13 @@
 package com.github.dreamhead.moco;
 
 public interface MutableHttpResponse extends HttpResponse {
-    void setVersion(HttpProtocolVersion version);
+    void setVersion(final HttpProtocolVersion version);
 
-    void setStatus(int status);
+    void setStatus(final int status);
 
-    void setContent(String content);
+    void setContent(final String content);
 
-    void addHeader(String name, Object value);
+    void addHeader(final String name, final Object value);
 
-    void removeHeader(String name);
+    void removeHeader(final String name);
 }
