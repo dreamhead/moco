@@ -16,7 +16,10 @@ import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.IdFactory;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.resource.ResourceConfigApplierFactory;
+import com.github.dreamhead.moco.resource.reader.CustomResourceReader;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -397,6 +400,10 @@ public class Moco {
                         checkNotNullOrEmpty(value1, "Template variable value should not be null"),
                         checkNotNullOrEmpty(name2, "Template variable name should not be null"),
                         checkNotNullOrEmpty(value2, "Template variable value should not be null")));
+    }
+
+    public static Resource custom(final Function<com.github.dreamhead.moco.Request, String> function) {
+        return customResource(checkNotNull(function, "Function should not be null"));
     }
 
     public static Failover failover(final String file) {

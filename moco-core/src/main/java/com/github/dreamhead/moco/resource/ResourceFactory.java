@@ -1,12 +1,10 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
-import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
-import com.github.dreamhead.moco.resource.reader.FileResourceReader;
-import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
+import com.github.dreamhead.moco.resource.reader.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
@@ -79,6 +77,11 @@ public class ResourceFactory {
         });
     }
 
+    public static ContentResource customResource(final Function<Request, String> function) {
+        CustomResourceReader reader = new CustomResourceReader("text/plain", function);
+        return contentResource(id("template"), DO_NOTHING_APPLIER, reader);
+    }
+
     private static ContentResource contentResource(Identifiable id, ResourceConfigApplier applier, ContentResourceReader reader) {
         return new ContentResource(id, applier, reader);
     }
@@ -86,6 +89,8 @@ public class ResourceFactory {
     private static Resource resource(Identifiable id, ResourceConfigApplier applier, ResourceReader reader) {
         return new Resource(id, applier, reader);
     }
+
+
 
     private ResourceFactory() {}
 }
