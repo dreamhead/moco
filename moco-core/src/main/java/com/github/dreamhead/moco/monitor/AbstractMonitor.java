@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.Request;
-import io.netty.handler.codec.http.FullHttpResponse;
+import com.github.dreamhead.moco.Response;
 
 public abstract class AbstractMonitor implements MocoMonitor {
     @Override
@@ -14,7 +14,7 @@ public abstract class AbstractMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onMessageLeave(final FullHttpResponse response) {
+    public void onMessageLeave(final Response response) {
     }
 
     @Override

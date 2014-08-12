@@ -15,7 +15,6 @@ import io.netty.handler.codec.http.*;
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static io.netty.handler.codec.http.HttpHeaders.*;
 
-
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final ImmutableList<HttpSetting> settings;
     private final HttpSetting anySetting;
@@ -35,9 +34,10 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private FullHttpResponse handleRequest(FullHttpRequest message) {
         HttpRequest request = DefaultHttpRequest.newRequest(message);
-        FullHttpResponse response = getHttpResponse(request).toFullResponse();
+        DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
+        FullHttpResponse response = httpResponse.toFullResponse();
         prepareForKeepAlive(message, response);
-        monitor.onMessageLeave(response);
+        monitor.onMessageLeave(httpResponse);
         return response;
     }
 

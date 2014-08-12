@@ -5,12 +5,8 @@ import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 
-public interface HttpServer extends HttpResponseSetting {
+public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSetting> {
     int port();
-
-    HttpResponseSetting request(final RequestMatcher matcher);
-
-    HttpResponseSetting request(final RequestMatcher... matchers);
 
     HttpResponseSetting get(final RequestMatcher matcher);
 

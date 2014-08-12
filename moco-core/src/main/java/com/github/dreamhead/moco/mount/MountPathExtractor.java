@@ -17,7 +17,7 @@ public class MountPathExtractor extends HttpRequestExtractor<String> {
     }
 
     @Override
-    protected Optional<String> doExtract(HttpRequest request) {
+    protected Optional<String> doExtract(final HttpRequest request) {
         return of(target.extract(extractor.extract(request).get()));
     }
 }

@@ -2,10 +2,14 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
-import io.netty.handler.codec.http.HttpHeaders;
+import com.google.common.base.Joiner;
 import io.netty.util.internal.StringUtil;
 
-public class HttpRequestDumper extends HttpMessageBaseDumper<Request> {
+import static com.github.dreamhead.moco.dumper.HttpDumpers.appendContent;
+
+public class HttpRequestDumper implements Dumper<Request> {
+    private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
+
     @Override
     public String dump(Request request) {
         HttpRequest httpRequest = (HttpRequest)request;
@@ -14,13 +18,7 @@ public class HttpRequestDumper extends HttpMessageBaseDumper<Request> {
         buf.append(StringUtil.NEWLINE);
         headerJoiner.appendTo(buf, httpRequest.getHeaders());
 
-        long contentLength = getContentLength(httpRequest, -1);
-        if (contentLength > 0) {
-            buf.append(StringUtil.NEWLINE);
-            buf.append(StringUtil.NEWLINE);
-            buf.append(request.getContent());
-        }
-
+        appendContent(httpRequest, buf);
         return buf.toString();
     }
 
@@ -30,18 +28,5 @@ public class HttpRequestDumper extends HttpMessageBaseDumper<Request> {
         buf.append(request.getUri());
         buf.append(' ');
         buf.append(request.getVersion().text());
-    }
-
-    private long getContentLength(HttpRequest request, long defaultValue) {
-        String contengLengthHeader = request.getHeaders().get(HttpHeaders.Names.CONTENT_LENGTH);
-        if (contengLengthHeader != null) {
-            try {
-                return Long.parseLong(contengLengthHeader);
-            } catch (NumberFormatException e) {
-                return defaultValue;
-            }
-        }
-
-        return defaultValue;
     }
 }

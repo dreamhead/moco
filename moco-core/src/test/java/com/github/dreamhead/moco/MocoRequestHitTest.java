@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import io.netty.handler.codec.http.FullHttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Before;
@@ -10,11 +9,11 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoRequestHit.*;
 import static com.github.dreamhead.moco.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -47,7 +46,7 @@ public class MocoRequestHitTest {
         });
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
-        verify(monitor).onMessageLeave(any(FullHttpResponse.class));
+        verify(monitor).onMessageLeave(any(HttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
 
@@ -65,7 +64,7 @@ public class MocoRequestHitTest {
         });
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
-        verify(monitor).onMessageLeave(any(FullHttpResponse.class));
+        verify(monitor).onMessageLeave(any(HttpResponse.class));
         verify(monitor, Mockito.never()).onException(any(Exception.class));
     }
 

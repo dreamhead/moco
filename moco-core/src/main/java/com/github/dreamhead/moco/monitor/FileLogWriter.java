@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 public class FileLogWriter implements LogWriter {
     private final File file;
 
-    public FileLogWriter(String filename) {
+    public FileLogWriter(final String filename) {
         this.file = new File(filename);
     }
 

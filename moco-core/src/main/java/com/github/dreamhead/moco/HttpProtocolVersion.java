@@ -14,7 +14,7 @@ public enum HttpProtocolVersion {
 
     private final String text;
 
-    private HttpProtocolVersion(String text) {
+    private HttpProtocolVersion(final String text) {
         this.text = text;
     }
 
@@ -27,7 +27,7 @@ public enum HttpProtocolVersion {
         return text;
     }
 
-    public static HttpProtocolVersion versionOf(String version) {
+    public static HttpProtocolVersion versionOf(final String version) {
         HttpProtocolVersion[] values = HttpProtocolVersion.values();
         for (HttpProtocolVersion value : values) {
             if (value.text.equalsIgnoreCase(version)) {

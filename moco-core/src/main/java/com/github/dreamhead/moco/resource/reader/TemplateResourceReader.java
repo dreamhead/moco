@@ -36,7 +36,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(Optional<? extends Request> request) {
+    public byte[] readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
             throw new IllegalArgumentException("Request is required to read template");
         }

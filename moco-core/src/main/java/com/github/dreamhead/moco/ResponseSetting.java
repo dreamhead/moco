@@ -2,16 +2,16 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.resource.Resource;
 
-public interface ResponseSetting {
-    ResponseSetting response(String content);
+public interface ResponseSetting<T extends ResponseSetting> {
+    T response(final String content);
 
-    ResponseSetting response(Resource resource);
+    T response(final Resource resource);
 
-    ResponseSetting response(ResponseHandler handler);
+    T response(final ResponseHandler handler);
 
-    ResponseSetting response(MocoProcedure procedure);
+    T response(final MocoProcedure procedure);
 
-    ResponseSetting response(ResponseHandler... handlers);
+    T response(final ResponseHandler... handlers);
 
-    ResponseSetting on(MocoEventTrigger trigger);
+    T on(final MocoEventTrigger trigger);
 }

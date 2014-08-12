@@ -8,7 +8,7 @@ import static com.google.common.base.Optional.of;
 
 public class HttpMethodExtractor extends HttpRequestExtractor<String> {
     @Override
-    protected Optional<String> doExtract(HttpRequest request) {
+    protected Optional<String> doExtract(final HttpRequest request) {
         return of(request.getMethod().toUpperCase());
     }
 }

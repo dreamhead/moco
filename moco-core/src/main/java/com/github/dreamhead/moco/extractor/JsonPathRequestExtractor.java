@@ -20,7 +20,7 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
 	}
 
     @Override
-    protected Optional<String[]> doExtract(HttpRequest request) {
+    protected Optional<String[]> doExtract(final HttpRequest request) {
         try {
             Object content = jsonPath.read(extractor.extract(request).get());
             if (content == null) {

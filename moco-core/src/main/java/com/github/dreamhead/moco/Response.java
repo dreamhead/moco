@@ -1,5 +1,4 @@
 package com.github.dreamhead.moco;
 
-public interface Response {
-    String getContent();
+public interface Response extends Message {
 }
