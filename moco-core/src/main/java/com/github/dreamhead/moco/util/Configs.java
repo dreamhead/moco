@@ -23,7 +23,7 @@ public class Configs {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends ConfigApplier> ImmutableList<T> configItems(List<T> items, MocoConfig... configs) {
+    public static <T extends ConfigApplier<T>> ImmutableList<T> configItems(List<T> items, MocoConfig... configs) {
         return from(items).transform(Configs.<T>config(configs)).toList();
     }
 

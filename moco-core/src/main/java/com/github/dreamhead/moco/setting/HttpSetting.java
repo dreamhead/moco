@@ -14,17 +14,19 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.collect.ImmutableList.of;
 
-public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSetting> implements ConfigApplier<HttpSetting>, HttpResponseSetting {
+public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSetting> implements Setting<HttpResponseSetting>, HttpResponseSetting {
     private final RequestMatcher matcher;
 
     public HttpSetting(final RequestMatcher matcher) {
         this.matcher = matcher;
     }
 
+    @Override
     public boolean match(Request request) {
         return this.matcher.match(request) && this.handler != null;
     }
 
+    @Override
     public void writeToResponse(SessionContext context) {
         this.handler.writeToResponse(context);
         this.fireCompleteEvent();
@@ -32,7 +34,7 @@ public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSe
 
     @Override
     @SuppressWarnings("unchecked")
-    public HttpSetting apply(final MocoConfig config) {
+    public Setting apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
             appliedMatcher = new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));

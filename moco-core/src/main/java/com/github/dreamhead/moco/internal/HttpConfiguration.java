@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
+import com.google.common.base.Optional;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
@@ -16,7 +17,11 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public abstract class HttpConfiguration extends BaseServer<HttpResponseSetting> implements HttpsServer {
+public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
+    public HttpConfiguration(Optional<Integer> port, MocoMonitor monitor, MocoConfig[] configs) {
+        super(port, monitor, configs);
+    }
+
     public HttpResponseSetting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
