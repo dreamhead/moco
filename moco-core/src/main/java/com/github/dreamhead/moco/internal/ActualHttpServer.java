@@ -6,11 +6,16 @@ import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.internal.InternalApis.context;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -131,7 +136,7 @@ public class ActualHttpServer extends HttpConfiguration {
             @SuppressWarnings("unchecked")
             public RequestMatcher apply(final MocoConfig config) {
                 if (config.isFor(MocoConfig.URI_ID)) {
-                    return context((String)config.apply(""));
+                    return context((String) config.apply(""));
                 }
 
                 return this;
@@ -165,5 +170,15 @@ public class ActualHttpServer extends HttpConfiguration {
 
     public void setPort(int port) {
         this.port = of(port);
+    }
+
+    @Override
+    protected HttpResponseSetting self() {
+        return this;
+    }
+
+    @Override
+    public HttpResponseSetting redirectTo(String url) {
+        return this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
     }
 }

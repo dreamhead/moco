@@ -1,15 +1,20 @@
 package com.github.dreamhead.moco.setting;
 
 import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.internal.HttpResponseSettingConfiguration;
+import com.github.dreamhead.moco.internal.BaseResponseSettingConfiguration;
+import com.github.dreamhead.moco.internal.InternalApis;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.collect.ImmutableList.of;
 
-public class HttpSetting extends HttpResponseSettingConfiguration implements ConfigApplier<HttpSetting> {
+public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSetting> implements ConfigApplier<HttpSetting>, HttpResponseSetting {
     private final RequestMatcher matcher;
 
     public HttpSetting(final RequestMatcher matcher) {
@@ -30,7 +35,7 @@ public class HttpSetting extends HttpResponseSettingConfiguration implements Con
     public HttpSetting apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
-            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, context((String)config.apply(""))));
+            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));
         }
 
         HttpSetting setting = new HttpSetting(appliedMatcher);
@@ -45,5 +50,15 @@ public class HttpSetting extends HttpResponseSettingConfiguration implements Con
                 eventTrigger.fireEvent();
             }
         }
+    }
+
+    @Override
+    protected HttpResponseSetting self() {
+        return this;
+    }
+
+    @Override
+    public HttpResponseSetting redirectTo(String url) {
+        return this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
     }
 }

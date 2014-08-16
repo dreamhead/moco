@@ -16,17 +16,7 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public abstract class HttpConfiguration extends HttpResponseSettingConfiguration implements HttpsServer {
-    protected abstract HttpResponseSetting onRequestAttached(final RequestMatcher matcher);
-
-    public HttpResponseSetting request(final RequestMatcher matcher) {
-        return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
-    }
-
-    public HttpResponseSetting request(final RequestMatcher... matchers) {
-        return request(or(matchers));
-    }
-
+public abstract class HttpConfiguration extends BaseServer<HttpResponseSetting> implements HttpsServer {
     public HttpResponseSetting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
@@ -60,7 +50,7 @@ public abstract class HttpConfiguration extends HttpResponseSettingConfiguration
 
     public HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
         ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
-        this.request(context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
+        this.request(InternalApis.context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
         return this;
     }
 }
