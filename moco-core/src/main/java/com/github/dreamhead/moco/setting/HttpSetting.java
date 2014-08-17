@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.setting;
 
-import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.internal.BaseResponseSettingConfiguration;
+import com.github.dreamhead.moco.HttpResponseSetting;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;
-import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -14,22 +14,10 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.collect.ImmutableList.of;
 
-public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSetting> implements Setting<HttpResponseSetting>, HttpResponseSetting {
-    private final RequestMatcher matcher;
+public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Setting<HttpResponseSetting>, HttpResponseSetting {
 
     public HttpSetting(final RequestMatcher matcher) {
-        this.matcher = matcher;
-    }
-
-    @Override
-    public boolean match(Request request) {
-        return this.matcher.match(request) && this.handler != null;
-    }
-
-    @Override
-    public void writeToResponse(SessionContext context) {
-        this.handler.writeToResponse(context);
-        this.fireCompleteEvent();
+        super(matcher);
     }
 
     @Override
@@ -44,14 +32,6 @@ public class HttpSetting extends BaseResponseSettingConfiguration<HttpResponseSe
         setting.handler = configItem(this.handler, config);
         setting.eventTriggers = configItems(eventTriggers, config);
         return setting;
-    }
-
-    public void fireCompleteEvent() {
-        for (MocoEventTrigger eventTrigger : eventTriggers) {
-            if (eventTrigger.isFor(MocoEvent.COMPLETE)) {
-                eventTrigger.fireEvent();
-            }
-        }
     }
 
     @Override
