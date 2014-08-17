@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

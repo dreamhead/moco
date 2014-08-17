@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.internal;
 
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.google.common.base.Optional.of;
 
 public class MocoHttpServerTest {

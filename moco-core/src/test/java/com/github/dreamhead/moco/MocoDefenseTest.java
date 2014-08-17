@@ -4,10 +4,10 @@ import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 
-public class MocoDefenseTest extends AbstractMocoTest {
+public class MocoDefenseTest extends AbstractMocoHttpTest {
     @Test(expected = HttpResponseException.class)
     public void should_work_well_without_response_setting() throws Exception {
         server = httpserver(12306, context("/foo"));

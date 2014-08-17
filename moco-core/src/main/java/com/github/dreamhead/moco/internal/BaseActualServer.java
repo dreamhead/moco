@@ -18,7 +18,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
 
     protected final MocoConfig[] configs;
     protected final MocoMonitor monitor;
-    private final List<Setting> settings = newArrayList();
+    private final List<Setting<T>> settings = newArrayList();
     protected Optional<Integer> port;
     protected RequestMatcher matcher = anyRequest();
 
@@ -59,12 +59,12 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         this.port = of(port);
     }
 
-    public ImmutableList<Setting> getSettings() {
+    public ImmutableList<Setting<T>> getSettings() {
         return configItems(settings, configs);
     }
 
-    public Setting getAnySetting() {
-        Setting setting = newSetting(configItem(this.matcher, configs));
+    public Setting<T> getAnySetting() {
+        Setting<T> setting = newSetting(configItem(this.matcher, configs));
         ResponseHandler configuredHandler = configItem(this.handler, configs);
         if (configuredHandler != null) {
             setting.response(configuredHandler);
@@ -83,7 +83,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         return monitor;
     }
 
-    protected void addSetting(final Setting setting) {
+    protected void addSetting(final Setting<T> setting) {
         this.settings.add(setting);
     }
 
@@ -98,8 +98,8 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         }
     }
 
-    protected void addSettings(ImmutableList<Setting> thatSettings) {
-        for (Setting thatSetting : thatSettings) {
+    protected void addSettings(ImmutableList<Setting<T>> thatSettings) {
+        for (Setting<T> thatSetting : thatSettings) {
             addSetting(thatSetting);
         }
     }

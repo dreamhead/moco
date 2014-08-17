@@ -12,7 +12,7 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.MocoRequestHit.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

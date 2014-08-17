@@ -15,8 +15,8 @@ import java.io.PrintStream;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;

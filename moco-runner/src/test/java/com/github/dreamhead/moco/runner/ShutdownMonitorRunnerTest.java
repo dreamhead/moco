@@ -12,8 +12,8 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;

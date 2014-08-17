@@ -22,7 +22,7 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Set
 
     @Override
     @SuppressWarnings("unchecked")
-    public Setting apply(final MocoConfig config) {
+    public Setting<HttpResponseSetting> apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         if (config.isFor("uri") && this.matcher == appliedMatcher) {
             appliedMatcher = new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));

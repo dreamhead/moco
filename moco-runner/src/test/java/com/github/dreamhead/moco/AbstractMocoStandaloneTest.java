@@ -10,7 +10,7 @@ import org.junit.After;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 
 public class AbstractMocoStandaloneTest {

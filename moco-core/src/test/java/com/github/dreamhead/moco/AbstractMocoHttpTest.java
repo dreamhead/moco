@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.Before;
 
 import static com.github.dreamhead.moco.Moco.httpserver;
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 
-public class AbstractMocoTest {
+public class AbstractMocoHttpTest {
     protected HttpServer server;
     protected MocoTestHelper helper;
 

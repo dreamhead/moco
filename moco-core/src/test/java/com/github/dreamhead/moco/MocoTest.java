@@ -14,15 +14,15 @@ import java.io.InputStream;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
-public class MocoTest extends AbstractMocoTest {
+public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_expected_response() throws Exception {
         server.response("foo");

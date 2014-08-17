@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpsCertificate;
-import com.github.dreamhead.moco.Runner;
+import com.github.dreamhead.moco.ResponseSetting;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import io.netty.channel.ChannelInitializer;
@@ -14,16 +14,21 @@ import io.netty.handler.ssl.SslHandler;
 
 import javax.net.ssl.SSLEngine;
 
-public class MocoHttpServer extends Runner {
-    private final MocoServer server = new MocoServer();
-    private final ActualHttpServer serverSetting;
+public class MocoHttpServer extends BaseServerRunner {
+    protected final ActualHttpServer serverSetting;
 
     public MocoHttpServer(ActualHttpServer serverSetting) {
         this.serverSetting = serverSetting;
     }
 
-    public void start() {
-        int port = server.start(serverSetting.getPort().or(0), new ChannelInitializer<SocketChannel>() {
+    @Override
+    protected BaseActualServer serverSetting() {
+        return this.serverSetting;
+    }
+
+    @Override
+    protected ChannelInitializer<SocketChannel> channelInitializer() {
+        return new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
@@ -37,8 +42,7 @@ public class MocoHttpServer extends Runner {
                 pipeline.addLast("encoder", new HttpResponseEncoder());
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
-        });
-        serverSetting.setPort(port);
+        };
     }
 
     private Optional<SslHandler> sslHandler() {
@@ -54,9 +58,5 @@ public class MocoHttpServer extends Runner {
                 return new SslHandler(sslEngine);
             }
         };
-    }
-
-    public void stop() {
-        server.stop();
     }
 }

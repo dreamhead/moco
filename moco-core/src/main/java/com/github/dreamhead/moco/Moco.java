@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
@@ -98,6 +99,10 @@ public class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(of(port), checkNotNull(certificate, "Certificate should not be null"),
                 mergeMonitor(monitor, monitor2, monitors));
+    }
+
+    public static SocketServer socketServer(int port) {
+        return new ActualSocketServer(port);
     }
 
     public static MocoConfig context(final String context) {

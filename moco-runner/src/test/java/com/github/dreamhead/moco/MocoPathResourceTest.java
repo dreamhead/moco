@@ -6,8 +6,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

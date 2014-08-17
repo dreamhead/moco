@@ -9,8 +9,8 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

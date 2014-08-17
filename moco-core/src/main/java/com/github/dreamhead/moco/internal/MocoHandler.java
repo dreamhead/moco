@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
@@ -16,8 +17,8 @@ import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResp
 import static io.netty.handler.codec.http.HttpHeaders.*;
 
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private final ImmutableList<Setting> settings;
-    private final Setting anySetting;
+    private final ImmutableList<Setting<HttpResponseSetting>> settings;
+    private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
 
     public MocoHandler(ActualHttpServer server) {

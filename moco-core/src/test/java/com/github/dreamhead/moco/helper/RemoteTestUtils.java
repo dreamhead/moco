@@ -1,9 +1,10 @@
-package com.github.dreamhead.moco;
+package com.github.dreamhead.moco.helper;
 
 public class RemoteTestUtils {
     private static final int PORT = 12306;
     private static final String ROOT_URL = "http://localhost:";
     private static final String HTTPS_ROOT_URL = "https://localhost:";
+    private static final String LOCALHOST = "localhost";
 
     public static int port() {
         return PORT;
@@ -39,5 +40,9 @@ public class RemoteTestUtils {
 
     public static String remoteHttpsUrl(String uri) {
         return httpsRoot() + uri;
+    }
+
+    public static String local() {
+        return LOCALHOST;
     }
 }

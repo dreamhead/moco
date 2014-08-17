@@ -6,12 +6,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoJsonTest extends AbstractMocoTest {
+public class MocoJsonTest extends AbstractMocoHttpTest {
 	@Test
 	public void should_return_content_based_on_jsonpath() throws Exception {
 		server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");

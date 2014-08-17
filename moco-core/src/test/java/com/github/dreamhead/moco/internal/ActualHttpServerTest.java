@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.AbstractMocoTest;
+import com.github.dreamhead.moco.AbstractMocoHttpTest;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.Runnable;
 import org.apache.http.client.HttpResponseException;
@@ -10,13 +10,13 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ActualHttpServerTest extends AbstractMocoTest {
+public class ActualHttpServerTest extends AbstractMocoHttpTest {
     private HttpServer httpServer;
     private HttpServer anotherServer;
 

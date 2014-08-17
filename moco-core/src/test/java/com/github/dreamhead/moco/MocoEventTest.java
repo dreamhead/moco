@@ -7,13 +7,13 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class MocoEventTest extends AbstractMocoTest {
+public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_fire_event_on_complete() throws Exception {
         MocoEventAction action = mock(MocoEventAction.class);

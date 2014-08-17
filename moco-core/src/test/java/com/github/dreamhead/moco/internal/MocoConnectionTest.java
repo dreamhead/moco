@@ -1,19 +1,19 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.AbstractMocoHttpTest;
 import com.github.dreamhead.moco.Runnable;
-import com.github.dreamhead.moco.AbstractMocoTest;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class MocoConnectionTest extends AbstractMocoTest {
+public class MocoConnectionTest extends AbstractMocoHttpTest {
     @Test
     public void should_keep_alive_for_1_0_keep_alive_request() throws Exception {
         server.response("foo");

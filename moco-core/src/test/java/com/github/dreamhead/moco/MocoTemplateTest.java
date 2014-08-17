@@ -12,13 +12,13 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoTemplateTest extends AbstractMocoTest {
+public class MocoTemplateTest extends AbstractMocoHttpTest {
     @Test
     public void should_generate_response_with_http_method() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.method}"));
