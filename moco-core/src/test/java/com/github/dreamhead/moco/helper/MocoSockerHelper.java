@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.helper;
 
-import com.google.common.io.CharStreams;
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
