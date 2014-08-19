@@ -6,18 +6,18 @@ import com.google.common.base.Optional;
 import org.junit.Test;
 
 
-public class CustomResourceReaderTest {
+public class FromRequestResourceReaderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_illegal_argument_exception_if_request_is_absent() {
-        final CustomResourceReader customResourceReader = new CustomResourceReader(new Function<Request, String>() {
+        final FromRequestResourceReader fromRequestResourceReader = new FromRequestResourceReader(new Function<Request, String>() {
             @Override
             public String apply(Request input) {
                 return null;
             }
         });
 
-        customResourceReader.readFor(Optional.<Request>absent());
+        fromRequestResourceReader.readFor(Optional.<Request>absent());
     }
 
 }

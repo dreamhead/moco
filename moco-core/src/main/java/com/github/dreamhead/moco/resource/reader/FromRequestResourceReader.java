@@ -5,11 +5,11 @@ import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
-public class CustomResourceReader implements ContentResourceReader {
+public class FromRequestResourceReader implements ContentResourceReader {
     private final Function<Request, String> contentFunction;
 
 
-    public CustomResourceReader(Function<Request, String> contentFunction) {
+    public FromRequestResourceReader(Function<Request, String> contentFunction) {
         this.contentFunction = contentFunction;
     }
 

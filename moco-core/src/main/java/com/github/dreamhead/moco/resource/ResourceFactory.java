@@ -77,8 +77,8 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource customResource(final Function<Request, String> function) {
-        CustomResourceReader reader = new CustomResourceReader(function);
+    public static ContentResource fromRequestResource(final Function<Request, String> function) {
+        FromRequestResourceReader reader = new FromRequestResourceReader(function);
         return contentResource(id("template"), DO_NOTHING_APPLIER, reader);
     }
 

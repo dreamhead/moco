@@ -664,7 +664,7 @@ public class MocoTest extends AbstractMocoTest {
 
     @Test
     public void should_return_custom_content() throws Exception {
-        server.response(custom(new Function<com.github.dreamhead.moco.Request, String>() {
+        server.response(fromRequest(new Function<com.github.dreamhead.moco.Request, String>() {
             @Override
             public String apply(com.github.dreamhead.moco.Request input) {
                 return "foo";
