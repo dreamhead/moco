@@ -1,16 +1,15 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
 public class CustomResourceReader implements ContentResourceReader {
-    private final String contentType;
     private final Function<Request, String> contentFunction;
 
 
-    public CustomResourceReader(String contentType, Function<Request, String> contentFunction) {
-        this.contentType = contentType;
+    public CustomResourceReader(Function<Request, String> contentFunction) {
         this.contentFunction = contentFunction;
     }
 
@@ -20,7 +19,7 @@ public class CustomResourceReader implements ContentResourceReader {
     }
 
     public String getContentType() {
-        return this.contentType;
+        return FileContentType.DEFAULT_CONTENT_TYPE;
     }
 
 }

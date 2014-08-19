@@ -78,7 +78,7 @@ public class ResourceFactory {
     }
 
     public static ContentResource customResource(final Function<Request, String> function) {
-        CustomResourceReader reader = new CustomResourceReader("text/plain", function);
+        CustomResourceReader reader = new CustomResourceReader(function);
         return contentResource(id("template"), DO_NOTHING_APPLIER, reader);
     }
 

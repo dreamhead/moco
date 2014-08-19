@@ -405,7 +405,7 @@ public class Moco {
                         checkNotNullOrEmpty(value2, "Template variable value should not be null")));
     }
 
-    public static Resource custom(final Function<com.github.dreamhead.moco.Request, String> function) {
+    public static Resource custom(final Function<Request, String> function) {
         return customResource(checkNotNull(function, "Function should not be null"));
     }
 
