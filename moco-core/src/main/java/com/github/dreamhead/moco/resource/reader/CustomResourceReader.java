@@ -15,7 +15,11 @@ public class CustomResourceReader implements ContentResourceReader {
 
     @Override
     public byte[] readFor(Optional<? extends Request> request) {
-      return contentFunction.apply(request.get()).getBytes();
+        if (!request.isPresent()) {
+            throw new IllegalArgumentException("Request can not be absent.");
+        }
+
+        return contentFunction.apply(request.get()).getBytes();
     }
 
     public String getContentType() {
