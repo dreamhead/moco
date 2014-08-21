@@ -1,7 +1,10 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.dumper.SocketRequestDumper;
+import com.github.dreamhead.moco.dumper.SocketResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
+import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
 
@@ -34,6 +37,6 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
     }
 
     public static ActualSocketServer createLogServer(int port) {
-        return new ActualSocketServer(port, null);
+        return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
 }
