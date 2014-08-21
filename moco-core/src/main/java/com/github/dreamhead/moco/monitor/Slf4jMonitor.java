@@ -3,15 +3,18 @@ package com.github.dreamhead.moco.monitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.dumper.Dumper;
-import com.github.dreamhead.moco.dumper.HttpRequestDumper;
-import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Slf4jMonitor extends AbstractMonitor {
     private static Logger logger = LoggerFactory.getLogger(Slf4jMonitor.class);
-    private final Dumper<Request> requestDumper = new HttpRequestDumper();
-    private final Dumper<Response> responseDumper = new HttpResponseDumper();
+    private final Dumper<Request> requestDumper;
+    private final Dumper<Response> responseDumper;
+
+    public Slf4jMonitor(Dumper<Request> requestDumper, Dumper<Response> responseDumper) {
+        this.requestDumper = requestDumper;
+        this.responseDumper = responseDumper;
+    }
 
     @Override
     public void onMessageArrived(final Request request) {

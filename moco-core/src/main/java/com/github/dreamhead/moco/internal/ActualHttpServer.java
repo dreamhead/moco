@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.dumper.HttpRequestDumper;
+import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
@@ -56,7 +58,7 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public static ActualHttpServer createLogServer(Optional<Integer> port, MocoConfig... configs) {
-        return createHttpServerWithMonitor(port, new Slf4jMonitor(), configs);
+        return createHttpServerWithMonitor(port, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
     public static ActualHttpServer createQuietServer(Optional<Integer> port, MocoConfig... configs) {
@@ -68,7 +70,7 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public static ActualHttpServer createHttpsLogServer(Optional<Integer> port, HttpsCertificate certificate, MocoConfig... configs) {
-        return createHttpsServerWithMonitor(port, certificate, new Slf4jMonitor(), configs);
+        return createHttpsServerWithMonitor(port, certificate, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
     public static ActualHttpServer createHttpsQuietServer(Optional<Integer> port, HttpsCertificate certificate, MocoConfig... configs) {

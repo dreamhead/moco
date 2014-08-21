@@ -1,17 +1,15 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.SocketResponseSetting;
-import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
 
 import static com.google.common.base.Optional.of;
 
 public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
-    public ActualSocketServer(int port) {
-        super(of(port), null, new MocoConfig[0]);
+    private ActualSocketServer(int port, MocoMonitor monitor) {
+        super(of(port), monitor, new MocoConfig[0]);
     }
 
     @Override
@@ -29,5 +27,13 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
     @Override
     protected SocketResponseSetting self() {
         return this;
+    }
+
+    public static ActualSocketServer createQuietServer(int port) {
+        return new ActualSocketServer(port, new QuietMonitor());
+    }
+
+    public static ActualSocketServer createLogServer(int port) {
+        return new ActualSocketServer(port, null);
     }
 }
