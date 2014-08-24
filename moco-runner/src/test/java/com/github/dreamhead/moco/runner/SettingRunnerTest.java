@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.github.dreamhead.moco.bootstrap.ServerType;
 import org.apache.http.Header;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
@@ -85,11 +86,11 @@ public class SettingRunnerTest {
     }
 
     private StartArgs createStartArgs(int port, String env) {
-        return new StartArgs(port, null, null, null, env, null);
+        return new StartArgs(ServerType.HTTP, port, null, null, null, env, null);
     }
 
     private StartArgs createStartArgs(int port) {
-        return new StartArgs(port, null, null, null, null, null);
+        return new StartArgs(ServerType.HTTP, port, null, null, null, null, null);
     }
     
     private InputStream getResourceAsStream(String filename) {

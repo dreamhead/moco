@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.ShutdownTask;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.http.conn.HttpHostConnectException;
@@ -25,7 +26,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
     @Before
     public void setup() {
         RunnerFactory factory = new RunnerFactory(SHUTDOWN_MOCO_KEY);
-        runner = factory.createRunner(new StartArgs(port(), SHUTDOWN_PORT, "src/test/resources/foo.json", null, null, null));
+        runner = factory.createRunner(new StartArgs(ServerType.HTTP, port(), SHUTDOWN_PORT, "src/test/resources/foo.json", null, null, null));
     }
 
     @Test(expected = HttpHostConnectException.class)
@@ -89,7 +90,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
     @Test(expected = HttpHostConnectException.class)
     public void should_shutdown_with_shutdown_port() throws IOException {
         RunnerFactory factory = new RunnerFactory(SHUTDOWN_MOCO_KEY);
-        runner = factory.createRunner(new StartArgs(port(), null, "src/test/resources/foo.json", null, null, null));
+        runner = factory.createRunner(new StartArgs(ServerType.HTTP, port(), null, "src/test/resources/foo.json", null, null, null));
         runner.run();
 
         try {

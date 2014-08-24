@@ -17,7 +17,7 @@ import static com.google.common.collect.Iterables.toArray;
 
 public class JsonRunner implements Runner {
 
-    private final HttpServerParser httpServerParser = new HttpServerParser();
+    private final HttpServerParser parser = new HttpServerParser();
     private final StandaloneRunner runner = new StandaloneRunner();
     private final HttpServer httpServer;
 
@@ -43,7 +43,7 @@ public class JsonRunner implements Runner {
         HttpServer server = createServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = httpServerParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
+            HttpServer parsedServer = parser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
             server = mergeServer(server, parsedServer);
         }
 

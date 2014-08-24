@@ -9,8 +9,9 @@ public class Bootstrap implements BootstrapTask {
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.of(
-            "start", new StartTask(DEFAULT_SHUTDOWN_KEY),
-            "shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY)
+            "start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP),
+            "shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY),
+            "socket", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET)
     );
 
     @Override

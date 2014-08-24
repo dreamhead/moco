@@ -11,14 +11,16 @@ import java.io.StringWriter;
 import static com.google.common.base.Optional.fromNullable;
 
 public class StartArgs extends ShutdownPortOption {
+    private final ServerType type;
     private final Optional<Integer> port;
     private final Optional<String> configurationFile;
     private final Optional<String> settings;
     private final Optional<String> env;
     private final Optional<HttpsArg> httpsArg;
 
-    public StartArgs(Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
+    public StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
         super(shutdownPort);
+        this.type = type;
         this.port = fromNullable(port);
         this.configurationFile = fromNullable(configurationFile);
         this.settings = fromNullable(globalSettings);
@@ -63,15 +65,15 @@ public class StartArgs extends ShutdownPortOption {
         };
     }
 
-    public static StartArgs parse(String... args) {
+    public static StartArgs parse(ServerType type, String... args) {
         try {
-            return doParse(args);
+            return doParse(type, args);
         } catch (ParseException e) {
             throw new ParseArgException("fail to parse arguments", e);
         }
     }
 
-    private static StartArgs doParse(String[] args) throws ParseException {
+    private static StartArgs doParse(ServerType type, String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
         String port = cmd.getOptionValue("p");
@@ -96,7 +98,7 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs(getPort(port), getPort(shutdownPort), config, globalSettings, env, httpsArg(cmd));
+        return new StartArgs(type, getPort(port), getPort(shutdownPort), config, globalSettings, env, httpsArg(cmd));
     }
 
     private static HttpsArg httpsArg(CommandLine cmd) {
@@ -187,5 +189,9 @@ public class StartArgs extends ShutdownPortOption {
         formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "moco start [options]", null, createMocoOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
         writer.flush();
         return textWriter.toString();
+    }
+
+    public boolean isSocket() {
+        return this.type == ServerType.SOCKET;
     }
 }

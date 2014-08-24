@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
@@ -38,6 +39,6 @@ public class AbstractMocoStandaloneTest {
         for (String resourceName : resourceNames) {
             builder.add(Resources.getResource(resourceName).openStream());
         }
-        return newJsonRunnerWithStreams(builder.build(), new StartArgs(port(), null, null, null, null, null));
+        return newJsonRunnerWithStreams(builder.build(), new StartArgs(ServerType.HTTP, port(), null, null, null, null, null));
     }
 }

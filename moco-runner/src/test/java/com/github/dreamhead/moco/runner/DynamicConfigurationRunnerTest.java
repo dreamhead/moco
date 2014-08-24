@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
                 "}}]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
-        runner = factory.createRunner(new StartArgs(port(), 9090, config.getAbsolutePath(), null, null, null));
+        runner = factory.createRunner(new StartArgs(ServerType.HTTP, port(), 9090, config.getAbsolutePath(), null, null, null));
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 
