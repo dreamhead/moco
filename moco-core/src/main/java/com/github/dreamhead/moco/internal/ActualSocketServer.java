@@ -7,12 +7,11 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
-
-import static com.google.common.base.Optional.of;
+import com.google.common.base.Optional;
 
 public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
-    private ActualSocketServer(int port, MocoMonitor monitor) {
-        super(of(port), monitor, new MocoConfig[0]);
+    private ActualSocketServer(Optional<Integer> port, MocoMonitor monitor) {
+        super(port, monitor, new MocoConfig[0]);
     }
 
     @Override
@@ -32,11 +31,11 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
         return this;
     }
 
-    public static ActualSocketServer createQuietServer(int port) {
+    public static ActualSocketServer createQuietServer(Optional<Integer> port) {
         return new ActualSocketServer(port, new QuietMonitor());
     }
 
-    public static ActualSocketServer createLogServer(int port) {
+    public static ActualSocketServer createLogServer(Optional<Integer> port) {
         return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
 }

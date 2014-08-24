@@ -60,6 +60,11 @@ public class SessionSetting {
         }
     }
 
+    public void bindTo(SocketServer server) {
+        server.request(getRequestMatcher()).response(getResponseHandler());
+    }
+
+
     private HttpResponseSetting bindToSession(HttpServer server) {
         if (isMount()) {
             return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());

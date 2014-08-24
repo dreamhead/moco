@@ -102,7 +102,7 @@ public class Moco {
     }
 
     public static SocketServer socketServer(int port) {
-        return ActualSocketServer.createQuietServer(port);
+        return ActualSocketServer.createQuietServer(of(port));
     }
 
     public static MocoConfig context(final String context) {
