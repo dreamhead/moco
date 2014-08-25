@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 
 public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSetting> {
-    int port();
-
     HttpResponseSetting get(final RequestMatcher matcher);
 
     HttpResponseSetting post(final RequestMatcher matcher);

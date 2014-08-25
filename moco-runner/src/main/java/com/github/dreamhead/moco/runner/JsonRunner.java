@@ -2,9 +2,13 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Server;
+import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
+import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -17,20 +21,44 @@ import static com.google.common.collect.Iterables.toArray;
 
 public class JsonRunner implements Runner {
 
-    private final HttpServerParser parser = new HttpServerParser();
+    private final HttpServerParser httpParser = new HttpServerParser();
+    private final SocketServerParser socketParser = new SocketServerParser();
     private final StandaloneRunner runner = new StandaloneRunner();
-    private final HttpServer httpServer;
+    private final Server server;
 
     private JsonRunner(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
-        this.httpServer = createHttpServer(settings, startArgs);
+        this.server = createServer(settings, startArgs);
+
+    }
+
+    private Server createServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        if (startArgs.isSocket()) {
+            return createSocketServer(settings, startArgs);
+        }
+        return createHttpServer(settings, startArgs);
     }
 
     public void run() {
-        runner.run(httpServer);
+        runner.run(server);
     }
 
     public void stop() {
         runner.stop();
+    }
+
+    private SocketServer createSocketServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+        SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort());
+        for (RunnerSetting setting : settings) {
+            SocketServer parsedServer = socketParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
+            socketServer = mergeServer(socketServer, parsedServer);
+        }
+
+        return socketServer;
+    }
+
+    private SocketServer mergeServer(SocketServer socketServer, SocketServer parsedServer) {
+        ActualSocketServer thisServer = (ActualSocketServer) socketServer;
+        return thisServer.mergeHttpServer((ActualSocketServer)parsedServer);
     }
 
     private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
@@ -40,17 +68,17 @@ public class JsonRunner implements Runner {
     }
 
     private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
-        HttpServer server = createServer(startArgs);
+        HttpServer server = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = parser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
+            HttpServer parsedServer = httpParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
             server = mergeServer(server, parsedServer);
         }
 
         return server;
     }
 
-    private HttpServer createServer(StartArgs startArgs) {
+    private HttpServer createHttpServer(StartArgs startArgs) {
         if (startArgs.isHttps()) {
             return ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate().get());
         }
