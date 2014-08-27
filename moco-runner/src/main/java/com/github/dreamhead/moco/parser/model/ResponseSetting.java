@@ -2,34 +2,14 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dreamhead.moco.Moco;
-import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
-import com.github.dreamhead.moco.resource.ContentResource;
-import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.net.HttpHeaders;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.util.Jsons.toJson;
-import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableSet.of;
-import static java.lang.String.format;
-
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ResponseSetting extends Dynamics {
+public class ResponseSetting {
     private final ResponseHandlerFactory factory = new DynamicResponseHandlerFactory();
 
     private String status;
