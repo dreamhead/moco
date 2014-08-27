@@ -12,6 +12,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.internal.Awaiter.awaitUntil;
 
@@ -56,17 +59,41 @@ public class MocoServer {
             future.channel().close().syncUninterruptibly();
             future = null;
         }
+        
+        Future<?> bossGroupFuture = null;
+		Future<?> workerGroupFuture = null;
 
         if (bossGroup != null) {
-            bossGroup.shutdownGracefully();
+            bossGroupFuture = bossGroup.shutdownGracefully(0, 0, TimeUnit.SECONDS);
             bossGroup = null;
         }
 
-
         if (workerGroup != null) {
-            workerGroup.shutdownGracefully();
+            workerGroupFuture = workerGroup.shutdownGracefully(0, 0, TimeUnit.SECONDS);
             workerGroup = null;
         }
+        
+        synchronizeShutdownEventGroups(bossGroupFuture, workerGroupFuture);
+		
+    }
+    
+    private void synchronizeShutdownEventGroups(Future<?> bossGroupFuture, Future<?> workerGroupFuture) {
+        
+        try {
+	        
+	        if(bossGroupFuture != null) {
+			    bossGroupFuture.get();
+        	}
+        	
+        	if(workerGroupFuture != null) {
+			    workerGroupFuture.get();
+        	}
+        	
+        } catch (InterruptedException e) {
+		    throw new IllegalStateException(e);
+	    } catch (ExecutionException e) {
+		    throw new IllegalStateException(e);
+	    }
     }
 
     private Callable<Boolean> serverIsClosed(final InetSocketAddress address) {
