@@ -9,4 +9,6 @@ public class InternalApis {
     public static RequestMatcher context(final String context) {
         return match(uri(context + ".*"));
     }
+
+    private InternalApis() {}
 }
