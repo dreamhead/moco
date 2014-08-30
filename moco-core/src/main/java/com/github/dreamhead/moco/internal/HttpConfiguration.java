@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
-    public HttpConfiguration(Optional<Integer> port, MocoMonitor monitor, MocoConfig[] configs) {
+    protected HttpConfiguration(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         super(port, monitor, configs);
     }
 
