@@ -26,10 +26,16 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        SocketRequest request = new DefaultSocketRequest(msg);
-        SocketResponse response = new DefaultSocketResponse();
-        handleSession(new SessionContext(request, response));
-        ctx.writeAndFlush(response.getContent());
+        try {
+            SocketRequest request = new DefaultSocketRequest(msg);
+            this.monitor.onMessageArrived(request);
+            SocketResponse response = new DefaultSocketResponse();
+            handleSession(new SessionContext(request, response));
+            this.monitor.onMessageLeave(response);
+            ctx.writeAndFlush(response.getContent());
+        } catch (Exception e) {
+            this.monitor.onException(e);
+        }
     }
 
     private void handleSession(SessionContext context) {
@@ -45,6 +51,7 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
             return;
         }
 
+        this.monitor.onUnexpectedMessage(context.getRequest());
         throw new RuntimeException(format("No handler found for request: %s", context.getRequest().getContent()));
     }
 
