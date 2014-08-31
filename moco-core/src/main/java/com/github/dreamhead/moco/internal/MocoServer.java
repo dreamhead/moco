@@ -17,19 +17,17 @@ import static com.github.dreamhead.moco.internal.Awaiter.awaitUntil;
 
 public class MocoServer {
     private static final int DEFAULT_TIMEOUT = 3;
-    private EventLoopGroup bossGroup;
-    private EventLoopGroup workerGroup;
+    private EventLoopGroup group;
     private ChannelFuture future;
     private InetSocketAddress address;
 
     public MocoServer() {
-        bossGroup = new NioEventLoopGroup(1);
-        workerGroup = new NioEventLoopGroup();
+        group = new NioEventLoopGroup();
     }
 
     public int start(final int port, ChannelHandler pipelineFactory) {
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup)
+        bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(pipelineFactory);
 
@@ -57,15 +55,9 @@ public class MocoServer {
             future = null;
         }
 
-        if (bossGroup != null) {
-            bossGroup.shutdownGracefully();
-            bossGroup = null;
-        }
-
-
-        if (workerGroup != null) {
-            workerGroup.shutdownGracefully();
-            workerGroup = null;
+        if (group != null) {
+            group.shutdownGracefully();
+            group = null;
         }
     }
 
