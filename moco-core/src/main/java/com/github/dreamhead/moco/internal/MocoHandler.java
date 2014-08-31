@@ -93,4 +93,9 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             setContentLength(response, response.content().writerIndex());
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        monitor.onException(cause);
+    }
 }

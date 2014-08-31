@@ -24,11 +24,11 @@ public class DefaultLogFormatter implements LogFormatter {
     }
 
     @Override
-    public String format(final Exception e) {
+    public String format(final Throwable e) {
         return String.format("Exception thrown:\n\n%s\n", stackTraceToString(e));
     }
 
-    private String stackTraceToString(Exception e) {
+    private String stackTraceToString(Throwable e) {
         StringWriter writer = new StringWriter();
         e.printStackTrace(new PrintWriter(writer));
         return writer.toString();

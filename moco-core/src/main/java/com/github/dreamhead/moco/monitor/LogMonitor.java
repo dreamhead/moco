@@ -18,7 +18,7 @@ public class LogMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onException(final Exception e) {
+    public void onException(final Throwable e) {
         writer.write(formatter.format(e));
     }
 

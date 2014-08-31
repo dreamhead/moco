@@ -22,7 +22,7 @@ public class Slf4jMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onException(final Exception e) {
+    public void onException(final Throwable e) {
         logger.error("Exception thrown", e);
     }
 

@@ -47,4 +47,9 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
 
         throw new RuntimeException(format("No handler found for request: %s", context.getRequest().getContent()));
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        monitor.onException(cause);
+    }
 }
