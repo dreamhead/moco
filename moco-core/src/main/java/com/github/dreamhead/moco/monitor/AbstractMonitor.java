@@ -10,7 +10,7 @@ public abstract class AbstractMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onException(final Throwable e) {
+    public void onException(final Throwable t) {
     }
 
     @Override

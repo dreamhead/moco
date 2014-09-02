@@ -7,7 +7,7 @@ public class QuietMonitor extends AbstractMonitor {
     private static Logger logger = LoggerFactory.getLogger(QuietMonitor.class);
 
     @Override
-    public void onException(final Throwable e) {
-        logger.error("Exception thrown", e);
+    public void onException(final Throwable t) {
+        logger.error("Exception thrown", t);
     }
 }

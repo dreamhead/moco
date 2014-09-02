@@ -11,7 +11,7 @@ public class Slf4jMonitor extends AbstractMonitor {
     private final Dumper<Request> requestDumper;
     private final Dumper<Response> responseDumper;
 
-    public Slf4jMonitor(Dumper<Request> requestDumper, Dumper<Response> responseDumper) {
+    public Slf4jMonitor(final Dumper<Request> requestDumper, final Dumper<Response> responseDumper) {
         this.requestDumper = requestDumper;
         this.responseDumper = responseDumper;
     }
@@ -22,8 +22,8 @@ public class Slf4jMonitor extends AbstractMonitor {
     }
 
     @Override
-    public void onException(final Throwable e) {
-        logger.error("Exception thrown", e);
+    public void onException(final Throwable t) {
+        logger.error("Exception thrown", t);
     }
 
     @Override

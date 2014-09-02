@@ -19,9 +19,9 @@ public class CompositeMonitor implements MocoMonitor {
     }
 
     @Override
-    public void onException(final Throwable e) {
+    public void onException(final Throwable t) {
         for (MocoMonitor monitor : monitors) {
-            monitor.onException(e);
+            monitor.onException(t);
         }
     }
 

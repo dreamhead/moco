@@ -7,7 +7,7 @@ public interface MocoMonitor {
     void onMessageArrived(final Request request);
 
     @Subscribe
-    void onException(final Throwable e);
+    void onException(final Throwable t);
 
     @Subscribe
     void onMessageLeave(final Response response);
