@@ -22,7 +22,7 @@ public class ShutdownTask implements BootstrapTask {
     }
 
     @Override
-    public void run(String[] args) {
+    public void run(final String[] args) {
         ShutdownArgs shutdownArgs = parse(args);
         client.run("127.0.0.1", shutdownArgs.getShutdownPort().get(), new ChannelInitializer<SocketChannel>() {
             @Override

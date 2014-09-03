@@ -15,7 +15,7 @@ public class Bootstrap implements BootstrapTask {
     );
 
     @Override
-    public void run(String[] args) {
+    public void run(final String[] args) {
         try {
             if (args.length < 1) {
                 throw new ParseArgException("task name needs to be specified");

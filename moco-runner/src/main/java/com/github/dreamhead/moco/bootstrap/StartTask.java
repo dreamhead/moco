@@ -19,7 +19,7 @@ public class StartTask implements BootstrapTask {
     }
 
     @Override
-    public void run(String[] args) {
+    public void run(final String[] args) {
         StartArgs startArgs = parse(type, args);
 
         final Runner runner = factory.createRunner(startArgs);
