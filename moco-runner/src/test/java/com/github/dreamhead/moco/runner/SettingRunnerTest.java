@@ -86,11 +86,11 @@ public class SettingRunnerTest {
     }
 
     private StartArgs createStartArgs(int port, String env) {
-        return new StartArgs(ServerType.HTTP, port, null, null, null, env, null);
+        return StartArgs.builder().withType(ServerType.HTTP).withPort(port).withEnv(env).build();
     }
 
     private StartArgs createStartArgs(int port) {
-        return new StartArgs(ServerType.HTTP, port, null, null, null, null, null);
+        return StartArgs.builder().withType(ServerType.HTTP).withPort(port).build();
     }
     
     private InputStream getResourceAsStream(String filename) {

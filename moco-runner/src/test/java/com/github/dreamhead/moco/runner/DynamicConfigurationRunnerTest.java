@@ -26,7 +26,7 @@ public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
                 "}}]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
-        runner = factory.createRunner(new StartArgs(ServerType.HTTP, port(), 9090, config.getAbsolutePath(), null, null, null));
+        runner = factory.createRunner(StartArgs.builder().withType(ServerType.HTTP).withPort(port()).withShutdownPort(9090).withConfigurationFile(config.getAbsolutePath()).build());
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 

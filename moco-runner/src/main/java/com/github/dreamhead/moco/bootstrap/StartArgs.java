@@ -18,7 +18,7 @@ public class StartArgs extends ShutdownPortOption {
     private final Optional<String> env;
     private final Optional<HttpsArg> httpsArg;
 
-    public StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
+    private StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
         this.port = fromNullable(port);
@@ -193,5 +193,58 @@ public class StartArgs extends ShutdownPortOption {
 
     public boolean isSocket() {
         return this.type == ServerType.SOCKET;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private ServerType type;
+        private Integer port;
+        private Integer shutdownPort;
+        private String configurationFile;
+        private String settings;
+        private String env;
+        private HttpsArg httpsArg;
+
+        public Builder withType(ServerType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder withPort(int port) {
+            this.port = port;
+            return this;
+        }
+
+        public Builder withShutdownPort(int shutdownPort) {
+            this.shutdownPort = shutdownPort;
+            return this;
+        }
+
+        public Builder withConfigurationFile(String configurationFile) {
+            this.configurationFile = configurationFile;
+            return this;
+        }
+
+        public Builder withSettings(String settings) {
+            this.settings = settings;
+            return this;
+        }
+
+        public Builder withEnv(String env) {
+            this.env = env;
+            return this;
+        }
+
+        public Builder withHttpsArg(HttpsArg httpsArg) {
+            this.httpsArg = httpsArg;
+            return this;
+        }
+
+        public StartArgs build() {
+            return new StartArgs(type, port, shutdownPort, configurationFile, settings, env, httpsArg);
+        }
     }
 }

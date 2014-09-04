@@ -39,6 +39,6 @@ public class AbstractMocoStandaloneTest {
         for (String resourceName : resourceNames) {
             builder.add(Resources.getResource(resourceName).openStream());
         }
-        return newJsonRunnerWithStreams(builder.build(), new StartArgs(ServerType.HTTP, port(), null, null, null, null, null));
+        return newJsonRunnerWithStreams(builder.build(), StartArgs.builder().withType(ServerType.HTTP).withPort(port()).build());
     }
 }
