@@ -98,7 +98,7 @@ public class StartArgs extends ShutdownPortOption {
             throw new ParseArgException("only one args allowed");
         }
 
-        return new StartArgs(type, getPort(port), getPort(shutdownPort), config, globalSettings, env, httpsArg(cmd));
+        return StartArgs.builder().withType(type).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
     }
 
     private static HttpsArg httpsArg(CommandLine cmd) {
@@ -213,12 +213,12 @@ public class StartArgs extends ShutdownPortOption {
             return this;
         }
 
-        public Builder withPort(int port) {
+        public Builder withPort(Integer port) {
             this.port = port;
             return this;
         }
 
-        public Builder withShutdownPort(int shutdownPort) {
+        public Builder withShutdownPort(Integer shutdownPort) {
             this.shutdownPort = shutdownPort;
             return this;
         }

@@ -49,5 +49,4 @@ public class RunnerFactory {
         MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createConfigurationWatcher(configuration, fileRunner);
         return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
     }
-
 }

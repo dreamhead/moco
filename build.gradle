@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 buildscript {
     repositories {
         mavenCentral()
@@ -51,7 +49,7 @@ subprojects {
         mavenCentral()
     }
 
-    uploadArchives {
+    project.uploadArchives {
         repositories {
             mavenDeployer {
                 beforeDeployment { deployment -> signing.signPom(deployment) }
@@ -164,100 +162,6 @@ subprojects {
         options.compilerArgs << "-Xlint:unchecked"
         options.compilerArgs << "-Xlint:deprecation"
     }
-}
-
-project(':moco-core') {
-    dependencies {
-        runtime(
-                "org.slf4j:slf4j-simple:$slf4jVersion"
-        )
-    }
-}
-
-project(':moco-runner') {
-    ext {
-        logbackVersion = '1.1.2'
-        commonsCliVersion = '1.2'
-    }
-
-    dependencies {
-        compile(
-                project(':moco-core'),
-                "commons-cli:commons-cli:$commonsCliVersion"
-        )
-
-        runtime("ch.qos.logback:logback-classic:$logbackVersion") {
-            exclude group: "org.slf4j", module: "slf4j-simple"
-        }
-
-        testCompile project(':moco-core').sourceSets.test.output
-
-        testRuntime(
-                project(':moco-core').sourceSets.test.resources,
-                project(':moco-runner').sourceSets.main.resources
-        )
-    }
-
-    task uberjar(type: Jar, dependsOn: jar) {
-        classifier = 'uber'
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        exclude('META-INF/maven/**')
-
-        from files(project(':moco-core').sourceSets.main.output.classesDir)
-        from files(sourceSets.main.output.classesDir)
-        from files(sourceSets.main.output.resourcesDir)
-        from configurations.runtime.asFileTree.files.collect { zipTree(it) }
-
-        manifest {
-            attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main',
-                    'Package': "com.github.dreamhead",
-                    'Implementation-Title': "${project.name}",
-                    'Implementation-Version': "${version}",
-                    'Implementation-Vendor': 'Zheng Ye',
-                    'Built-By': 'Zheng Ye',
-                    'Built-Date': new Date().getDateTimeString(),
-                    'Built-With': "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
-                    'Created-By': 'Java ' + System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
-        }
-    }
-
-    task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
-        injars uberjar.archivePath
-        outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
-        libraryjars javaRtLib()
-        libraryjars jsseLib()
-        configuration file("$rootDir/proguard.pro")
-    }
-
-    task proguardCheck(type: Test, dependsOn: proguard) {
-        testLogging { exceptionFormat "full" }
-        classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile)
-    }
-
-    uploadArchives.dependsOn proguardCheck
-
-    artifacts {
-        archives proguard.outputs.files.singleFile
-    }
-}
-
-def javaRtLib() {
-    javaLibPath("/lib/rt.jar", "/../Classes/classes.jar")
-}
-
-def jsseLib() {
-    javaLibPath("/lib/jsse.jar", "/../Classes/jsse.jar")
-}
-
-def javaLibPath(lib, osxLib) {
-    def javaBase = System.properties["java.home"];
-    def target = lib
-    if (OperatingSystem.current().isMacOsX()) {
-        if (!new File(javaBase + target).exists()) {
-            target = osxLib
-        }
-    }
-    javaBase + target
 }
 
 task wrapper(type: Wrapper) {
