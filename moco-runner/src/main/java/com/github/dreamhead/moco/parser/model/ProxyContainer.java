@@ -2,11 +2,9 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
-import static com.github.dreamhead.moco.Moco.failover;
-import static com.github.dreamhead.moco.Moco.from;
-import static com.github.dreamhead.moco.Moco.playback;
+import static com.github.dreamhead.moco.Moco.*;
 
 public class ProxyContainer {
     private String url;
@@ -26,7 +24,7 @@ public class ProxyContainer {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(ProxyContainer.class)
+        return MoreObjects.toStringHelper(ProxyContainer.class)
                 .add("url", this.url)
                 .add("failover", this.failover)
                 .toString();

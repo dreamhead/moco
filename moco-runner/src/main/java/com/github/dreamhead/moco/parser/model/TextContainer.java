@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 
 public class TextContainer {
@@ -39,7 +39,7 @@ public class TextContainer {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("text", text)
                 .add("operation", operation)

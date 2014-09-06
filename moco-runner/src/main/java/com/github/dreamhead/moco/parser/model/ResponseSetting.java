@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class ResponseSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("text", text)
                 .add("file", file)

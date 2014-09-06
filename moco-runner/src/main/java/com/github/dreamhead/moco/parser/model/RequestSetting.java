@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class RequestSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper(this).omitNullValues()
                 .add("version", version)
                 .add("URI", uri)
                 .add("text", text)

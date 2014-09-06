@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.parser.model;
 
-import static com.github.dreamhead.moco.MocoMount.to;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.dreamhead.moco.*;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
+
+import static com.github.dreamhead.moco.MocoMount.to;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -27,7 +27,7 @@ public class SessionSetting {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).omitNullValues().add("request", request).add("response", response).toString();
+        return MoreObjects.toStringHelper(this).omitNullValues().add("request", request).add("response", response).toString();
     }
 
     private boolean isRedirectResponse() {

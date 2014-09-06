@@ -90,7 +90,7 @@ subprojects {
     }
 
     project.ext {
-        guavaVersion = '17.0'
+        guavaVersion = '18.0'
         nettyVersion = '4.0.23.Final'
         slf4jVersion = '1.7.7'
         commonsIoVersion = '2.4'
@@ -103,7 +103,7 @@ subprojects {
         freemarkerVersion = '2.3.20'
     }
 
-    jar {
+    project.jar {
         manifest {
             attributes 'Package': "com.github.dreamhead",
                     'Implementation-Title': "${project.name}",
@@ -116,7 +116,7 @@ subprojects {
         }
     }
 
-    dependencies {
+    project.dependencies {
         compile(
                 "com.google.guava:guava:$guavaVersion",
                 "io.netty:netty-codec-http:$nettyVersion",
