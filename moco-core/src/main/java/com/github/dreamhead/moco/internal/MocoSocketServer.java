@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.SocketResponseSetting;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -21,7 +20,7 @@ public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting> {
     }
 
     @Override
-    protected ChannelHandler channelInitializer() {
+    protected ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {

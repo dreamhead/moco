@@ -1,8 +1,9 @@
 package com.github.dreamhead.moco.internal;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -25,7 +26,7 @@ public class MocoServer {
         group = new NioEventLoopGroup();
     }
 
-    public int start(final int port, ChannelHandler pipelineFactory) {
+    public int start(final int port, ChannelInitializer<? extends Channel> pipelineFactory) {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
