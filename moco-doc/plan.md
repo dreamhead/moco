@@ -7,12 +7,11 @@
 
 ### Handler
 * Template function
+* Path variables extraction
 
 ## More
 * REST
-
-## Client
-* Socket
+* Client
 
 # Document
 * Cookbook

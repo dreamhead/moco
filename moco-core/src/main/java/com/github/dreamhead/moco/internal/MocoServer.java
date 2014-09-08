@@ -26,7 +26,7 @@ public class MocoServer {
         group = new NioEventLoopGroup();
     }
 
-    public int start(final int port, ChannelInitializer<? extends Channel> pipelineFactory) {
+    public int start(final int port, final ChannelInitializer<? extends Channel> pipelineFactory) {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
