@@ -79,7 +79,7 @@ public class ResourceFactory {
 
     public static ContentResource fromRequestResource(final Function<Request, String> function) {
         FromRequestResourceReader reader = new FromRequestResourceReader(function);
-        return contentResource(id("template"), DO_NOTHING_APPLIER, reader);
+        return contentResource(id("fromrequest"), DO_NOTHING_APPLIER, reader);
     }
 
     private static ContentResource contentResource(Identifiable id, ResourceConfigApplier applier, ContentResourceReader reader) {

@@ -1,2 +1,0 @@
-deal with optional requests
-use of "template"
