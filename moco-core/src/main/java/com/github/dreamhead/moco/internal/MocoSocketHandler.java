@@ -11,8 +11,10 @@ import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import static io.netty.channel.ChannelHandler.Sharable;
 import static java.lang.String.format;
 
+@Sharable
 public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     private final ImmutableList<Setting<SocketResponseSetting>> settings;
     private final Setting<SocketResponseSetting> anySetting;

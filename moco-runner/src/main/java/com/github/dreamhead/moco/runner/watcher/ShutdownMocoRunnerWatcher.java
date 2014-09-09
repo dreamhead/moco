@@ -2,10 +2,7 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.base.Optional;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import org.slf4j.Logger;
@@ -16,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.google.common.io.CharSource.wrap;
+import static io.netty.channel.ChannelHandler.Sharable;
 
 public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
@@ -54,6 +52,7 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
         return port;
     }
 
+    @Sharable
     private class ShutdownHandler extends SimpleChannelInboundHandler<String> {
         private final ExecutorService service = Executors.newCachedThreadPool();
 

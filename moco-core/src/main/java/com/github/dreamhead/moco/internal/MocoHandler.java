@@ -11,11 +11,14 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
+import static io.netty.channel.ChannelHandler.Sharable;
 import static io.netty.handler.codec.http.HttpHeaders.*;
 
+@Sharable
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final ImmutableList<Setting<HttpResponseSetting>> settings;
     private final Setting<HttpResponseSetting> anySetting;
