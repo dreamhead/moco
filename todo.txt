@@ -1,2 +1,2 @@
 deal with optional requests
-fix name for 'custom'
+use of "template"
