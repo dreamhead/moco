@@ -32,7 +32,7 @@ public class MocoHttpServer extends BaseServerRunner {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
-                    pipeline.addLast("ssl", sslHandler().get());
+                    pipeline.addFirst("ssl", sslHandler().get());
                 }
 
                 pipeline.addLast("codec", new HttpServerCodec());
