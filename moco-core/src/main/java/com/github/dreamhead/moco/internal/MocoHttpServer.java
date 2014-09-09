@@ -1,15 +1,13 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpsCertificate;
-import com.github.dreamhead.moco.ResponseSetting;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 
 import javax.net.ssl.SSLEngine;
@@ -37,9 +35,8 @@ public class MocoHttpServer extends BaseServerRunner {
                     pipeline.addLast("ssl", sslHandler().get());
                 }
 
-                pipeline.addLast("decoder", new HttpRequestDecoder());
+                pipeline.addLast("codec", new HttpServerCodec());
                 pipeline.addLast("aggregator", new HttpObjectAggregator(1048576));
-                pipeline.addLast("encoder", new HttpResponseEncoder());
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
         };
