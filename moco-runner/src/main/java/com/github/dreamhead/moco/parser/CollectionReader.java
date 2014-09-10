@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.google.common.collect.ImmutableList.copyOf;
@@ -33,7 +35,7 @@ public class CollectionReader {
     public <T> ImmutableList<T> read(InputStream is, Class<T> elementClass) {
         try {
             CollectionType type = factory.constructCollectionType(List.class, elementClass);
-            List<T> sessionSettings = mapper.readValue(is, type);
+            List<T> sessionSettings = mapper.readValue(new InputStreamReader(is, Charset.defaultCharset()), type);
             return copyOf(sessionSettings);
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
