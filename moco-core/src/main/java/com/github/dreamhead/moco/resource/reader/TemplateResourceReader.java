@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
@@ -14,6 +15,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
+import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
@@ -28,9 +31,9 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private final ContentResource template;
-    private final ImmutableMap<String, String> variables;
+    private final ImmutableMap<String, ? extends Variable> variables;
 
-    public TemplateResourceReader(ContentResource template, ImmutableMap<String, String> variables) {
+    public TemplateResourceReader(ContentResource template, ImmutableMap<String, ? extends Variable> variables) {
         this.template = template;
         this.variables = variables;
     }
@@ -72,7 +75,16 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private ImmutableMap<String, Object> variables(Request request) {
-        return ImmutableMap.<String, Object>builder().putAll(this.variables).put("req", request).build();
+        return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", request).build();
+    }
+
+    private ImmutableMap<String, String> toVariableString(final Request request) {
+        return copyOf(Maps.transformEntries(this.variables, new Maps.EntryTransformer<String, Variable, String>() {
+            @Override
+            public String transformEntry(String key, Variable value) {
+                return value.toString(request);
+            }
+        }));
     }
 
     @Override

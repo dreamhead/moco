@@ -18,12 +18,16 @@ import com.github.dreamhead.moco.monitor.*;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
+import com.github.dreamhead.moco.resource.reader.PlainVariable;
+import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
@@ -36,6 +40,7 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Maps.transformEntries;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
@@ -386,7 +391,7 @@ public class Moco {
 
     public static Resource template(final ContentResource template, final ImmutableMap<String, String> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
-                checkNotNull(variables, "Template variable should not be null"));
+                toVariables(checkNotNull(variables, "Template variable should not be null")));
     }
 
     public static Resource template(final ContentResource resource) {
@@ -404,14 +409,35 @@ public class Moco {
                 ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                         checkNotNullOrEmpty(value1, "Template variable value should not be null"),
                         checkNotNullOrEmpty(name2, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value2, "Template variable value should not be null")));
+                        checkNotNullOrEmpty(value2, "Template variable value should not be null"))
+        );
+    }
+
+    public static <T> Resource template(final String template, final String name, final RequestExtractor<T> extractor) {
+        return templateResource(text(checkNotNullOrEmpty(template, "Template should not be null")),
+                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                        new ExtractorVariable<T>(checkNotNull(extractor, "Template variable extractor should not be null")))
+        );
+    }
+
+    private static ImmutableMap<String, Variable> toVariables(ImmutableMap<String, String> variables) {
+        return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
+    }
+
+    private static Maps.EntryTransformer<String, String, Variable> toVariable() {
+        return new Maps.EntryTransformer<String, String, Variable>() {
+            @Override
+            public Variable transformEntry(String key, String value) {
+                return new PlainVariable(value);
+            }
+        };
     }
 
     public static Failover failover(final String file) {
         return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
     }
 
-    private static DefaultFailoverExecutor failoverExecutor(String file) {
+    private static DefaultFailoverExecutor failoverExecutor(final String file) {
         return new DefaultFailoverExecutor(new File(checkNotNullOrEmpty(file, "Filename should not be null")));
     }
 

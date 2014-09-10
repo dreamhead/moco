@@ -1,10 +1,7 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
-import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
-import com.github.dreamhead.moco.resource.reader.FileResourceReader;
-import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
+import com.github.dreamhead.moco.resource.reader.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
@@ -66,7 +63,7 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, String> variables) {
+    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, ? extends Variable> variables) {
         return contentResource(id("template"), templateConfigApplier(template, variables), new TemplateResourceReader(template, variables));
     }
 
