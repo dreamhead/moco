@@ -414,7 +414,13 @@ public class Moco {
     }
 
     public static <T> Resource template(final String template, final String name, final RequestExtractor<T> extractor) {
-        return templateResource(text(checkNotNullOrEmpty(template, "Template should not be null")),
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
+                checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                checkNotNull(extractor, "Template variable extractor should not be null"));
+    }
+
+    public static <T> Resource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
+        return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
                         new ExtractorVariable<T>(checkNotNull(extractor, "Template variable extractor should not be null")))
         );
