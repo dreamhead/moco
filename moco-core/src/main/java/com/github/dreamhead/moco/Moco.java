@@ -419,10 +419,29 @@ public class Moco {
                 checkNotNull(extractor, "Template variable extractor should not be null"));
     }
 
+    public static <ExtractorType1, ExtractorType2> Resource template(final String template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
+                                        final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
+                checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                checkNotNull(extractor1, "Template variable extractor should not be null"),
+                checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                checkNotNull(extractor2, "Template variable extractor should not be null"));
+    }
+
     public static <T> Resource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
                         new ExtractorVariable<T>(checkNotNull(extractor, "Template variable extractor should not be null")))
+        );
+    }
+
+    public static <ExtractorType1, ExtractorType2> Resource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
+                                        final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+        return templateResource(checkNotNull(template, "Template should not be null"),
+                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                        new ExtractorVariable<ExtractorType1>(checkNotNull(extractor1, "Template variable extractor should not be null")),
+                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                        new ExtractorVariable<ExtractorType2>(checkNotNull(extractor2, "Template variable extractor should not be null")))
         );
     }
 

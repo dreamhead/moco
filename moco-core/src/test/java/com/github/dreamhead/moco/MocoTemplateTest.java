@@ -246,6 +246,19 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_generate_response_with_two_variables_by_request() throws Exception {
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book[*].price"), "bar", jsonPath("$.book[*].price")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2 2"));
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1 1"));
+            }
+        });
+    }
+
+    @Test
     public void should_generate_response_with_variable_by_request() throws Exception {
         server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath("$.book[*].price")));
 
@@ -267,6 +280,19 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2"));
                 assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file_with_two_variables_by_request() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/two_vars.template"), "foo", jsonPath("$.book[*].price"), "bar", jsonPath("$.book[*].price")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2 2"));
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1 1"));
             }
         });
     }
