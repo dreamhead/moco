@@ -296,4 +296,17 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_generate_response_with_two_variables_by_request_and_one_variable_is_plain_text() throws Exception {
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book[*].price"), "bar", var("bar")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2 bar"));
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1 bar"));
+            }
+        });
+    }
 }

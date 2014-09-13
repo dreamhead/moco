@@ -445,6 +445,10 @@ public class Moco {
         );
     }
 
+    public static RequestExtractor<String> var(final String text) {
+        return new PlainTextExtractor(checkNotNullOrEmpty(text, "Template variable should not be null or empty"));
+    }
+
     private static ImmutableMap<String, Variable> toVariables(ImmutableMap<String, String> variables) {
         return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
     }
