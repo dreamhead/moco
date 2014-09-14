@@ -28,6 +28,7 @@ public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting> {
 
                 pipeline.addLast("decoder", new StringDecoder());
                 pipeline.addLast("encoder", new StringEncoder());
+                pipeline.addLast("aggregator", new MocoStringAggregator());
                 pipeline.addLast("handler", new MocoSocketHandler(serverSetting));
             }
         };
