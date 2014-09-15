@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoProcedure;
+import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -9,10 +10,7 @@ import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.*;
 import com.google.common.net.HttpHeaders;
 
 import java.lang.reflect.Field;
@@ -20,9 +18,9 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
 
@@ -146,13 +144,27 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
             if (container.hasProperties()) {
                 return template(invokeTarget(name, container.getText(), ContentResource.class),
-                        container.getProps());
+                        toVariables(container.getProps()));
             }
 
             return template(invokeTarget(name, container.getText(), ContentResource.class));
         }
 
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
+    }
+
+    private ImmutableMap<String, RequestExtractor<?>> toVariables(ImmutableMap<String, String> props) {
+        return copyOf(Maps.transformEntries(props, toVariable()));
+    }
+
+    private static Maps.EntryTransformer<String, String, RequestExtractor<?>> toVariable() {
+        return new Maps.EntryTransformer<String, String, RequestExtractor<?>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public RequestExtractor<?> transformEntry(String key, String value) {
+                return var(value);
+            }
+        };
     }
 
     private ResponseHandler createProxy(ProxyContainer proxy) {

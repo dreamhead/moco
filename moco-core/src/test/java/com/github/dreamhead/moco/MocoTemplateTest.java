@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.collect.ImmutableMap;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -198,7 +197,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     @Test
     public void should_generate_response_with_variable_map() throws Exception {
         server.request(by(uri("/template"))).response(template("${foo} ${bar}",
-                ImmutableMap.of("foo", "ANOTHER", "bar", "TEMPLATE")));
+                of("foo", var("ANOTHER"), "bar", var("TEMPLATE"))));
 
         running(server, new Runnable() {
             @Override
@@ -233,17 +232,17 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test
-    public void should_generate_response_from_file_with_variable_map() throws Exception {
-        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), ImmutableMap.of("var", "TEMPLATE")));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
-            }
-        });
-    }
+//    @Test
+//    public void should_generate_response_from_file_with_variable_map() throws Exception {
+//        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), of("var", "TEMPLATE")));
+//
+//        running(server, new Runnable() {
+//            @Override
+//            public void run() throws Exception {
+//                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
+//            }
+//        });
+//    }
 
     @Test
     public void should_generate_response_with_two_variables_by_request() throws Exception {
@@ -306,6 +305,19 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2 bar"));
                 assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1 bar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_from_file_with_variable_map() throws Exception {
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), of("var", jsonPath("$.book[*].price"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"2\"}}"), is("2"));
+                assertThat(helper.postContent(remoteUrl("/template"), "{\"book\":{\"price\":\"1\"}}"), is("1"));
             }
         });
     }

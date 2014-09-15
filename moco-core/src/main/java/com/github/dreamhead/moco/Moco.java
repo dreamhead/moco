@@ -19,7 +19,6 @@ import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
-import com.github.dreamhead.moco.resource.reader.PlainVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
@@ -372,45 +371,34 @@ public class Moco {
 
     public static Resource template(final String template, final String name, final String value) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
-                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value, "Template variable value should not be null")));
+                checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                checkNotNullOrEmpty(value, "Template variable value should not be null"));
     }
 
     public static Resource template(final String template, final String name1, final String value1, final String name2, final String value2) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
-                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value1, "Template variable value should not be null"),
-                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value2, "Template variable value should not be null")));
-    }
-
-    public static Resource template(final String template, final ImmutableMap<String, String> variables) {
-        return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
-                checkNotNull(variables, "Template variable should not be null"));
-    }
-
-    public static Resource template(final ContentResource template, final ImmutableMap<String, String> variables) {
-        return templateResource(checkNotNull(template, "Template should not be null"),
-                toVariables(checkNotNull(variables, "Template variable should not be null")));
+                checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                checkNotNullOrEmpty(value1, "Template variable value should not be null"),
+                checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                checkNotNullOrEmpty(value2, "Template variable value should not be null"));
     }
 
     public static Resource template(final ContentResource resource) {
-        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, String>of());
+        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, RequestExtractor<?>>of());
     }
 
     public static Resource template(final ContentResource template, final String name, final String value) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value, "Template variable value should not be null")));
+                checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                var(checkNotNullOrEmpty(value, "Template variable value should not be null")));
     }
 
     public static Resource template(final ContentResource template, final String name1, final String value1, final String name2, final String value2) {
         return template(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value1, "Template variable value should not be null"),
-                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
-                        checkNotNullOrEmpty(value2, "Template variable value should not be null"))
-        );
+                checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                var(checkNotNullOrEmpty(value1, "Template variable value should not be null")),
+                checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                var(checkNotNullOrEmpty(value2, "Template variable value should not be null")));
     }
 
     public static <T> Resource template(final String template, final String name, final RequestExtractor<T> extractor) {
@@ -420,7 +408,7 @@ public class Moco {
     }
 
     public static <ExtractorType1, ExtractorType2> Resource template(final String template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
-                                        final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+                                                                     final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                 checkNotNull(extractor1, "Template variable extractor should not be null"),
@@ -436,7 +424,7 @@ public class Moco {
     }
 
     public static <ExtractorType1, ExtractorType2> Resource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
-                                        final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+                                                                     final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                         new ExtractorVariable<ExtractorType1>(checkNotNull(extractor1, "Template variable extractor should not be null")),
@@ -445,21 +433,18 @@ public class Moco {
         );
     }
 
+    public static Resource template(final String template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+        return template(text(checkNotNull(template, "Template should not be null")),
+                checkNotNull(variables, "Template variable should not be null"));
+    }
+
+    public static Resource template(final ContentResource template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+        return templateResource(checkNotNull(template, "Template should not be null"),
+                toVariables(checkNotNull(variables, "Template variable should not be null")));
+    }
+
     public static RequestExtractor<String> var(final String text) {
         return new PlainTextExtractor(checkNotNullOrEmpty(text, "Template variable should not be null or empty"));
-    }
-
-    private static ImmutableMap<String, Variable> toVariables(ImmutableMap<String, String> variables) {
-        return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
-    }
-
-    private static Maps.EntryTransformer<String, String, Variable> toVariable() {
-        return new Maps.EntryTransformer<String, String, Variable>() {
-            @Override
-            public Variable transformEntry(String key, String value) {
-                return new PlainVariable(value);
-            }
-        };
     }
 
     public static Failover failover(final String file) {
@@ -512,6 +497,20 @@ public class Moco {
             @Override
             public ResponseHandler apply(Resource content) {
                 return with(content);
+            }
+        };
+    }
+
+    private static ImmutableMap<String, Variable> toVariables(ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+        return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
+    }
+
+    private static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
+        return new Maps.EntryTransformer<String, RequestExtractor<?>, Variable>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public Variable transformEntry(String key, RequestExtractor<?> value) {
+                return new ExtractorVariable(value);
             }
         };
     }
