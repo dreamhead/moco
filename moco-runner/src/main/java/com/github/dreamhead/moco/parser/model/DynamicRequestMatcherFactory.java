@@ -10,7 +10,6 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,13 +19,6 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
-    private final Map<String, String> methods = ImmutableMap.<String,String>builder()
-    		.put("headers", "header")
-    		.put("queries", "query")
-    		.put("xpaths", "xpath")
-    		.put("jsonPaths", "jsonPath")
-    		.put("cookies", "cookie")
-    		.put("forms", "form").build();
 
     @Override
     public RequestMatcher createRequestMatcher(final RequestSetting request) {
@@ -102,7 +94,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
-        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getMethod(name))).toList();
+        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getExtractorMethod(name))).toList();
         return wrapRequestMatcher(null, matchers);
     }
 
@@ -115,14 +107,6 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
                 return createRequestMatcher(extractor, pair.getValue());
             }
         };
-    }
-
-    private RequestExtractor createRequestExtractor(Method method, String key) {
-        try {
-            return RequestExtractor.class.cast(method.invoke(null, key));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private <T> RequestMatcher createRequestMatcher(RequestExtractor<T> extractor, Object value) {
@@ -161,14 +145,6 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
 
         throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
-    }
-
-    private Method getMethod(String name) {
-        try {
-            return Moco.class.getMethod(methods.get(name), String.class);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static RequestMatcher wrapRequestMatcher(RequestSetting request, ImmutableList<RequestMatcher> matchers) {

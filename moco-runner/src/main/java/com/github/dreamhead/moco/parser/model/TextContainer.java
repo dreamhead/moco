@@ -7,7 +7,7 @@ public class TextContainer {
     public static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
-    private ImmutableMap<String, String> props;
+    private ImmutableMap<String, TextContainer> props;
 
     public boolean isRawText() {
         return this.operation == null;
@@ -25,7 +25,7 @@ public class TextContainer {
         return !this.props.isEmpty();
     }
 
-    public ImmutableMap<String, String> getProps() {
+    public ImmutableMap<String, TextContainer> getProps() {
         return props;
     }
 
@@ -54,7 +54,7 @@ public class TextContainer {
     public static class Builder {
         private String text;
         private String operation;
-        private ImmutableMap<String, String> props;
+        private ImmutableMap<String, TextContainer> props;
 
         public Builder withText(String text) {
             this.text = text;
@@ -66,7 +66,7 @@ public class TextContainer {
             return this;
         }
 
-        public Builder withProps(ImmutableMap<String, String> props) {
+        public Builder withProps(ImmutableMap<String, TextContainer> props) {
             this.props = props;
             return this;
         }
@@ -75,7 +75,7 @@ public class TextContainer {
             TextContainer container = new TextContainer();
             container.text = text;
             container.operation = operation;
-            container.props = (props != null) ? props : ImmutableMap.<String, String>of();
+            container.props = (props != null) ? props : ImmutableMap.<String, TextContainer>of();
             return container;
         }
     }

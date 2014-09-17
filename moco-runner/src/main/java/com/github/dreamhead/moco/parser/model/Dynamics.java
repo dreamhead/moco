@@ -1,18 +1,29 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Map;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.base.Predicates.or;
 
 public class Dynamics {
+    private static final Map<String, String> extractorMethods = ImmutableMap.<String, String>builder()
+            .put("headers", "header")
+            .put("queries", "query")
+            .put("xpaths", "xpath")
+            .put("jsonPaths", "jsonPath")
+            .put("cookies", "cookie")
+            .put("forms", "form").build();
+
     protected Predicate<Field> isClassField() {
         return new Predicate<Field>() {
             @Override
@@ -76,5 +87,21 @@ public class Dynamics {
 
     protected <T> T invokeTarget(String name, long value, Class<T> clazz) {
         return invokeTarget(name, value, clazz, Long.TYPE);
+    }
+
+    protected static Method getExtractorMethod(String name) {
+        try {
+            return Moco.class.getMethod(extractorMethods.get(name), String.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected static RequestExtractor createRequestExtractor(Method method, String key) {
+        try {
+            return RequestExtractor.class.cast(method.invoke(null, key));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

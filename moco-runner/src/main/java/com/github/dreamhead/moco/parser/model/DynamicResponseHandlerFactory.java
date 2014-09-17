@@ -153,16 +153,20 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
-    private ImmutableMap<String, RequestExtractor<?>> toVariables(ImmutableMap<String, String> props) {
+    private ImmutableMap<String, RequestExtractor<?>> toVariables(ImmutableMap<String, TextContainer> props) {
         return copyOf(Maps.transformEntries(props, toVariable()));
     }
 
-    private static Maps.EntryTransformer<String, String, RequestExtractor<?>> toVariable() {
-        return new Maps.EntryTransformer<String, String, RequestExtractor<?>>() {
+    private static Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>> toVariable() {
+        return new Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>>() {
             @Override
             @SuppressWarnings("unchecked")
-            public RequestExtractor<?> transformEntry(String key, String value) {
-                return var(value);
+            public RequestExtractor<?> transformEntry(String key, TextContainer value) {
+                if (value.isRawText()) {
+                    return var(value.getText());
+                }
+
+                return createRequestExtractor(getExtractorMethod(value.getOperation()), value.getText());
             }
         };
     }

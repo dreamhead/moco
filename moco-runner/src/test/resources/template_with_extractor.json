@@ -1,0 +1,19 @@
+[
+    {
+        "request": {
+            "uri": "/extractor_template"
+        },
+        "response": {
+            "text": {
+                "template": {
+                    "with" : "${foo}",
+                    "vars" : {
+                        "foo" : {
+                            "json_paths": "$.book[*].price"
+                        }
+                    }
+                }
+            }
+        }
+    }
+]
