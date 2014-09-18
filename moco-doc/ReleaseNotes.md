@@ -1,6 +1,14 @@
 # Release 0.10.0
+
+## Usage
 * Socket support
+
+## Template
+
 * Template extractor support
+
+## Shell
+* Added version argument
 
 # Release 0.9.2 (1-Jul-2014)
 

@@ -139,6 +139,9 @@ elif [ "$1" = "upgrade" ]; then
         rm $VERSION_LOG_FILE
         install
     fi
+elif [ "$1" = "version" ]; then
+    load_current_version
+    echo "Moco version: $CURRENT_VERSION"
 elif [ "$1" = "help" ]; then
     usage
 else
