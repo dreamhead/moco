@@ -33,7 +33,12 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
     	FullHttpResponse response = handleRequest(message);
-        closeIfNotKeepAlive(message, ctx.writeAndFlush(response));
+        closeIfNotKeepAlive(message, ctx.write(response));
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
     }
 
     private FullHttpResponse handleRequest(FullHttpRequest message) {
