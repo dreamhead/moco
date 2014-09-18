@@ -44,14 +44,18 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
             }
 
             if (TextContainer.isForTemplate(operation) && token == JsonToken.START_OBJECT) {
-                Iterator<Template> iterator = jp.readValuesAs(Template.class);
-                Template template = Iterators.get(iterator, 0);
-                jp.nextToken();
-                return builder.withText(template.with).withProps(toTemplateVars(template)).build();
+                return template(jp, builder);
             }
         }
 
         throw ctxt.mappingException(TextContainer.class, jp.getCurrentToken());
+    }
+
+    private TextContainer template(JsonParser jp, TextContainer.Builder builder) throws IOException {
+        Iterator<Template> iterator = jp.readValuesAs(Template.class);
+        Template template = Iterators.get(iterator, 0);
+        jp.nextToken();
+        return builder.withText(template.with).withProps(toTemplateVars(template)).build();
     }
 
     private ImmutableMap<String, TextContainer> toTemplateVars(Template template) {

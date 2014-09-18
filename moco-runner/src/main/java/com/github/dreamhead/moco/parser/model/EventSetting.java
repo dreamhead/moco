@@ -15,6 +15,7 @@ public class EventSetting {
         if (complete != null) {
             return of(Moco.complete(complete.createTrigger()));
         }
+
         return of();
     }
 }

@@ -1,5 +1,6 @@
 # Release 0.10.0
 * Socket support
+* Template extractor support
 
 # Release 0.9.2 (1-Jul-2014)
 

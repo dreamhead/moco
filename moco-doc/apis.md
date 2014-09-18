@@ -1304,7 +1304,7 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
 ```
 
 ## Template(Beta)
-**Note**: Template is an experimental feature which could be changed a lot in the future. Feel free to tell how it helps or you need more feature in template.
+**Note**: Template is an experimental feature which could be changed a lot in the future. Feel free to tell how it helps or you need more features in template.
 
 Sometimes, we need to customize our response based on something, e.g. response should have same header with request.
 
@@ -1502,6 +1502,36 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar")
                 "with" : "${'foo'}",
                 "vars" : {
                     "foo" : "bar"
+                }
+            }
+        }
+    }
+}
+```
+
+**@Since Will be at 0.10.0**
+
+You can also use extractor to extract information from request.
+
+* Java
+```java
+server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPath("$.book[*].price")));
+```
+
+* JSON
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": {
+                "with" : "${'foo'}",
+                "vars" : {
+                    "foo" : {
+                      "json_paths": "$.book[*].price"
+                    }
                 }
             }
         }
