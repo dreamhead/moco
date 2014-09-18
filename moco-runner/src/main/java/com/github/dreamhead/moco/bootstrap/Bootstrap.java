@@ -11,6 +11,8 @@ public class Bootstrap implements BootstrapTask {
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.of(
             "start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP),
             "shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY),
+            "http", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP),
+            "https", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS),
             "socket", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET)
     );
 

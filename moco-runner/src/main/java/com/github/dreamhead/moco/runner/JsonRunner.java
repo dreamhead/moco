@@ -35,6 +35,7 @@ public class JsonRunner implements Runner {
         if (startArgs.isSocket()) {
             return createSocketServer(settings, startArgs);
         }
+
         return createHttpServer(settings, startArgs);
     }
 
