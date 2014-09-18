@@ -35,7 +35,7 @@ public class MocoHttpServer extends BaseServerRunner {
                     pipeline.addFirst("ssl", sslHandler().get());
                 }
 
-                pipeline.addLast("codec", new HttpServerCodec());
+                pipeline.addLast("codec", new HttpServerCodec(4096, 8192, 8192, false));
                 pipeline.addLast("aggregator", new HttpObjectAggregator(1048576));
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
