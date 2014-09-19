@@ -34,10 +34,15 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
             SocketResponse response = new DefaultSocketResponse();
             handleSession(new SessionContext(request, response));
             this.monitor.onMessageLeave(response);
-            ctx.writeAndFlush(response.getContent());
+            ctx.write(response.getContent());
         } catch (Exception e) {
             this.monitor.onException(e);
         }
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
     }
 
     private void handleSession(SessionContext context) {

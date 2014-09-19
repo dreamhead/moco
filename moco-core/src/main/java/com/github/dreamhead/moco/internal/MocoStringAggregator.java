@@ -17,5 +17,7 @@ public class MocoStringAggregator extends SimpleChannelInboundHandler<String> {
             ctx.fireChannelRead(sb.toString());
             sb = new StringBuilder();
         }
+
+        ctx.fireChannelReadComplete();
     }
 }
