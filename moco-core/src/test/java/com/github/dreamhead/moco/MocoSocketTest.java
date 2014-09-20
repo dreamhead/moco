@@ -53,14 +53,12 @@ public class MocoSocketTest {
     @Test
     public void should_match_extreme_big_request() throws Exception {
         server.request(by(times("a", 1025))).response(line("long_a"));
-//        server.request(by(times("b", 1025))).response(line("long_b"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
                 helper.connect();
                 assertThat(helper.send(times("a", 1025)), is("long_a"));
-//                assertThat(helper.send(times("b", 1025)), is("long_b"));
                 helper.close();
             }
         });

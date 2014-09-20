@@ -125,7 +125,7 @@ subprojects {
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
                 "org.freemarker:freemarker:$freemarkerVersion",
-                "org.slf4j:slf4j-api:$slf4jVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion"
         )
 
         testCompile(

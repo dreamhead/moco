@@ -6,7 +6,6 @@ import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,9 +13,9 @@ import java.io.InputStream;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.running;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
@@ -592,32 +591,6 @@ public class MocoTest extends AbstractMocoHttpTest {
                 ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
                 assertThat(version11.getMajor(), is(1));
                 assertThat(version11.getMinor(), is(1));
-            }
-        });
-    }
-
-    @Test
-    public void should_match_form_value() throws Exception {
-        server.post(eq(form("name"), "dreamhead")).response("foobar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
-                assertThat(content, is("foobar"));
-            }
-        });
-    }
-
-    @Test
-    public void should_no_exception_form_get_request() throws Exception {
-        server.request(eq(form("password"), "hello")).response("foobar");
-        server.response("foobar");
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root()), is("foobar"));
             }
         });
     }
