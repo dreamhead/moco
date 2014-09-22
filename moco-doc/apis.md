@@ -1,4 +1,4 @@
-# APIs
+# HTTP(s) APIs
 Moco mainly focuses on server configuration. There are only two kinds of API right now: **Request** and **Response**.
 
 That means if we get the expected request and then return our response. Now, you can see a Moco reference in details.

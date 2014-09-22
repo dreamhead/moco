@@ -11,12 +11,11 @@ Moco is an easy setup stub framework.
 ## Latest Release
 * __0.9.2__
 
-More details in [Release Notes](/moco-doc/ReleaseNotes.md)
+More details in [Release Notes](moco-doc/ReleaseNotes.md)
 
 ## User Voice
-[Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
-
-Join Moco [mailing list](https://groups.google.com/forum/#!forum/moco-stub) to discuss.
+* [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
+* Join Moco [mailing list](https://groups.google.com/forum/#!forum/moco-stub) to discuss.
 
 ## Why
 Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most of our development.
@@ -46,7 +45,7 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 
 ## Documents
 * More [Usages](moco-doc/usage.md)
-* Detailed [APIs](moco-doc/apis.md)
+* Detailed [HTTP APIs](moco-doc/apis.md) or [Socket APIs](moco-doc/socket-apis.md)
 * [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
 * [Command Line Usages](moco-doc/cmd.md)
 
