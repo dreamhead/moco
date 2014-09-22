@@ -6,12 +6,12 @@
 
 # [Moco](https://github.com/dreamhead/moco) [![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
 
-Moco is an easy setup stub framework, mainly focusing on testing and integration, inspired by Mock framework, e.g. [Mockito](http://code.google.com/p/mockito/), and [Playframework](http://www.playframework.com/)
+Moco is an easy setup stub framework.
 
 ## Latest Release
 * __0.9.2__
 
-More details in [Release Notes](https://github.com/dreamhead/moco/blob/master/moco-doc/ReleaseNotes.md)
+More details in [Release Notes](/moco-doc/ReleaseNotes.md)
 
 ## User Survey
 [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.

@@ -147,8 +147,24 @@ final HttpsServer server = httpsServer(certificate, hit);
 If you want to use HTTPS for standalone server. certificate information could be provided as CLI arguments.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
+java -jar moco-runner-<version>-standalone.jar https -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
 ```
+
+## Socket
+
+Socket is a common integration channel. There is only content available in socket.
+
+```java
+final SocketServer server = socketServer(12306);
+```
+
+You can also use socket in standalone server.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
+```
+
+More socket APIs can be found [here](/moco-doc/socket-apis.md).
 
 ## Maven Plugin
 

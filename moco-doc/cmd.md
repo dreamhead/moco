@@ -29,7 +29,15 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 A HTTPS server can be started by the following command:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
+java -jar moco-runner-<version>-standalone.jar https -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
+```
+
+## Socket Server
+
+A socket server can be started by the following command:
+
+```shell
+java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
 ```
 
 ## Port
