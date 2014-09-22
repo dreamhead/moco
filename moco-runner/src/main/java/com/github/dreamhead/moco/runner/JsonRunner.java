@@ -28,7 +28,6 @@ public class JsonRunner implements Runner {
 
     private JsonRunner(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
         this.server = createServer(settings, startArgs);
-
     }
 
     private Server createServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
