@@ -1,0 +1,49 @@
+package com.github.dreamhead.moco;
+
+import com.github.dreamhead.moco.helper.MocoSocketHelper;
+import org.junit.Before;
+import org.junit.Test;
+
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.MocoRunner.jsonSocketServer;
+import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+public class MocoJsonSocketHttpRunner {
+    private MocoSocketHelper helper;
+
+    @Before
+    public void setup() {
+        this.helper = new MocoSocketHelper(local(), port());
+    }
+
+    @Test
+    public void should_return_expected_response() throws Exception {
+        final SocketServer server = jsonSocketServer(port(), file("src/test/resources/base.json"));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.connect();
+                assertThat(helper.send("foo", 3), is("bar"));
+                helper.close();
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_without_port() throws Exception {
+        final SocketServer server = jsonSocketServer(file("src/test/resources/base.json"));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                MocoSocketHelper helper = new MocoSocketHelper(local(), server.port());
+                helper.connect();
+                assertThat(helper.send("foo", 3), is("bar"));
+                helper.close();
+            }
+        });
+    }
+}

@@ -5,13 +5,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class MocoSockerHelper implements Closeable {
+public class MocoSocketHelper implements Closeable {
     private Socket socket;
     private SocketAddress address;
     private PrintStream os;
     private BufferedReader reader;
 
-    public MocoSockerHelper(String target, int port) {
+    public MocoSocketHelper(String target, int port) {
         socket = new Socket();
         address = new InetSocketAddress(target, port);
     }
@@ -33,6 +33,19 @@ public class MocoSockerHelper implements Closeable {
 
         try {
             return reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String send(String request, int readCount) {
+        os.print(request);
+        os.flush();
+
+        try {
+            char[] buffer = new char[readCount];
+            reader.read(buffer);
+            return new String(buffer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

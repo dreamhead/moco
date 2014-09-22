@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.MocoSockerHelper;
+import com.github.dreamhead.moco.helper.MocoSocketHelper;
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -12,11 +13,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoSocketTest {
-    private MocoSockerHelper helper;
+    private MocoSocketHelper helper;
     private SocketServer server;
 
-    public MocoSocketTest() {
-        this.helper = new MocoSockerHelper(local(), port());
+    @Before
+    public void setup() {
+        this.helper = new MocoSocketHelper(local(), port());
         this.server = socketServer(port());
     }
 
