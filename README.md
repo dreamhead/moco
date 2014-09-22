@@ -13,8 +13,10 @@ Moco is an easy setup stub framework.
 
 More details in [Release Notes](/moco-doc/ReleaseNotes.md)
 
-## User Survey
+## User Voice
 [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
+
+Join Moco [mailing list](https://groups.google.com/forum/#!forum/moco-stub) to discuss.
 
 ## Why
 Integration, especially based on HTTP protocol, e.g. web service, REST etc, is wildly used in most of our development.
