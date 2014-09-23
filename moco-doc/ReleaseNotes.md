@@ -3,8 +3,10 @@
 ## Usage
 * Socket support
 
-## Template
+## Runner API
+* server by JSON configuration
 
+## Template
 * Template extractor support
 
 ## Shell

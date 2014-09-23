@@ -134,6 +134,37 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.
 
+## JSON configuration in Java API
+
+**@Since Will be at 0.10.0**
+
+If you have setup your server with JSON configuration, you can also your configuration from Java API.
+
+```java
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.MocoRunner.jsonHttpServer;
+import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+public class MocoJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+    @Test
+    public void should_return_expected_response() throws Exception {
+        final HttpServer server = jsonHttpServer(port(), file("src/test/resources/foo.json"));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Content content = Request.Get("http://localhost:12306").execute().returnContent();
+                assertThat(content.asString(), is("foo"));
+            }
+        });
+    }
+}
+```
+
 ## HTTPS
 
 HTTPS is also a mainstream usage for HTTP protocol. Moco supports HTTPS as well. The main difference in API is that a certificate is required for HTTPS.

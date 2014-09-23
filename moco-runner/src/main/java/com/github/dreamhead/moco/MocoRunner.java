@@ -8,7 +8,6 @@ import com.google.common.base.Optional;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class MocoRunner {
