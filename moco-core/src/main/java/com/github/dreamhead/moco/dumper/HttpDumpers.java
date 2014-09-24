@@ -9,8 +9,17 @@ public class HttpDumpers {
         if (length > 0) {
             buf.append(StringUtil.NEWLINE);
             buf.append(StringUtil.NEWLINE);
-            buf.append(message.getContent());
+            String type = message.getHeaders().get("Content-Type");
+            if (isText(type)) {
+                buf.append(message.getContent());
+            } else {
+                buf.append("<content is binary>");
+            }
         }
+    }
+
+    private static boolean isText(String type) {
+        return type == null || type.startsWith("text") || type.endsWith("javascript");
     }
 
     private static long getContentLength(HttpMessage response, long defaultValue) {
