@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
+import com.google.common.net.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 
 public class HttpDumpers {
@@ -9,7 +10,7 @@ public class HttpDumpers {
         if (length > 0) {
             buf.append(StringUtil.NEWLINE);
             buf.append(StringUtil.NEWLINE);
-            String type = message.getHeaders().get("Content-Type");
+            String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
             if (isText(type)) {
                 buf.append(message.getContent());
             } else {
@@ -23,7 +24,7 @@ public class HttpDumpers {
     }
 
     private static long getContentLength(HttpMessage response, long defaultValue) {
-        String lengthText = response.getHeaders().get("Content-Length");
+        String lengthText = response.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
         if (lengthText != null) {
             try {
                 return Long.parseLong(lengthText);

@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
+import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.header;
@@ -84,7 +85,7 @@ public class ActualHttpServer extends HttpConfiguration {
 
     @Override
     public HttpResponseSetting redirectTo(String url) {
-        return this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
+        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
     }
 
     @Override

@@ -27,7 +27,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import io.netty.handler.codec.http.HttpHeaders;
 
 import java.io.File;
 
@@ -40,6 +39,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
+import static com.google.common.net.HttpHeaders.SET_COOKIE;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
@@ -267,7 +267,7 @@ public class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource) {
-        return header(HttpHeaders.Names.SET_COOKIE, cookieResource(
+        return header(SET_COOKIE, cookieResource(
                 checkNotNullOrEmpty(key, "Cookie key should not be null"),
                 checkNotNull(resource, "Cookie value should not be null")));
     }
