@@ -43,4 +43,6 @@ public class MocoRunner {
         Optional<Request> request = Optional.absent();
         return new ByteArrayInputStream(resource.readFor(request));
     }
+
+    private MocoRunner() {}
 }
