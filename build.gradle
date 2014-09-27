@@ -1,17 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    ext {
-        proguardVersion = '5.0'
-    }
-
-    dependencies {
-        classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
-    }
-}
-
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'

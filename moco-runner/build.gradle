@@ -1,5 +1,19 @@
 import org.gradle.internal.os.OperatingSystem
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        proguardVersion = '5.0'
+    }
+
+    dependencies {
+        classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
+    }
+}
+
 project.ext {
     logbackVersion = '1.1.2'
     commonsCliVersion = '1.2'
