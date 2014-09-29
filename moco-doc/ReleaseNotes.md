@@ -2,6 +2,7 @@
 
 ## Usage
 * Socket support
+* Version query 
 
 ## Runner API
 * server by JSON configuration

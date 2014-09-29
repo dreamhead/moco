@@ -21,7 +21,7 @@ First of all, a JSON configuration file needs to be provided to start Moco.
 You can start a HTTP server by the following command:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 ```
 
 ## HTTPS Server
@@ -45,7 +45,15 @@ java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
 If you don't need any specified port, you run run Moco without port. An available port will picked up by Moco and you can see the port in console.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -c foo.json
+java -jar moco-runner-<version>-standalone.jar http -c foo.json
+```
+
+## Version
+
+You can query Moco version by the following command: 
+
+```shell
+java -jar moco-runner-<version>-standalone.jar version
 ```
 
 ## Global Settings
