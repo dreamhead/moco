@@ -8,13 +8,14 @@ public class Bootstrap implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
-    private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.of(
-            "start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP),
-            "shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY),
-            "http", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP),
-            "https", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS),
-            "socket", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET)
-    );
+    private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.<String, BootstrapTask>builder()
+            .put("start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
+            .put("shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY))
+            .put("http", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
+            .put("https", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS))
+            .put("socket", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET))
+            .put("version", new VersionTask())
+            .build();
 
     @Override
     public void run(final String[] args) {
