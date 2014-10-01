@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.MocoRunner.jsonHttpServer;
+import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
