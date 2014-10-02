@@ -14,6 +14,7 @@ import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class ActualHttpServer extends HttpConfiguration {
@@ -33,7 +34,7 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public HttpServer mergeHttpServer(ActualHttpServer thatServer) {
-        ActualHttpServer newServer = newBaseServer();
+        ActualHttpServer newServer = newBaseServer(newServerCertificate(thatServer.certificate));
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
@@ -46,8 +47,20 @@ public class ActualHttpServer extends HttpConfiguration {
         return newServer;
     }
 
-    private ActualHttpServer newBaseServer() {
-        if (isSecure()) {
+    private Optional<HttpsCertificate> newServerCertificate(Optional<HttpsCertificate> certificate) {
+        if (this.isSecure()) {
+            return this.certificate;
+        }
+
+        if (certificate.isPresent()) {
+            return certificate;
+        }
+
+        return absent();
+    }
+
+    private ActualHttpServer newBaseServer(Optional<HttpsCertificate> certificate) {
+        if (certificate.isPresent()) {
             return createHttpsLogServer(getPort(), certificate.get());
         }
 
