@@ -129,7 +129,7 @@ First of all, a JSON configuration file needs to be provided to start Moco.
 It's time to run Moco standalone server:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 ```
 
 Now, open your browser and input "http://localhost:12306". You will see "foo". That's it.

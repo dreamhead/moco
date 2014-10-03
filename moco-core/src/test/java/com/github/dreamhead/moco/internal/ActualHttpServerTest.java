@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.IllegalFormatCodePointException;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.*;
