@@ -61,7 +61,7 @@ java -jar moco-runner-<version>-standalone.jar version
 You can run Moco instance with [global settings](global-settings.md).
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -g settings.json
 ```
 
 ### Environment
@@ -69,18 +69,18 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
 [Environment](global-settings.md#environment) is a good feature, which allows you start your server with different environment from CLI.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -g env.json -e remote
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -g env.json -e remote
 ```
 
 ## Shutdown
 
-You can start many Moco instance in one machine. Different Moco instance can ben shutdown by shutdown command and its shutdown port. A shutdown port can be specified when start Moco instance.
+Moco instance can ben shutdown by shutdown command and its shutdown port. A shutdown port can be specified when start Moco instance.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -c foo.json -s 9527
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json -s 9527
 ```
 
-Or leave Moco choose by default, the shutdown port will be shown on console.
+Or leave Moco to choose by default, the shutdown port will be shown on console.
 
 Then you can use the shutdown port to shutdown the running Moco instance.
 
