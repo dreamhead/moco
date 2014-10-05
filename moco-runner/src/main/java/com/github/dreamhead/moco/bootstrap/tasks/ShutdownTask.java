@@ -1,5 +1,7 @@
-package com.github.dreamhead.moco.bootstrap;
+package com.github.dreamhead.moco.bootstrap.tasks;
 
+import com.github.dreamhead.moco.bootstrap.BootstrapTask;
+import com.github.dreamhead.moco.bootstrap.ShutdownArgs;
 import com.github.dreamhead.moco.internal.MocoClient;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;

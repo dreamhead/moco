@@ -1,6 +1,7 @@
-package com.github.dreamhead.moco.bootstrap;
+package com.github.dreamhead.moco.bootstrap.tasks;
 
 import com.github.dreamhead.moco.MocoVersion;
+import com.github.dreamhead.moco.bootstrap.BootstrapTask;
 
 public class VersionTask implements BootstrapTask {
     @Override

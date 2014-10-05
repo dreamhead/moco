@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.ShutdownTask;
+import com.github.dreamhead.moco.bootstrap.tasks.ShutdownTask;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.http.conn.HttpHostConnectException;
 import org.junit.Before;

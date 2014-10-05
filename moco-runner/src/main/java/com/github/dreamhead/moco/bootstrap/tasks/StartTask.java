@@ -1,5 +1,8 @@
-package com.github.dreamhead.moco.bootstrap;
+package com.github.dreamhead.moco.bootstrap.tasks;
 
+import com.github.dreamhead.moco.bootstrap.BootstrapTask;
+import com.github.dreamhead.moco.bootstrap.ServerType;
+import com.github.dreamhead.moco.bootstrap.StartArgs;
 import com.github.dreamhead.moco.runner.Runner;
 import com.github.dreamhead.moco.runner.RunnerFactory;
 import com.google.common.base.Stopwatch;
