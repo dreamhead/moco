@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.github.dreamhead.moco.bootstrap.tasks.ShutdownTask;
-import com.github.dreamhead.moco.bootstrap.tasks.StartTask;
-import com.github.dreamhead.moco.bootstrap.tasks.VersionTask;
+import com.github.dreamhead.moco.bootstrap.tasks.*;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +12,9 @@ public class Bootstrap implements BootstrapTask {
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.<String, BootstrapTask>builder()
             .put("start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
             .put("shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY))
-            .put("http", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
-            .put("https", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS))
-            .put("socket", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET))
+            .put("http", new HttpTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
+            .put("https", new HttpsTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS))
+            .put("socket", new SocketTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET))
             .put("version", new VersionTask())
             .build();
 
