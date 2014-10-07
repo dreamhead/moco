@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class MocoJsonTest extends AbstractMocoHttpTest {
 	@Test
 	public void should_return_content_based_on_jsonpath() throws Exception {
-		server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
+		server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
 		running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -26,7 +26,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_for_mismatch_jsonpath() throws Exception {
-        server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
+        server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -48,7 +48,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_if_no_json_found() throws Exception {
-        server.request(eq(jsonPath("$.book[*].price"), "1")).response("jsonpath match success");
+        server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -83,7 +83,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_content_based_on_jsonpath_existing() throws Exception {
-        server.request(exist(jsonPath("$.book[*].price"))).response("jsonpath match success");
+        server.request(exist(jsonPath("$.book.price"))).response("jsonpath match success");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {

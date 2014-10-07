@@ -3,7 +3,7 @@
         "request": {
             "uri": "/jsonpath",
             "json_paths": {
-            	"$.book[*].price": "1"
+            	"$.book.price": "1"
             }
         },
         "response": {

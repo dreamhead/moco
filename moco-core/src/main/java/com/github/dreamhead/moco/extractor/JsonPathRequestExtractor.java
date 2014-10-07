@@ -21,12 +21,13 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
 
     @Override
     protected Optional<String[]> doExtract(final HttpRequest request) {
+        String content = extractor.extract(request).get();
         try {
-            Object content = jsonPath.read(extractor.extract(request).get());
-            if (content == null) {
+            Object jsonPathContent = jsonPath.read(content);
+            if (jsonPathContent == null) {
                 return absent();
             }
-            return of(toStringArray(content));
+            return of(toStringArray(jsonPathContent));
         } catch (PathNotFoundException e) {
             return absent();
         }

@@ -246,7 +246,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_two_variables_by_request() throws Exception {
-        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book[*].price"), "bar", jsonPath("$.book[*].price")));
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book.price"), "bar", jsonPath("$.book.price")));
 
         running(server, new Runnable() {
             @Override
@@ -259,7 +259,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_variable_by_request() throws Exception {
-        server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath("$.book[*].price")));
+        server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath("$.book.price")));
 
         running(server, new Runnable() {
             @Override
@@ -272,7 +272,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_from_file_with_variable_by_request() throws Exception {
-        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), "var", jsonPath("$.book[*].price")));
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), "var", jsonPath("$.book.price")));
 
         running(server, new Runnable() {
             @Override
@@ -285,7 +285,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_from_file_with_two_variables_by_request() throws Exception {
-        server.request(by(uri("/template"))).response(template(file("src/test/resources/two_vars.template"), "foo", jsonPath("$.book[*].price"), "bar", jsonPath("$.book[*].price")));
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/two_vars.template"), "foo", jsonPath("$.book.price"), "bar", jsonPath("$.book.price")));
 
         running(server, new Runnable() {
             @Override
@@ -298,7 +298,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_two_variables_by_request_and_one_variable_is_plain_text() throws Exception {
-        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book[*].price"), "bar", var("bar")));
+        server.request(by(uri("/template"))).response(template("${foo} ${bar}", "foo", jsonPath("$.book.price"), "bar", var("bar")));
 
         running(server, new Runnable() {
             @Override
@@ -311,7 +311,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_from_file_with_variable_map() throws Exception {
-        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), of("var", jsonPath("$.book[*].price"))));
+        server.request(by(uri("/template"))).response(template(file("src/test/resources/var.template"), of("var", jsonPath("$.book.price"))));
 
         running(server, new Runnable() {
             @Override
