@@ -12,9 +12,9 @@ public class Bootstrap implements BootstrapTask {
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.<String, BootstrapTask>builder()
             .put("start", new StartTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
             .put("shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY))
-            .put("http", new HttpTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTP))
-            .put("https", new HttpsTask(DEFAULT_SHUTDOWN_KEY, ServerType.HTTPS))
-            .put("socket", new SocketTask(DEFAULT_SHUTDOWN_KEY, ServerType.SOCKET))
+            .put("http", new HttpTask(DEFAULT_SHUTDOWN_KEY))
+            .put("https", new HttpsTask(DEFAULT_SHUTDOWN_KEY))
+            .put("socket", new SocketTask(DEFAULT_SHUTDOWN_KEY))
             .put("version", new VersionTask())
             .build();
 
