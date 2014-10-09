@@ -13,8 +13,8 @@ import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
 
 public class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
-    private final RunnerFactory factory;
-    private final ServerType type;
+    protected final RunnerFactory factory;
+    protected final ServerType type;
 
     public StartTask(String shutdownKey, ServerType type) {
         this.factory = new RunnerFactory(shutdownKey);
@@ -23,9 +23,7 @@ public class StartTask implements BootstrapTask {
 
     @Override
     public void run(final String[] args) {
-        StartArgs startArgs = parse(type, args);
-
-        final Runner runner = factory.createRunner(startArgs);
+        final Runner runner = createRunner(args);
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
         runner.run();
@@ -38,5 +36,10 @@ public class StartTask implements BootstrapTask {
                 logger.info("Total time: " + stopwatch);
             }
         });
+    }
+
+    protected Runner createRunner(String[] args) {
+        StartArgs startArgs = parse(type, args);
+        return factory.createRunner(startArgs);
     }
 }
