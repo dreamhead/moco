@@ -8,12 +8,12 @@ import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
 
 public class HttpTask extends StartTask {
     public HttpTask(String shutdownKey) {
-        super(shutdownKey, ServerType.HTTP);
+        super(shutdownKey);
     }
 
     @Override
     protected Runner createRunner(String[] args) {
-        StartArgs startArgs = parse(type, args);
+        StartArgs startArgs = parse(ServerType.HTTP, args);
         return factory.createRunner(startArgs);
     }
 }
