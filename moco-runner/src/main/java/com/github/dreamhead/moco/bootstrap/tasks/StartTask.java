@@ -15,7 +15,7 @@ public class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
     protected final RunnerFactory factory;
 
-    public StartTask(String shutdownKey) {
+    public StartTask(final String shutdownKey) {
         this.factory = new RunnerFactory(shutdownKey);
     }
 
@@ -36,7 +36,7 @@ public class StartTask implements BootstrapTask {
         });
     }
 
-    protected Runner createRunner(String[] args) {
+    protected Runner createRunner(final String[] args) {
         StartArgs startArgs = parse(ServerType.HTTP, args);
         return factory.createRunner(startArgs);
     }

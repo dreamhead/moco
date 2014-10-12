@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.bootstrap.BootstrapTask;
 
 public class VersionTask implements BootstrapTask {
     @Override
-    public void run(String[] args) {
+    public void run(final String[] args) {
         System.out.println(MocoVersion.VERSION);
     }
 }

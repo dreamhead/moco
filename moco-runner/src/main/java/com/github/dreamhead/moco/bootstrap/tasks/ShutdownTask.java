@@ -19,7 +19,7 @@ public class ShutdownTask implements BootstrapTask {
     private final MocoClient client = new MocoClient();
     private final String shutdownKey;
 
-    public ShutdownTask(String shutdownKey) {
+    public ShutdownTask(final String shutdownKey) {
         this.shutdownKey = shutdownKey;
     }
 
