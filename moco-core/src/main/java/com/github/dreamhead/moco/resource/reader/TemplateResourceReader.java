@@ -19,6 +19,7 @@ import java.io.Writer;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
+    private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_21;
     private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
     private static final String TEMPLATE_NAME = "template";
 
@@ -66,8 +67,8 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private Configuration createConfiguration(StringTemplateLoader templateLoader) {
-        Configuration cfg = new Configuration();
-        cfg.setObjectWrapper(new DefaultObjectWrapper());
+        Configuration cfg = new Configuration(CURRENT_VERSION);
+        cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
         cfg.setDefaultEncoding("UTF-8");
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setTemplateLoader(templateLoader);

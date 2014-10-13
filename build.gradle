@@ -4,23 +4,23 @@ allprojects {
     apply plugin: 'signing'
 }
 
-project(':') {
-    idea {
-        project {
-            jdkName = JavaVersion.VERSION_1_6
-            languageLevel = JavaVersion.VERSION_1_6
+idea {
+    project {
+        jdkName = JavaVersion.VERSION_1_6
+        languageLevel = JavaVersion.VERSION_1_6
 
-            ipr.withXml { xml ->
-                def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping
-                mapping.@vcs = 'Git'
-                mapping.@directory = '$PROJECT_DIR$'
-            }
+        ipr.withXml { xml ->
+            def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping
+            mapping.@vcs = 'Git'
+            mapping.@directory = '$PROJECT_DIR$'
         }
+    }
 
-        workspace.iws.withXml { provider ->
-            def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find { it.@type == 'JUnit' }
-            junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
+    workspace.iws.withXml { provider ->
+        def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find {
+            it.@type == 'JUnit'
         }
+        junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
     }
 }
 
@@ -86,7 +86,7 @@ subprojects {
         mockitoVersion = '1.9.5'
         httpComponentVersion = '4.3.5'
         jsonpathVersion = '1.1.0'
-        freemarkerVersion = '2.3.20'
+        freemarkerVersion = '2.3.21'
     }
 
     project.jar {
