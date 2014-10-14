@@ -11,7 +11,7 @@ public class ShutdownArgs extends ShutdownPortOption {
         try {
             CommandLineParser parser = new PosixParser();
             CommandLine cmd = parser.parse(createShutdownOptions(), args);
-            return new ShutdownArgs(StartArgs.getPort(cmd.getOptionValue("s")));
+            return new ShutdownArgs(StartArgsParser.getPort(cmd.getOptionValue("s")));
         } catch (ParseException e) {
             throw new ParseArgException("fail to parse arguments", e);
         }
