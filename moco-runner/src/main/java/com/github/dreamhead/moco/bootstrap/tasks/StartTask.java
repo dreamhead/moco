@@ -3,19 +3,25 @@ package com.github.dreamhead.moco.bootstrap.tasks;
 import com.github.dreamhead.moco.bootstrap.BootstrapTask;
 import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.github.dreamhead.moco.runner.Runner;
 import com.github.dreamhead.moco.runner.RunnerFactory;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
-
 public class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
+    private final StartArgsParser startArgsParser;
     protected final RunnerFactory factory;
 
     public StartTask(final String shutdownKey) {
+        this.factory = new RunnerFactory(shutdownKey);
+        this.startArgsParser = new StartArgsParser(ServerType.HTTP);
+    }
+
+    protected StartTask(final String shutdownKey, final StartArgsParser startArgsParser) {
+        this.startArgsParser = startArgsParser;
         this.factory = new RunnerFactory(shutdownKey);
     }
 
@@ -37,7 +43,7 @@ public class StartTask implements BootstrapTask {
     }
 
     protected Runner createRunner(final String[] args) {
-        StartArgs startArgs = parse(ServerType.HTTP, args);
+        StartArgs startArgs = startArgsParser.parse(args);
         return factory.createRunner(startArgs);
     }
 }

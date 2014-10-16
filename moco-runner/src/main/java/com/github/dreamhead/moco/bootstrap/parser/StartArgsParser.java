@@ -1,11 +1,18 @@
-package com.github.dreamhead.moco.bootstrap;
+package com.github.dreamhead.moco.bootstrap.parser;
 
+import com.github.dreamhead.moco.bootstrap.*;
 import org.apache.commons.cli.*;
 
 public class StartArgsParser {
-    public StartArgs parse(ServerType type, String[] args) {
+    private ServerType serverType;
+
+    public StartArgsParser(ServerType serverType) {
+        this.serverType = serverType;
+    }
+
+    public StartArgs parse(String[] args) {
         try {
-            return doParse(type, args);
+            return doParse(this.serverType, args);
         } catch (ParseException e) {
             throw new ParseArgException("fail to parse arguments", e);
         }

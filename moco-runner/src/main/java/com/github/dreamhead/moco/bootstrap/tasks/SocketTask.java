@@ -1,19 +1,9 @@
 package com.github.dreamhead.moco.bootstrap.tasks;
 
-import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.StartArgs;
-import com.github.dreamhead.moco.runner.Runner;
-
-import static com.github.dreamhead.moco.bootstrap.StartArgs.parse;
+import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 
 public class SocketTask extends StartTask {
     public SocketTask(final String shutdownKey) {
-        super(shutdownKey);
-    }
-
-    @Override
-    protected Runner createRunner(final String[] args) {
-        StartArgs startArgs = parse(ServerType.SOCKET, args);
-        return factory.createRunner(startArgs);
+        super(shutdownKey, new SocketArgsParser());
     }
 }

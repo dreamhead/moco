@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.HttpsCertificate;
+import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.*;
@@ -11,7 +12,6 @@ import java.io.StringWriter;
 import static com.google.common.base.Optional.fromNullable;
 
 public class StartArgs extends ShutdownPortOption {
-    private static StartArgsParser parser = new StartArgsParser();
     private final ServerType type;
     private final Optional<Integer> port;
     private final Optional<String> configurationFile;
@@ -66,16 +66,11 @@ public class StartArgs extends ShutdownPortOption {
         };
     }
 
-    public static StartArgs parse(ServerType type, String... args) {
-
-        return parser.parse(type, args);
-    }
-
     public static String help() {
         HelpFormatter formatter = new HelpFormatter();
         StringWriter textWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(textWriter);
-        formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "moco start [options]", null, parser.createMocoOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
+        formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "moco start [options]", null, new StartArgsParser(ServerType.HTTP).createMocoOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
         writer.flush();
         return textWriter.toString();
     }
