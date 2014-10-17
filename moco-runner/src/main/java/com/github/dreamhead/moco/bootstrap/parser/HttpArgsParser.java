@@ -2,9 +2,10 @@ package com.github.dreamhead.moco.bootstrap.parser;
 
 import com.github.dreamhead.moco.bootstrap.ParseArgException;
 import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.ShutdownPortOption;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
 import org.apache.commons.cli.*;
+
+import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 
 public class HttpArgsParser extends StartArgsParser {
     public HttpArgsParser() {
@@ -44,11 +45,9 @@ public class HttpArgsParser extends StartArgsParser {
         Options options = new Options();
         options.addOption(configOption());
         options.addOption(portOption());
-        options.addOption(ShutdownPortOption.shutdownPortOption());
+        options.addOption(shutdownPortOption());
         options.addOption(settingsOption());
         options.addOption(envOption());
-        options.addOption(keyStore());
-        options.addOption(cert());
         return options;
     }
 }
