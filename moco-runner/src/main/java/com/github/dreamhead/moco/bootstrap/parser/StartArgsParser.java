@@ -18,7 +18,7 @@ public class StartArgsParser {
         }
     }
 
-    private StartArgs doParse(ServerType type, String[] args) throws ParseException {
+    protected StartArgs doParse(ServerType type, String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
         String port = cmd.getOptionValue("p");
@@ -74,49 +74,49 @@ public class StartArgsParser {
         return options;
     }
 
-    private Option portOption() {
+    protected Option portOption() {
         Option opt = new Option("p", true, "port");
         opt.setType(Number.class);
         opt.setRequired(false);
         return opt;
     }
 
-    private Option configOption() {
+    protected Option configOption() {
         Option opt = new Option("c", true, "config");
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;
     }
 
-    private Option settingsOption() {
+    protected Option settingsOption() {
         Option opt = new Option("g", true, "global settings");
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;
     }
 
-    private Option envOption() {
+    protected Option envOption() {
         Option opt = new Option("e", true, "environment");
         opt.setType(String.class);
         opt.setRequired(false);
         return opt;
     }
 
-    private Option httpsCertificate() {
+    protected Option httpsCertificate() {
         Option option = new Option(null, "https", true, "Https certificate filename");
         option.setType(String.class);
         option.setRequired(false);
         return option;
     }
 
-    private Option keyStore() {
+    protected Option keyStore() {
         Option option = new Option(null, "keystore", true, "Key store password");
         option.setType(String.class);
         option.setRequired(false);
         return option;
     }
 
-    private Option cert() {
+    protected Option cert() {
         Option option = new Option(null, "cert", true, "Cert password");
         option.setType(String.class);
         option.setRequired(false);
