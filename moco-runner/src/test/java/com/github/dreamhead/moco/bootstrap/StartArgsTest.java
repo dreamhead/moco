@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.bootstrap;
 
+import com.github.dreamhead.moco.bootstrap.parser.HttpsArgsParser;
+import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.google.common.base.Optional;
 import org.junit.Before;
@@ -14,7 +16,7 @@ public class StartArgsTest {
 
     @Before
     public void setUp() throws Exception {
-        startArgsParser = new StartArgsParser(ServerType.HTTP);
+        startArgsParser = new HttpsArgsParser();
     }
 
     @Test
@@ -65,7 +67,7 @@ public class StartArgsTest {
 
     @Test
     public void should_parse_socket() {
-        StartArgs args = new StartArgsParser(ServerType.SOCKET).parse(new String[]{"start", "-c", "foo.json"});
+        StartArgs args = new SocketArgsParser().parse(new String[]{"start", "-c", "foo.json"});
         assertThat(args.isSocket(), is(true));
     }
 }

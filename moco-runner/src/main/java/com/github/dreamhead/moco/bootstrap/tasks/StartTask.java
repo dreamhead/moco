@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.bootstrap.tasks;
 
 import com.github.dreamhead.moco.bootstrap.BootstrapTask;
-import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.github.dreamhead.moco.runner.Runner;
 import com.github.dreamhead.moco.runner.RunnerFactory;
@@ -17,7 +17,7 @@ public class StartTask implements BootstrapTask {
 
     public StartTask(final String shutdownKey) {
         this.factory = new RunnerFactory(shutdownKey);
-        this.startArgsParser = new StartArgsParser(ServerType.HTTP);
+        this.startArgsParser = new HttpArgsParser();
     }
 
     protected StartTask(final String shutdownKey, final StartArgsParser startArgsParser) {

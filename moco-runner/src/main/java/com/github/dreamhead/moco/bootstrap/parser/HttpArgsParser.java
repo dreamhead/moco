@@ -8,12 +8,8 @@ import org.apache.commons.cli.*;
 import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 
 public class HttpArgsParser extends StartArgsParser {
-    public HttpArgsParser() {
-        super(ServerType.HTTP);
-    }
-
     @Override
-    protected StartArgs doParse(ServerType type, String[] args) throws ParseException {
+    protected StartArgs doParse(String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = parser.parse(createMocoOptions(), args);
         String port = cmd.getOptionValue("p");
@@ -38,7 +34,7 @@ public class HttpArgsParser extends StartArgsParser {
             throw new ParseArgException("only one args allowed");
         }
 
-        return StartArgs.builder().withType(type).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).build();
+        return StartArgs.builder().withType(ServerType.HTTP).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).build();
     }
 
     public Options createMocoOptions() {
