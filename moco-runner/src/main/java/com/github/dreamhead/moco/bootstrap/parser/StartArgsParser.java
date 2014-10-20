@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.bootstrap.*;
 import org.apache.commons.cli.*;
 
 public abstract class StartArgsParser {
-    protected abstract StartArgs doParse(String[] args) throws ParseException;
+    protected abstract Options createMocoOptions();
+    protected abstract StartArgs parseArgs(CommandLine cmd);
 
     public StartArgs parse(String[] args) {
         try {
@@ -12,6 +13,12 @@ public abstract class StartArgsParser {
         } catch (ParseException e) {
             throw new ParseArgException("fail to parse arguments", e);
         }
+    }
+
+    protected StartArgs doParse(String[] args) throws ParseException {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse(createMocoOptions(), args);
+        return parseArgs(cmd);
     }
 
     protected HttpsArg httpsArg(CommandLine cmd) {

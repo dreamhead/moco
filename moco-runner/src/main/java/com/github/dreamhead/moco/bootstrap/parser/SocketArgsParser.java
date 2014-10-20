@@ -9,9 +9,7 @@ import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPor
 
 public class SocketArgsParser extends StartArgsParser {
     @Override
-    protected StartArgs doParse(String[] args) throws ParseException {
-        CommandLineParser parser = new PosixParser();
-        CommandLine cmd = parser.parse(createMocoOptions(), args);
+    protected StartArgs parseArgs(CommandLine cmd) {
         String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String shutdownPort = cmd.getOptionValue("s");
@@ -28,7 +26,8 @@ public class SocketArgsParser extends StartArgsParser {
         return StartArgs.builder().withType(ServerType.SOCKET).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).build();
     }
 
-    public Options createMocoOptions() {
+    @Override
+    protected Options createMocoOptions() {
         Options options = new Options();
         options.addOption(configOption());
         options.addOption(portOption());
