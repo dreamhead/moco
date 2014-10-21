@@ -13,6 +13,9 @@
 ## Shell
 * Added version argument
 
+## Potential Breaks
+* JSON Path, because new version JSON Path implementation has been introduced.
+
 # Release 0.9.2 (1-Jul-2014)
 
 ## Usage
