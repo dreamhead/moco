@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.bootstrap.parser;
 
-import com.github.dreamhead.moco.bootstrap.ParseArgException;
-import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.ShutdownPortOption;
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.*;
 import org.apache.commons.cli.*;
 
 public class HttpsArgsParser extends StartArgsParser {
@@ -32,6 +29,21 @@ public class HttpsArgsParser extends StartArgsParser {
         }
 
         return StartArgs.builder().withType(ServerType.HTTPS).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
+    }
+
+    private HttpsArg httpsArg(CommandLine cmd) {
+        String https = cmd.getOptionValue("https");
+        String keystore = cmd.getOptionValue("keystore");
+        String cert = cmd.getOptionValue("cert");
+        if (https != null) {
+            if (keystore == null || cert == null) {
+                throw new ParseArgException("keystore and cert must be set for HTTPS");
+            }
+
+            return new HttpsArg(https, keystore, cert);
+        }
+
+        return null;
     }
 
     @Override
