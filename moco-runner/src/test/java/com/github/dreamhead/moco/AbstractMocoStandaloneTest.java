@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.collect.ImmutableList;

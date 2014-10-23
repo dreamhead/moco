@@ -1,13 +1,14 @@
 package com.github.dreamhead.moco.bootstrap.parser;
 
 import com.github.dreamhead.moco.bootstrap.*;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.*;
 
 public abstract class StartArgsParser {
-    protected abstract Options createMocoOptions();
-    protected abstract StartArgs parseArgs(CommandLine cmd);
+    protected abstract Options options();
+    protected abstract StartArgs parseArgs(final CommandLine cmd);
 
-    public StartArgs parse(String[] args) {
+    public StartArgs parse(final String[] args) {
         try {
             return doParse(args);
         } catch (ParseException e) {
@@ -15,9 +16,9 @@ public abstract class StartArgsParser {
         }
     }
 
-    protected StartArgs doParse(String[] args) throws ParseException {
+    private StartArgs doParse(final String[] args) throws ParseException {
         CommandLineParser parser = new PosixParser();
-        CommandLine cmd = parser.parse(createMocoOptions(), args);
+        CommandLine cmd = parser.parse(options(), args);
         return parseArgs(cmd);
     }
 

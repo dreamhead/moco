@@ -1,6 +1,9 @@
-package com.github.dreamhead.moco.bootstrap;
+package com.github.dreamhead.moco.bootstrap.arg;
 
 import com.github.dreamhead.moco.HttpsCertificate;
+import com.github.dreamhead.moco.bootstrap.HttpsArg;
+import com.github.dreamhead.moco.bootstrap.ServerType;
+import com.github.dreamhead.moco.bootstrap.ShutdownPortOption;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
@@ -14,7 +17,7 @@ public class StartArgs extends ShutdownPortOption {
     private final Optional<String> env;
     private final Optional<HttpsArg> httpsArg;
 
-    private StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
+    protected StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
         this.port = fromNullable(port);

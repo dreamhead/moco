@@ -14,7 +14,7 @@ import org.apache.http.client.fluent.Request;
 import org.junit.After;
 import org.junit.Test;
 
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 
 public class SettingRunnerTest {

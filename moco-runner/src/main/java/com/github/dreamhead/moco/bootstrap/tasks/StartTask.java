@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.bootstrap.tasks;
 
 import com.github.dreamhead.moco.bootstrap.BootstrapTask;
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.github.dreamhead.moco.runner.Runner;

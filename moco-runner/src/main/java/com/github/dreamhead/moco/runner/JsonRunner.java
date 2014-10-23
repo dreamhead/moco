@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Server;
 import com.github.dreamhead.moco.SocketServer;
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;

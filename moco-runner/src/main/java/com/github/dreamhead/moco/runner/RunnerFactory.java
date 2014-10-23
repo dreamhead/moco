@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.runner.watcher.MocoRunnerWatcher;
 import com.github.dreamhead.moco.runner.watcher.MonitorFactory;
 import com.google.common.base.Optional;

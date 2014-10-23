@@ -1,11 +1,14 @@
 package com.github.dreamhead.moco.bootstrap.parser;
 
 import com.github.dreamhead.moco.bootstrap.*;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.*;
+
+import static com.github.dreamhead.moco.bootstrap.arg.HttpsArgs.httpsArgs;
 
 public class HttpsArgsParser extends StartArgsParser {
     @Override
-    protected StartArgs parseArgs(CommandLine cmd) {
+    protected StartArgs parseArgs(final CommandLine cmd) {
         String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String globalSettings = cmd.getOptionValue("g");
@@ -28,8 +31,9 @@ public class HttpsArgsParser extends StartArgsParser {
             throw new ParseArgException("only one args allowed");
         }
 
-        return StartArgs.builder().withType(ServerType.HTTPS).withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
+        return httpsArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
     }
+
 
     private HttpsArg httpsArg(CommandLine cmd) {
         String https = cmd.getOptionValue("https");
@@ -47,7 +51,7 @@ public class HttpsArgsParser extends StartArgsParser {
     }
 
     @Override
-    protected Options createMocoOptions() {
+    protected Options options() {
         Options options = new Options();
         options.addOption(configOption());
         options.addOption(portOption());

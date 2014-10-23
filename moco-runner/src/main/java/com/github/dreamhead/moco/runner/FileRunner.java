@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 
 import java.io.File;
 import java.io.FileInputStream;

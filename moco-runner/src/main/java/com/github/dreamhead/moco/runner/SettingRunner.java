@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.bootstrap.StartArgs;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.parser.GlobalSettingParser;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
 import com.google.common.base.Function;
