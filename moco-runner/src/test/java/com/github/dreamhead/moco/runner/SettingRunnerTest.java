@@ -1,21 +1,20 @@
 package com.github.dreamhead.moco.runner;
 
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.github.dreamhead.moco.bootstrap.ServerType;
+import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
+import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.http.Header;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.junit.After;
 import org.junit.Test;
 
-import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.helper.MocoTestHelper;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class SettingRunnerTest {
     private final MocoTestHelper helper = new MocoTestHelper();
@@ -86,11 +85,11 @@ public class SettingRunnerTest {
     }
 
     private StartArgs createStartArgs(int port, String env) {
-        return StartArgs.builder().withType(ServerType.HTTP).withPort(port).withEnv(env).build();
+        return httpArgs().withPort(port).withEnv(env).build();
     }
 
     private StartArgs createStartArgs(int port) {
-        return StartArgs.builder().withType(ServerType.HTTP).withPort(port).build();
+        return httpArgs().withPort(port).build();
     }
     
     private InputStream getResourceAsStream(String filename) {

@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.collect.ImmutableList;
@@ -11,6 +9,7 @@ import org.junit.After;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 
@@ -39,6 +38,6 @@ public class AbstractMocoStandaloneTest {
         for (String resourceName : resourceNames) {
             builder.add(Resources.getResource(resourceName).openStream());
         }
-        return newJsonRunnerWithStreams(builder.build(), StartArgs.builder().withType(ServerType.HTTP).withPort(port()).build());
+        return newJsonRunnerWithStreams(builder.build(), httpArgs().withPort(port()).build());
     }
 }

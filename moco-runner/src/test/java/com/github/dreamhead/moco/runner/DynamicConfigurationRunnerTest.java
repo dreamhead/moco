@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.bootstrap.ServerType;
-import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -9,6 +7,7 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,7 +25,7 @@ public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
                 "}}]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
-        runner = factory.createRunner(StartArgs.builder().withType(ServerType.HTTP).withPort(port()).withShutdownPort(9090).withConfigurationFile(config.getAbsolutePath()).build());
+        runner = factory.createRunner(httpArgs().withPort(port()).withShutdownPort(9090).withConfigurationFile(config.getAbsolutePath()).build());
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 
