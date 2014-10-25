@@ -9,7 +9,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class StartArgs extends ShutdownPortOption {
+public abstract class StartArgs extends ShutdownPortOption {
     private final ServerType type;
     private final Optional<Integer> port;
     private final Optional<String> configurationFile;

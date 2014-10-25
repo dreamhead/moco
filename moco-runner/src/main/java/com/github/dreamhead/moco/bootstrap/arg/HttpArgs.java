@@ -12,7 +12,6 @@ public class HttpArgs extends StartArgs {
     }
 
     public static class Builder {
-        private ServerType type;
         private Integer port;
         private Integer shutdownPort;
         private String configurationFile;
