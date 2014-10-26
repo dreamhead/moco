@@ -40,6 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
+import static java.lang.String.format;
 
 public class Moco {
     public static HttpServer httpserver(final int port, final MocoConfig... configs) {
@@ -481,6 +482,10 @@ public class Moco {
 
     public static MocoEventAction post(final String url, final String content) {
         return post(checkNotNullOrEmpty(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
+    }
+
+    public static ResponseHandler attachment(String filename, Resource resource) {
+        return new AndResponseHandler(ImmutableList.of(header("Content-Disposition", format("attachment; filename=%s", filename)), with(resource)));
     }
 
     private static Function<String, ResponseHandler> textToResource() {

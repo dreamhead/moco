@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Runner.runner;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -64,5 +65,17 @@ public class MocoWebTest extends AbstractMocoHttpTest {
                 assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
             }
         });
-}
+    }
+
+    @Test
+    public void should_download_attachment() throws Exception {
+        server.get(by(uri("/"))).response(attachment("foo.txt", file("src/test/resources/foo.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/")), is("foo.response"));
+            }
+        });
+    }
 }
