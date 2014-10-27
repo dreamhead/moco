@@ -27,6 +27,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.net.HttpHeaders;
 
 import java.io.File;
 
@@ -484,8 +485,10 @@ public class Moco {
         return post(checkNotNullOrEmpty(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
-    public static ResponseHandler attachment(String filename, Resource resource) {
-        return new AndResponseHandler(ImmutableList.of(header("Content-Disposition", format("attachment; filename=%s", filename)), with(resource)));
+    public static ResponseHandler attachment(final String filename, final Resource resource) {
+        return new AndResponseHandler(ImmutableList.of(
+                header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty"))),
+                with(checkNotNull(resource, "Resource should not be null"))));
     }
 
     private static Function<String, ResponseHandler> textToResource() {
@@ -506,7 +509,7 @@ public class Moco {
         };
     }
 
-    private static ImmutableMap<String, Variable> toVariables(ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    private static ImmutableMap<String, Variable> toVariables(final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
     }
 
