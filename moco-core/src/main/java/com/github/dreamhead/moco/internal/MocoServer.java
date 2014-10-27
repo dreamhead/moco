@@ -8,10 +8,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
 import java.util.concurrent.Callable;
 
 import static com.github.dreamhead.moco.internal.Awaiter.awaitUntil;
@@ -70,7 +70,7 @@ public class MocoServer {
                     Socket socket = new Socket();
                     socket.connect(address);
                     return false;
-                } catch (ConnectException e) {
+                } catch (SocketException e) {
                     return true;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
