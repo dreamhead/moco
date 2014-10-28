@@ -23,6 +23,7 @@ public class ResponseSetting {
     private TextContainer pathResource;
     private TextContainer version;
     private Object json;
+    private AttachmentSetting attachment;
 
     @Override
     public String toString() {

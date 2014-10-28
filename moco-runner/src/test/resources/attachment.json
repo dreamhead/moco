@@ -1,0 +1,35 @@
+[
+    {
+        "request": {
+            "uri": "/text_attachment"
+        },
+        "response": {
+            "attachment": {
+                "filename": "text_attachment.txt",
+                "text": "text_attachment"
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/file_attachment"
+        },
+        "response": {
+            "attachment": {
+                "filename": "file_attachment.txt",
+                "file": "src/test/resources/foo.response"
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/path_attachment"
+        },
+        "response": {
+            "attachment": {
+                "filename": "path_attachment.txt",
+                "path_resource": "path.response"
+            }
+        }
+    }
+]

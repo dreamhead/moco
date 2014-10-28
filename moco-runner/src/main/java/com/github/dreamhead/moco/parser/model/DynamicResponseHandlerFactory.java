@@ -77,7 +77,6 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return createCompositeHandler(name, castToMap(value));
         }
 
-
         if ("status".equalsIgnoreCase(name)) {
             return invokeTarget(name, Integer.parseInt(value.toString()), ResponseHandler.class);
         }
@@ -90,7 +89,28 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return createProxy((ProxyContainer) value);
         }
 
+        if ("attachment".equalsIgnoreCase(name)) {
+            AttachmentSetting attachment = (AttachmentSetting)value;
+            return attachment(attachment.getFilename(), resourceFrom(attachment));
+        }
+
         throw new IllegalArgumentException(format("unknown field [%s]", name));
+    }
+
+    private Resource resourceFrom(AttachmentSetting attachment) {
+        if (attachment.hasText()) {
+            return resourceFrom("text", attachment.getText());
+        }
+
+        if (attachment.hasFile()) {
+            return resourceFrom("file", attachment.getFile());
+        }
+
+        if (attachment.hasPathResource()) {
+            return resourceFrom("pathResource", attachment.getPathResource());
+        }
+
+        throw new IllegalArgumentException(format("attachment is expected"));
     }
 
     private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {
