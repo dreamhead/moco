@@ -1141,6 +1141,30 @@ server.response(cookie("loggedIn", "true"), status(302));
 }
 ```
 
+### Attachment
+**@Since Will be at 0.10.0**
+
+Attachment is often used in web development. You can setup an attachment in Moco as following. As you will see, you'd better set a filename for client to receive.
+
+* Java API
+
+```java
+server.get(by(uri("/"))).response(attachment("foo.txt", file("foo.response")));
+```
+
+* JSON
+
+{
+  "request": {
+    "uri": "/file_attachment"
+  },
+  "response": {
+    "attachment": {
+        "filename": "foo.txt",
+        "file": "foo.response"
+    }
+  }
+}
 
 ### Latency
 **@Since 0.7**
