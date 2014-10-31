@@ -37,6 +37,9 @@ public class ResponseSetting {
                 .add("cookies", cookies)
                 .add("proxy", proxy)
                 .add("latency", latency)
+                .add("path resource", pathResource)
+                .add("json", json)
+                .add("attachment", attachment)
                 .toString();
     }
 
