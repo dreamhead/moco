@@ -25,8 +25,12 @@ public class ProxyContainer {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(ProxyContainer.class)
+                .omitNullValues()
                 .add("url", this.url)
+                .add("from", this.from)
+                .add("to", this.to)
                 .add("failover", this.failover)
+                .add("playback", this.playback)
                 .toString();
     }
 
