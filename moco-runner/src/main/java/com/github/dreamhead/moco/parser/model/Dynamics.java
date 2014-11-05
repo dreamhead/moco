@@ -3,17 +3,17 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Map;
 
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.base.Predicates.or;
+import static com.google.common.base.Predicates.*;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 public class Dynamics {
     private static final Map<String, String> extractorMethods = ImmutableMap.<String, String>builder()
@@ -56,11 +56,21 @@ public class Dynamics {
     }
 
     protected Iterable<Field> getFields(Class<?> clazz) {
+        ImmutableList<Field> fieldsForCurrent = getFieldsForCurrent(clazz);
+        if (clazz.getSuperclass() == null) {
+            return fieldsForCurrent;
+        }
+
+        return Iterables.concat(getFields(clazz.getSuperclass()), fieldsForCurrent);
+    }
+
+    private ImmutableList<Field> getFieldsForCurrent(Class<?> clazz) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
         }
-        return Arrays.asList(fields);
+
+        return copyOf(fields);
     }
 
     protected <T> Predicate<Field> isValidField(T target) {

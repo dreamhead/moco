@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.google.common.base.MoreObjects;
@@ -9,7 +8,7 @@ import com.google.common.base.MoreObjects;
 import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ResponseSetting {
+public class ResponseSetting extends BaseResourceSetting {
     private final ResponseHandlerFactory factory = new DynamicResponseHandlerFactory();
 
     private String status;
@@ -17,10 +16,7 @@ public class ResponseSetting {
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> cookies;
     private Long latency;
-    private TextContainer text;
-    private TextContainer file;
-    @JsonProperty("path_resource")
-    private TextContainer pathResource;
+
     private TextContainer version;
     private Object json;
     private AttachmentSetting attachment;
