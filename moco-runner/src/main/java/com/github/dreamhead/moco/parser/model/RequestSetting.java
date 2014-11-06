@@ -9,14 +9,11 @@ import com.google.common.base.MoreObjects;
 import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RequestSetting {
+public class RequestSetting extends BaseResourceSetting {
     private final RequestMatcherFactory factory = new DynamicRequestMatcherFactory();
 
-    private TextContainer text;
     private TextContainer uri;
-    private TextContainer file;
-    @JsonProperty("path_resource")
-    private TextContainer pathResource;
+
     private TextContainer method;
     private TextContainer version;
     private Object json;
