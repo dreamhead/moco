@@ -41,6 +41,8 @@ public class MocoRequestHit {
     }
 
     public static VerificationMode between(final int min, final int max) {
+        checkArgument(min >= 0, "Min should be greater than or equal to 0");
+        checkArgument(max > min, "Max should be greater than min");
         return new BetweenVerification(min, max);
     }
 
