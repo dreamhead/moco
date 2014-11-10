@@ -97,20 +97,28 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException(format("unknown field [%s]", name));
     }
 
-    private Resource resourceFrom(AttachmentSetting attachment) {
-        if (attachment.hasText()) {
-            return resourceFrom("text", attachment.getText());
+    private Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+        try {
+            return clazz.getDeclaredField(name);
+        } catch (NoSuchFieldException e) {
+            Class<?> superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                return getField(superclass, name);
+            }
+            throw e;
+        }
+    }
+
+    private Resource resourceFrom(BaseResourceSetting resourceSetting) {
+        for (String resource : RESOURCES) {
+            try {
+                Field field = getField(resourceSetting.getClass(), resource);
+                return resourceFrom(resource, (TextContainer)field.get(resourceSetting));
+            } catch (Exception ignored) {
+            }
         }
 
-        if (attachment.hasFile()) {
-            return resourceFrom("file", attachment.getFile());
-        }
-
-        if (attachment.hasPathResource()) {
-            return resourceFrom("pathResource", attachment.getPathResource());
-        }
-
-        throw new IllegalArgumentException(format("attachment is expected"));
+        throw new IllegalArgumentException(format("resourceSetting is expected"));
     }
 
     private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {
