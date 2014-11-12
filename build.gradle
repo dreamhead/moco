@@ -9,11 +9,7 @@ idea {
         jdkName = JavaVersion.VERSION_1_6
         languageLevel = JavaVersion.VERSION_1_6
 
-        ipr.withXml { xml ->
-            def mapping = xml.node.component.find { it.@name == "VcsDirectoryMappings" }.mapping
-            mapping.@vcs = 'Git'
-            mapping.@directory = '$PROJECT_DIR$'
-        }
+        vcs = "Git"
     }
 
     workspace.iws.withXml { provider ->
