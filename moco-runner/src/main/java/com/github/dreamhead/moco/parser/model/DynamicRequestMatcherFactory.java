@@ -77,11 +77,15 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             return createSingleMatcher(name, container.getText());
         }
 
-        if ("exist".equals(container.getOperation())) {
+        if (isExistOperator(container)) {
             return existMatcher(Extractors.extractor(name), container);
         }
 
         return createRequestMatcherWithResource(container.getOperation(), createResource(name, container.getText()));
+    }
+
+    private boolean isExistOperator(TextContainer container) {
+        return "exist".equals(container.getOperation());
     }
 
     private RequestMatcher createRequestMatcherWithResource(String operation, Resource resource) {
@@ -122,7 +126,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             return eq(extractor, container.getText());
         }
 
-        if ("exist".equals(container.getOperation())) {
+        if (isExistOperator(container)) {
             return existMatcher(extractor, container);
         }
 
