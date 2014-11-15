@@ -25,9 +25,7 @@ project.dependencies {
             "commons-cli:commons-cli:$commonsCliVersion"
     )
 
-    runtime("ch.qos.logback:logback-classic:$logbackVersion") {
-        exclude group: "org.slf4j", module: "slf4j-simple"
-    }
+    runtime("ch.qos.logback:logback-classic:$logbackVersion")
 
     testCompile project(':moco-core').sourceSets.test.output
 
