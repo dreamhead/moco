@@ -28,7 +28,7 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_6
 
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     project.uploadArchives {
