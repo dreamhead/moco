@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.reader.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
@@ -76,6 +77,11 @@ public class ResourceFactory {
         });
     }
 
+    public static ContentResource fromRequestResource(final Function<Request, String> function) {
+        FromRequestResourceReader reader = new FromRequestResourceReader(function);
+        return contentResource(id("fromrequest"), DO_NOTHING_APPLIER, reader);
+    }
+
     private static ContentResource contentResource(Identifiable id, ResourceConfigApplier applier, ContentResourceReader reader) {
         return new ContentResource(id, applier, reader);
     }
@@ -83,6 +89,8 @@ public class ResourceFactory {
     private static Resource resource(Identifiable id, ResourceConfigApplier applier, ResourceReader reader) {
         return new Resource(id, applier, reader);
     }
+
+
 
     private ResourceFactory() {}
 }

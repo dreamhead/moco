@@ -14,6 +14,7 @@ public class ResponseHandlers {
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
             .put("template", ContentHandler.class)
+            .put("fromrequest", ContentHandler.class)
             .put("version", VersionResponseHandler.class).build();
 
     public static ResponseHandler responseHandler(Resource resource) {

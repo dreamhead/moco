@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.base.Function;
 import com.google.common.io.ByteStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
@@ -630,6 +631,23 @@ public class MocoTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
                 assertThat(header.getValue(), is("text/html"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_custom_content() throws Exception {
+        server.response(fromRequest(new Function<com.github.dreamhead.moco.Request, String>() {
+            @Override
+            public String apply(com.github.dreamhead.moco.Request input) {
+                return "foo";
+            }
+        }));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(root()), is("foo"));
             }
         });
     }

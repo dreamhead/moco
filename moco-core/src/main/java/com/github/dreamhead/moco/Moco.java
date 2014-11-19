@@ -449,6 +449,10 @@ public class Moco {
         return new PlainTextExtractor(checkNotNullOrEmpty(text, "Template variable should not be null or empty"));
     }
 
+    public static Resource fromRequest(final Function<Request, String> function) {
+        return fromRequestResource(checkNotNull(function, "Function should not be null"));
+    }
+
     public static Failover failover(final String file) {
         return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
     }
