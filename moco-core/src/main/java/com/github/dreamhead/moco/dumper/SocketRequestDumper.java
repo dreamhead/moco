@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.Request;
 
 public class SocketRequestDumper implements Dumper<Request> {
     @Override
-    public String dump(Request message) {
+    public String dump(final Request message) {
         return message.getContent();
     }
 }

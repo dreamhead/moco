@@ -11,7 +11,7 @@ public class HttpResponseDumper implements Dumper<Response> {
     private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
     @Override
-    public String dump(Response response) {
+    public String dump(final Response response) {
         HttpResponse httpResponse = (HttpResponse)response;
         StringBuilder buf = new StringBuilder();
         appendResponseProtocolLine(httpResponse, buf);

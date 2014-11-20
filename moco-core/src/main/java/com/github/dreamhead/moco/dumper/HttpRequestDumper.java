@@ -11,7 +11,7 @@ public class HttpRequestDumper implements Dumper<Request> {
     private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
     @Override
-    public String dump(Request request) {
+    public String dump(final Request request) {
         HttpRequest httpRequest = (HttpRequest)request;
         StringBuilder buf = new StringBuilder();
         appendRequestProtocolLine(httpRequest, buf);
