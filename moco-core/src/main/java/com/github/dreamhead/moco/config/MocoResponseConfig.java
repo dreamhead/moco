@@ -14,12 +14,12 @@ public class MocoResponseConfig implements MocoConfig<ResponseHandler> {
     }
 
     @Override
-    public boolean isFor(String id) {
+    public boolean isFor(final String id) {
         return RESPONSE_ID.equals(id);
     }
 
     @Override
-    public ResponseHandler apply(ResponseHandler target) {
+    public ResponseHandler apply(final ResponseHandler target) {
         return new AndResponseHandler(of(handler, target));
     }
 }

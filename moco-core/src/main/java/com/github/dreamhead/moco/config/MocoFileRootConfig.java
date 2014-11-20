@@ -14,12 +14,12 @@ public class MocoFileRootConfig implements MocoConfig<String> {
     }
 
     @Override
-    public boolean isFor(String id) {
+    public boolean isFor(final String id) {
         return FILE_ID.equals(id);
     }
 
     @Override
-    public String apply(String filename) {
+    public String apply(final String filename) {
         return join(this.fileRoot, filename);
     }
 }

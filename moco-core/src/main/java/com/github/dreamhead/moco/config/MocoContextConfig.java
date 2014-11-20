@@ -10,12 +10,12 @@ public class MocoContextConfig implements MocoConfig<String> {
     }
 
     @Override
-    public boolean isFor(String id) {
+    public boolean isFor(final String id) {
         return URI_ID.equalsIgnoreCase(id);
     }
 
     @Override
-    public String apply(String uri) {
+    public String apply(final String uri) {
         return context + uri;
     }
 }
