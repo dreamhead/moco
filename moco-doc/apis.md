@@ -1154,6 +1154,7 @@ server.get(by(uri("/"))).response(attachment("foo.txt", file("foo.response")));
 
 * JSON
 
+```json
 {
   "request": {
     "uri": "/file_attachment"
@@ -1165,6 +1166,7 @@ server.get(by(uri("/"))).response(attachment("foo.txt", file("foo.response")));
     }
   }
 }
+```
 
 ### Latency
 **@Since 0.7**
