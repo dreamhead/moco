@@ -11,7 +11,7 @@ public class Bootstrap implements BootstrapTask {
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.<String, BootstrapTask>builder()
-            .put("start", new StartTask(DEFAULT_SHUTDOWN_KEY))
+            .put("start", new HttpTask(DEFAULT_SHUTDOWN_KEY))
             .put("shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY))
             .put("http", new HttpTask(DEFAULT_SHUTDOWN_KEY))
             .put("https", new HttpsTask(DEFAULT_SHUTDOWN_KEY))

@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.bootstrap.tasks;
 
 import com.github.dreamhead.moco.bootstrap.BootstrapTask;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.github.dreamhead.moco.runner.Runner;
 import com.github.dreamhead.moco.runner.RunnerFactory;
@@ -10,15 +9,10 @@ import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StartTask implements BootstrapTask {
+public abstract class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
     private final StartArgsParser startArgsParser;
     protected final RunnerFactory factory;
-
-    public StartTask(final String shutdownKey) {
-        this.factory = new RunnerFactory(shutdownKey);
-        this.startArgsParser = new HttpArgsParser();
-    }
 
     protected StartTask(final String shutdownKey, final StartArgsParser startArgsParser) {
         this.startArgsParser = startArgsParser;
