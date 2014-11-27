@@ -27,7 +27,14 @@ public class SessionSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues().add("request", request).add("response", response).toString();
+        return MoreObjects.toStringHelper(this).omitNullValues()
+                .add("request", request)
+                .add("response", response)
+                .add("redirect to", redirectTo)
+                .add("mount", mount)
+                .add("proxy", proxy)
+                .add("on", on)
+                .toString();
     }
 
     private boolean isRedirectResponse() {
