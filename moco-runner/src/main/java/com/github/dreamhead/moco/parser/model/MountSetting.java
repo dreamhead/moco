@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
 
@@ -52,5 +53,13 @@ public class MountSetting {
                 return exclude(input);
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).omitNullValues()
+                .add("dir", dir)
+                .add("uri", uri)
+                .toString();
     }
 }
