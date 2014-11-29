@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoEventAction;
+import com.google.common.base.MoreObjects;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CompleteEventSetting {
@@ -32,5 +33,16 @@ public class CompleteEventSetting {
         }
 
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("async", async)
+                .add("latency", latency)
+                .add("post", post)
+                .add("get", get)
+                .toString();
     }
 }
