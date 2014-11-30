@@ -102,6 +102,9 @@ function install {
 
 function load_current_version {
     read MOCO_STANDALONE CURRENT_VERSION < $VERSION_LOG_FILE
+    if [ "$(expr substr $(uname -s) 1 6)" == "CYGWIN" ];then
+        MOCO_STANDALONE=`cygpath -m "$MOCO_STANDALONE"`
+    fi
 }
 
 function usage {
