@@ -7,20 +7,15 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.Future;
 
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.SocketAddress;
-import java.net.SocketException;
-import java.util.concurrent.Callable;
-
-import static com.github.dreamhead.moco.internal.Awaiter.awaitUntil;
+import java.util.concurrent.TimeUnit;
 
 public class MocoServer {
-    private static final int DEFAULT_TIMEOUT = 3;
     private EventLoopGroup group;
     private ChannelFuture future;
-    private InetSocketAddress address;
 
     public MocoServer() {
         group = new NioEventLoopGroup();
@@ -35,8 +30,7 @@ public class MocoServer {
         try {
             future = bootstrap.bind(port).sync();
             SocketAddress socketAddress = future.channel().localAddress();
-            address = (InetSocketAddress) socketAddress;
-            return address.getPort();
+            return ((InetSocketAddress) socketAddress).getPort();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -44,10 +38,6 @@ public class MocoServer {
 
     public void stop() {
         doStop();
-        if (address != null) {
-            awaitUntil(serverIsClosed(address), DEFAULT_TIMEOUT);
-            address = null;
-        }
     }
 
     private void doStop() {
@@ -57,25 +47,13 @@ public class MocoServer {
         }
 
         if (group != null) {
-            group.shutdownGracefully();
+            Future<?> groupFuture = group.shutdownGracefully(0, 0, TimeUnit.SECONDS);
+            try {
+                groupFuture.get();
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
             group = null;
         }
-    }
-
-    private Callable<Boolean> serverIsClosed(final InetSocketAddress address) {
-        return new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                try {
-                    Socket socket = new Socket();
-                    socket.connect(address);
-                    return false;
-                } catch (SocketException e) {
-                    return true;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 }

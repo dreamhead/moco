@@ -23,7 +23,7 @@ public abstract class AbstractRunnerTest {
 
     protected void waitChangeHappens() {
         try {
-            Idles.idle(FileMocoRunnerWatcher.INTERVAL * 2);
+            Idles.idle(FileMocoRunnerWatcher.INTERVAL * 3);
         } catch (Exception e) {
             fail(format("failed to wait change happens: %s", e.getMessage()));
         }
