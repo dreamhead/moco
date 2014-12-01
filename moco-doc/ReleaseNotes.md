@@ -1,8 +1,9 @@
-# Release 0.10.0
+# Release 0.10.0 (1-Dec-2014)
 
 ## Usage
 * Socket support
-* Version query 
+* Version query
+* Start arguments have been changed from start to HTTP(HTTPS, Socket) etc.
 
 ## APIs
 * Attachment

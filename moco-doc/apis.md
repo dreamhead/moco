@@ -1142,7 +1142,7 @@ server.response(cookie("loggedIn", "true"), status(302));
 ```
 
 ### Attachment
-**@Since Will be at 0.10.0**
+**@Since 0.10.0**
 
 Attachment is often used in web development. You can setup an attachment in Moco as following. As you will see, you'd better set a filename for client to receive.
 
@@ -1535,7 +1535,7 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar")
 }
 ```
 
-**@Since Will be at 0.10.0**
+**@Since 0.10.0**
 
 You can also use extractor to extract information from request.
 

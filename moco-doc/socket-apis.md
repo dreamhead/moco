@@ -595,7 +595,7 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar")
 }
 ```
 
-**@Since Will be at 0.10.0**
+**@Since 0.10.0**
 
 You can also use extractor to extract information from request.
 
