@@ -17,6 +17,7 @@
 -keep public class com.github.dreamhead.moco.MocoRunner{*;}
 -keep public class com.github.dreamhead.moco.handler.*{*;}
 -keep public class com.github.dreamhead.moco.dumper.*{*;}
+-keep public class com.github.dreamhead.moco.MocoJsonRunner{*;}
 -keep public class com.github.dreamhead.moco.runner.ShutdownRunner{
     public int shutdownPort();
 }
