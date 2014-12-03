@@ -5,8 +5,10 @@ import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 
 import java.io.IOException;
+import java.net.URL;
 
 import static com.google.common.io.ByteStreams.toByteArray;
+import static java.lang.String.format;
 
 public class ClasspathFileResourceReader implements ContentResourceReader {
     private final String filename;
@@ -18,7 +20,13 @@ public class ClasspathFileResourceReader implements ContentResourceReader {
     @Override
     public byte[] readFor(final Optional<? extends Request> request) {
         try {
-            return toByteArray(this.getClass().getClassLoader().getResourceAsStream(filename));
+            ClassLoader classLoader = this.getClass().getClassLoader();
+            URL resource = classLoader.getResource(filename);
+            if (resource == null) {
+                throw new IllegalArgumentException(format("%s does not exist", filename));
+            }
+
+            return toByteArray(resource.openStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
