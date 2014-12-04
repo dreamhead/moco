@@ -153,7 +153,7 @@ import static org.junit.Assert.assertThat;
 public class MocoJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response() throws Exception {
-        final HttpServer server = jsonHttpServer(port(), file("src/test/resources/foo.json"));
+        final HttpServer server = jsonHttpServer(12306, file("foo.json"));
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
