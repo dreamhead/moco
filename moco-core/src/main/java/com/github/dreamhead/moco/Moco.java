@@ -30,6 +30,7 @@ import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
@@ -281,6 +282,11 @@ public class Moco {
     public static LatencyProcedure latency(final long millis) {
         checkArgument(millis > 0, "Latency must be greater than zero");
         return new LatencyProcedure(millis);
+    }
+
+    public static MocoProcedure latency(int duration, TimeUnit unit) {
+        checkArgument(duration > 0, "Latency must be greater than zero");
+        return new LatencyProcedure(checkNotNull(unit, "Time unit should not be null").toMillis(duration));
     }
 
     public static RequestExtractor<String> query(final String param) {

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
@@ -556,6 +557,25 @@ public class MocoTest extends AbstractMocoHttpTest {
                 long stop = System.currentTimeMillis();
                 long gap = stop - start + delta;
                 assertThat(gap, greaterThan(latency));
+                assertThat(code, is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_wait_for_awhile_with_time_unit() throws Exception {
+        final long delta = 200;
+        server.response(latency(1, TimeUnit.SECONDS));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                long start = System.currentTimeMillis();
+                helper.get(root());
+                int code = helper.getForStatus(root());
+                long stop = System.currentTimeMillis();
+                long gap = stop - start + delta;
+                assertThat(gap, greaterThan(TimeUnit.SECONDS.toMillis(1)));
                 assertThat(code, is(200));
             }
         });
