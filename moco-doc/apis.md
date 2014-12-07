@@ -1194,6 +1194,14 @@ server.request(by("foo")).response(latency(5000));
 }
 ```
 
+**@Since will be at next release
+
+It's easy to setup latency with time unit.
+
+```java
+server.response(latency(1, TimeUnit.SECONDS));
+```
+
 ### Sequence
 **@Since 0.7**
 
