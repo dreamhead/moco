@@ -280,13 +280,12 @@ public class Moco {
     }
 
     public static LatencyProcedure latency(final long millis) {
-        checkArgument(millis > 0, "Latency must be greater than zero");
-        return new LatencyProcedure(millis);
+        return latency(millis, TimeUnit.MILLISECONDS);
     }
 
-    public static MocoProcedure latency(int duration, TimeUnit unit) {
+    public static LatencyProcedure latency(final long duration, final TimeUnit unit) {
         checkArgument(duration > 0, "Latency must be greater than zero");
-        return new LatencyProcedure(checkNotNull(unit, "Time unit should not be null").toMillis(duration));
+        return new LatencyProcedure(duration, checkNotNull(unit, "Time unit should not be null"));
     }
 
     public static RequestExtractor<String> query(final String param) {
