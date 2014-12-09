@@ -311,19 +311,23 @@ public class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
+        checkArgument(contents.length > 0, "seq contents should not be null");
         return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toList());
     }
 
     public static ResponseHandler seq(final Resource... contents) {
+        checkArgument(contents.length > 0, "seq contents should not be null");
         return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toList());
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
+        checkArgument(handlers.length > 0, "seq contents should not be null");
         return seq(copyOf(handlers));
     }
 
-    private static ResponseHandler seq(ImmutableList<ResponseHandler> list) {
-        return new SequenceContentHandler(list);
+    private static ResponseHandler seq(ImmutableList<ResponseHandler> handlers) {
+        checkArgument(handlers.size() > 0, "seq contents should not be null");
+        return new SequenceContentHandler(handlers);
     }
 
     public static ContentResource file(final String filename) {
