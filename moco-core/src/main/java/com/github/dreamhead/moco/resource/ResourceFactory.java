@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.reader.*;
 import com.github.dreamhead.moco.util.Cookies;
@@ -49,7 +50,7 @@ public class ResourceFactory {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
             public byte[] readFor(Optional<? extends Request> request) {
-                return version.readFor(request);
+                return HttpProtocolVersion.versionOf(new String(version.readFor(request))).text().getBytes();
             }
         });
     }
