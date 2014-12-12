@@ -624,3 +624,5 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPa
     }
 }
 ```
+
+Other extractors, e.g. xpath also work here.

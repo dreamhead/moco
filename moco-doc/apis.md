@@ -1573,6 +1573,8 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPa
 }
 ```
 
+Other extractors, e.g. xpath also work here.
+
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 
