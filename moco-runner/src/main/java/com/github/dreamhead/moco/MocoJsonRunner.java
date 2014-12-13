@@ -35,7 +35,7 @@ public class MocoJsonRunner {
 
     private static SocketServer jsonSocketServer(final Resource resource, final Optional<Integer> port) {
         SocketServerParser parser = new SocketServerParser();
-        return parser.parseServer(toStream(resource), port);
+        return parser.parseServer(toStream(checkNotNull(resource, "resource should not be null")), port);
     }
 
     private static HttpServer jsonHttpServer(final Resource resource, final Optional<Integer> port) {
@@ -45,7 +45,7 @@ public class MocoJsonRunner {
 
     private static InputStream toStream(final Resource resource) {
         Optional<Request> request = Optional.absent();
-        return new ByteArrayInputStream(resource.readFor(request));
+        return new ByteArrayInputStream(checkNotNull(resource, "resource should not be null").readFor(request));
     }
 
     private MocoJsonRunner() {}
