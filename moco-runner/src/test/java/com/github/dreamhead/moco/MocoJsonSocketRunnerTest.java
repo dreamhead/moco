@@ -12,7 +12,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoJsonSocketHttpRunner {
+public class MocoJsonSocketRunnerTest {
     private MocoSocketHelper helper;
 
     @Before
