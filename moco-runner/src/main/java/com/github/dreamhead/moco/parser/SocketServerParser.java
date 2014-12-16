@@ -6,8 +6,12 @@ import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SocketServerParser extends BaseParser<SocketServer> {
+    protected static Logger logger = LoggerFactory.getLogger(SocketServerParser.class);
+
     @Override
     protected SocketServer createServer(ImmutableList<SessionSetting> sessionSettings, Optional<Integer> port, MocoConfig... configs) {
         SocketServer server = ActualSocketServer.createLogServer(port);

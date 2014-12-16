@@ -3,10 +3,8 @@ package com.github.dreamhead.moco.parser;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Server;
-import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
 import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
@@ -14,15 +12,12 @@ import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(ImmutableList<SessionSetting> read, Optional<Integer> port, MocoConfig[] configs);
 
-    protected static Logger logger = LoggerFactory.getLogger(HttpServer.class);
     protected final CollectionReader reader;
 
     protected BaseParser() {

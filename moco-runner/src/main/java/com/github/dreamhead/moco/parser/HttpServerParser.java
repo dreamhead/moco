@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpServerParser extends BaseParser<HttpServer> {
-    private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpServerParser.class);
 
     @Override
     protected HttpServer createServer(ImmutableList<SessionSetting> sessionSettings, Optional<Integer> port, MocoConfig... configs) {
