@@ -2,17 +2,19 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class Runner {
     public static void running(final HttpServer httpServer, final Runnable runnable) throws Exception {
-        doRunning(runner(httpServer), runnable);
+        doRunning(runner(checkNotNull(httpServer)), checkNotNull(runnable));
     }
 
     public static void running(final HttpsServer httpServer, final Runnable runnable) throws Exception {
-        doRunning(runner(httpServer), runnable);
+        doRunning(runner(checkNotNull(httpServer)), checkNotNull(runnable));
     }
 
     public static void running(final SocketServer server, final Runnable runnable) throws Exception {
-        doRunning(runner(server), runnable);
+        doRunning(runner(checkNotNull(server)), checkNotNull(runnable));
     }
 
     private static void doRunning(final Runner server, final Runnable runnable) throws Exception {
