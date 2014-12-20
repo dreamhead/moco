@@ -27,11 +27,11 @@ public abstract class Runner {
     }
 
     public static Runner runner(final HttpServer server) {
-        return new MocoHttpServer((ActualHttpServer) server);
+        return new MocoHttpServer((ActualHttpServer) checkNotNull(server));
     }
 
     public static Runner runner(final SocketServer server) {
-        return new MocoSocketServer((ActualSocketServer)server);
+        return new MocoSocketServer((ActualSocketServer)checkNotNull(server));
     }
 
     public abstract void start();
