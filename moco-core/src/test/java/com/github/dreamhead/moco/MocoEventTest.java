@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
@@ -119,7 +121,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
                 verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
-                Idles.idle(2000);
+                Idles.idle(2, TimeUnit.SECONDS);
             }
         });
 
@@ -137,7 +139,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
                 verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
-                Idles.idle(2000);
+                Idles.idle(2, TimeUnit.SECONDS);
             }
         });
 

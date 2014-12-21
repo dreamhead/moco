@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
-    public static final int INTERVAL = 1000;
+    public static final long INTERVAL = 1000;
     private static Logger logger = LoggerFactory.getLogger(FileMocoRunnerWatcher.class);
 
     private final FileAlterationMonitor monitor;

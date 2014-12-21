@@ -2,11 +2,15 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.watcher.FileMocoRunnerWatcher;
-import com.github.dreamhead.moco.util.Idles;
 import org.junit.After;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
 
+import static com.github.dreamhead.moco.util.Idles.idle;
 import static java.lang.String.format;
 import static org.junit.Assert.fail;
 
@@ -23,7 +27,7 @@ public abstract class AbstractRunnerTest {
 
     protected void waitChangeHappens() {
         try {
-            Idles.idle(FileMocoRunnerWatcher.INTERVAL * 3);
+            idle(FileMocoRunnerWatcher.INTERVAL * 3, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             fail(format("failed to wait change happens: %s", e.getMessage()));
         }

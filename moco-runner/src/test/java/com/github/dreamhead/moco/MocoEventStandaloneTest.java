@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.util.Idles;
 import com.google.common.io.Files;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,14 +10,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.util.Idles.idle;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
-    private static final int IDLE = 1200;
+    private static final long IDLE = 1200;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -29,7 +30,7 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
         File file = folder.newFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
         assertThat(helper.get(remoteUrl("/event")), is("post_foo"));
-        Idles.idle(IDLE);
+        idle(IDLE, TimeUnit.MILLISECONDS);
 
         assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
     }
@@ -40,7 +41,7 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
         File file = folder.newFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
         assertThat(helper.get(remoteUrl("/get_event")), is("get_foo"));
-        Idles.idle(IDLE);
+        idle(IDLE, TimeUnit.MILLISECONDS);
 
         assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
     }
