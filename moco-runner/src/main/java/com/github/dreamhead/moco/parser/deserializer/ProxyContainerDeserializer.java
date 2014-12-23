@@ -18,7 +18,9 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return builder().withUrl(jp.getText().trim()).build();
-        } else if (currentToken == JsonToken.START_OBJECT) {
+        }
+
+        if (currentToken == JsonToken.START_OBJECT) {
             InternalProxyContainer container = get(jp.readValuesAs(InternalProxyContainer.class), 0);
             return container.toProxyContainer();
         }

@@ -22,7 +22,9 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return text(jp);
-        } else if (currentToken == JsonToken.START_OBJECT) {
+        }
+
+        if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
             return textContainer(jp, ctxt);
         }
