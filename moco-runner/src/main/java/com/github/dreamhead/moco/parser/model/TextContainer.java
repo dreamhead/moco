@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 
 public class TextContainer {
-    public static final String TEMPLATE_NAME = "template";
+    private static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
     private ImmutableMap<String, TextContainer> props;
