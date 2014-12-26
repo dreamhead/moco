@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import java.io.InputStream;
 
 import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public class RunnerSetting {
@@ -18,9 +19,9 @@ public class RunnerSetting {
 
     public RunnerSetting(InputStream stream, String context, String fileRoot, ResponseSetting response) {
         this.stream = stream;
-        this.response = Optional.fromNullable(response);
-        this.context = Optional.fromNullable(context);
-        this.fileRoot = Optional.fromNullable(fileRoot);
+        this.response = fromNullable(response);
+        this.context = fromNullable(context);
+        this.fileRoot = fromNullable(fileRoot);
     }
 
     public InputStream getStream() {

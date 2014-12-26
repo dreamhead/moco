@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static com.google.common.base.Predicates.*;
 import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Iterables.concat;
 
 public class Dynamics {
     private static final Map<String, String> extractorMethods = ImmutableMap.<String, String>builder()
@@ -61,7 +62,7 @@ public class Dynamics {
             return fieldsForCurrent;
         }
 
-        return Iterables.concat(getFields(clazz.getSuperclass()), fieldsForCurrent);
+        return concat(getFields(clazz.getSuperclass()), fieldsForCurrent);
     }
 
     private ImmutableList<Field> getFieldsForCurrent(Class<?> clazz) {

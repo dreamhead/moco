@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 
+import static com.google.common.collect.FluentIterable.from;
 import static java.lang.String.format;
 
 public class VerificationData {
@@ -22,7 +23,7 @@ public class VerificationData {
     }
 
     public int matchedSize() {
-        return FluentIterable.from(requests).filter(matched()).size();
+        return from(requests).filter(matched()).size();
     }
 
     private Predicate<Request> matched() {
