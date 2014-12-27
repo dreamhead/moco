@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.action.MocoAsyncAction;
 import com.github.dreamhead.moco.action.MocoRequestAction;
 import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
+import com.github.dreamhead.moco.config.MocoRequestConfig;
 import com.github.dreamhead.moco.config.MocoResponseConfig;
 import com.github.dreamhead.moco.extractor.*;
 import com.github.dreamhead.moco.handler.*;
@@ -114,6 +115,10 @@ public class Moco {
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
+    }
+
+    public static MocoConfig request(final RequestMatcher matcher) {
+        return new MocoRequestConfig(checkNotNull(matcher, "Response should not be null"));
     }
 
     public static MocoConfig response(final ResponseHandler handler) {

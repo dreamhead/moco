@@ -6,5 +6,6 @@ public interface MocoConfig<T> {
 
     String FILE_ID = "file";
     String URI_ID = "uri";
+    String REQUEST_ID = "request";
     String RESPONSE_ID = "response";
 }

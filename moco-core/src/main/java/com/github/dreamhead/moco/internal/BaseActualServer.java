@@ -42,6 +42,10 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
                     return context((String) config.apply(""));
                 }
 
+                if (config.isFor(MocoConfig.REQUEST_ID)) {
+                    return (RequestMatcher)config.apply(anyRequest());
+                }
+
                 return this;
             }
         };
