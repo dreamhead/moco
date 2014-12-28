@@ -27,6 +27,20 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         });
     }
 
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_global_matcher() throws Exception {
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.request(by(uri("/global-request"))).response(text("blah"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String result = helper.get(remoteUrl("/global-request"));
+                assertThat(result, is("blah"));
+            }
+        });
+    }
+
     @Test
     public void should_match_global_header_with_any_response() throws Exception {
         server = httpserver(port(), request(eq(header("foo"), "bar")));
@@ -43,7 +57,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     }
 
     @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_without_global_matcher() throws Exception {
+    public void should_throw_exception_without_global_matcher_for_any_response() throws Exception {
         server = httpserver(port(), request(eq(header("foo"), "bar")));
         server.response(text("blah"));
 

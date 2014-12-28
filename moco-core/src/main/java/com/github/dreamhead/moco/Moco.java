@@ -118,11 +118,11 @@ public class Moco {
     }
 
     public static MocoConfig request(final RequestMatcher matcher) {
-        return new MocoRequestConfig(checkNotNull(matcher, "Response should not be null"));
+        return new MocoRequestConfig(checkNotNull(matcher, "Request matcher should not be null"));
     }
 
     public static MocoConfig response(final ResponseHandler handler) {
-        return new MocoResponseConfig(checkNotNull(handler, "Response should not be null"));
+        return new MocoResponseConfig(checkNotNull(handler, "Response handler should not be null"));
     }
 
     public static MocoConfig fileRoot(final String fileRoot) {
