@@ -20,7 +20,12 @@ public class ExistMatcher<T> implements RequestMatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.REQUEST_ID)) {
+            return (RequestMatcher)config.apply(this);
+        }
+
         return this;
     }
 }

@@ -68,4 +68,30 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_match_with_exist_header() throws Exception {
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.request(exist(header("blah"))).response(text("header"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(root(), of("foo", "bar", "blah", "any")), is("header"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_global_matcher_for_exist() throws Exception {
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.request(exist(header("blah"))).response(text("header"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.getWithHeader(root(), of("blah", "any"));
+            }
+        });
+    }
 }
