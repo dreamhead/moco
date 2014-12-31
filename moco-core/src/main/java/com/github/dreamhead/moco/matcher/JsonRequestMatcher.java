@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.Moco.and;
 import static com.google.common.base.Optional.of;
 
 public class JsonRequestMatcher implements RequestMatcher {
@@ -41,7 +42,12 @@ public class JsonRequestMatcher implements RequestMatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.REQUEST_ID)) {
+            return (RequestMatcher)config.apply(this);
+        }
+
         Resource appliedResource = this.resource.apply(config);
         if (appliedResource == this.resource) {
             return this;

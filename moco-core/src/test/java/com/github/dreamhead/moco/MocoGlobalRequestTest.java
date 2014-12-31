@@ -3,6 +3,8 @@ package com.github.dreamhead.moco;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -91,6 +93,32 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 helper.getWithHeader(root(), of("blah", "any"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_with_json() throws Exception {
+        server = httpserver(port(), request(by(uri("/path"))));
+        final String jsonContent = "{\"foo\":\"bar\"}";
+        server.request(json(text(jsonContent))).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/path"), jsonContent), is("foo"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_match_with_json() throws Exception {
+        server = httpserver(port(), request(by(uri("/path"))));
+        final String jsonContent = "{\"foo\":\"bar\"}";
+        server.request(json(text(jsonContent))).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                helper.postContent(root(), jsonContent);
             }
         });
     }
