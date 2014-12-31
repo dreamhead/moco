@@ -40,7 +40,11 @@ public class XmlRequestMatcher implements RequestMatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.REQUEST_ID)) {
+            return (RequestMatcher)config.apply(this);
+        }
         if (config.isFor(resource.id())) {
             return new XmlRequestMatcher(this.extractor, resource.apply(config));
         }

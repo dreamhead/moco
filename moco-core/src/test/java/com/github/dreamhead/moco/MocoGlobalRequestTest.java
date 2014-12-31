@@ -111,7 +111,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     }
 
     @Test(expected = HttpResponseException.class)
-    public void should_throw_match_with_json() throws Exception {
+    public void should_throw_exception_without_match_json() throws Exception {
         server = httpserver(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(json(text(jsonContent))).response("foo");
@@ -119,6 +119,30 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 helper.postContent(root(), jsonContent);
+            }
+        });
+    }
+
+    @Test
+    public void should_match_with_xml() throws Exception {
+        server = httpserver(port(), request(by(uri("/path"))));
+        server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postFile(remoteUrl("/path"), "foo.xml"), is("foo"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_match_xml() throws Exception {
+        server = httpserver(port(), request(by(uri("/path"))));
+        server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                helper.postFile(root(), "foo.xml");
             }
         });
     }
