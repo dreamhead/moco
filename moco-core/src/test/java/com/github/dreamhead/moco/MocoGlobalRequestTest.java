@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -143,6 +144,34 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 helper.postFile(root(), "foo.xml");
+            }
+        });
+    }
+
+    @Test
+    public void should_match_mount() throws Exception {
+        final String MOUNT_DIR = "src/test/resources/test";
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.mount(MOUNT_DIR, to("/dir"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getWithHeader(remoteUrl("/dir/dir.response"), of("foo", "bar")), is("response from dir"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_match_mount() throws Exception {
+        final String MOUNT_DIR = "src/test/resources/test";
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.mount(MOUNT_DIR, to("/dir"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
             }
         });
     }
