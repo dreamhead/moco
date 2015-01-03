@@ -17,7 +17,11 @@ public class NotRequestMatcher implements RequestMatcher {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.REQUEST_ID)) {
+            return (RequestMatcher)config.apply(this);
+        }
         RequestMatcher appliedMatcher = matcher.apply(config);
         if (appliedMatcher == this.matcher) {
             return this;
