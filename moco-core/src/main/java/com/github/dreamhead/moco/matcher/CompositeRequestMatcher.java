@@ -8,6 +8,8 @@ import com.google.common.collect.FluentIterable;
 import static com.google.common.collect.FluentIterable.from;
 
 public abstract class CompositeRequestMatcher implements RequestMatcher {
+    protected abstract RequestMatcher newMatcher(Iterable<RequestMatcher> matchers);
+
     protected final Iterable<RequestMatcher> matchers;
 
     public CompositeRequestMatcher(final Iterable<RequestMatcher> matchers) {
@@ -30,5 +32,16 @@ public abstract class CompositeRequestMatcher implements RequestMatcher {
                 return matcher.apply(config);
             }
         };
+    }
+
+
+    @Override
+    public RequestMatcher apply(final MocoConfig config) {
+        Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
+        if (appliedMatchers == this.matchers) {
+            return this;
+        }
+
+        return newMatcher(appliedMatchers);
     }
 }

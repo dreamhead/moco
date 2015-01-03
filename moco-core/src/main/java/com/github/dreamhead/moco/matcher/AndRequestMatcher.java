@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
@@ -21,12 +20,7 @@ public class AndRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    public RequestMatcher apply(final MocoConfig config) {
-        Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
-        if (appliedMatchers == this.matchers) {
-            return this;
-        }
-
-        return new AndRequestMatcher(appliedMatchers);
+    protected RequestMatcher newMatcher(Iterable<RequestMatcher> matchers) {
+        return new AndRequestMatcher(matchers);
     }
 }
