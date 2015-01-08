@@ -201,4 +201,30 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_match_request_based_on_and_matcher() throws Exception {
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar", "header", "blah")), is("bar"));
+            }
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_match_and_matcher() throws Exception {
+        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response(text("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                helper.getWithHeader(remoteUrl("/foo"), of("header", "blah"));
+            }
+        });
+    }
 }
