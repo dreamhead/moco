@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.google.common.base.Optional;
 
-public class ExistMatcher<T> implements RequestMatcher {
+public class ExistMatcher<T> extends AbstractRequestMatcher {
     private final RequestExtractor<T> extractor;
 
     public ExistMatcher(final RequestExtractor<T> extractor) {
@@ -21,11 +21,7 @@ public class ExistMatcher<T> implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
-        }
-
+    public RequestMatcher doApply(final MocoConfig config) {
         return this;
     }
 }

@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
-public class NotRequestMatcher implements RequestMatcher {
+public class NotRequestMatcher extends AbstractRequestMatcher {
     private final RequestMatcher matcher;
 
     public NotRequestMatcher(final RequestMatcher matcher) {
@@ -18,10 +18,7 @@ public class NotRequestMatcher implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
-        }
+    public RequestMatcher doApply(final MocoConfig config) {
         RequestMatcher appliedMatcher = matcher.apply(config);
         if (appliedMatcher == this.matcher) {
             return this;

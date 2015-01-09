@@ -7,7 +7,7 @@ import com.google.common.collect.FluentIterable;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public abstract class CompositeRequestMatcher implements RequestMatcher {
+public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     protected abstract RequestMatcher newMatcher(Iterable<RequestMatcher> matchers);
 
     protected final Iterable<RequestMatcher> matchers;
@@ -37,10 +37,7 @@ public abstract class CompositeRequestMatcher implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
-        }
+    public RequestMatcher doApply(final MocoConfig config) {
         Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
         if (appliedMatchers == this.matchers) {
             return this;

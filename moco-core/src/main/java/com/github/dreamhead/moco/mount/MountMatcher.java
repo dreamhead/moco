@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.mount;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 import com.google.common.base.Optional;
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.io.File;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class MountMatcher implements RequestMatcher {
+public class MountMatcher extends AbstractRequestMatcher {
     private final MountPathExtractor extractor;
 
     private final File dir;
@@ -36,11 +37,7 @@ public class MountMatcher implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher) config.apply(this);
-        }
-
+    public RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(MocoConfig.URI_ID)) {
             return new MountMatcher(this.dir, this.target.apply(config), this.predicates);
         }

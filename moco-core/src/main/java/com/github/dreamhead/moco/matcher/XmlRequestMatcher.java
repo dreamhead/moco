@@ -16,7 +16,7 @@ import java.io.IOException;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class XmlRequestMatcher implements RequestMatcher {
+public class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final DocumentBuilder documentBuilder;
     private final RequestExtractor<String> extractor;
@@ -41,10 +41,7 @@ public class XmlRequestMatcher implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
-        }
+    public RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
             return new XmlRequestMatcher(this.extractor, resource.apply(config));
         }

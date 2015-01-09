@@ -9,7 +9,7 @@ import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
+public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher {
     protected abstract RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource);
 
     private final RequestExtractor<T> extractor;
@@ -31,11 +31,11 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
 
         T target = extractContent.get();
         if (target instanceof String) {
-            return predicate.apply((String)target);
+            return predicate.apply((String) target);
         }
 
         if (target instanceof String[]) {
-            String[] contents = (String[])target;
+            String[] contents = (String[]) target;
             return from(newArrayList(contents)).filter(notNull()).anyMatch(predicate);
         }
 
@@ -44,11 +44,7 @@ public abstract class AbstractOperatorMatcher<T> implements RequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
-        }
-
+    public RequestMatcher doApply(final MocoConfig config) {
         Resource appliedResource = expected.apply(config);
         if (appliedResource == expected) {
             return this;

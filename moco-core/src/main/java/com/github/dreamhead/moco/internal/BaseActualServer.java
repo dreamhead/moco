@@ -1,13 +1,13 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.github.dreamhead.moco.internal.InternalApis.context;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
@@ -29,7 +29,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
     }
 
     private static RequestMatcher anyRequest() {
-        return new RequestMatcher() {
+        return new AbstractRequestMatcher() {
             @Override
             public boolean match(final Request request) {
                 return true;
@@ -37,11 +37,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
 
             @Override
             @SuppressWarnings("unchecked")
-            public RequestMatcher apply(final MocoConfig config) {
-                if (config.isFor(MocoConfig.URI_ID)) {
-                    return context((String) config.apply(""));
-                }
-
+            public RequestMatcher doApply(final MocoConfig config) {
                 if (config.isFor(MocoConfig.REQUEST_ID)) {
                     return (RequestMatcher)config.apply(anyRequest());
                 }
