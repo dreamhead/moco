@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+import static com.github.dreamhead.moco.internal.InternalApis.context;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
@@ -38,8 +39,8 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
             @Override
             @SuppressWarnings("unchecked")
             public RequestMatcher doApply(final MocoConfig config) {
-                if (config.isFor(MocoConfig.REQUEST_ID)) {
-                    return (RequestMatcher)config.apply(anyRequest());
+                if (config.isFor(MocoConfig.URI_ID)) {
+                    return context((String) config.apply(""));
                 }
 
                 return this;
