@@ -13,6 +13,7 @@ import java.io.InputStream;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -82,6 +83,24 @@ public class SettingRunnerTest {
 
         Header header = Request.Get(remoteUrl("/foo")).execute().returnResponse().getFirstHeader("foo");
         assertThat(header.getValue(), is("bar"));
+    }
+
+    @Test
+    public void should_run_with_global_request_settings() throws IOException {
+        InputStream stream = getResourceAsStream("settings/request-settings.json");
+        runner = new SettingRunner(stream, createStartArgs(12306));
+        runner.run();
+
+        assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar")), is("foo"));
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_throw_exception_without_global_request_settings() throws IOException {
+        InputStream stream = getResourceAsStream("settings/request-settings.json");
+        runner = new SettingRunner(stream, createStartArgs(12306));
+        runner.run();
+
+        helper.get(remoteUrl("/foo"));
     }
 
     private StartArgs createStartArgs(int port, String env) {

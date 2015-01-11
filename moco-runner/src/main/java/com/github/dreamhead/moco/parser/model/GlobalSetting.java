@@ -11,6 +11,7 @@ public class GlobalSetting {
     @JsonProperty("file_root")
     private String fileRoot;
     private String env;
+    private RequestSetting request;
     private ResponseSetting response;
 
     public String getInclude() {
@@ -29,6 +30,10 @@ public class GlobalSetting {
         return env;
     }
 
+    public RequestSetting getRequest() {
+        return request;
+    }
+
     public ResponseSetting getResponse() {
         return response;
     }
@@ -41,6 +46,7 @@ public class GlobalSetting {
                 .add("context", context)
                 .add("file root", fileRoot)
                 .add("env", env)
+                .add("request", request)
                 .add("response", response)
                 .toString();
     }

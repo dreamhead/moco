@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.google.common.base.Optional;
 
@@ -13,12 +14,15 @@ import static com.google.common.base.Optional.of;
 
 public class RunnerSetting {
     private InputStream stream;
+    private final Optional<RequestSetting> request;
     private final Optional<ResponseSetting> response;
     private final Optional<String> context;
     private final Optional<String> fileRoot;
 
-    public RunnerSetting(InputStream stream, String context, String fileRoot, ResponseSetting response) {
+    public RunnerSetting(InputStream stream, String context, String fileRoot,
+                         RequestSetting requestSetting, ResponseSetting response) {
         this.stream = stream;
+        this.request = fromNullable(requestSetting);
         this.response = fromNullable(response);
         this.context = fromNullable(context);
         this.fileRoot = fromNullable(fileRoot);
@@ -39,6 +43,14 @@ public class RunnerSetting {
     public Optional<MocoConfig> fileRoot() {
         if (fileRoot.isPresent()) {
             return of(Moco.fileRoot(fileRoot.get()));
+        }
+
+        return absent();
+    }
+
+    public Optional<MocoConfig> request() {
+        if (request.isPresent()) {
+            return of(Moco.request(request.get().getRequestMatcher()));
         }
 
         return absent();

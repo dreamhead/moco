@@ -91,6 +91,7 @@ public class JsonRunner implements Runner {
 
         addConfig(builder, setting.context());
         addConfig(builder, setting.fileRoot());
+        addConfig(builder, setting.request());
         addConfig(builder, setting.response());
 
         return toArray(builder.build(), MocoConfig.class);
@@ -115,7 +116,7 @@ public class JsonRunner implements Runner {
         return new Function<InputStream, RunnerSetting>() {
             @Override
             public RunnerSetting apply(InputStream input) {
-                return new RunnerSetting(input, null, null, null);
+                return new RunnerSetting(input, null, null, null, null);
             }
         };
     }

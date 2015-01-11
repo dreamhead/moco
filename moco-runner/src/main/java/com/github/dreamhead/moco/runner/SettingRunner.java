@@ -60,6 +60,7 @@ public class SettingRunner implements Runner {
                     return new RunnerSetting(new FileInputStream(setting.getInclude()),
                             setting.getContext(),
                             setting.getFileRoot(),
+                            setting.getRequest(),
                             setting.getResponse());
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
