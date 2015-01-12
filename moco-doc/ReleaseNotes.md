@@ -3,6 +3,9 @@
 ## APIs
 * Latency with time unit
 
+## Global Settings
+* Request
+
 # Release 0.10.0 (1-Dec-2014)
 
 ## Usage

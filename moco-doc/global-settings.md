@@ -140,6 +140,25 @@ Now, when you access your server, all configurations with "remote" environment r
 
 In this case, http://localhost:12306/foo will give you "foo", but http://localhost:12306/bar will return nothing.
 
+## Request
+
+You may need a global request matcher in some cases, for example, token for some REST APIs, which actually is request parameter. Global request will help you.
+
+```json
+[
+  {
+    "request" : {
+      "headers" : {
+        "foo" : "bar"
+      }
+    },
+    "include": "blah.json"
+  }
+]
+```
+
+In this case, you won't receive response until your request has "foo", "bar" header.
+
 ## Response
 
 In some cases, you may want to setup a global response for all response, for example, HTTP version, or HTTP header, so you don't have to setup it for every single response.
