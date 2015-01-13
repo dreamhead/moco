@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.google.common.io.Files.toByteArray;
+import static java.lang.String.format;
 
 public class FileResourceReader implements ContentResourceReader {
     private final File file;
@@ -23,6 +24,10 @@ public class FileResourceReader implements ContentResourceReader {
 
     @Override
     public byte[] readFor(final Optional<? extends Request> request) {
+        if (!file.exists()) {
+            throw new IllegalArgumentException(format("%s does not exist", file.getPath()));
+        }
+
         try {
             return toByteArray(file);
         } catch (IOException e) {
