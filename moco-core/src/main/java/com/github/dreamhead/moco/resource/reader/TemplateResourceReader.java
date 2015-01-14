@@ -70,7 +70,6 @@ public class TemplateResourceReader implements ContentResourceReader {
         Configuration cfg = new Configuration(CURRENT_VERSION);
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
         cfg.setDefaultEncoding("UTF-8");
-        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setTemplateLoader(templateLoader);
         return cfg;
     }
