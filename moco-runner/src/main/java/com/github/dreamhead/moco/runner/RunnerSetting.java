@@ -19,7 +19,7 @@ public class RunnerSetting {
     private final Optional<String> context;
     private final Optional<String> fileRoot;
 
-    public RunnerSetting(InputStream stream, String context, String fileRoot,
+    private RunnerSetting(InputStream stream, String context, String fileRoot,
                          RequestSetting requestSetting, ResponseSetting response) {
         this.stream = stream;
         this.request = fromNullable(requestSetting);
@@ -64,4 +64,45 @@ public class RunnerSetting {
         return absent();
     }
 
+    public static Builder aRunnerSetting() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private InputStream stream;
+        private RequestSetting request;
+        private ResponseSetting response;
+        private String context;
+        private String fileRoot;
+
+        public Builder withStream(InputStream stream) {
+            this.stream = stream;
+            return this;
+        }
+
+        public Builder withRequest(RequestSetting request) {
+            this.request = request;
+            return this;
+        }
+
+        public Builder withResponse(ResponseSetting response) {
+            this.response = response;
+            return this;
+        }
+
+        public Builder withContext(String context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder withFileRoot(String fileRoot) {
+            this.fileRoot = fileRoot;
+            return this;
+        }
+
+        public RunnerSetting build() {
+            return new RunnerSetting(stream, context, fileRoot, request, response);
+        }
+
+    }
 }

@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetting;
+import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
@@ -57,11 +58,13 @@ public class SettingRunner implements Runner {
             @Override
             public RunnerSetting apply(GlobalSetting setting) {
                 try {
-                    return new RunnerSetting(new FileInputStream(setting.getInclude()),
-                            setting.getContext(),
-                            setting.getFileRoot(),
-                            setting.getRequest(),
-                            setting.getResponse());
+                    return aRunnerSetting()
+                            .withStream(new FileInputStream(setting.getInclude()))
+                            .withContext(setting.getContext())
+                            .withFileRoot(setting.getFileRoot())
+                            .withRequest(setting.getRequest())
+                            .withResponse(setting.getResponse())
+                            .build();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

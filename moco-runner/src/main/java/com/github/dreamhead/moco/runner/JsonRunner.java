@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import java.io.InputStream;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.toArray;
 
@@ -116,7 +117,7 @@ public class JsonRunner implements Runner {
         return new Function<InputStream, RunnerSetting>() {
             @Override
             public RunnerSetting apply(InputStream input) {
-                return new RunnerSetting(input, null, null, null, null);
+                return aRunnerSetting().withStream(input).build();
             }
         };
     }
