@@ -34,6 +34,7 @@
 -keep public class ch.** {*;}
 -keep public class org.apache.commons.logging.impl.**{*;}
 -keep public class com.fasterxml.jackson.databind.**{*;}
+-keep public class com.fasterxml.jackson.annotation.**{*;}
 
 #jce.jar
 -dontwarn org.apache.http.impl.auth.**
