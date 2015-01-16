@@ -1,12 +1,14 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 
 import java.io.File;
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.io.Files.toByteArray;
 import static java.lang.String.format;
 
@@ -23,13 +25,13 @@ public class FileResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(final Optional<? extends Request> request) {
+    public MessageContent readFor(final Optional<? extends Request> request) {
         if (!file.exists()) {
             throw new IllegalArgumentException(format("%s does not exist", file.getPath()));
         }
 
         try {
-            return toByteArray(file);
+            return content().withContent(toByteArray(file)).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

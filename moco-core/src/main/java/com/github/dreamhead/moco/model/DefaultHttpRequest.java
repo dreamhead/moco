@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
@@ -11,18 +12,17 @@ import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.CharStreams;
+import com.google.common.io.ByteStreams;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
@@ -31,14 +31,14 @@ public class DefaultHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 
     private final HttpProtocolVersion version;
-    private final String content;
+    private final MessageContent content;
     private final ImmutableMap<String, String> headers;
     private final String method;
 
     private final String uri;
     private final ImmutableMap<String, String> queries;
 
-    private DefaultHttpRequest(HttpProtocolVersion version, String content, String method, String uri,
+    private DefaultHttpRequest(HttpProtocolVersion version, MessageContent content, String method, String uri,
                                ImmutableMap<String, String> headers, ImmutableMap<String, String> queries) {
         this.version = version;
         this.content = content;
@@ -54,7 +54,8 @@ public class DefaultHttpRequest implements HttpRequest {
         return version;
     }
 
-    public String getContent() {
+    @Override
+    public MessageContent getContent() {
         return content;
     }
 
@@ -121,14 +122,15 @@ public class DefaultHttpRequest implements HttpRequest {
         return new Builder();
     }
 
-    private static String contentToString(FullHttpRequest request) {
+    private static MessageContent contentToString(FullHttpRequest request) {
         long contentLength = HttpHeaders.getContentLength(request, -1);
         if (contentLength <= 0) {
-            return "";
+            return content().build();
         }
 
         try {
-            return CharStreams.toString(new InputStreamReader(new ByteBufInputStream(request.content()), Charset.defaultCharset()));
+            ByteBufInputStream inputStream = new ByteBufInputStream(request.content());
+            return content().withContent(ByteStreams.toByteArray(inputStream)).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -159,7 +161,7 @@ public class DefaultHttpRequest implements HttpRequest {
     public FullHttpRequest toFullHttpRequest() {
         ByteBuf buffer = Unpooled.buffer();
         if (content != null) {
-            buffer.writeBytes(content.getBytes());
+            buffer.writeBytes(content.getContent());
         }
 
         QueryStringEncoder encoder = new QueryStringEncoder(uri);
@@ -186,7 +188,7 @@ public class DefaultHttpRequest implements HttpRequest {
 
     public static final class Builder {
         private HttpProtocolVersion version;
-        private String content;
+        private MessageContent content;
         private ImmutableMap<String, String> headers;
         private String method;
         private String uri;
@@ -197,7 +199,12 @@ public class DefaultHttpRequest implements HttpRequest {
             return this;
         }
 
-        public Builder withContent(String content) {
+        public Builder withTextContent(String content) {
+            this.content = content().withContent(content).build();
+            return this;
+        }
+
+        public Builder withContent(MessageContent content) {
             this.content = content;
             return this;
         }

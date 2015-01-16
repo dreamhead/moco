@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.*;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
@@ -10,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
 
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
 
@@ -22,8 +24,8 @@ public class ResourceFactory {
             }
 
             @Override
-            public byte[] readFor(final Optional<? extends Request> request) {
-                return text.getBytes();
+            public MessageContent readFor(final Optional<? extends Request> request) {
+                return content().withContent(text).build();
             }
         });
     }
@@ -40,8 +42,8 @@ public class ResourceFactory {
     public static Resource methodResource(final String method) {
         return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public byte[] readFor(Optional<? extends Request> request) {
-                return method.toUpperCase().getBytes();
+            public MessageContent readFor(Optional<? extends Request> request) {
+                return content().withContent(method.toUpperCase()).build();
             }
         });
     }
@@ -49,8 +51,11 @@ public class ResourceFactory {
     public static Resource versionResource(final Resource version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public byte[] readFor(Optional<? extends Request> request) {
-                return HttpProtocolVersion.versionOf(new String(version.readFor(request))).text().getBytes();
+            public MessageContent readFor(Optional<? extends Request> request) {
+                String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
+                return content()
+                        .withContent(text)
+                        .build();
             }
         });
     }
@@ -58,8 +63,11 @@ public class ResourceFactory {
     public static Resource cookieResource(final String key, final Resource resource) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
-            public byte[] readFor(Optional<? extends Request> request) {
-                return new Cookies().encodeCookie(key, new String(resource.readFor(request))).getBytes();
+            public MessageContent readFor(Optional<? extends Request> request) {
+                MessageContent messageContent = resource.readFor(request);
+                return content()
+                        .withContent(new Cookies().encodeCookie(key, messageContent.toString()))
+                        .build();
             }
         });
     }
@@ -71,8 +79,8 @@ public class ResourceFactory {
     public static Resource uriResource(final String uri) {
         return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
             @Override
-            public byte[] readFor(Optional<? extends Request> request) {
-                return uri.getBytes();
+            public MessageContent readFor(Optional<? extends Request> request) {
+                return content().withContent(uri).build();
             }
         });
     }

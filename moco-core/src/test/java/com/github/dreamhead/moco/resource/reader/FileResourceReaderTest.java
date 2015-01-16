@@ -13,7 +13,7 @@ public class FileResourceReaderTest {
     @Test
     public void should_return_class_path_file_content() {
         FileResourceReader reader = new FileResourceReader(new File("src/test/resources/foo.response"));
-        assertThat(new String(reader.readFor(Optional.<Request>absent())), is("foo.response"));
+        assertThat(reader.readFor(Optional.<Request>absent()).toString(), is("foo.response"));
     }
 
     @Test(expected = IllegalArgumentException.class)

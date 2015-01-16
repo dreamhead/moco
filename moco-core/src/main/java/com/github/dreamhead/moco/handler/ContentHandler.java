@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 
@@ -17,8 +18,8 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected String responseContent(final Request request) {
-        return new String(this.resource.readFor(of(request)));
+    protected MessageContent responseContent(final Request request) {
+        return this.resource.readFor(of(request));
     }
 
     @Override

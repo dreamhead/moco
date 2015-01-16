@@ -6,19 +6,19 @@ import com.github.dreamhead.moco.HttpResponse;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpResponse;
 
-import java.nio.charset.Charset;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.util.ByteBufs.toMessageContent;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder=DefaultHttpResponse.Builder.class)
 public class DefaultHttpResponse implements HttpResponse {
     private final HttpProtocolVersion version;
-    private final String content;
+    private final MessageContent content;
     private final ImmutableMap<String, String> headers;
     private final int status;
 
-    public DefaultHttpResponse(HttpProtocolVersion version, int status, ImmutableMap<String, String> headers, String content) {
+    public DefaultHttpResponse(HttpProtocolVersion version, int status, ImmutableMap<String, String> headers, MessageContent content) {
         this.version = version;
         this.headers = headers;
         this.content = content;
@@ -29,7 +29,8 @@ public class DefaultHttpResponse implements HttpResponse {
         return version;
     }
 
-    public String getContent() {
+    @Override
+    public MessageContent getContent() {
         return content;
     }
 
@@ -51,7 +52,7 @@ public class DefaultHttpResponse implements HttpResponse {
                 .withVersion(HttpProtocolVersion.versionOf(response.getProtocolVersion().text()))
                 .withStatus(response.getStatus().code())
                 .withHeaders(headerBuilder.build())
-                .withContent(response.content().toString(Charset.defaultCharset()))
+                .withContent(toMessageContent(response.content()))
                 .build();
     }
 
@@ -61,7 +62,7 @@ public class DefaultHttpResponse implements HttpResponse {
 
     public static final class Builder {
         private HttpProtocolVersion version;
-        private String content;
+        private MessageContent content;
         private ImmutableMap<String, String> headers;
         private int status;
 
@@ -70,7 +71,7 @@ public class DefaultHttpResponse implements HttpResponse {
             return this;
         }
 
-        public Builder withContent(String content) {
+        public Builder withContent(MessageContent content) {
             this.content = content;
             return this;
         }

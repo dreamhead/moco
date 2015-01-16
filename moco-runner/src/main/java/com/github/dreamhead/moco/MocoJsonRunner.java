@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import static com.google.common.base.Optional.of;
@@ -45,7 +44,7 @@ public class MocoJsonRunner {
 
     private static InputStream toStream(final Resource resource) {
         Optional<Request> request = Optional.absent();
-        return new ByteArrayInputStream(checkNotNull(resource, "resource should not be null").readFor(request));
+        return checkNotNull(resource, "resource should not be null").readFor(request).toInputStream();
     }
 
     private MocoJsonRunner() {}

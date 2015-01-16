@@ -3,14 +3,14 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.SocketRequest;
 
 public class DefaultSocketRequest implements SocketRequest {
-    private String content;
+    private MessageContent content;
 
-    public DefaultSocketRequest(String content) {
+    public DefaultSocketRequest(MessageContent content) {
         this.content = content;
     }
 
     @Override
-    public String getContent() {
+    public MessageContent getContent() {
         return this.content;
     }
 }

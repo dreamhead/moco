@@ -2,12 +2,13 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.net.HttpHeaders;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
-    protected abstract String responseContent(final Request request);
+    protected abstract MessageContent responseContent(final Request request);
 
     @Override
     public void writeToResponse(SessionContext context) {
@@ -26,9 +27,9 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     }
 
     protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
-        String content = responseContent(httpRequest);
+        MessageContent content = responseContent(httpRequest);
         httpResponse.setContent(content);
-        httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getBytes().length);
+        httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);
 
         if (!detector.hasContentType(httpResponse)) {
             httpResponse.addHeader(HttpHeaders.CONTENT_TYPE, getContentType(httpRequest));

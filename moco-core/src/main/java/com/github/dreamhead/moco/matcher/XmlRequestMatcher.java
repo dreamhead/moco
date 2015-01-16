@@ -1,6 +1,9 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.*;
@@ -10,8 +13,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -50,7 +53,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Document getResourceDocument(Request request, Resource resource) throws SAXException {
-        ByteArrayInputStream stream = new ByteArrayInputStream(resource.readFor(of(request)));
+        InputStream stream = resource.readFor(of(request)).toInputStream();
         return extractDocument(new InputSource(stream), this);
     }
 

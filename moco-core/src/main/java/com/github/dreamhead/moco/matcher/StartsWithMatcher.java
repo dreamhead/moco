@@ -12,7 +12,7 @@ public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input.startsWith(new String(expected.readFor(Optional.<Request>absent())));
+                return input.startsWith(expected.readFor(Optional.<Request>absent()).toString());
             }
         });
     }

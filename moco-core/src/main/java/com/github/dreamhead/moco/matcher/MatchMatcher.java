@@ -15,7 +15,7 @@ public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
 
             @Override
             public boolean apply(String input) {
-                Pattern pattern = Pattern.compile(new String(expected.readFor(Optional.<Request>absent())));
+                Pattern pattern = Pattern.compile(expected.readFor(Optional.<Request>absent()).toString());
                 return pattern.matcher(input).matches();
             }
         });

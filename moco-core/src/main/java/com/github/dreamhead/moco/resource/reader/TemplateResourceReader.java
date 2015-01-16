@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
@@ -40,13 +42,13 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public byte[] readFor(final Optional<? extends Request> request) {
+    public MessageContent readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
             throw new IllegalArgumentException("Request is required to read template");
         }
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
-        String templateSource = new String(this.template.readFor(request));
+        String templateSource = this.template.readFor(request).toString();
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
         Configuration cfg = createConfiguration(templateLoader);
 
@@ -55,7 +57,8 @@ public class TemplateResourceReader implements ContentResourceReader {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
             template.process(variables(request.get()), writer);
-            return stream.toByteArray();
+
+            return content().withContent(stream.toByteArray()).build();
         } catch (ParseException e) {
             logger.error("Fail to parse template: {}", templateSource);
             throw new RuntimeException(e);

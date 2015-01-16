@@ -12,7 +12,7 @@ public class EndsWithMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input.endsWith(new String(expected.readFor(Optional.<Request>absent())));
+                return input.endsWith(expected.readFor(Optional.<Request>absent()).toString());
             }
         });
     }

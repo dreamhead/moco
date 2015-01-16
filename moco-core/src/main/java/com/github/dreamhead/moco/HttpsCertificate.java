@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
@@ -57,7 +57,8 @@ public class HttpsCertificate {
     }
 
     private InputStream getKeyStore() {
-        return new ByteArrayInputStream(resource.readFor(Optional.<Request>absent()));
+        MessageContent messageContent = resource.readFor(Optional.<Request>absent());
+        return messageContent.toInputStream();
     }
 
     private char[] getKeyStorePassword() {

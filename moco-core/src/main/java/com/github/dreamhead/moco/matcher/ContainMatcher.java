@@ -12,7 +12,7 @@ public class ContainMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(String input) {
-                return input.contains(new String(expected.readFor(Optional.<Request>absent())));
+                return input.contains(expected.readFor(Optional.<Request>absent()).toString());
             }
         });
     }

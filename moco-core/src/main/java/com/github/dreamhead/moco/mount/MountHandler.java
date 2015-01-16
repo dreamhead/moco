@@ -5,13 +5,15 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+
+import static com.github.dreamhead.moco.model.MessageContent.content;
 
 public class MountHandler extends AbstractContentResponseHandler {
     private final MountPathExtractor extractor;
@@ -26,13 +28,14 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected String responseContent(final Request request) {
+    protected MessageContent responseContent(final Request request) {
         if (!HttpRequest.class.isInstance(request)) {
             throw new RuntimeException("Only HTTP request is allowed");
         }
 
         try {
-            return Files.toString(targetFile((HttpRequest)request), Charset.defaultCharset());
+            byte[] bytes = Files.toByteArray(targetFile((HttpRequest) request));
+            return content().withContent(bytes).build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

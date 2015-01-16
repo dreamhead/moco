@@ -26,7 +26,7 @@ public class HeaderResponseHandler extends AbstractHttpResponseHandler {
             httpResponse.removeHeader(name);
         }
 
-        String value = new String(resource.readFor(of(httpRequest)));
+        String value = resource.readFor(of(httpRequest)).toString();
         httpResponse.addHeader(name, value);
     }
 

@@ -43,4 +43,8 @@ public class HttpRequestFailoverMatcher {
     protected boolean doMatch(HttpProtocolVersion thisField, HttpProtocolVersion thatField) {
         return thisField == null || thisField == thatField;
     }
+
+    protected boolean doMatch(MessageContent thisField, MessageContent thatField) {
+        return thisField == null || thisField.equals(thatField);
+    }
 }

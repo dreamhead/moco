@@ -3,13 +3,15 @@ package com.github.dreamhead.moco.matcher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.and;
 import static com.google.common.base.Optional.of;
 
 public class JsonRequestMatcher extends AbstractRequestMatcher {
@@ -32,7 +34,7 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
     private boolean doMatch(final Request request, final String content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
-            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)));
+            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)).getContent());
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;

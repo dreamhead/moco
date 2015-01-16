@@ -198,6 +198,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_failover_with_same_response_once() throws Exception {
+        server = httpserver(port(), log());
         server.post(and(by(uri("/target")), by("proxy"))).response("0XCAFEBABE");
         final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));

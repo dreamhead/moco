@@ -6,11 +6,13 @@ import com.github.dreamhead.moco.SocketResponse;
 import com.github.dreamhead.moco.SocketResponseSetting;
 import com.github.dreamhead.moco.model.DefaultSocketRequest;
 import com.github.dreamhead.moco.model.DefaultSocketResponse;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static io.netty.channel.ChannelHandler.Sharable;
 import static java.lang.String.format;
 
@@ -29,12 +31,13 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         try {
-            SocketRequest request = new DefaultSocketRequest(msg);
+            MessageContent content = content().withContent(msg.getBytes()).build();
+            SocketRequest request = new DefaultSocketRequest(content);
             this.monitor.onMessageArrived(request);
             SocketResponse response = new DefaultSocketResponse();
             handleSession(new SessionContext(request, response));
             this.monitor.onMessageLeave(response);
-            ctx.write(response.getContent());
+            ctx.write(response.getContent().toString());
         } catch (Exception e) {
             this.monitor.onException(e);
         }

@@ -16,7 +16,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
     private Map<String, String> headers = Maps.newHashMap();
     private int status;
-    private String content;
+    private MessageContent content;
 
     private DefaultMutableHttpResponse() {
     }
@@ -32,7 +32,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public void setContent(String content) {
+    public void setContent(MessageContent content) {
         this.content = content;
     }
 
@@ -62,7 +62,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public String getContent() {
+    public MessageContent getContent() {
         return this.content;
     }
 
@@ -80,7 +80,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
         }
 
         if (this.content != null) {
-            response.content().writeBytes(this.content.getBytes());
+            response.content().writeBytes(this.content.getContent());
         }
 
         return response;
