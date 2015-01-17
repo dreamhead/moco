@@ -10,6 +10,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
@@ -30,13 +31,13 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource fileResource(final File file) {
+    public static ContentResource fileResource(final File file, final Optional<Charset> charset) {
         String fileId = "file";
-        return contentResource(id(fileId), fileConfigApplier(fileId, file), new FileResourceReader(file));
+        return contentResource(id(fileId), fileConfigApplier(fileId, file), new FileResourceReader(file, charset));
     }
 
-    public static ContentResource classpathFileResource(final String filename) {
-        return contentResource(id("pathresource"), DO_NOTHING_APPLIER, new ClasspathFileResourceReader(filename));
+    public static ContentResource classpathFileResource(final String filename, final Optional<Charset> charset) {
+        return contentResource(id("pathresource"), DO_NOTHING_APPLIER, new ClasspathFileResourceReader(filename, charset));
     }
 
     public static Resource methodResource(final String method) {

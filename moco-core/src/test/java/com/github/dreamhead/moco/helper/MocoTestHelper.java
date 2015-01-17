@@ -39,6 +39,10 @@ public class MocoTestHelper {
         return get(Request.Get(url));
     }
 
+    public byte[] getAsBytes(String url) throws IOException {
+        return getAsBytes(Request.Get(url));
+    }
+
     public HttpResponse getResponse(String url) throws IOException {
         return EXECUTOR.execute(Request.Get(url)).returnResponse();
     }
@@ -58,6 +62,10 @@ public class MocoTestHelper {
 
     private String get(Request request) throws IOException {
         return EXECUTOR.execute(request).returnContent().asString();
+    }
+
+    public byte[] getAsBytes(Request request) throws IOException {
+        return EXECUTOR.execute(request).returnContent().asBytes();
     }
 
     public String postContent(String url, String postContent) throws IOException {

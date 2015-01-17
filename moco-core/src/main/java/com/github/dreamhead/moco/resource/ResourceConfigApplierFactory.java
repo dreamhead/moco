@@ -2,9 +2,11 @@ package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.resource.reader.Variable;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 
@@ -21,7 +23,7 @@ public class ResourceConfigApplierFactory {
             @Override
             @SuppressWarnings("unchecked")
             protected Resource newResource(MocoConfig config) {
-                return fileResource(new File((String)config.apply(file.getName())));
+                return fileResource(new File((String) config.apply(file.getName())), Optional.<Charset>absent());
             }
         };
     }

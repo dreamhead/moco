@@ -8,8 +8,10 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
@@ -18,6 +20,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
+import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
@@ -72,6 +75,18 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_expected_response_from_file_with_charset() throws Exception {
+        server.response(file("src/test/resources/gbk_response.xml", Charset.forName("GBK")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk_response.xml"))));
+            }
+        });
+    }
+
+    @Test
     public void should_return_expected_response_from_path_resource() throws Exception {
         server.response(pathResource("foo.response"));
 
@@ -79,6 +94,18 @@ public class MocoTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(root()), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_from_path_resource_with_charset() throws Exception {
+        server.response(pathResource("gbk_response.xml", Charset.forName("GBK")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk_response.xml"))));
             }
         });
     }

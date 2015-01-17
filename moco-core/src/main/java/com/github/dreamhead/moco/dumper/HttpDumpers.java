@@ -12,7 +12,7 @@ public class HttpDumpers {
             buf.append(StringUtil.NEWLINE);
             String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
             if (isText(type)) {
-                buf.append(message.getContent());
+                buf.append(message.getContent().toString());
             } else {
                 buf.append("<content is binary>");
             }

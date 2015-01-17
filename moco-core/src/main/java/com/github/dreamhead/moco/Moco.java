@@ -31,6 +31,7 @@ import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
@@ -336,11 +337,19 @@ public class Moco {
     }
 
     public static ContentResource file(final String filename) {
-        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")));
+        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), Optional.<Charset>absent());
+    }
+
+    public static ContentResource file(final String filename, Charset charset) {
+        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), of(charset));
     }
 
     public static ContentResource pathResource(final String filename) {
-        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"));
+        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), Optional.<Charset>absent());
+    }
+
+    public static ContentResource pathResource(final String filename, Charset charset) {
+        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), of(charset));
     }
 
     public static Resource version(final Resource resource) {

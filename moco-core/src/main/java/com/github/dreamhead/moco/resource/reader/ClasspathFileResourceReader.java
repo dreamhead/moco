@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.io.ByteStreams.toByteArray;
@@ -14,9 +15,11 @@ import static java.lang.String.format;
 
 public class ClasspathFileResourceReader implements ContentResourceReader {
     private final String filename;
+    private final Optional<Charset> charset;
 
-    public ClasspathFileResourceReader(String filename) {
+    public ClasspathFileResourceReader(String filename, Optional<Charset> charset) {
         this.filename = filename;
+        this.charset = charset;
     }
 
     @Override
@@ -28,7 +31,12 @@ public class ClasspathFileResourceReader implements ContentResourceReader {
                 throw new IllegalArgumentException(format("%s does not exist", filename));
             }
 
-            return content().withContent(toByteArray(resource.openStream())).build();
+            MessageContent.Builder builder = content().withContent(toByteArray(resource.openStream()));
+            if (charset.isPresent()) {
+                builder.withCharset(charset.get());
+            }
+
+            return builder.build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
