@@ -1521,7 +1521,7 @@ You can provide your own variables in your template.
 
 * Java
 ```java
-server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar"));
+server.request(by(uri("/template"))).response(template("${foo}", "foo", "bar"));
 ```
 
 * JSON
@@ -1533,7 +1533,7 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar")
     "response": {
         "text": {
             "template": {
-                "with" : "${'foo'}",
+                "with" : "${foo}",
                 "vars" : {
                     "foo" : "bar"
                 }
@@ -1549,7 +1549,7 @@ You can also use extractor to extract information from request.
 
 * Java
 ```java
-server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPath("$.book[*].price")));
+server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath("$.book[*].price")));
 ```
 
 * JSON
@@ -1561,7 +1561,7 @@ server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPa
     "response": {
         "text": {
             "template": {
-                "with" : "${'foo'}",
+                "with" : "${foo}",
                 "vars" : {
                     "foo" : {
                       "json_paths": "$.book[*].price"
