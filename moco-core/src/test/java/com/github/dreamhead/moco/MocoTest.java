@@ -76,12 +76,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_expected_response_from_file_with_charset() throws Exception {
-        server.response(file("src/test/resources/gbk_response.xml", Charset.forName("GBK")));
+        server.response(file("src/test/resources/gbk.response", Charset.forName("GBK")));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk_response.xml"))));
+                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk.response"))));
             }
         });
     }
@@ -100,12 +100,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_expected_response_from_path_resource_with_charset() throws Exception {
-        server.response(pathResource("gbk_response.xml", Charset.forName("GBK")));
+        server.response(pathResource("gbk.response", Charset.forName("GBK")));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk_response.xml"))));
+                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk.response"))));
             }
         });
     }
