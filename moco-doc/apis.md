@@ -95,7 +95,7 @@ Sometimes, your request has parameters in query:
 * Java API
 
 ```java
-server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar");a
+server.request(and(by(uri("/foo")), eq(query("param"), "blah"))).response("bar");
 ```
 
 * JSON
