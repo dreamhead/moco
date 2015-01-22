@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -117,8 +116,8 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                InputStream asStream = this.getClass().getClassLoader().getResourceAsStream("foo.request");
-                assertThat(helper.postBytes(root(), ByteStreams.toByteArray(asStream)), is("foo"));
+                InputStream stream = this.getClass().getClassLoader().getResourceAsStream("foo.request");
+                assertThat(helper.postStream(root(), stream), is("foo"));
             }
         });
     }

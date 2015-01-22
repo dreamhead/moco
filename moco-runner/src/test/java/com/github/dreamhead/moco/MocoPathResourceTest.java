@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class MocoPathResourceTest extends AbstractMocoStandaloneTest {
     public void should_return_response_based_on_path_resource() throws IOException {
         runWithConfiguration("path_resource.json");
 
-        InputStream asStream = this.getClass().getClassLoader().getResourceAsStream("path.request");
-        assertThat(helper.postBytes(root(), ByteStreams.toByteArray(asStream)), is("path resource"));
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("path.request");
+        assertThat(helper.postStream(root(), stream), is("path resource"));
     }
 }

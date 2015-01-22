@@ -76,9 +76,12 @@ public class MocoTestHelper {
         return EXECUTOR.execute(Request.Post(url).bodyByteArray(bytes)).returnContent().asString();
     }
 
+    public String postStream(String url, InputStream stream) throws IOException {
+        return postBytes(url, toByteArray(stream));
+    }
+
     public String postFile(String url, String file) throws IOException {
-        InputStream is = Resources.getResource(file).openStream();
-        return EXECUTOR.execute(Request.Post(url).bodyByteArray(toByteArray(is))).returnContent().asString();
+        return postStream(url, Resources.getResource(file).openStream());
     }
 
     public int getForStatus(String url) throws IOException {
