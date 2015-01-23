@@ -6,6 +6,9 @@
 ## Global Settings
 * Request
 
+## Implementation Details
+* File and path resource read as byte array to fix file encoding issue
+
 # Release 0.10.0 (1-Dec-2014)
 
 ## Usage
