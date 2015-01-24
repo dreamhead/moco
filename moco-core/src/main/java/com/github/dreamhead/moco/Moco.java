@@ -349,7 +349,7 @@ public class Moco {
     }
 
     public static ContentResource pathResource(final String filename, Charset charset) {
-        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), of(charset));
+        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static Resource version(final Resource resource) {
@@ -357,11 +357,11 @@ public class Moco {
     }
 
     public static Resource version(final String version) {
-        return version(HttpProtocolVersion.versionOf(checkNotNullOrEmpty(version, "Version should not be null")));
+        return versionResource(HttpProtocolVersion.versionOf(checkNotNullOrEmpty(version, "Version should not be null")));
     }
 
     public static Resource version(final HttpProtocolVersion version) {
-        return version(text((checkNotNull(version, "Version should not be null")).text()));
+        return versionResource(checkNotNull(version, "Version should not be null"));
     }
 
     public static ResponseHandler status(final int code) {

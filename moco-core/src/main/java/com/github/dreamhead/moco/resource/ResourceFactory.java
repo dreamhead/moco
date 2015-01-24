@@ -61,6 +61,18 @@ public class ResourceFactory {
         });
     }
 
+    public static Resource versionResource(final HttpProtocolVersion version) {
+        return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
+            @Override
+            public MessageContent readFor(Optional<? extends Request> request) {
+                String text = version.text();
+                return content()
+                        .withContent(text)
+                        .build();
+            }
+        });
+    }
+
     public static Resource cookieResource(final String key, final Resource resource) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
