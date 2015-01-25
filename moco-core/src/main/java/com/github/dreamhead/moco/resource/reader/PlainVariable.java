@@ -3,14 +3,14 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.Request;
 
 public class PlainVariable implements Variable {
-    private String text;
+    private Object text;
 
-    public PlainVariable(String text) {
+    public PlainVariable(Object text) {
         this.text = text;
     }
 
     @Override
-    public String toString(Request request) {
+    public Object toTemplateVariable(Request request) {
         return text;
     }
 }

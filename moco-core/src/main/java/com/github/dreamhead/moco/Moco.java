@@ -468,8 +468,8 @@ public class Moco {
                 toVariables(checkNotNull(variables, "Template variable should not be null")));
     }
 
-    public static RequestExtractor<String> var(final String text) {
-        return new PlainTextExtractor(checkNotNullOrEmpty(text, "Template variable should not be null or empty"));
+    public static RequestExtractor<Object> var(final Object text) {
+        return new PlainExtractor(checkNotNull(text, "Template variable should not be null or empty"));
     }
 
     public static Failover failover(final String file) {

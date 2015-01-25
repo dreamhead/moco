@@ -81,11 +81,11 @@ public class TemplateResourceReader implements ContentResourceReader {
         return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", request).build();
     }
 
-    private ImmutableMap<String, String> toVariableString(final Request request) {
-        return copyOf(Maps.transformEntries(this.variables, new Maps.EntryTransformer<String, Variable, String>() {
+    private ImmutableMap<String, Object> toVariableString(final Request request) {
+        return copyOf(Maps.transformEntries(this.variables, new Maps.EntryTransformer<String, Variable, Object>() {
             @Override
-            public String transformEntry(String key, Variable value) {
-                return value.toString(request);
+            public Object transformEntry(String key, Variable value) {
+                return value.toTemplateVariable(request);
             }
         }));
     }

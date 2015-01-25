@@ -12,17 +12,13 @@ public class ExtractorVariable<T> implements Variable {
     }
 
     @Override
-    public String toString(Request request) {
+    public Object toTemplateVariable(Request request) {
         Optional<T> extractContent = extractor.extract(request);
         if (!extractContent.isPresent()) {
             return null;
         }
 
         T target = extractContent.get();
-        if (target instanceof String) {
-            return (String)target;
-        }
-
         if (target instanceof String[]) {
             String[] contents = (String[])target;
             return contents[0];
