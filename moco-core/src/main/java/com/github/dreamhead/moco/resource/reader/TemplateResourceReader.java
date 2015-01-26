@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
@@ -48,9 +49,10 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
-        String templateSource = this.template.readFor(request).toString();
+        MessageContent messageContent = this.template.readFor(request);
+        String templateSource = messageContent.toString();
         templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
-        Configuration cfg = createConfiguration(templateLoader);
+        Configuration cfg = createConfiguration(templateLoader, messageContent.getCharset());
 
         try {
             Template template = cfg.getTemplate(TEMPLATE_NAME);
@@ -69,10 +71,10 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    private Configuration createConfiguration(StringTemplateLoader templateLoader) {
+    private Configuration createConfiguration(StringTemplateLoader templateLoader, Optional<Charset> charset) {
         Configuration cfg = new Configuration(CURRENT_VERSION);
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
-        cfg.setDefaultEncoding("UTF-8");
+        cfg.setDefaultEncoding(charset.or(Charset.defaultCharset()).name());
         cfg.setTemplateLoader(templateLoader);
         return cfg;
     }
