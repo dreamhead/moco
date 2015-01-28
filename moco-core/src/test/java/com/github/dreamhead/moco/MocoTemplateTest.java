@@ -321,4 +321,16 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_generate_response_with_many_extracted_variables() throws Exception {
+        server.request(by(uri("/template"))).response(template("<#list seq as item>${item}</#list>", "seq", xpath("/request/parameters/id/text()")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postFile(remoteUrl("/template"), "foobar.xml"), is("12"));
+            }
+        });
+    }
 }
