@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
+import com.github.dreamhead.moco.Request;
 import com.google.common.base.Optional;
 
 import java.io.File;
@@ -13,12 +14,12 @@ public class FileResourceReader extends AbstractFileResourceReader {
     private final File file;
 
     public FileResourceReader(File file, Optional<Charset> charset) {
-        super(charset, file.getName());
+        super(file.getName(), charset);
         this.file = file;
     }
 
     @Override
-    protected byte[] doReadFor() {
+    protected byte[] doReadFor(final Optional<? extends Request> request) {
         if (!file.exists()) {
             throw new IllegalArgumentException(format("%s does not exist", file.getPath()));
         }

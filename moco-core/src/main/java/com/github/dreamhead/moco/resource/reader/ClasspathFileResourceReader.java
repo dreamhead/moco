@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
+import com.github.dreamhead.moco.Request;
 import com.google.common.base.Optional;
 
 import java.io.IOException;
@@ -11,10 +12,10 @@ import static java.lang.String.format;
 
 public class ClasspathFileResourceReader extends AbstractFileResourceReader {
     public ClasspathFileResourceReader(String filename, Optional<Charset> charset) {
-        super(charset, filename);
+        super(filename, charset);
     }
 
-    protected byte[] doReadFor() {
+    protected byte[] doReadFor(final Optional<? extends Request> request) {
         ClassLoader classLoader = this.getClass().getClassLoader();
         URL resource = classLoader.getResource(filename);
         if (resource == null) {
