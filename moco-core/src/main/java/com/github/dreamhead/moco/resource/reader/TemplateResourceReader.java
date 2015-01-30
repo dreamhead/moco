@@ -45,7 +45,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     @Override
     public MessageContent readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
-            throw new IllegalArgumentException("Request is required to read template");
+            throw new IllegalArgumentException("Request is required to render template");
         }
 
         StringTemplateLoader templateLoader = new StringTemplateLoader();
@@ -71,10 +71,10 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    private Configuration createConfiguration(StringTemplateLoader templateLoader, Optional<Charset> charset) {
+    private Configuration createConfiguration(StringTemplateLoader templateLoader, Charset charset) {
         Configuration cfg = new Configuration(CURRENT_VERSION);
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
-        cfg.setDefaultEncoding(charset.or(Charset.defaultCharset()).name());
+        cfg.setDefaultEncoding(charset.name());
         cfg.setTemplateLoader(templateLoader);
         return cfg;
     }

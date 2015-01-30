@@ -22,8 +22,8 @@ public class MessageContent {
         return content;
     }
 
-    public Optional<Charset> getCharset() {
-        return charset;
+    public Charset getCharset() {
+        return charset.or(Charset.defaultCharset());
     }
 
     public boolean hasContent() {
@@ -32,7 +32,7 @@ public class MessageContent {
 
     @Override
     public String toString() {
-        return new String(content, charset.or(Charset.defaultCharset()));
+        return new String(content, getCharset());
     }
 
     @Override
