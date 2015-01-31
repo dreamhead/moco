@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
@@ -12,13 +11,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.ByteStreams;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -128,12 +125,7 @@ public class DefaultHttpRequest implements HttpRequest {
             return content().build();
         }
 
-        try {
-            ByteBufInputStream inputStream = new ByteBufInputStream(request.content());
-            return content().withContent(ByteStreams.toByteArray(inputStream)).build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return content().withContent(new ByteBufInputStream(request.content())).build();
     }
 
     public static HttpRequest newRequest(FullHttpRequest request) {

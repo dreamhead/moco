@@ -8,9 +8,12 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import static com.google.common.io.ByteStreams.toByteArray;
 
 @JsonSerialize(using = MessageContentSerializer.class)
 @JsonDeserialize(using = MessageContentDeserializer.class)
@@ -69,6 +72,15 @@ public class MessageContent {
         public Builder withContent(String content) {
             this.content = content.getBytes();
             return this;
+        }
+
+        public Builder withContent(InputStream is) {
+            try {
+                this.content = toByteArray(is);
+                return this;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         public Builder withContent(byte[] content) {

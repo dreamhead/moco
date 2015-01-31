@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
