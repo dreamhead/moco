@@ -178,10 +178,15 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return template(invokeTarget(name, container.getText(), ContentResource.class));
         }
 
+        if (container.isFileContainer()) {
+            FileContainer fileContainer = FileContainer.class.cast(container);
+            return file(fileContainer.getName(), fileContainer.getCharset());
+        }
+
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
-    private ImmutableMap<String, RequestExtractor<?>> toVariables(ImmutableMap<String, TextContainer> props) {
+    private ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
         return copyOf(Maps.transformEntries(props, toVariable()));
     }
 

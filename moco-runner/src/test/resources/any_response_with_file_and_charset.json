@@ -1,0 +1,12 @@
+[
+  {
+    "response":
+    {
+      "file":
+      {
+        "name": "src/test/resources/foo.response",
+        "charset": "utf-8"
+      }
+    }
+  }
+]

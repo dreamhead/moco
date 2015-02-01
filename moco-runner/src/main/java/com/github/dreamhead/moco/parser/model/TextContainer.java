@@ -1,16 +1,28 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 public class TextContainer {
     private static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
-    private ImmutableMap<String, TextContainer> props;
+    private Map<String, TextContainer> props;
+
+    protected TextContainer(String text, String operation, Map<String, TextContainer> props) {
+        this.text = text;
+        this.operation = operation;
+        this.props = props;
+    }
+
+    public TextContainer() {
+    }
 
     public boolean isRawText() {
-        return this.operation == null;
+        return this.operation == null && text != null;
     }
 
     public String getText() {
@@ -25,7 +37,7 @@ public class TextContainer {
         return !this.props.isEmpty();
     }
 
-    public ImmutableMap<String, TextContainer> getProps() {
+    public Map<String, TextContainer> getProps() {
         return props;
     }
 
@@ -35,6 +47,10 @@ public class TextContainer {
 
     public boolean isForTemplate() {
         return isForTemplate(this.operation);
+    }
+
+    public boolean isFileContainer() {
+        return false;
     }
 
     @Override
@@ -54,7 +70,7 @@ public class TextContainer {
     public static class Builder {
         private String text;
         private String operation;
-        private ImmutableMap<String, TextContainer> props;
+        private Map<String, TextContainer> props;
 
         public Builder withText(String text) {
             this.text = text;
@@ -66,7 +82,7 @@ public class TextContainer {
             return this;
         }
 
-        public Builder withProps(ImmutableMap<String, TextContainer> props) {
+        public Builder withProps(Map<String, TextContainer> props) {
             this.props = props;
             return this;
         }

@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Server;
+import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
 import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
 import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
+import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.github.dreamhead.moco.parser.model.TextContainer;
@@ -21,13 +23,14 @@ public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected final CollectionReader reader;
 
     protected BaseParser() {
-        Module textContainerModule = new SimpleModule("TextContainerModule",
-                new Version(1, 0, 0, null, null, null))
+        Version version = new Version(1, 0, 0, null, null, null);
+        Module textContainerModule = new SimpleModule("TextContainerModule", version)
                 .addDeserializer(TextContainer.class, new TextContainerDeserializer());
-        Module proxyContainerModule = new SimpleModule("ProxyContainerModule",
-                new Version(1, 0, 0, null, null, null))
+        Module proxyContainerModule = new SimpleModule("ProxyContainerModule", version)
                 .addDeserializer(ProxyContainer.class, new ProxyContainerDeserializer());
-        this.reader = new CollectionReader(textContainerModule, proxyContainerModule);
+        Module fileContainerModule = new SimpleModule("FileContainerModule", version)
+                .addDeserializer(FileContainer.class, new FileContainerDeserializer());
+        this.reader = new CollectionReader(textContainerModule, proxyContainerModule, fileContainerModule);
     }
 
     public T parseServer(InputStream is, Optional<Integer> port, MocoConfig... configs) {

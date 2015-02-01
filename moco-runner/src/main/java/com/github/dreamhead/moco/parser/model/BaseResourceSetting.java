@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class BaseResourceSetting {
     protected TextContainer text;
-    protected TextContainer file;
+    protected FileContainer file;
     @JsonProperty("path_resource")
     protected TextContainer pathResource;
 
@@ -16,7 +16,7 @@ public abstract class BaseResourceSetting {
         return text != null;
     }
 
-    public TextContainer getFile() {
+    public FileContainer getFile() {
         return file;
     }
 

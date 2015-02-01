@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.net.HttpHeaders;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
@@ -37,6 +38,6 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     }
 
     protected String getContentType(final HttpRequest request) {
-        return "text/html; charset=UTF-8";
+        return FileContentType.DEFAULT_CONTENT_TYPE;
     }
 }
