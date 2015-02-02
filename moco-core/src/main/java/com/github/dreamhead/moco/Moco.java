@@ -341,11 +341,11 @@ public class Moco {
     }
 
     public static ContentResource file(final String filename, Charset charset) {
-        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), of(charset));
+        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource file(final String filename, Optional<Charset> charset) {
-        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), charset);
+        return fileResource(new File(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static ContentResource pathResource(final String filename) {
