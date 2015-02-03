@@ -1,0 +1,12 @@
+[
+  {
+    "response":
+    {
+      "path_resource":
+      {
+        "name": "path.response",
+        "charset": "utf-8"
+      }
+    }
+  }
+]

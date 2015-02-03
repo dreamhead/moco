@@ -37,6 +37,12 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_return_expected_response_with_path_resource_and_charset() throws IOException {
+        runWithConfiguration("any_response_with_path_resource_and_charset.json");
+        assertThat(helper.get(root()), is("response from path"));
+    }
+
+    @Test
     public void should_return_expected_response_with_text_based_on_specified_uri() throws IOException {
         runWithConfiguration("foo.json");
         assertThat(helper.get(remoteUrl("/foo")), is("bar"));

@@ -356,6 +356,10 @@ public class Moco {
         return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
+    public static ContentResource pathResource(final String filename, Optional<Charset> charset) {
+        return classpathFileResource(checkNotNullOrEmpty(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
+    }
+
     public static Resource version(final Resource resource) {
         return versionResource(checkNotNull(resource, "Version should not be null"));
     }

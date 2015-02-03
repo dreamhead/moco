@@ -91,6 +91,16 @@ public class Dynamics {
         }
     }
 
+    protected <T> T invokeTarget(String name, Object arg1, Object arg2, Class<T> clazz, Class<?> arg1Class, Class<?> arg2Class) {
+        try {
+            Method method = Moco.class.getMethod(name, arg1Class, arg2Class);
+            Object result = method.invoke(null, arg1, arg2);
+            return clazz.cast(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected <T> T invokeTarget(String name, int value, Class<T> clazz) {
         return invokeTarget(name, value, clazz, Integer.TYPE);
     }

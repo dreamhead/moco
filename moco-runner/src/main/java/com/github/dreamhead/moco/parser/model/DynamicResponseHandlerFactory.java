@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.*;
 import com.google.common.net.HttpHeaders;
 
@@ -180,7 +181,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
         if (container.isFileContainer()) {
             FileContainer fileContainer = FileContainer.class.cast(container);
-            return file(fileContainer.getName(), fileContainer.getCharset());
+            return invokeTarget(name, fileContainer.getName(), fileContainer.getCharset(),
+                    Resource.class, String.class, Optional.class);
         }
 
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
