@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
 import java.nio.charset.Charset;
@@ -24,6 +25,15 @@ public class FileContainer extends TextContainer {
 
     public Optional<Charset> getCharset() {
         return charset;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("name", name)
+                .add("charset", charset)
+                .toString();
     }
 
     @Override
