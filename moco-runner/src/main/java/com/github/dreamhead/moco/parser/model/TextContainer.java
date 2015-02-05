@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;

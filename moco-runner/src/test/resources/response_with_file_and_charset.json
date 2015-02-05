@@ -1,0 +1,26 @@
+[
+  {
+    "response":
+    {
+      "file":
+      {
+        "name": "src/test/resources/foo.response",
+        "charset": "utf-8"
+      }
+    }
+  },
+  {
+    "request":
+    {
+      "uri":"/charset_first"
+    },
+    "response":
+    {
+      "file":
+      {
+        "charset": "utf-8",
+        "name": "src/test/resources/foo.response"
+      }
+    }
+  }
+]
