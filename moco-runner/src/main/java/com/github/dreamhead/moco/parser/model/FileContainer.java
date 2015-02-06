@@ -16,7 +16,9 @@ public class FileContainer extends TextContainer {
         super(container.getText(), container.getOperation(), container.getProps());
     }
 
-    public FileContainer() {
+    private FileContainer(String name, Optional<Charset> charset) {
+        this.name = name;
+        this.charset = charset;
     }
 
     public String getName() {
@@ -64,10 +66,7 @@ public class FileContainer extends TextContainer {
         }
 
         public FileContainer build() {
-            FileContainer fileContainer = new FileContainer();
-            fileContainer.name = name;
-            fileContainer.charset = toCharset(charset);
-            return fileContainer;
+            return new FileContainer(name, toCharset(charset));
         }
 
         private Optional<Charset> toCharset(String charset) {
