@@ -41,8 +41,7 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
     public HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
         checkNotNull(target, "Target should not be null");
-        this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
-        return this;
+        return this.request(new MountMatcher(mountedDir, target, copyOf(predicates))).response(new MountHandler(mountedDir, target));
     }
 
     private HttpResponseSetting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {

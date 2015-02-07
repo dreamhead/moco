@@ -11,6 +11,7 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>> {
@@ -36,12 +37,16 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
     }
 
     public T response(final ResponseHandler handler) {
-        if (this.handler != null) {
-            throw new RuntimeException("handler has already been set");
+        this.handler = targetHandler(checkNotNull(handler, "Handler should not be null"));
+        return self();
+    }
+
+    private ResponseHandler targetHandler(ResponseHandler responseHandler) {
+        if (this.handler == null) {
+            return responseHandler;
         }
 
-        this.handler = checkNotNull(handler, "Handler should not be null");
-        return self();
+        return new AndResponseHandler(of(this.handler, responseHandler));
     }
 
     public T on(final MocoEventTrigger trigger) {
