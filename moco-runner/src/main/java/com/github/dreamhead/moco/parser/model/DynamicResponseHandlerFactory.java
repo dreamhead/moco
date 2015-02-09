@@ -79,11 +79,11 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if ("status".equalsIgnoreCase(name)) {
-            return invokeTarget(name, Integer.parseInt(value.toString()), ResponseHandler.class);
+            return status(Integer.parseInt(value.toString()));
         }
 
         if ("latency".equalsIgnoreCase(name)) {
-            return with(invokeTarget(name, Long.parseLong(value.toString()), MocoProcedure.class));
+            return with(latency(Long.parseLong(value.toString())));
         }
 
         if (ProxyContainer.class.isInstance(value)) {
