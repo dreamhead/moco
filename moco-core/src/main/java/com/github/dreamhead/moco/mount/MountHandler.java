@@ -2,20 +2,18 @@ package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
-import com.google.common.io.Files;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.google.common.base.Optional.of;
 
-public class MountHandler extends AbstractContentResponseHandler {
+public class MountHandler extends AbstractHttpContentResponseHandler {
     private final MountPathExtractor extractor;
 
     private final File dir;
@@ -28,17 +26,9 @@ public class MountHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected MessageContent responseContent(final Request request) {
-        if (!HttpRequest.class.isInstance(request)) {
-            throw new RuntimeException("Only HTTP request is allowed");
-        }
-
-        try {
-            byte[] bytes = Files.toByteArray(targetFile((HttpRequest) request));
-            return content().withContent(bytes).build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    protected MessageContent responseContent(HttpRequest httpRequest) {
+        FileResourceReader reader = new FileResourceReader(targetFile(httpRequest), Optional.<Charset>absent());
+        return reader.readFor(of(httpRequest));
     }
 
     private File targetFile(HttpRequest request) {
@@ -63,7 +53,7 @@ public class MountHandler extends AbstractContentResponseHandler {
         }
 
         if (config.isFor(MocoConfig.FILE_ID)) {
-            return new MountHandler(new File((String)config.apply(this.dir.getName())), this.target);
+            return new MountHandler(new File((String) config.apply(this.dir.getName())), this.target);
         }
 
         return this;

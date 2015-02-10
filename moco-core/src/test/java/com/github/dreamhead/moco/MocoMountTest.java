@@ -1,11 +1,8 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.*;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.*;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
@@ -14,9 +11,8 @@ import java.io.InputStreamReader;
 
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.MocoMount.*;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
