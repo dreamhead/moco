@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.Moco;
-import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;

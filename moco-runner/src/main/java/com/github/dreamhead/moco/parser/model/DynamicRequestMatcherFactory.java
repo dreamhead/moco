@@ -140,11 +140,11 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private <T> RequestMatcher existMatcher(RequestExtractor<T> extractor, TextContainer container) {
-        if ("true".equals(container.getText())) {
+        if ("true".equalsIgnoreCase(container.getText())) {
             return exist(extractor);
         }
 
-        if ("false".equals(container.getText())) {
+        if ("false".equalsIgnoreCase(container.getText())) {
             return not(exist(extractor));
         }
 
