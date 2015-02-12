@@ -1,18 +1,14 @@
 package com.github.dreamhead.moco.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.StringWriter;
 
 public class Jsons {
     public static String toJson(Object value) {
         ObjectMapper mapper = new ObjectMapper();
-        StringWriter writer = new StringWriter();
         try {
-            mapper.writeValue(writer, value);
-            return writer.toString();
-        } catch (IOException e) {
+            return mapper.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
