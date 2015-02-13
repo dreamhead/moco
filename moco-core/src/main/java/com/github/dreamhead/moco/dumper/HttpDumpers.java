@@ -5,7 +5,8 @@ import com.google.common.net.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 
 public class HttpDumpers {
-    public static void appendContent(HttpMessage message, StringBuilder buf) {
+    public static String asContent(HttpMessage message) {
+        StringBuilder buf = new StringBuilder();
         long length = getContentLength(message, -1);
         if (length > 0) {
             buf.append(StringUtil.NEWLINE);
@@ -17,6 +18,7 @@ public class HttpDumpers {
                 buf.append("<content is binary>");
             }
         }
+        return buf.toString();
     }
 
     private static boolean isText(String type) {
