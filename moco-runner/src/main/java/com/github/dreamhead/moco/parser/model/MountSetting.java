@@ -60,6 +60,8 @@ public class MountSetting {
         return MoreObjects.toStringHelper(this).omitNullValues()
                 .add("dir", dir)
                 .add("uri", uri)
+                .add("includes", includes.isEmpty() ? null : includes)
+                .add("excludes", excludes.isEmpty() ? null : excludes)
                 .toString();
     }
 }
