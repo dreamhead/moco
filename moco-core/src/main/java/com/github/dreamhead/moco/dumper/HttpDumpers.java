@@ -6,19 +6,21 @@ import io.netty.util.internal.StringUtil;
 
 public class HttpDumpers {
     public static String asContent(HttpMessage message) {
-        StringBuilder buf = new StringBuilder();
         long length = getContentLength(message, -1);
         if (length > 0) {
-            buf.append(StringUtil.NEWLINE);
-            buf.append(StringUtil.NEWLINE);
-            String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
-            if (isText(type)) {
-                buf.append(message.getContent().toString());
-            } else {
-                buf.append("<content is binary>");
-            }
+            return StringUtil.NEWLINE + StringUtil.NEWLINE + contentForDump(message);
         }
-        return buf.toString();
+
+        return "";
+    }
+
+    private static String contentForDump(HttpMessage message) {
+        String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
+        if (isText(type)) {
+            return message.getContent().toString();
+        }
+
+        return "<content is binary>";
     }
 
     private static boolean isText(String type) {
