@@ -1,5 +1,8 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.dumper.HttpProtocolVersionDeserializer;
+import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
@@ -8,6 +11,7 @@ import java.nio.charset.Charset;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 
+@JsonDeserialize(using = FileContainerDeserializer.class)
 public class FileContainer extends TextContainer {
     private String name;
     private Optional<Charset> charset;

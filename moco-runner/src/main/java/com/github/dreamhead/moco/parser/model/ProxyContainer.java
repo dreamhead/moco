@@ -1,11 +1,14 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
+import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.*;
 
+@JsonDeserialize(using = ProxyContainerDeserializer.class)
 public class ProxyContainer {
     private String url;
     private String from;

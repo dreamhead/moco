@@ -1,10 +1,14 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
+import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
+@JsonDeserialize(using = TextContainerDeserializer.class)
 public class TextContainer {
     private static final String TEMPLATE_NAME = "template";
     private String text;
