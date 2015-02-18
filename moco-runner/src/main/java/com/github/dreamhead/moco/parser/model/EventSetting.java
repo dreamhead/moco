@@ -6,13 +6,14 @@ import com.github.dreamhead.moco.MocoEventTrigger;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
+import static com.github.dreamhead.moco.Moco.complete;
 import static com.google.common.collect.ImmutableList.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class EventSetting {
     private CompleteEventSetting complete;
 
-    public ImmutableList<MocoEventTrigger> createTriggers() {
+    public ImmutableList<MocoEventTrigger> triggers() {
         if (complete != null) {
             return of(Moco.complete(complete.createTrigger()));
         }

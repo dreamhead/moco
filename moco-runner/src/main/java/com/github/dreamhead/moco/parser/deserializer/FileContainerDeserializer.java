@@ -24,7 +24,7 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
             jp.nextToken();
 
             String target = jp.getText().trim();
-            if ("name".equalsIgnoreCase(target) || "charset".equalsIgnoreCase(target)) {
+            if (isForFileContainer(target)) {
                 Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
                 FileVar file = Iterators.get(iterator, 0);
                 return FileContainer.aFileContainer().withName(file.name).withCharset(file.charset).build();
@@ -34,6 +34,10 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
         }
 
         throw ctxt.mappingException(TextContainer.class, currentToken);
+    }
+
+    private boolean isForFileContainer(String target) {
+        return "name".equalsIgnoreCase(target) || "charset".equalsIgnoreCase(target);
     }
 
 

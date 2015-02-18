@@ -103,7 +103,6 @@ public class ProxyContainer {
                 throw new IllegalArgumentException("Batch proxy needs both 'from' and 'to'");
             }
 
-
             ProxyContainer container = new ProxyContainer();
             container.url = url;
             container.from = from;

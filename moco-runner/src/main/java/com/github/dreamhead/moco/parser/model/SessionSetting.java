@@ -61,7 +61,7 @@ public class SessionSetting {
         HttpResponseSetting setting = bindToSession(server);
 
         if (hasEvent()) {
-            for (MocoEventTrigger trigger : on.createTriggers()) {
+            for (MocoEventTrigger trigger : on.triggers()) {
                 setting.on(trigger);
             }
         }
