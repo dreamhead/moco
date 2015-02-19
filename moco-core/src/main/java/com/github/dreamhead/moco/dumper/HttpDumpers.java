@@ -24,7 +24,7 @@ public class HttpDumpers {
     }
 
     private static boolean isText(String type) {
-        return type == null || type.startsWith("text") || type.endsWith("javascript") || type.endsWith("json");
+        return type == null || type.startsWith("text") || type.endsWith("javascript") || type.endsWith("json") || type.endsWith("xml");
     }
 
     private static long getContentLength(HttpMessage response, long defaultValue) {
