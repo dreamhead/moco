@@ -38,7 +38,7 @@ public class RequestSetting extends BaseResourceSetting {
                 .add("method", method)
                 .add("headers", headers)
                 .add("xpaths", xpaths)
-                .add("json path", jsonPaths)
+                .add("json paths", jsonPaths)
                 .add("queries", queries)
                 .add("cookies", cookies)
                 .add("forms", forms)

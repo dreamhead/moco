@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MocoEventTrigger;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
-import static com.github.dreamhead.moco.Moco.complete;
 import static com.google.common.collect.ImmutableList.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
