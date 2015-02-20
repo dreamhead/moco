@@ -22,7 +22,7 @@ public class SessionSetting {
     }
 
     private boolean isAnyResponse() {
-        return request == null;
+        return request == null && mount == null && proxy == null && redirectTo == null;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SessionSetting {
 
     private ResponseHandler getResponseHandler() {
         if (response == null) {
-            throw new RuntimeException("No response specified");
+            throw new IllegalArgumentException("No response specified");
         }
 
         return response.getResponseHandler();
@@ -51,7 +51,7 @@ public class SessionSetting {
 
     private RequestMatcher getRequestMatcher() {
         if (request == null) {
-            throw new RuntimeException("No request specified");
+            throw new IllegalArgumentException("No request specified");
         }
 
         return request.getRequestMatcher();
