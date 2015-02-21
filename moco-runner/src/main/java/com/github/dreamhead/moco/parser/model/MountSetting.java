@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
@@ -13,7 +14,7 @@ import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.*;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class MountSetting {
+public class MountSetting extends ResponseSetting {
     private String dir;
     private String uri;
     private List<String> includes = of();
@@ -53,6 +54,10 @@ public class MountSetting {
                 return exclude(input);
             }
         };
+    }
+
+    public ResponseHandler getResponseHandler() {
+        return this.asResponsSetting().getResponseHandler();
     }
 
     @Override

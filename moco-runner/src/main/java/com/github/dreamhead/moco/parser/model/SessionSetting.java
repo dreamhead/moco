@@ -74,7 +74,7 @@ public class SessionSetting {
 
     private HttpResponseSetting bindToSession(HttpServer server) {
         if (isMount()) {
-            return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates());
+            return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates()).response(mount.getResponseHandler());
         }
 
         if (isProxy()) {

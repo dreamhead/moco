@@ -21,6 +21,23 @@ public class ResponseSetting extends BaseResourceSetting {
     private Object json;
     private AttachmentSetting attachment;
 
+    public ResponseSetting asResponsSetting() {
+        ResponseSetting responseSetting = new ResponseSetting();
+        responseSetting.text = text;
+        responseSetting.file = file;
+        responseSetting.pathResource = pathResource;
+        responseSetting.status = status;
+        responseSetting.proxy = proxy;
+        responseSetting.headers = headers;
+        responseSetting.cookies = cookies;
+        responseSetting.latency = latency;
+        responseSetting.version = version;
+        responseSetting.json = json;
+        responseSetting.attachment = attachment;
+
+        return responseSetting;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

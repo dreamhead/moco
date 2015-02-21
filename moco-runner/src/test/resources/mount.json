@@ -27,5 +27,16 @@
                 "*.response"
             ]
         }
+    },
+    {
+        "mount" :
+        {
+            "dir" : "src/test/resources/mount",
+            "uri" : "/mount-response",
+            "headers" : {
+                "Content-Type" : "text/plain"
+            }
+        }
     }
+
 ]
