@@ -21,7 +21,7 @@ public class ResponseSetting extends BaseResourceSetting {
     private Object json;
     private AttachmentSetting attachment;
 
-    public ResponseSetting asResponsSetting() {
+    public ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = new ResponseSetting();
         responseSetting.text = text;
         responseSetting.file = file;

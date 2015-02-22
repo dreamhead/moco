@@ -57,7 +57,7 @@ public class MountSetting extends ResponseSetting {
     }
 
     public ResponseHandler getResponseHandler() {
-        return this.asResponsSetting().getResponseHandler();
+        return this.asResponseSetting().getResponseHandler();
     }
 
     @Override
@@ -67,6 +67,7 @@ public class MountSetting extends ResponseSetting {
                 .add("uri", uri)
                 .add("includes", includes.isEmpty() ? null : includes)
                 .add("excludes", excludes.isEmpty() ? null : excludes)
+                .add("response", super.toString())
                 .toString();
     }
 }
