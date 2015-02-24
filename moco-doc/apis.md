@@ -1337,6 +1337,23 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
 }
 ```
 
+You can also specify some response information like normal response, e.g.
+
+* JSON
+
+```json
+{
+  "mount" :
+    {
+      "dir" : "dir",
+      "uri" : "/uri",
+      "headers" : {
+        "Content-Type" : "text/plain"
+      }
+    }
+}
+```
+
 ## Template(Beta)
 **Note**: Template is an experimental feature which could be changed a lot in the future. Feel free to tell how it helps or you need more features in template.
 
