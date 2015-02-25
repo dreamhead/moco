@@ -3,11 +3,15 @@
 ## APIs
 * Latency with time unit
 
+## JSON APIs
+* Mount with response
+
 ## Global Settings
 * Request
 
 ## Implementation Details
 * File and path resource read as byte array to fix file encoding issue
+* JSON path and XPath in template will return many objects.
 
 # Release 0.10.0 (1-Dec-2014)
 
@@ -45,6 +49,9 @@
 ** exist
 * between for verifier
 * Added multiple monitors for server creation.
+
+## JSON APIs
+* json text shortcut
 
 ### Template
 * change template variables from Object to String.
