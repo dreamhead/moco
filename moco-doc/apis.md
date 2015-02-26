@@ -62,6 +62,32 @@ server.request(by(file("foo.request"))).response("bar");
 }
 ```
 
+**@Since will be at next release
+
+You can specify file charset if you want to see it in correct encoding in console.
+
+* Java API
+
+```java
+server.response(file("src/test/resources/gbk.response", Charset.forName("GBK")));
+```
+
+* JSON 
+```json
+[
+  {
+    "response":
+    {
+      "file":
+      {
+        "name": "gbk.response",
+        "charset": "GBK"
+      }
+    }
+  }
+]
+```
+
 ### URI
 **@Since 0.7**
 
