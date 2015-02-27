@@ -56,7 +56,7 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    private static abstract class BaseResourceConfigAppllier implements ResourceConfigApplier {
+    private static abstract class BaseResourceConfigApplier implements ResourceConfigApplier {
         protected abstract Resource newResource(MocoConfig config);
         protected abstract String id();
 
@@ -70,7 +70,7 @@ public class ResourceConfigApplierFactory {
         }
     }
 
-    private static abstract class SelfResourceConfigApplier extends BaseResourceConfigAppllier {
+    private static abstract class SelfResourceConfigApplier extends BaseResourceConfigApplier {
         private String id;
 
         private SelfResourceConfigApplier(String id) {
@@ -83,7 +83,7 @@ public class ResourceConfigApplierFactory {
         }
     }
 
-    private static abstract class EmbeddedResourceConfigApplier extends BaseResourceConfigAppllier {
+    private static abstract class EmbeddedResourceConfigApplier extends BaseResourceConfigApplier {
         private Resource resource;
 
         private EmbeddedResourceConfigApplier(Resource resource) {
