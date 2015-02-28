@@ -52,7 +52,6 @@ public class SettingRunner implements Runner {
         };
     }
 
-
     private Function<GlobalSetting, RunnerSetting> toRunnerSetting() {
         return new Function<GlobalSetting, RunnerSetting>() {
             @Override

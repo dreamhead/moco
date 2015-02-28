@@ -31,7 +31,7 @@ public class StandaloneRunner {
             return Runner.runner((SocketServer) server);
         }
 
-        throw new IllegalArgumentException("Unknown Server");
+        throw new IllegalArgumentException("Unknown server type:" + server.getClass().getName());
     }
 
     public void stop() {

@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.net.HttpHeaders;
 
 import java.io.InputStream;
 
@@ -64,7 +65,7 @@ public class JsonRunner implements Runner {
 
     private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
         HttpServer server = createBaseHttpServer(settings, startArgs);
-        server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header("Content-Type", "image/png"));
+        server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header(HttpHeaders.CONTENT_TYPE, "image/png"));
         return server;
     }
 
