@@ -15,7 +15,7 @@ public class ResponseSetting extends BaseResourceSetting {
     private ProxyContainer proxy;
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> cookies;
-    private Long latency;
+    private LatencyContainer latency;
 
     private TextContainer version;
     private Object json;

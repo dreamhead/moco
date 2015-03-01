@@ -117,6 +117,17 @@
         }
     },
     {
+      "request": {
+        "uri": "/latency-with-unit"
+      },
+      "response": {
+        "latency": {
+          "duration": 1,
+          "unit": "second"
+        }
+      }
+    },
+    {
         "request": {
             "uri": "/cookie",
             "cookies": {

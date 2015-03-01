@@ -82,7 +82,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if ("latency".equalsIgnoreCase(name)) {
-            return with(latency(Long.parseLong(value.toString())));
+            LatencyContainer container = LatencyContainer.class.cast(value);
+            return with(latency(container.getLatency(), container.getUint()));
         }
 
         if (ProxyContainer.class.isInstance(value)) {

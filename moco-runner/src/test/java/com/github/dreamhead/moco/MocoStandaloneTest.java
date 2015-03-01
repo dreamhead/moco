@@ -202,6 +202,20 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_wait_for_awhile_with_unit() throws IOException {
+        final long latency = 1000;
+        final long delta = 200;
+
+        runWithConfiguration("foo.json");
+        long start = System.currentTimeMillis();
+        int code = helper.getForStatus(remoteUrl("/latency-with-unit"));
+        long stop = System.currentTimeMillis();
+        long gap = stop - start + delta;
+        assertThat(gap, greaterThan(latency));
+        assertThat(code, is(200));
+    }
+
+    @Test
     public void should_match_form_value() throws IOException {
         runWithConfiguration("form.json");
 
