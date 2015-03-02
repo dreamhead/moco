@@ -26,7 +26,7 @@ public class ResourceFactory {
 
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
-                return content().withContent(text).build();
+                return content(text);
             }
         });
     }
@@ -44,7 +44,7 @@ public class ResourceFactory {
         return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
             public MessageContent readFor(Optional<? extends Request> request) {
-                return content().withContent(method.toUpperCase()).build();
+                return content(method.toUpperCase());
             }
         });
     }
@@ -54,9 +54,7 @@ public class ResourceFactory {
             @Override
             public MessageContent readFor(Optional<? extends Request> request) {
                 String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
-                return content()
-                        .withContent(text)
-                        .build();
+                return content(text);
             }
         });
     }
@@ -65,10 +63,7 @@ public class ResourceFactory {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
             public MessageContent readFor(Optional<? extends Request> request) {
-                String text = version.text();
-                return content()
-                        .withContent(text)
-                        .build();
+                return content(version.text());
             }
         });
     }
@@ -78,9 +73,7 @@ public class ResourceFactory {
             @Override
             public MessageContent readFor(Optional<? extends Request> request) {
                 MessageContent messageContent = resource.readFor(request);
-                return content()
-                        .withContent(new Cookies().encodeCookie(key, messageContent.toString()))
-                        .build();
+                return content(new Cookies().encodeCookie(key, messageContent.toString()));
             }
         });
     }
@@ -93,7 +86,7 @@ public class ResourceFactory {
         return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
             @Override
             public MessageContent readFor(Optional<? extends Request> request) {
-                return content().withContent(uri).build();
+                return content(uri);
             }
         });
     }

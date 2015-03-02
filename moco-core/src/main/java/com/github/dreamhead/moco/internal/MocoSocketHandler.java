@@ -31,7 +31,7 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         try {
-            MessageContent content = content().withContent(msg).build();
+            MessageContent content = content(msg);
             SocketRequest request = new DefaultSocketRequest(content);
             this.monitor.onMessageArrived(request);
             SocketResponse response = new DefaultSocketResponse();

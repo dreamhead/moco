@@ -192,7 +192,7 @@ public class DefaultHttpRequest implements HttpRequest {
         }
 
         public Builder withTextContent(String content) {
-            this.content = content().withContent(content).build();
+            this.content = content(content);
             return this;
         }
 

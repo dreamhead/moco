@@ -61,6 +61,10 @@ public class MessageContent {
         return new Builder();
     }
 
+    public static MessageContent content(String content) {
+        return content().withContent(content).build();
+    }
+
     public InputStream toInputStream() {
         return new ByteArrayInputStream(this.content);
     }
