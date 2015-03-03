@@ -11,6 +11,7 @@ import com.google.common.base.Optional;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import static com.github.dreamhead.moco.Moco.text;
 import static com.google.common.base.Optional.of;
 
 public class MountHandler extends AbstractHttpContentResponseHandler {
@@ -27,7 +28,7 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
 
     @Override
     protected MessageContent responseContent(HttpRequest httpRequest) {
-        FileResourceReader reader = new FileResourceReader(targetFile(httpRequest), Optional.<Charset>absent());
+        FileResourceReader reader = new FileResourceReader(text(targetFile(httpRequest).getPath()), Optional.<Charset>absent());
         return reader.readFor(of(httpRequest));
     }
 

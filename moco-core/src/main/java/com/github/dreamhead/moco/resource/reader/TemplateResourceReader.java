@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource.reader;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -93,7 +94,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public String getContentType() {
-        return template.getContentType();
+    public String getContentType(HttpRequest request) {
+        return template.getContentType(request);
     }
 }

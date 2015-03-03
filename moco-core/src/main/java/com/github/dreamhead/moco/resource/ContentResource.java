@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 
 public class ContentResource extends Resource implements Content {
@@ -7,7 +8,7 @@ public class ContentResource extends Resource implements Content {
         super(identifiable, configApplier, reader);
     }
 
-    public String getContentType() {
-        return ((ContentResourceReader)reader).getContentType();
+    public String getContentType(HttpRequest request) {
+        return ((ContentResourceReader)reader).getContentType(request);
     }
 }

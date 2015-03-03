@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.HttpProtocolVersion;
+import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.*;
@@ -9,7 +11,6 @@ import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
-import java.io.File;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -20,7 +21,7 @@ public class ResourceFactory {
     public static ContentResource textResource(final String text) {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
-            public String getContentType() {
+            public String getContentType(HttpRequest request) {
                 return FileContentType.DEFAULT_CONTENT_TYPE;
             }
 
@@ -31,12 +32,12 @@ public class ResourceFactory {
         });
     }
 
-    public static ContentResource fileResource(final File file, final Optional<Charset> charset) {
+    public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset, final Optional<MocoConfig> config) {
         String fileId = "file";
-        return contentResource(id(fileId), fileConfigApplier(fileId, file), new FileResourceReader(file, charset));
+        return contentResource(id(fileId), fileConfigApplier(fileId, filename), new FileResourceReader(filename, charset, config));
     }
 
-    public static ContentResource classpathFileResource(final String filename, final Optional<Charset> charset) {
+    public static ContentResource classpathFileResource(final Resource filename, final Optional<Charset> charset) {
         return contentResource(id("pathresource"), DO_NOTHING_APPLIER, new ClasspathFileResourceReader(filename, charset));
     }
 

@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
 import java.io.IOException;
@@ -11,13 +12,13 @@ import static com.google.common.io.ByteStreams.toByteArray;
 import static java.lang.String.format;
 
 public class ClasspathFileResourceReader extends AbstractFileResourceReader {
-    public ClasspathFileResourceReader(String filename, Optional<Charset> charset) {
+    public ClasspathFileResourceReader(Resource filename, Optional<Charset> charset) {
         super(filename, charset);
     }
 
     protected byte[] doReadFor(final Optional<? extends Request> request) {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        URL resource = classLoader.getResource(filename);
+        URL resource = classLoader.getResource(filename.readFor(request).toString());
         if (resource == null) {
             throw new IllegalArgumentException(format("%s does not exist", filename));
         }

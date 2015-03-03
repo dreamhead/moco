@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.resource.reader.Variable;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
-import java.io.File;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
@@ -18,12 +17,12 @@ public class ResourceConfigApplierFactory {
         }
     };
 
-    public static ResourceConfigApplier fileConfigApplier(final String id, final File file) {
+    public static ResourceConfigApplier fileConfigApplier(final String id, final Resource file) {
         return new SelfResourceConfigApplier(id) {
             @Override
             @SuppressWarnings("unchecked")
             protected Resource newResource(MocoConfig config) {
-                return fileResource(new File((String) config.apply(file.getName())), Optional.<Charset>absent());
+                return fileResource(file, Optional.<Charset>absent(), Optional.of(config));
             }
         };
     }

@@ -24,7 +24,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
 
     @Override
     protected String getContentType(final HttpRequest request) {
-        return resource.getContentType();
+        return resource.getContentType(request);
     }
 
     @Override

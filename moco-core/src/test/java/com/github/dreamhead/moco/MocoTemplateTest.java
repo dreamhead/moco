@@ -333,4 +333,28 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_return_file_with_template() throws Exception {
+        server.request(by(uri("/template"))).response(file(template("src/test/resources/${var}", "var", "foo.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_path_resource_with_template() throws Exception {
+        server.request(by(uri("/template"))).response(pathResource(template("${var}", "var", "foo.response")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("foo.response"));
+            }
+        });
+    }
 }

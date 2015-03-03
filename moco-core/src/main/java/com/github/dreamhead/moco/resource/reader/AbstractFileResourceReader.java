@@ -1,22 +1,25 @@
 package com.github.dreamhead.moco.resource.reader;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.google.common.base.Optional.of;
 
 public abstract class AbstractFileResourceReader implements ContentResourceReader {
 
     protected abstract byte[] doReadFor(final Optional<? extends Request> request);
 
-    protected final String filename;
+    protected final Resource filename;
     protected final Optional<Charset> charset;
 
-    public AbstractFileResourceReader(String filename, Optional<Charset> charset) {
+    public AbstractFileResourceReader(Resource filename, Optional<Charset> charset) {
         this.charset = charset;
         this.filename = filename;
     }
@@ -36,7 +39,9 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     }
 
     @Override
-    public String getContentType() {
-        return new FileContentType(this.filename).getContentType();
+    public String getContentType(final HttpRequest request) {
+        MessageContent messageContent = this.filename.readFor(of(request));
+        String filename = messageContent.toString();
+        return new FileContentType(filename).getContentType();
     }
 }
