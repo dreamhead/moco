@@ -6,9 +6,10 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
 import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
 import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.fromNullable;
+import static com.google.common.base.Optional.of;
 
 @JsonDeserialize(using = FileContainerDeserializer.class)
 public class FileContainer extends TextContainer {
@@ -76,7 +77,12 @@ public class FileContainer extends TextContainer {
             if (charset == null) {
                 return absent();
             }
-            return fromNullable(Charset.forName(charset));
+
+            try {
+                return of(Charset.forName(charset));
+            } catch (UnsupportedCharsetException e) {
+                return absent();
+            }
         }
     }
 }
