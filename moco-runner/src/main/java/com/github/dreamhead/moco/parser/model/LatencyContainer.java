@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.LatencyContainerDeserializer;
+import com.google.common.base.MoreObjects;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +17,15 @@ public class LatencyContainer {
 
     public TimeUnit getUint() {
         return uint;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("latency", latency)
+                .add("unit", uint)
+                .toString();
     }
 
     public static LatencyContainer latency(long latency) {
