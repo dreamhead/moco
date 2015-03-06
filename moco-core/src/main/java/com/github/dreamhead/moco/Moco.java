@@ -348,6 +348,10 @@ public class Moco {
         return fileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")), Optional.<MocoConfig>absent());
     }
 
+    public static ContentResource file(final Resource filename, Charset charset) {
+        return fileResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")), Optional.<MocoConfig>absent());
+    }
+
     public static ContentResource file(final String filename, Optional<Charset> charset) {
         return fileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"), Optional.<MocoConfig>absent());
     }
@@ -362,6 +366,10 @@ public class Moco {
 
     public static ContentResource pathResource(final String filename, Charset charset) {
         return classpathFileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+    }
+
+    public static ContentResource pathResource(final Resource filename, Charset charset) {
+        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource pathResource(final String filename, Optional<Charset> charset) {

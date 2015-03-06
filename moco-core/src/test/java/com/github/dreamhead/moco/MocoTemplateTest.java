@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.ByteStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -8,12 +9,16 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.google.common.collect.ImmutableMap.of;
+import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -347,6 +352,18 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_file_with_template_and_charset() throws Exception {
+        server.request(by(uri("/template"))).response(file(template("src/test/resources/${var}", "var", "gbk.response"), Charset.forName("GBK")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getAsBytes(remoteUrl("/template")), is(toByteArray(new File("src/test/resources/gbk.response"))));
+            }
+        });
+    }
+
+    @Test
     public void should_return_path_resource_with_template() throws Exception {
         server.request(by(uri("/template"))).response(pathResource(template("${var}", "var", "foo.response")));
 
@@ -354,6 +371,19 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/template")), is("foo.response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_path_resource_with_template_and_charset() throws Exception {
+        server.request(by(uri("/template"))).response(pathResource(template("${var}", "var", "gbk.response"), Charset.forName("GBK")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                InputStream stream = this.getClass().getClassLoader().getResourceAsStream("gbk.response");
+                assertThat(helper.getAsBytes(remoteUrl("/template")), is(ByteStreams.toByteArray(stream)));
             }
         });
     }
