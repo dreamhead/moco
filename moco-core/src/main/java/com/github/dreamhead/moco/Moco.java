@@ -337,43 +337,51 @@ public class Moco {
     }
 
     public static ContentResource file(final String filename) {
-        return fileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), Optional.<Charset>absent(), Optional.<MocoConfig>absent());
+        return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")));
     }
 
     public static ContentResource file(final Resource filename) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent(), Optional.<MocoConfig>absent());
+        return file(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
     public static ContentResource file(final String filename, Charset charset) {
-        return fileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")), Optional.<MocoConfig>absent());
+        return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource file(final Resource filename, Charset charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")), Optional.<MocoConfig>absent());
+        return file(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource file(final String filename, Optional<Charset> charset) {
-        return fileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"), Optional.<MocoConfig>absent());
+        return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
+    }
+
+    public static ContentResource file(final Resource filename, Optional<Charset> charset) {
+        return fileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"), Optional.<MocoConfig>absent());
     }
 
     public static ContentResource pathResource(final String filename) {
-        return classpathFileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), Optional.<Charset>absent());
+        return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")));
     }
 
     public static ContentResource pathResource(final Resource filename) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
+        return pathResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
     public static ContentResource pathResource(final String filename, Charset charset) {
-        return classpathFileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+        return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource pathResource(final Resource filename, Charset charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
+        return pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource pathResource(final String filename, Optional<Charset> charset) {
-        return classpathFileResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
+        return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
+    }
+
+    public static ContentResource pathResource(final Resource filename, Optional<Charset> charset) {
+        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static Resource version(final Resource resource) {
