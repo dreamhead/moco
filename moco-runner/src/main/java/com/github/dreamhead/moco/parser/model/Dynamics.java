@@ -101,14 +101,6 @@ public class Dynamics {
         }
     }
 
-    protected <T> T invokeTarget(String name, int value, Class<T> clazz) {
-        return invokeTarget(name, value, clazz, Integer.TYPE);
-    }
-
-    protected <T> T invokeTarget(String name, long value, Class<T> clazz) {
-        return invokeTarget(name, value, clazz, Long.TYPE);
-    }
-
     protected static Method getExtractorMethod(String name) {
         try {
             return Moco.class.getMethod(extractorMethods.get(name), String.class);
