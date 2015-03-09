@@ -11,6 +11,22 @@ Moco Java API is designed in functional fashion which means you can composite an
 server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(with(text("foo")), header("Content-Type", "text/html"));
 ```
 
+## Description as comment
+**@Since 0.7**
+
+In all JSON APIs, you can use **description** to describe what is this session for. It's just used as comment, which will be ignored in runtime.
+
+```json
+[
+    {
+        "description": "any response",
+        "response": {
+            "text": "foo"
+        }
+    }
+]
+```
+
 ## Request
 
 ### Content
