@@ -78,7 +78,7 @@ server.request(by(file("foo.request"))).response("bar");
 }
 ```
 
-**@Since will be at next release
+**@Since will be at next release**
 
 You can specify file charset if you want to see it in correct encoding in console.
 
@@ -1260,7 +1260,7 @@ server.request(by("foo")).response(latency(5000));
 }
 ```
 
-**@Since will be at next release
+**@Since will be at next release**
 
 It's easy to setup latency with time unit.
 

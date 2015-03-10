@@ -13,9 +13,9 @@ public abstract class BaseServerRunner<T extends ResponseSetting<T>> extends Run
 
     @Override
     public void start() {
-        BaseActualServer<T> responseSetting = serverSetting();
-        int port = server.start(responseSetting.getPort().or(0), channelInitializer());
-        responseSetting.setPort(port);
+        BaseActualServer<T> server = serverSetting();
+        int port = this.server.start(server.getPort().or(0), channelInitializer());
+        server.setPort(port);
     }
 
     @Override

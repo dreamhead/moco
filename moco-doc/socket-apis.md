@@ -73,7 +73,6 @@ server.request(xml(text("<request><parameters><id>1</id></parameters></request>"
 {
   "request":
     {
-      "uri": "/xml",
       "text":
         {
           "xml": "<request><parameters><id>1</id></parameters></request>"
@@ -94,7 +93,6 @@ The large request can be put into a file:
 {
    "request":
      {
-        "uri": "/xml",
         "file":
           {
             "xml": "your_file.xml"
@@ -156,7 +154,6 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 {
   "request":
     {
-      "uri": "/json",
       "text":
         {
           "json": "{\"foo\":\"bar\"}"
@@ -181,7 +178,6 @@ As you have seen, it is so boring to write json with escape character, especiall
 ```json
 {
     "request": {
-        "uri": "/json",
         "json": {
             "foo": "bar"
         }
@@ -209,7 +205,6 @@ server.request(json(file("your_file.json"))).response("foo");
 {
   "request":
     {
-      "uri": "/json",
       "file":
         {
           "json": "your_file.json"
@@ -239,7 +234,6 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
 {
   "request":
     {
-      "uri": "/jsonpath",
       "json_paths":
         {
           "$.book[*].price": "1"
@@ -264,7 +258,7 @@ You may want to match your request with regular expression, **match** could be y
 * Java API
 
 ```java
-server.request(match(uri("/\\w*/foo"))).response("bar");
+server.request(match(text("/\\w*/foo"))).response("bar");
 ```
 
 * JSON
@@ -273,7 +267,7 @@ server.request(match(uri("/\\w*/foo"))).response("bar");
 {
   "request":
     {
-      "uri":
+      "text":
         {
           "match": "/\\w*/foo"
         }
@@ -295,7 +289,7 @@ Moco is implemented by Java regular expression, you can refer [here](http://docs
 * Java API
 
 ```java
-server.request(startsWith(uri("/foo"))).response("bar");
+server.request(startsWith(text("/foo"))).response("bar");
 ```
 
 * JSON
@@ -304,7 +298,7 @@ server.request(startsWith(uri("/foo"))).response("bar");
 {
   "request":
     {
-      "uri":
+      "text":
         {
           "startsWith": "/foo"
         }
@@ -324,7 +318,7 @@ server.request(startsWith(uri("/foo"))).response("bar");
 * Java API
 
 ```java
-server.request(endsWith(uri("foo"))).response("bar");
+server.request(endsWith(text("foo"))).response("bar");
 ```
 
 * JSON
@@ -333,7 +327,7 @@ server.request(endsWith(uri("foo"))).response("bar");
 {
   "request":
     {
-      "uri":
+      "text":
         {
           "endsWith": "foo"
         }
@@ -353,7 +347,7 @@ server.request(endsWith(uri("foo"))).response("bar");
 * Java API
 
 ```java
-server.request(contain(uri("foo"))).response("bar");
+server.request(contain(text("foo"))).response("bar");
 ```
 
 * JSON
@@ -362,7 +356,7 @@ server.request(contain(uri("foo"))).response("bar");
 {
   "request":
     {
-      "uri":
+      "text":
         {
           "contain": "foo"
         }
@@ -518,12 +512,7 @@ Sometimes, we want to simulate a real-world operation which change server side r
 
 We can do that by
 ```java
-server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
-```
-
-The other response settings are able to be set as well.
-```java
-server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
+server.request(by(text("/foo"))).response(seq("foo", "bar", "blah"));
 ```
 
 ### JSON Response
@@ -533,7 +522,7 @@ JSON response is the API without Java API, so if response is json, we don't have
 ```json
 {
     "request": {
-        "uri": "/json"
+        "text": "json"
     },
     "response": {
         "json": {
@@ -557,14 +546,14 @@ All request content can be used in template with "req.content"
 
 * Java
 ```java
-server.request(by(uri("/template"))).response(template("${req.content}"));
+server.request(by(text("template"))).response(template("${req.content}"));
 ```
 
 * JSON
 ```json
 {
     "request": {
-        "uri": "/template"
+        "text": "template"
     },
     "response": {
         "text": {
@@ -581,14 +570,14 @@ You can provide your own variables in your template.
 
 * Java
 ```java
-server.request(by(uri("/template"))).response(template("${'foo'}", "foo", "bar"));
+server.request(by(text("template"))).response(template("${'foo'}", "foo", "bar"));
 ```
 
 * JSON
 ```json
 {
     "request": {
-        "uri": "/template"
+        "text": "template"
     },
     "response": {
         "text": {
@@ -609,14 +598,14 @@ You can also use extractor to extract information from request.
 
 * Java
 ```java
-server.request(by(uri("/template"))).response(template("${'foo'}", "foo", jsonPath("$.book[*].price")));
+server.request(by(text("template"))).response(template("${'foo'}", "foo", jsonPath("$.book[*].price")));
 ```
 
 * JSON
 ```json
 {
     "request": {
-        "uri": "/template"
+        "text": "template"
     },
     "response": {
         "text": {
