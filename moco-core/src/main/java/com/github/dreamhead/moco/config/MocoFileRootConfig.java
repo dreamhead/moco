@@ -2,8 +2,6 @@ package com.github.dreamhead.moco.config;
 
 import com.github.dreamhead.moco.MocoConfig;
 
-import java.io.File;
-
 import static com.github.dreamhead.moco.util.Files.join;
 
 public class MocoFileRootConfig implements MocoConfig<String> {
