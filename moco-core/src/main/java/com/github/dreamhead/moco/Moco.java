@@ -302,9 +302,17 @@ public class Moco {
         return new XPathRequestExtractor(checkNotNullOrEmpty(xpath, "XPath should not be null"));
     }
 
+    public static RequestMatcher xml(final String resource) {
+        return xml(text(checkNotNull(resource, "Resource should not be null")));
+    }
+
     public static RequestMatcher xml(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
         return new XmlRequestMatcher(extractor(resource.id()), resource);
+    }
+
+    public static RequestMatcher json(final String jsonText) {
+        return json(text(checkNotNull(jsonText, "JSON should not be null")));
     }
 
     public static RequestMatcher json(final Resource resource) {

@@ -74,6 +74,18 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_xml() throws Exception {
+        server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postFile(root(), "foo.xml"), is("foo"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_xml_with_resource() throws Exception {
         server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
 
         running(server, new Runnable() {
@@ -86,7 +98,7 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
 
     @Test(expected = IOException.class)
     public void should_throw_exception_for_unknown_content() throws Exception {
-        server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+        server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
 
         running(server, new Runnable() {
             @Override

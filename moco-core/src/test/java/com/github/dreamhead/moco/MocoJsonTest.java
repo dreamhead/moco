@@ -57,9 +57,20 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         });
     }
 
-
     @Test
     public void should_match_exact_json() throws Exception {
+        final String jsonContent = "{\"foo\":\"bar\"}";
+        server.request(json(jsonContent)).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), jsonContent), is("foo"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_exact_json_with_resource() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(json(text(jsonContent))).response("foo");
         running(server, new Runnable() {
@@ -72,7 +83,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_same_structure_json() throws Exception {
-        server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
+        server.request(json("{\"foo\":\"bar\"}")).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
