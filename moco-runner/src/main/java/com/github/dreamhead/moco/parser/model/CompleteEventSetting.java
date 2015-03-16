@@ -8,7 +8,7 @@ import com.google.common.base.MoreObjects;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CompleteEventSetting {
     private boolean async;
-    private long latency;
+    private LatencyContainer latency;
     private PostSetting post;
     private GetSetting get;
 
@@ -16,7 +16,7 @@ public class CompleteEventSetting {
         MocoEventAction action = doCreateAction();
 
         if (this.async) {
-            return Moco.async(action, Moco.latency(latency));
+            return Moco.async(action, Moco.latency(latency.getLatency(), latency.getUint()));
         }
 
         return action;

@@ -529,7 +529,7 @@ public class Moco {
     }
 
     public static MocoEventAction async(final MocoEventAction action) {
-        return async(checkNotNull(action, "Action should not be null"), latency(LatencyProcedure.DEFAULT_LATENCY));
+        return async(checkNotNull(action, "Action should not be null"), latency(LatencyProcedure.DEFAULT_LATENCY, TimeUnit.MILLISECONDS));
     }
 
     public static MocoEventAction async(final MocoEventAction action, final LatencyProcedure procedure) {
