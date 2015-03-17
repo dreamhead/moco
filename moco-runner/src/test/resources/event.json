@@ -17,6 +17,27 @@
             }
         }
     },
+    {
+      "request": {
+          "uri": "/event-with-unit"
+      },
+      "response": {
+          "text": "post_foo"
+      },
+      "on": {
+          "complete": {
+              "async": "true",
+              "latency": {
+                  "duration": 1,
+                  "unit": "second"
+              },
+              "post": {
+                  "url": "http://localhost:12306/target",
+                  "content": "content"
+              }
+          }
+      }
+  },
 
     {
         "request": {
