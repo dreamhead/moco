@@ -136,7 +136,7 @@ Now, open your browser and input "http://localhost:12306". You will see "foo". T
 
 ## JSON configuration in Java API
 
-**@Since Will be at 0.10.0**
+**@Since 0.10.0**
 
 If you have setup your server with JSON configuration, you can also your configuration from Java API.
 
