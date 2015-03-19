@@ -38,6 +38,7 @@ import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -135,7 +136,11 @@ public class Moco {
     }
 
     public static MocoMonitor log(final String filename) {
-        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty")));
+        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
+    }
+
+    public static MocoMonitor log(final String filename, final Charset charset) {
+        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
     }
 
     public static RequestMatcher by(final String content) {

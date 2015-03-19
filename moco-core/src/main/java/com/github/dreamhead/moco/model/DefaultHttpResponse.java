@@ -4,14 +4,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.google.common.collect.ImmutableMap;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 import java.util.Map;
 
-import static com.github.dreamhead.moco.util.ByteBufs.toMessageContent;
+import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
-@JsonDeserialize(builder=DefaultHttpResponse.Builder.class)
+@JsonDeserialize(builder = DefaultHttpResponse.Builder.class)
 public class DefaultHttpResponse implements HttpResponse {
     private final HttpProtocolVersion version;
     private final MessageContent content;
@@ -52,7 +53,9 @@ public class DefaultHttpResponse implements HttpResponse {
                 .withVersion(HttpProtocolVersion.versionOf(response.getProtocolVersion().text()))
                 .withStatus(response.getStatus().code())
                 .withHeaders(headerBuilder.build())
-                .withContent(toMessageContent(response.content()))
+                .withContent(content()
+                        .withContent(new ByteBufInputStream(response.content()))
+                        .build())
                 .build();
     }
 
