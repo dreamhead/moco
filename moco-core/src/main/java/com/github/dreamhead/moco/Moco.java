@@ -38,7 +38,6 @@ import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.resource.ResourceFactory.*;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -132,15 +131,23 @@ public class Moco {
     }
 
     public static MocoMonitor log() {
-        return new LogMonitor(new DefaultLogFormatter(), new StdLogWriter());
+        return log(new StdLogWriter());
     }
 
     public static MocoMonitor log(final String filename) {
-        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
+        return log(fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
     }
 
     public static MocoMonitor log(final String filename, final Charset charset) {
-        return new LogMonitor(new DefaultLogFormatter(), new FileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
+        return log(fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
+    }
+
+    private static LogWriter fileLogWriter(final String filename, final Optional<Charset> charset) {
+        return new FileLogWriter(filename, charset);
+    }
+
+    private static MocoMonitor log(final LogWriter writer) {
+        return new LogMonitor(new DefaultLogFormatter(), writer);
     }
 
     public static RequestMatcher by(final String content) {
