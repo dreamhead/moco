@@ -1864,6 +1864,12 @@ It you want to keep log, you can use log interface as following:
 final HttpServer server = httpserver(log("path/to/log.log"));
 ```
 
+**@Since will be at next release**
+Log content may contain some non UTF-8 character, charset could be specified in log API:
+```
+final HttpServer server = httpserver(log("path/to/log.log", Charset.forName("GBK")));
+```
+
 The log will be saved in your log file.
 
 #### Log with verifier

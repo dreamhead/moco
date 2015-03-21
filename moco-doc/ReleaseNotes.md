@@ -2,6 +2,7 @@
 
 ## APIs
 * Latency with time unit
+* Log file with charset
 
 ## JSON APIs
 * Mount with response
