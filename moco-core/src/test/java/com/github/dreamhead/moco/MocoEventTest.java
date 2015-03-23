@@ -132,7 +132,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     public void should_send_post_request_to_target_on_complete_async_after_awhile() throws Exception {
         final ResponseHandler handler = mock(ResponseHandler.class);
         server.request(by(uri("/target")), by("content")).response(handler);
-        server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")), latency(1000))));
+        server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")), latency(1, TimeUnit.SECONDS))));
 
         running(server, new Runnable() {
             @Override

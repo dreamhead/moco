@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.*;
@@ -134,7 +135,7 @@ public class MocoGlobalResponseTest {
     @Test
     public void should_return_all_response_for_latency_with_header() throws Exception {
         server = httpserver(port(), response(header("foo", "bar")));
-        server.response(latency(1000));
+        server.response(latency(1, TimeUnit.SECONDS));
 
         running(server, new Runnable() {
             @Override
