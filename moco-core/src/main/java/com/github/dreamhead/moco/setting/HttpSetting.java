@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.header;
@@ -41,6 +42,6 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Set
 
     @Override
     public HttpResponseSetting redirectTo(String url) {
-        return this.response(status(HttpResponseStatus.FOUND.code()), header("Location", checkNotNullOrEmpty(url, "URL should not be null")));
+        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
     }
 }
