@@ -91,7 +91,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if ("attachment".equalsIgnoreCase(name)) {
-            AttachmentSetting attachment = (AttachmentSetting)value;
+            AttachmentSetting attachment = (AttachmentSetting) value;
             return attachment(attachment.getFilename(), resourceFrom(attachment));
         }
 
@@ -114,7 +114,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         for (String resource : RESOURCES) {
             try {
                 Field field = getField(resourceSetting.getClass(), resource);
-                return resourceFrom(resource, (TextContainer)field.get(resourceSetting));
+                return resourceFrom(resource, (TextContainer) field.get(resourceSetting));
             } catch (Exception ignored) {
             }
         }
@@ -171,27 +171,39 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
                 return version(template(container.getText()));
             }
 
-            if (container.hasProperties()) {
-                return template(invokeTarget(name, container.getText(), ContentResource.class),
-                        toVariables(container.getProps()));
-            }
-
-            return template(invokeTarget(name, container.getText(), ContentResource.class));
+            return createTemplate(name, container);
         }
 
         if (container.isFileContainer()) {
             FileContainer fileContainer = FileContainer.class.cast(container);
-            return invokeTarget(name, fileContainer.getName(), fileContainer.getCharset(),
-                    Resource.class, String.class, Optional.class);
+            TextContainer filename = fileContainer.getName();
+            if (filename.isRawText()) {
+                return invokeTarget(name, fileContainer.getName().getText(), fileContainer.getCharset(),
+                        Resource.class, String.class, Optional.class);
+            }
+
+            if (filename.isForTemplate()) {
+                return invokeTarget(name, createTemplate("text", filename), fileContainer.getCharset(),
+                        Resource.class, Resource.class, Optional.class);
+            }
         }
 
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
-    private ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
-        return copyOf(Maps.transformEntries(props, toVariable()));
+    private Resource createTemplate(String name, TextContainer container) {
+        if (container.hasProperties()) {
+            return template(invokeTarget(name, container.getText(), ContentResource.class),
+                    toVariables(container.getProps()));
+        }
+
+        return template(invokeTarget(name, container.getText(), ContentResource.class));
     }
 
+    private ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
+        return copyOf(Maps.transformEntries(props, toVariable()));
+
+    }
     private static Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>> toVariable() {
         return new Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>>() {
             @Override

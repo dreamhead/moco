@@ -13,19 +13,19 @@ import static com.google.common.base.Optional.of;
 
 @JsonDeserialize(using = FileContainerDeserializer.class)
 public class FileContainer extends TextContainer {
-    private String name;
+    private TextContainer name;
     private Optional<Charset> charset;
 
     private FileContainer(TextContainer container) {
         super(container.getText(), container.getOperation(), container.getProps());
     }
 
-    private FileContainer(String name, Optional<Charset> charset) {
+    private FileContainer(TextContainer name, Optional<Charset> charset) {
         this.name = name;
         this.charset = charset;
     }
 
-    public String getName() {
+    public TextContainer getName() {
         return name;
     }
 
@@ -56,10 +56,10 @@ public class FileContainer extends TextContainer {
     }
 
     public static class FileContainerBuilder {
-        private String name;
+        private TextContainer name;
         private String charset;
 
-        public FileContainerBuilder withName(String name) {
+        public FileContainerBuilder withName(TextContainer name) {
             this.name = name;
             return this;
         }

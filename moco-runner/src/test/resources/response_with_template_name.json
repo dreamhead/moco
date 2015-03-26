@@ -1,0 +1,18 @@
+[
+  {
+    "response":
+    {
+      "file":
+      {
+        "name": {
+          "template": {
+            "with" : "src/test/resources/${var}.response",
+            "vars" : {
+              "var" : "foo"
+            }
+          }
+        }
+      }
+    }
+  }
+]

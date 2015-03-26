@@ -42,7 +42,7 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
 
 
     private static class FileVar {
-        public String name;
+        public TextContainer name;
         public String charset;
     }
 }

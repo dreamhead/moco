@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -82,5 +83,11 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template_with_extractor.json");
         String content = helper.postContent(remoteUrl("/extractor_template"), "{\"book\":[{\"price\":\"1\"}]}");
         assertThat(content, is("1"));
+    }
+
+    @Test
+    public void should_return_file_with_template_name() throws IOException {
+        runWithConfiguration("response_with_template_name.json");
+        assertThat(helper.get(root()), is("foo.response"));
     }
 }
