@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.google.common.collect.Iterators;
 
 import java.io.IOException;
+import java.util.IllegalFormatCodePointException;
 import java.util.Iterator;
 
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
@@ -27,13 +28,22 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
             if (isForFileContainer(target)) {
                 Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
                 FileVar file = Iterators.get(iterator, 0);
-                return FileContainer.aFileContainer().withName(file.name).withCharset(file.charset).build();
+                TextContainer filename = file.name;
+                if (!isAllowedFilename(filename)) {
+                    throw new IllegalArgumentException("only string and template are allowed as filename");
+                }
+
+                return FileContainer.aFileContainer().withName(filename).withCharset(file.charset).build();
             }
 
             return asFileContainer(textContainer(jp, ctxt));
         }
 
         throw ctxt.mappingException(TextContainer.class, currentToken);
+    }
+
+    private boolean isAllowedFilename(TextContainer filename) {
+        return filename.isRawText() || filename.isForTemplate();
     }
 
     private boolean isForFileContainer(String target) {
