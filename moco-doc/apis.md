@@ -1659,6 +1659,30 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath
 
 Other extractors, e.g. xpath also work here.
 
+### File Name Template
+
+Template can also be used in file name, thus response can be different based on different request.
+
+* Java
+```java
+server.response(file(template("${req.headers['foo'].txt")));
+```
+
+* JSON
+```json
+[
+  {
+    "response": {
+      "file": {
+        "name": {
+          "template": "${req.headers['foo'].txt")"
+        }
+      }
+    }
+  }
+]
+```
+
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 
