@@ -3,9 +3,10 @@
 ## APIs
 * Latency with time unit
 * Log file with charset
+* Template as filename
 
 ## JSON APIs
-* Mount with response
+* Mount with response setting
 
 ## Global Settings
 * Request

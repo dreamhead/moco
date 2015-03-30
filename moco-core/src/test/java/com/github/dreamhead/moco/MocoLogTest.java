@@ -95,4 +95,23 @@ public class MocoLogTest {
         String actual = Files.toString(file, Charset.defaultCharset());
         assertThat(actual, containsString("RuntimeException"));
     }
+
+    @Test
+    public void should_log_request_and_response_into_file_with_charset() throws Exception {
+        File file = folder.newFile();
+        HttpServer server = httpserver(port(), log(file.getAbsolutePath(), Charset.forName("UTF-8")));
+        server.request(by("0XCAFE")).response("0XBABE");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.postContent(root(), "0XCAFE"), is("0XBABE"));
+            }
+        });
+
+        String actual = Files.toString(file, Charset.defaultCharset());
+        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("0XCAFE"));
+    }
+
 }
