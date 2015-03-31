@@ -1648,7 +1648,7 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath
                 "with" : "${foo}",
                 "vars" : {
                     "foo" : {
-                      "json_paths": "$.book[*].price"
+                      "json_path": "$.book[*].price"
                     }
                 }
             }

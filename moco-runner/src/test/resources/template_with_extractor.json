@@ -9,7 +9,7 @@
                     "with" : "${foo}",
                     "vars" : {
                         "foo" : {
-                            "json_paths": "$.book[*].price"
+                            "json_path": "$.book[*].price"
                         }
                     }
                 }

@@ -119,7 +119,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             }
         }
 
-        throw new IllegalArgumentException(format("resourceSetting is expected"));
+        throw new IllegalArgumentException("resourceSetting is expected");
     }
 
     private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {

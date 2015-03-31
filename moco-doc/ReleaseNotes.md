@@ -1,9 +1,10 @@
-# Release
+# Release 0.10.1
 
 ## APIs
+* File and path resource with charset
 * Latency with time unit
 * Log file with charset
-* Template as filename
+* Template as filename for file and path resource
 
 ## JSON APIs
 * Mount with response setting
@@ -14,6 +15,7 @@
 ## Implementation Details
 * File and path resource read as byte array to fix file encoding issue
 * JSON path and XPath in template will return many objects.
+* Changed template extractor name in JSON API, json_paths to **json_path**, xpaths to **xpath**.
 
 # Release 0.10.0 (1-Dec-2014)
 

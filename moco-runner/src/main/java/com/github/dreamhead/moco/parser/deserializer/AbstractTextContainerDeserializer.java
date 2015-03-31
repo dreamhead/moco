@@ -17,7 +17,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
 public abstract class AbstractTextContainerDeserializer<T extends TextContainer> extends JsonDeserializer<T> {
-    private final ImmutableMap<String, String> names = ImmutableMap.of("json_paths", "jsonPaths");
+    private final ImmutableMap<String, String> names = ImmutableMap.of("json_path", "jsonPaths", "xpath", "xpaths");
 
     protected TextContainer textContainer(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
