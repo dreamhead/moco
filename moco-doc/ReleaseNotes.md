@@ -15,7 +15,7 @@
 ## Implementation Details
 * File and path resource read as byte array to fix file encoding issue
 * JSON path and XPath in template will return many objects.
-* Changed template extractor name in JSON API, json_paths to **json_path**, xpaths to **xpath**.
+* Changed template extractor name to singular in JSON API, e.g. json_paths to **json_path**, xpaths to **xpath**.
 
 # Release 0.10.0 (1-Dec-2014)
 
