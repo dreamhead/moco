@@ -11,7 +11,7 @@ import java.util.List;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
+public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
 	private final ContentRequestExtractor extractor = new ContentRequestExtractor();
 	private final JsonPath jsonPath;
 
@@ -20,7 +20,7 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
 	}
 
     @Override
-    protected Optional<String[]> doExtract(final HttpRequest request) {
+    protected Optional<Object> doExtract(final HttpRequest request) {
         String content = extractor.extract(request).get();
         try {
             Object jsonPathContent = jsonPath.read(content);
@@ -33,13 +33,13 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<String[]> {
         }
     }
 
-	private String[] toStringArray(Object content){
+	private Object toStringArray(Object content){
 		if(content instanceof List){
             @SuppressWarnings("unchecked")
             List<String> texts = (List<String>) content;
             return texts.toArray(new String[texts.size()]);
 		}
 
-		return new String[]{content.toString()};
+		return content.toString();
 	}
 }
