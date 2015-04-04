@@ -20,13 +20,7 @@ public class ExtractorVariable<T> implements Variable {
 
         T target = extractContent.get();
         if (target instanceof String[]) {
-            String[] contents = (String[])target;
-
-            if (contents.length == 1) {
-                return contents[0];
-            }
-
-            return contents;
+            return target;
         }
 
         return target.toString();
