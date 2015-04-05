@@ -2,7 +2,7 @@
 
 ## APIs
 * File and path resource with charset
-* Latency with time unit
+* Latency with time unit, and latency without time unit has been deprecated, will be removed at next release
 * Log file with charset
 * Template as filename for file and path resource
 

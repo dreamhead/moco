@@ -572,7 +572,7 @@ public class MocoTest extends AbstractMocoHttpTest {
     public void should_wait_for_awhile() throws Exception {
         final long latency = 1000;
         final long delta = 200;
-        server.response(latency(latency));
+        server.response(latency(latency, TimeUnit.MILLISECONDS));
 
         running(server, new Runnable() {
             @Override

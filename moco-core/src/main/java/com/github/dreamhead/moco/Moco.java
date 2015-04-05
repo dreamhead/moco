@@ -297,6 +297,7 @@ public class Moco {
         return new FormRequestExtractor(checkNotNullOrEmpty(key, "Form key should not be null"));
     }
 
+    @Deprecated
     public static LatencyProcedure latency(final long millis) {
         return latency(millis, TimeUnit.MILLISECONDS);
     }
