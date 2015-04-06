@@ -22,7 +22,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
         .put("xpath", "xpaths")
         .put("header", "headers")
         .put("cookie", "cookies")
-        .put("form", "form")
+        .put("form", "forms")
         .build();
 
     protected TextContainer textContainer(JsonParser jp, DeserializationContext ctxt) throws IOException {
