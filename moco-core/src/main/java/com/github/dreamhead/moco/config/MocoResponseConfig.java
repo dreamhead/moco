@@ -15,7 +15,7 @@ public class MocoResponseConfig implements MocoConfig<ResponseHandler> {
 
     @Override
     public boolean isFor(final String id) {
-        return RESPONSE_ID.equals(id);
+        return RESPONSE_ID.equalsIgnoreCase(id);
     }
 
     @Override

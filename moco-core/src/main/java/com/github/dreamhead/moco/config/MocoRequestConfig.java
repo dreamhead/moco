@@ -14,7 +14,7 @@ public class MocoRequestConfig implements MocoConfig<RequestMatcher> {
 
     @Override
     public boolean isFor(String id) {
-        return REQUEST_ID.equals(id);
+        return REQUEST_ID.equalsIgnoreCase(id);
     }
 
     @Override
