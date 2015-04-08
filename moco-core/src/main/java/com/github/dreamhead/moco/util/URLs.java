@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.util;
 
+import com.google.common.base.Strings;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -18,6 +20,14 @@ public class URLs {
 
     public static String join(String base, String path) {
         if (base.endsWith(SEPARATOR)) {
+            return base + path;
+        }
+
+        if (Strings.isNullOrEmpty(path)) {
+            return base;
+        }
+
+        if (path.startsWith(SEPARATOR)) {
             return base + path;
         }
 

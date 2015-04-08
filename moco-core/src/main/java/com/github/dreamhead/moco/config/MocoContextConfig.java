@@ -2,6 +2,8 @@ package com.github.dreamhead.moco.config;
 
 import com.github.dreamhead.moco.MocoConfig;
 
+import static com.github.dreamhead.moco.util.URLs.join;
+
 public class MocoContextConfig implements MocoConfig<String> {
     private final String context;
 
@@ -16,6 +18,6 @@ public class MocoContextConfig implements MocoConfig<String> {
 
     @Override
     public String apply(final String uri) {
-        return context + uri;
+        return join(context, uri);
     }
 }
