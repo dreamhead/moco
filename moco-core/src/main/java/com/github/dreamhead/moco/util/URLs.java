@@ -19,19 +19,28 @@ public class URLs {
     }
 
     public static String join(String base, String path) {
+        String joinPath = toJoinPath(path);
         if (base.endsWith(SEPARATOR)) {
-            return base + path;
+            return base + joinPath;
         }
 
-        if (Strings.isNullOrEmpty(path)) {
+        if (joinPath.isEmpty()) {
             return base;
         }
 
-        if (path.startsWith(SEPARATOR)) {
-            return base + path;
+        return base + SEPARATOR + joinPath;
+    }
+
+    private static String toJoinPath(String path) {
+        if (Strings.isNullOrEmpty(path)) {
+            return "";
         }
 
-        return base + SEPARATOR + path;
+        if (path.startsWith(SEPARATOR)) {
+            return path.substring(1);
+        }
+
+        return path;
     }
 
     public static URL toUrl(final String url) {
