@@ -1,17 +1,18 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.*;
-import com.github.dreamhead.moco.handler.AndResponseHandler;
+import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.MocoProcedure;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.resource.Resource;
 
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.copyOf;
-import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>> {
@@ -33,7 +34,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
     }
 
     public T response(final ResponseHandler... handlers) {
-        return this.response(new AndResponseHandler(copyOf(handlers)));
+        return this.response(and(handlers));
     }
 
     public T response(final ResponseHandler handler) {
@@ -46,7 +47,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
             return responseHandler;
         }
 
-        return new AndResponseHandler(of(this.handler, responseHandler));
+        return and(this.handler, responseHandler);
     }
 
     public T on(final MocoEventTrigger trigger) {

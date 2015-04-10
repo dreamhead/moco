@@ -562,9 +562,9 @@ public class Moco {
     }
 
     public static ResponseHandler attachment(final String filename, final Resource resource) {
-        return new AndResponseHandler(ImmutableList.of(
+        return AndResponseHandler.and(
                 header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty"))),
-                with(checkNotNull(resource, "Resource should not be null"))));
+                with(checkNotNull(resource, "Resource should not be null")));
     }
 
     private static Function<String, ResponseHandler> textToResource() {

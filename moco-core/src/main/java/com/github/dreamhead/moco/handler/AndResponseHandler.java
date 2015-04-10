@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.base.Function;
 
 import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 public class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
@@ -27,7 +28,7 @@ public class AndResponseHandler extends AbstractResponseHandler {
             return super.apply(config);
         }
 
-        return new AndResponseHandler(from(handlers).transform(applyConfig(config)));
+        return and(from(handlers).transform(applyConfig(config)));
     }
 
     private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
@@ -37,5 +38,13 @@ public class AndResponseHandler extends AbstractResponseHandler {
                 return handler.apply(config);
             }
         };
+    }
+
+    public static AndResponseHandler and(final Iterable<ResponseHandler> handlers) {
+        return new AndResponseHandler(handlers);
+    }
+
+    public static AndResponseHandler and(final ResponseHandler... handlers) {
+        return new AndResponseHandler(copyOf(handlers));
     }
 }
