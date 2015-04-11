@@ -1,10 +1,18 @@
 package com.github.dreamhead.moco.util;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 
+import java.nio.charset.Charset;
+
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
+
 public class FileContentType {
-    public static final String DEFAULT_CONTENT_TYPE = "text/plain; charset=UTF-8";
+    public static final String DEFAULT_CONTENT_TYPE_WITH_CHARSET = "text/plain; charset=UTF-8";
+    private static final String DEFAULT_CONTENT_TYPE = "text/plain";
 
     private static final ImmutableMap<String, String> contentTypeMap = ImmutableMap.<String, String>builder()
             .put("png", "image/png")
@@ -23,13 +31,33 @@ public class FileContentType {
             .build();
 
     private final String filename;
+    private Optional<Charset> charset;
 
-    public FileContentType(String filename) {
+    public FileContentType(String filename, Optional<Charset> charset) {
         this.filename = filename;
+        this.charset = charset;
     }
 
     public String getContentType() {
-        return toContentType(Files.getFileExtension(filename));
+        String type = toContentType(Files.getFileExtension(filename));
+        Optional<Charset> charset = toCharset(type);
+        if (charset.isPresent()) {
+            return type + "; charset=" + charset.get().displayName();
+        }
+
+        return type;
+    }
+
+    private Optional<Charset> toCharset(String type) {
+        if (charset.isPresent()) {
+            return charset;
+        }
+
+        if (DEFAULT_CONTENT_TYPE.equalsIgnoreCase(type)) {
+            return of(Charsets.UTF_8);
+        }
+
+        return absent();
     }
 
     private String toContentType(String extension) {

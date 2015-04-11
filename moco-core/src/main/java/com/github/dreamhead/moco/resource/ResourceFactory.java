@@ -22,7 +22,7 @@ public class ResourceFactory {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public String getContentType(HttpRequest request) {
-                return FileContentType.DEFAULT_CONTENT_TYPE;
+                return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
             }
 
             @Override

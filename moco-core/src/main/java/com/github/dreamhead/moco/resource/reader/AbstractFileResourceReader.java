@@ -42,6 +42,6 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     public String getContentType(final HttpRequest request) {
         MessageContent messageContent = this.filename.readFor(of(request));
         String filename = messageContent.toString();
-        return new FileContentType(filename).getContentType();
+        return new FileContentType(filename, charset).getContentType();
     }
 }

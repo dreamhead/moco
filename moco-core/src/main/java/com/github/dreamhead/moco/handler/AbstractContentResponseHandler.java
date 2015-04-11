@@ -38,6 +38,6 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     }
 
     protected String getContentType(final HttpRequest request) {
-        return FileContentType.DEFAULT_CONTENT_TYPE;
+        return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
     }
 }
