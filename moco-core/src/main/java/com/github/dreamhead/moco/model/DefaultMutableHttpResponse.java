@@ -33,6 +33,10 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     @Override
     public void setContent(MessageContent content) {
+        if (this.content != null) {
+            throw new IllegalArgumentException("Content has been set");
+        }
+        
         this.content = content;
     }
 
