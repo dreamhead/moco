@@ -36,7 +36,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
         if (this.content != null) {
             throw new IllegalArgumentException("Content has been set");
         }
-        
+
         this.content = content;
     }
 
