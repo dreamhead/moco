@@ -190,12 +190,12 @@ public class Moco {
         return startsWith(extractor(resource.id()), resource);
     }
 
-    public static <T> RequestMatcher startsWith(RequestExtractor<T> extractor, String expected) {
+    public static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final String expected) {
         return startsWith(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
-    private static <T> RequestMatcher startsWith(RequestExtractor<T> extractor, Resource resource) {
+    private static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final Resource resource) {
         return new StartsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
                 checkNotNull(resource, "Expected resource should not be null"));
     }
@@ -352,7 +352,7 @@ public class Moco {
         return seq(copyOf(handlers));
     }
 
-    private static ResponseHandler seq(ImmutableList<ResponseHandler> handlers) {
+    private static ResponseHandler seq(final ImmutableList<ResponseHandler> handlers) {
         checkArgument(handlers.size() > 0, "seq contents should not be null");
         return new SequenceContentHandler(handlers);
     }
@@ -365,19 +365,19 @@ public class Moco {
         return file(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
-    public static ContentResource file(final String filename, Charset charset) {
+    public static ContentResource file(final String filename, final Charset charset) {
         return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
-    public static ContentResource file(final Resource filename, Charset charset) {
+    public static ContentResource file(final Resource filename, final Charset charset) {
         return file(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
-    public static ContentResource file(final String filename, Optional<Charset> charset) {
+    public static ContentResource file(final String filename, final Optional<Charset> charset) {
         return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
     }
 
-    public static ContentResource file(final Resource filename, Optional<Charset> charset) {
+    public static ContentResource file(final Resource filename, final Optional<Charset> charset) {
         return fileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"), Optional.<MocoConfig>absent());
     }
 
@@ -389,19 +389,19 @@ public class Moco {
         return pathResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
-    public static ContentResource pathResource(final String filename, Charset charset) {
+    public static ContentResource pathResource(final String filename, final Charset charset) {
         return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
-    public static ContentResource pathResource(final Resource filename, Charset charset) {
+    public static ContentResource pathResource(final Resource filename, final Charset charset) {
         return pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
-    public static ContentResource pathResource(final String filename, Optional<Charset> charset) {
+    public static ContentResource pathResource(final String filename, final Optional<Charset> charset) {
         return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
     }
 
-    public static ContentResource pathResource(final Resource filename, Optional<Charset> charset) {
+    public static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
         return classpathFileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 
