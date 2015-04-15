@@ -35,7 +35,7 @@ public class MocoRequestHitTest {
     @Test
     public void should_monitor_server_behavior() throws Exception {
         final MocoMonitor monitor = mock(MocoMonitor.class);
-        final HttpServer server = httpserver(port(), monitor);
+        final HttpServer server = httpServer(port(), monitor);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -53,7 +53,7 @@ public class MocoRequestHitTest {
     @Test
     public void should_monitor_server_behavior_without_port() throws Exception {
         final MocoMonitor monitor = mock(MocoMonitor.class);
-        final HttpServer server = httpserver(monitor);
+        final HttpServer server = httpServer(monitor);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -70,7 +70,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_expected_request() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -85,13 +85,13 @@ public class MocoRequestHitTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_expectation_can_not_be_met() throws Exception {
-        httpserver(port(), hit);
+        httpServer(port(), hit);
         hit.verify(by(uri("/foo")), times(1));
     }
 
     @Test
     public void should_verify_expected_request_for_at_least() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -107,7 +107,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_expected_request_for_between() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -124,13 +124,13 @@ public class MocoRequestHitTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() throws Exception {
-        httpserver(port(), hit);
+        httpServer(port(), hit);
         hit.verify(by(uri("/foo")), atLeast(1));
     }
 
     @Test
     public void should_verify_expected_request_for_at_most() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -146,7 +146,7 @@ public class MocoRequestHitTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_at_most_expected_request_while_expectation_can_not_be_met() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
         running(server, new Runnable() {
             @Override
@@ -161,7 +161,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_expected_request_for_once() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -176,13 +176,13 @@ public class MocoRequestHitTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_once_expectation_can_not_be_met() throws Exception {
-        httpserver(port(), hit);
+        httpServer(port(), hit);
         hit.verify(by(uri("/foo")), times(1));
     }
 
     @Test
     public void should_verify_unexpected_request_without_unexpected_request() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
@@ -197,7 +197,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_unexpected_request_with_unexpected_request() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
 
         running(server, new Runnable() {
             @Override
@@ -214,7 +214,7 @@ public class MocoRequestHitTest {
 
     @Test(expected = VerificationException.class)
     public void should_fail_to_verify_while_unexpected_request_expectation_can_not_be_met() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
 
         running(server, new Runnable() {
             @Override
@@ -236,7 +236,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_form_data() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.post(eq(form("name"), "dreamhead")).response("foobar");
 
         running(server, new Runnable() {
@@ -252,7 +252,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_form_data_even_if_no_server_expectation() throws Exception {
-        final HttpServer server = httpserver(port(), hit);
+        final HttpServer server = httpServer(port(), hit);
         server.response("foobar");
 
         running(server, new Runnable() {
@@ -268,7 +268,7 @@ public class MocoRequestHitTest {
 
     @Test
     public void should_verify_expected_request_and_log_at_same_time() throws Exception {
-        final HttpServer server = httpserver(port(), hit, log());
+        final HttpServer server = httpServer(port(), hit, log());
         server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {

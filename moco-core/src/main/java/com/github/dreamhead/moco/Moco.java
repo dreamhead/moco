@@ -47,20 +47,35 @@ import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
 
 public class Moco {
-    public static HttpServer httpserver(final int port, final MocoConfig... configs) {
+    public static HttpServer httpServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createQuietServer(of(port), configs);
     }
 
-    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
+    @Deprecated
+    public static HttpServer httpserver(final int port, final MocoConfig... configs) {
+        return httpServer(port, configs);
+    }
+
+    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
-    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+    @Deprecated
+    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
+        return httpServer(port, monitor, configs);
+    }
+
+    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
+    }
+
+    @Deprecated
+    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+        return httpServer(port, monitor, monitor2, monitors);
     }
 
     private static MocoMonitor mergeMonitor(MocoMonitor monitor, MocoMonitor monitor2, MocoMonitor[] monitors) {
@@ -74,11 +89,11 @@ public class Moco {
         return new CompositeMonitor(targetMonitors);
     }
 
-    public static HttpServer httpserver(final MocoConfig... configs) {
+    public static HttpServer httpServer(final MocoConfig... configs) {
         return ActualHttpServer.createQuietServer(Optional.<Integer>absent(), configs);
     }
 
-    public static HttpServer httpserver(final MocoMonitor monitor, final MocoConfig... configs) {
+    public static HttpServer httpServer(final MocoMonitor monitor, final MocoConfig... configs) {
         return ActualHttpServer.createHttpServerWithMonitor(Optional.<Integer>absent(), checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 

@@ -198,7 +198,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_failover_with_same_response_once() throws Exception {
-        server = httpserver(port(), log());
+        server = httpServer(port(), log());
         server.post(and(by(uri("/target")), by("proxy"))).response("0XCAFEBABE");
         final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
@@ -334,7 +334,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_batch_proxy_from_server_with_context_server() throws Exception {
-        server = httpserver(port(), context("/proxy"));
+        server = httpServer(port(), context("/proxy"));
         server.get(by(uri("/target/1"))).response("target_1");
         server.get(by(uri("/target/2"))).response("target_2");
         server.proxy(from("/proxy").to(remoteUrl("/proxy/target")));
@@ -377,7 +377,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     @Test
     public void should_proxy_with_playback_to_access_remote_only_once() throws Exception {
         RequestHit hit = requestHit();
-        server = httpserver(port(), hit);
+        server = httpServer(port(), hit);
         server.request(by(uri("/target"))).response("proxy");
         final File file = tempFolder.newFile();
         server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));

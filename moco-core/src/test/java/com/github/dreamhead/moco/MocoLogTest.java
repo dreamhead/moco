@@ -38,7 +38,7 @@ public class MocoLogTest {
 
     @Test
     public void should_log_request_and_response() throws Exception {
-        HttpServer server = httpserver(port(), log());
+        HttpServer server = httpServer(port(), log());
         server.request(by("0XCAFE")).response("0XBABE");
         File file = folder.newFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
@@ -58,7 +58,7 @@ public class MocoLogTest {
     @Test
     public void should_log_request_and_response_into_file() throws Exception {
         File file = folder.newFile();
-        HttpServer server = httpserver(port(), log(file.getAbsolutePath()));
+        HttpServer server = httpServer(port(), log(file.getAbsolutePath()));
         server.request(by("0XCAFE")).response("0XBABE");
 
         running(server, new Runnable() {
@@ -76,7 +76,7 @@ public class MocoLogTest {
     @Test
     public void should_log_request_and_response_with_exception() throws Exception {
         File file = folder.newFile();
-        HttpServer server = httpserver(port(), log(file.getAbsolutePath()));
+        HttpServer server = httpServer(port(), log(file.getAbsolutePath()));
         ResponseHandler mock = mock(ResponseHandler.class);
         doThrow(RuntimeException.class).when(mock).writeToResponse(any(SessionContext.class));
 
@@ -99,7 +99,7 @@ public class MocoLogTest {
     @Test
     public void should_log_request_and_response_into_file_with_charset() throws Exception {
         File file = folder.newFile();
-        HttpServer server = httpserver(port(), log(file.getAbsolutePath(), Charset.forName("UTF-8")));
+        HttpServer server = httpServer(port(), log(file.getAbsolutePath(), Charset.forName("UTF-8")));
         server.request(by("0XCAFE")).response("0XBABE");
 
         running(server, new Runnable() {

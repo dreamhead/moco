@@ -150,7 +150,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     public void should_fire_event_for_context_configuration() throws Exception {
         MocoEventAction action = mock(MocoEventAction.class);
         when(action.apply(Matchers.<MocoConfig>anyObject())).thenReturn(action);
-        server = httpserver(port(), context("/context"));
+        server = httpServer(port(), context("/context"));
         server.get(by(uri("/foo"))).response("foo").on(complete(action));
 
         running(server, new Runnable() {
@@ -168,7 +168,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         ResponseHandler handler = mock(ResponseHandler.class);
         when(handler.apply(Matchers.<MocoConfig>anyObject())).thenReturn(handler);
 
-        server = httpserver(port(), fileRoot("src/test/resources"));
+        server = httpServer(port(), fileRoot("src/test/resources"));
         server.request(by(uri("/target")), by(file("foo.request"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), file("foo.request"))));
 

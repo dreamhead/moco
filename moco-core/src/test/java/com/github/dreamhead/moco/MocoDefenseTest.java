@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.Runner.running;
 public class MocoDefenseTest extends AbstractMocoHttpTest {
     @Test(expected = HttpResponseException.class)
     public void should_work_well_without_response_setting() throws Exception {
-        server = httpserver(12306, context("/foo"));
+        server = httpServer(12306, context("/foo"));
         server.request(by("bar"));
 
         running(server, new Runnable() {

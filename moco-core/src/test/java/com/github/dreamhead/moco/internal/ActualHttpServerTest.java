@@ -24,9 +24,9 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        httpServer = httpserver(12306, context("/foo"));
+        httpServer = httpServer(12306, context("/foo"));
         httpServer.response("foo");
-        anotherServer = httpserver(12306, context("/bar"));
+        anotherServer = httpServer(12306, context("/bar"));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_config_handler_correctly_while_merging() throws Exception {
-        httpServer = httpserver(12306, fileRoot("src/test/resources"));
+        httpServer = httpServer(12306, fileRoot("src/test/resources"));
         httpServer.response(file("foo.response"));
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
 
@@ -89,7 +89,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_config_handler_correctly_other_side_while_merging() throws Exception {
-        httpServer = httpserver(12306, fileRoot("src/test/resources"));
+        httpServer = httpServer(12306, fileRoot("src/test/resources"));
         httpServer.response(file("foo.response"));
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
 

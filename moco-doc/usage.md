@@ -50,7 +50,7 @@ import static org.junit.Assert.assertThat;
 
 @Test
 public void should_response_as_expected() throws Exception {
-    HttpServer server = httpserver(12306);
+    HttpServer server = httpServer(12306);
     server.response("foo");
 
     running(server, new Runnable() {
@@ -78,7 +78,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Runner.runner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -88,7 +88,7 @@ public class MocoRunnerTest {
 
     @Before
     public void setup() {
-        HttpServer server = httpserver(12306);
+        HttpServer server = httpServer(12306);
         server.response("foo");
         runner = runner(server);
         runner.start();

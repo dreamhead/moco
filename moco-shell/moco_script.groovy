@@ -18,5 +18,5 @@ configureServer = { HttpServer server ->
 }
 
 println "Dependencies downloaded... Proceeding with setting up Moco"
-configureServer(httpserver(SERVER_PORT)).start()
+configureServer(httpServer(SERVER_PORT)).start()
 println "Moco has started successfully!"

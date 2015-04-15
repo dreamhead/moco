@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_global_header() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(by(uri("/global-request"))).response(text("blah"));
 
         running(server, new Runnable() {
@@ -32,7 +32,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_global_matcher() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(by(uri("/global-request"))).response(text("blah"));
 
         running(server, new Runnable() {
@@ -46,7 +46,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_global_header_with_any_response() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.response(text("blah"));
 
         running(server, new Runnable() {
@@ -61,7 +61,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_global_matcher_for_any_response() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.response(text("blah"));
 
         running(server, new Runnable() {
@@ -74,7 +74,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_with_exist_header() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(exist(header("blah"))).response(text("header"));
 
         running(server, new Runnable() {
@@ -87,7 +87,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_global_matcher_for_exist() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(exist(header("blah"))).response(text("header"));
 
         running(server, new Runnable() {
@@ -100,7 +100,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_with_json() throws Exception {
-        server = httpserver(port(), request(by(uri("/path"))));
+        server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(json(text(jsonContent))).response("foo");
         running(server, new Runnable() {
@@ -113,7 +113,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_json() throws Exception {
-        server = httpserver(port(), request(by(uri("/path"))));
+        server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(json(text(jsonContent))).response("foo");
         running(server, new Runnable() {
@@ -126,7 +126,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_with_xml() throws Exception {
-        server = httpserver(port(), request(by(uri("/path"))));
+        server = httpServer(port(), request(by(uri("/path"))));
         server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
         running(server, new Runnable() {
             @Override
@@ -138,7 +138,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_xml() throws Exception {
-        server = httpserver(port(), request(by(uri("/path"))));
+        server = httpServer(port(), request(by(uri("/path"))));
         server.request(xml(text("<request><parameters><id>1</id></parameters></request>"))).response("foo");
         running(server, new Runnable() {
             @Override
@@ -151,7 +151,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_mount() throws Exception {
         final String MOUNT_DIR = "src/test/resources/test";
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
@@ -165,7 +165,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_mount() throws Exception {
         final String MOUNT_DIR = "src/test/resources/test";
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
@@ -178,7 +178,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_based_on_not_matcher() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(not(by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
@@ -191,7 +191,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_not() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(not(by(uri("/foo")))).response(text("bar"));
 
         running(server, new Runnable() {
@@ -204,7 +204,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_based_on_and_matcher() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response(text("bar"));
 
         running(server, new Runnable() {
@@ -217,7 +217,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_and_matcher() throws Exception {
-        server = httpserver(port(), request(eq(header("foo"), "bar")));
+        server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response(text("bar"));
 
         running(server, new Runnable() {

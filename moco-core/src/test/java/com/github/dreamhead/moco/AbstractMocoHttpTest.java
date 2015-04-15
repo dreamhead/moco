@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.Before;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 
 public class AbstractMocoHttpTest {
@@ -13,6 +13,6 @@ public class AbstractMocoHttpTest {
     @Before
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
-        server = httpserver(port());
+        server = httpServer(port());
     }
 }

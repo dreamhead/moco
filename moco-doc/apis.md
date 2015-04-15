@@ -1815,7 +1815,7 @@ You can verify request like this:
 
 ```java
 RequestHit hit = requestHit();
-final HttpServer server = httpserver(12306, hit);
+final HttpServer server = httpServer(12306, hit);
 server.get(by(uri("/foo"))).response("bar");
 
 running(server, new Runnable() {
@@ -1850,7 +1850,7 @@ If you specify a port for your stub server, it means the port must be available 
 Moco provides you another way to start your server: specify no port, and it will look up an available port. The port can be got by port() method. The example is as follow:
 
 ```java
-final HttpServer server = httpserver();
+final HttpServer server = httpServer();
 server.response("foo");
 
 running(server, new Runnable() {
@@ -1878,20 +1878,20 @@ The port information will shown on screen.
 If you want to know more about how your Moco server running, log will be your helper.
 
 ```java
-final HttpServer server = httpserver(log());
+final HttpServer server = httpServer(log());
 ```
 
 The Moco server will log all your requests and responses in your console.
 
 It you want to keep log, you can use log interface as following:
 ```java
-final HttpServer server = httpserver(log("path/to/log.log"));
+final HttpServer server = httpServer(log("path/to/log.log"));
 ```
 
 **@Since will be at next release**
 Log content may contain some non UTF-8 character, charset could be specified in log API:
 ```
-final HttpServer server = httpserver(log("path/to/log.log", Charset.forName("GBK")));
+final HttpServer server = httpServer(log("path/to/log.log", Charset.forName("GBK")));
 ```
 
 The log will be saved in your log file.
@@ -1902,5 +1902,5 @@ Log will help you for some legacy system to know what detailed request/response 
 
 ```java
 RequestHit hit = requestHit();
-final HttpServer server = httpserver(port(), hit, log());
+final HttpServer server = httpServer(port(), hit, log());
 ```

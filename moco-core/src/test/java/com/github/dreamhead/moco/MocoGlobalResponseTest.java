@@ -25,7 +25,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_version_with_header() throws Exception {
-        server = httpserver(port(), response(header("Content-Type", "text/plain")));
+        server = httpServer(port(), response(header("Content-Type", "text/plain")));
         server.response(version(VERSION_1_0));
 
         running(server, new Runnable() {
@@ -40,7 +40,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_content_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response("hello");
 
         running(server, new Runnable() {
@@ -58,7 +58,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_header_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(header("blah", "param"));
 
         running(server, new Runnable() {
@@ -73,7 +73,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_status_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(status(200));
 
         running(server, new Runnable() {
@@ -88,7 +88,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_and_response_handler_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(status(200), with(version(VERSION_1_0)));
 
         running(server, new Runnable() {
@@ -103,7 +103,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_proxy_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(proxy("https://github.com/"));
 
         running(server, new Runnable() {
@@ -119,7 +119,7 @@ public class MocoGlobalResponseTest {
     @Test
     public void should_return_all_response_for_mount_with_header() throws Exception {
         String MOUNT_DIR = "src/test/resources/test";
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
         running(server, new Runnable() {
@@ -134,7 +134,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_latency_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(latency(1, TimeUnit.SECONDS));
 
         running(server, new Runnable() {
@@ -149,7 +149,7 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_seq_with_header() throws Exception {
-        server = httpserver(port(), response(header("foo", "bar")));
+        server = httpServer(port(), response(header("foo", "bar")));
         server.response(seq("hello", "world"));
 
         running(server, new Runnable() {

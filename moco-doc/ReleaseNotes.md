@@ -1,6 +1,7 @@
 # Release 0.10.1
 
 ## APIs
+* Use httpServer as API, and httpserver has been deprecated, will be removed at next release.
 * File and path resource with charset
 * Latency with time unit, and latency without time unit has been deprecated, will be removed at next release
 * Log file with charset

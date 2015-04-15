@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.httpserver;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,7 +19,7 @@ public class MocoRunnerTest {
 
     @Before
     public void setup() {
-        HttpServer server = httpserver(port());
+        HttpServer server = httpServer(port());
         server.response("foo");
         runner = Runner.runner(server);
         runner.start();

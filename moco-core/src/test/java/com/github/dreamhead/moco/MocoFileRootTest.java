@@ -24,7 +24,7 @@ public class MocoFileRootTest {
     @Before
     public void setup() {
         helper = new MocoTestHelper();
-        server = httpserver(port(), fileRoot("src/test/resources"));
+        server = httpServer(port(), fileRoot("src/test/resources"));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class MocoFileRootTest {
 
     @Test
     public void should_return_header_from_file_root() throws Exception {
-        server = httpserver(port(), log(), fileRoot("src/test/resources"));
+        server = httpServer(port(), log(), fileRoot("src/test/resources"));
         server.response(header("foo", file("foo.response")));
 
         running(server, new Runnable() {
