@@ -8,6 +8,7 @@ import com.google.common.io.Files;
 import java.nio.charset.Charset;
 
 import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public class FileContentType {
@@ -31,7 +32,7 @@ public class FileContentType {
             .build();
 
     private final String filename;
-    private Optional<Charset> charset;
+    private final Optional<Charset> charset;
 
     public FileContentType(String filename, Optional<Charset> charset) {
         this.filename = filename;
@@ -39,8 +40,10 @@ public class FileContentType {
     }
 
     public String getContentType() {
-        String type = toContentType(Files.getFileExtension(filename));
-        Optional<Charset> charset = toCharset(type);
+        Optional<String> optionalType = toContentType(Files.getFileExtension(filename));
+        Optional<Charset> charset = toCharset(optionalType);
+
+        String type = optionalType.or(DEFAULT_CONTENT_TYPE);
         if (charset.isPresent()) {
             return type + "; charset=" + charset.get().displayName();
         }
@@ -48,20 +51,19 @@ public class FileContentType {
         return type;
     }
 
-    private Optional<Charset> toCharset(String type) {
+    private Optional<Charset> toCharset(Optional<String> type) {
         if (charset.isPresent()) {
             return charset;
         }
 
-        if (DEFAULT_CONTENT_TYPE.equalsIgnoreCase(type)) {
+        if (!type.isPresent()) {
             return of(Charsets.UTF_8);
         }
 
         return absent();
     }
 
-    private String toContentType(String extension) {
-        String contentType = contentTypeMap.get(extension.toLowerCase());
-        return contentType != null ? contentType : DEFAULT_CONTENT_TYPE;
+    private Optional<String> toContentType(String extension) {
+        return fromNullable(contentTypeMap.get(extension.toLowerCase()));
     }
 }
