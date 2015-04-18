@@ -281,7 +281,7 @@ public class Moco {
         return methodResource(checkNotNullOrEmpty(httpMethod, "HTTP method should not be null"));
     }
 
-    public static RequestExtractor<String> header(final String header) {
+    public static RequestExtractor<String[]> header(final String header) {
         return new HeaderRequestExtractor(checkNotNullOrEmpty(header, "Header name should not be null"));
     }
 

@@ -15,14 +15,15 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.net.HttpHeaders.COOKIE;
 
 public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
-    private final RequestExtractor<String> extractor = new HeaderRequestExtractor(COOKIE);
+    private final RequestExtractor<String[]> extractor = new HeaderRequestExtractor(COOKIE);
 
     @Override
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
-        Optional<String> cookieString = extractor.extract(request);
+        Optional<String[]> cookieString = extractor.extract(request);
         if (!cookieString.isPresent()) {
             return absent() ;
         }
@@ -30,13 +31,21 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
         return of(doExtractCookies(cookieString.get()));
     }
 
-    private static ImmutableMap<String, String> doExtractCookies(String cookieString) {
-        Set<Cookie> cookies = CookieDecoder.decode(cookieString);
+    private static ImmutableMap<String, String> doExtractCookies(String[] cookieString) {
+        Set<Cookie> cookies = toCookies(cookieString);
         Map<String, String> target = newHashMap();
         for (Cookie cookie : cookies) {
             target.put(cookie.getName(), cookie.getValue());
         }
 
         return copyOf(target);
+    }
+
+    private static Set<Cookie> toCookies(String[] headers) {
+        Set<Cookie> cookies = newHashSet();
+        for (String header : headers) {
+            cookies.addAll(CookieDecoder.decode(header));
+        }
+        return cookies;
     }
 }
