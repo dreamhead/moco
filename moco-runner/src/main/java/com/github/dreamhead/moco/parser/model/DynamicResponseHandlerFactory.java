@@ -65,7 +65,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
     private ResponseHandler createResponseHandler(String name, Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return AndResponseHandler.and(with(text(toJson(value))), header(HttpHeaders.CONTENT_TYPE, "application/json"));
+            return AndResponseHandler.and(with(toJson(value)), header(HttpHeaders.CONTENT_TYPE, "application/json"));
         }
 
         if (isResource(name) && TextContainer.class.isInstance(value)) {
