@@ -45,7 +45,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
 
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return json(text(Jsons.toJson(value)));
+            return json(Jsons.toJson(value));
         }
 
         if (Map.class.isInstance(value)) {

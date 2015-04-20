@@ -72,7 +72,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_exact_json_with_resource() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(json(text(jsonContent))).response("foo");
+        server.request(json(jsonContent)).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {

@@ -182,7 +182,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_even_if_match_one_of_conditions() throws Exception {
-        server.request(and(by("foo"), by(uri("/foo")))).response(text("bar"));
+        server.request(and(by("foo"), by(uri("/foo")))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -194,7 +194,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_based_on_either_matcher() throws Exception {
-        server.request(or(by("foo"), by(uri("/foo")))).response(text("bar"));
+        server.request(or(by("foo"), by(uri("/foo")))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -207,7 +207,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_based_on_not_matcher() throws Exception {
-        server.request(not(by(uri("/foo")))).response(text("bar"));
+        server.request(not(by(uri("/foo")))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -219,7 +219,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_based_on_simplified_either_matcher() throws Exception {
-        server.request(by("foo"), by(uri("/foo"))).response(text("bar"));
+        server.request(by("foo"), by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -244,7 +244,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_response_for_get_while_http_method_is_not_get() throws Exception {
-        server.get(by(uri("/foo"))).response(text("bar"));
+        server.get(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -282,7 +282,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_not_response_for_post_while_http_method_is_not_post() throws Exception {
-        server.post(by(uri("/foo"))).response(text("bar"));
+        server.post(by(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -337,7 +337,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match() throws Exception {
-        server.request(match(uri("/\\w*/foo"))).response(text("bar"));
+        server.request(match(uri("/\\w*/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -363,7 +363,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_exist_header() throws Exception {
-        server.request(exist(header("foo"))).response(text("header"));
+        server.request(exist(header("foo"))).response("header");
 
         running(server, new Runnable() {
             @Override
@@ -376,7 +376,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_starts_with() throws Exception {
-        server.request(startsWith(uri("/foo"))).response(text("bar"));
+        server.request(startsWith(uri("/foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -389,7 +389,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_starts_with_for_resource() throws Exception {
-        server.request(startsWith(header("foo"), "bar")).response(text("bar"));
+        server.request(startsWith(header("foo"), "bar")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -402,7 +402,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_ends_with() throws Exception {
-        server.request(endsWith(uri("foo"))).response(text("bar"));
+        server.request(endsWith(uri("foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -415,7 +415,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_ends_with_for_resource() throws Exception {
-        server.request(endsWith(header("foo"), "bar")).response(text("bar"));
+        server.request(endsWith(header("foo"), "bar")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -428,7 +428,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_contain() throws Exception {
-        server.request(contain(uri("foo"))).response(text("bar"));
+        server.request(contain(uri("foo"))).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -441,7 +441,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_contain_for_resource() throws Exception {
-        server.request(contain(header("foo"), "bar")).response(text("bar"));
+        server.request(contain(header("foo"), "bar")).response("bar");
 
         running(server, new Runnable() {
             @Override
@@ -643,7 +643,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_default_content_type() throws Exception {
-        server.response(with(text("foo")));
+        server.response(with("foo"));
 
         running(server, new Runnable() {
             @Override
@@ -656,7 +656,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_specified_content_type() throws Exception {
-        server.response(with(text("foo")), header("Content-Type", "text/html"));
+        server.response(with("foo"), header("Content-Type", "text/html"));
 
         running(server, new Runnable() {
             @Override
@@ -669,7 +669,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_specified_content_type_no_matter_order() throws Exception {
-        server.response(header("Content-Type", "text/html"), with(text("foo")));
+        server.response(header("Content-Type", "text/html"), with("foo"));
 
         running(server, new Runnable() {
             @Override
