@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.net.HttpHeaders;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,8 +29,8 @@ public class MocoStartsWithTest extends AbstractMocoStandaloneTest {
     public void should_match_header() throws IOException {
         runWithConfiguration("starts_with.json");
 
-        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of("Content-type", "application/json")), is("header_match"));
-        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of("Content-type", "application/xml")), is("header_match"));
+        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of(HttpHeaders.CONTENT_TYPE, "application/json")), is("header_match"));
+        assertThat(helper.getWithHeader(remoteUrl("/header-match"), of(HttpHeaders.CONTENT_TYPE, "application/xml")), is("header_match"));
     }
 
     @Test

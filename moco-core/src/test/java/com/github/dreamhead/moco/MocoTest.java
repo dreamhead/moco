@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -542,12 +543,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_expected_header() throws Exception {
-        server.response(header("content-type", "application/json"));
+        server.response(header(HttpHeaders.CONTENT_TYPE, "application/json"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String value = Request.Get(root()).execute().returnResponse().getFirstHeader("content-type").getValue();
+                String value = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
                 assertThat(value, is("application/json"));
             }
         });
@@ -555,12 +556,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_multiple_expected_header() throws Exception {
-        server.response(header("content-type", "application/json"), header("foo", "bar"));
+        server.response(header(HttpHeaders.CONTENT_TYPE, "application/json"), header("foo", "bar"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String json = Request.Get(root()).execute().returnResponse().getFirstHeader("content-type").getValue();
+                String json = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
                 assertThat(json, is("application/json"));
                 String bar = Request.Get(root()).execute().returnResponse().getFirstHeader("foo").getValue();
                 assertThat(bar, is("bar"));
@@ -648,7 +649,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/plain; charset=UTF-8"));
             }
         });
@@ -656,12 +657,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_specified_content_type() throws Exception {
-        server.response(with("foo"), header("Content-Type", "text/html"));
+        server.response(with("foo"), header(HttpHeaders.CONTENT_TYPE, "text/html"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/html"));
             }
         });
@@ -669,12 +670,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_specified_content_type_no_matter_order() throws Exception {
-        server.response(header("Content-Type", "text/html"), with("foo"));
+        server.response(header(HttpHeaders.CONTENT_TYPE, "text/html"), with("foo"));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("Content-Type");
+                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/html"));
             }
         });

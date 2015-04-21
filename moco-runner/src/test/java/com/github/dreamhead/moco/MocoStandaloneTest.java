@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.net.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -123,7 +124,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_specified_header_request() throws IOException {
         runWithConfiguration("header.json");
-        assertThat(helper.getWithHeader(remoteUrl("/header"), of("content-type", "application/json")), is("response_for_header_request"));
+        assertThat(helper.getWithHeader(remoteUrl("/header"), of(HttpHeaders.CONTENT_TYPE, "application/json")), is("response_for_header_request"));
     }
 
     @Test(expected = IOException.class)
@@ -160,7 +161,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_expected_response_header() throws IOException {
         runWithConfiguration("foo.json");
         HttpResponse response = Request.Get(remoteUrl("/response_header")).execute().returnResponse();
-        assertThat(response.getFirstHeader("content-type").getValue(), is("application/json"));
+        assertThat(response.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue(), is("application/json"));
         assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
 
@@ -168,7 +169,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_run_as_proxy() throws IOException {
         runWithConfiguration("foo.json");
         HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
-        String value = response.getFirstHeader("Content-Type").getValue();
+        String value = response.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(value, startsWith("text/html"));
     }
 
@@ -226,7 +227,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_have_favicon() throws IOException {
         runWithConfiguration("foo.json");
-        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getFirstHeader("Content-Type").getValue();
+        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(header, is("image/png"));
     }
 }

@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -25,14 +26,14 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_version_with_header() throws Exception {
-        server = httpServer(port(), response(header("Content-Type", "text/plain")));
+        server = httpServer(port(), response(header(HttpHeaders.CONTENT_TYPE, "text/plain")));
         server.response(version(VERSION_1_0));
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
                 HttpResponse response = Request.Get(root()).execute().returnResponse();
-                Header header = response.getFirstHeader("Content-Type");
+                Header header = response.getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/plain"));
             }
         });
