@@ -5,13 +5,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
-import com.google.common.collect.Iterators;
 
 import java.io.IOException;
-import java.util.IllegalFormatCodePointException;
 import java.util.Iterator;
 
+import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContainer;
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
+import static com.google.common.collect.Iterators.get;
 
 public class FileContainerDeserializer extends AbstractTextContainerDeserializer<FileContainer> {
     @Override
@@ -26,20 +26,24 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
 
             String target = jp.getText().trim();
             if (isForFileContainer(target)) {
-                Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
-                FileVar file = Iterators.get(iterator, 0);
-                TextContainer filename = file.name;
-                if (!isAllowedFilename(filename)) {
-                    throw new IllegalArgumentException("only string and template are allowed as filename");
-                }
-
-                return FileContainer.aFileContainer().withName(filename).withCharset(file.charset).build();
+                return toFileContainer(jp);
             }
 
             return asFileContainer(textContainer(jp, ctxt));
         }
 
         throw ctxt.mappingException(TextContainer.class, currentToken);
+    }
+
+    private FileContainer toFileContainer(JsonParser jp) throws IOException {
+        Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
+        FileVar file = get(iterator, 0);
+        TextContainer filename = file.name;
+        if (!isAllowedFilename(filename)) {
+            throw new IllegalArgumentException("only string and template are allowed as filename");
+        }
+
+        return aFileContainer().withName(filename).withCharset(file.charset).build();
     }
 
     private boolean isAllowedFilename(TextContainer filename) {

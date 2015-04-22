@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
+import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
@@ -28,7 +30,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
     protected TextContainer textContainer(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.FIELD_NAME) {
-            TextContainer.Builder builder = TextContainer.builder();
+            TextContainer.Builder builder = builder();
             String operation = jp.getText().trim();
             builder.withOperation(operation);
             JsonToken token = jp.nextToken();
@@ -38,7 +40,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
                 return builder.withText(text).build();
             }
 
-            if (TextContainer.isForTemplate(operation) && token == JsonToken.START_OBJECT) {
+            if (isForTemplate(operation) && token == JsonToken.START_OBJECT) {
                 return template(jp, builder);
             }
         }
@@ -72,11 +74,11 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
 
     private TextContainer toLocal(TextContainer container) {
         String name = names.get(container.getOperation());
-        return name == null ? container : TextContainer.builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
+        return name == null ? container : builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
     }
 
     protected TextContainer text(JsonParser jp) throws IOException {
-        return TextContainer.builder().withText(jp.getText().trim()).build();
+        return builder().withText(jp.getText().trim()).build();
     }
 
     private static class Template {
