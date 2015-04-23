@@ -47,7 +47,7 @@ public class HttpsArgsParser extends StartArgsParser {
             return new HttpsArg(https, keystore, cert);
         }
 
-        return null;
+        throw new ParseArgException("HTTPS arguments are expected");
     }
 
     @Override

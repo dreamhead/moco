@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.bootstrap.parser.HttpsArgsParser;
+import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.google.common.base.Optional;
@@ -17,7 +17,7 @@ public class StartArgsTest {
 
     @Before
     public void setUp() throws Exception {
-        startArgsParser = new HttpsArgsParser();
+        startArgsParser = new HttpArgsParser();
     }
 
     @Test
