@@ -2,9 +2,11 @@ package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
+import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.util.URLs.toBase;
-import static com.google.common.base.Strings.nullToEmpty;
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
 
 public class MountTo implements ConfigApplier<MountTo> {
     private final String target;
@@ -13,8 +15,12 @@ public class MountTo implements ConfigApplier<MountTo> {
         this.target = toBase(target);
     }
 
-    public String extract(final String uri) {
-        return uri.startsWith(this.target) ? nullToEmpty(uri.replaceFirst(this.target, "")) : "";
+    public Optional<String> extract(final String uri) {
+        if (uri.startsWith(this.target) && uri.length() != this.target.length()) {
+            return fromNullable(uri.replaceFirst(this.target, ""));
+        }
+
+        return absent();
     }
 
     @Override

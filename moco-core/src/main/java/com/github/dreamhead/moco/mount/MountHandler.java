@@ -34,7 +34,7 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
 
     private File targetFile(HttpRequest request) {
         Optional<String> relativePath = extractor.extract(request);
-        return new File(dir, relativePath.get());
+        return new File(dir, relativePath.or(""));
     }
 
     @Override

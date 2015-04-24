@@ -15,7 +15,6 @@ public class SocketArgsParser extends StartArgsParser {
         String config = cmd.getOptionValue("c");
         String shutdownPort = cmd.getOptionValue("s");
 
-
         if (config == null) {
             throw new ParseArgException("config is required");
         }

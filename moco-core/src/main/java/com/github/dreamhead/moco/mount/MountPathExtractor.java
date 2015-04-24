@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.extractor.UriRequestExtractor;
 import com.google.common.base.Optional;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class MountPathExtractor extends HttpRequestExtractor<String> {
@@ -18,6 +19,11 @@ public class MountPathExtractor extends HttpRequestExtractor<String> {
 
     @Override
     protected Optional<String> doExtract(final HttpRequest request) {
-        return of(target.extract(extractor.extract(request).get()));
+        Optional<String> extractedUri = extractor.extract(request);
+        if (!extractedUri.isPresent()) {
+            return absent();
+        }
+
+        return target.extract(extractedUri.get());
     }
 }
