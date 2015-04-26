@@ -127,6 +127,18 @@ if [ "$1" = "start" ]; then
     echo "Starting..."
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
+elif [ "$1" = "http" ]; then
+    echo "Starting HTTP server..."
+    load_current_version
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
+elif [ "$1" = "https" ]; then
+    echo "Starting HTTPS server..."
+    load_current_version
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
+elif [ "$1" = "socket" ]; then
+    echo "Starting Socket server..."
+    load_current_version
+    exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
 elif [ "$1" = "shutdown" ]; then
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*

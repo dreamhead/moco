@@ -220,7 +220,7 @@ If you are using Mac or Linux, you may try the following approach:
 
 Now, you can try
 ```shell
-moco start -p 12306 -c foo.json
+moco http -p 12306 -c foo.json
 ```
 
 It will download the latest moco automatically if you don't have locally.
