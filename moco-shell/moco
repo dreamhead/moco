@@ -140,6 +140,7 @@ elif [ "$1" = "socket" ]; then
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
 elif [ "$1" = "shutdown" ]; then
+    echo "Shutting down server..."
     load_current_version
     exec "$JAVACMD" -jar "$MOCO_STANDALONE" $*
 elif [ "$1" = "upgrade" ]; then

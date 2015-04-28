@@ -65,7 +65,8 @@ public abstract class StartArgs extends ShutdownPortOption {
     }
 
     public static String help() {
-        return "Moco Options:\\n[server type] -p port -c [configuration file]\\server type: http, https, socket";
+        String separator = System.getProperty("line.separator");
+        return "Moco Options:" + separator + "moco [server type] -p port -c [configuration file]" + separator + separator + "server type: http, https, socket";
     }
 
     public boolean isSocket() {
