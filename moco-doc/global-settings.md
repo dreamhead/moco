@@ -59,7 +59,7 @@ Feel free to open your browser to try.
 In fact, there are some configurations for settings to simplify your configuration.
 
 ## Context
-**@Since 0.8
+**@Since 0.8**
 
 We can put all responses for one service in a specified context:
 
@@ -81,7 +81,7 @@ Now all configurations in foo.json must be accessed by /foo context. In this cas
 On the other hand, bar.json will in /bar context which means http://localhost:12306/bar/bar will return "bar".
 
 ## File Root
-**@Since 0.8
+**@Since 0.8**
 
 If you have many file APIs in your configuration, file root setting will help you to shorten configurations.
 As the name suggests, file root setting will play as the file root for configuration. So all your file APIs could be used as the relative path.
@@ -114,7 +114,7 @@ Now, both include setting and file APIs use relative path. In this case, fileroo
 When the request is launched, src/test/resources/foo.response will be returned.
 
 ## Environment
-**@Since 0.8
+**@Since 0.8**
 
 For some different cases, you have different configuration. For example, your code may access proxy for remote server and mock server for local testing.
 
@@ -144,7 +144,7 @@ Now, when you access your server, all configurations with "remote" environment r
 In this case, http://localhost:12306/foo will give you "foo", but http://localhost:12306/bar will return nothing.
 
 ## Request
-**@Since will be at next release
+**@Since will be at next release**
 
 You may need a global request matcher in some cases, for example, token for some REST APIs, which actually is request parameter. Global request will help you.
 
@@ -164,7 +164,7 @@ You may need a global request matcher in some cases, for example, token for some
 In this case, you won't receive response until your request has "foo", "bar" header.
 
 ## Response
-**@Since 0.9.1
+**@Since 0.9.1**
 
 In some cases, you may want to setup a global response for all response, for example, HTTP version, or HTTP header, so you don't have to setup it for every single response.
 
