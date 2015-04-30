@@ -5,6 +5,22 @@ That means if we get the expected request and then return our response. Now, you
 
 **WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
+## Description as comment
+**@Since 0.7**
+
+In all JSON APIs, you can use **description** to describe what is this session for. It's just used as comment, which will be ignored in runtime.
+
+```json
+[
+    {
+        "description": "any response",
+        "response": {
+            "text": "foo"
+        }
+    }
+]
+```
+
 ## Request
 
 ### Content
@@ -623,3 +639,27 @@ server.request(by(text("template"))).response(template("${'foo'}", "foo", jsonPa
 ```
 
 Other extractors, e.g. xpath also work here.
+
+### File Name Template
+
+Template can also be used in file name, thus response can be different based on different request.
+
+* Java
+```java
+server.response(file(template("${req.headers['foo'].txt")));
+```
+
+* JSON
+```json
+[
+  {
+    "response": {
+      "file": {
+        "name": {
+          "template": "${req.content}.txt")"
+        }
+      }
+    }
+  }
+]
+```
