@@ -9,7 +9,7 @@
 Moco is an easy setup stub framework.
 
 ## Latest Release
-* __0.10.0__
+* __0.10.1__
 
 More details in [Release Notes](moco-doc/ReleaseNotes.md)
 

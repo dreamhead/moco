@@ -78,7 +78,7 @@ server.request(by(file("foo.request"))).response("bar");
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.10.1**
 
 You can specify file charset if you want to see it in correct encoding in console.
 
@@ -1260,7 +1260,7 @@ server.request(by("foo")).response(latency(5000));
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.10.1**
 
 It's easy to setup latency with time unit.
 
@@ -1403,7 +1403,7 @@ server.mount(dir, to("/uri"), include("a.txt"), exclude("b.txt"), include("c.txt
 }
 ```
 
-**@Since Will be at next release**
+**@Since 0.10.1**
 You can also specify some response information like normal response, e.g.
 
 * JSON
@@ -1888,7 +1888,7 @@ It you want to keep log, you can use log interface as following:
 final HttpServer server = httpServer(log("path/to/log.log"));
 ```
 
-**@Since will be at next release**
+**@Since 0.10.1**
 Log content may contain some non UTF-8 character, charset could be specified in log API:
 ```
 final HttpServer server = httpServer(log("path/to/log.log", Charset.forName("GBK")));

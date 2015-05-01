@@ -510,7 +510,7 @@ server.request(by("foo")).response(latency(5000));
 }
 ```
 
-**@Since will be at next release
+**@Since 0.10.1**
 
 It's easy to setup latency with time unit.
 

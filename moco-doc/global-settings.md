@@ -144,7 +144,7 @@ Now, when you access your server, all configurations with "remote" environment r
 In this case, http://localhost:12306/foo will give you "foo", but http://localhost:12306/bar will return nothing.
 
 ## Request
-**@Since will be at next release**
+**@Since 0.10.1**
 
 You may need a global request matcher in some cases, for example, token for some REST APIs, which actually is request parameter. Global request will help you.
 
