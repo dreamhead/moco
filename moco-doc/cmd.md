@@ -1,7 +1,7 @@
 # Standalone Command Line
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.10.0/moco-runner-0.10.0-standalone.jar)
+[Standalone Moco Runner](https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.10.1/moco-runner-0.10.1-standalone.jar)
 
 First of all, a JSON configuration file needs to be provided to start Moco.
 
