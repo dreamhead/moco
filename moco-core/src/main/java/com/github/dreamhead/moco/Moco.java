@@ -52,30 +52,15 @@ public class Moco {
         return ActualHttpServer.createQuietServer(of(port), configs);
     }
 
-    @Deprecated
-    public static HttpServer httpserver(final int port, final MocoConfig... configs) {
-        return httpServer(port, configs);
-    }
-
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
-    @Deprecated
-    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
-        return httpServer(port, monitor, configs);
-    }
-
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
-    }
-
-    @Deprecated
-    public static HttpServer httpserver(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
-        return httpServer(port, monitor, monitor2, monitors);
     }
 
     private static MocoMonitor mergeMonitor(MocoMonitor monitor, MocoMonitor monitor2, MocoMonitor[] monitors) {
@@ -310,11 +295,6 @@ public class Moco {
 
     public static RequestExtractor<String> form(final String key) {
         return new FormRequestExtractor(checkNotNullOrEmpty(key, "Form key should not be null"));
-    }
-
-    @Deprecated
-    public static LatencyProcedure latency(final long millis) {
-        return latency(millis, TimeUnit.MILLISECONDS);
     }
 
     public static LatencyProcedure latency(final long duration, final TimeUnit unit) {
