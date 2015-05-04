@@ -125,6 +125,7 @@ First of all, a JSON configuration file needs to be provided to start Moco.
   }
 ]
 ```
+(foo.json)
 
 It's time to run Moco standalone server:
 

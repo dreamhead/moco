@@ -35,8 +35,9 @@ In the old days, we just deployed another WAR to an application server, e.g. Jet
   }
 ]
 ```
+(foo.json)
 
-* Run Moco HTTP server
+* Run Moco HTTP server with the configuration file.
 ```shell
 java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 ```
