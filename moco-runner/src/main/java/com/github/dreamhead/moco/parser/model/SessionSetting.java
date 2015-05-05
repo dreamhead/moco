@@ -68,6 +68,11 @@ public class SessionSetting {
     }
 
     public void bindTo(SocketServer server) {
+        if (isAnyResponse()) {
+            server.response(getResponseHandler());
+            return;
+        }
+
         server.request(getRequestMatcher()).response(getResponseHandler());
     }
 
