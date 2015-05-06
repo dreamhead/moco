@@ -1,12 +1,15 @@
 [
-    {
-        "request" :
-        {
-            "text" : "foo"
-        },
-        "response" :
-        {
-            "text" : "bar"
-        }
+  {
+    "request": {
+      "text": "foo"
+    },
+    "response": {
+      "text": "bar"
     }
+  },
+  {
+    "response": {
+      "text": "blah"
+    }
+  }
 ]

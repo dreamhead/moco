@@ -28,6 +28,7 @@ public class MocoJsonSocketRunnerTest {
             public void run() throws Exception {
                 helper.connect();
                 assertThat(helper.send("foo", 3), is("bar"));
+                assertThat(helper.send("anything", 4), is("blah"));
                 helper.close();
             }
         });
