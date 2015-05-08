@@ -5,8 +5,8 @@ import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import io.netty.handler.codec.http.Cookie;
-import io.netty.handler.codec.http.CookieDecoder;
+import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
         Set<Cookie> cookies = toCookies(cookieString);
         Map<String, String> target = newHashMap();
         for (Cookie cookie : cookies) {
-            target.put(cookie.getName(), cookie.getValue());
+            target.put(cookie.name(), cookie.value());
         }
 
         return copyOf(target);
@@ -44,7 +44,7 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
     private static Set<Cookie> toCookies(String[] headers) {
         Set<Cookie> cookies = newHashSet();
         for (String header : headers) {
-            cookies.addAll(CookieDecoder.decode(header));
+            cookies.addAll(ServerCookieDecoder.STRICT.decode(header));
         }
         return cookies;
     }
