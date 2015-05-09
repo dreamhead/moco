@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpServer;
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +34,11 @@ public class CollectionReader {
     }
 
     public <T> ImmutableList<T> read(InputStream is, Class<T> elementClass) {
+        Closer closer = Closer.create();
+        InputStream in = closer.register(is);
         try {
             CollectionType type = factory.constructCollectionType(List.class, elementClass);
-            List<T> sessionSettings = mapper.readValue(new InputStreamReader(is, Charset.defaultCharset()), type);
+            List<T> sessionSettings = mapper.readValue(new InputStreamReader(in, Charset.defaultCharset()), type);
             return copyOf(sessionSettings);
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
@@ -45,6 +48,12 @@ public class CollectionReader {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                closer.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
