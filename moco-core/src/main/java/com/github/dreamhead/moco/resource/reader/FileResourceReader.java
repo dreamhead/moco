@@ -23,7 +23,6 @@ public class FileResourceReader extends AbstractFileResourceReader {
     public FileResourceReader(Resource file, Optional<Charset> charset, Optional<MocoConfig> config) {
         super(file, charset);
         this.config = config;
-
     }
 
     @Override
