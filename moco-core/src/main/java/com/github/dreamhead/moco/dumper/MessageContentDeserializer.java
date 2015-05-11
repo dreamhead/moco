@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 
 public class MessageContentDeserializer extends JsonDeserializer<MessageContent> {
     @Override
-    public MessageContent deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public MessageContent deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
         return content(jp.getText());
     }
 }

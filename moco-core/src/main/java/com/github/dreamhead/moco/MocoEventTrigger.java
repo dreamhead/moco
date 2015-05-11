@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger>{
+public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger> {
     private final MocoEvent event;
     private final MocoEventAction action;
 

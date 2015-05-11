@@ -15,28 +15,33 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>> {
+public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>> implements ResponseSetting<T> {
     protected abstract T self();
 
     protected ResponseHandler handler;
     protected List<MocoEventTrigger> eventTriggers = newArrayList();
 
+    @Override
     public T response(final String content) {
         return this.response(text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
+    @Override
     public T response(final Resource resource) {
         return this.response(with(checkNotNull(resource, "Resource should not be null")));
     }
 
+    @Override
     public T response(final MocoProcedure procedure) {
         return this.response(with(checkNotNull(procedure, "Procedure should not be null")));
     }
 
+    @Override
     public T response(final ResponseHandler... handlers) {
         return this.response(and(handlers));
     }
 
+    @Override
     public T response(final ResponseHandler handler) {
         this.handler = targetHandler(checkNotNull(handler, "Handler should not be null"));
         return self();
@@ -50,6 +55,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
         return and(this.handler, responseHandler);
     }
 
+    @Override
     public T on(final MocoEventTrigger trigger) {
         this.eventTriggers.add(checkNotNull(trigger, "Trigger should not be null"));
         return self();
