@@ -20,7 +20,7 @@ public class SocketArgsParser extends StartArgsParser {
         }
 
         if (cmd.getArgs().length != 1) {
-            throw new ParseArgException("only one args allowed");
+            throw new ParseArgException("only one arg not allowed");
         }
 
         return socketArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).build();

@@ -30,7 +30,7 @@ public class HttpArgsParser extends StartArgsParser {
         }
 
         if (cmd.getArgs().length != 1) {
-            throw new ParseArgException("only one args allowed");
+            throw new ParseArgException("only one arg not allowed");
         }
 
         return httpArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).build();

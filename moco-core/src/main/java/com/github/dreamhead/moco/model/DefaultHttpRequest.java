@@ -119,7 +119,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return new Builder();
     }
 
-    private static MessageContent contentToString(FullHttpRequest request) {
+    private static MessageContent toMessageContent(FullHttpRequest request) {
         long contentLength = HttpHeaders.getContentLength(request, -1);
         if (contentLength <= 0) {
             return content().build();
@@ -138,7 +138,7 @@ public class DefaultHttpRequest implements HttpRequest {
                 .withMethod(request.getMethod().toString().toUpperCase())
                 .withUri(decoder.path())
                 .withQueries(queries)
-                .withContent(contentToString(request))
+                .withContent(toMessageContent(request))
                 .build();
     }
 
