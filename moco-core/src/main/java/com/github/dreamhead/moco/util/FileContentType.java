@@ -11,7 +11,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
-public class FileContentType {
+public final class FileContentType {
     public static final String DEFAULT_CONTENT_TYPE_WITH_CHARSET = "text/plain; charset=UTF-8";
     private static final String DEFAULT_CONTENT_TYPE = "text/plain";
 

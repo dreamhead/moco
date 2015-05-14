@@ -4,8 +4,7 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 
-
-public class Cookies {
+public final class Cookies {
     public String encodeCookie(String key, String value) {
         Cookie cookie = new DefaultCookie(key, value);
         cookie.setPath("/");

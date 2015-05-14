@@ -4,7 +4,7 @@ import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Files {
+public final class Files {
     public static String join(String path1, String path2, String... paths) {
         String finalPath = actualJoin(path1, path2);
         for (String path : paths) {

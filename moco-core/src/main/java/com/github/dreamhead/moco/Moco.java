@@ -46,7 +46,7 @@ import static com.google.common.collect.Maps.transformEntries;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
 
-public class Moco {
+public final class Moco {
     public static HttpServer httpServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createQuietServer(of(port), configs);
