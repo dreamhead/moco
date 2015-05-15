@@ -10,7 +10,7 @@ import java.util.List;
 import static com.google.common.collect.FluentIterable.from;
 
 public final class Configs {
-    public static  <T extends ConfigApplier<T>> T configItem(T source, MocoConfig... configs) {
+    public static  <T extends ConfigApplier<T>> T configItem(final T source, final MocoConfig... configs) {
         if (source == null) {
             return null;
         }
@@ -23,7 +23,7 @@ public final class Configs {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends ConfigApplier<T>> ImmutableList<T> configItems(List<T> items, MocoConfig... configs) {
+    public static <T extends ConfigApplier<T>> ImmutableList<T> configItems(final List<T> items, final MocoConfig... configs) {
         return from(items).transform(Configs.<T>config(configs)).toList();
     }
 

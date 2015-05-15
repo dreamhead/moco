@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 public class URLs {
     private static final String SEPARATOR = "/";
 
-    public static String toBase(String baseUri) {
+    public static String toBase(final String baseUri) {
         if (baseUri.endsWith(SEPARATOR)) {
             return baseUri;
         }
@@ -18,7 +18,7 @@ public class URLs {
         return baseUri + SEPARATOR;
     }
 
-    public static String join(String base, String path) {
+    public static String join(final String base, final String path) {
         String joinPath = toJoinPath(path);
         if (base.endsWith(SEPARATOR)) {
             return base + joinPath;
@@ -31,7 +31,7 @@ public class URLs {
         return base + SEPARATOR + joinPath;
     }
 
-    private static String toJoinPath(String path) {
+    private static String toJoinPath(final String path) {
         if (Strings.isNullOrEmpty(path)) {
             return "";
         }

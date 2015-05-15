@@ -14,7 +14,7 @@ public enum HttpProtocolVersion {
 
     private final String text;
 
-    private HttpProtocolVersion(final String text) {
+    HttpProtocolVersion(final String text) {
         this.text = text;
     }
 

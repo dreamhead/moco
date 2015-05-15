@@ -52,8 +52,7 @@ public class HttpsCertificate {
         } finally {
             try {
                 closer.close();
-            } catch (IOException e) {
-                throw new RuntimeException("failed to close keystore", e);
+            } catch (IOException ignored) {
             }
         }
     }

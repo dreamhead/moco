@@ -34,7 +34,7 @@ public final class FileContentType {
     private final String filename;
     private final Optional<Charset> charset;
 
-    public FileContentType(String filename, Optional<Charset> charset) {
+    public FileContentType(final String filename, final Optional<Charset> charset) {
         this.filename = filename;
         this.charset = charset;
     }

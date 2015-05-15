@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.util;
 import java.util.concurrent.TimeUnit;
 
 public final class Idles {
-    public static void idle(long duration, TimeUnit unit) {
+    public static void idle(final long duration, final TimeUnit unit) {
         try {
             unit.sleep(duration);
         } catch (InterruptedException e) {
