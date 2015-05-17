@@ -60,10 +60,12 @@ public class DefaultHttpRequest implements HttpRequest {
         return headers;
     }
 
+    @Override
     public String getMethod() {
         return method;
     }
 
+    @Override
     public String getUri() {
         return uri;
     }
@@ -78,6 +80,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return cookieSupplier.get();
     }
 
+    @Override
     public ImmutableMap<String, String> getQueries() {
         return queries;
     }

@@ -22,22 +22,27 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
         super(port, monitor, configs);
     }
 
+    @Override
     public HttpResponseSetting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
 
+    @Override
     public HttpResponseSetting post(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.POST, checkNotNull(matcher, "Matcher should not be null"));
     }
 
+    @Override
     public HttpResponseSetting put(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.PUT, checkNotNull(matcher, "Matcher should not be null"));
     }
 
+    @Override
     public HttpResponseSetting delete(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.DELETE, checkNotNull(matcher, "Matcher should not be null"));
     }
 
+    @Override
     public HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
         checkNotNull(target, "Target should not be null");
@@ -48,10 +53,12 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
         return request(and(by(method(method.name())), matcher));
     }
 
+    @Override
     public HttpResponseSetting proxy(final ProxyConfig config) {
         return proxy(checkNotNull(config, "Proxy config should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
+    @Override
     public HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
         ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
         this.request(InternalApis.context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));

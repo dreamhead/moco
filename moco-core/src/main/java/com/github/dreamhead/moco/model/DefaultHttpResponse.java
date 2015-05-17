@@ -39,6 +39,7 @@ public class DefaultHttpResponse implements HttpResponse {
         return this.headers;
     }
 
+    @Override
     public int getStatus() {
         return status;
     }
