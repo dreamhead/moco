@@ -48,6 +48,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         };
     }
 
+    @Override
     public int port() {
         if (port.isPresent()) {
             return port.get();
