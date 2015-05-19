@@ -47,7 +47,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
         return self();
     }
 
-    private ResponseHandler targetHandler(ResponseHandler responseHandler) {
+    private ResponseHandler targetHandler(final ResponseHandler responseHandler) {
         if (this.handler == null) {
             return responseHandler;
         }

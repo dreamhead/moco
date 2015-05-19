@@ -41,7 +41,7 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Set
     }
 
     @Override
-    public HttpResponseSetting redirectTo(String url) {
+    public HttpResponseSetting redirectTo(final String url) {
         return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
     }
 }

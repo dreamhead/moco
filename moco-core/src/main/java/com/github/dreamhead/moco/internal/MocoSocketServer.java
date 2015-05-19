@@ -10,7 +10,7 @@ import io.netty.handler.codec.string.StringEncoder;
 public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting> {
     private final ActualSocketServer serverSetting;
 
-    public MocoSocketServer(ActualSocketServer serverSetting) {
+    public MocoSocketServer(final ActualSocketServer serverSetting) {
         this.serverSetting = serverSetting;
     }
 

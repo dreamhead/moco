@@ -51,7 +51,7 @@ public final class FileContentType {
         return type;
     }
 
-    private Optional<Charset> toCharset(Optional<String> type) {
+    private Optional<Charset> toCharset(final Optional<String> type) {
         if (charset.isPresent()) {
             return charset;
         }
@@ -63,7 +63,7 @@ public final class FileContentType {
         return absent();
     }
 
-    private Optional<String> toContentType(String extension) {
+    private Optional<String> toContentType(final String extension) {
         return fromNullable(contentTypeMap.get(extension.toLowerCase()));
     }
 }

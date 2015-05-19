@@ -12,17 +12,17 @@ import com.google.common.base.Optional;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 
 public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
-    private ActualSocketServer(Optional<Integer> port, MocoMonitor monitor) {
+    private ActualSocketServer(final Optional<Integer> port, final MocoMonitor monitor) {
         super(port, monitor, new MocoConfig[0]);
     }
 
     @Override
-    protected Setting<SocketResponseSetting> newSetting(RequestMatcher matcher) {
+    protected Setting<SocketResponseSetting> newSetting(final RequestMatcher matcher) {
         return new SocketSetting(matcher);
     }
 
     @Override
-    protected SocketResponseSetting onRequestAttached(RequestMatcher matcher) {
+    protected SocketResponseSetting onRequestAttached(final RequestMatcher matcher) {
         SocketSetting baseSetting = new SocketSetting(matcher);
         addSetting(baseSetting);
         return baseSetting;
@@ -33,7 +33,7 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
         return this;
     }
 
-    public SocketServer mergeHttpServer(ActualSocketServer thatServer) {
+    public SocketServer mergeHttpServer(final ActualSocketServer thatServer) {
         ActualSocketServer newServer = newBaseServer();
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
@@ -51,11 +51,11 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
         return createLogServer(this.getPort());
     }
 
-    public static ActualSocketServer createQuietServer(Optional<Integer> port) {
+    public static ActualSocketServer createQuietServer(final Optional<Integer> port) {
         return new ActualSocketServer(port, new QuietMonitor());
     }
 
-    public static ActualSocketServer createLogServer(Optional<Integer> port) {
+    public static ActualSocketServer createLogServer(final Optional<Integer> port) {
         return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
 }

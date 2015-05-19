@@ -11,7 +11,7 @@ public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
     public StartsWithMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
-            public boolean apply(String input) {
+            public boolean apply(final String input) {
                 return input.startsWith(expected.readFor(Optional.<Request>absent()).toString());
             }
         });

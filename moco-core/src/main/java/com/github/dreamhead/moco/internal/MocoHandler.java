@@ -24,24 +24,24 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
 
-    public MocoHandler(ActualHttpServer server) {
+    public MocoHandler(final ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
         this.monitor = server.getMonitor();
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest message) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final FullHttpRequest message) throws Exception {
     	FullHttpResponse response = handleRequest(message);
         closeIfNotKeepAlive(message, ctx.write(response));
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(final ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
 
-    private FullHttpResponse handleRequest(FullHttpRequest message) {
+    private FullHttpResponse handleRequest(final FullHttpRequest message) {
         HttpRequest request = DefaultHttpRequest.newRequest(message);
         DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
         FullHttpResponse response = httpResponse.toFullResponse();
@@ -50,7 +50,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         return response;
     }
 
-    private DefaultMutableHttpResponse getHttpResponse(HttpRequest request) {
+    private DefaultMutableHttpResponse getHttpResponse(final HttpRequest request) {
         try {
             monitor.onMessageArrived(request);
             return doGetHttpResponse(request);
@@ -63,7 +63,7 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
     }
 
-    private DefaultMutableHttpResponse doGetHttpResponse(HttpRequest request) {
+    private DefaultMutableHttpResponse doGetHttpResponse(final HttpRequest request) {
         DefaultMutableHttpResponse httpResponse = newResponse(request, 200);
         SessionContext context = new SessionContext(request, httpResponse);
 
@@ -83,27 +83,27 @@ public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         return newResponse(request, 400);
     }
 
-    private void closeIfNotKeepAlive(FullHttpRequest request, ChannelFuture future) {
+    private void closeIfNotKeepAlive(final FullHttpRequest request, final ChannelFuture future) {
         if (!isKeepAlive(request)) {
             future.addListener(ChannelFutureListener.CLOSE);
         }
     }
 
-    private void prepareForKeepAlive(FullHttpRequest request, FullHttpResponse response) {
+    private void prepareForKeepAlive(final FullHttpRequest request, final FullHttpResponse response) {
         if (isKeepAlive(request)) {
             setKeepAlive(response, true);
             setContentLengthForKeepAlive(response);
         }
     }
 
-    private void setContentLengthForKeepAlive(FullHttpResponse response) {
+    private void setContentLengthForKeepAlive(final FullHttpResponse response) {
         if (!isContentLengthSet(response)) {
             setContentLength(response, response.content().writerIndex());
         }
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         monitor.onException(cause);
     }
 }

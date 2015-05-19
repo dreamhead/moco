@@ -18,7 +18,7 @@ public class MountMatcher extends AbstractRequestMatcher {
     private final Iterable<MountPredicate> predicates;
     private final MountTo target;
 
-    public MountMatcher(File dir, MountTo target, Iterable<MountPredicate> predicates) {
+    public MountMatcher(final File dir, final MountTo target, final Iterable<MountPredicate> predicates) {
         this.dir = dir;
         this.predicates = predicates;
         this.target = target;

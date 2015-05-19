@@ -14,7 +14,7 @@ public final class Files {
         return finalPath;
     }
 
-    private static String actualJoin(final String path1, String path2) {
+    private static String actualJoin(final String path1, final String path2) {
         return joinedFile(path1, path2).getPath();
     }
 

@@ -28,7 +28,7 @@ public class DefaultLogFormatter implements LogFormatter {
         return String.format("Exception thrown:\n\n%s\n", stackTraceToString(e));
     }
 
-    private String stackTraceToString(Throwable e) {
+    private String stackTraceToString(final Throwable e) {
         StringWriter writer = new StringWriter();
         e.printStackTrace(new PrintWriter(writer));
         return writer.toString();

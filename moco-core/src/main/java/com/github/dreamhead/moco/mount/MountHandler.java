@@ -27,12 +27,12 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
     }
 
     @Override
-    protected MessageContent responseContent(HttpRequest httpRequest) {
+    protected MessageContent responseContent(final HttpRequest httpRequest) {
         FileResourceReader reader = new FileResourceReader(text(targetFile(httpRequest).getPath()), Optional.<Charset>absent());
         return reader.readFor(of(httpRequest));
     }
 
-    private File targetFile(HttpRequest request) {
+    private File targetFile(final HttpRequest request) {
         Optional<String> relativePath = extractor.extract(request);
         if (!relativePath.isPresent()) {
             throw new IllegalStateException("Reach mount handler without relative path");
@@ -42,7 +42,7 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
     }
 
     @Override
-    protected String getContentType(HttpRequest request) {
+    protected String getContentType(final HttpRequest request) {
         return new FileContentType(targetFile(request).getName(), Optional.<Charset>absent()).getContentType();
     }
 

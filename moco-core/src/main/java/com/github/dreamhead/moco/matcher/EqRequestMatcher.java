@@ -13,7 +13,7 @@ public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     public EqRequestMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
-            public boolean apply(String input) {
+            public boolean apply(final String input) {
                 return Arrays.equals(input.getBytes(), expected.readFor(Optional.<Request>absent()).getContent());
             }
         });

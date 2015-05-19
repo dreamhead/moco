@@ -23,7 +23,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
     protected Optional<Integer> port;
     protected RequestMatcher matcher = anyRequest();
 
-    public BaseActualServer(Optional<Integer> port, MocoMonitor monitor, MocoConfig[] configs) {
+    public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -57,7 +57,7 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         throw new IllegalStateException("unbound port should not be returned");
     }
 
-    public void setPort(int port) {
+    public void setPort(final int port) {
         this.port = of(port);
     }
 
@@ -89,18 +89,18 @@ public abstract class BaseActualServer <T extends ResponseSetting<T>> extends Ba
         this.settings.add(setting);
     }
 
-    protected void addEvents(List<MocoEventTrigger> eventTriggers) {
+    protected void addEvents(final List<MocoEventTrigger> eventTriggers) {
         this.eventTriggers.addAll(eventTriggers);
     }
 
-    protected void anySetting(RequestMatcher matcher, ResponseHandler handler) {
+    protected void anySetting(final RequestMatcher matcher, final ResponseHandler handler) {
         if (handler != null) {
             this.response(handler);
             this.matcher = matcher;
         }
     }
 
-    protected void addSettings(ImmutableList<Setting<T>> thatSettings) {
+    protected void addSettings(final ImmutableList<Setting<T>> thatSettings) {
         for (Setting<T> thatSetting : thatSettings) {
             addSetting(thatSetting);
         }

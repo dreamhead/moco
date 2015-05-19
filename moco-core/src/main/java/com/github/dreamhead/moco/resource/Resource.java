@@ -28,7 +28,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
     }
 
     @Override
-    public MessageContent readFor(Optional<? extends Request> request) {
+    public MessageContent readFor(final Optional<? extends Request> request) {
         return reader.readFor(request);
     }
 }

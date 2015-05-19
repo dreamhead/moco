@@ -15,7 +15,7 @@ import javax.net.ssl.SSLEngine;
 public class MocoHttpServer extends BaseServerRunner {
     protected final ActualHttpServer serverSetting;
 
-    public MocoHttpServer(ActualHttpServer serverSetting) {
+    public MocoHttpServer(final ActualHttpServer serverSetting) {
         this.serverSetting = serverSetting;
     }
 

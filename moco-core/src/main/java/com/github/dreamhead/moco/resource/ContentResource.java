@@ -8,7 +8,7 @@ public class ContentResource extends Resource implements Content {
         super(identifiable, configApplier, reader);
     }
 
-    public String getContentType(HttpRequest request) {
+    public String getContentType(final HttpRequest request) {
         return ((ContentResourceReader)reader).getContentType(request);
     }
 }

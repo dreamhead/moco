@@ -21,7 +21,7 @@ public class ResourceFactory {
     public static ContentResource textResource(final String text) {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
-            public String getContentType(HttpRequest request) {
+            public String getContentType(final HttpRequest request) {
                 return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
             }
 
@@ -44,7 +44,7 @@ public class ResourceFactory {
     public static Resource methodResource(final String method) {
         return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public MessageContent readFor(Optional<? extends Request> request) {
+            public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(method.toUpperCase());
             }
         });
@@ -53,7 +53,7 @@ public class ResourceFactory {
     public static Resource versionResource(final Resource version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public MessageContent readFor(Optional<? extends Request> request) {
+            public MessageContent readFor(final Optional<? extends Request> request) {
                 String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
                 return content(text);
             }
@@ -63,7 +63,7 @@ public class ResourceFactory {
     public static Resource versionResource(final HttpProtocolVersion version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public MessageContent readFor(Optional<? extends Request> request) {
+            public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(version.text());
             }
         });
@@ -72,31 +72,31 @@ public class ResourceFactory {
     public static Resource cookieResource(final String key, final Resource resource) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
-            public MessageContent readFor(Optional<? extends Request> request) {
+            public MessageContent readFor(final Optional<? extends Request> request) {
                 MessageContent messageContent = resource.readFor(request);
                 return content(new Cookies().encodeCookie(key, messageContent.toString()));
             }
         });
     }
 
-    public static ContentResource templateResource(final ContentResource template, ImmutableMap<String, ? extends Variable> variables) {
+    public static ContentResource templateResource(final ContentResource template, final ImmutableMap<String, ? extends Variable> variables) {
         return contentResource(id("template"), templateConfigApplier(template, variables), new TemplateResourceReader(template, variables));
     }
 
     public static Resource uriResource(final String uri) {
         return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
             @Override
-            public MessageContent readFor(Optional<? extends Request> request) {
+            public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(uri);
             }
         });
     }
 
-    private static ContentResource contentResource(Identifiable id, ResourceConfigApplier applier, ContentResourceReader reader) {
+    private static ContentResource contentResource(final Identifiable id, final ResourceConfigApplier applier, final ContentResourceReader reader) {
         return new ContentResource(id, applier, reader);
     }
 
-    private static Resource resource(Identifiable id, ResourceConfigApplier applier, ResourceReader reader) {
+    private static Resource resource(final Identifiable id, final ResourceConfigApplier applier, final ResourceReader reader) {
         return new Resource(id, applier, reader);
     }
 

@@ -19,7 +19,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     protected final Resource filename;
     protected final Optional<Charset> charset;
 
-    public AbstractFileResourceReader(Resource filename, Optional<Charset> charset) {
+    public AbstractFileResourceReader(final Resource filename, final Optional<Charset> charset) {
         this.charset = charset;
         this.filename = filename;
     }
@@ -29,7 +29,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
         return asMessageContent(doReadFor(request));
     }
 
-    private MessageContent asMessageContent(byte[] content) {
+    private MessageContent asMessageContent(final byte[] content) {
         MessageContent.Builder builder = content().withContent(content);
         if (charset.isPresent()) {
             builder.withCharset(charset.get());

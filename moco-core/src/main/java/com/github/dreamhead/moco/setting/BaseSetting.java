@@ -13,12 +13,12 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
     }
 
     @Override
-    public boolean match(Request request) {
+    public boolean match(final Request request) {
         return this.matcher.match(request) && this.handler != null;
     }
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         this.handler.writeToResponse(context);
         this.fireCompleteEvent();
     }

@@ -7,12 +7,12 @@ import com.google.common.base.Optional;
 public class ExtractorVariable<T> implements Variable {
     private final RequestExtractor<T> extractor;
 
-    public ExtractorVariable(RequestExtractor<T> extractor) {
+    public ExtractorVariable(final RequestExtractor<T> extractor) {
         this.extractor = extractor;
     }
 
     @Override
-    public Object toTemplateVariable(Request request) {
+    public Object toTemplateVariable(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
         if (!extractContent.isPresent()) {
             return null;

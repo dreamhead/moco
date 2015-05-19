@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.internal.SessionContext;
 
 public interface Setting<T extends ResponseSetting> extends ConfigApplier<Setting<T>>, ResponseSetting<T> {
-    boolean match(Request request);
+    boolean match(final Request request);
 
-    void writeToResponse(SessionContext context);
+    void writeToResponse(final SessionContext context);
 }

@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
 public class OrRequestMatcher extends CompositeRequestMatcher {
-    public OrRequestMatcher(Iterable<RequestMatcher> matchers) {
+    public OrRequestMatcher(final Iterable<RequestMatcher> matchers) {
         super(matchers);
     }
 
@@ -20,7 +20,7 @@ public class OrRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    protected RequestMatcher newMatcher(Iterable<RequestMatcher> matchers) {
+    protected RequestMatcher newMatcher(final Iterable<RequestMatcher> matchers) {
         return new OrRequestMatcher(matchers);
     }
 }

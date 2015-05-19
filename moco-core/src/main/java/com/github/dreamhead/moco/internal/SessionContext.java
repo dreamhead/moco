@@ -4,10 +4,10 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
 public class SessionContext {
-    private Request request;
-    private Response response;
+    private final Request request;
+    private final Response response;
 
-    public SessionContext(Request request, Response response) {
+    public SessionContext(final Request request, final Response response) {
         this.request = request;
         this.response = response;
     }

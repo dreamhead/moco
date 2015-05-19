@@ -22,14 +22,14 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     private final Setting<SocketResponseSetting> anySetting;
     private final MocoMonitor monitor;
 
-    public MocoSocketHandler(ActualSocketServer server) {
+    public MocoSocketHandler(final ActualSocketServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
         this.monitor = server.getMonitor();
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final String msg) throws Exception {
         try {
             MessageContent content = content(msg);
             SocketRequest request = new DefaultSocketRequest(content);
@@ -44,11 +44,11 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(final ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
 
-    private void handleSession(SessionContext context) {
+    private void handleSession(final SessionContext context) {
         for (Setting setting : settings) {
             if (setting.match(context.getRequest())) {
                 setting.writeToResponse(context);
@@ -66,7 +66,7 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         monitor.onException(cause);
     }
 }

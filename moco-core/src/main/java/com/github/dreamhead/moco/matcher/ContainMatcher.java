@@ -11,7 +11,7 @@ public class ContainMatcher<T> extends AbstractOperatorMatcher<T> {
     public ContainMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
-            public boolean apply(String input) {
+            public boolean apply(final String input) {
                 return input.contains(expected.readFor(Optional.<Request>absent()).toString());
             }
         });

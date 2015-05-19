@@ -52,16 +52,16 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         return this;
     }
 
-    private Document getResourceDocument(Request request, Resource resource) throws SAXException {
+    private Document getResourceDocument(final Request request, final Resource resource) throws SAXException {
         InputStream stream = resource.readFor(of(request)).toInputStream();
         return extractDocument(new InputSource(stream), this);
     }
 
-    private Document extractDocument(Request request, RequestExtractor<String> extractor) throws SAXException {
+    private Document extractDocument(final Request request, final RequestExtractor<String> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 
-    public void trimChild(Node node, Node child) {
+    public void trimChild(final Node node, final Node child) {
         if (child instanceof Text) {
             if (isNullOrEmpty(child.getNodeValue().trim())) {
                 node.removeChild(child);
@@ -75,7 +75,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     // Whitespace will be kept by DOM parser.
-    private void trimNode(Node node) {
+    private void trimNode(final Node node) {
         NodeList children = node.getChildNodes();
         for (int i = children.getLength() - 1; i >= 0; i--) {
             trimChild(node, children.item(i));
@@ -96,7 +96,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    public Document extractDocument(InputSource inputSource, XmlRequestMatcher xmlRequestMatcher) throws SAXException {
+    public Document extractDocument(final InputSource inputSource, final XmlRequestMatcher xmlRequestMatcher) throws SAXException {
         try {
             Document document = xmlRequestMatcher.documentBuilder.parse(inputSource);
             document.normalizeDocument();

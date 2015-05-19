@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.Response;
 public class CompositeMonitor implements MocoMonitor {
     private final MocoMonitor[] monitors;
 
-    public CompositeMonitor(MocoMonitor[] monitors) {
+    public CompositeMonitor(final MocoMonitor[] monitors) {
         this.monitors = monitors;
     }
 

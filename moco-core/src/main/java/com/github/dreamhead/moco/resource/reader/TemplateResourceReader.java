@@ -34,7 +34,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
 
-    public TemplateResourceReader(ContentResource template, ImmutableMap<String, ? extends Variable> variables) {
+    public TemplateResourceReader(final ContentResource template, final ImmutableMap<String, ? extends Variable> variables) {
         this.template = template;
         this.variables = variables;
     }
@@ -68,7 +68,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    private Configuration createConfiguration(StringTemplateLoader templateLoader, Charset charset) {
+    private Configuration createConfiguration(final StringTemplateLoader templateLoader, final Charset charset) {
         Configuration cfg = new Configuration(CURRENT_VERSION);
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
         cfg.setDefaultEncoding(charset.name());
@@ -76,7 +76,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         return cfg;
     }
 
-    private ImmutableMap<String, Object> variables(Request request) {
+    private ImmutableMap<String, Object> variables(final Request request) {
         return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", request).build();
     }
 
@@ -90,7 +90,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public String getContentType(HttpRequest request) {
+    public String getContentType(final HttpRequest request) {
         return template.getContentType(request);
     }
 }

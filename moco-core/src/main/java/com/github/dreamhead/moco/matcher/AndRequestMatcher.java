@@ -20,7 +20,7 @@ public class AndRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    protected RequestMatcher newMatcher(Iterable<RequestMatcher> matchers) {
+    protected RequestMatcher newMatcher(final Iterable<RequestMatcher> matchers) {
         return new AndRequestMatcher(matchers);
     }
 }
