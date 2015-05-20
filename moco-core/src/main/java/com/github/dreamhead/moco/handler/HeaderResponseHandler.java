@@ -21,7 +21,7 @@ public class HeaderResponseHandler extends AbstractHttpResponseHandler {
 
 
     @Override
-    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         if (detector.hasHeader(httpResponse, name)) {
             httpResponse.removeHeader(name);
         }

@@ -30,12 +30,12 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     private final ObjectMapper mapper = new ObjectMapper();
     private final File file;
 
-    public DefaultFailoverExecutor(File file) {
+    public DefaultFailoverExecutor(final File file) {
         this.file = file;
     }
 
     @Override
-    public void onCompleteResponse(HttpRequest request, HttpResponse httpResponse) {
+    public void onCompleteResponse(final HttpRequest request, final HttpResponse httpResponse) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
             Session targetSession = Session.newSession(request, httpResponse);
@@ -45,7 +45,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         }
     }
 
-    private ImmutableList<Session> prepareTargetSessions(Session targetSession) {
+    private ImmutableList<Session> prepareTargetSessions(final Session targetSession) {
         if (file.length() == 0) {
             return of(targetSession);
         }
@@ -53,7 +53,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         return ImmutableList.<Session>builder().addAll(toUniqueSessions(targetSession, restoreSessions(this.file))).add(targetSession).build();
     }
 
-    private Iterable<Session> toUniqueSessions(Session targetSession, ImmutableList<Session> sessions) {
+    private Iterable<Session> toUniqueSessions(final Session targetSession, final ImmutableList<Session> sessions) {
         Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
         if (session.isPresent()) {
             return from(sessions).filter(not(isForRequest(targetSession.getRequest())));
@@ -62,7 +62,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         return sessions;
     }
 
-    private ImmutableList<Session> restoreSessions(File file) {
+    private ImmutableList<Session> restoreSessions(final File file) {
         try {
             List<Session> sessions = mapper.readValue(file, factory.constructCollectionType(List.class, Session.class));
             return copyOf(sessions);
@@ -75,7 +75,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     @Override
-    public HttpResponse failover(HttpRequest request) {
+    public HttpResponse failover(final HttpRequest request) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = tryFind(sessions, isForRequest(request));
         if (session.isPresent()) {

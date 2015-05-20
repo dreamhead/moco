@@ -12,7 +12,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     protected abstract MessageContent responseContent(final Request request);
 
     @Override
-    public void writeToResponse(SessionContext context) {
+    public void writeToResponse(final SessionContext context) {
         Request request = context.getRequest();
         Response response = context.getResponse();
 
@@ -27,7 +27,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         mutableResponse.setContent(responseContent(request));
     }
 
-    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(final HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         MessageContent content = responseContent(httpRequest);
         httpResponse.setContent(content);
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);

@@ -19,7 +19,7 @@ public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     }
 
     @Override
-    protected Optional<String> remoteUrl(String uri) {
+    protected Optional<String> remoteUrl(final String uri) {
         if (!proxyConfig.canAccessedBy(uri)) {
             return absent();
         }

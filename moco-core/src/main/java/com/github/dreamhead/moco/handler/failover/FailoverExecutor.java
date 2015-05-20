@@ -4,16 +4,16 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 
 public interface FailoverExecutor {
-    void onCompleteResponse(HttpRequest request, HttpResponse response);
-    HttpResponse failover(HttpRequest request);
+    void onCompleteResponse(final HttpRequest request, final HttpResponse response);
+    HttpResponse failover(final HttpRequest request);
 
     FailoverExecutor EMPTY_FAILOVER = new FailoverExecutor() {
         @Override
-        public void onCompleteResponse(HttpRequest request, HttpResponse response) {
+        public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
         }
 
         @Override
-        public HttpResponse failover(HttpRequest request) {
+        public HttpResponse failover(final HttpRequest request) {
             throw new RuntimeException("no failover response found");
         }
     };

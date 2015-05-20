@@ -38,17 +38,17 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of("Host", "Content-Length");
     private static ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of("Date", "Server");
 
-    protected abstract Optional<String> remoteUrl(String uri);
+    protected abstract Optional<String> remoteUrl(final String uri);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
     protected final Failover failover;
 
-    public AbstractProxyResponseHandler(Failover failover) {
+    public AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
     }
 
-    protected HttpRequestBase prepareRemoteRequest(FullHttpRequest request, URL url) {
+    protected HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createRemoteRequest(request, url);
         RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
         remoteRequest.setConfig(config);
@@ -63,7 +63,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return remoteRequest;
     }
 
-    private HttpRequestBase createRemoteRequest(FullHttpRequest request, URL url) {
+    private HttpRequestBase createRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request.getMethod());
         for (Map.Entry<String, String> entry : request.headers()) {
             if (isRequestHeader(entry)) {
@@ -78,20 +78,20 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return new InputStreamEntity(new ByteBufInputStream(content), contentLength);
     }
 
-    private org.apache.http.HttpVersion createVersion(FullHttpRequest request) {
+    private org.apache.http.HttpVersion createVersion(final FullHttpRequest request) {
         HttpVersion protocolVersion = request.getProtocolVersion();
         return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
-    private boolean isRequestHeader(Map.Entry<String, String> entry) {
+    private boolean isRequestHeader(final Map.Entry<String, String> entry) {
         return !IGNORED_REQUEST_HEADERS.contains(entry.getKey());
     }
 
-    private boolean isResponseHeader(Header header) {
+    private boolean isResponseHeader(final Header header) {
         return !IGNORED_RESPONSE_HEADERS.contains(header.getName());
     }
 
-    private HttpRequestBase createBaseRequest(URL url, HttpMethod method) {
+    private HttpRequestBase createBaseRequest(final URL url, final HttpMethod method) {
         if (method == HttpMethod.GET) {
             return new HttpGet(url.toString());
         }
@@ -123,8 +123,8 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         throw new RuntimeException("unknown HTTP method");
     }
 
-    protected HttpResponse setupResponse(HttpRequest request,
-                                         org.apache.http.HttpResponse remoteResponse) throws IOException {
+    protected HttpResponse setupResponse(final HttpRequest request,
+                                         final org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
             return failover.failover(request);
@@ -136,7 +136,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return httpResponse;
     }
 
-    private HttpResponse setupNormalResponse(org.apache.http.HttpResponse remoteResponse) throws IOException {
+    private HttpResponse setupNormalResponse(final org.apache.http.HttpResponse remoteResponse) throws IOException {
         HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString());
         HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode());
         FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
@@ -159,7 +159,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     @Override
-    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
         if (!url.isPresent()) {
             return;
@@ -169,7 +169,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         doWritHttpResponse(response, httpResponse);
     }
 
-    private void doWritHttpResponse(HttpResponse response, MutableHttpResponse httpResponse) {
+    private void doWritHttpResponse(final HttpResponse response, final MutableHttpResponse httpResponse) {
         httpResponse.setVersion(response.getVersion());
         httpResponse.setStatus(response.getStatus());
         for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
@@ -189,7 +189,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return doForward(request, remoteUrl);
     }
 
-    private HttpResponse doForward(HttpRequest request, URL remoteUrl) {
+    private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
@@ -205,7 +205,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
     }
 
-    protected Optional<URL> remoteUrl(HttpRequest request) {
+    protected Optional<URL> remoteUrl(final HttpRequest request) {
         Optional<String> remoteUrl = this.remoteUrl(request.getUri());
         if (!remoteUrl.isPresent()) {
             return absent();

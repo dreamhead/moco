@@ -16,7 +16,7 @@ public class ResponseHandlers {
             .put("template", ContentHandler.class)
             .put("version", VersionResponseHandler.class).build();
 
-    public static ResponseHandler responseHandler(Resource resource) {
+    public static ResponseHandler responseHandler(final Resource resource) {
         if (handlers.containsKey(resource.id())) {
             return createResponseHandler(resource);
         }
@@ -24,7 +24,7 @@ public class ResponseHandlers {
         throw new IllegalArgumentException(format("unknown response handler for [%s]", resource.id()));
     }
 
-    private static ResponseHandler createResponseHandler(Resource resource) {
+    private static ResponseHandler createResponseHandler(final Resource resource) {
         Class clazz = handlers.get(resource.id());
         try {
             Constructor[] constructors = clazz.getConstructors();

@@ -15,7 +15,7 @@ public class VersionResponseHandler extends AbstractHttpResponseHandler {
     }
 
     @Override
-    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         String version = resource.readFor(of(httpRequest)).toString();
         httpResponse.setVersion(HttpProtocolVersion.versionOf(version));
     }

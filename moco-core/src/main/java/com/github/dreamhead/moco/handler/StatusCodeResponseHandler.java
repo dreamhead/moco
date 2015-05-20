@@ -12,7 +12,7 @@ public class StatusCodeResponseHandler extends AbstractHttpResponseHandler {
     }
 
     @Override
-    protected void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         httpResponse.setStatus(status.code());
     }
 }
