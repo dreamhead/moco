@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class HttpProtocolVersionDeserializer extends JsonDeserializer<HttpProtocolVersion> {
     @Override
-    public HttpProtocolVersion deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
+    public HttpProtocolVersion deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         return HttpProtocolVersion.versionOf(jp.getText());
     }
 }

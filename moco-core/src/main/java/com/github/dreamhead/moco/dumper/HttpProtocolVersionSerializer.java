@@ -9,7 +9,8 @@ import java.io.IOException;
 
 public class HttpProtocolVersionSerializer extends JsonSerializer<HttpProtocolVersion> {
     @Override
-    public void serialize(HttpProtocolVersion value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+    public void serialize(final HttpProtocolVersion value, final JsonGenerator generator,
+                          final SerializerProvider provider) throws IOException {
         generator.writeString(value.text());
     }
 }

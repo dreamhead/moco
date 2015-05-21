@@ -22,7 +22,7 @@ public class HttpResponseDumper implements Dumper<Response> {
         return buf.toString();
     }
 
-    private String responseProtocolLine(HttpResponse httpResponse) {
+    private String responseProtocolLine(final HttpResponse httpResponse) {
         return httpResponse.getVersion().text() + ' ' + httpResponse.getStatus();
     }
 }

@@ -21,7 +21,7 @@ public class HttpRequestDumper implements Dumper<Request> {
         return buf.toString();
     }
 
-    private String requestProtocolLine(HttpRequest request) {
+    private String requestProtocolLine(final HttpRequest request) {
         return request.getMethod() + ' ' + request.getUri() + ' ' + request.getVersion().text();
     }
 }

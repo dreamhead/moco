@@ -9,7 +9,8 @@ import java.io.IOException;
 
 public class MessageContentSerializer extends JsonSerializer<MessageContent> {
     @Override
-    public void serialize(MessageContent value, JsonGenerator generator, SerializerProvider serializers) throws IOException {
+    public void serialize(final MessageContent value, final JsonGenerator generator,
+                          final SerializerProvider serializers) throws IOException {
         generator.writeString(value.toString());
     }
 }

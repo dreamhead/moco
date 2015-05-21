@@ -7,7 +7,7 @@ import static com.github.dreamhead.moco.util.URLs.join;
 public class MocoContextConfig implements MocoConfig<String> {
     private final String context;
 
-    public MocoContextConfig(String context) {
+    public MocoContextConfig(final String context) {
         this.context = context;
     }
 

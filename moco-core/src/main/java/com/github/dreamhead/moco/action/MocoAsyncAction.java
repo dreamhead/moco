@@ -12,7 +12,7 @@ public class MocoAsyncAction implements MocoEventAction {
     private final LatencyProcedure procedure;
     private final ExecutorService service = Executors.newCachedThreadPool();
 
-    public MocoAsyncAction(MocoEventAction action, LatencyProcedure procedure) {
+    public MocoAsyncAction(final MocoEventAction action, final LatencyProcedure procedure) {
         this.action = action;
         this.procedure = procedure;
     }

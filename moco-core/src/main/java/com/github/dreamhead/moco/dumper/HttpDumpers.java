@@ -5,7 +5,7 @@ import com.google.common.net.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 
 public class HttpDumpers {
-    public static String asContent(HttpMessage message) {
+    public static String asContent(final HttpMessage message) {
         long length = getContentLength(message, -1);
         if (length > 0) {
             return StringUtil.NEWLINE + StringUtil.NEWLINE + contentForDump(message);
@@ -14,7 +14,7 @@ public class HttpDumpers {
         return "";
     }
 
-    private static String contentForDump(HttpMessage message) {
+    private static String contentForDump(final HttpMessage message) {
         String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
         if (isText(type)) {
             return message.getContent().toString();
@@ -23,11 +23,11 @@ public class HttpDumpers {
         return "<content is binary>";
     }
 
-    private static boolean isText(String type) {
+    private static boolean isText(final String type) {
         return type == null || type.startsWith("text") || type.endsWith("javascript") || type.endsWith("json") || type.endsWith("xml");
     }
 
-    private static long getContentLength(HttpMessage response, long defaultValue) {
+    private static long getContentLength(final HttpMessage response, final long defaultValue) {
         String lengthText = response.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
         if (lengthText != null) {
             try {

@@ -7,7 +7,7 @@ import static com.github.dreamhead.moco.util.Files.join;
 public class MocoFileRootConfig implements MocoConfig<String> {
     private final String fileRoot;
 
-    public MocoFileRootConfig(String fileRoot) {
+    public MocoFileRootConfig(final String fileRoot) {
         this.fileRoot = fileRoot;
     }
 

@@ -51,7 +51,7 @@ public class MocoRequestAction implements MocoEventAction {
         }
     }
 
-    private HttpRequestBase createRequest(String url, String method) {
+    private HttpRequestBase createRequest(final String url, final String method) {
         if (HttpMethod.GET.name().equalsIgnoreCase(method)) {
             return new HttpGet(url);
         }

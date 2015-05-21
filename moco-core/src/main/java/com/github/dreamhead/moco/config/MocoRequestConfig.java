@@ -8,17 +8,17 @@ import static com.github.dreamhead.moco.Moco.and;
 public class MocoRequestConfig implements MocoConfig<RequestMatcher> {
     private RequestMatcher requestMatcher;
 
-    public MocoRequestConfig(RequestMatcher requestMatcher) {
+    public MocoRequestConfig(final RequestMatcher requestMatcher) {
         this.requestMatcher = requestMatcher;
     }
 
     @Override
-    public boolean isFor(String id) {
+    public boolean isFor(final String id) {
         return REQUEST_ID.equalsIgnoreCase(id);
     }
 
     @Override
-    public RequestMatcher apply(RequestMatcher target) {
+    public RequestMatcher apply(final RequestMatcher target) {
         return and(requestMatcher, target);
     }
 }
