@@ -33,7 +33,7 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
         }
     }
 
-	private Object toStringArray(Object content){
+	private Object toStringArray(final Object content){
 		if(content instanceof List){
             @SuppressWarnings("unchecked")
             List<String> texts = (List<String>) content;

@@ -7,7 +7,7 @@ import org.xml.sax.InputSource;
 import java.io.StringReader;
 
 public class XmlExtractorHelper {
-    public InputSource extractAsInputSource(Request request, RequestExtractor<String> extractor) {
+    public InputSource extractAsInputSource(final Request request, final RequestExtractor<String> extractor) {
         return new InputSource(new StringReader(extractor.extract(request).get()));
     }
 }

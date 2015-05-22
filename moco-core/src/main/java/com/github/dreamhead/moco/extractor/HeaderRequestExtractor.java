@@ -23,7 +23,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     @Override
     protected Optional<String[]> doExtract(final HttpRequest request) {
         final ImmutableMap<String,String> headers = request.getHeaders();
-        String[] extractedValues = from(headers.entrySet()).filter(isForName(name)).transform(toValue(headers)).toArray(String.class);
+        String[] extractedValues = from(headers.entrySet()).filter(isForName(name)).transform(toValue()).toArray(String.class);
         if (extractedValues.length > 0) {
             return of(extractedValues);
         }
@@ -31,7 +31,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
         return absent();
     }
 
-    private Function<Map.Entry<String, String>, String> toValue(final ImmutableMap<String, String> headers) {
+    private Function<Map.Entry<String, String>, String> toValue() {
         return new Function<Map.Entry<String,String>, String>() {
             @Override
             public String apply(Map.Entry<String, String> input) {

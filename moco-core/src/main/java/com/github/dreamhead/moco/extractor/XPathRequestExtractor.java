@@ -42,7 +42,7 @@ public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
         }
     }
 
-    private Optional<String[]> doExtract(NodeList list) {
+    private Optional<String[]> doExtract(final NodeList list) {
         List<String> values = newArrayList();
         for (int i = 0; i < list.getLength(); i++) {
             Node node = list.item(i);

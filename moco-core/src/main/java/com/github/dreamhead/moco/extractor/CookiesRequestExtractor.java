@@ -31,7 +31,7 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
         return of(doExtractCookies(cookieString.get()));
     }
 
-    private static ImmutableMap<String, String> doExtractCookies(String[] cookieString) {
+    private static ImmutableMap<String, String> doExtractCookies(final String[] cookieString) {
         Set<Cookie> cookies = toCookies(cookieString);
         Map<String, String> target = newHashMap();
         for (Cookie cookie : cookies) {
@@ -41,7 +41,7 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
         return copyOf(target);
     }
 
-    private static Set<Cookie> toCookies(String[] headers) {
+    private static Set<Cookie> toCookies(final String[] headers) {
         Set<Cookie> cookies = newHashSet();
         for (String header : headers) {
             cookies.addAll(ServerCookieDecoder.STRICT.decode(header));

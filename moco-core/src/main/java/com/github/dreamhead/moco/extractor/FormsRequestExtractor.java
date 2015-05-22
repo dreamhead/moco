@@ -36,7 +36,7 @@ public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<Str
         }
     }
 
-    private ImmutableMap<String, String> doExtractForms(HttpPostRequestDecoder decoder) throws IOException {
+    private ImmutableMap<String, String> doExtractForms(final HttpPostRequestDecoder decoder) throws IOException {
         List<InterfaceHttpData> bodyHttpDatas = decoder.getBodyHttpDatas();
         Map<String, String> forms = newHashMap();
         for (InterfaceHttpData data : bodyHttpDatas) {
