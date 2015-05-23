@@ -1,11 +1,13 @@
 package com.github.dreamhead.moco;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
@@ -102,5 +104,29 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                         is("jsonpath match success"));
             }
         });
+    }
+
+    @Test
+    public void should_return_json_for_POJO() throws Exception {
+        server = httpServer(port(), log());
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        server.response(toJson(pojo));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String actual = helper.get(root());
+                ObjectMapper mapper = new ObjectMapper();
+                PlainA response = mapper.readValue(actual, PlainA.class);
+                assertThat(response.code, is(1));
+                assertThat(response.message, is("message"));
+            }
+        });
+    }
+
+    private static class PlainA {
+        public int code;
+        public String message;
     }
 }

@@ -29,6 +29,9 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
 
     protected void doWriteToResponse(final HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         MessageContent content = responseContent(httpRequest);
+        if (content == null) {
+            throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");
+        }
         httpResponse.setContent(content);
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);
 

@@ -328,6 +328,10 @@ public final class Moco {
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
+    public static ResponseHandler toJson(Object pojo) {
+        return new JsonResponseHandler(pojo);
+    }
+
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
         return new JsonPathRequestExtractor(checkNotNullOrEmpty(jsonPath, "JsonPath should not be null"));
     }
