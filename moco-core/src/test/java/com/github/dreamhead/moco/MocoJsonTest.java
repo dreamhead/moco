@@ -1,15 +1,21 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.CharStreams;
+import com.google.common.net.*;
+import org.apache.http.*;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -108,7 +114,6 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_for_POJO() throws Exception {
-        server = httpServer(port(), log());
         PlainA pojo = new PlainA();
         pojo.code = 1;
         pojo.message = "message";
@@ -116,11 +121,14 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String actual = helper.get(root());
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                HttpEntity entity = response.getEntity();
+                assertThat(entity.getContentType().getValue(), is("application/json"));
+                String content = CharStreams.toString(new InputStreamReader(entity.getContent(), Charset.defaultCharset()));
                 ObjectMapper mapper = new ObjectMapper();
-                PlainA response = mapper.readValue(actual, PlainA.class);
-                assertThat(response.code, is(1));
-                assertThat(response.message, is("message"));
+                PlainA responseA = mapper.readValue(content, PlainA.class);
+                assertThat(responseA.code, is(1));
+                assertThat(responseA.message, is("message"));
             }
         });
     }
