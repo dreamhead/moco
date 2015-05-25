@@ -10,15 +10,25 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.*;
-import com.google.common.net.HttpHeaders;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.util.Jsons.toJson;
+import static com.github.dreamhead.moco.Moco.attachment;
+import static com.github.dreamhead.moco.Moco.latency;
+import static com.github.dreamhead.moco.Moco.proxy;
+import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.var;
+import static com.github.dreamhead.moco.Moco.version;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
@@ -65,7 +75,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
     private ResponseHandler createResponseHandler(String name, Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return AndResponseHandler.and(with(toJson(value)), header(HttpHeaders.CONTENT_TYPE, "application/json"));
+            return toJson(value);
         }
 
         if (isResource(name) && TextContainer.class.isInstance(value)) {
