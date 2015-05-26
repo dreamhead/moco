@@ -329,7 +329,7 @@ public final class Moco {
     }
 
     public static ResponseHandler toJson(Object pojo) {
-        return AndResponseHandler.and(new JsonResponseHandler(pojo), header(HttpHeaders.CONTENT_TYPE, "application/json"));
+        return new JsonResponseHandler(checkNotNull(pojo, "Json object should not be null"));
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
