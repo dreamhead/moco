@@ -24,20 +24,25 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         }
 
         MutableResponse mutableResponse = MutableResponse.class.cast(response);
-        mutableResponse.setContent(responseContent(request));
+        mutableResponse.setContent(requireResponseContent(request));
     }
 
-    protected void doWriteToResponse(final HttpRequest httpRequest, MutableHttpResponse httpResponse) {
-        MessageContent content = responseContent(httpRequest);
-        if (content == null) {
-            throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");
-        }
+    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+        MessageContent content = requireResponseContent(httpRequest);
         httpResponse.setContent(content);
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);
 
         if (!detector.hasContentType(httpResponse)) {
             httpResponse.addHeader(HttpHeaders.CONTENT_TYPE, getContentType(httpRequest));
         }
+    }
+
+    private MessageContent requireResponseContent(Request request) {
+        MessageContent content = responseContent(request);
+        if (content == null) {
+            throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");
+        }
+        return content;
     }
 
     protected String getContentType(final HttpRequest request) {
