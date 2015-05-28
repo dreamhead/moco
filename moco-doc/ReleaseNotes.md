@@ -1,3 +1,8 @@
+# Release 0.10.2
+
+## APIs
+* toJson will convert POJO to JSON text
+
 # Release 0.10.1 (1-May-2015)
 
 ## APIs

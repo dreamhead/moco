@@ -1287,19 +1287,32 @@ server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(20
 ```
 
 ### JSON Response
+If the response is JSON, we don't need to write JSON text with escape character in code.
 
-JSON response is the API without Java API, so if response is json, we don't have to write json with escape character. Hint, json api will setup Content-Type header as well.
+**@Since next release**
+You can give a POJO to Java API, it will be converted JSON text. Hint, this api will setup Content-Type header as well.
+```java
+server.request(by(uri("/json"))).response(toJson(pojo));
+```
+
+Note that this functionality is implemented in Jackson, please make sure your POJO is written in Jackson acceptable format. 
+
+**@Since 0.9.2**
+For JSON API, just give json object directly
 
 ```json
 {
-    "request": {
+    "request": 
+      {
         "uri": "/json"
-    },
-    "response": {
-        "json": {
+      },
+    "response": 
+      {
+        "json": 
+          {
             "foo" : "bar"
-        }
-    }
+          }
+      }
 }
 ```
 
