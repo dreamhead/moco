@@ -21,6 +21,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
+import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -321,6 +322,10 @@ public final class Moco {
 
     public static RequestMatcher json(final String jsonText) {
         return json(text(checkNotNull(jsonText, "JSON should not be null")));
+    }
+
+    public static RequestMatcher json(final Object pojo) {
+        return json(Jsons.toJson(checkNotNull(pojo, "Json object should not be null")));
     }
 
     public static RequestMatcher json(final Resource resource) {

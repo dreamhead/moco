@@ -2,8 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharStreams;
-import com.google.common.net.*;
-import org.apache.http.*;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
@@ -11,11 +10,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.json;
+import static com.github.dreamhead.moco.Moco.jsonPath;
+import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -96,6 +97,20 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.postContent(root(), "{\n\t\"foo\":\"bar\"\n}"), is("foo"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_POJO_json() throws Exception {
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        server.request(json(pojo)).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo"));
             }
         });
     }
