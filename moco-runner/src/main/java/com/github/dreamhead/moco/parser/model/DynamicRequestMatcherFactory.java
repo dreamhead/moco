@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.extractor.Extractors;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.Resource;
-import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 
@@ -15,7 +14,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.json;
+import static com.github.dreamhead.moco.Moco.not;
 import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
@@ -45,7 +48,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
 
     private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return json(Jsons.toJson(value));
+            return json(value);
         }
 
         if (Map.class.isInstance(value)) {
