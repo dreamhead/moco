@@ -1,7 +1,8 @@
 # Release 0.10.2
 
 ## APIs
-* toJson will convert POJO to JSON text
+* **toJson** will convert POJO to JSON text in response handler
+* **json** with pojo will convert POJO to JSON text in request matcher
 
 # Release 0.10.1 (1-May-2015)
 

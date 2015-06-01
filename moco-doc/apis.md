@@ -515,6 +515,8 @@ Json is rising with RESTful style architecture. Just like XML, in the most case,
 server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 ```
 
+Note that this functionality is implemented in Jackson, please make sure your POJO is written in Jackson acceptable format.
+
 * JSON
 
 ```json
@@ -536,7 +538,16 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 
 **NOTE**: Please escape the quote in text.
 
-#### JSON Text Shortcut
+#### JSON Shortcut
+
+If the response is JSON, we don't need to write JSON text with escape character in code.
+
+**@Since next release**
+You can give a POJO to Java API, it will be converted JSON text.
+```java
+server.request(json(pojo)).response("foo");
+```
+
 **@Since 0.9.2**
 
 As you have seen, it is so boring to write json with escape character, especially in json configuration. So you can try the json shortcut. The upper case could be rewritten as following:
