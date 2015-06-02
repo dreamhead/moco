@@ -1275,8 +1275,29 @@ server.request(by("foo")).response(latency(5000));
 
 It's easy to setup latency with time unit.
 
+* Java API
+
 ```java
 server.response(latency(1, TimeUnit.SECONDS));
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "text" : "foo"
+    },
+  "response" :
+    {
+      "latency": 
+        {
+          "duration": 1,
+          "unit": "second"
+        }
+    }
+}
 ```
 
 ### Sequence
