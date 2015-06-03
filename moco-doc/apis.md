@@ -1250,27 +1250,6 @@ server.get(by(uri("/"))).response(attachment("foo.txt", file("foo.response")));
 
 Sometimes, we need a latency to simulate slow server side operation.
 
-* Java API
-
-```java
-server.request(by("foo")).response(latency(5000));
-```
-
-* JSON
-
-```json
-{
-  "request" :
-    {
-      "text" : "foo"
-    },
-  "response" :
-    {
-      "latency" : 5000
-    }
-}
-```
-
 **@Since 0.10.1**
 
 It's easy to setup latency with time unit.
@@ -1299,6 +1278,8 @@ server.response(latency(1, TimeUnit.SECONDS));
     }
 }
 ```
+
+The original API without time unit introduced in 0.7 has been deprecated.
 
 ### Sequence
 **@Since 0.7**
