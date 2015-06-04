@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.reflect.TypeToken;
 
 import java.util.List;
 
@@ -16,10 +17,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>> implements ResponseSetting<T> {
-    protected abstract T self();
 
     protected ResponseHandler handler;
     protected List<MocoEventTrigger> eventTriggers = newArrayList();
+    private final Class<T> clazz;
+
+    @SuppressWarnings("unchecked")
+    public BaseResponseSettingConfiguration() {
+        this.clazz = (Class<T>)new TypeToken<T>(getClass()) {}.getRawType();
+    }
+
+    protected T self() {
+        return clazz.cast(this);
+    }
 
     @Override
     public T response(final String content) {

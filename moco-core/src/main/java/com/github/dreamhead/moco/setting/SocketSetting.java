@@ -13,11 +13,6 @@ public class SocketSetting extends BaseSetting<SocketResponseSetting> implements
     }
 
     @Override
-    protected SocketResponseSetting self() {
-        return this;
-    }
-
-    @Override
     public Setting<SocketResponseSetting> apply(final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(this.matcher, config);
         SocketSetting setting = new SocketSetting(appliedMatcher);

@@ -28,11 +28,6 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
         return baseSetting;
     }
 
-    @Override
-    protected SocketResponseSetting self() {
-        return this;
-    }
-
     public SocketServer mergeHttpServer(final ActualSocketServer thatServer) {
         ActualSocketServer newServer = newBaseServer();
         newServer.addSettings(this.getSettings());
