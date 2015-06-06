@@ -33,8 +33,7 @@ public class ResourceFactory {
     }
 
     public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset, final Optional<MocoConfig> config) {
-        String fileId = "file";
-        return contentResource(id(fileId), fileConfigApplier(fileId, filename), new FileResourceReader(filename, charset, config));
+        return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename), new FileResourceReader(filename, charset, config));
     }
 
     public static ContentResource classpathFileResource(final Resource filename, final Optional<Charset> charset) {
@@ -84,7 +83,7 @@ public class ResourceFactory {
     }
 
     public static Resource uriResource(final String uri) {
-        return resource(id("uri"), uriConfigApplier("uri", uri), new ResourceReader() {
+        return resource(id(MocoConfig.URI_ID), uriConfigApplier(MocoConfig.URI_ID, uri), new ResourceReader() {
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(uri);
