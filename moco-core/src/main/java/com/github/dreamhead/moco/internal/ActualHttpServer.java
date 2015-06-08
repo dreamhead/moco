@@ -1,19 +1,18 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.HttpsCertificate;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
-import com.google.common.net.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
-import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.util.Configs.configItem;
-import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
@@ -89,18 +88,6 @@ public class ActualHttpServer extends HttpConfiguration {
 
     public static ActualHttpServer createHttpsQuietServer(final Optional<Integer> port, final HttpsCertificate certificate, final MocoConfig... configs) {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
-    }
-
-    @Override
-    public HttpResponseSetting redirectTo(final String url) {
-        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
-    }
-
-    @Override
-    protected HttpResponseSetting onRequestAttached(final RequestMatcher matcher) {
-        HttpSetting baseSetting = new HttpSetting(matcher);
-        addSetting(baseSetting);
-        return baseSetting;
     }
 
     @Override

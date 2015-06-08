@@ -7,8 +7,11 @@ import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
+import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
+import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.File;
 
@@ -63,5 +66,17 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
         ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
         this.request(InternalApis.context(config.localBase())).response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
         return this;
+    }
+
+    @Override
+    public HttpResponseSetting redirectTo(final String url) {
+        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
+    }
+
+    @Override
+    protected HttpResponseSetting onRequestAttached(final RequestMatcher matcher) {
+        HttpSetting baseSetting = new HttpSetting(matcher);
+        addSetting(baseSetting);
+        return baseSetting;
     }
 }
