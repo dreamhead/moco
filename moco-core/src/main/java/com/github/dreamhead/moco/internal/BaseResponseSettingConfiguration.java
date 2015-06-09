@@ -27,7 +27,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
         this.clazz = (Class<T>)new TypeToken<T>(getClass()) {}.getRawType();
     }
 
-    protected T self() {
+    private T self() {
         return clazz.cast(this);
     }
 
