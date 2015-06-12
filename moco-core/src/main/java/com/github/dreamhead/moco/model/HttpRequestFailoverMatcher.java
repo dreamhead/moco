@@ -9,11 +9,11 @@ import java.util.Map;
 public class HttpRequestFailoverMatcher {
     private final HttpRequest failover;
 
-    public HttpRequestFailoverMatcher(HttpRequest failover) {
+    public HttpRequestFailoverMatcher(final HttpRequest failover) {
         this.failover = failover;
     }
 
-    public boolean match(HttpRequest target) {
+    public boolean match(final HttpRequest target) {
         return doMatch(failover.getUri(), target.getUri())
                 && doMatch(failover.getVersion(), target.getVersion())
                 && doMatch(failover.getContent(), target.getContent())
@@ -22,7 +22,7 @@ public class HttpRequestFailoverMatcher {
                 && doMatch(failover.getQueries(), target.getQueries());
     }
 
-    protected boolean doMatch(Map<String, String> thisField, Map<String, String> thatField) {
+    protected boolean doMatch(final Map<String, String> thisField, final Map<String, String> thatField) {
         if (thisField == null || thisField.isEmpty()) {
             return true;
         }
@@ -36,15 +36,15 @@ public class HttpRequestFailoverMatcher {
         return true;
     }
 
-    protected boolean doMatch(String thisField, String thatField) {
+    protected boolean doMatch(final String thisField, final String thatField) {
         return Strings.isNullOrEmpty(thisField) || thisField.equals(thatField);
     }
 
-    protected boolean doMatch(HttpProtocolVersion thisField, HttpProtocolVersion thatField) {
+    protected boolean doMatch(final HttpProtocolVersion thisField, final HttpProtocolVersion thatField) {
         return thisField == null || thisField == thatField;
     }
 
-    protected boolean doMatch(MessageContent thisField, MessageContent thatField) {
+    protected boolean doMatch(final MessageContent thisField, final MessageContent thatField) {
         return thisField == null || thisField.equals(thatField);
     }
 }

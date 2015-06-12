@@ -21,7 +21,8 @@ public class Session {
     }
 
     @JsonCreator
-    public static Session newSession(@JsonProperty("request") HttpRequest request, @JsonProperty("response") HttpResponse response) {
+    public static Session newSession(@JsonProperty("request") final HttpRequest request,
+                                     @JsonProperty("response") final HttpResponse response) {
         Session session = new Session();
         session.request = request;
         session.response = response;

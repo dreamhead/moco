@@ -74,7 +74,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return remoteRequest;
     }
 
-    private HttpEntity createEntity(ByteBuf content, long contentLength) {
+    private HttpEntity createEntity(final ByteBuf content, final long contentLength) {
         return new InputStreamEntity(new ByteBufInputStream(content), contentLength);
     }
 

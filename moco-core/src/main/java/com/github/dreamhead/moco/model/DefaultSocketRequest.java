@@ -3,9 +3,9 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.SocketRequest;
 
 public class DefaultSocketRequest implements SocketRequest {
-    private MessageContent content;
+    private final MessageContent content;
 
-    public DefaultSocketRequest(MessageContent content) {
+    public DefaultSocketRequest(final MessageContent content) {
         this.content = content;
     }
 

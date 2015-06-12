@@ -37,7 +37,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         }
     }
 
-    private MessageContent requireResponseContent(Request request) {
+    private MessageContent requireResponseContent(final Request request) {
         MessageContent content = responseContent(request);
         if (content == null) {
             throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");

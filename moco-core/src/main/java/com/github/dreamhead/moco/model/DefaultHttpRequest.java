@@ -35,8 +35,9 @@ public class DefaultHttpRequest implements HttpRequest {
     private final String uri;
     private final ImmutableMap<String, String> queries;
 
-    private DefaultHttpRequest(HttpProtocolVersion version, MessageContent content, String method, String uri,
-                               ImmutableMap<String, String> headers, ImmutableMap<String, String> queries) {
+    private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
+                               final String method, final String uri,
+                               final ImmutableMap<String, String> headers, final ImmutableMap<String, String> queries) {
         this.version = version;
         this.content = content;
         this.headers = headers;
@@ -122,7 +123,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return new Builder();
     }
 
-    private static MessageContent toMessageContent(FullHttpRequest request) {
+    private static MessageContent toMessageContent(final FullHttpRequest request) {
         long contentLength = HttpHeaders.getContentLength(request, -1);
         if (contentLength <= 0) {
             return content().build();
@@ -131,7 +132,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return content().withContent(new ByteBufInputStream(request.content())).build();
     }
 
-    public static HttpRequest newRequest(FullHttpRequest request) {
+    public static HttpRequest newRequest(final FullHttpRequest request) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         ImmutableMap<String, String> queries = toQueries(decoder);
 
@@ -145,7 +146,7 @@ public class DefaultHttpRequest implements HttpRequest {
                 .build();
     }
 
-    private static ImmutableMap<String, String> toQueries(QueryStringDecoder decoder) {
+    private static ImmutableMap<String, String> toQueries(final QueryStringDecoder decoder) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
             builder.put(entry.getKey(), entry.getValue().get(0));
@@ -172,7 +173,7 @@ public class DefaultHttpRequest implements HttpRequest {
         return request;
     }
 
-    private static ImmutableMap<String, String> collectHeaders(Iterable<Map.Entry<String, String>> httpHeaders) {
+    private static ImmutableMap<String, String> collectHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
         ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : httpHeaders) {
             headerBuilder.put(entry);
@@ -189,22 +190,22 @@ public class DefaultHttpRequest implements HttpRequest {
         private String uri;
         private ImmutableMap<String, String> queries;
 
-        public Builder withVersion(HttpProtocolVersion version) {
+        public Builder withVersion(final HttpProtocolVersion version) {
             this.version = version;
             return this;
         }
 
-        public Builder withTextContent(String content) {
+        public Builder withTextContent(final String content) {
             this.content = content(content);
             return this;
         }
 
-        public Builder withContent(MessageContent content) {
+        public Builder withContent(final MessageContent content) {
             this.content = content;
             return this;
         }
 
-        public Builder withHeaders(Map<String, String> headers) {
+        public Builder withHeaders(final Map<String, String> headers) {
             if (headers != null) {
                 this.headers = copyOf(headers);
             }
@@ -212,17 +213,17 @@ public class DefaultHttpRequest implements HttpRequest {
             return this;
         }
 
-        public Builder withMethod(String method) {
+        public Builder withMethod(final String method) {
             this.method = method;
             return this;
         }
 
-        public Builder withUri(String uri) {
+        public Builder withUri(final String uri) {
             this.uri = uri;
             return this;
         }
 
-        public Builder withQueries(Map<String, String> queries) {
+        public Builder withQueries(final Map<String, String> queries) {
             if (queries != null) {
                 this.queries = copyOf(queries);
             }

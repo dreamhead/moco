@@ -39,7 +39,7 @@ public class MessageContent {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -61,7 +61,7 @@ public class MessageContent {
         return new Builder();
     }
 
-    public static MessageContent content(String content) {
+    public static MessageContent content(final String content) {
         return content().withContent(content).build();
     }
 
@@ -73,12 +73,12 @@ public class MessageContent {
         private byte[] content;
         private Charset charset;
 
-        public Builder withContent(String content) {
+        public Builder withContent(final String content) {
             this.content = content.getBytes();
             return this;
         }
 
-        public Builder withContent(InputStream is) {
+        public Builder withContent(final InputStream is) {
             try {
                 this.content = toByteArray(is);
                 return this;
@@ -87,12 +87,12 @@ public class MessageContent {
             }
         }
 
-        public Builder withContent(byte[] content) {
+        public Builder withContent(final byte[] content) {
             this.content = content;
             return this;
         }
 
-        public Builder withCharset(Charset charset) {
+        public Builder withCharset(final Charset charset) {
             this.charset = charset;
             return this;
         }

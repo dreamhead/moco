@@ -22,17 +22,17 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public void setVersion(HttpProtocolVersion version) {
+    public void setVersion(final HttpProtocolVersion version) {
         this.version = version;
     }
 
     @Override
-    public void setStatus(int status) {
+    public void setStatus(final int status) {
         this.status = status;
     }
 
     @Override
-    public void setContent(MessageContent content) {
+    public void setContent(final MessageContent content) {
         if (this.content != null) {
             throw new IllegalArgumentException("Content has been set");
         }
@@ -41,12 +41,12 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public void addHeader(String name, Object value) {
+    public void addHeader(final String name, final Object value) {
         this.headers.put(name, value.toString());
     }
 
     @Override
-    public void removeHeader(String name) {
+    public void removeHeader(final String name) {
         this.headers.remove(name);
     }
 
@@ -70,7 +70,7 @@ public class DefaultMutableHttpResponse implements MutableHttpResponse {
         return this.content;
     }
 
-    public static DefaultMutableHttpResponse newResponse(HttpRequest request, int status) {
+    public static DefaultMutableHttpResponse newResponse(final HttpRequest request, final int status) {
         DefaultMutableHttpResponse httpResponse = new DefaultMutableHttpResponse();
         httpResponse.version = request.getVersion();
         httpResponse.status = status;

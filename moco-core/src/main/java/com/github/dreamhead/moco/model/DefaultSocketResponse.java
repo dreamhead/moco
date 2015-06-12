@@ -11,7 +11,7 @@ public class DefaultSocketResponse implements MutableSocketResponse {
     }
 
     @Override
-    public void setContent(MessageContent content) {
+    public void setContent(final MessageContent content) {
         this.content = content;
     }
 }

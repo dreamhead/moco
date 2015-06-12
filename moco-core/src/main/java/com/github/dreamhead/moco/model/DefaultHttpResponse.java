@@ -19,7 +19,8 @@ public class DefaultHttpResponse implements HttpResponse {
     private final ImmutableMap<String, String> headers;
     private final int status;
 
-    public DefaultHttpResponse(HttpProtocolVersion version, int status, ImmutableMap<String, String> headers, MessageContent content) {
+    public DefaultHttpResponse(final HttpProtocolVersion version, final int status,
+                               final ImmutableMap<String, String> headers, final MessageContent content) {
         this.version = version;
         this.headers = headers;
         this.content = content;
@@ -44,7 +45,7 @@ public class DefaultHttpResponse implements HttpResponse {
         return status;
     }
 
-    public static DefaultHttpResponse newResponse(FullHttpResponse response) {
+    public static DefaultHttpResponse newResponse(final FullHttpResponse response) {
         ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : response.headers()) {
             headerBuilder.put(entry);
@@ -70,17 +71,17 @@ public class DefaultHttpResponse implements HttpResponse {
         private ImmutableMap<String, String> headers;
         private int status;
 
-        public Builder withVersion(HttpProtocolVersion version) {
+        public Builder withVersion(final HttpProtocolVersion version) {
             this.version = version;
             return this;
         }
 
-        public Builder withContent(MessageContent content) {
+        public Builder withContent(final MessageContent content) {
             this.content = content;
             return this;
         }
 
-        public Builder withHeaders(Map<String, String> headers) {
+        public Builder withHeaders(final Map<String, String> headers) {
             if (headers != null) {
                 this.headers = copyOf(headers);
             }
@@ -88,7 +89,7 @@ public class DefaultHttpResponse implements HttpResponse {
             return this;
         }
 
-        public Builder withStatus(int code) {
+        public Builder withStatus(final int code) {
             this.status = code;
             return this;
         }

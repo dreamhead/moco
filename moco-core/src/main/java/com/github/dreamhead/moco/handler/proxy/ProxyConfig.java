@@ -38,7 +38,7 @@ public class ProxyConfig {
     public static class Builder {
         private final String localBase;
 
-        public Builder(String localBase) {
+        public Builder(final String localBase) {
             this.localBase = localBase;
         }
 
