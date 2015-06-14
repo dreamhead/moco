@@ -27,13 +27,13 @@ public class CollectionReader {
     private final ObjectMapper mapper = new ObjectMapper();
     private final TypeFactory factory = TypeFactory.defaultInstance();
 
-    public CollectionReader(Module... modules) {
+    public CollectionReader(final Module... modules) {
         for (Module module : modules) {
             mapper.registerModule(module);
         }
     }
 
-    public <T> ImmutableList<T> read(InputStream is, Class<T> elementClass) {
+    public <T> ImmutableList<T> read(final InputStream is, final Class<T> elementClass) {
         Closer closer = Closer.create();
         InputStream in = closer.register(is);
         try {

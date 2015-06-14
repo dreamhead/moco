@@ -15,7 +15,7 @@ import static com.google.common.collect.Iterators.get;
 
 public class FileContainerDeserializer extends AbstractTextContainerDeserializer<FileContainer> {
     @Override
-    public FileContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public FileContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return asFileContainer(text(jp));
@@ -35,7 +35,7 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
         throw ctxt.mappingException(TextContainer.class, currentToken);
     }
 
-    private FileContainer toFileContainer(JsonParser jp) throws IOException {
+    private FileContainer toFileContainer(final JsonParser jp) throws IOException {
         Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
         FileVar file = get(iterator, 0);
         TextContainer filename = file.name;
@@ -46,11 +46,11 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
         return aFileContainer().withName(filename).withCharset(file.charset).build();
     }
 
-    private boolean isAllowedFilename(TextContainer filename) {
+    private boolean isAllowedFilename(final TextContainer filename) {
         return filename.isRawText() || filename.isForTemplate();
     }
 
-    private boolean isForFileContainer(String target) {
+    private boolean isForFileContainer(final String target) {
         return "name".equalsIgnoreCase(target) || "charset".equalsIgnoreCase(target);
     }
 

@@ -14,7 +14,7 @@ import static com.google.common.collect.Iterators.get;
 
 public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContainer> {
     @Override
-    public LatencyContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public LatencyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_NUMBER_INT) {
             return LatencyContainer.latency(jp.getLongValue());

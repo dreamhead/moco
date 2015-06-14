@@ -27,7 +27,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
         .put("form", "forms")
         .build();
 
-    protected TextContainer textContainer(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    protected TextContainer textContainer(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.FIELD_NAME) {
             TextContainer.Builder builder = builder();
@@ -48,14 +48,14 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
         throw ctxt.mappingException(TextContainer.class, jp.getCurrentToken());
     }
 
-    private TextContainer template(JsonParser jp, TextContainer.Builder builder) throws IOException {
+    private TextContainer template(final JsonParser jp, final TextContainer.Builder builder) throws IOException {
         Iterator<Template> iterator = jp.readValuesAs(Template.class);
         Template template = Iterators.get(iterator, 0);
         jp.nextToken();
         return builder.withText(template.with).withProps(toTemplateVars(template)).build();
     }
 
-    private ImmutableMap<String, TextContainer> toTemplateVars(Template template) {
+    private ImmutableMap<String, TextContainer> toTemplateVars(final Template template) {
         return copyOf(transformEntries(template.vars, toLocalContainer()));
     }
 
@@ -72,12 +72,12 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
         };
     }
 
-    private TextContainer toLocal(TextContainer container) {
+    private TextContainer toLocal(final TextContainer container) {
         String name = names.get(container.getOperation());
         return name == null ? container : builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
     }
 
-    protected TextContainer text(JsonParser jp) throws IOException {
+    protected TextContainer text(final JsonParser jp) throws IOException {
         return builder().withText(jp.getText().trim()).build();
     }
 

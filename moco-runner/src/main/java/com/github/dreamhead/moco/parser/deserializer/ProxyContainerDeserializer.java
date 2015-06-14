@@ -14,7 +14,7 @@ import static com.google.common.collect.Iterators.get;
 
 public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override
-    public ProxyContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public ProxyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return builder().withUrl(jp.getText().trim()).build();
