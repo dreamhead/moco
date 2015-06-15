@@ -51,8 +51,7 @@ public class CollectionReader {
         } finally {
             try {
                 closer.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException ignored) {
             }
         }
     }
