@@ -8,17 +8,15 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpServer;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Closer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
 
 public class CollectionReader {
@@ -34,11 +32,9 @@ public class CollectionReader {
     }
 
     public <T> ImmutableList<T> read(final InputStream is, final Class<T> elementClass) {
-        Closer closer = Closer.create();
-        InputStream in = closer.register(is);
         try {
             CollectionType type = factory.constructCollectionType(List.class, elementClass);
-            List<T> sessionSettings = mapper.readValue(new InputStreamReader(in, Charset.defaultCharset()), type);
+            List<T> sessionSettings = mapper.readValue(is, type);
             return copyOf(sessionSettings);
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
@@ -49,10 +45,7 @@ public class CollectionReader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            try {
-                closer.close();
-            } catch (IOException ignored) {
-            }
+            closeQuietly(is);
         }
     }
 }
