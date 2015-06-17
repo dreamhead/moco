@@ -3,12 +3,11 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
-import com.google.common.io.Closer;
+import com.google.common.io.Closeables;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
@@ -35,11 +34,9 @@ public class HttpsCertificate {
     }
 
     private SSLContext createServerContext() {
-        Closer closer = Closer.create();
+        InputStream is = this.getKeyStore();
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            InputStream is = this.getKeyStore();
-            closer.register(is);
             keyStore.load(is, this.getKeyStorePassword());
             KeyManagerFactory factory = KeyManagerFactory.getInstance(getAlgorithm());
             factory.init(keyStore, this.getCertPassword());
@@ -50,10 +47,7 @@ public class HttpsCertificate {
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize the server-side SSLContext", e);
         } finally {
-            try {
-                closer.close();
-            } catch (IOException ignored) {
-            }
+            Closeables.closeQuietly(is);
         }
     }
 
