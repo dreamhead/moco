@@ -16,7 +16,7 @@ public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
     private final FileAlterationMonitor monitor;
     private boolean running = false;
 
-    public FileMocoRunnerWatcher(File file, FileAlterationListener listener) {
+    public FileMocoRunnerWatcher(final File file, final FileAlterationListener listener) {
         this.monitor = monitorFile(file, listener);
     }
 
@@ -40,7 +40,7 @@ public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
         }
     }
 
-    private FileAlterationMonitor monitorFile(File file, FileAlterationListener listener) {
+    private FileAlterationMonitor monitorFile(final File file, final FileAlterationListener listener) {
         File parentFile = file.getParentFile();
         File directory = (parentFile == null) ? new File(".") : parentFile;
         FileAlterationObserver observer = new FileAlterationObserver(directory, sameFile(file));

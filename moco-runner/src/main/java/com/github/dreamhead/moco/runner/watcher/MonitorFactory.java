@@ -13,7 +13,7 @@ import java.io.File;
 public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
 
-    public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner, Optional<Integer> shutdownPort, String shutdownKey) {
+    public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
         return new ShutdownMocoRunnerWatcher(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override
             public void onShutdown() {
