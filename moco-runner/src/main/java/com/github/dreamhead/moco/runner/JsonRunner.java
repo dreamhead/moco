@@ -28,11 +28,11 @@ public class JsonRunner implements Runner {
     private final StandaloneRunner runner = new StandaloneRunner();
     private final Server server;
 
-    private JsonRunner(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    private JsonRunner(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         this.server = createServer(settings, startArgs);
     }
 
-    private Server createServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    private Server createServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         if (startArgs.isSocket()) {
             return createSocketServer(settings, startArgs);
         }
@@ -48,7 +48,7 @@ public class JsonRunner implements Runner {
         runner.stop();
     }
 
-    private SocketServer createSocketServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    private SocketServer createSocketServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort());
         for (RunnerSetting setting : settings) {
             SocketServer parsedServer = socketParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
@@ -58,18 +58,18 @@ public class JsonRunner implements Runner {
         return socketServer;
     }
 
-    private SocketServer mergeServer(SocketServer socketServer, SocketServer parsedServer) {
+    private SocketServer mergeServer(final SocketServer socketServer, final SocketServer parsedServer) {
         ActualSocketServer thisServer = (ActualSocketServer) socketServer;
         return thisServer.mergeHttpServer((ActualSocketServer)parsedServer);
     }
 
-    private HttpServer createHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         HttpServer server = createBaseHttpServer(settings, startArgs);
         server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header(HttpHeaders.CONTENT_TYPE, "image/png"));
         return server;
     }
 
-    private HttpServer createBaseHttpServer(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    private HttpServer createBaseHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         HttpServer server = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
@@ -80,7 +80,7 @@ public class JsonRunner implements Runner {
         return server;
     }
 
-    private HttpServer createHttpServer(StartArgs startArgs) {
+    private HttpServer createHttpServer(final StartArgs startArgs) {
         if (startArgs.isHttps()) {
             return ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate().get());
         }
@@ -88,7 +88,7 @@ public class JsonRunner implements Runner {
         return ActualHttpServer.createLogServer(startArgs.getPort());
     }
 
-    private MocoConfig[] toConfigs(RunnerSetting setting) {
+    private MocoConfig[] toConfigs(final RunnerSetting setting) {
         ImmutableList.Builder<MocoConfig> builder = ImmutableList.builder();
 
         addConfig(builder, setting.context());
@@ -99,18 +99,18 @@ public class JsonRunner implements Runner {
         return toArray(builder.build(), MocoConfig.class);
     }
 
-    private void addConfig(ImmutableList.Builder<MocoConfig> builder, Optional<MocoConfig> config) {
+    private void addConfig(final ImmutableList.Builder<MocoConfig> builder, final Optional<MocoConfig> config) {
         if (config.isPresent()) {
             builder.add(config.get());
         }
     }
 
-    private HttpServer mergeServer(HttpServer server, HttpServer parsedServer) {
+    private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {
         ActualHttpServer thisServer = (ActualHttpServer) server;
         return thisServer.mergeHttpServer((ActualHttpServer)parsedServer);
     }
 
-    public static JsonRunner newJsonRunnerWithStreams(Iterable<? extends InputStream> streams, StartArgs startArgs) {
+    public static JsonRunner newJsonRunnerWithStreams(final Iterable<? extends InputStream> streams, final StartArgs startArgs) {
         return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), startArgs);
     }
 
@@ -123,7 +123,7 @@ public class JsonRunner implements Runner {
         };
     }
 
-    public static JsonRunner newJsonRunnerWithSetting(Iterable<? extends RunnerSetting> settings, StartArgs startArgs) {
+    public static JsonRunner newJsonRunnerWithSetting(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         return new JsonRunner(settings, startArgs);
     }
 }

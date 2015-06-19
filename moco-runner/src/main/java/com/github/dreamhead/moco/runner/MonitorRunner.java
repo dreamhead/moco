@@ -6,7 +6,7 @@ public class MonitorRunner implements Runner {
     private final Runner runner;
     private final MocoRunnerWatcher mocoRunnerWatcher;
 
-    public MonitorRunner(Runner runner, MocoRunnerWatcher mocoRunnerWatcher) {
+    public MonitorRunner(final Runner runner, final MocoRunnerWatcher mocoRunnerWatcher) {
         this.runner = runner;
         this.mocoRunnerWatcher = mocoRunnerWatcher;
     }

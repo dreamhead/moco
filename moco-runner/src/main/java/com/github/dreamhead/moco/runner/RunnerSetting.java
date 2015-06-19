@@ -19,8 +19,8 @@ public class RunnerSetting {
     private final Optional<String> context;
     private final Optional<String> fileRoot;
 
-    private RunnerSetting(InputStream stream, String context, String fileRoot,
-                         RequestSetting requestSetting, ResponseSetting response) {
+    private RunnerSetting(final InputStream stream, final String context, final String fileRoot,
+                          final RequestSetting requestSetting, final ResponseSetting response) {
         this.stream = stream;
         this.request = fromNullable(requestSetting);
         this.response = fromNullable(response);
@@ -75,27 +75,27 @@ public class RunnerSetting {
         private String context;
         private String fileRoot;
 
-        public Builder withStream(InputStream stream) {
+        public Builder withStream(final InputStream stream) {
             this.stream = stream;
             return this;
         }
 
-        public Builder withRequest(RequestSetting request) {
+        public Builder withRequest(final RequestSetting request) {
             this.request = request;
             return this;
         }
 
-        public Builder withResponse(ResponseSetting response) {
+        public Builder withResponse(final ResponseSetting response) {
             this.response = response;
             return this;
         }
 
-        public Builder withContext(String context) {
+        public Builder withContext(final String context) {
             this.context = context;
             return this;
         }
 
-        public Builder withFileRoot(String fileRoot) {
+        public Builder withFileRoot(final String fileRoot) {
             this.fileRoot = fileRoot;
             return this;
         }

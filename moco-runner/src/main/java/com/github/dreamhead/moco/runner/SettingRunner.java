@@ -26,7 +26,7 @@ public class SettingRunner implements Runner {
     private JsonRunner jsonRunner;
     private final FluentIterable<File> files;
 
-    public SettingRunner(InputStream stream, StartArgs args) {
+    public SettingRunner(final InputStream stream, final StartArgs args) {
         this.env = args.getEnv();
         this.globalSettings = settingParser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
