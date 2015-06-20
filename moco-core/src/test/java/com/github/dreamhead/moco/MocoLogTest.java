@@ -51,7 +51,7 @@ public class MocoLogTest {
         });
 
         String actual = Files.toString(file, Charset.defaultCharset());
-        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
 
@@ -69,7 +69,7 @@ public class MocoLogTest {
         });
 
         String actual = Files.toString(file, Charset.defaultCharset());
-        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
 
@@ -110,7 +110,7 @@ public class MocoLogTest {
         });
 
         String actual = Files.toString(file, Charset.defaultCharset());
-        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
 
