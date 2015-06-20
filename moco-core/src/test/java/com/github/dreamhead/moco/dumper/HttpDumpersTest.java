@@ -68,6 +68,7 @@ public class HttpDumpersTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void should_not_parse_content_when_content_length_not_set() throws Exception {
         assertThat(asContent(messageWithHeaders(EMPTY_MAP)), isEmptyString());
     }
