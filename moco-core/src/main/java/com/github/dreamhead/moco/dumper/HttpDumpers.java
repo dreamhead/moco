@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.google.common.net.HttpHeaders;
+import com.google.common.net.MediaType;
 import io.netty.util.internal.StringUtil;
 
 public class HttpDumpers {
@@ -24,7 +25,15 @@ public class HttpDumpers {
     }
 
     private static boolean isText(final String type) {
-        return type == null || type.startsWith("text") || type.endsWith("javascript") || type.endsWith("json") || type.endsWith("xml");
+        try {
+            MediaType mediaType = MediaType.parse(type);
+            return mediaType.is(MediaType.ANY_TEXT_TYPE)
+                    || mediaType.subtype().endsWith("javascript")
+                    || mediaType.subtype().endsWith("json")
+                    || mediaType.subtype().endsWith("xml");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private static long getContentLength(final HttpMessage response, final long defaultValue) {
