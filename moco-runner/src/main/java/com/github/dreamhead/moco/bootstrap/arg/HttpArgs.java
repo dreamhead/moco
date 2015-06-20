@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.bootstrap.arg;
 import com.github.dreamhead.moco.bootstrap.ServerType;
 
 public class HttpArgs extends StartArgs {
-    protected HttpArgs(Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env) {
+    protected HttpArgs(final Integer port, final Integer shutdownPort, final String configurationFile, final String globalSettings, final String env) {
         super(ServerType.HTTP, port, shutdownPort, configurationFile, globalSettings, env, null);
     }
 
@@ -18,27 +18,27 @@ public class HttpArgs extends StartArgs {
         private String settings;
         private String env;
 
-        public Builder withPort(Integer port) {
+        public Builder withPort(final Integer port) {
             this.port = port;
             return this;
         }
 
-        public Builder withShutdownPort(Integer shutdownPort) {
+        public Builder withShutdownPort(final Integer shutdownPort) {
             this.shutdownPort = shutdownPort;
             return this;
         }
 
-        public Builder withConfigurationFile(String configurationFile) {
+        public Builder withConfigurationFile(final String configurationFile) {
             this.configurationFile = configurationFile;
             return this;
         }
 
-        public Builder withSettings(String settings) {
+        public Builder withSettings(final String settings) {
             this.settings = settings;
             return this;
         }
 
-        public Builder withEnv(String env) {
+        public Builder withEnv(final String env) {
             this.env = env;
             return this;
         }

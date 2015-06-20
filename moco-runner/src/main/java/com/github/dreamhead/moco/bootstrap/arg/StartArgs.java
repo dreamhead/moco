@@ -17,7 +17,7 @@ public abstract class StartArgs extends ShutdownPortOption {
     private final Optional<String> env;
     private final Optional<HttpsArg> httpsArg;
 
-    protected StartArgs(ServerType type, Integer port, Integer shutdownPort, String configurationFile, String globalSettings, String env, HttpsArg httpsArg) {
+    protected StartArgs(final ServerType type, final Integer port, final Integer shutdownPort, final String configurationFile, final String globalSettings, final String env, final HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
         this.port = fromNullable(port);
