@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 import static com.google.common.io.ByteStreams.toByteArray;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 
 public class MocoTestHelper {
     private final Executor EXECUTOR;
@@ -73,7 +75,10 @@ public class MocoTestHelper {
     }
 
     public String postBytes(String url, byte[] bytes) throws IOException {
-        return EXECUTOR.execute(Request.Post(url).bodyByteArray(bytes)).returnContent().asString();
+        Request request = Request.Post(url)
+                .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
+                .bodyByteArray(bytes);
+        return EXECUTOR.execute(request).returnContent().asString();
     }
 
     public String postStream(String url, InputStream stream) throws IOException {
