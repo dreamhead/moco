@@ -38,12 +38,12 @@ public class ShutdownTask implements BootstrapTask {
 
     private class ShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
-        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        public void channelActive(final ChannelHandlerContext ctx) throws Exception {
             ctx.writeAndFlush(shutdownKey + "\r\n").addListener(ChannelFutureListener.CLOSE);
         }
 
         @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        public void exceptionCaught(final ChannelHandlerContext ctx, Throwable cause) throws Exception {
             ctx.close();
 
             if (ConnectException.class.isInstance(cause)) {

@@ -35,7 +35,7 @@ public class HttpsArgsParser extends StartArgsParser {
     }
 
 
-    private HttpsArg httpsArg(CommandLine cmd) {
+    private HttpsArg httpsArg(final CommandLine cmd) {
         String https = cmd.getOptionValue("https");
         String keystore = cmd.getOptionValue("keystore");
         String cert = cmd.getOptionValue("cert");
