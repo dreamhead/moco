@@ -6,7 +6,7 @@ import org.apache.commons.cli.Option;
 public class ShutdownPortOption {
     private final Optional<Integer> shutdownPort;
 
-    public ShutdownPortOption(Integer shutdownPort) {
+    public ShutdownPortOption(final Integer shutdownPort) {
         this.shutdownPort = Optional.fromNullable(shutdownPort);
     }
 

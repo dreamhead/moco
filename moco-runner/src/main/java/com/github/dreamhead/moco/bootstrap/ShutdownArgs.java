@@ -4,11 +4,11 @@ import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import org.apache.commons.cli.*;
 
 public class ShutdownArgs extends ShutdownPortOption {
-    public ShutdownArgs(Integer shutdownPort) {
+    public ShutdownArgs(final Integer shutdownPort) {
         super(shutdownPort);
     }
 
-    public static ShutdownArgs parse(String[] args) {
+    public static ShutdownArgs parse(final String[] args) {
         try {
             CommandLineParser parser = new PosixParser();
             CommandLine cmd = parser.parse(createShutdownOptions(), args);
