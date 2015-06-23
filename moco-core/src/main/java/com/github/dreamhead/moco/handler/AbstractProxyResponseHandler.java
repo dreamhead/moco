@@ -49,8 +49,8 @@ import static com.google.common.io.ByteStreams.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
-    private static ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of("Host", "Content-Length");
-    private static ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of("Date", "Server");
+    private static ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(com.google.common.net.HttpHeaders.HOST, com.google.common.net.HttpHeaders.CONTENT_LENGTH);
+    private static ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(com.google.common.net.HttpHeaders.DATE, com.google.common.net.HttpHeaders.SERVER);
 
     protected abstract Optional<String> remoteUrl(final String uri);
 
