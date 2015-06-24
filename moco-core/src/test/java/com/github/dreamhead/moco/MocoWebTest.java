@@ -67,6 +67,20 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_redirect_for_any_response() throws Exception {
+        server.get(by(uri("/"))).response("foo");
+        server.redirectTo(root());
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
+            }
+        });
+
+    }
+
+    @Test
     public void should_download_attachment() throws Exception {
         server.get(by(uri("/"))).response(attachment("foo.txt", file("src/test/resources/foo.response")));
 
