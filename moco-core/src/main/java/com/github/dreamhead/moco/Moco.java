@@ -368,7 +368,7 @@ public final class Moco {
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
-    public static ResponseHandler toJson(Object pojo) {
+    public static ResponseHandler toJson(final Object pojo) {
         return new JsonResponseHandler(checkNotNull(pojo, "Json object should not be null"));
     }
 
