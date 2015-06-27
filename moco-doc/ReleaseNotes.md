@@ -4,6 +4,9 @@
 * **toJson** will convert POJO to JSON text in response handler
 * **json** with pojo will convert POJO to JSON text in request matcher
 
+## Implementation Details
+* Enhance log dumper with MediaType implementation
+
 # Release 0.10.1 (1-May-2015)
 
 ## APIs
