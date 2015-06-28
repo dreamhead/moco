@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.concurrent.TimeUnit;
 
 public class MocoSocketHelper implements Closeable {
     private Socket socket;
@@ -19,6 +20,7 @@ public class MocoSocketHelper implements Closeable {
     public void connect() {
         try {
             socket.connect(address);
+            socket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(1));
             OutputStream outputStream = this.socket.getOutputStream();
             this.os = new PrintStream(outputStream);
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
