@@ -9,6 +9,9 @@ import com.github.dreamhead.moco.model.DefaultSocketResponse;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.collect.ImmutableList;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -17,7 +20,7 @@ import static io.netty.channel.ChannelHandler.Sharable;
 import static java.lang.String.format;
 
 @Sharable
-public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
+public class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final ImmutableList<Setting<SocketResponseSetting>> settings;
     private final Setting<SocketResponseSetting> anySetting;
     private final MocoMonitor monitor;
@@ -29,15 +32,15 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, final String msg) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final ByteBuf msg) throws Exception {
         try {
-            MessageContent content = content(msg);
+            MessageContent content = content().withContent(new ByteBufInputStream(msg)).build();
             SocketRequest request = new DefaultSocketRequest(content);
             this.monitor.onMessageArrived(request);
             SocketResponse response = new DefaultSocketResponse();
             handleSession(new SessionContext(request, response));
             this.monitor.onMessageLeave(response);
-            ctx.write(response.getContent().toString());
+            ctx.write(Unpooled.wrappedBuffer(response.getContent().getContent()));
         } catch (Exception e) {
             this.monitor.onException(e);
         }
