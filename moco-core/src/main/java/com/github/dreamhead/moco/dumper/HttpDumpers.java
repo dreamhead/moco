@@ -30,7 +30,8 @@ public class HttpDumpers {
             return mediaType.is(MediaType.ANY_TEXT_TYPE)
                     || mediaType.subtype().endsWith("javascript")
                     || mediaType.subtype().endsWith("json")
-                    || mediaType.subtype().endsWith("xml");
+                    || mediaType.subtype().endsWith("xml")
+                    || mediaType.is(MediaType.FORM_DATA);
         } catch (Exception e) {
             return false;
         }
