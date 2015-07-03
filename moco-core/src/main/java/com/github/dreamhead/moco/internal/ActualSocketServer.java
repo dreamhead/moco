@@ -50,6 +50,10 @@ public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> 
         return new ActualSocketServer(port, new QuietMonitor());
     }
 
+    public static ActualSocketServer createServerWithMonitor(final Optional<Integer> port, final MocoMonitor monitor) {
+        return new ActualSocketServer(port, monitor);
+    }
+
     public static ActualSocketServer createLogServer(final Optional<Integer> port) {
         return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
