@@ -13,6 +13,8 @@ import java.nio.charset.Charset;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.socketServer;
+import static com.github.dreamhead.moco.MocoRequestHit.once;
+import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -95,6 +97,24 @@ public class MocoSocketTest {
         String actual = Files.toString(file, Charset.defaultCharset());
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
+    }
+
+    @Test
+    public void should_monitor_socket_server_behavior() throws Exception {
+        RequestHit hit = requestHit();
+        SocketServer server = socketServer(port(), hit);
+        server.request(by("0XCAFE")).response(line("0XBABE"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.connect();
+                assertThat(helper.send("0XCAFE"), is("0XBABE"));
+                helper.close();
+            }
+        });
+
+        hit.verify(by("0XCAFE"), once());
     }
 
     private String times(String base, int times) {
