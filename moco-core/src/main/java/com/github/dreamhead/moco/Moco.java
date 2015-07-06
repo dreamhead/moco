@@ -146,6 +146,10 @@ public final class Moco {
                 mergeMonitor(monitor, monitor2, monitors));
     }
 
+    public static SocketServer socketServer() {
+        return ActualSocketServer.createQuietServer(Optional.<Integer>absent());
+    }
+
     public static SocketServer socketServer(int port) {
         return ActualSocketServer.createQuietServer(of(port));
     }

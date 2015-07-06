@@ -117,6 +117,22 @@ public class MocoSocketTest {
         hit.verify(by("0XCAFE"), once());
     }
 
+    @Test
+    public void should_create_socket_server_without_specific_port() throws Exception {
+        final SocketServer server = socketServer();
+        server.request(by("foo")).response(line("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper = new MocoSocketHelper(local(), server.port());
+                helper.connect();
+                assertThat(helper.send("foo"), is("bar"));
+                helper.close();
+            }
+        });
+    }
+
     private String times(String base, int times) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < times; i++) {
