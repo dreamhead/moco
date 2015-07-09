@@ -10,7 +10,7 @@ public class ShutdownArgs extends ShutdownPortOption {
 
     public static ShutdownArgs parse(final String[] args) {
         try {
-            CommandLineParser parser = new PosixParser();
+            CommandLineParser parser = new DefaultParser();
             CommandLine cmd = parser.parse(createShutdownOptions(), args);
             return new ShutdownArgs(StartArgsParser.getPort(cmd.getOptionValue("s")));
         } catch (ParseException e) {
