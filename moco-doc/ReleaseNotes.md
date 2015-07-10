@@ -3,6 +3,8 @@
 ## APIs
 * **toJson** will convert POJO to JSON text in response handler
 * **json** with pojo will convert POJO to JSON text in request matcher
+* **socketServer** without port
+* **socketServer** with monitor, e.g. logging and verification
 
 ## Implementation Details
 * Enhance log dumper with MediaType implementation
