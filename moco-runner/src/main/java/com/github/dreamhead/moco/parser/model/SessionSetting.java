@@ -3,7 +3,9 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.MocoMount.to;
 
@@ -12,6 +14,7 @@ import static com.github.dreamhead.moco.MocoMount.to;
 public class SessionSetting {
     private RequestSetting request;
     private ResponseSetting response;
+    private ResponseSetting[] responses;
     private String redirectTo;
     private MountSetting mount;
     private EventSetting on;
@@ -42,11 +45,23 @@ public class SessionSetting {
     }
 
     private ResponseHandler getResponseHandler() {
-        if (response == null) {
-            throw new IllegalArgumentException("No response specified");
+        if (response == null && responses == null) {
+            throw new IllegalArgumentException("No response or responses specified");
         }
 
-        return response.getResponseHandler();
+        if (response != null) {
+            return response.getResponseHandler();
+        }
+
+        return new SequenceContentHandler(getResponseHandlers());
+    }
+
+    private ImmutableList<ResponseHandler> getResponseHandlers() {
+        ImmutableList.Builder<ResponseHandler> builder = ImmutableList.builder();
+        for (ResponseSetting responseSetting : responses) {
+            builder.add(responseSetting.getResponseHandler());
+        }
+        return builder.build();
     }
 
     private RequestMatcher getRequestMatcher() {
