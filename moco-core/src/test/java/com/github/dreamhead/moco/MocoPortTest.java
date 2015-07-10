@@ -20,7 +20,7 @@ public class MocoPortTest {
     }
 
     @Test
-    public void should_create_server_without_specific_port() throws Exception {
+    public void should_create_http_server_without_specific_port() throws Exception {
         final HttpServer server = httpServer();
         server.response("foo");
 

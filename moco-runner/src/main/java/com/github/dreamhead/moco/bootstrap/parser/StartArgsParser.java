@@ -17,7 +17,7 @@ public abstract class StartArgsParser {
     }
 
     private StartArgs doParse(final String[] args) throws ParseException {
-        CommandLineParser parser = new PosixParser();
+        CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options(), args);
         return parseArgs(cmd);
     }

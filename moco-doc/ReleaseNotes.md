@@ -6,6 +6,7 @@
 
 ## Implementation Details
 * Enhance log dumper with MediaType implementation
+* Enhance socket server implementation with byte buf, rather than string
 
 # Release 0.10.1 (1-May-2015)
 

@@ -68,6 +68,11 @@ public class HttpDumpersTest {
     }
 
     @Test
+    public void should_parse_complete_form_urlencoded_media_type() throws Exception {
+        assertMessageContent("application/x-www-form-urlencoded;charset=UTF-8", EXPECTED_MESSAGE_BODY);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void should_not_parse_content_when_content_length_not_set() throws Exception {
         assertThat(asContent(messageWithHeaders(EMPTY_MAP)), isEmptyString());
