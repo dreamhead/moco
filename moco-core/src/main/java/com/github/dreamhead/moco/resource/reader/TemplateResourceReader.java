@@ -23,7 +23,7 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
-    private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_22;
+    private static final Version CURRENT_VERSION = Configuration.getVersion();
     private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
     private static final String TEMPLATE_NAME = "template";
 
