@@ -133,6 +133,25 @@ public class MocoSocketTest {
         });
     }
 
+    @Test
+    public void should_verify_expected_request_and_log_at_same_time() throws Exception {
+        RequestHit hit = requestHit();
+        final SocketServer server = socketServer(port(), hit, log());
+        server.request(by("foo")).response(line("bar"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper = new MocoSocketHelper(local(), server.port());
+                helper.connect();
+                assertThat(helper.send("foo"), is("bar"));
+                helper.close();
+            }
+        });
+
+        hit.verify(by("foo"), once());
+    }
+
     private String times(String base, int times) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < times; i++) {

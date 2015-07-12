@@ -9,6 +9,7 @@ import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static org.apache.http.client.fluent.Request.Post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,7 +21,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String content = org.apache.http.client.fluent.Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                String content = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
                 assertThat(content, is("foobar"));
             }
         });
@@ -77,7 +78,6 @@ public class MocoWebTest extends AbstractMocoHttpTest {
                 assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
             }
         });
-
     }
 
     @Test

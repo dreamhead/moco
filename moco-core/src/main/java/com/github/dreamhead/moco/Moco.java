@@ -160,6 +160,11 @@ public final class Moco {
                 checkNotNull(monitor, "Monitor should not be null"));
     }
 
+    public static SocketServer socketServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        return ActualSocketServer.createServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
+    }
+
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
