@@ -11,19 +11,32 @@ import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.dumper.SocketRequestDumper;
 import com.github.dreamhead.moco.dumper.SocketResponseDumper;
+import com.google.common.collect.ImmutableMap;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class DefaultLogFormatter implements LogFormatter {
+    @SuppressWarnings("unchecked")
+    private static ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = (ImmutableMap<Class<? extends Request>, Dumper<Request>>) ImmutableMap.of(
+            HttpRequest.class, new HttpRequestDumper(),
+            SocketRequest.class, new SocketRequestDumper()
+    );
+
+    @SuppressWarnings("unchecked")
+    private static ImmutableMap<Class<? extends Response>, Dumper<Response>> RESPONSE_DUMPERS = (ImmutableMap<Class<? extends Response>, Dumper<Response>>) ImmutableMap.of(
+            HttpResponse.class, new HttpResponseDumper(),
+            SocketResponse.class, new SocketResponseDumper()
+    );
+
     @Override
     public String format(final Request request) {
-        return String.format("Request received:\n\n%s\n", requestDumper(request).dump(request));
+        return String.format("Request received:\n\n%s\n", findDumper(request, REQUEST_DUMPERS).dump(request));
     }
 
     @Override
     public String format(final Response response) {
-        return String.format("Response return:\n\n%s\n", responseDumper(response).dump(response));
+        return String.format("Response return:\n\n%s\n", findDumper(response, RESPONSE_DUMPERS).dump(response));
     }
 
     @Override
@@ -37,27 +50,14 @@ public class DefaultLogFormatter implements LogFormatter {
         return writer.toString();
     }
 
-    private Dumper<Request> requestDumper(final Request request) {
-        if (request instanceof HttpRequest) {
-            return new HttpRequestDumper();
+    private <T> Dumper<T> findDumper(final T target, ImmutableMap<Class<? extends T>, Dumper<T>> dumerClasses) {
+        for (Class<? extends T> dumperClass : dumerClasses.keySet()) {
+            if (dumperClass.isInstance(target)) {
+                return dumerClasses.get(dumperClass);
+            }
         }
 
-        if (request instanceof SocketRequest) {
-            return new SocketRequestDumper();
-        }
-
-        throw new IllegalArgumentException("Unknown request type:" + request.getClass());
+        throw new IllegalArgumentException("Unknown target type:" + target.getClass());
     }
 
-    private Dumper<Response> responseDumper(final Response response) {
-        if (response instanceof HttpResponse) {
-            return new HttpResponseDumper();
-        }
-
-        if (response instanceof SocketResponse) {
-            return new SocketResponseDumper();
-        }
-
-        throw new IllegalArgumentException("Unknown response type:" + response.getClass());
-    }
 }
