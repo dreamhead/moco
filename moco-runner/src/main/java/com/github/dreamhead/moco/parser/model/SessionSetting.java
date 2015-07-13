@@ -14,6 +14,7 @@ import static com.github.dreamhead.moco.MocoMount.to;
 public class SessionSetting {
     private RequestSetting request;
     private ResponseSetting response;
+    private ResponsesInFileSetting responsesInFile;
     private ResponseSetting[] responses;
     private String redirectTo;
     private MountSetting mount;
@@ -33,6 +34,7 @@ public class SessionSetting {
         return MoreObjects.toStringHelper(this).omitNullValues()
                 .add("request", request)
                 .add("response", response)
+                .add("responses in file", responsesInFile)
                 .add("redirect to", redirectTo)
                 .add("mount", mount)
                 .add("proxy", proxy)
@@ -45,15 +47,19 @@ public class SessionSetting {
     }
 
     private ResponseHandler getResponseHandler() {
-        if (response == null && responses == null) {
-            throw new IllegalArgumentException("No response or responses specified");
+        if (response == null && responses == null && responsesInFile == null) {
+            throw new IllegalArgumentException("No response or responses or responsesInFile specified");
         }
 
         if (response != null) {
             return response.getResponseHandler();
         }
 
-        return new SequenceContentHandler(getResponseHandlers());
+        if (responses != null) {
+            return new SequenceContentHandler(getResponseHandlers());
+        }
+
+        return responsesInFile.getResponseHandler();
     }
 
     private ImmutableList<ResponseHandler> getResponseHandlers() {

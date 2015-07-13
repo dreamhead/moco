@@ -32,4 +32,12 @@ public class MocoSequenceResponseTest extends AbstractMocoStandaloneTest {
 
         assertThat(helper.get(remoteUrl("/foo")), is("bar"));
     }
+
+    @Test
+    public void should_config_sequence_responses_in_file() throws IOException {
+        runWithConfiguration("sequence_response_in_file.json");
+
+        assertThat(helper.get(remoteUrl("/sequence_response")), is("{\"key\":\"first response\"}"));
+        assertThat(helper.get(remoteUrl("/sequence_response")), is("{\"key\":\"second response\"}"));
+    }
 }
