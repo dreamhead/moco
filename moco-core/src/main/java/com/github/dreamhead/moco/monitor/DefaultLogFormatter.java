@@ -17,14 +17,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class DefaultLogFormatter implements LogFormatter {
-    @SuppressWarnings("unchecked")
-    private static ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = (ImmutableMap<Class<? extends Request>, Dumper<Request>>) ImmutableMap.of(
+    private static ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = ImmutableMap.of(
             HttpRequest.class, new HttpRequestDumper(),
             SocketRequest.class, new SocketRequestDumper()
     );
 
-    @SuppressWarnings("unchecked")
-    private static ImmutableMap<Class<? extends Response>, Dumper<Response>> RESPONSE_DUMPERS = (ImmutableMap<Class<? extends Response>, Dumper<Response>>) ImmutableMap.of(
+    private static ImmutableMap<Class<? extends Response>, Dumper<Response>> RESPONSE_DUMPERS = ImmutableMap.of(
             HttpResponse.class, new HttpResponseDumper(),
             SocketResponse.class, new SocketResponseDumper()
     );
@@ -59,5 +57,4 @@ public class DefaultLogFormatter implements LogFormatter {
 
         throw new IllegalArgumentException("Unknown target type:" + target.getClass());
     }
-
 }
