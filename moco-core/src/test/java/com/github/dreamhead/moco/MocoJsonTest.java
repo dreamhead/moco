@@ -10,12 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.exist;
-import static com.github.dreamhead.moco.Moco.json;
-import static com.github.dreamhead.moco.Moco.jsonPath;
-import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -144,6 +141,24 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 PlainA responseA = mapper.readValue(content, PlainA.class);
                 assertThat(responseA.code, is(1));
                 assertThat(responseA.message, is("message"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_json_for_POJO_with_CJK() throws Exception {
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "消息";
+        server.response(toJson(pojo));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String content = helper.get(remoteUrl(root()));
+                ObjectMapper mapper = new ObjectMapper();
+                PlainA responseA = mapper.readValue(content, PlainA.class);
+                assertThat(responseA.code, is(1));
+                assertThat(responseA.message, is("消息"));
             }
         });
     }
