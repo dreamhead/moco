@@ -4,31 +4,31 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
+import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 
 import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public final class FileContentType {
-    public static final String DEFAULT_CONTENT_TYPE_WITH_CHARSET = "text/plain; charset=UTF-8";
-    private static final String DEFAULT_CONTENT_TYPE = "text/plain";
+    public static final String DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8.toString();
+    private static final String DEFAULT_CONTENT_TYPE = MediaType.create("text", "plain").toString();
 
-    private static final ImmutableMap<String, String> contentTypeMap = ImmutableMap.<String, String>builder()
-            .put("png", "image/png")
-            .put("gif", "image/gif")
-            .put("jpg", "image/jpeg")
-            .put("jpeg", "image/jpeg")
-            .put("tiff", "image/tiff")
-            .put("css", "text/css")
-            .put("html", "text/html")
-            .put("txt", "text/plain")
-            .put("js", "application/x-javascript")
-            .put("json", "application/json")
-            .put("pdf", "application/pdf")
-            .put("zip", "application/zip")
-            .put("xml", "text/xml")
+    private static final ImmutableMap<String, MediaType> contentTypeMap = ImmutableMap.<String, MediaType>builder()
+            .put("png", MediaType.PNG)
+            .put("gif", MediaType.GIF)
+            .put("jpg", MediaType.JPEG)
+            .put("jpeg", MediaType.JPEG)
+            .put("tiff", MediaType.TIFF)
+            .put("css", MediaType.CSS_UTF_8)
+            .put("html", MediaType.HTML_UTF_8)
+            .put("txt", MediaType.create("text", "plain"))
+            .put("js", MediaType.JAVASCRIPT_UTF_8)
+            .put("json", MediaType.create("application", "json"))
+            .put("pdf", MediaType.PDF)
+            .put("zip", MediaType.ZIP)
+            .put("xml", MediaType.create("text", "xml"))
             .build();
 
     private final String filename;
@@ -64,6 +64,11 @@ public final class FileContentType {
     }
 
     private Optional<String> toContentType(final String extension) {
-        return fromNullable(contentTypeMap.get(extension.toLowerCase()));
+        MediaType mediaType = contentTypeMap.get(extension.toLowerCase());
+        if (mediaType == null) {
+            return absent();
+        }
+
+        return of(mediaType.toString());
     }
 }
