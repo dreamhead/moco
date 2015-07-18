@@ -8,12 +8,12 @@ import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 
-import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public final class FileContentType {
-    public static final String DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8.toString();
-    private static final String DEFAULT_CONTENT_TYPE = MediaType.create("text", "plain").toString();
+    public static final MediaType DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8;
+    private static final MediaType DEFAULT_CONTENT_TYPE = MediaType.create("text", "plain");
 
     private static final ImmutableMap<String, MediaType> contentTypeMap = ImmutableMap.<String, MediaType>builder()
             .put("png", MediaType.PNG)
@@ -39,19 +39,19 @@ public final class FileContentType {
         this.charset = charset;
     }
 
-    public String getContentType() {
-        Optional<String> optionalType = toContentType(Files.getFileExtension(filename));
+    public MediaType getContentType() {
+        Optional<MediaType> optionalType = toContentType(Files.getFileExtension(filename));
         Optional<Charset> charset = toCharset(optionalType);
 
-        String type = optionalType.or(DEFAULT_CONTENT_TYPE);
-        if (charset.isPresent()) {
-            return type + "; charset=" + charset.get().displayName();
+        MediaType type = optionalType.or(DEFAULT_CONTENT_TYPE);
+        if (charset.isPresent() && !type.charset().equals(charset)) {
+            return type.withCharset(charset.get());
         }
 
         return type;
     }
 
-    private Optional<Charset> toCharset(final Optional<String> type) {
+    private Optional<Charset> toCharset(final Optional<MediaType> type) {
         if (charset.isPresent()) {
             return charset;
         }
@@ -60,15 +60,10 @@ public final class FileContentType {
             return of(Charsets.UTF_8);
         }
 
-        return absent();
+        return type.get().charset();
     }
 
-    private Optional<String> toContentType(final String extension) {
-        MediaType mediaType = contentTypeMap.get(extension.toLowerCase());
-        if (mediaType == null) {
-            return absent();
-        }
-
-        return of(mediaType.toString());
+    private Optional<MediaType> toContentType(final String extension) {
+        return fromNullable(contentTypeMap.get(extension.toLowerCase()));
     }
 }
