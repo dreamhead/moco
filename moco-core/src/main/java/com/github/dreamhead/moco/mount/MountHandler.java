@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
+import com.google.common.net.MediaType;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -42,8 +43,8 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
     }
 
     @Override
-    protected String getContentType(final HttpRequest request) {
-        return new FileContentType(targetFile(request).getName(), Optional.<Charset>absent()).getContentType().toString();
+    protected MediaType getContentType(final HttpRequest request) {
+        return new FileContentType(targetFile(request).getName(), Optional.<Charset>absent()).getContentType();
     }
 
     @Override

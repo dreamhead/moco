@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.net.MediaType;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.*;
@@ -90,7 +91,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public String getContentType(final HttpRequest request) {
+    public MediaType getContentType(final HttpRequest request) {
         return template.getContentType(request);
     }
 }

@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.net.HttpHeaders;
+import com.google.common.net.MediaType;
 
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
@@ -45,7 +46,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         return content;
     }
 
-    protected String getContentType(final HttpRequest request) {
-        return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET.toString();
+    protected MediaType getContentType(final HttpRequest request) {
+        return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
     }
 }

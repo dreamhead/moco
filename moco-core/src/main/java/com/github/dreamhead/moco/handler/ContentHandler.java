@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.net.MediaType;
 
 import static com.google.common.base.Optional.of;
 
@@ -23,7 +24,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected String getContentType(final HttpRequest request) {
+    protected MediaType getContentType(final HttpRequest request) {
         return resource.getContentType(request);
     }
 

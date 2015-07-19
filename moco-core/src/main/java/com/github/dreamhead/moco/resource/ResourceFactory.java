@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 
@@ -21,8 +22,8 @@ public class ResourceFactory {
     public static ContentResource textResource(final String text) {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
-            public String getContentType(final HttpRequest request) {
-                return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET.toString();
+            public MediaType getContentType(final HttpRequest request) {
+                return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
             }
 
             @Override

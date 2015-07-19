@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
+import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 
@@ -39,9 +40,9 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     }
 
     @Override
-    public String getContentType(final HttpRequest request) {
+    public MediaType getContentType(final HttpRequest request) {
         MessageContent messageContent = this.filename.readFor(of(request));
         String filename = messageContent.toString();
-        return new FileContentType(filename, charset).getContentType().toString();
+        return new FileContentType(filename, charset).getContentType();
     }
 }
