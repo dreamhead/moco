@@ -650,7 +650,7 @@ public class MocoTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
-                assertThat(header.getValue(), is("text/plain; charset=UTF-8"));
+                assertThat(header.getValue(), is("text/plain; charset=utf-8"));
             }
         });
     }

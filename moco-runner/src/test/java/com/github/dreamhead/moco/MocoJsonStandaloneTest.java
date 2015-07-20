@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
+import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.junit.Test;
@@ -31,7 +32,9 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
         HttpEntity entity = response.getEntity();
         byte[] bytes = ByteStreams.toByteArray(entity.getContent());
         assertThat(new String(bytes), is("{\"foo\":\"bar\"}"));
-        assertThat(entity.getContentType().getValue(), is("application/json"));
+        MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
+        assertThat(mediaType.type(), is("application"));
+        assertThat(mediaType.subtype(), is("json"));
     }
     
     @Test
