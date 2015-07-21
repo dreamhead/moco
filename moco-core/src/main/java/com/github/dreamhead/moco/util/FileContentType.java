@@ -13,7 +13,6 @@ import static com.google.common.base.Optional.of;
 
 public final class FileContentType {
     public static final MediaType DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8;
-    private static final MediaType DEFAULT_CONTENT_TYPE = MediaType.create("text", "plain");
 
     private static final ImmutableMap<String, MediaType> contentTypeMap = ImmutableMap.<String, MediaType>builder()
             .put("png", MediaType.PNG)
@@ -43,7 +42,7 @@ public final class FileContentType {
         Optional<MediaType> optionalType = toContentType(Files.getFileExtension(filename));
         Optional<Charset> charset = toCharset(optionalType);
 
-        MediaType type = optionalType.or(DEFAULT_CONTENT_TYPE);
+        MediaType type = optionalType.or(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
         if (charset.isPresent() && !type.charset().equals(charset)) {
             return type.withCharset(charset.get());
         }
