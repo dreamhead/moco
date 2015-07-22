@@ -20,13 +20,15 @@ public final class FileContentType {
             .put("jpg", MediaType.JPEG)
             .put("jpeg", MediaType.JPEG)
             .put("tiff", MediaType.TIFF)
-            .put("css", MediaType.CSS_UTF_8)
-            .put("html", MediaType.HTML_UTF_8)
+            .put("css", MediaType.create("text", "css"))
+            .put("html", MediaType.create("text", "html"))
             .put("txt", MediaType.create("text", "plain"))
-            .put("js", MediaType.JAVASCRIPT_UTF_8)
+            .put("js", MediaType.create("application", "javascript"))
             .put("json", MediaType.create("application", "json"))
             .put("pdf", MediaType.PDF)
             .put("zip", MediaType.ZIP)
+            .put("tar", MediaType.TAR)
+            .put("gz", MediaType.GZIP)
             .put("xml", MediaType.create("text", "xml"))
             .build();
 

@@ -34,6 +34,6 @@ public class FileContentTypeTest {
 	@Test
 	public void should_have_charset_for_css_file() {
 		FileContentType contentType = new FileContentType("result.css", Optional.<Charset>absent());
-		assertThat(contentType.getContentType(), is(MediaType.CSS_UTF_8));
+		assertThat(contentType.getContentType(), is(MediaType.create("text", "css")));
 	}
 }
