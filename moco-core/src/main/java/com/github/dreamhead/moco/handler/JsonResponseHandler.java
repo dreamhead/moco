@@ -20,7 +20,7 @@ public class JsonResponseHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    protected MediaType getContentType(HttpRequest request) {
+    protected MediaType getContentType(final HttpRequest request) {
         return MediaType.create("application", "json").withCharset(content.getCharset());
     }
 }
