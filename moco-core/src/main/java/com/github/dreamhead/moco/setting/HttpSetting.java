@@ -5,17 +5,14 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.google.common.net.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import com.github.dreamhead.moco.util.RedirectDelegate;
 
-import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
-import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.collect.ImmutableList.of;
 
 public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Setting<HttpResponseSetting>, HttpResponseSetting {
+    private RedirectDelegate delegate = new RedirectDelegate();
 
     public HttpSetting(final RequestMatcher matcher) {
         super(matcher);
@@ -37,6 +34,6 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Set
 
     @Override
     public HttpResponseSetting redirectTo(final String url) {
-        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
+        return delegate.redirectTo(this, url);
     }
 }

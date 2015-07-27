@@ -1,6 +1,11 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.HttpResponseSetting;
+import com.github.dreamhead.moco.HttpsServer;
+import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountHandler;
@@ -8,19 +13,22 @@ import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.setting.HttpSetting;
+import com.github.dreamhead.moco.util.RedirectDelegate;
 import com.google.common.base.Optional;
-import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.File;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.method;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
+    private RedirectDelegate delegate = new RedirectDelegate();
+
     protected HttpConfiguration(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         super(port, monitor, configs);
     }
@@ -70,7 +78,7 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
 
     @Override
     public HttpResponseSetting redirectTo(final String url) {
-        return this.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
+        return delegate.redirectTo(this, url);
     }
 
     @Override
