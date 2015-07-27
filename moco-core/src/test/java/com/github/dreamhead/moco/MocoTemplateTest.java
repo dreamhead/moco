@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
@@ -384,6 +385,21 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 InputStream stream = this.getClass().getClassLoader().getResourceAsStream("gbk.response");
                 assertThat(helper.getAsBytes(remoteUrl("/template")), is(ByteStreams.toByteArray(stream)));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_redirect_with_template() throws Exception {
+        server.get(by(uri("/"))).response("foo");
+        server.request(by(uri("/redirectTemplate"))).redirectTo(template("${var}", "var", root()));
+        server.redirectTo(template("${var}", "var", root()));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/redirectTemplate")), is("foo"));
+                assertThat(helper.get(remoteUrl("/anything")), is("foo"));
             }
         });
     }

@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.mount.MountHandler;
 import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
+import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
 import com.google.common.base.Optional;
@@ -27,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
-    private RedirectDelegate delegate = new RedirectDelegate();
+    private final RedirectDelegate delegate = new RedirectDelegate();
 
     protected HttpConfiguration(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         super(port, monitor, configs);
@@ -78,6 +79,11 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
 
     @Override
     public HttpResponseSetting redirectTo(final String url) {
+        return delegate.redirectTo(this, url);
+    }
+
+    @Override
+    public HttpResponseSetting redirectTo(Resource url) {
         return delegate.redirectTo(this, url);
     }
 
