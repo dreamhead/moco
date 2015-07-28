@@ -7,12 +7,13 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class RedirectDelegate {
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final String url) {
-        return setting.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNullOrEmpty(url, "URL should not be null")));
+        return this.redirectTo(setting, text(checkNotNullOrEmpty(url, "URL should not be null")));
     }
 
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final Resource url) {
