@@ -1,0 +1,14 @@
+[
+  {
+    "request" :
+    {
+      "uri" : "/sequence_response"
+    },
+    "responsesInFile" :
+    {
+      "file" : {
+        "name": "src/test/resources/sequence_responses.response"
+      }
+    }
+  }
+]

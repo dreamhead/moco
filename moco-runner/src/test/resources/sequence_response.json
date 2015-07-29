@@ -1,0 +1,23 @@
+[
+{
+    "request" :
+    {
+        "uri" : "/sequence_response"
+    },
+    "responses" :
+    [{
+        "text" : "first response"
+    }, {
+        "text" : "second response"
+    }]
+}, {
+    "request" :
+    {
+      "uri" : "/foo"
+    },
+    "response" :
+    {
+      "text" : "bar"
+    }
+}
+]
