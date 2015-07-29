@@ -1701,7 +1701,7 @@ server.response(file(template("${req.headers['foo'].txt")));
     "response": {
       "file": {
         "name": {
-          "template": "${req.headers['foo'].txt")"
+          "template": "${req.headers['foo'].txt"}"
         }
       }
     }
