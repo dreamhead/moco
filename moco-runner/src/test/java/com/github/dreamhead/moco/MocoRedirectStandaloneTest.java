@@ -15,4 +15,11 @@ public class MocoRedirectStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(helper.get(remoteUrl("/redirect")), is("foo"));
     }
+
+    @Test
+    public void should_redirect_to_expected_url_with_template() throws IOException {
+        runWithConfiguration("redirect.json");
+
+        assertThat(helper.get(remoteUrl("/redirect-with-template")), is("foo"));
+    }
 }

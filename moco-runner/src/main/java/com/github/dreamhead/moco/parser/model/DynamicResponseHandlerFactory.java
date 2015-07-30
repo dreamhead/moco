@@ -210,10 +210,10 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         return template(invokeTarget(name, container.getText(), ContentResource.class));
     }
 
-    private ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
+    public static ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
         return copyOf(Maps.transformEntries(props, toVariable()));
-
     }
+
     private static Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>> toVariable() {
         return new Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>>() {
             @Override

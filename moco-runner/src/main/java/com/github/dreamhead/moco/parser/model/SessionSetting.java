@@ -2,17 +2,24 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.HttpResponseSetting;
+import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.SocketServer;
 import com.google.common.base.MoreObjects;
 
+import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.MocoMount.to;
+import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class SessionSetting {
     private RequestSetting request;
     private ResponseSetting response;
-    private String redirectTo;
+    private TextContainer redirectTo;
     private MountSetting mount;
     private EventSetting on;
     private ProxyContainer proxy;
@@ -95,7 +102,17 @@ public class SessionSetting {
 
         HttpResponseSetting request = server.request(getRequestMatcher());
         if (isRedirectResponse()) {
-            return request.redirectTo(redirectTo);
+            if (redirectTo.isRawText()) {
+                return request.redirectTo(redirectTo.getText());
+            }
+
+            if (redirectTo.isForTemplate()) {
+                if (redirectTo.hasProperties()) {
+                    return request.redirectTo(template(redirectTo.getText(), toVariables(redirectTo.getProps())));
+                }
+
+                return request.redirectTo(template(redirectTo.getText()));
+            }
         }
 
         return request.response(getResponseHandler());
