@@ -8,9 +8,11 @@ import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 
@@ -102,20 +104,27 @@ public class SessionSetting {
 
         HttpResponseSetting request = server.request(getRequestMatcher());
         if (isRedirectResponse()) {
-            if (redirectTo.isRawText()) {
-                return request.redirectTo(redirectTo.getText());
-            }
-
-            if (redirectTo.isForTemplate()) {
-                if (redirectTo.hasProperties()) {
-                    return request.redirectTo(template(redirectTo.getText(), toVariables(redirectTo.getProps())));
-                }
-
-                return request.redirectTo(template(redirectTo.getText()));
-            }
+            return request.redirectTo(redirectResource(this.redirectTo));
         }
 
         return request.response(getResponseHandler());
+    }
+
+    private Resource redirectResource(TextContainer textContainer) {
+        if (textContainer.isRawText()) {
+            return text(textContainer.getText());
+        }
+
+        if (textContainer.isForTemplate()) {
+            if (textContainer.hasProperties()) {
+                return template(textContainer.getText(), toVariables(textContainer.getProps()));
+            }
+
+            return template(textContainer.getText());
+        }
+
+
+        throw new IllegalArgumentException("Illegal resource" + textContainer);
     }
 
     private boolean isProxy() {
