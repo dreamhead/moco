@@ -1685,7 +1685,37 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath
 
 Other extractors, e.g. xpath also work here.
 
+### Redirect
+**@Since next release**
+
+Redirect can also be set as template.
+
+* Java
+```java
+server.request(by(uri("/redirectTemplate"))).redirectTo(template("${var}", "var", ""https://github.com"));
+```
+
+* Json
+```json
+{
+      "request" :
+      {
+          "uri" : "/redirect-with-template"
+      },
+
+      "redirectTo" : {
+          "template" : {
+              "with" : "${url}",
+              "vars" : {
+                  "url" : "https://github.com"
+              }
+          }
+      }
+  }
+```
+
 ### File Name Template
+**@Since 0.10.1**
 
 Template can also be used in file name, thus response can be different based on different request.
 
