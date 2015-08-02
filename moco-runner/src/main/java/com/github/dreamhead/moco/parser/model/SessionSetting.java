@@ -123,7 +123,6 @@ public class SessionSetting {
             return template(textContainer.getText());
         }
 
-
         throw new IllegalArgumentException("Illegal resource" + textContainer);
     }
 

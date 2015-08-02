@@ -9,14 +9,14 @@ import java.util.concurrent.TimeUnit;
 @JsonDeserialize(using = LatencyContainerDeserializer.class)
 public class LatencyContainer {
     private long latency;
-    private TimeUnit uint = TimeUnit.MILLISECONDS;
+    private TimeUnit unit = TimeUnit.MILLISECONDS;
 
     public long getLatency() {
         return latency;
     }
 
-    public TimeUnit getUint() {
-        return uint;
+    public TimeUnit getUnit() {
+        return unit;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LatencyContainer {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("latency", latency)
-                .add("unit", uint)
+                .add("unit", unit)
                 .toString();
     }
 
@@ -37,7 +37,7 @@ public class LatencyContainer {
     public static LatencyContainer latencyWithUnit(long latency, TimeUnit timeUnit) {
         LatencyContainer latencyContainer = new LatencyContainer();
         latencyContainer.latency = latency;
-        latencyContainer.uint = timeUnit;
+        latencyContainer.unit = timeUnit;
         return latencyContainer;
     }
 }
