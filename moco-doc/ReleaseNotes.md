@@ -5,6 +5,7 @@
 * **json** with pojo will convert POJO to JSON text in request matcher
 * **socketServer** without port
 * **socketServer** with monitor, e.g. logging and verification
+* Template as **redirect** target 
 
 ## Implementation Details
 * Enhance log dumper with MediaType implementation
