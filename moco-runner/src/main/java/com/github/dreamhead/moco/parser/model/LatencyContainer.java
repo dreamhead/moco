@@ -29,9 +29,7 @@ public class LatencyContainer {
     }
 
     public static LatencyContainer latency(long latency) {
-        LatencyContainer latencyContainer = new LatencyContainer();
-        latencyContainer.latency = latency;
-        return latencyContainer;
+        return latencyWithUnit(latency, TimeUnit.MILLISECONDS);
     }
 
     public static LatencyContainer latencyWithUnit(long latency, TimeUnit timeUnit) {
