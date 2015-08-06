@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.LatencyContainer;
-import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

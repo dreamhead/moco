@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
-import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 
@@ -25,7 +24,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
             return container.toProxyContainer();
         }
 
-        throw ctxt.mappingException(TextContainer.class, currentToken);
+        throw ctxt.mappingException(ProxyContainer.class, currentToken);
     }
 
     private static class InternalProxyContainer {
