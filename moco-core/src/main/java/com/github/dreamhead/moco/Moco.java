@@ -283,11 +283,11 @@ public final class Moco {
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
-        return new AndRequestMatcher(copyOf(matchers));
+        return new AndRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
     }
 
     public static RequestMatcher or(final RequestMatcher... matchers) {
-        return new OrRequestMatcher(copyOf(matchers));
+        return new OrRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
     }
 
     public static RequestMatcher not(final RequestMatcher matcher) {

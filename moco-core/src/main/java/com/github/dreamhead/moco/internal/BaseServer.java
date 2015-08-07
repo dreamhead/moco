@@ -16,6 +16,6 @@ public abstract class BaseServer<T extends ResponseSetting<T>>
     }
 
     public T request(final RequestMatcher... matchers) {
-        return request(or(matchers));
+        return request(or(checkNotNull(matchers, "Matcher should not be null")));
     }
 }
