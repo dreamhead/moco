@@ -45,7 +45,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
-import static com.google.common.io.ByteStreams.toByteArray;
+import static org.apache.http.util.EntityUtils.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
@@ -164,9 +164,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
 
         HttpEntity entity = remoteResponse.getEntity();
-        if (entity != null && entity.getContentLength() > 0) {
-            ByteBuf buffer = Unpooled.copiedBuffer(toByteArray(entity.getContent()), 0, (int) entity.getContentLength());
-            response.content().writeBytes(buffer);
+        if (entity != null) {
+            byte[] content = toByteArray(entity);
+            if (content.length > 0) {
+                ByteBuf buffer = Unpooled.copiedBuffer(content);
+                response.content().writeBytes(buffer);
+            }
         }
 
         return newResponse(response);
