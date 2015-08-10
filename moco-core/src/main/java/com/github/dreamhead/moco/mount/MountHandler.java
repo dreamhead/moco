@@ -44,7 +44,7 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
 
     @Override
     protected MediaType getContentType(final HttpRequest request) {
-        return new FileContentType(targetFile(request).getName(), Optional.<Charset>absent()).getContentType();
+        return new FileContentType(targetFile(request).getName()).getContentType();
     }
 
     @Override
