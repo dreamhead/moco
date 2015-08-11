@@ -1,9 +1,12 @@
 package com.github.dreamhead.moco.handler;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.MutableResponse;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 
@@ -11,6 +14,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     private final HeaderDetector detector = new HeaderDetector();
 
     protected abstract MessageContent responseContent(final Request request);
+    protected abstract MediaType getContentType(final HttpRequest request);
 
     @Override
     public void writeToResponse(final SessionContext context) {
@@ -44,9 +48,5 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
             throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");
         }
         return content;
-    }
-
-    protected MediaType getContentType(final HttpRequest request) {
-        return FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET;
     }
 }
