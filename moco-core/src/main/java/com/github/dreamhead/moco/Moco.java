@@ -19,7 +19,7 @@ import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
-import com.github.dreamhead.moco.handler.SequenceContentHandler;
+import com.github.dreamhead.moco.handler.SequenceHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -409,7 +409,7 @@ public final class Moco {
 
     private static ResponseHandler seq(final ImmutableList<ResponseHandler> handlers) {
         checkArgument(handlers.size() > 0, "seq contents should not be null");
-        return new SequenceContentHandler(handlers);
+        return new SequenceHandler(handlers);
     }
 
     public static ContentResource file(final String filename) {

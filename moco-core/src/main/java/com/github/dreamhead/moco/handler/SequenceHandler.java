@@ -10,11 +10,11 @@ import com.google.common.collect.ImmutableList;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public class SequenceContentHandler extends AbstractResponseHandler {
+public class SequenceHandler extends AbstractResponseHandler {
     private final ImmutableList<ResponseHandler> handlers;
     private int index;
 
-    public SequenceContentHandler(final ImmutableList<ResponseHandler> handlers) {
+    public SequenceHandler(final ImmutableList<ResponseHandler> handlers) {
         this.handlers = handlers;
     }
 
@@ -39,7 +39,7 @@ public class SequenceContentHandler extends AbstractResponseHandler {
         }
 
         FluentIterable<ResponseHandler> transformedResources = from(copyOf(handlers)).transform(applyConfig(config));
-        return new SequenceContentHandler(transformedResources.toList());
+        return new SequenceHandler(transformedResources.toList());
     }
 
     private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
