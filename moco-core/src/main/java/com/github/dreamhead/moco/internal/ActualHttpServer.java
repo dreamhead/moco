@@ -17,7 +17,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class ActualHttpServer extends HttpConfiguration {
-    protected final Optional<HttpsCertificate> certificate;
+    private final Optional<HttpsCertificate> certificate;
 
     protected ActualHttpServer(final Optional<Integer> port, final Optional<HttpsCertificate> certificate, final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
@@ -78,7 +78,8 @@ public class ActualHttpServer extends HttpConfiguration {
         return createHttpServerWithMonitor(port, new QuietMonitor(), configs);
     }
 
-    public static ActualHttpServer createHttpsServerWithMonitor(final Optional<Integer> port, final HttpsCertificate certificate, MocoMonitor monitor, MocoConfig... configs) {
+    public static ActualHttpServer createHttpsServerWithMonitor(final Optional<Integer> port, final HttpsCertificate certificate,
+                                                                final MocoMonitor monitor, final MocoConfig... configs) {
         return new ActualHttpServer(port, of(certificate), monitor, configs);
     }
 
