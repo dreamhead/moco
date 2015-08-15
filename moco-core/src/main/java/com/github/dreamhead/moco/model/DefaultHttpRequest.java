@@ -14,7 +14,13 @@ import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.QueryStringEncoder;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +29,7 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
-public class DefaultHttpRequest implements HttpRequest {
+public final class DefaultHttpRequest implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> formSupplier;
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 

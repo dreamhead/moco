@@ -16,7 +16,10 @@ import io.netty.handler.codec.http.FullHttpResponse;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static io.netty.channel.ChannelHandler.Sharable;
-import static io.netty.handler.codec.http.HttpHeaders.*;
+import static io.netty.handler.codec.http.HttpHeaders.isContentLengthSet;
+import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
+import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
+import static io.netty.handler.codec.http.HttpHeaders.setKeepAlive;
 
 @Sharable
 public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {

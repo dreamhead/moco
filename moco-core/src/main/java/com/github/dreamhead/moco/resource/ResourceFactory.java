@@ -5,7 +5,11 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.resource.reader.*;
+import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
+import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
+import com.github.dreamhead.moco.resource.reader.FileResourceReader;
+import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
+import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
@@ -16,9 +20,13 @@ import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
-import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.*;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.DO_NOTHING_APPLIER;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.cookieConfigApplier;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fileConfigApplier;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
 
-public class ResourceFactory {
+public final class ResourceFactory {
     public static ContentResource textResource(final String text) {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override

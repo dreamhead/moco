@@ -1,6 +1,12 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.base.Optional;
@@ -14,7 +20,7 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class BaseActualServer <T extends ResponseSetting<T>> extends BaseServer<T> {
+public abstract class BaseActualServer<T extends ResponseSetting<T>> extends BaseServer<T> {
     protected abstract Setting<T> newSetting(final RequestMatcher matcher);
 
     protected final MocoConfig[] configs;

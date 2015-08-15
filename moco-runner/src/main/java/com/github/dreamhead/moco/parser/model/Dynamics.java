@@ -11,7 +11,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
-import static com.google.common.base.Predicates.*;
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.concat;
 

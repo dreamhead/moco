@@ -34,7 +34,7 @@ public class AndResponseHandler extends AbstractResponseHandler {
     private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
         return new Function<ResponseHandler, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(ResponseHandler handler) {
+            public ResponseHandler apply(final ResponseHandler handler) {
                 return handler.apply(config);
             }
         };

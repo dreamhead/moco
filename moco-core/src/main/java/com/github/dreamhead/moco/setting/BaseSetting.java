@@ -1,6 +1,11 @@
 package com.github.dreamhead.moco.setting;
 
-import com.github.dreamhead.moco.*;
+
+import com.github.dreamhead.moco.MocoEvent;
+import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.internal.BaseResponseSettingConfiguration;
 import com.github.dreamhead.moco.internal.SessionContext;
 

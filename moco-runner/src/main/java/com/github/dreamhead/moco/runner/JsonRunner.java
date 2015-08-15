@@ -16,12 +16,16 @@ import com.google.common.net.HttpHeaders;
 
 import java.io.InputStream;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.toArray;
 
-public class JsonRunner implements Runner {
+public final class JsonRunner implements Runner {
 
     private final HttpServerParser httpParser = new HttpServerParser();
     private final SocketServerParser socketParser = new SocketServerParser();

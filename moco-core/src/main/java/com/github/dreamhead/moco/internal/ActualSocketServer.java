@@ -1,6 +1,10 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.SocketResponseSetting;
+import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.dumper.SocketRequestDumper;
 import com.github.dreamhead.moco.dumper.SocketResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
@@ -11,7 +15,7 @@ import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
 
-public class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
+public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
     private ActualSocketServer(final Optional<Integer> port, final MocoMonitor monitor) {
         super(port, monitor, new MocoConfig[0]);
     }

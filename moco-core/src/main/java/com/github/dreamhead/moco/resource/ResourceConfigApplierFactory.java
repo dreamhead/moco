@@ -7,9 +7,12 @@ import com.google.common.collect.ImmutableMap;
 
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.resource.ResourceFactory.*;
+import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 
-public class ResourceConfigApplierFactory {
+public final class ResourceConfigApplierFactory {
     public static ResourceConfigApplier DO_NOTHING_APPLIER = new ResourceConfigApplier() {
         @Override
         public Resource apply(MocoConfig config, Resource resource) {
@@ -55,7 +58,7 @@ public class ResourceConfigApplierFactory {
         };
     }
 
-    private static abstract class BaseResourceConfigApplier implements ResourceConfigApplier {
+    private abstract static class BaseResourceConfigApplier implements ResourceConfigApplier {
         protected abstract Resource newResource(final MocoConfig config);
         protected abstract String id();
 
@@ -69,7 +72,7 @@ public class ResourceConfigApplierFactory {
         }
     }
 
-    private static abstract class SelfResourceConfigApplier extends BaseResourceConfigApplier {
+    private abstract static class SelfResourceConfigApplier extends BaseResourceConfigApplier {
         private String id;
 
         private SelfResourceConfigApplier(final String id) {
@@ -82,7 +85,7 @@ public class ResourceConfigApplierFactory {
         }
     }
 
-    private static abstract class EmbeddedResourceConfigApplier extends BaseResourceConfigApplier {
+    private abstract static class EmbeddedResourceConfigApplier extends BaseResourceConfigApplier {
         private Resource resource;
 
         private EmbeddedResourceConfigApplier(final Resource resource) {
