@@ -2,7 +2,12 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.HttpResponseSetting;
+import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.MoreObjects;
@@ -13,7 +18,6 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.ImmutableList.copyOf;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
