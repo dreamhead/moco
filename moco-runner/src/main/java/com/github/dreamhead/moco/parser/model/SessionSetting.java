@@ -2,19 +2,18 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.github.dreamhead.moco.HttpResponseSetting;
-import com.github.dreamhead.moco.HttpServer;
-import com.github.dreamhead.moco.MocoEventTrigger;
-import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.*;
+import com.github.dreamhead.moco.handler.SequenceContentHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -25,6 +24,7 @@ public class SessionSetting {
     private MountSetting mount;
     private EventSetting on;
     private ProxyContainer proxy;
+    private ResponseSetting[] responseSeq;
 
     private boolean isMount() {
         return this.mount != null;
@@ -39,6 +39,7 @@ public class SessionSetting {
         return MoreObjects.toStringHelper(this).omitNullValues()
                 .add("request", request)
                 .add("response", response)
+                .add("responseSeq", responseSeq)
                 .add("redirect to", redirectTo)
                 .add("mount", mount)
                 .add("proxy", proxy)
@@ -51,11 +52,17 @@ public class SessionSetting {
     }
 
     private ResponseHandler getResponseHandler() {
-        if (response == null) {
+        if (response == null && responseSeq == null) {
             throw new IllegalArgumentException("No response specified");
         }
 
-        return response.getResponseHandler();
+        if (response != null && responseSeq != null) {
+            throw new IllegalArgumentException("response and responseSeq can not be specified at same time, choose either of two");
+        }
+        if (response != null) {
+            return response.getResponseHandler();
+        }
+        return getSeqResponseHandler();
     }
 
     private RequestMatcher getRequestMatcher() {
@@ -132,5 +139,21 @@ public class SessionSetting {
 
     private boolean hasEvent() {
         return this.on != null;
+    }
+
+    private void checkSeqResponse() {
+        checkArgument(responseSeq != null, "seq contents should not be null");
+        checkArgument(responseSeq.length > 0, "seq contents should contain at least one response");
+    }
+
+    private ResponseHandler getSeqResponseHandler() {
+        checkSeqResponse();
+
+        ImmutableList.Builder<ResponseHandler> builder = ImmutableList.builder();
+        for (ResponseSetting responseSetting : responseSeq) {
+            builder.add(responseSetting.getResponseHandler());
+        }
+
+        return new SequenceContentHandler(builder.build());
     }
 }
