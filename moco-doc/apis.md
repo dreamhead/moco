@@ -78,56 +78,6 @@ server.request(by(file("foo.request"))).response("bar");
 }
 ```
 
-**@Since 0.10.1**
-
-You can specify file charset if you want to see it in correct encoding in console.
-
-* Java API
-
-```java
-server.response(file("src/test/resources/gbk.response", Charset.forName("GBK")));
-```
-
-* JSON
-```json
-[
-  {
-    "response":
-    {
-      "file":
-      {
-        "name": "gbk.response",
-        "charset": "GBK"
-      }
-    }
-  }
-]
-```
-
-Charset can also be used in path resource.
-
-* Java API
-
-```java
-server.response(pathResource("src/test/resources/gbk.response", Charset.forName("GBK")));
-```
-
-* JSON
-```json
-[
-  {
-    "response":
-    {
-      "path_resource":
-      {
-        "name": "gbk.response",
-        "charset": "GBK"
-      }
-    }
-  }
-]
-```
-
 ### URI
 **@Since 0.7**
 
@@ -848,6 +798,56 @@ server.request(by("foo")).response(file("bar.response"));
       "file" : "bar.response"
     }
 }
+```
+
+**@Since 0.10.1**
+
+You can specify file charset if you want to see it in correct encoding in console.
+
+* Java API
+
+```java
+server.response(file("src/test/resources/gbk.response", Charset.forName("GBK")));
+```
+
+* JSON
+```json
+[
+  {
+    "response":
+    {
+      "file":
+      {
+        "name": "gbk.response",
+        "charset": "GBK"
+      }
+    }
+  }
+]
+```
+
+Charset can also be used in path resource.
+
+* Java API
+
+```java
+server.response(pathResource("src/test/resources/gbk.response", Charset.forName("GBK")));
+```
+
+* JSON
+```json
+[
+  {
+    "response":
+    {
+      "path_resource":
+      {
+        "name": "gbk.response",
+        "charset": "GBK"
+      }
+    }
+  }
+]
 ```
 
 ### Status Code
