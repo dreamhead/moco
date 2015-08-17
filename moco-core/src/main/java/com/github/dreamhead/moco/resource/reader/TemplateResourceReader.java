@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.resource.reader;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
@@ -29,8 +31,9 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.getVersion();
-    private static final Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
     private static final String TEMPLATE_NAME = "template";
+
+    private static Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
 
     static {
         System.setProperty(freemarker.log.Logger.SYSTEM_PROPERTY_NAME_LOGGER_LIBRARY, freemarker.log.Logger.LIBRARY_NAME_NONE);
@@ -82,13 +85,17 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private ImmutableMap<String, Object> variables(final Request request) {
-        return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", request).build();
+        return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", toTemplateRequest(request)).build();
+    }
+
+    private TemplateRequest toTemplateRequest(final Request request) {
+        return new TemplateRequest(request);
     }
 
     private ImmutableMap<String, Object> toVariableString(final Request request) {
         return copyOf(Maps.transformEntries(this.variables, new Maps.EntryTransformer<String, Variable, Object>() {
             @Override
-            public Object transformEntry(String key, Variable value) {
+            public Object transformEntry(final String key, final Variable value) {
                 return value.toTemplateVariable(request);
             }
         }));
@@ -97,5 +104,80 @@ public class TemplateResourceReader implements ContentResourceReader {
     @Override
     public MediaType getContentType(final HttpRequest request) {
         return template.getContentType(request);
+    }
+
+    public static class TemplateRequest {
+        private Request request;
+
+        public TemplateRequest(final Request request) {
+            this.request = request;
+        }
+
+        public MessageContent getContent() {
+            return this.request.getContent();
+        }
+
+        public HttpProtocolVersion getVersion() {
+            if (this.request instanceof HttpRequest) {
+                return ((HttpRequest) this.request).getVersion();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public ImmutableMap<String, String> getHeaders() {
+            if (this.request instanceof HttpRequest) {
+                return ((HttpRequest) this.request).getHeaders();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public String getUri() {
+            if (this.request instanceof HttpRequest) {
+                return ((HttpRequest) this.request).getUri();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public String getMethod() {
+            if (this.request instanceof HttpRequest) {
+                return ((HttpRequest) this.request).getMethod();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public ImmutableMap<String, String> getQueries() {
+            if (this.request instanceof HttpRequest) {
+                HttpRequest httpRequest = (HttpRequest) this.request;
+                ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+                ImmutableMap<String, String[]> queries = httpRequest.getQueries();
+                for (String key : queries.keySet()) {
+                    builder.put(key, queries.get(key)[0]);
+                }
+
+                return builder.build();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public ImmutableMap<String, String> getForms() {
+            if (this.request instanceof DefaultHttpRequest) {
+                return ((DefaultHttpRequest) this.request).getForms();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
+
+        public ImmutableMap<String, String> getCookies() {
+            if (this.request instanceof DefaultHttpRequest) {
+                return ((DefaultHttpRequest) this.request).getCookies();
+            }
+
+            throw new IllegalArgumentException("Request is not HTTP request");
+        }
     }
 }

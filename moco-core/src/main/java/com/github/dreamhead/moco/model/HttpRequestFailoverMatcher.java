@@ -22,13 +22,39 @@ public class HttpRequestFailoverMatcher {
                 && doMatch(failover.getQueries(), target.getQueries());
     }
 
-    protected boolean doMatch(final Map<String, String> thisField, final Map<String, String> thatField) {
+    protected boolean doMatch(final Map<String, ?> thisField, final Map<String, ?> thatField) {
         if (thisField == null || thisField.isEmpty()) {
             return true;
         }
 
-        for (Map.Entry<String, String> entry : thisField.entrySet()) {
-            if (!doMatch(entry.getValue(), thatField.get(entry.getKey()))) {
+        for (Map.Entry<String, ?> entry : thisField.entrySet()) {
+            Object thisValue = entry.getValue();
+            Object thatValue = thatField.get(entry.getKey());
+            if (thisValue instanceof String && thatValue instanceof String) {
+                if (!doMatch((String) thisValue, (String) thatValue)) {
+                    return false;
+                }
+            }
+
+            if (thisValue instanceof String[] && thatValue instanceof String[]) {
+                String[] thisValues = (String[]) thisValue;
+                String[] thatValues = (String[]) thatValue;
+                if (!doMatch(thisValues, thatValues)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean doMatch(final String[] thisValues, final String[] thatValues) {
+        if (thisValues.length != thatValues.length) {
+            return false;
+        }
+
+        for (int i = 0; i < thatValues.length; i++) {
+            if (!doMatch(thisValues[i], thatValues[i])) {
                 return false;
             }
         }

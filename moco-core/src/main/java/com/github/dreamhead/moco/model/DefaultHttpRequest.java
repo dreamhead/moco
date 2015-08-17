@@ -39,11 +39,11 @@ public final class DefaultHttpRequest implements HttpRequest {
     private final String method;
 
     private final String uri;
-    private final ImmutableMap<String, String> queries;
+    private final ImmutableMap<String, String[]> queries;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final String method, final String uri,
-                               final ImmutableMap<String, String> headers, final ImmutableMap<String, String> queries) {
+                               final ImmutableMap<String, String> headers, final ImmutableMap<String, String[]> queries) {
         this.version = version;
         this.content = content;
         this.headers = headers;
@@ -88,7 +88,7 @@ public final class DefaultHttpRequest implements HttpRequest {
     }
 
     @Override
-    public ImmutableMap<String, String> getQueries() {
+    public ImmutableMap<String, String[]> getQueries() {
         return queries;
     }
 
@@ -140,7 +140,7 @@ public final class DefaultHttpRequest implements HttpRequest {
 
     public static HttpRequest newRequest(final FullHttpRequest request) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        ImmutableMap<String, String> queries = toQueries(decoder);
+        ImmutableMap<String, String[]> queries = toQueries(decoder);
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().text()))
@@ -152,10 +152,11 @@ public final class DefaultHttpRequest implements HttpRequest {
                 .build();
     }
 
-    private static ImmutableMap<String, String> toQueries(final QueryStringDecoder decoder) {
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+    private static ImmutableMap<String, String[]> toQueries(final QueryStringDecoder decoder) {
+        ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
         for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            builder.put(entry.getKey(), entry.getValue().get(0));
+            List<String> value = entry.getValue();
+            builder.put(entry.getKey(), value.toArray(new String[value.size()]));
         }
         return builder.build();
     }
@@ -167,8 +168,11 @@ public final class DefaultHttpRequest implements HttpRequest {
         }
 
         QueryStringEncoder encoder = new QueryStringEncoder(uri);
-        for (Map.Entry<String, String> entry : queries.entrySet()) {
-            encoder.addParam(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, String[]> entry : queries.entrySet()) {
+            String[] values = entry.getValue();
+            for (String value : values) {
+                encoder.addParam(entry.getKey(), value);
+            }
         }
 
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version.text()), HttpMethod.valueOf(method), encoder.toString(), buffer);
@@ -194,7 +198,7 @@ public final class DefaultHttpRequest implements HttpRequest {
         private ImmutableMap<String, String> headers;
         private String method;
         private String uri;
-        private ImmutableMap<String, String> queries;
+        private ImmutableMap<String, String[]> queries;
 
         public Builder withVersion(final HttpProtocolVersion version) {
             this.version = version;
@@ -229,7 +233,7 @@ public final class DefaultHttpRequest implements HttpRequest {
             return this;
         }
 
-        public Builder withQueries(final Map<String, String> queries) {
+        public Builder withQueries(final Map<String, String[]> queries) {
             if (queries != null) {
                 this.queries = copyOf(queries);
             }

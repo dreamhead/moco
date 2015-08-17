@@ -7,5 +7,5 @@ public interface HttpRequest extends Request, HttpMessage {
 
     String getMethod();
 
-    ImmutableMap<String, String> getQueries();
+    ImmutableMap<String, String[]> getQueries();
 }

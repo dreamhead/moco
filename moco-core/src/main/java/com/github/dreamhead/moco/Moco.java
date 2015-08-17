@@ -354,7 +354,7 @@ public final class Moco {
         return new LatencyProcedure(duration, checkNotNull(unit, "Time unit should not be null"));
     }
 
-    public static RequestExtractor<String> query(final String param) {
+    public static RequestExtractor<String[]> query(final String param) {
         return new ParamRequestExtractor(checkNotNullOrEmpty(param, "Query parameter should not be null"));
     }
 

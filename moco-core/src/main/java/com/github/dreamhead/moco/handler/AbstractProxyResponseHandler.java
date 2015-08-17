@@ -229,8 +229,10 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
 
         QueryStringEncoder encoder = new QueryStringEncoder(remoteUrl.get());
-        for (Map.Entry<String, String> entry : request.getQueries().entrySet()) {
-            encoder.addParam(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, String[]> entry : request.getQueries().entrySet()) {
+            for (String value : entry.getValue()) {
+                encoder.addParam(entry.getKey(), value);
+            }
         }
 
         try {

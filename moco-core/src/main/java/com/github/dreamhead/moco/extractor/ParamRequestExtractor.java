@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class ParamRequestExtractor extends HttpRequestExtractor<String> {
+public class ParamRequestExtractor extends HttpRequestExtractor<String[]> {
     private final String param;
 
     public ParamRequestExtractor(final String param) {
@@ -14,7 +14,7 @@ public class ParamRequestExtractor extends HttpRequestExtractor<String> {
     }
 
     @Override
-    protected Optional<String> doExtract(final HttpRequest request) {
+    protected Optional<String[]> doExtract(final HttpRequest request) {
         return fromNullable(request.getQueries().get(this.param));
     }
 }
