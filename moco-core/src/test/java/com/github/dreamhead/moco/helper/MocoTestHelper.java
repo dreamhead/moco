@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.helper;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -49,9 +49,9 @@ public class MocoTestHelper {
         return EXECUTOR.execute(Request.Get(url)).returnResponse();
     }
 
-    public String getWithHeader(String url, ImmutableMap<String, String> headers) throws IOException {
+    public String getWithHeader(String url, ImmutableMultimap<String, String> headers) throws IOException {
         Request request = Request.Get(url);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
+        for (Map.Entry<String, String> entry : headers.entries()) {
             request = request.addHeader(entry.getKey(), entry.getValue());
         }
 

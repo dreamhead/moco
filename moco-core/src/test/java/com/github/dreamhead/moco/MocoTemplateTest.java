@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.ByteStreams;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
@@ -68,7 +69,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getWithHeader(remoteUrl("/template"), of("foo", "bar")), is("bar"));
+                assertThat(helper.getWithHeader(remoteUrl("/template"), ImmutableMultimap.of("foo", "bar")), is("bar"));
             }
         });
     }

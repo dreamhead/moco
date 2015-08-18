@@ -23,7 +23,7 @@ import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.google.common.collect.ImmutableMap.of;
+import static com.google.common.collect.ImmutableMultimap.of;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
