@@ -14,7 +14,7 @@ import static com.google.common.base.Optional.of;
 public final class FileContentType {
     public static final MediaType DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8;
 
-    private static final ImmutableMap<String, MediaType> contentTypeMap = ImmutableMap.<String, MediaType>builder()
+    private static final ImmutableMap<String, MediaType> CONTENT_TYPES = ImmutableMap.<String, MediaType>builder()
             .put("png", MediaType.PNG)
             .put("gif", MediaType.GIF)
             .put("jpg", MediaType.JPEG)
@@ -69,6 +69,6 @@ public final class FileContentType {
     }
 
     private Optional<MediaType> toContentType(final String extension) {
-        return fromNullable(contentTypeMap.get(extension.toLowerCase()));
+        return fromNullable(CONTENT_TYPES.get(extension.toLowerCase()));
     }
 }

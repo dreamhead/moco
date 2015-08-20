@@ -13,9 +13,9 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.templateResourc
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 
 public final class ResourceConfigApplierFactory {
-    public static ResourceConfigApplier DO_NOTHING_APPLIER = new ResourceConfigApplier() {
+    public static final ResourceConfigApplier DO_NOTHING_APPLIER = new ResourceConfigApplier() {
         @Override
-        public Resource apply(MocoConfig config, Resource resource) {
+        public Resource apply(final MocoConfig config, final Resource resource) {
             return resource;
         }
     };

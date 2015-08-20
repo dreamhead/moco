@@ -1,6 +1,9 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.internal.*;
+import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.internal.ActualSocketServer;
+import com.github.dreamhead.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.internal.MocoSocketServer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,7 +34,7 @@ public abstract class Runner {
     }
 
     public static Runner runner(final SocketServer server) {
-        return new MocoSocketServer((ActualSocketServer)checkNotNull(server, "server should not be null"));
+        return new MocoSocketServer((ActualSocketServer) checkNotNull(server, "server should not be null"));
     }
 
     public abstract void start();

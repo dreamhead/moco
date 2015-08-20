@@ -25,7 +25,8 @@ import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
 
 public class DefaultFailoverExecutor implements FailoverExecutor {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
+    private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
+
     private final TypeFactory factory = TypeFactory.defaultInstance();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File file;

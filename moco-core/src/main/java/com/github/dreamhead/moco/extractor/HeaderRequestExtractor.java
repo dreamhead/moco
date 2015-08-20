@@ -32,9 +32,9 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     }
 
     private Function<Map.Entry<String, String>, String> toValue() {
-        return new Function<Map.Entry<String,String>, String>() {
+        return new Function<Map.Entry<String, String>, String>() {
             @Override
-            public String apply(Map.Entry<String, String> input) {
+            public String apply(final Map.Entry<String, String> input) {
                 return input.getValue();
             }
         };
@@ -43,7 +43,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     private Predicate<Map.Entry<String, String>> isForName(final String key) {
         return new Predicate<Map.Entry<String, String>>() {
             @Override
-            public boolean apply(Map.Entry<String, String> input) {
+            public boolean apply(final Map.Entry<String, String> input) {
                 return key.equalsIgnoreCase(input.getKey());
             }
         };

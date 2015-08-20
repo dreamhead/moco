@@ -99,7 +99,7 @@ public final class Moco {
         return ActualHttpServer.createHttpServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
     }
 
-    private static MocoMonitor mergeMonitor(MocoMonitor monitor, MocoMonitor monitor2, MocoMonitor[] monitors) {
+    private static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor[] monitors) {
         MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
         targetMonitors[0] = checkNotNull(monitor, "Monitor should not be null");
         targetMonitors[1] = checkNotNull(monitor2, "Monitor should not be null");

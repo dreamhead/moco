@@ -8,8 +8,8 @@ import java.lang.reflect.Constructor;
 
 import static java.lang.String.format;
 
-public class ResponseHandlers {
-    private static final ImmutableMap<String, Class> handlers = ImmutableMap.<String, Class>builder()
+public final class ResponseHandlers {
+    private static final ImmutableMap<String, Class> HANDLERS = ImmutableMap.<String, Class>builder()
             .put("file", ContentHandler.class)
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
@@ -17,7 +17,7 @@ public class ResponseHandlers {
             .put("version", VersionResponseHandler.class).build();
 
     public static ResponseHandler responseHandler(final Resource resource) {
-        if (handlers.containsKey(resource.id())) {
+        if (HANDLERS.containsKey(resource.id())) {
             return createResponseHandler(resource);
         }
 
@@ -25,7 +25,7 @@ public class ResponseHandlers {
     }
 
     private static ResponseHandler createResponseHandler(final Resource resource) {
-        Class clazz = handlers.get(resource.id());
+        Class clazz = HANDLERS.get(resource.id());
         try {
             Constructor[] constructors = clazz.getConstructors();
             return (ResponseHandler)constructors[0].newInstance(resource);

@@ -37,7 +37,7 @@ public class MocoRequestAction implements MocoEventAction {
         try {
             HttpRequestBase request = createRequest(url, method);
             if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-                ((HttpEntityEnclosingRequest)request).setEntity(new ByteArrayEntity(content.get().readFor(Optional.<Request>absent()).getContent()));
+                ((HttpEntityEnclosingRequest) request).setEntity(new ByteArrayEntity(content.get().readFor(Optional.<Request>absent()).getContent()));
             }
 
             client.execute(request);

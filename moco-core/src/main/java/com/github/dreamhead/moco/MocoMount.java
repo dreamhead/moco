@@ -16,7 +16,7 @@ public class MocoMount {
         checkNotNullOrEmpty(wildcard, "Wildcard should not be null");
         return new MountPredicate() {
             @Override
-            public boolean apply(String filename) {
+            public boolean apply(final String filename) {
                 return wildcardMatch(filename, wildcard);
             }
         };
@@ -30,7 +30,7 @@ public class MocoMount {
         checkNotNull(predicate);
         return new MountPredicate() {
             @Override
-            public boolean apply(String filename) {
+            public boolean apply(final String filename) {
                 return !predicate.apply(filename);
             }
         };
