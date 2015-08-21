@@ -83,7 +83,7 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
     }
 
     @Override
-    public HttpResponseSetting redirectTo(Resource url) {
+    public HttpResponseSetting redirectTo(final Resource url) {
         return delegate.redirectTo(this, url);
     }
 

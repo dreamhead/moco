@@ -39,7 +39,7 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting> implements Set
     }
 
     @Override
-    public HttpResponseSetting redirectTo(Resource url) {
+    public HttpResponseSetting redirectTo(final Resource url) {
         return delegate.redirectTo(this, url);
     }
 }
