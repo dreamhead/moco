@@ -1,4 +1,4 @@
 package com.github.dreamhead.moco;
 
-public interface SocketServer extends SocketResponseSetting, Server<SocketResponseSetting>{
+public interface SocketServer extends SocketResponseSetting, Server<SocketResponseSetting> {
 }

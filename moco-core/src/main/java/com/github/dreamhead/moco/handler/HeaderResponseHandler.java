@@ -37,9 +37,9 @@ public class HeaderResponseHandler extends AbstractHttpResponseHandler {
             return handler;
         }
 
-        Resource resource = this.resource.apply(config);
-        if (resource != this.resource) {
-            return new HeaderResponseHandler(name, resource);
+        Resource appliedResource = this.resource.apply(config);
+        if (appliedResource != this.resource) {
+            return new HeaderResponseHandler(name, appliedResource);
         }
 
         return this;

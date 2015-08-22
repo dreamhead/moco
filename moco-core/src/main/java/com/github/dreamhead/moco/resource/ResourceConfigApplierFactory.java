@@ -53,7 +53,7 @@ public final class ResourceConfigApplierFactory {
         return new SelfResourceConfigApplier(id) {
             @Override
             protected Resource newResource(final MocoConfig config) {
-                return uriResource((String)config.apply(uri));
+                return uriResource((String) config.apply(uri));
             }
         };
     }

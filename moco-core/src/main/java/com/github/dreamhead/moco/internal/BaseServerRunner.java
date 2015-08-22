@@ -9,13 +9,13 @@ public abstract class BaseServerRunner<T extends ResponseSetting<T>> extends Run
     protected abstract BaseActualServer<T> serverSetting();
     protected abstract ChannelInitializer<? extends Channel> channelInitializer();
 
-    protected final MocoServer server = new MocoServer();
+    private final MocoServer server = new MocoServer();
 
     @Override
     public void start() {
-        BaseActualServer<T> server = serverSetting();
-        int port = this.server.start(server.getPort().or(0), channelInitializer());
-        server.setPort(port);
+        BaseActualServer<T> setting = serverSetting();
+        int port = this.server.start(setting.getPort().or(0), channelInitializer());
+        setting.setPort(port);
     }
 
     @Override

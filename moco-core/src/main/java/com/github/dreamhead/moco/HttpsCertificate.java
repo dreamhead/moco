@@ -15,8 +15,7 @@ import java.security.Security;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class HttpsCertificate {
-
+public final class HttpsCertificate {
     private static final String PROTOCOL = "TLS";
     private static final String DEFAULT_ALGORITHM = "SunX509";
     private final ContentResource resource;
@@ -73,7 +72,7 @@ public class HttpsCertificate {
         return certPassword.toCharArray();
     }
 
-    public static HttpsCertificate certificate(final ContentResource resource, final String keyStorePassword, String certPassword) {
+    public static HttpsCertificate certificate(final ContentResource resource, final String keyStorePassword, final String certPassword) {
         return new HttpsCertificate(checkNotNull(resource),
                 checkNotNullOrEmpty(keyStorePassword, "Key store password should not be null"),
                 checkNotNullOrEmpty(certPassword, "Cert password should not be null"));

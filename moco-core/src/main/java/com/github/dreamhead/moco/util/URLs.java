@@ -7,7 +7,7 @@ import java.net.URL;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
-public class URLs {
+public final class URLs {
     private static final String SEPARATOR = "/";
 
     public static String toBase(final String baseUri) {

@@ -35,4 +35,7 @@ public class MocoMount {
             }
         };
     }
+
+    private MocoMount() {
+    }
 }

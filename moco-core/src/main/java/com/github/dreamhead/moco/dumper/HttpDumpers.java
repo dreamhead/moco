@@ -5,7 +5,7 @@ import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import io.netty.util.internal.StringUtil;
 
-public class HttpDumpers {
+public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
         long length = getContentLength(message, -1);
         if (length > 0) {

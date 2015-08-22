@@ -73,9 +73,9 @@ public class MocoRequestAction implements MocoEventAction {
     }
 
     private MocoEventAction applyContent(final MocoConfig config, final ContentResource originalContent) {
-        Resource content = originalContent.apply(config);
-        if (content != originalContent) {
-            return new MocoRequestAction(this.url, this.method, of((ContentResource) content));
+        Resource appliedContent = originalContent.apply(config);
+        if (appliedContent != originalContent) {
+            return new MocoRequestAction(this.url, this.method, of((ContentResource) appliedContent));
         }
 
         return this;

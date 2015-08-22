@@ -8,7 +8,7 @@ import com.github.dreamhead.moco.verification.TimesVerification;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class MocoRequestHit {
+public final class MocoRequestHit {
     public static RequestHit requestHit() {
         return new DefaultRequestHit();
     }

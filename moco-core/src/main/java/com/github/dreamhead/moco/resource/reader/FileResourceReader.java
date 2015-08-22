@@ -46,7 +46,7 @@ public class FileResourceReader extends AbstractFileResourceReader {
         String filename = messageContent.toString();
 
         if (config.isPresent()) {
-            return (String)config.get().apply(filename);
+            return (String) config.get().apply(filename);
         }
 
         return filename;

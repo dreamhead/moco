@@ -45,7 +45,7 @@ public class SequenceHandler extends AbstractResponseHandler {
     private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
         return new Function<ResponseHandler, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(ResponseHandler input) {
+            public ResponseHandler apply(final ResponseHandler input) {
                 return input.apply(config);
             }
         };

@@ -43,7 +43,7 @@ public class MountMatcher extends AbstractRequestMatcher {
         }
 
         if (config.isFor(MocoConfig.FILE_ID)) {
-            return new MountMatcher(new File((String)config.apply(this.dir.getName())), this.target, this.predicates);
+            return new MountMatcher(new File((String) config.apply(this.dir.getName())), this.target, this.predicates);
         }
 
         return this;

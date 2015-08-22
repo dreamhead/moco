@@ -150,7 +150,7 @@ public final class Moco {
         return ActualSocketServer.createQuietServer(Optional.<Integer>absent());
     }
 
-    public static SocketServer socketServer(int port) {
+    public static SocketServer socketServer(final int port) {
         return ActualSocketServer.createQuietServer(of(port));
     }
 
@@ -625,7 +625,7 @@ public final class Moco {
     private static Function<String, ResponseHandler> textToResource() {
         return new Function<String, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(String content) {
+            public ResponseHandler apply(final String content) {
                 return with(text(content));
             }
         };
@@ -634,7 +634,7 @@ public final class Moco {
     private static Function<Resource, ResponseHandler> resourceToResourceHandler() {
         return new Function<Resource, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(Resource content) {
+            public ResponseHandler apply(final Resource content) {
                 return with(content);
             }
         };
@@ -648,7 +648,7 @@ public final class Moco {
         return new Maps.EntryTransformer<String, RequestExtractor<?>, Variable>() {
             @Override
             @SuppressWarnings("unchecked")
-            public Variable transformEntry(String key, RequestExtractor<?> value) {
+            public Variable transformEntry(final String key, final RequestExtractor<?> value) {
                 return new ExtractorVariable(value);
             }
         };

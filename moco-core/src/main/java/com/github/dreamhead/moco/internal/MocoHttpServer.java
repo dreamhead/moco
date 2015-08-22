@@ -13,7 +13,7 @@ import io.netty.handler.ssl.SslHandler;
 import javax.net.ssl.SSLEngine;
 
 public class MocoHttpServer extends BaseServerRunner {
-    protected final ActualHttpServer serverSetting;
+    private final ActualHttpServer serverSetting;
 
     public MocoHttpServer(final ActualHttpServer serverSetting) {
         this.serverSetting = serverSetting;
@@ -28,7 +28,7 @@ public class MocoHttpServer extends BaseServerRunner {
     protected ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
+            protected void initChannel(final SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
@@ -49,7 +49,7 @@ public class MocoHttpServer extends BaseServerRunner {
     private Function<HttpsCertificate, SslHandler> toSslHandler() {
         return new Function<HttpsCertificate, SslHandler>() {
             @Override
-            public SslHandler apply(HttpsCertificate certificate) {
+            public SslHandler apply(final HttpsCertificate certificate) {
                 SSLEngine sslEngine = certificate.createSSLEngine();
                 sslEngine.setUseClientMode(false);
                 return new SslHandler(sslEngine);

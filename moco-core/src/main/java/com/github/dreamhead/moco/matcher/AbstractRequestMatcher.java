@@ -10,7 +10,7 @@ public abstract class AbstractRequestMatcher implements RequestMatcher {
     @SuppressWarnings("unchecked")
     public RequestMatcher apply(final MocoConfig config) {
         if (config.isFor(MocoConfig.REQUEST_ID)) {
-            return (RequestMatcher)config.apply(this);
+            return (RequestMatcher) config.apply(this);
         }
 
         return doApply(config);

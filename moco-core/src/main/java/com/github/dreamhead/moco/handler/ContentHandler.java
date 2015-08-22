@@ -35,9 +35,9 @@ public class ContentHandler extends AbstractContentResponseHandler {
             return handler;
         }
 
-        Resource resource = this.resource.apply(config);
-        if (resource != this.resource) {
-            return new ContentHandler((ContentResource) resource);
+        Resource appliedReosurce = this.resource.apply(config);
+        if (appliedReosurce != this.resource) {
+            return new ContentHandler((ContentResource) appliedReosurce);
         }
 
         return this;

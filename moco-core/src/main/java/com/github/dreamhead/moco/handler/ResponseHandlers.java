@@ -28,7 +28,7 @@ public final class ResponseHandlers {
         Class clazz = HANDLERS.get(resource.id());
         try {
             Constructor[] constructors = clazz.getConstructors();
-            return (ResponseHandler)constructors[0].newInstance(resource);
+            return (ResponseHandler) constructors[0].newInstance(resource);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

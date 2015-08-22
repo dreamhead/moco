@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 
 import static java.lang.String.format;
 
-public class Extractors {
+public final class Extractors {
     private static ImmutableMap<String, RequestExtractor<String>> extractors = ImmutableMap.<String, RequestExtractor<String>>builder()
             .put("file", new ContentRequestExtractor())
             .put("text", new ContentRequestExtractor())

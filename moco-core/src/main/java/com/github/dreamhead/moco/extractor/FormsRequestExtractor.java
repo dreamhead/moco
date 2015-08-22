@@ -23,7 +23,7 @@ public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<Str
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
-            decoder = new HttpPostRequestDecoder(((DefaultHttpRequest)request).toFullHttpRequest());
+            decoder = new HttpPostRequestDecoder(((DefaultHttpRequest) request).toFullHttpRequest());
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
             return absent();

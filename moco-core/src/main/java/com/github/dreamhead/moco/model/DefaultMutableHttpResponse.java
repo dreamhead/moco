@@ -12,7 +12,7 @@ import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.Map;
 
-public class DefaultMutableHttpResponse implements MutableHttpResponse {
+public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
     private Map<String, String> headers = Maps.newHashMap();
     private int status;

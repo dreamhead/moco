@@ -30,7 +30,7 @@ public final class Configs {
     private static <T extends ConfigApplier<T>> Function<T, T> config(final MocoConfig... configs) {
         return new Function<T, T>() {
             @Override
-            public T apply(T item) {
+            public T apply(final T item) {
                 return configItem(item, configs);
             }
         };

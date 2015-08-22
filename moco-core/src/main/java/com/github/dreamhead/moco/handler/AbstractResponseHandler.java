@@ -8,7 +8,7 @@ public abstract class AbstractResponseHandler implements ResponseHandler {
     @SuppressWarnings("unchecked")
     public ResponseHandler apply(final MocoConfig config) {
         if (config.isFor(MocoConfig.RESPONSE_ID)) {
-            return (ResponseHandler)config.apply(this);
+            return (ResponseHandler) config.apply(this);
         }
 
         return this;
