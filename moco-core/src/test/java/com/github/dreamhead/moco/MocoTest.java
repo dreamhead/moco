@@ -1,11 +1,17 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.ByteStreams;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.Header;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
+import org.apache.http.*;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HttpRequestExecutor;
 import org.junit.Test;
 
 import java.io.File;
@@ -689,6 +695,28 @@ public class MocoTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/html"));
+            }
+        });
+    }
+
+    @Test
+    public void should_not_return_response_for_head_request() throws Exception {
+        server.response(header("foo", "bar"), with(template("${req.uri}")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                CloseableHttpClient httpClient = HttpClients.custom().setRequestExecutor(new HttpRequestExecutor() {
+                    @Override
+                    protected boolean canResponseHaveBody(HttpRequest request, HttpResponse response) {
+                        return "HEAD".equalsIgnoreCase(request.getRequestLine().getMethod())
+                                || super.canResponseHaveBody(request, response);
+                    }
+                }).build();
+                HttpHead httpHead = new HttpHead(remoteUrl("/request"));
+                CloseableHttpResponse response = httpClient.execute(httpHead);
+                byte[] bytes = ByteStreams.toByteArray(response.getEntity().getContent());
+                assertThat(bytes.length, is(0));
             }
         });
     }
