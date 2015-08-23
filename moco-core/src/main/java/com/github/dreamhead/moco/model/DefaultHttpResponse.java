@@ -13,31 +13,14 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpResponse.Builder.class)
-public class DefaultHttpResponse implements HttpResponse {
-    private final HttpProtocolVersion version;
-    private final MessageContent content;
-    private final ImmutableMap<String, String> headers;
+public class DefaultHttpResponse extends DefaultHttpMessage implements HttpResponse {
     private final int status;
 
     public DefaultHttpResponse(final HttpProtocolVersion version, final int status,
-                               final ImmutableMap<String, String> headers, final MessageContent content) {
-        this.version = version;
-        this.headers = headers;
-        this.content = content;
+                               final ImmutableMap<String, String> headers,
+                               final MessageContent content) {
+        super(version, content, headers);
         this.status = status;
-    }
-
-    public HttpProtocolVersion getVersion() {
-        return version;
-    }
-
-    @Override
-    public MessageContent getContent() {
-        return content;
-    }
-
-    public ImmutableMap<String, String> getHeaders() {
-        return this.headers;
     }
 
     @Override

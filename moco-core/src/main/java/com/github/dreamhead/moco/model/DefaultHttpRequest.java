@@ -29,13 +29,10 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
-public final class DefaultHttpRequest implements HttpRequest {
+public final class DefaultHttpRequest extends DefaultHttpMessage implements HttpRequest {
     private final Supplier<ImmutableMap<String, String>> formSupplier;
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 
-    private final HttpProtocolVersion version;
-    private final MessageContent content;
-    private final ImmutableMap<String, String> headers;
     private final String method;
 
     private final String uri;
@@ -43,28 +40,14 @@ public final class DefaultHttpRequest implements HttpRequest {
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final String method, final String uri,
-                               final ImmutableMap<String, String> headers, final ImmutableMap<String, String[]> queries) {
-        this.version = version;
-        this.content = content;
-        this.headers = headers;
+                               final ImmutableMap<String, String> headers,
+                               final ImmutableMap<String, String[]> queries) {
+        super(version, content, headers);
         this.method = method;
         this.uri = uri;
         this.queries = queries;
         this.formSupplier = formSupplier();
         this.cookieSupplier = cookieSupplier();
-    }
-
-    public HttpProtocolVersion getVersion() {
-        return version;
-    }
-
-    @Override
-    public MessageContent getContent() {
-        return content;
-    }
-
-    public ImmutableMap<String, String> getHeaders() {
-        return headers;
     }
 
     @Override
@@ -117,11 +100,11 @@ public final class DefaultHttpRequest implements HttpRequest {
         return MoreObjects.toStringHelper("HTTP Request")
                 .omitNullValues()
                 .add("uri", this.uri)
-                .add("version", this.version)
+                .add("version", this.getVersion())
                 .add("method", this.method)
                 .add("queries", this.queries)
-                .add("headers", this.headers)
-                .add("content", this.content)
+                .add("headers", this.getHeaders())
+                .add("content", this.getContent())
                 .toString();
     }
 
@@ -163,6 +146,7 @@ public final class DefaultHttpRequest implements HttpRequest {
 
     public FullHttpRequest toFullHttpRequest() {
         ByteBuf buffer = Unpooled.buffer();
+        MessageContent content = getContent();
         if (content != null) {
             buffer.writeBytes(content.getContent());
         }
@@ -175,8 +159,8 @@ public final class DefaultHttpRequest implements HttpRequest {
             }
         }
 
-        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(version.text()), HttpMethod.valueOf(method), encoder.toString(), buffer);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
+        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(getVersion().text()), HttpMethod.valueOf(method), encoder.toString(), buffer);
+        for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
             request.headers().add(entry.getKey(), entry.getValue());
         }
 
