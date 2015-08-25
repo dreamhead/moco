@@ -42,8 +42,7 @@ public class FileResourceReader extends AbstractFileResourceReader {
 
     @SuppressWarnings("unchecked")
     private String targetFileName(final Optional<? extends Request> request) {
-        MessageContent messageContent = filename.readFor(request);
-        String filename = messageContent.toString();
+        String filename = this.filename(request);
 
         if (config.isPresent()) {
             return (String) config.get().apply(filename);

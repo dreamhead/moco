@@ -18,9 +18,10 @@ public class ClasspathFileResourceReader extends AbstractFileResourceReader {
 
     protected byte[] doReadFor(final Optional<? extends Request> request) {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        URL resource = classLoader.getResource(filename.readFor(request).toString());
+        String actualFilename = this.filename(request);
+        URL resource = classLoader.getResource(actualFilename);
         if (resource == null) {
-            throw new IllegalArgumentException(format("%s does not exist", filename));
+            throw new IllegalArgumentException(format("%s does not exist", actualFilename));
         }
         try {
             return toByteArray(resource.openStream());
