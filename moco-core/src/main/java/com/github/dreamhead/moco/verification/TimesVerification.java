@@ -5,7 +5,8 @@ public class TimesVerification extends UnaryTimesVerification {
         super(count);
     }
 
-    protected boolean meet(final int size) {
+    @Override
+    protected boolean doMeet(final int size, final int count) {
         return size == count;
     }
 }

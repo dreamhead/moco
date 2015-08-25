@@ -7,7 +7,7 @@ public class AtMostVerification extends UnaryTimesVerification {
     }
 
     @Override
-    protected boolean meet(final int size) {
+    protected boolean doMeet(final int size, final int count) {
         return size <= count;
     }
 }
