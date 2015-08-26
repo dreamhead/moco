@@ -52,7 +52,7 @@ public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
     private FileFilter sameFile(final File file) {
         return new FileFilter() {
             @Override
-            public boolean accept(File detectedFile) {
+            public boolean accept(final File detectedFile) {
                 return file.getName().equals(detectedFile.getName());
             }
         };

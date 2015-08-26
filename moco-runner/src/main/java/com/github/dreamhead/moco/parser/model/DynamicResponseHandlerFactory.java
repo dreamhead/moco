@@ -42,12 +42,12 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             .build();
 
     @Override
-    public ResponseHandler createResponseHandler(ResponseSetting responseSetting) {
+    public ResponseHandler createResponseHandler(final ResponseSetting responseSetting) {
         FluentIterable<ResponseHandler> handlers = from(getFields(responseSetting.getClass())).filter(isValidField(responseSetting)).transform(fieldToResponseHandler(responseSetting));
         return getResponseHandler(handlers.toList());
     }
 
-    private ResponseHandler getResponseHandler(ImmutableList<ResponseHandler> list) {
+    private ResponseHandler getResponseHandler(final ImmutableList<ResponseHandler> list) {
         if (list.size() == 1) {
             return list.get(0);
         }
@@ -55,14 +55,14 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         return AndResponseHandler.and(list);
     }
 
-    private boolean isResource(String name) {
+    private boolean isResource(final String name) {
         return RESOURCES.contains(name);
     }
 
     private Function<Field, ResponseHandler> fieldToResponseHandler(final ResponseSetting response) {
         return new Function<Field, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(Field field) {
+            public ResponseHandler apply(final Field field) {
                 try {
                     Object value = field.get(response);
                     return createResponseHandler(field.getName(), value);
@@ -73,7 +73,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
-    private ResponseHandler createResponseHandler(String name, Object value) {
+    private ResponseHandler createResponseHandler(final String name, final Object value) {
         if ("json".equalsIgnoreCase(name)) {
             return toJson(value);
         }
@@ -108,7 +108,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException(format("unknown field [%s]", name));
     }
 
-    private Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+    private Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
@@ -120,7 +120,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
     }
 
-    private Resource resourceFrom(BaseResourceSetting resourceSetting) {
+    private Resource resourceFrom(final BaseResourceSetting resourceSetting) {
         for (String resource : RESOURCES) {
             try {
                 Field field = getField(resourceSetting.getClass(), resource);
@@ -132,7 +132,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException("resourceSetting is expected");
     }
 
-    private ResponseHandler createCompositeHandler(String name, Map<String, TextContainer> map) {
+    private ResponseHandler createCompositeHandler(final String name, final Map<String, TextContainer> map) {
         ImmutableList<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name)).toList();
         return getResponseHandler(handlers);
     }
@@ -140,7 +140,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     private Function<Map.Entry<String, TextContainer>, ResponseHandler> toTargetHandler(final String name) {
         return new Function<Map.Entry<String, TextContainer>, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(Map.Entry<String, TextContainer> pair) {
+            public ResponseHandler apply(final Map.Entry<String, TextContainer> pair) {
                 String result = COMPOSITES.get(name);
                 if (result == null) {
                     throw new RuntimeException("unknown composite handler name [" + name + "]");
@@ -151,7 +151,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
-    private ResponseHandler createResponseHandler(Map.Entry<String, TextContainer> pair, String targetMethodName) {
+    private ResponseHandler createResponseHandler(final Map.Entry<String, TextContainer> pair, final String targetMethodName) {
         TextContainer container = pair.getValue();
         try {
             if (container.isForTemplate()) {
@@ -167,11 +167,11 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, TextContainer> castToMap(Object value) {
+    private Map<String, TextContainer> castToMap(final Object value) {
         return Map.class.cast(value);
     }
 
-    private Resource resourceFrom(String name, TextContainer container) {
+    private Resource resourceFrom(final String name, final TextContainer container) {
         if (container.isRawText()) {
             return invokeTarget(name, container.getText(), Resource.class);
         }
@@ -201,7 +201,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
-    private Resource createTemplate(String name, TextContainer container) {
+    private Resource createTemplate(final String name, final TextContainer container) {
         if (container.hasProperties()) {
             return template(invokeTarget(name, container.getText(), ContentResource.class),
                     toVariables(container.getProps()));
@@ -210,7 +210,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         return template(invokeTarget(name, container.getText(), ContentResource.class));
     }
 
-    public static ImmutableMap<String, RequestExtractor<?>> toVariables(Map<String, TextContainer> props) {
+    public static ImmutableMap<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
         return copyOf(Maps.transformEntries(props, toVariable()));
     }
 
@@ -218,7 +218,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         return new Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>>() {
             @Override
             @SuppressWarnings("unchecked")
-            public RequestExtractor<?> transformEntry(String key, TextContainer value) {
+            public RequestExtractor<?> transformEntry(final String key, final TextContainer value) {
                 if (value.isRawText()) {
                     return var(value.getText());
                 }
@@ -228,7 +228,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
-    private ResponseHandler createProxy(ProxyContainer proxy) {
+    private ResponseHandler createProxy(final ProxyContainer proxy) {
         Failover failover = proxy.getFailover();
 
         if (proxy.hasProxyConfig()) {

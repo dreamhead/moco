@@ -35,7 +35,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     private Function<Field, RequestMatcher> fieldToRequestMatcher(final RequestSetting request) {
         return new Function<Field, RequestMatcher>() {
             @Override
-            public RequestMatcher apply(Field field) {
+            public RequestMatcher apply(final Field field) {
                 try {
                     Object value = field.get(request);
                     return createRequestMatcherFromValue(field.getName(), value);
@@ -46,7 +46,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         };
     }
 
-    private RequestMatcher createRequestMatcherFromValue(String name, Object value) {
+    private RequestMatcher createRequestMatcherFromValue(final String name, final Object value) {
         if ("json".equalsIgnoreCase(name)) {
             return json(value);
         }
@@ -63,19 +63,19 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> castToMap(Object value) {
+    private Map<String, Object> castToMap(final Object value) {
         return Map.class.cast(value);
     }
 
-    private RequestMatcher createSingleMatcher(String name, String value) {
+    private RequestMatcher createSingleMatcher(final String name, final String value) {
         return by(createResource(name, value));
     }
 
-    private Resource createResource(String name, String value) {
+    private Resource createResource(final String name, final String value) {
         return invokeTarget(name, value, Resource.class);
     }
 
-    private RequestMatcher createSingleTextMatcher(String name, TextContainer container) {
+    private RequestMatcher createSingleTextMatcher(final String name, final TextContainer container) {
         if (container.isRawText()) {
             return createSingleMatcher(name, container.getText());
         }
@@ -87,11 +87,11 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         return createRequestMatcherWithResource(container.getOperation(), createResource(name, container.getText()));
     }
 
-    private boolean isExistOperator(TextContainer container) {
+    private boolean isExistOperator(final TextContainer container) {
         return "exist".equals(container.getOperation());
     }
 
-    private RequestMatcher createRequestMatcherWithResource(String operation, Resource resource) {
+    private RequestMatcher createRequestMatcherWithResource(final String operation, final Resource resource) {
         try {
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             return RequestMatcher.class.cast(operationMethod.invoke(null, resource));
@@ -100,7 +100,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
     }
 
-    private RequestMatcher createCompositeMatcher(String name, Map<String, Object> collection) {
+    private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
         ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getExtractorMethod(name))).toList();
         return wrapRequestMatcher(null, matchers);
     }
@@ -109,14 +109,14 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         return new Function<Map.Entry<String, Object>, RequestMatcher>() {
             @Override
             @SuppressWarnings("unchecked")
-            public RequestMatcher apply(Map.Entry<String, Object> pair) {
+            public RequestMatcher apply(final Map.Entry<String, Object> pair) {
                 RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
                 return createRequestMatcher(extractor, pair.getValue());
             }
         };
     }
 
-    private <T> RequestMatcher createRequestMatcher(RequestExtractor<T> extractor, Object value) {
+    private <T> RequestMatcher createRequestMatcher(final RequestExtractor<T> extractor, final Object value) {
         if (TextContainer.class.isInstance(value)) {
             return getRequestMatcher(extractor, TextContainer.class.cast(value));
         }
@@ -124,7 +124,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         throw new IllegalArgumentException("unknown value type: " + value);
     }
 
-    private <T> RequestMatcher getRequestMatcher(RequestExtractor<T> extractor, TextContainer container) {
+    private <T> RequestMatcher getRequestMatcher(final RequestExtractor<T> extractor, final TextContainer container) {
         if (container.isRawText()) {
             return eq(extractor, container.getText());
         }
@@ -142,7 +142,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
     }
 
-    private <T> RequestMatcher existMatcher(RequestExtractor<T> extractor, TextContainer container) {
+    private <T> RequestMatcher existMatcher(final RequestExtractor<T> extractor, final TextContainer container) {
         if ("true".equalsIgnoreCase(container.getText())) {
             return exist(extractor);
         }
@@ -154,7 +154,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
     }
 
-    private static RequestMatcher wrapRequestMatcher(RequestSetting request, ImmutableList<RequestMatcher> matchers) {
+    private static RequestMatcher wrapRequestMatcher(final RequestSetting request, final ImmutableList<RequestMatcher> matchers) {
         switch (matchers.size()) {
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);

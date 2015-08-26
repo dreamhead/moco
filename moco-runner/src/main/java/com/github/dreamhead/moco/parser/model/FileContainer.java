@@ -12,15 +12,15 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 @JsonDeserialize(using = FileContainerDeserializer.class)
-public class FileContainer extends TextContainer {
+public final class FileContainer extends TextContainer {
     private TextContainer name;
     private Optional<Charset> charset;
 
-    private FileContainer(TextContainer container) {
+    private FileContainer(final TextContainer container) {
         super(container.getText(), container.getOperation(), container.getProps());
     }
 
-    private FileContainer(TextContainer name, Optional<Charset> charset) {
+    private FileContainer(final TextContainer name, final Optional<Charset> charset) {
         this.name = name;
         this.charset = charset;
     }
@@ -47,7 +47,7 @@ public class FileContainer extends TextContainer {
         return name != null;
     }
 
-    public static FileContainer asFileContainer(TextContainer container) {
+    public static FileContainer asFileContainer(final TextContainer container) {
         return new FileContainer(container);
     }
 
@@ -59,12 +59,12 @@ public class FileContainer extends TextContainer {
         private TextContainer name;
         private String charset;
 
-        public FileContainerBuilder withName(TextContainer name) {
+        public FileContainerBuilder withName(final TextContainer name) {
             this.name = name;
             return this;
         }
 
-        public FileContainerBuilder withCharset(String charset) {
+        public FileContainerBuilder withCharset(final String charset) {
             this.charset = charset;
             return this;
         }
@@ -73,7 +73,7 @@ public class FileContainer extends TextContainer {
             return new FileContainer(name, toCharset(charset));
         }
 
-        private Optional<Charset> toCharset(String charset) {
+        private Optional<Charset> toCharset(final String charset) {
             if (charset == null) {
                 return absent();
             }

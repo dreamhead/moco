@@ -62,7 +62,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
     private Maps.EntryTransformer<String, TextContainer, TextContainer> toLocalContainer() {
         return new Maps.EntryTransformer<String, TextContainer, TextContainer>() {
             @Override
-            public TextContainer transformEntry(String key, TextContainer container) {
+            public TextContainer transformEntry(final String key, final TextContainer container) {
                 if (container.isRawText()) {
                     return container;
                 }

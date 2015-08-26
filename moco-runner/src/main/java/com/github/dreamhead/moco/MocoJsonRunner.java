@@ -11,7 +11,7 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class MocoJsonRunner {
+public final class MocoJsonRunner {
     public static HttpServer jsonHttpServer(final int port, final Resource resource) {
         checkArgument(port > 0, "Port must be greater than zero");
         return jsonHttpServer(checkNotNull(resource, "resource should not be null"), of(port));

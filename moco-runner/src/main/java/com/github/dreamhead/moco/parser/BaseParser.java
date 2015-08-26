@@ -9,15 +9,17 @@ import com.google.common.collect.ImmutableList;
 import java.io.InputStream;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
-    protected abstract T createServer(final ImmutableList<SessionSetting> read, final Optional<Integer> port, final MocoConfig[] configs);
+    protected abstract T createServer(final ImmutableList<SessionSetting> read,
+                                      final Optional<Integer> port, final MocoConfig[] configs);
 
-    protected final CollectionReader reader;
+    private final CollectionReader reader;
 
     protected BaseParser() {
         this.reader = new CollectionReader();
     }
 
-    public T parseServer(final InputStream is, final Optional<Integer> port, final MocoConfig... configs) {
+    public T parseServer(final InputStream is, final Optional<Integer> port,
+                         final MocoConfig... configs) {
         return createServer(reader.read(is, SessionSetting.class), port, configs);
     }
 }

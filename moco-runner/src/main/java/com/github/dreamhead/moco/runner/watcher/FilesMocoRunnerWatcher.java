@@ -13,7 +13,7 @@ public class FilesMocoRunnerWatcher implements MocoRunnerWatcher {
     public FilesMocoRunnerWatcher(final Iterable<File> files, final FileAlterationListener listener) {
         this.monitors = from(files).transform(new Function<File, FileMocoRunnerWatcher>() {
             @Override
-            public FileMocoRunnerWatcher apply(File file) {
+            public FileMocoRunnerWatcher apply(final File file) {
                 return new FileMocoRunnerWatcher(file, listener);
             }
         });

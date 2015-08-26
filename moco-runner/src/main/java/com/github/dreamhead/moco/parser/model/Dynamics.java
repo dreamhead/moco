@@ -29,7 +29,7 @@ public class Dynamics {
     protected Predicate<Field> isClassField() {
         return new Predicate<Field>() {
             @Override
-            public boolean apply(Field field) {
+            public boolean apply(final Field field) {
                 return "class".equals(field.getName());
             }
         };
@@ -38,7 +38,7 @@ public class Dynamics {
     protected Predicate<Field> isFinalField() {
         return new Predicate<Field>() {
             @Override
-            public boolean apply(Field field) {
+            public boolean apply(final Field field) {
                 return Modifier.isFinal(field.getModifiers());
             }
         };
@@ -47,7 +47,7 @@ public class Dynamics {
     protected <T> Predicate<Field> fieldExist(final T target) {
         return new Predicate<Field>() {
             @Override
-            public boolean apply(Field field) {
+            public boolean apply(final Field field) {
                 try {
                     return field.get(target) != null;
                 } catch (IllegalAccessException e) {
@@ -57,7 +57,7 @@ public class Dynamics {
         };
     }
 
-    protected Iterable<Field> getFields(Class<?> clazz) {
+    protected Iterable<Field> getFields(final Class<?> clazz) {
         ImmutableList<Field> fieldsForCurrent = getFieldsForCurrent(clazz);
         if (clazz.getSuperclass() == null) {
             return fieldsForCurrent;
@@ -66,7 +66,7 @@ public class Dynamics {
         return concat(getFields(clazz.getSuperclass()), fieldsForCurrent);
     }
 
-    private ImmutableList<Field> getFieldsForCurrent(Class<?> clazz) {
+    private ImmutableList<Field> getFieldsForCurrent(final Class<?> clazz) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -75,15 +75,15 @@ public class Dynamics {
         return copyOf(fields);
     }
 
-    protected <T> Predicate<Field> isValidField(T target) {
+    protected <T> Predicate<Field> isValidField(final T target) {
         return and(not(or(isClassField(), isFinalField())), fieldExist(target));
     }
 
-    protected <T> T invokeTarget(String name, Object value, Class<T> clazz) {
+    protected <T> T invokeTarget(final String name, final Object value, final Class<T> clazz) {
         return invokeTarget(name, value, clazz, value.getClass());
     }
 
-    private <T> T invokeTarget(String name, Object value, Class<T> clazz, Class<?> argClass) {
+    private <T> T invokeTarget(final String name, final Object value, final Class<T> clazz, final Class<?> argClass) {
         try {
             Method method = Moco.class.getMethod(name, argClass);
             Object result = method.invoke(null, value);
@@ -93,7 +93,7 @@ public class Dynamics {
         }
     }
 
-    protected <T> T invokeTarget(String name, Object arg1, Object arg2, Class<T> clazz, Class<?> arg1Class, Class<?> arg2Class) {
+    protected <T> T invokeTarget(final String name, final Object arg1, final Object arg2, final Class<T> clazz, final Class<?> arg1Class, Class<?> arg2Class) {
         try {
             Method method = Moco.class.getMethod(name, arg1Class, arg2Class);
             Object result = method.invoke(null, arg1, arg2);
@@ -103,7 +103,7 @@ public class Dynamics {
         }
     }
 
-    protected static Method getExtractorMethod(String name) {
+    protected static Method getExtractorMethod(final String name) {
         try {
             return Moco.class.getMethod(extractorMethods.get(name), String.class);
         } catch (NoSuchMethodException e) {
@@ -111,7 +111,7 @@ public class Dynamics {
         }
     }
 
-    protected static RequestExtractor createRequestExtractor(Method method, String key) {
+    protected static RequestExtractor createRequestExtractor(final Method method, final String key) {
         try {
             return RequestExtractor.class.cast(method.invoke(null, key));
         } catch (Exception e) {

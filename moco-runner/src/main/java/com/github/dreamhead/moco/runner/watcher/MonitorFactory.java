@@ -34,7 +34,7 @@ public class MonitorFactory {
     private FileAlterationListenerAdaptor createListener(final FileRunner fileRunner) {
         return new FileAlterationListenerAdaptor() {
             @Override
-            public void onFileChange(File file) {
+            public void onFileChange(final File file) {
                 logger.info("{} change detected.", file.getName());
                 try {
                     fileRunner.restart();

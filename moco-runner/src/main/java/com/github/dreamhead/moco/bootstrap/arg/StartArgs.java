@@ -58,7 +58,7 @@ public abstract class StartArgs extends ShutdownPortOption {
     private Function<HttpsArg, HttpsCertificate> toCertificate() {
         return new Function<HttpsArg, HttpsCertificate>() {
             @Override
-            public HttpsCertificate apply(HttpsArg input) {
+            public HttpsCertificate apply(final HttpsArg input) {
                 return input.getCertificate();
             }
         };

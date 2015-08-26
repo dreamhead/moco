@@ -66,7 +66,7 @@ public class SessionSetting {
         return request.getRequestMatcher();
     }
 
-    public void bindTo(HttpServer server) {
+    public void bindTo(final HttpServer server) {
         HttpResponseSetting setting = bindToSession(server);
 
         if (hasEvent()) {
@@ -76,7 +76,7 @@ public class SessionSetting {
         }
     }
 
-    public void bindTo(SocketServer server) {
+    public void bindTo(final SocketServer server) {
         if (isAnyResponse()) {
             server.response(getResponseHandler());
             return;
@@ -85,7 +85,7 @@ public class SessionSetting {
         server.request(getRequestMatcher()).response(getResponseHandler());
     }
 
-    private HttpResponseSetting bindToSession(HttpServer server) {
+    private HttpResponseSetting bindToSession(final HttpServer server) {
         if (isMount()) {
             return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates()).response(mount.getResponseHandler());
         }
@@ -110,7 +110,7 @@ public class SessionSetting {
         return request.response(getResponseHandler());
     }
 
-    private Resource redirectResource(TextContainer textContainer) {
+    private Resource redirectResource(final TextContainer textContainer) {
         if (textContainer.isRawText()) {
             return text(textContainer.getText());
         }

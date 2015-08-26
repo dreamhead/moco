@@ -32,7 +32,7 @@ public class ShutdownTask implements BootstrapTask {
         ShutdownArgs shutdownArgs = parse(args);
         client.run("127.0.0.1", shutdownArgs.getShutdownPort().get(), new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
+            protected void initChannel(final SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("encoder", new StringEncoder());
                 pipeline.addLast("handler", new ShutdownHandler());
@@ -47,7 +47,7 @@ public class ShutdownTask implements BootstrapTask {
         }
 
         @Override
-        public void exceptionCaught(final ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
             ctx.close();
 
             if (ConnectException.class.isInstance(cause)) {

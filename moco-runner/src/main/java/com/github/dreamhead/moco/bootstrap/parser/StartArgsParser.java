@@ -76,7 +76,7 @@ public abstract class StartArgsParser {
         return option;
     }
 
-    public static Integer getPort(String port) {
+    public static Integer getPort(final String port) {
         return port == null ? null : Integer.valueOf(port);
     }
 }

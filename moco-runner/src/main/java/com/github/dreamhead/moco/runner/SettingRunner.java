@@ -45,7 +45,7 @@ public class SettingRunner implements Runner {
     private Predicate<? super GlobalSetting> byEnv(final Optional<String> env) {
         return new Predicate<GlobalSetting>() {
             @Override
-            public boolean apply(GlobalSetting globalSetting) {
+            public boolean apply(final GlobalSetting globalSetting) {
                 return !env.isPresent() || env.get().equalsIgnoreCase(globalSetting.getEnv());
 
             }
@@ -55,7 +55,7 @@ public class SettingRunner implements Runner {
     private Function<GlobalSetting, RunnerSetting> toRunnerSetting() {
         return new Function<GlobalSetting, RunnerSetting>() {
             @Override
-            public RunnerSetting apply(GlobalSetting setting) {
+            public RunnerSetting apply(final GlobalSetting setting) {
                 try {
                     return aRunnerSetting()
                             .withStream(new FileInputStream(setting.getInclude()))
@@ -78,7 +78,7 @@ public class SettingRunner implements Runner {
     private Function<? super GlobalSetting, File> toFile() {
         return new Function<GlobalSetting, File>() {
             @Override
-            public File apply(GlobalSetting input) {
+            public File apply(final GlobalSetting input) {
                 return new File(input.getInclude());
             }
         };

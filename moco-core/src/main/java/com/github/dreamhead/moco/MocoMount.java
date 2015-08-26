@@ -7,7 +7,7 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.io.FilenameUtils.wildcardMatch;
 
-public class MocoMount {
+public final class MocoMount {
     public static MountTo to(final String target) {
         return new MountTo(checkNotNullOrEmpty(target, "Target should not be null"));
     }

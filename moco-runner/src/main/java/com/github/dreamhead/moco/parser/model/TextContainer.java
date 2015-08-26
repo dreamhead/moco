@@ -14,7 +14,8 @@ public class TextContainer {
     private String operation;
     private Map<String, TextContainer> props;
 
-    protected TextContainer(String text, String operation, Map<String, TextContainer> props) {
+    protected TextContainer(final String text, final String operation,
+                            final Map<String, TextContainer> props) {
         this.text = text;
         this.operation = operation;
         this.props = props;
@@ -43,7 +44,7 @@ public class TextContainer {
         return props;
     }
 
-    public static boolean isForTemplate(String operation) {
+    public static boolean isForTemplate(final String operation) {
         return TEMPLATE_NAME.equalsIgnoreCase(operation);
     }
 
@@ -74,17 +75,17 @@ public class TextContainer {
         private String operation;
         private Map<String, TextContainer> props;
 
-        public Builder withText(String text) {
+        public Builder withText(final String text) {
             this.text = text;
             return this;
         }
 
-        public Builder withOperation(String operation) {
+        public Builder withOperation(final String operation) {
             this.operation = operation;
             return this;
         }
 
-        public Builder withProps(Map<String, TextContainer> props) {
+        public Builder withProps(final Map<String, TextContainer> props) {
             this.props = props;
             return this;
         }
