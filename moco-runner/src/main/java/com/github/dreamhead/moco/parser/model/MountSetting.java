@@ -44,7 +44,7 @@ public class MountSetting extends ResponseSetting {
     private Function<String, MountPredicate> toInclude() {
         return new Function<String, MountPredicate>() {
             @Override
-            public MountPredicate apply(String input) {
+            public MountPredicate apply(final String input) {
                 return include(input);
             }
         };
@@ -53,7 +53,7 @@ public class MountSetting extends ResponseSetting {
     private Function<String, MountPredicate> toExclude() {
         return new Function<String, MountPredicate>() {
             @Override
-            public MountPredicate apply(String input) {
+            public MountPredicate apply(final String input) {
                 return exclude(input);
             }
         };

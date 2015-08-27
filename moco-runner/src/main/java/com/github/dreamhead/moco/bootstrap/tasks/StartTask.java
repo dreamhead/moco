@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public abstract class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
     private final StartArgsParser startArgsParser;
-    protected final RunnerFactory factory;
+    private final RunnerFactory factory;
 
     protected StartTask(final String shutdownKey, final StartArgsParser startArgsParser) {
         this.startArgsParser = startArgsParser;

@@ -33,7 +33,7 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     }
 
     public void startMonitor() {
-        int port = server.start(this.shutdownPort.or(0), new ChannelInitializer<SocketChannel>() {
+        int actualPort = server.start(this.shutdownPort.or(0), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
@@ -42,9 +42,9 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
             }
         });
 
-        this.port = port;
+        this.port = actualPort;
 
-        logger.info("Shutdown port is {}", port);
+        logger.info("Shutdown port is {}", actualPort);
     }
 
     public void stopMonitor() {

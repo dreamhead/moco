@@ -121,7 +121,7 @@ public final class JsonRunner implements Runner {
     private static Function<InputStream, RunnerSetting> toRunnerSetting() {
         return new Function<InputStream, RunnerSetting>() {
             @Override
-            public RunnerSetting apply(InputStream input) {
+            public RunnerSetting apply(final InputStream input) {
                 return aRunnerSetting().withStream(input).build();
             }
         };

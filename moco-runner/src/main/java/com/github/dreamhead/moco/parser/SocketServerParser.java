@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SocketServerParser extends BaseParser<SocketServer> {
-    protected static Logger logger = LoggerFactory.getLogger(SocketServerParser.class);
+    private static Logger logger = LoggerFactory.getLogger(SocketServerParser.class);
 
     @Override
     protected SocketServer createServer(final ImmutableList<SessionSetting> sessionSettings, final Optional<Integer> port, final MocoConfig... configs) {

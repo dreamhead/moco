@@ -71,27 +71,27 @@ public class ProxyContainer {
         private String from;
         private String to;
 
-        public Builder withUrl(String url) {
+        public Builder withUrl(final String url) {
             this.url = url;
             return this;
         }
 
-        public Builder withFrom(String from) {
+        public Builder withFrom(final String from) {
             this.from = from;
             return this;
         }
 
-        public Builder withTo(String to) {
+        public Builder withTo(final String to) {
             this.to = to;
             return this;
         }
 
-        public Builder withFailover(String failover) {
+        public Builder withFailover(final String failover) {
             this.failover = failover;
             return this;
         }
 
-        public Builder withPlayback(String playback) {
+        public Builder withPlayback(final String playback) {
             this.playback = playback;
             return this;
         }

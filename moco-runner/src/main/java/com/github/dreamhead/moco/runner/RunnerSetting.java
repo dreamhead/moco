@@ -12,7 +12,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
-public class RunnerSetting {
+public final class RunnerSetting {
     private InputStream stream;
     private final Optional<RequestSetting> request;
     private final Optional<ResponseSetting> response;

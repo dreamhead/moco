@@ -28,11 +28,11 @@ public class LatencyContainer {
                 .toString();
     }
 
-    public static LatencyContainer latency(long latency) {
+    public static LatencyContainer latency(final long latency) {
         return latencyWithUnit(latency, TimeUnit.MILLISECONDS);
     }
 
-    public static LatencyContainer latencyWithUnit(long latency, TimeUnit timeUnit) {
+    public static LatencyContainer latencyWithUnit(final long latency, final TimeUnit timeUnit) {
         LatencyContainer latencyContainer = new LatencyContainer();
         latencyContainer.latency = latency;
         latencyContainer.unit = timeUnit;
