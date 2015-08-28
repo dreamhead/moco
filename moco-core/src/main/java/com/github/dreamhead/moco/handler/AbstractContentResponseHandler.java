@@ -22,9 +22,6 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         Response response = context.getResponse();
 
         if (HttpRequest.class.isInstance(request) && MutableHttpResponse.class.isInstance(response)) {
-            if (!canResponseHaveContent(HttpRequest.class.cast(request))) {
-                return;
-            }
             HttpRequest httpRequest = HttpRequest.class.cast(request);
             MutableHttpResponse httpResponse = MutableHttpResponse.class.cast(response);
             doWriteToResponse(httpRequest, httpResponse);
@@ -33,10 +30,6 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
 
         MutableResponse mutableResponse = MutableResponse.class.cast(response);
         mutableResponse.setContent(requireResponseContent(request));
-    }
-
-    private boolean canResponseHaveContent(final HttpRequest request) {
-        return !"HEAD".equalsIgnoreCase(request.getMethod());
     }
 
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
