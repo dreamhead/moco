@@ -10,15 +10,11 @@ import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStrea
 import static com.google.common.collect.ImmutableList.of;
 
 public abstract class FileRunner implements Runner {
-    protected final File file;
-    protected final StartArgs startArgs;
     private Runner runner;
 
     protected abstract Runner createRunner();
 
-    protected FileRunner(final File file, final StartArgs startArgs) {
-        this.file = file;
-        this.startArgs = startArgs;
+    protected FileRunner() {
         this.runner = createRunner();
     }
 
@@ -43,7 +39,7 @@ public abstract class FileRunner implements Runner {
     }
 
     public static FileRunner createConfigurationFileRunner(final File file, final StartArgs startArgs) {
-        return new FileRunner(file, startArgs) {
+        return new FileRunner() {
             @Override
             protected Runner createRunner() {
                 return newJsonRunnerWithStreams(of(toInputStream(file)), startArgs);
@@ -52,10 +48,10 @@ public abstract class FileRunner implements Runner {
     }
 
     public static FileRunner createSettingFileRunner(final File settingsFile, final StartArgs startArgs) {
-        return new FileRunner(settingsFile, startArgs) {
+        return new FileRunner() {
             @Override
             protected Runner createRunner() {
-                return new SettingRunner(toInputStream(file), startArgs);
+                return new SettingRunner(toInputStream(settingsFile), startArgs);
             }
         };
     }
