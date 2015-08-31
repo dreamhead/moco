@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
