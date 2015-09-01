@@ -12,6 +12,7 @@
 -keep public class com.github.dreamhead.moco.model.*{*;}
 -keep public class com.github.dreamhead.moco.parser.deserializer.*{*;}
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
+-keep public class com.github.dreamhead.moco.resource.reader.TemplateRequest{*;}
 -keep public class com.github.dreamhead.moco.Moco{*;}
 -keep public class com.github.dreamhead.moco.Runner{*;}
 -keep public class com.github.dreamhead.moco.Runnable{*;}
@@ -31,6 +32,8 @@
 -keep public class com.google.common.io.Files{*;}
 -keep public class org.apache.commons.io.FilenameUtils{*;}
 -keep public class com.google.common.io.Resources{*;}
+-keep public class com.google.common.collect.ImmutableMultimap{*;}
+-keep public class com.google.common.net.MediaType{*;}
 -keep public class org.slf4j.** {*;}
 -keep public class ch.** {*;}
 -keep public class org.apache.commons.logging.impl.**{*;}
