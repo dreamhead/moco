@@ -492,7 +492,7 @@ Note that this functionality is implemented in Jackson, please make sure your PO
 
 If the response is JSON, we don't need to write JSON text with escape character in code.
 
-**@Since next release**
+**@Since 0.10.2**
 You can give a POJO to Java API, it will be converted JSON text.
 ```java
 server.request(json(pojo)).response("foo");
@@ -1302,7 +1302,7 @@ server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(20
 ### JSON Response
 If the response is JSON, we don't need to write JSON text with escape character in code.
 
-**@Since next release**
+**@Since 0.10.2**
 You can give a POJO to Java API, it will be converted JSON text. Hint, this api will setup Content-Type header as well.
 ```java
 server.request(by(uri("/json"))).response(toJson(pojo));
@@ -1686,7 +1686,7 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath
 Other extractors, e.g. xpath also work here.
 
 ### Redirect
-**@Since next release**
+**@Since 0.10.2**
 
 Redirect can also be set as template.
 
