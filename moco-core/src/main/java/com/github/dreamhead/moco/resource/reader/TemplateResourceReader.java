@@ -1,9 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
-import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
