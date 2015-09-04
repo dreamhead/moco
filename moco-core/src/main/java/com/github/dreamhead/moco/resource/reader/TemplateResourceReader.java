@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.net.MediaType;
 import freemarker.cache.StringTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
@@ -34,13 +35,16 @@ public class TemplateResourceReader implements ContentResourceReader {
     private static Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
 
     static {
-        System.setProperty(freemarker.log.Logger.SYSTEM_PROPERTY_NAME_LOGGER_LIBRARY, freemarker.log.Logger.LIBRARY_NAME_NONE);
+        System.setProperty(freemarker.log.Logger.SYSTEM_PROPERTY_NAME_LOGGER_LIBRARY,
+                freemarker.log.Logger.LIBRARY_NAME_NONE);
     }
 
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
 
-    public TemplateResourceReader(final ContentResource template, final ImmutableMap<String, ? extends Variable> variables) {
+
+    public TemplateResourceReader(final ContentResource template,
+                                  final ImmutableMap<String, ? extends Variable> variables) {
         this.template = template;
         this.variables = variables;
     }
@@ -48,24 +52,19 @@ public class TemplateResourceReader implements ContentResourceReader {
     @Override
     public MessageContent readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
-            throw new IllegalArgumentException("Request is required to render template");
+            throw new IllegalStateException("Request is required to render template");
         }
 
-        StringTemplateLoader templateLoader = new StringTemplateLoader();
-        MessageContent messageContent = this.template.readFor(request);
-        String templateSource = messageContent.toString();
-        templateLoader.putTemplate(TEMPLATE_NAME, templateSource);
-        Configuration cfg = createConfiguration(templateLoader, messageContent.getCharset());
+        MessageContent content = this.template.readFor(request);
 
         try {
-            Template template = cfg.getTemplate(TEMPLATE_NAME);
+            Template targetTemplate = createTemplate(content);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            template.process(variables(request.get()), writer);
-
+            targetTemplate.process(variables(request.get()), writer);
             return content().withContent(stream.toByteArray()).build();
         } catch (ParseException e) {
-            logger.error("Fail to parse template: {}", templateSource);
+            logger.error("Fail to parse template: {}", content.toString());
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -74,7 +73,19 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    private Configuration createConfiguration(final StringTemplateLoader templateLoader, final Charset charset) {
+    private Template createTemplate(final MessageContent messageContent) throws IOException {
+        TemplateLoader templateLoader = createTemplateLoader(messageContent);
+        Configuration cfg = createConfiguration(templateLoader, messageContent.getCharset());
+        return cfg.getTemplate(TEMPLATE_NAME);
+    }
+
+    private StringTemplateLoader createTemplateLoader(final MessageContent messageContent) {
+        StringTemplateLoader templateLoader = new StringTemplateLoader();
+        templateLoader.putTemplate(TEMPLATE_NAME, messageContent.toString());
+        return templateLoader;
+    }
+
+    private Configuration createConfiguration(final TemplateLoader templateLoader, final Charset charset) {
         Configuration cfg = new Configuration(CURRENT_VERSION);
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
         cfg.setDefaultEncoding(charset.name());
@@ -83,7 +94,10 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private ImmutableMap<String, Object> variables(final Request request) {
-        return ImmutableMap.<String, Object>builder().putAll(toVariableString(request)).put("req", toTemplateRequest(request)).build();
+        return ImmutableMap.<String, Object>builder()
+                .putAll(toVariableString(request))
+                .put("req", toTemplateRequest(request))
+                .build();
     }
 
     private TemplateRequest toTemplateRequest(final Request request) {
