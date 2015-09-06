@@ -13,7 +13,6 @@
 * Fix charset issue in toJson
 * Enhance file content type with MediaType implementation
 * Same name query has been supported
-* Content will not be return for head request
 
 # Release 0.10.1 (1-May-2015)
 
