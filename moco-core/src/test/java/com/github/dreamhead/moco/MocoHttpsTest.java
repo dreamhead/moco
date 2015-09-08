@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 
 public class MocoHttpsTest {
     private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
-    protected MocoTestHelper helper;
+    private MocoTestHelper helper;
 
     @Before
     public void setUp() throws Exception {

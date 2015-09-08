@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoJunitPojoSocketRunnerTest {
-    public static SocketServer server;
+    private static SocketServer server;
 
     static {
         server = socketServer(12306);

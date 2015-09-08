@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoJunitPojoHttpRunnerTest extends AbstractMocoStandaloneTest {
-    public static HttpServer server;
+    private static HttpServer server;
 
     static {
         server = httpServer(12306);

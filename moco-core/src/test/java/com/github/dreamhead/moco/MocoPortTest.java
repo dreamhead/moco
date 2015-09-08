@@ -11,8 +11,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoPortTest {
-    protected HttpServer server;
-    protected MocoTestHelper helper;
+    private HttpServer server;
+    private MocoTestHelper helper;
 
     @Before
     public void setUp() throws Exception {

@@ -29,7 +29,7 @@ public class MocoLogTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    protected MocoTestHelper helper;
+    private MocoTestHelper helper;
 
     @Before
     public void setUp() throws Exception {
