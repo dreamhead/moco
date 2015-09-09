@@ -13,8 +13,6 @@ import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
 import com.google.common.base.Optional;
 
-import static com.github.dreamhead.moco.util.Configs.configItem;
-
 public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting> implements SocketServer {
     private ActualSocketServer(final Optional<Integer> port, final MocoMonitor monitor) {
         super(port, monitor, new MocoConfig[0]);
@@ -37,8 +35,8 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
-        newServer.anySetting(configItem(this.matcher, this.configs), configItem(this.handler, this.configs));
-        newServer.anySetting(configItem(thatServer.matcher, thatServer.configs), configItem(thatServer.handler, thatServer.configs));
+        newServer.anySetting(configured(this.matcher), configured(this.handler));
+        newServer.anySetting(thatServer.configured(thatServer.matcher), thatServer.configured(thatServer.handler));
 
         newServer.addEvents(this.eventTriggers);
         newServer.addEvents(thatServer.eventTriggers);

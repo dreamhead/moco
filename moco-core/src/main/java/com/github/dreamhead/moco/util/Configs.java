@@ -10,7 +10,7 @@ import java.util.List;
 import static com.google.common.collect.FluentIterable.from;
 
 public final class Configs {
-    public static  <T extends ConfigApplier<T>> T configItem(final T source, final MocoConfig... configs) {
+    public static <T extends ConfigApplier<T>> T configItem(final T source, final MocoConfig... configs) {
         if (source == null) {
             return null;
         }

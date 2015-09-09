@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.MocoMonitor;
@@ -23,10 +24,10 @@ import static com.google.common.collect.Lists.newArrayList;
 public abstract class BaseActualServer<T extends ResponseSetting<T>> extends BaseServer<T> {
     protected abstract Setting<T> newSetting(final RequestMatcher matcher);
 
-    protected final MocoConfig[] configs;
-    protected final MocoMonitor monitor;
+    private final MocoConfig[] configs;
+    private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
-    protected Optional<Integer> port;
+    private Optional<Integer> port;
     protected RequestMatcher matcher = anyRequest();
 
     public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
@@ -110,5 +111,9 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
         for (Setting<T> thatSetting : thatSettings) {
             addSetting(thatSetting);
         }
+    }
+
+    protected  <T extends ConfigApplier<T>> T configured(final T source) {
+        return configItem(source, this.configs);
     }
 }
