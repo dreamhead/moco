@@ -28,7 +28,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
     private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
     private Optional<Integer> port;
-    protected RequestMatcher matcher = anyRequest();
+    private RequestMatcher matcher = anyRequest();
 
     public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         this.port = port;
@@ -115,5 +115,9 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
 
     protected  <T extends ConfigApplier<T>> T configured(final T source) {
         return configItem(source, this.configs);
+    }
+
+    protected RequestMatcher configuredMatcher() {
+        return configured(this.matcher);
     }
 }

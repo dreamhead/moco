@@ -35,8 +35,8 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
-        newServer.anySetting(configured(this.matcher), configured(this.handler));
-        newServer.anySetting(thatServer.configured(thatServer.matcher), thatServer.configured(thatServer.handler));
+        newServer.anySetting(configuredMatcher(), configured(this.handler));
+        newServer.anySetting(thatServer.configuredMatcher(), thatServer.configured(thatServer.handler));
 
         newServer.addEvents(this.eventTriggers);
         newServer.addEvents(thatServer.eventTriggers);
