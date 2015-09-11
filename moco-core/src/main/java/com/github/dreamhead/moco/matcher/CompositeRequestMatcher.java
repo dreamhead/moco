@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.matcher;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
@@ -10,7 +11,7 @@ import static com.google.common.collect.FluentIterable.from;
 public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     protected abstract RequestMatcher newMatcher(Iterable<RequestMatcher> matchers);
 
-    protected final Iterable<RequestMatcher> matchers;
+    private final Iterable<RequestMatcher> matchers;
 
     public CompositeRequestMatcher(final Iterable<RequestMatcher> matchers) {
         this.matchers = matchers;
@@ -45,4 +46,11 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
 
         return newMatcher(appliedMatchers);
     }
+
+    @Override
+    public boolean match(final Request request) {
+        return doMatch(request, matchers);
+    }
+
+    protected abstract boolean doMatch(final Request request, final Iterable<RequestMatcher> matchers);
 }

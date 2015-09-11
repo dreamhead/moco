@@ -9,7 +9,7 @@ public class AndRequestMatcher extends CompositeRequestMatcher {
     }
 
     @Override
-    public boolean match(final Request request) {
+    protected boolean doMatch(final Request request, final Iterable<RequestMatcher> matchers) {
         for (RequestMatcher matcher : matchers) {
             if (!matcher.match(request)) {
                 return false;
