@@ -12,6 +12,6 @@ public class ContentResource extends Resource implements Content {
 
     @Override
     public MediaType getContentType(final HttpRequest request) {
-        return ((ContentResourceReader) reader).getContentType(request);
+        return reader(ContentResourceReader.class).getContentType(request);
     }
 }

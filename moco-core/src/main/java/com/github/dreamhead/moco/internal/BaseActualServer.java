@@ -73,8 +73,8 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
     }
 
     public Setting<T> getAnySetting() {
-        Setting<T> setting = newSetting(configItem(this.matcher, configs));
-        ResponseHandler configuredHandler = configItem(this.handler, configs);
+        Setting<T> setting = newSetting(configuredMatcher());
+        ResponseHandler configuredHandler = configured(this.handler);
         if (configuredHandler != null) {
             setting.response(configuredHandler);
         }

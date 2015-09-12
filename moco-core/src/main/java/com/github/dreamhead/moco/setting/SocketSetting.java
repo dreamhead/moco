@@ -7,7 +7,8 @@ import com.github.dreamhead.moco.SocketResponseSetting;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 
-public class SocketSetting extends BaseSetting<SocketResponseSetting> implements Setting<SocketResponseSetting>, SocketResponseSetting {
+public class SocketSetting extends BaseSetting<SocketResponseSetting>
+        implements Setting<SocketResponseSetting>, SocketResponseSetting {
     public SocketSetting(final RequestMatcher matcher) {
         super(matcher);
     }
