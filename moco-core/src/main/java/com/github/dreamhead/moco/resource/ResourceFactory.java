@@ -41,12 +41,15 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset, final Optional<MocoConfig> config) {
-        return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename), new FileResourceReader(filename, charset, config));
+    public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset,
+                                               final Optional<MocoConfig> config) {
+        return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename),
+                new FileResourceReader(filename, charset, config));
     }
 
     public static ContentResource classpathFileResource(final Resource filename, final Optional<Charset> charset) {
-        return contentResource(id("pathresource"), DO_NOTHING_APPLIER, new ClasspathFileResourceReader(filename, charset));
+        return contentResource(id("pathresource"), DO_NOTHING_APPLIER,
+                new ClasspathFileResourceReader(filename, charset));
     }
 
     public static Resource methodResource(final String method) {
@@ -87,8 +90,10 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource templateResource(final ContentResource template, final ImmutableMap<String, ? extends Variable> variables) {
-        return contentResource(id("template"), templateConfigApplier(template, variables), new TemplateResourceReader(template, variables));
+    public static ContentResource templateResource(final ContentResource template,
+                                                   final ImmutableMap<String, ? extends Variable> variables) {
+        return contentResource(id("template"), templateConfigApplier(template, variables),
+                new TemplateResourceReader(template, variables));
     }
 
     public static Resource uriResource(final String uri) {
@@ -100,13 +105,16 @@ public final class ResourceFactory {
         });
     }
 
-    private static ContentResource contentResource(final Identifiable id, final ResourceConfigApplier applier, final ContentResourceReader reader) {
+    private static ContentResource contentResource(final Identifiable id, final ResourceConfigApplier applier,
+                                                   final ContentResourceReader reader) {
         return new ContentResource(id, applier, reader);
     }
 
-    private static Resource resource(final Identifiable id, final ResourceConfigApplier applier, final ResourceReader reader) {
+    private static Resource resource(final Identifiable id, final ResourceConfigApplier applier,
+                                     final ResourceReader reader) {
         return new Resource(id, applier, reader);
     }
 
-    private ResourceFactory() {}
+    private ResourceFactory() {
+    }
 }

@@ -46,5 +46,6 @@ public final class MocoRequestHit {
         return new BetweenVerification(min, max);
     }
 
-    private MocoRequestHit() {}
+    private MocoRequestHit() {
+    }
 }

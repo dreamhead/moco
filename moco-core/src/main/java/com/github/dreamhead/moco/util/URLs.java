@@ -51,5 +51,6 @@ public final class URLs {
         }
     }
 
-    private URLs() {}
+    private URLs() {
+    }
 }

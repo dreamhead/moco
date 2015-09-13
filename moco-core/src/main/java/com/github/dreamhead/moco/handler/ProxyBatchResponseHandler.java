@@ -32,7 +32,7 @@ public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     public ResponseHandler apply(final MocoConfig config) {
         if (config.isFor(MocoConfig.URI_ID)) {
             String newLocalBase = (String) config.apply(proxyConfig.localBase());
-            return new ProxyBatchResponseHandler(from(newLocalBase).to(proxyConfig.remoteBase()), failover);
+            return new ProxyBatchResponseHandler(from(newLocalBase).to(proxyConfig.remoteBase()), failover());
         }
 
         return this;

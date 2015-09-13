@@ -45,18 +45,22 @@ import java.util.Map;
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
+import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
+import static com.google.common.net.HttpHeaders.DATE;
+import static com.google.common.net.HttpHeaders.HOST;
+import static com.google.common.net.HttpHeaders.SERVER;
 import static org.apache.http.util.EntityUtils.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
-    private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(com.google.common.net.HttpHeaders.HOST, com.google.common.net.HttpHeaders.CONTENT_LENGTH);
-    private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(com.google.common.net.HttpHeaders.DATE, com.google.common.net.HttpHeaders.SERVER);
+    private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(HOST, CONTENT_LENGTH);
+    private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(DATE, SERVER);
 
     protected abstract Optional<String> remoteUrl(final String uri);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
-    protected final Failover failover;
+    private final Failover failover;
 
     public AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
@@ -240,5 +244,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         } catch (MalformedURLException e) {
             return absent();
         }
+    }
+
+    protected final Failover failover() {
+        return failover;
     }
 }

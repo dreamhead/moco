@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Optional;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -35,7 +36,8 @@ public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
     @Override
     protected Optional<String[]> doExtract(final HttpRequest request) {
         try {
-            NodeList list = (NodeList) xPathExpression.evaluate(helper.extractAsInputSource(request, extractor), XPathConstants.NODESET);
+            InputSource source = helper.extractAsInputSource(request, extractor);
+            NodeList list = (NodeList) xPathExpression.evaluate(source, XPathConstants.NODESET);
             if (list.getLength() == 0) {
                 return absent();
             }

@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco;
 
 public class VerificationException extends RuntimeException {
-    public VerificationException() {}
-
     public VerificationException(final String message) {
         super(message);
     }

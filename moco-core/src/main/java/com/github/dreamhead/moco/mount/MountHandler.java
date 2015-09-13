@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.ContentResource;
+import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.base.Optional;
@@ -29,8 +31,12 @@ public class MountHandler extends AbstractHttpContentResponseHandler {
 
     @Override
     protected MessageContent responseContent(final HttpRequest httpRequest) {
-        FileResourceReader reader = new FileResourceReader(text(targetFile(httpRequest).getPath()), Optional.<Charset>absent());
+        FileResourceReader reader = new FileResourceReader(asResource(httpRequest), Optional.<Charset>absent());
         return reader.readFor(of(httpRequest));
+    }
+
+    private Resource asResource(final HttpRequest httpRequest) {
+        return text(targetFile(httpRequest).getPath());
     }
 
     private File targetFile(final HttpRequest request) {

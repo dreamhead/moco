@@ -19,7 +19,9 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
     private final Resource expected;
     private final Predicate<String> predicate;
 
-    protected AbstractOperatorMatcher(final RequestExtractor<T> extractor, final Resource expected, final Predicate<String> predicate) {
+    protected AbstractOperatorMatcher(final RequestExtractor<T> extractor,
+                                      final Resource expected,
+                                      final Predicate<String> predicate) {
         this.extractor = extractor;
         this.predicate = predicate;
         this.expected = expected;

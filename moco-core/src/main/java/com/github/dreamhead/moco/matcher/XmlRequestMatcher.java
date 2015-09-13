@@ -61,7 +61,8 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         return extractDocument(new InputSource(stream), this);
     }
 
-    private Document extractDocument(final Request request, final RequestExtractor<String> extractor) throws SAXException {
+    private Document extractDocument(final Request request,
+                                     final RequestExtractor<String> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 
@@ -100,7 +101,8 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    public Document extractDocument(final InputSource inputSource, final XmlRequestMatcher xmlRequestMatcher) throws SAXException {
+    public Document extractDocument(final InputSource inputSource,
+                                    final XmlRequestMatcher xmlRequestMatcher) throws SAXException {
         try {
             Document document = xmlRequestMatcher.documentBuilder.parse(inputSource);
             document.normalizeDocument();
