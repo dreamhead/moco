@@ -74,7 +74,10 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
 
     private TextContainer toLocal(final TextContainer container) {
         String name = names.get(container.getOperation());
-        return name == null ? container : builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
+        if (name == null) {
+            return container;
+        }
+        return builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
     }
 
     protected TextContainer text(final JsonParser jp) throws IOException {

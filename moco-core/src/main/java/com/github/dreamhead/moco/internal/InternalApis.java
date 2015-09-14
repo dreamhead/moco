@@ -10,5 +10,6 @@ public final class InternalApis {
         return match(uri(context + ".*"));
     }
 
-    private InternalApis() {}
+    private InternalApis() {
+    }
 }

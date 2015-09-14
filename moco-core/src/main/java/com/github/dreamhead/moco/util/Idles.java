@@ -11,5 +11,6 @@ public final class Idles {
         }
     }
 
-    private Idles() {}
+    private Idles() {
+    }
 }

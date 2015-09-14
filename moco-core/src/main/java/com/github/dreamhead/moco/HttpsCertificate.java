@@ -72,7 +72,9 @@ public final class HttpsCertificate {
         return certPassword.toCharArray();
     }
 
-    public static HttpsCertificate certificate(final ContentResource resource, final String keyStorePassword, final String certPassword) {
+    public static HttpsCertificate certificate(final ContentResource resource,
+                                               final String keyStorePassword,
+                                               final String certPassword) {
         return new HttpsCertificate(checkNotNull(resource),
                 checkNotNullOrEmpty(keyStorePassword, "Key store password should not be null"),
                 checkNotNullOrEmpty(certPassword, "Cert password should not be null"));

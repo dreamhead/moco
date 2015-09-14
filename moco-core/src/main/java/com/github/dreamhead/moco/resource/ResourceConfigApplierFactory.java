@@ -39,7 +39,9 @@ public final class ResourceConfigApplierFactory {
         };
     }
 
-    public static ResourceConfigApplier templateConfigApplier(final ContentResource template, final ImmutableMap<String, ? extends Variable> variables) {
+    public static ResourceConfigApplier templateConfigApplier(
+            final ContentResource template,
+            final ImmutableMap<String, ? extends Variable> variables) {
         return new EmbeddedResourceConfigApplier(template) {
             @Override
             protected Resource newResource(final MocoConfig config) {
@@ -60,6 +62,7 @@ public final class ResourceConfigApplierFactory {
 
     private abstract static class BaseResourceConfigApplier implements ResourceConfigApplier {
         protected abstract Resource newResource(final MocoConfig config);
+
         protected abstract String id();
 
         @Override
@@ -98,5 +101,6 @@ public final class ResourceConfigApplierFactory {
         }
     }
 
-    private ResourceConfigApplierFactory() {}
+    private ResourceConfigApplierFactory() {
+    }
 }

@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.util.FileContentType;

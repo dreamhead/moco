@@ -51,7 +51,10 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
             return of(targetSession);
         }
 
-        return ImmutableList.<Session>builder().addAll(toUniqueSessions(targetSession, restoreSessions(this.file))).add(targetSession).build();
+        return ImmutableList.<Session>builder()
+                .addAll(toUniqueSessions(targetSession, restoreSessions(this.file)))
+                .add(targetSession)
+                .build();
     }
 
     private Iterable<Session> toUniqueSessions(final Session targetSession, final ImmutableList<Session> sessions) {

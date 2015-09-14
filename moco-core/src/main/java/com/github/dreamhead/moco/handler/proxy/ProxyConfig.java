@@ -43,7 +43,8 @@ public class ProxyConfig {
         }
 
         public ProxyConfig to(final String remoteBase) {
-            return new ProxyConfig(toBase(localBase), toBase(checkNotNullOrEmpty(remoteBase, "Remote base should not be null")));
+            return new ProxyConfig(toBase(localBase),
+                    toBase(checkNotNullOrEmpty(remoteBase, "Remote base should not be null")));
         }
     }
 }

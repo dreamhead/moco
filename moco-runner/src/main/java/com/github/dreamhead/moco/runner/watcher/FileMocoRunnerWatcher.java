@@ -42,11 +42,19 @@ public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
 
     private FileAlterationMonitor monitorFile(final File file, final FileAlterationListener listener) {
         File parentFile = file.getParentFile();
-        File directory = (parentFile == null) ? new File(".") : parentFile;
+        File directory = toDirectory(parentFile);
         FileAlterationObserver observer = new FileAlterationObserver(directory, sameFile(file));
         observer.addListener(listener);
 
         return new FileAlterationMonitor(INTERVAL, observer);
+    }
+
+    private File toDirectory(final File parentFile) {
+        if (parentFile == null) {
+            return new File(".");
+        }
+
+        return parentFile;
     }
 
     private FileFilter sameFile(final File file) {

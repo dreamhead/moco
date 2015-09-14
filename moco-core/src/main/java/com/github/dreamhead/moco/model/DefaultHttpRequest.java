@@ -79,7 +79,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> forms = new FormsRequestExtractor().extract(DefaultHttpRequest.this);
+                Optional<ImmutableMap<String, String>> forms =
+                        new FormsRequestExtractor().extract(DefaultHttpRequest.this);
                 return forms.isPresent() ? forms.get() : ImmutableMap.<String, String>of();
             }
         });
@@ -89,7 +90,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
             @Override
             public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> cookies = new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
+                Optional<ImmutableMap<String, String>> cookies =
+                        new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
                 return cookies.isPresent() ? cookies.get() : ImmutableMap.<String, String>of();
             }
         });

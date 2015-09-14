@@ -17,6 +17,7 @@ public class RedirectDelegate {
     }
 
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final Resource url) {
-        return setting.response(status(HttpResponseStatus.FOUND.code()), header(HttpHeaders.LOCATION, checkNotNull(url, "URL should not be null")));
+        return setting.response(status(HttpResponseStatus.FOUND.code()),
+                header(HttpHeaders.LOCATION, checkNotNull(url, "URL should not be null")));
     }
 }

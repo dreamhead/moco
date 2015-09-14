@@ -11,5 +11,6 @@ public final class Preconditions {
         return reference;
     }
 
-    private Preconditions() {}
+    private Preconditions() {
+    }
 }

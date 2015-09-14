@@ -100,8 +100,16 @@ public class MessageContent {
         public MessageContent build() {
             MessageContent messageContent = new MessageContent();
             messageContent.charset = Optional.fromNullable(charset);
-            messageContent.content = (content == null ? new byte[0] : content);
+            messageContent.content = targetContent(content);
             return messageContent;
+        }
+
+        private byte[] targetContent(final byte[] content) {
+            if (content == null) {
+                return new byte[0];
+            }
+
+            return this.content;
         }
     }
 }

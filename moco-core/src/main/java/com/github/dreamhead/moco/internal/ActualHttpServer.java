@@ -18,7 +18,9 @@ import static com.google.common.base.Optional.of;
 public class ActualHttpServer extends HttpConfiguration {
     private final Optional<HttpsCertificate> certificate;
 
-    protected ActualHttpServer(final Optional<Integer> port, final Optional<HttpsCertificate> certificate, final MocoMonitor monitor, final MocoConfig... configs) {
+    protected ActualHttpServer(final Optional<Integer> port,
+                               final Optional<HttpsCertificate> certificate,
+                               final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
         this.certificate = certificate;
     }
@@ -65,28 +67,38 @@ public class ActualHttpServer extends HttpConfiguration {
         return createLogServer(getPort());
     }
 
-    public static ActualHttpServer createHttpServerWithMonitor(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig... configs) {
+    public static ActualHttpServer createHttpServerWithMonitor(final Optional<Integer> port,
+                                                               final MocoMonitor monitor,
+                                                               final MocoConfig... configs) {
         return new ActualHttpServer(port, Optional.<HttpsCertificate>absent(), monitor, configs);
     }
 
     public static ActualHttpServer createLogServer(final Optional<Integer> port, final MocoConfig... configs) {
-        return createHttpServerWithMonitor(port, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
+        return createHttpServerWithMonitor(port,
+                new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
     public static ActualHttpServer createQuietServer(final Optional<Integer> port, final MocoConfig... configs) {
         return createHttpServerWithMonitor(port, new QuietMonitor(), configs);
     }
 
-    public static ActualHttpServer createHttpsServerWithMonitor(final Optional<Integer> port, final HttpsCertificate certificate,
-                                                                final MocoMonitor monitor, final MocoConfig... configs) {
+    public static ActualHttpServer createHttpsServerWithMonitor(final Optional<Integer> port,
+                                                                final HttpsCertificate certificate,
+                                                                final MocoMonitor monitor,
+                                                                final MocoConfig... configs) {
         return new ActualHttpServer(port, of(certificate), monitor, configs);
     }
 
-    public static ActualHttpServer createHttpsLogServer(final Optional<Integer> port, final HttpsCertificate certificate, final MocoConfig... configs) {
-        return createHttpsServerWithMonitor(port, certificate, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
+    public static ActualHttpServer createHttpsLogServer(final Optional<Integer> port,
+                                                        final HttpsCertificate certificate,
+                                                        final MocoConfig... configs) {
+        return createHttpsServerWithMonitor(port, certificate,
+                new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
-    public static ActualHttpServer createHttpsQuietServer(final Optional<Integer> port, final HttpsCertificate certificate, final MocoConfig... configs) {
+    public static ActualHttpServer createHttpsQuietServer(final Optional<Integer> port,
+                                                          final HttpsCertificate certificate,
+                                                          final MocoConfig... configs) {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
     }
 
