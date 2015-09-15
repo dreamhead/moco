@@ -26,7 +26,9 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
     private final ShutdownListener shutdownListener;
     private int port;
 
-    public ShutdownMocoRunnerWatcher(final Optional<Integer> shutdownPort, final String shutdownKey, final ShutdownListener shutdownListener) {
+    public ShutdownMocoRunnerWatcher(final Optional<Integer> shutdownPort,
+                                     final String shutdownKey,
+                                     final ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
         this.shutdownKey = shutdownKey;
         this.shutdownListener = shutdownListener;

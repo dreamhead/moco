@@ -94,8 +94,16 @@ public class TextContainer {
             TextContainer container = new TextContainer();
             container.text = text;
             container.operation = operation;
-            container.props = (props != null) ? props : ImmutableMap.<String, TextContainer>of();
+            container.props = asProps(props);
             return container;
+        }
+
+        private Map<String, TextContainer> asProps(final Map<String, TextContainer> props) {
+            if (props != null) {
+                return props;
+            }
+
+            return ImmutableMap.of();
         }
     }
 }

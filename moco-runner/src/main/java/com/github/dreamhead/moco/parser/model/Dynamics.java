@@ -18,7 +18,7 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.concat;
 
 public class Dynamics {
-    private static final Map<String, String> extractorMethods = ImmutableMap.<String, String>builder()
+    private static final Map<String, String> EXTRACTORS = ImmutableMap.<String, String>builder()
             .put("headers", "header")
             .put("queries", "query")
             .put("xpaths", "xpath")
@@ -93,7 +93,8 @@ public class Dynamics {
         }
     }
 
-    protected <T> T invokeTarget(final String name, final Object arg1, final Object arg2, final Class<T> clazz, final Class<?> arg1Class, Class<?> arg2Class) {
+    protected <T> T invokeTarget(final String name, final Object arg1, final Object arg2,
+                                 final Class<T> clazz, final Class<?> arg1Class, final Class<?> arg2Class) {
         try {
             Method method = Moco.class.getMethod(name, arg1Class, arg2Class);
             Object result = method.invoke(null, arg1, arg2);
@@ -105,7 +106,7 @@ public class Dynamics {
 
     protected static Method getExtractorMethod(final String name) {
         try {
-            return Moco.class.getMethod(extractorMethods.get(name), String.class);
+            return Moco.class.getMethod(EXTRACTORS.get(name), String.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

@@ -19,7 +19,7 @@ import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
 
 public class SettingRunner implements Runner {
-    private static final GlobalSettingParser settingParser = new GlobalSettingParser();
+    private final GlobalSettingParser parser = new GlobalSettingParser();
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
     private final StartArgs startArgs;
@@ -28,7 +28,7 @@ public class SettingRunner implements Runner {
 
     public SettingRunner(final InputStream stream, final StartArgs args) {
         this.env = args.getEnv();
-        this.globalSettings = settingParser.parse(stream);
+        this.globalSettings = parser.parse(stream);
         this.files = from(globalSettings).transform(toFile());
         this.startArgs = args;
     }
