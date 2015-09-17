@@ -68,9 +68,17 @@ public class MountSetting extends ResponseSetting {
         return MoreObjects.toStringHelper(this).omitNullValues()
                 .add("dir", dir)
                 .add("uri", uri)
-                .add("includes", includes.isEmpty() ? null : includes)
-                .add("excludes", excludes.isEmpty() ? null : excludes)
+                .add("includes", toStringList(includes))
+                .add("excludes", toStringList(excludes))
                 .add("response", super.toString())
                 .toString();
+    }
+
+    private List<String> toStringList(final List<String> includes) {
+        if (includes.isEmpty()) {
+            return null;
+        }
+
+        return includes;
     }
 }
