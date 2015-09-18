@@ -47,5 +47,6 @@ public final class MocoJsonRunner {
         return checkNotNull(resource, "resource should not be null").readFor(request).toInputStream();
     }
 
-    private MocoJsonRunner() {}
+    private MocoJsonRunner() {
+    }
 }

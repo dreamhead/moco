@@ -87,7 +87,8 @@ public class SessionSetting {
 
     private HttpResponseSetting bindToSession(final HttpServer server) {
         if (isMount()) {
-            return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates()).response(mount.getResponseHandler());
+            return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates())
+                    .response(mount.getResponseHandler());
         }
 
         if (isProxy()) {
@@ -102,12 +103,12 @@ public class SessionSetting {
             return server.response(getResponseHandler());
         }
 
-        HttpResponseSetting request = server.request(getRequestMatcher());
+        HttpResponseSetting targetRequest = server.request(getRequestMatcher());
         if (isRedirectResponse()) {
-            return request.redirectTo(redirectResource(this.redirectTo));
+            return targetRequest.redirectTo(redirectResource(this.redirectTo));
         }
 
-        return request.response(getResponseHandler());
+        return targetRequest.response(getResponseHandler());
     }
 
     private Resource redirectResource(final TextContainer textContainer) {

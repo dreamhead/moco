@@ -3,7 +3,9 @@ package com.github.dreamhead.moco.bootstrap.arg;
 import com.github.dreamhead.moco.bootstrap.ServerType;
 
 public class HttpArgs extends StartArgs {
-    protected HttpArgs(final Integer port, final Integer shutdownPort, final String configurationFile, final String globalSettings, final String env) {
+    protected HttpArgs(final Integer port, final Integer shutdownPort,
+                       final String configurationFile, final String globalSettings,
+                       final String env) {
         super(ServerType.HTTP, port, shutdownPort, configurationFile, globalSettings, env, null);
     }
 

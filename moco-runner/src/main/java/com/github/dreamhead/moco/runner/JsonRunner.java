@@ -68,20 +68,20 @@ public final class JsonRunner implements Runner {
     }
 
     private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
-        HttpServer server = createBaseHttpServer(settings, startArgs);
-        server.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header(HttpHeaders.CONTENT_TYPE, "image/png"));
-        return server;
+        HttpServer targetServer = createBaseHttpServer(settings, startArgs);
+        targetServer.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header(HttpHeaders.CONTENT_TYPE, "image/png"));
+        return targetServer;
     }
 
     private HttpServer createBaseHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
-        HttpServer server = createHttpServer(startArgs);
+        HttpServer targetServer = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
             HttpServer parsedServer = httpParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
-            server = mergeServer(server, parsedServer);
+            targetServer = mergeServer(targetServer, parsedServer);
         }
 
-        return server;
+        return targetServer;
     }
 
     private HttpServer createHttpServer(final StartArgs startArgs) {
