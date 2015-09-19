@@ -7,13 +7,12 @@ import org.junit.Test;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.junit.MocoJunitRunner.jsonSocketRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoJunitJsonSocketRunnerTest {
     @Rule
-    public MocoJunitRunner runner = jsonSocketRunner(12306, "src/test/resources/base.json");
+    public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, "src/test/resources/base.json");
 
     private MocoSocketHelper helper;
 

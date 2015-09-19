@@ -1,0 +1,11 @@
+project.dependencies {
+    compile(
+            project(':moco-runner'),
+            "junit:junit:$junitVersion"
+    )
+
+    testCompile(
+            project(':moco-core').sourceSets.test.output,
+            project(':moco-runner').sourceSets.test.output
+    )
+}

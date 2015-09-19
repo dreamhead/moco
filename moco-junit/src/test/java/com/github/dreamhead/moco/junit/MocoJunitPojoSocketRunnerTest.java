@@ -11,7 +11,6 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.Moco.socketServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.junit.MocoJunitRunner.socketRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,7 +23,7 @@ public class MocoJunitPojoSocketRunnerTest {
     }
 
     @Rule
-    public MocoJunitRunner runner = socketRunner(server);
+    public MocoJunitRunner runner = MocoJunitRunner.socketRunner(server);
 
     private MocoSocketHelper helper;
 

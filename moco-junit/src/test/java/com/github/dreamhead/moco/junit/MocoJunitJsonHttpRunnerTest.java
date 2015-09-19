@@ -7,13 +7,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.junit.MocoJunitRunner.jsonHttpRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Rule
-    public MocoJunitRunner runner = jsonHttpRunner(12306, "src/test/resources/foo.json");
+    public MocoJunitRunner runner = MocoJunitRunner.jsonHttpRunner(12306, "src/test/resources/foo.json");
 
     @Test
     public void should_return_expected_message() throws IOException {

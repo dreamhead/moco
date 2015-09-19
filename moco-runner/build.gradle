@@ -22,8 +22,7 @@ project.ext {
 project.dependencies {
     compile(
             project(':moco-core'),
-            "commons-cli:commons-cli:$commonsCliVersion",
-            "junit:junit:$junitVersion"
+            "commons-cli:commons-cli:$commonsCliVersion"
     )
 
     runtime("ch.qos.logback:logback-classic:$logbackVersion")

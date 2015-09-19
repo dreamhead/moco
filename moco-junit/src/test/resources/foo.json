@@ -1,0 +1,167 @@
+[
+    {
+        "description": "any response",
+        "response": {
+            "text": "foo"
+        }
+    },
+    {
+        "request": {
+            "uri": "/foo"
+        },
+        "response": {
+            "text": "bar"
+        }
+    },
+    {
+        "request": {
+            "uri": "/file"
+        },
+        "response": {
+            "file": "src/test/resources/foo.response"
+        }
+    },
+    {
+        "request": {
+            "text": "text_request"
+        },
+        "response": {
+            "text": "response_for_text_request"
+        }
+    },
+    {
+        "request": {
+            "file": "src/test/resources/foo.request"
+        },
+        "response": {
+            "text": "response_for_file_request"
+        }
+    },
+    {
+        "request": {
+            "uri": "/header",
+            "headers": {
+                "content-type": "application/json"
+            }
+        },
+        "response": {
+            "text": "response_for_header_request"
+        }
+    },
+    {
+        "request": {
+            "uri": "/query",
+            "queries": {
+                "param": "foo"
+            }
+        },
+        "response": {
+            "text": "response_for_query_request"
+        }
+    },
+    {
+        "request": {
+            "uri": "/xpath",
+            "xpaths": {
+                "/request/parameters/id/text()": "1"
+            }
+        },
+        "response": {
+            "text": "response_for_xpath_request"
+        }
+    },
+    {
+        "request": {
+            "uri": "/status"
+        },
+        "response": {
+            "status": 200
+        }
+    },
+    {
+        "request": {
+            "uri": "/response_header"
+        },
+        "response": {
+            "headers": {
+                "content-type": "application/json",
+                "foo": "bar"
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/proxy"
+        },
+        "response": {
+            "proxy": "https://github.com/"
+        }
+    },
+    {
+        "request": {
+            "uri": "/composite-response"
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "foo": "bar"
+            }
+        }
+    },
+    {
+        "request": {
+            "uri": "/latency"
+        },
+        "response": {
+            "latency": 1000
+        }
+    },
+    {
+      "request": {
+        "uri": "/latency-with-unit"
+      },
+      "response": {
+        "latency": {
+          "duration": 1,
+          "unit": "second"
+        }
+      }
+    },
+    {
+        "request": {
+            "uri": "/cookie",
+            "cookies": {
+                "login": "true"
+            }
+        },
+        "response": {
+            "text": "success"
+        }
+    },
+    {
+        "request": {
+            "uri": "/cookie"
+        },
+        "response": {
+            "cookies": {
+                "login": "true"
+            }
+        }
+    },
+    {
+        "request": {
+            "version": "HTTP/1.0"
+        },
+        "response": {
+            "text": "version"
+        }
+    },
+    {
+        "request": {
+            "uri": "/version10"
+        },
+        "response": {
+            "version": "HTTP/1.0"
+        }
+    }
+]
