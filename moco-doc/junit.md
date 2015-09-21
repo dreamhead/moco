@@ -1,0 +1,74 @@
+# JUnit Integration
+
+Moco make use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitRunner** provices several ways to run Moco server as Test Rule, which can start Moco server before your test and stop after the test.
+
+## HTTP Server
+
+### POJO HTTP Server
+
+**httpRunner** can reference a HttpServer object.
+
+```java
+public class MocoJunitPojoHttpRunnerTest {
+  private static HttpServer server;
+
+  static {
+    server = httpServer(12306);
+    server.response("foo");
+  }
+
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.httpRunner(server);
+  
+  ...
+}
+```
+
+### JSON HTTP Server
+
+**jsonHttpRunner** can reference a JSON file as HTTP server.
+
+```java
+public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonHttpRunner(12306, "foo.json");
+  
+  ...
+}
+```
+
+## Socket Server
+
+### POJO Socket Server
+
+**socketRunner** can reference a HttpServer object.
+
+```java
+public class MocoJunitPojoSocketRunnerTest {
+  private static SocketServer server;
+
+  static {
+    server = socketServer(12306);
+    server.response("bar\n");
+  }
+
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.socketRunner(server);
+  
+  ...
+}
+```
+
+### JSON Socket Server
+
+**jsonHttpRunner** can reference a JSON file as HTTP server.
+
+```java
+public class MocoJunitJsonSocketRunnerTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, "foo.json");
+
+  
+  ...
+}
+```

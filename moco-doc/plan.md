@@ -17,8 +17,6 @@
 * Cookbook
 
 # Tools Support
-* JUnit better support
-* homebrew
 * IntelliJ IDEA plugin
 * Eclipse plugin
 * Runtime configuration change
