@@ -198,6 +198,14 @@ java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
 
 More socket APIs can be found [here](/moco-doc/socket-apis.md).
 
+## JUnit Integration
+
+**@Since will be at next release**
+
+Moco provides JUnit integration to simplify the use of Moco in JUnit.
+ 
+More details can be found in [here](/moco-doc/junit.md).
+
 ## Maven Plugin
 
 Moco also can be used as Maven plugin.

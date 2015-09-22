@@ -68,7 +68,6 @@ public class MocoJunitJsonSocketRunnerTest {
   @Rule
   public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, "foo.json");
 
-  
   ...
 }
 ```
