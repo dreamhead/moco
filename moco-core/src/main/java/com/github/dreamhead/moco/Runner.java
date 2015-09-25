@@ -30,11 +30,11 @@ public abstract class Runner {
     }
 
     public static Runner runner(final HttpServer server) {
-        return new MocoHttpServer((ActualHttpServer) checkNotNull(server, "server should not be null"));
+        return new MocoHttpServer((ActualHttpServer) checkNotNull(server, "Server should not be null"));
     }
 
     public static Runner runner(final SocketServer server) {
-        return new MocoSocketServer((ActualSocketServer) checkNotNull(server, "server should not be null"));
+        return new MocoSocketServer((ActualSocketServer) checkNotNull(server, "Server should not be null"));
     }
 
     public abstract void start();
