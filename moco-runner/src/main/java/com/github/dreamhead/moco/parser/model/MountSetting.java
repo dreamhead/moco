@@ -65,7 +65,8 @@ public class MountSetting extends ResponseSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("dir", dir)
                 .add("uri", uri)
                 .add("includes", toStringList(includes))

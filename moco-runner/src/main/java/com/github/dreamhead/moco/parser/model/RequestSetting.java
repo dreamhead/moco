@@ -16,7 +16,6 @@ public class RequestSetting extends BaseResourceSetting {
 
     private TextContainer method;
     private TextContainer version;
-    private Object json;
 
     private Map<String, TextContainer> headers;
     private Map<String, TextContainer> xpaths;
@@ -28,7 +27,8 @@ public class RequestSetting extends BaseResourceSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("version", version)
                 .add("URI", uri)
                 .add("text", text)

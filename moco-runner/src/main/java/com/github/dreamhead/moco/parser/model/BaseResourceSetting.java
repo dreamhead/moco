@@ -7,6 +7,7 @@ public abstract class BaseResourceSetting {
     protected FileContainer file;
     @JsonProperty("path_resource")
     protected FileContainer pathResource;
+    protected Object json;
 
     public TextContainer getText() {
         return text;

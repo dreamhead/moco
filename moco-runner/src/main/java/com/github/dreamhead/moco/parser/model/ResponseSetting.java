@@ -18,7 +18,6 @@ public class ResponseSetting extends BaseResourceSetting {
     private LatencyContainer latency;
 
     private TextContainer version;
-    private Object json;
     private AttachmentSetting attachment;
 
     public ResponseSetting asResponseSetting() {
