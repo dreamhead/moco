@@ -43,7 +43,9 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
     @Override
     public ResponseHandler createResponseHandler(final ResponseSetting responseSetting) {
-        FluentIterable<ResponseHandler> handlers = from(getFields(responseSetting.getClass())).filter(isValidField(responseSetting)).transform(fieldToResponseHandler(responseSetting));
+        FluentIterable<ResponseHandler> handlers = from(getFields(responseSetting.getClass()))
+                .filter(isValidField(responseSetting))
+                .transform(fieldToResponseHandler(responseSetting));
         return getResponseHandler(handlers.toList());
     }
 
@@ -151,7 +153,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
-    private ResponseHandler createResponseHandler(final Map.Entry<String, TextContainer> pair, final String targetMethodName) {
+    private ResponseHandler createResponseHandler(final Map.Entry<String, TextContainer> pair,
+                                                  final String targetMethodName) {
         TextContainer container = pair.getValue();
         try {
             if (container.isForTemplate()) {

@@ -54,7 +54,6 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
         return "name".equalsIgnoreCase(target) || "charset".equalsIgnoreCase(target);
     }
 
-
     private static class FileVar {
         public TextContainer name;
         public String charset;
