@@ -14,11 +14,16 @@ public class SocketSetting extends BaseSetting<SocketResponseSetting>
     }
 
     @Override
-    public Setting<SocketResponseSetting> apply(final MocoConfig config) {
-        RequestMatcher appliedMatcher = configItem(this.matcher, config);
+    protected Setting<SocketResponseSetting> createSetting(final RequestMatcher appliedMatcher,
+                                                           final MocoConfig config) {
         SocketSetting setting = new SocketSetting(appliedMatcher);
         setting.handler = configItem(this.handler, config);
         setting.eventTriggers = configItems(eventTriggers, config);
         return setting;
+    }
+
+    @Override
+    protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
+        return configItem(matcher, config);
     }
 }

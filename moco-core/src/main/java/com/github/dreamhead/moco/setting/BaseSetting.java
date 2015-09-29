@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.setting;
 
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEvent;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.Request;
@@ -11,7 +12,12 @@ import com.github.dreamhead.moco.internal.SessionContext;
 
 public abstract class BaseSetting<T extends ResponseSetting<T>>
         extends BaseResponseSettingConfiguration<T> implements Setting<T> {
-    protected final RequestMatcher matcher;
+    private final RequestMatcher matcher;
+
+    protected abstract Setting<T> createSetting(final RequestMatcher appliedMatcher,
+                                                                  final MocoConfig config);
+    protected abstract RequestMatcher configMatcher(final RequestMatcher matcher,
+                                           final MocoConfig config);
 
     public BaseSetting(final RequestMatcher matcher) {
         this.matcher = matcher;
@@ -34,5 +40,11 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
                 eventTrigger.fireEvent();
             }
         }
+    }
+
+    @Override
+    public Setting<T> apply(final MocoConfig config) {
+        RequestMatcher appliedMatcher = configMatcher(this.matcher, config);
+        return createSetting(appliedMatcher, config);
     }
 }

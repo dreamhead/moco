@@ -21,17 +21,21 @@ public class HttpSetting extends BaseSetting<HttpResponseSetting>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Setting<HttpResponseSetting> apply(final MocoConfig config) {
-        RequestMatcher appliedMatcher = configItem(this.matcher, config);
-        if (config.isFor(MocoConfig.URI_ID) && this.matcher == appliedMatcher) {
-            appliedMatcher = new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));
-        }
-
+    protected Setting<HttpResponseSetting> createSetting(final RequestMatcher appliedMatcher, final MocoConfig config) {
         HttpSetting setting = new HttpSetting(appliedMatcher);
         setting.handler = configItem(this.handler, config);
         setting.eventTriggers = configItems(eventTriggers, config);
         return setting;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
+        RequestMatcher appliedMatcher = configItem(matcher, config);
+        if (config.isFor(MocoConfig.URI_ID) && matcher == appliedMatcher) {
+            return new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));
+        }
+
+        return appliedMatcher;
     }
 
     @Override
