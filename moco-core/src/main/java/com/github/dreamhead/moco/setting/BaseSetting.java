@@ -6,11 +6,9 @@ import com.github.dreamhead.moco.MocoEvent;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.internal.BaseResponseSettingConfiguration;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
@@ -19,9 +17,7 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
         extends BaseResponseSettingConfiguration<T> implements Setting<T> {
     private final RequestMatcher matcher;
 
-    protected abstract Setting<T> createSetting(final RequestMatcher matcher,
-                                                final ResponseHandler responseHandler,
-                                                final ImmutableList<MocoEventTrigger> eventTriggers);
+    protected abstract BaseSetting<T> createSetting(final RequestMatcher matcher);
 
     protected abstract RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config);
 
@@ -50,7 +46,9 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
 
     @Override
     public Setting<T> apply(final MocoConfig config) {
-        return createSetting(configMatcher(this.matcher, config),
-                configItem(this.handler, config), configItems(eventTriggers, config));
+        BaseSetting<T> setting = createSetting(configMatcher(this.matcher, config));
+        setting.handler = configItem(this.handler, config);
+        setting.eventTriggers = configItems(eventTriggers, config);
+        return setting;
     }
 }
