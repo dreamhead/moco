@@ -29,9 +29,10 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
 
     @Override
     public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
-        checkNotNull(mode, "Verification mode should not be null").verify(new VerificationData(copyOf(unexpectedRequests),
-                checkNotNull(matcher, "Matcher should not be null"),
-                "expect unexpected request hit %s times but %d times"));
+        checkNotNull(mode, "Verification mode should not be null")
+                .verify(new VerificationData(copyOf(unexpectedRequests),
+                        checkNotNull(matcher, "Matcher should not be null"),
+                        "expect unexpected request hit %s times but %d times"));
     }
 
     @Override

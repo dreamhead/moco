@@ -12,12 +12,12 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
-	private final ContentRequestExtractor extractor = new ContentRequestExtractor();
-	private final JsonPath jsonPath;
+    private final ContentRequestExtractor extractor = new ContentRequestExtractor();
+    private final JsonPath jsonPath;
 
-	public JsonPathRequestExtractor(final String jsonPath) {
-		this.jsonPath = JsonPath.compile(jsonPath);
-	}
+    public JsonPathRequestExtractor(final String jsonPath) {
+        this.jsonPath = JsonPath.compile(jsonPath);
+    }
 
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
@@ -33,13 +33,13 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
         }
     }
 
-	private Object toStringArray(final Object content){
-		if(content instanceof List){
+    private Object toStringArray(final Object content) {
+        if (content instanceof List) {
             @SuppressWarnings("unchecked")
             List<String> texts = (List<String>) content;
             return texts.toArray(new String[texts.size()]);
-		}
+        }
 
-		return content.toString();
-	}
+        return content.toString();
+    }
 }

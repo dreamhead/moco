@@ -28,5 +28,6 @@ public final class Files {
         return new File(new File(path1), path2);
     }
 
-    private Files() {}
+    private Files() {
+    }
 }

@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 
 public class Failover {
-    public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER, FailoverStrategy.FAILOVER);
+    public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER,
+            FailoverStrategy.FAILOVER);
 
     private final FailoverExecutor executor;
     private final FailoverStrategy strategy;

@@ -18,6 +18,10 @@ public class FormRequestExtractor extends HttpRequestExtractor<String> {
     @Override
     protected Optional<String> doExtract(final HttpRequest request) {
         Optional<ImmutableMap<String, String>> forms = extractor.extract(request);
-        return forms.isPresent() ? fromNullable(forms.get().get(key)) : Optional.<String>absent();
+        if (forms.isPresent()) {
+            return fromNullable(forms.get().get(key));
+        }
+
+        return Optional.absent();
     }
 }

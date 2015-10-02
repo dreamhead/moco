@@ -13,5 +13,6 @@ public final class Jsons {
         }
     }
 
-    private Jsons() {}
+    private Jsons() {
+    }
 }

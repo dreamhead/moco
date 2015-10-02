@@ -22,5 +22,6 @@ public final class Extractors {
         throw new IllegalArgumentException(format("unknown extractor for [%s]", id));
     }
 
-    private Extractors() {}
+    private Extractors() {
+    }
 }

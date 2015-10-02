@@ -78,7 +78,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     public FullHttpResponse toFullResponse() {
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.valueOf(this.version.text()), HttpResponseStatus.valueOf(this.status));
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.valueOf(this.version.text()),
+                HttpResponseStatus.valueOf(this.status));
         for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
             response.headers().add(entry.getKey(), entry.getValue());
         }
