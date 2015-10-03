@@ -207,7 +207,7 @@ public final class Moco {
     }
 
     public static RequestMatcher by(final Resource resource) {
-        checkNotNull(resource, "resource should not be null");
+        checkNotNull(resource, "Resource should not be null");
         return eq(extractor(resource.id()), resource);
     }
 
@@ -372,7 +372,7 @@ public final class Moco {
     }
 
     public static RequestMatcher json(final String jsonText) {
-        return json(text(checkNotNull(jsonText, "JSON should not be null")));
+        return json(text(checkNotNull(jsonText, "Json should not be null")));
     }
 
     public static RequestMatcher json(final Object pojo) {
@@ -380,7 +380,7 @@ public final class Moco {
     }
 
     public static RequestMatcher json(final Resource resource) {
-        checkNotNull(resource, "JSON should not be null");
+        checkNotNull(resource, "Json should not be null");
         return new JsonRequestMatcher(extractor(resource.id()), resource);
     }
 
@@ -393,22 +393,22 @@ public final class Moco {
     }
 
     public static ResponseHandler seq(final String... contents) {
-        checkArgument(contents.length > 0, "seq contents should not be null");
+        checkArgument(contents.length > 0, "Sequence contents should not be null");
         return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toList());
     }
 
     public static ResponseHandler seq(final Resource... contents) {
-        checkArgument(contents.length > 0, "seq contents should not be null");
+        checkArgument(contents.length > 0, "Sequence contents should not be null");
         return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toList());
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
-        checkArgument(handlers.length > 0, "seq contents should not be null");
+        checkArgument(handlers.length > 0, "Sequence contents should not be null");
         return seq(copyOf(handlers));
     }
 
     private static ResponseHandler seq(final ImmutableList<ResponseHandler> handlers) {
-        checkArgument(handlers.size() > 0, "seq contents should not be null");
+        checkArgument(handlers.size() > 0, "Sequence contents should not be null");
         return new SequenceHandler(handlers);
     }
 

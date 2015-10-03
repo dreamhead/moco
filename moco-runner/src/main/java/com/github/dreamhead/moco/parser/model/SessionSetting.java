@@ -36,7 +36,8 @@ public class SessionSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("request", request)
                 .add("response", response)
                 .add("redirect to", redirectTo)

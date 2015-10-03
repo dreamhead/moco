@@ -29,7 +29,10 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private ImmutableList<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return from(getFields(RequestSetting.class)).filter(isValidField(request)).transform(fieldToRequestMatcher(request)).toList();
+        return from(getFields(RequestSetting.class))
+                .filter(isValidField(request))
+                .transform(fieldToRequestMatcher(request))
+                .toList();
     }
 
     private Function<Field, RequestMatcher> fieldToRequestMatcher(final RequestSetting request) {
