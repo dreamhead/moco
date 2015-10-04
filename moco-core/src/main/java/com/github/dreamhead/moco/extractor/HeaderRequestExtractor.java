@@ -23,7 +23,11 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     @Override
     protected Optional<String[]> doExtract(final HttpRequest request) {
         final ImmutableMap<String, String> headers = request.getHeaders();
-        String[] extractedValues = from(headers.entrySet()).filter(isForName(name)).transform(toValue()).toArray(String.class);
+        String[] extractedValues = from(headers.entrySet())
+                .filter(isForName(name))
+                .transform(toValue())
+                .toArray(String.class);
+
         if (extractedValues.length > 0) {
             return of(extractedValues);
         }

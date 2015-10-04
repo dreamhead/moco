@@ -104,7 +104,9 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
-        ImmutableList<RequestMatcher> matchers = from(collection.entrySet()).transform(toTargetMatcher(getExtractorMethod(name))).toList();
+        ImmutableList<RequestMatcher> matchers = from(collection.entrySet())
+                .transform(toTargetMatcher(getExtractorMethod(name)))
+                .toList();
         return wrapRequestMatcher(null, matchers);
     }
 
@@ -137,8 +139,9 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         }
 
         try {
-            Method operationMethod = Moco.class.getMethod(container.getOperation(), RequestExtractor.class, String.class);
-            Object result = operationMethod.invoke(null, extractor, container.getText());
+            Method operatorMethod = Moco.class.getMethod(container.getOperation(),
+                    RequestExtractor.class, String.class);
+            Object result = operatorMethod.invoke(null, extractor, container.getText());
             return RequestMatcher.class.cast(result);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -146,18 +149,20 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
     }
 
     private <T> RequestMatcher existMatcher(final RequestExtractor<T> extractor, final TextContainer container) {
-        if ("true".equalsIgnoreCase(container.getText())) {
+        String text = container.getText();
+        if ("true".equalsIgnoreCase(text)) {
             return exist(extractor);
         }
 
-        if ("false".equalsIgnoreCase(container.getText())) {
+        if ("false".equalsIgnoreCase(text)) {
             return not(exist(extractor));
         }
 
-        throw new RuntimeException(String.format("Unknown exist parameter: [%s]", container.getText()));
+        throw new RuntimeException(String.format("Unknown exist parameter: [%s]", text));
     }
 
-    private static RequestMatcher wrapRequestMatcher(final RequestSetting request, final ImmutableList<RequestMatcher> matchers) {
+    private static RequestMatcher wrapRequestMatcher(final RequestSetting request,
+                                                     final ImmutableList<RequestMatcher> matchers) {
         switch (matchers.size()) {
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);

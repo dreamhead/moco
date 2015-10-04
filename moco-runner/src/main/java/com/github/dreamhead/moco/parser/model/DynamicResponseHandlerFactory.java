@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -29,6 +28,7 @@ import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.Moco.var;
 import static com.github.dreamhead.moco.Moco.version;
 import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
@@ -54,7 +54,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return list.get(0);
         }
 
-        return AndResponseHandler.and(list);
+        return and(list);
     }
 
     private boolean isResource(final String name) {
