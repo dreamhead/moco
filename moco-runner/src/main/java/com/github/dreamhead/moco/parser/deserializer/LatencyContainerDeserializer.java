@@ -22,7 +22,8 @@ public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContai
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
             InternalLatencyContainer container = get(jp.readValuesAs(InternalLatencyContainer.class), 0);
-            return LatencyContainer.latencyWithUnit(container.duration, TimeUnit.valueOf(container.unit.toUpperCase() + 'S'));
+            return LatencyContainer.latencyWithUnit(container.duration,
+                    TimeUnit.valueOf(container.unit.toUpperCase() + 'S'));
         }
 
         throw ctxt.mappingException(LatencyContainer.class, currentToken);

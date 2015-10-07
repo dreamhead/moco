@@ -36,7 +36,13 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
         public String playback;
 
         public ProxyContainer toProxyContainer() {
-            return builder().withUrl(url).withFrom(from).withTo(to).withFailover(failover).withPlayback(playback).build();
+            return builder()
+                    .withUrl(url)
+                    .withFrom(from)
+                    .withTo(to)
+                    .withFailover(failover)
+                    .withPlayback(playback)
+                    .build();
         }
     }
 }

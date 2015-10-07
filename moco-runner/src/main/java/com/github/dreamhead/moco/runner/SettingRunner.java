@@ -38,7 +38,9 @@ public class SettingRunner implements Runner {
     }
 
     public void run() {
-        jsonRunner = newJsonRunnerWithSetting(from(globalSettings).filter(byEnv(this.env)).transform(toRunnerSetting()), startArgs);
+        jsonRunner = newJsonRunnerWithSetting(from(globalSettings)
+                .filter(byEnv(this.env))
+                .transform(toRunnerSetting()), startArgs);
         jsonRunner.run();
     }
 

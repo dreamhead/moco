@@ -23,7 +23,11 @@ public class SocketArgsParser extends StartArgsParser {
             throw new ParseArgException("only one arg not allowed");
         }
 
-        return socketArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).build();
+        return socketArgs()
+                .withPort(getPort(port))
+                .withShutdownPort(getPort(shutdownPort))
+                .withConfigurationFile(config)
+                .build();
     }
 
     @Override

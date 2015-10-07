@@ -24,7 +24,8 @@ public class Dynamics {
             .put("xpaths", "xpath")
             .put("jsonPaths", "jsonPath")
             .put("cookies", "cookie")
-            .put("forms", "form").build();
+            .put("forms", "form")
+            .build();
 
     protected Predicate<Field> isClassField() {
         return new Predicate<Field>() {

@@ -33,7 +33,13 @@ public class HttpArgsParser extends StartArgsParser {
             throw new ParseArgException("only one arg not allowed");
         }
 
-        return httpArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).build();
+        return httpArgs()
+                .withPort(getPort(port))
+                .withShutdownPort(getPort(shutdownPort))
+                .withConfigurationFile(config)
+                .withSettings(globalSettings)
+                .withEnv(env)
+                .build();
     }
 
     @Override

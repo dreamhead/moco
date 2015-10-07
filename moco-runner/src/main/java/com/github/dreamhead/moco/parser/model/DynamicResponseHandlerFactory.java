@@ -188,20 +188,29 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if (container.isFileContainer()) {
-            FileContainer fileContainer = FileContainer.class.cast(container);
-            TextContainer filename = fileContainer.getName();
-            if (filename.isRawText()) {
-                return invokeTarget(name, fileContainer.getName().getText(), fileContainer.getCharset(),
-                        Resource.class, String.class, Optional.class);
-            }
-
-            if (filename.isForTemplate()) {
-                return invokeTarget(name, createTemplate("text", filename), fileContainer.getCharset(),
-                        Resource.class, Resource.class, Optional.class);
+            Optional<Resource> resource = fileResource(name, container);
+            if (resource.isPresent()) {
+                return resource.get();
             }
         }
 
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
+    }
+
+    private Optional<Resource> fileResource(final String name, final TextContainer container) {
+        FileContainer fileContainer = FileContainer.class.cast(container);
+        TextContainer filename = fileContainer.getName();
+        if (filename.isRawText()) {
+            return Optional.of(invokeTarget(name, fileContainer.getName().getText(), fileContainer.getCharset(),
+                    Resource.class, String.class, Optional.class));
+        }
+
+        if (filename.isForTemplate()) {
+            return Optional.of(invokeTarget(name, createTemplate("text", filename), fileContainer.getCharset(),
+                    Resource.class, Resource.class, Optional.class));
+        }
+
+        return Optional.absent();
     }
 
     private Resource createTemplate(final String name, final TextContainer container) {

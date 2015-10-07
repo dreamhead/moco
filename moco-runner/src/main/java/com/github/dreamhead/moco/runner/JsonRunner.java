@@ -52,10 +52,12 @@ public final class JsonRunner implements Runner {
         runner.stop();
     }
 
-    private SocketServer createSocketServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
+    private SocketServer createSocketServer(final Iterable<? extends RunnerSetting> settings,
+                                            final StartArgs startArgs) {
         SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort());
         for (RunnerSetting setting : settings) {
-            SocketServer parsedServer = socketParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
+            SocketServer parsedServer = socketParser.parseServer(setting.getStream(), startArgs.getPort(),
+                    toConfigs(setting));
             socketServer = mergeServer(socketServer, parsedServer);
         }
 
@@ -69,7 +71,8 @@ public final class JsonRunner implements Runner {
 
     private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         HttpServer targetServer = createBaseHttpServer(settings, startArgs);
-        targetServer.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")), header(HttpHeaders.CONTENT_TYPE, "image/png"));
+        targetServer.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")),
+                header(HttpHeaders.CONTENT_TYPE, "image/png"));
         return targetServer;
     }
 
@@ -127,7 +130,8 @@ public final class JsonRunner implements Runner {
         };
     }
 
-    public static JsonRunner newJsonRunnerWithSetting(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
+    public static JsonRunner newJsonRunnerWithSetting(final Iterable<? extends RunnerSetting> settings,
+                                                      final StartArgs startArgs) {
         return new JsonRunner(settings, startArgs);
     }
 }

@@ -23,7 +23,8 @@ public class RunnerFactory {
         return createShutdownRunner(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
     }
 
-    public ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort, final String shutdownKey) {
+    public ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort,
+                                               final String shutdownKey) {
         return new ShutdownRunner(runner, monitorFactory.createShutdownWatcher(runner, shutdownPort, shutdownKey));
     }
 
@@ -39,7 +40,8 @@ public class RunnerFactory {
         final File settingsFile = new File(startArgs.getSettings().get());
         final FileRunner fileRunner = createSettingFileRunner(settingsFile, startArgs);
         final SettingRunner runner = (SettingRunner) fileRunner.getRunner();
-        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createSettingWatcher(settingsFile, runner.getFiles(), fileRunner);
+        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createSettingWatcher(settingsFile,
+                runner.getFiles(), fileRunner);
         return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
     }
 
