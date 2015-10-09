@@ -10,5 +10,6 @@ public final class IdFactory {
         };
     }
 
-    private IdFactory() {}
+    private IdFactory() {
+    }
 }
