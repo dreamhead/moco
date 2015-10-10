@@ -1,3 +1,68 @@
+Table of Contents
+=================
+
+  * [HTTP(s) APIs](#https-apis)
+    * [Composite Java API Design](#composite-java-api-design)
+    * [Description as comment](#description-as-comment)
+    * [Request](#request)
+      * [Content](#content)
+      * [URI](#uri)
+      * [Query Parameter](#query-parameter)
+      * [HTTP Method](#http-method)
+      * [Version](#version)
+      * [Header](#header)
+      * [Cookie](#cookie)
+      * [Form](#form)
+      * [XML](#xml)
+      * [XPath](#xpath)
+      * [JSON Request](#json-request)
+        * [JSON Text](#json-text)
+        * [JSON Shortcut](#json-shortcut)
+        * [JSON File](#json-file)
+      * [JSONPath](#jsonpath)
+      * [Operator](#operator)
+        * [Match](#match)
+        * [Starts With](#starts-with)
+        * [Ends With](#ends-with)
+        * [Contain](#contain)
+        * [Exist](#exist)
+    * [Response](#response)
+      * [Content](#content-1)
+      * [Status Code](#status-code)
+      * [Version](#version-1)
+      * [Header](#header-1)
+      * [Proxy](#proxy)
+        * [Single URL](#single-url)
+        * [Failover](#failover)
+        * [Playback](#playback)
+        * [Batch URLs](#batch-urls)
+      * [Redirect](#redirect)
+      * [Cookie](#cookie-1)
+      * [Attachment](#attachment)
+      * [Latency](#latency)
+      * [Sequence](#sequence)
+      * [JSON Response](#json-response)
+    * [Mount](#mount)
+    * [Template(Beta)](#templatebeta)
+      * [Version](#version-2)
+      * [Method](#method)
+      * [Content](#content-2)
+      * [Header](#header-2)
+      * [Query](#query)
+      * [Form](#form-1)
+      * [Cookie](#cookie-2)
+      * [Custom Variable](#custom-variable)
+      * [Redirect](#redirect-1)
+      * [File Name Template](#file-name-template)
+    * [Event](#event)
+      * [Complete](#complete)
+      * [Asynchronous](#asynchronous)
+    * [Verify](#verify)
+    * [Miscellaneous](#miscellaneous)
+      * [Port](#port)
+      * [Log](#log)
+        * [Log with verifier](#log-with-verifier)
+        
 # HTTP(s) APIs
 Moco mainly focuses on server configuration. There are only two kinds of API right now: **Request** and **Response**.
 
@@ -493,6 +558,7 @@ Note that this functionality is implemented in Jackson, please make sure your PO
 If the response is JSON, we don't need to write JSON text with escape character in code.
 
 **@Since 0.10.2**
+
 You can give a POJO to Java API, it will be converted JSON text.
 ```java
 server.request(json(pojo)).response("foo");
@@ -1303,6 +1369,7 @@ server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(20
 If the response is JSON, we don't need to write JSON text with escape character in code.
 
 **@Since 0.10.2**
+
 You can give a POJO to Java API, it will be converted JSON text. Hint, this api will setup Content-Type header as well.
 ```java
 server.request(by(uri("/json"))).response(toJson(pojo));
@@ -1311,6 +1378,7 @@ server.request(by(uri("/json"))).response(toJson(pojo));
 Note that this functionality is implemented in Jackson, please make sure your POJO is written in Jackson acceptable format. 
 
 **@Since 0.9.2**
+
 For JSON API, just give json object directly
 
 ```json
@@ -1862,7 +1930,7 @@ server.request(by(uri("/event"))).response("event").on(complete(async(post("http
 }
 ```
 
-# Verify
+## Verify
 **@Since 0.9**
 
 Someone may want to verify what kind of request has been sent to server in testing framework.
@@ -1945,6 +2013,7 @@ final HttpServer server = httpServer(log("path/to/log.log"));
 ```
 
 **@Since 0.10.1**
+
 Log content may contain some non UTF-8 character, charset could be specified in log API:
 ```
 final HttpServer server = httpServer(log("path/to/log.log", Charset.forName("GBK")));
