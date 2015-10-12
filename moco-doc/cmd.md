@@ -16,6 +16,17 @@ First of all, a JSON configuration file needs to be provided to start Moco.
 ]
 ```
 
+**Table of Contents**
+
+* [HTTP Server](#http-server)
+* [HTTPS Server](#https-server)
+* [Socket Server](#socket-server)
+* [Port](#port)
+* [Version](#version)
+* [Global Settings](#global-settings)
+  * [Environment](#environment)
+* [Shutdown](#shutdown)
+
 ## HTTP Server
 
 You can start a HTTP server by the following command:
@@ -87,4 +98,3 @@ Then you can use the shutdown port to shutdown the running Moco instance.
 ```shell
 java -jar moco-runner-<version>-standalone.jar shutdown -s 9527
 ```
-
