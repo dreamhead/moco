@@ -5,6 +5,34 @@ That means if we get the expected request and then return our response. Now, you
 
 **WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
+**Table of Contents**
+
+* [Description as comment](#description-as-comment)
+* [Request](#request)
+  * [Content](#content)
+  * [XML](#xml)
+  * [XPath](#xpath)
+  * [JSON Request](#json-request)
+    * [JSON Text](#json-text)
+    * [JSON Text Shortcut](#json-text-shortcut)
+    * [JSON File](#json-file)
+  * [JSONPath](#jsonpath)
+  * [Operator](#operator)
+    * [Match](#match)
+    * [Starts With](#starts-with)
+    * [Ends With](#ends-with)
+    * [Contain](#contain)
+    * [Exist](#exist)
+* [Response](#response)
+  * [Content](#content-1)
+  * [Latency](#latency)
+  * [Sequence](#sequence)
+  * [JSON Response](#json-response)
+* [Template(Beta)](#templatebeta)
+  * [Content](#content-2)
+  * [Custom Variable](#custom-variable)
+  * [File Name Template](#file-name-template)
+
 ## Description as comment
 **@Since 0.7**
 
@@ -527,6 +555,7 @@ Sometimes, we want to simulate a real-world operation which change server side r
 * Again request the same URL, updated content, e.g. "bar" is expected.
 
 We can do that by
+
 ```java
 server.request(by(text("/foo"))).response(seq("foo", "bar", "blah"));
 ```
@@ -561,11 +590,13 @@ The goal can be reached by template:
 All request content can be used in template with "req.content"
 
 * Java
+
 ```java
 server.request(by(text("template"))).response(template("${req.content}"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -585,11 +616,13 @@ server.request(by(text("template"))).response(template("${req.content}"));
 You can provide your own variables in your template.
 
 * Java
+
 ```java
 server.request(by(text("template"))).response(template("${'foo'}", "foo", "bar"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -613,11 +646,13 @@ server.request(by(text("template"))).response(template("${'foo'}", "foo", "bar")
 You can also use extractor to extract information from request.
 
 * Java
+
 ```java
 server.request(by(text("template"))).response(template("${'foo'}", "foo", jsonPath("$.book[*].price")));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -645,11 +680,13 @@ Other extractors, e.g. xpath also work here.
 Template can also be used in file name, thus response can be different based on different request.
 
 * Java
+
 ```java
 server.response(file(template("${req.headers['foo'].txt")));
 ```
 
 * JSON
+
 ```json
 [
   {
