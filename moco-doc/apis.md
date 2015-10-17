@@ -558,6 +558,7 @@ If the response is JSON, we don't need to write JSON text with escape character 
 **@Since 0.10.2**
 
 You can give a POJO to Java API, it will be converted JSON text.
+
 ```java
 server.request(json(pojo)).response("foo");
 ```
@@ -875,6 +876,7 @@ server.response(file("src/test/resources/gbk.response", Charset.forName("GBK")))
 ```
 
 * JSON
+
 ```json
 [
   {
@@ -899,6 +901,7 @@ server.response(pathResource("src/test/resources/gbk.response", Charset.forName(
 ```
 
 * JSON
+
 ```json
 [
   {
@@ -1038,6 +1041,7 @@ server.request(by("foo")).response(proxy("http://www.github.com", failover("fail
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -1071,6 +1075,7 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 ```
 
 * JSON
+
 ```json
 {
   "request" :
@@ -1094,11 +1099,13 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 If we want to proxy with a batch of URLs in the same context, proxy can also help us.
 
 * Java API
+
 ```java
 server.get(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to("http://localhost:12306/target")));
 ```
 
 * JSON
+
 ```json
 {
     "request" :
@@ -1120,12 +1127,14 @@ server.get(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to("http://loc
 Same with single url, you can also specify a failover.
 
 * Java API
+
 ```java
 server.request(match(uri("/proxy/.*")))
       .response(proxy("http://localhost:12306/unknown"), failover("failover.response")));
 ```
 
 * JSON
+
 ```json
 {
     "request" :
@@ -1149,12 +1158,14 @@ server.request(match(uri("/proxy/.*")))
 and playback.
 
 * Java API
+
 ```java
 server.request(match(uri("/proxy/.*")))
       .response(proxy("http://localhost:12306/unknown"), playback("playback.response")));
 ```
 
 * JSON
+
 ```json
 {
     "request" :
@@ -1178,11 +1189,13 @@ server.request(match(uri("/proxy/.*")))
 As you may find, we often set request match same context with response, so Moco gives us a shortcut to do that.
 
 * Java API
+
 ```java
 server.proxy(from("/proxy").to("http://localhost:12306/target"));
 ```
 
 * JSON
+
 ```json
 {
     "proxy" : {
@@ -1349,16 +1362,19 @@ The original API without time unit introduced in 0.7 has been deprecated.
 **@Since 0.7**
 
 Sometimes, we want to simulate a real-world operation which change server side resource. For example:
+
 * First time you request a resource and "foo" is returned
 * We update this resource
 * Again request the same URL, updated content, e.g. "bar" is expected.
 
 We can do that by
+
 ```java
 server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
 ```
 
 The other response settings are able to be set as well.
+
 ```java
 server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
 ```
@@ -1369,6 +1385,7 @@ If the response is JSON, we don't need to write JSON text with escape character 
 **@Since 0.10.2**
 
 You can give a POJO to Java API, it will be converted JSON text. Hint, this api will setup Content-Type header as well.
+
 ```java
 server.request(by(uri("/json"))).response(toJson(pojo));
 ```
@@ -1523,16 +1540,18 @@ The goal can be reached by template:
 ### Version
 **@Since 0.8**
 
-With "req.version", request version can be retrieved in template.
+With `req.version`, request version can be retrieved in template.
 
 The following example will return response version as content.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.version}"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1549,14 +1568,16 @@ server.request(by(uri("/template"))).response(template("${req.version}"));
 ### Method
 **@Since 0.8**
 
-Request method is identified by "req.method"
+Request method is identified by `req.method`.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.method}"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1573,14 +1594,16 @@ server.request(by(uri("/template"))).response(template("${req.method}"));
 ### Content
 **@Since 0.8**
 
-All request content can be used in template with "req.content"
+All request content can be used in template with `req.content`
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.content}"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1597,14 +1620,16 @@ server.request(by(uri("/template"))).response(template("${req.content}"));
 ### Header
 **@Since 0.8**
 
-Header is another important element in template and we can use "req.headers" for headers.
+Header is another important element in template and we can use `req.headers` for headers.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1621,14 +1646,16 @@ server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
 ### Query
 **@Since 0.8**
 
-"req.queries" helps us to extract request query.
+`req.queries` helps us to extract request query.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1645,14 +1672,16 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 ### Form
 **@Since 0.9.1**
 
-"req.forms" can extract form value from request.
+`req.forms` can extract form value from request.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1669,14 +1698,16 @@ server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
 ### Cookie
 **@Since 0.9.1**
 
-Cookie from request can extracted by "req.cookies".
+Cookie from request can extracted by `req.cookies`.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1696,11 +1727,13 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
 You can provide your own variables in your template.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${foo}", "foo", "bar"));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1724,11 +1757,13 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", "bar"));
 You can also use extractor to extract information from request.
 
 * Java
+
 ```java
 server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath("$.book[*].price")));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1757,11 +1792,13 @@ Other extractors, e.g. xpath also work here.
 Redirect can also be set as template.
 
 * Java
+
 ```java
 server.request(by(uri("/redirectTemplate"))).redirectTo(template("${var}", "var", ""https://github.com"));
 ```
 
 * Json
+
 ```json
 {
       "request" :
@@ -1786,11 +1823,13 @@ server.request(by(uri("/redirectTemplate"))).redirectTo(template("${var}", "var"
 Template can also be used in file name, thus response can be different based on different request.
 
 * Java
+
 ```java
 server.response(file(template("${req.headers['foo'].txt")));
 ```
 
 * JSON
+
 ```json
 [
   {
@@ -1814,11 +1853,13 @@ You may need to request another site when you receive a request, e.g. OAuth. Eve
 Complete event will be fired after your request has been handled completely.
 
 * Java
+
 ```java
 server.request(by(uri("/event"))).response("event").on(complete(get("http://another_site")));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1840,11 +1881,13 @@ server.request(by(uri("/event"))).response("event").on(complete(get("http://anot
 You can post some content as well.
 
 * Java
+
 ```java
 server.request(by(uri("/event"))).response("event").on(complete(post("http://another_site", "content")));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1874,11 +1917,13 @@ Synchronized request is used by default, which means response won't be returned 
 If it is not your expected behavior, you can changed with async API which will fire event asynchronously.
 
 * Java
+
 ```java
 server.request(by(uri("/event"))).response("event").on(complete(async(post("http://another_site", "content"))));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -1902,11 +1947,13 @@ server.request(by(uri("/event"))).response("event").on(complete(async(post("http
 You can specify latency for this asynchronous request as well to wait a while.
 
 * Java
+
 ```java
 server.request(by(uri("/event"))).response("event").on(complete(async(post("http://another_site", "content"), latency(1000))));
 ```
 
 * JSON
+
 ```json
 {
     "request": {
@@ -2006,6 +2053,7 @@ final HttpServer server = httpServer(log());
 The Moco server will log all your requests and responses in your console.
 
 It you want to keep log, you can use log interface as following:
+
 ```java
 final HttpServer server = httpServer(log("path/to/log.log"));
 ```
@@ -2013,6 +2061,7 @@ final HttpServer server = httpServer(log("path/to/log.log"));
 **@Since 0.10.1**
 
 Log content may contain some non UTF-8 character, charset could be specified in log API:
+
 ```
 final HttpServer server = httpServer(log("path/to/log.log", Charset.forName("GBK")));
 ```
