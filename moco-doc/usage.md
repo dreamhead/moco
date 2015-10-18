@@ -245,6 +245,7 @@ If you are using Mac or Linux, you may try the following approach:
 * Set it to be executable. (chmod 755 ~/bin/moco)
 
 Now, you can try
+
 ```shell
 moco http -p 12306 -c foo.json
 ```
