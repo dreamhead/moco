@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -30,77 +31,134 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting() throws IOException {
-        InputStream stream = getResourceAsStream("settings/settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        assertThat(helper.get(remoteUrl("/foo")), is("foo"));
-        assertThat(helper.get(remoteUrl("/bar")), is("bar"));
+    	InputStream stream = null;
+    	try {
+	        stream = getResourceAsStream("settings/settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        assertThat(helper.get(remoteUrl("/foo")), is("foo"));
+	        assertThat(helper.get(remoteUrl("/bar")), is("bar"));
+    	} finally {
+    		if(stream != null) {
+    			stream.close();
+    		}
+    	}
     }
 
     @Test
     public void should_run_with_setting_with_context() throws IOException {
-        InputStream stream = getResourceAsStream("settings/context-settingss.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
-        assertThat(helper.get(remoteUrl("/bar/bar")), is("bar"));
+    	InputStream stream = null;
+    	try {
+    		stream = getResourceAsStream("settings/context-settingss.json");
+    		runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
+	        assertThat(helper.get(remoteUrl("/bar/bar")), is("bar"));
+	    } finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}
     }
 
     @Test
     public void should_run_with_setting_with_file_root() throws IOException {
-        InputStream stream = getResourceAsStream("settings/fileroot-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        assertThat(helper.get(remoteUrl("/fileroot/fileroot")), is("foo.response"));
+    	InputStream stream = null;
+    	try {
+    		stream = getResourceAsStream("settings/fileroot-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        assertThat(helper.get(remoteUrl("/fileroot/fileroot")), is("foo.response"));
+    	} finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}   
     }
 
     @Test
     public void should_run_with_env() throws IOException {
-        InputStream stream = getResourceAsStream("settings/env-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306, "foo"));
-        runner.run();
+    	InputStream stream = null;
+    	try {
+	    	stream = getResourceAsStream("settings/env-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306, "foo"));
+	        runner.run();
+	
+	        assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
+    	} finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}   
 
-        assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_not_run_without_env() throws IOException {
-        InputStream stream = getResourceAsStream("settings/env-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306, "bar"));
-        runner.run();
-
-        helper.get(remoteUrl("/foo/foo"));
+    	InputStream stream = null;
+    	try {
+	    	stream = getResourceAsStream("settings/env-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306, "bar"));
+	        runner.run();
+	
+	        helper.get(remoteUrl("/foo/foo"));
+    	} finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}   
     }
 
     @Test
     public void should_run_with_global_response_settings() throws IOException {
-        InputStream stream = getResourceAsStream("settings/response-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        Header header = Request.Get(remoteUrl("/foo")).execute().returnResponse().getFirstHeader("foo");
-        assertThat(header.getValue(), is("bar"));
+    	InputStream stream = null;
+    	try {
+    		stream = getResourceAsStream("settings/response-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        Header header = Request.Get(remoteUrl("/foo")).execute().returnResponse().getFirstHeader("foo");
+	        assertThat(header.getValue(), is("bar"));
+	    } finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}
     }
 
     @Test
     public void should_run_with_global_request_settings() throws IOException {
-        InputStream stream = getResourceAsStream("settings/request-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar")), is("foo"));
+    	InputStream stream = null;
+    	try {
+    		stream = getResourceAsStream("settings/request-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar")), is("foo"));
+    	} finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_global_request_settings() throws IOException {
-        InputStream stream = getResourceAsStream("settings/request-settings.json");
-        runner = new SettingRunner(stream, createStartArgs(12306));
-        runner.run();
-
-        helper.get(remoteUrl("/foo"));
+    	InputStream stream = null;
+    	try {
+	    	stream = getResourceAsStream("settings/request-settings.json");
+	        runner = new SettingRunner(stream, createStartArgs(12306));
+	        runner.run();
+	
+	        helper.get(remoteUrl("/foo"));
+	    } finally {
+			if(stream != null) {
+				stream.close();
+			}
+		}
     }
 
     private StartArgs createStartArgs(int port, String env) {
