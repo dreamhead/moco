@@ -15,6 +15,7 @@ First of all, a JSON configuration file needs to be provided to start Moco.
   }
 ]
 ```
+(foo.json)
 
 **Table of Contents**
 
@@ -53,10 +54,17 @@ java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
 
 ## Port
 
-If you don't need any specified port, you run run Moco without port. An available port will picked up by Moco and you can see the port in console.
+If you don't need any specified port, you run run Moco without port.
 
 ```shell
 java -jar moco-runner-<version>-standalone.jar http -c foo.json
+```
+
+An available port will picked up by Moco and you can see the port in console.
+
+```shell
+20 Oct 2015 22:10:18 [main] INFO  Server is started at 58593
+20 Oct 2015 22:10:18 [main] INFO  Shutdown port is 58594
 ```
 
 ## Version
