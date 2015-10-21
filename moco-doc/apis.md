@@ -70,6 +70,7 @@ That means if we get the expected request and then return our response. Now, you
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
+
 ```java
 server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(with(text("foo")), header("Content-Type", "text/html"));
 ```

@@ -7,6 +7,7 @@ That means if we get the expected request and then return our response. Now, you
 
 **Table of Contents**
 
+* [Composite Java API Design](#composite-java-api-design)
 * [Description as comment](#description-as-comment)
 * [Request](#request)
   * [Content](#content)
@@ -32,6 +33,13 @@ That means if we get the expected request and then return our response. Now, you
   * [Content](#content-2)
   * [Custom Variable](#custom-variable)
   * [File Name Template](#file-name-template)
+  
+## Composite Java API Design
+Moco Java API is designed in functional fashion which means you can composite any request or response easily.
+
+```java
+server.request(and(by(uri("/target")), by(version(VERSION_1_0)))).response(with(text("foo")), header("Content-Type", "text/html"));
+```
 
 ## Description as comment
 **@Since 0.7**
