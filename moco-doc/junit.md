@@ -35,7 +35,7 @@ public class MocoJunitPojoHttpRunnerTest {
 
 ### JSON HTTP Server
 
-**jsonHttpRunner** can reference a JSON file as HTTP server.
+**jsonHttpRunner** can reference a JSON file as a HTTP server.
 
 ```java
 public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
@@ -50,7 +50,7 @@ public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
 
 ### POJO Socket Server
 
-**socketRunner** can reference a HttpServer object.
+**socketRunner** can reference a SocketServer object.
 
 ```java
 public class MocoJunitPojoSocketRunnerTest {
@@ -70,7 +70,7 @@ public class MocoJunitPojoSocketRunnerTest {
 
 ### JSON Socket Server
 
-**jsonHttpRunner** can reference a JSON file as HTTP server.
+**jsonHttpRunner** can reference a JSON file as a Socket server.
 
 ```java
 public class MocoJunitJsonSocketRunnerTest {
