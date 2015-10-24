@@ -36,12 +36,7 @@ public class MocoRequestAction implements MocoEventAction {
     public void execute() {
         CloseableHttpClient client = HttpClients.createDefault();
         try {
-            HttpRequestBase request = createRequest(url, method);
-            if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-                ((HttpEntityEnclosingRequest) request).setEntity(asEntity());
-            }
-
-            client.execute(request);
+            doExecute(client);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -50,6 +45,15 @@ public class MocoRequestAction implements MocoEventAction {
             } catch (IOException ignored) {
             }
         }
+    }
+
+    private void doExecute(final CloseableHttpClient client) throws IOException {
+        HttpRequestBase request = createRequest(url, method);
+        if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
+            ((HttpEntityEnclosingRequest) request).setEntity(asEntity());
+        }
+
+        client.execute(request);
     }
 
     private HttpEntity asEntity() {
