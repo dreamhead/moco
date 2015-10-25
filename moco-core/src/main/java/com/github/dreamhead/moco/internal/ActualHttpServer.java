@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
@@ -12,6 +13,10 @@ import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
 
+import java.util.Map;
+
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
@@ -105,5 +110,12 @@ public class ActualHttpServer extends HttpConfiguration {
     @Override
     protected HttpSetting newSetting(final RequestMatcher matcher) {
         return new HttpSetting(matcher);
+    }
+
+    @Override
+    public void resource(final String name, final Map<String, ? extends ResponseHandler> getHandlers) {
+        for (Map.Entry<String, ? extends ResponseHandler> entry : getHandlers.entrySet()) {
+            this.get(by(uri("/" + name + "/" + entry.getKey()))).response(entry.getValue());
+        }
     }
 }
