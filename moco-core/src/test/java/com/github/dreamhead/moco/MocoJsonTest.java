@@ -1,17 +1,18 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.json;
+import static com.github.dreamhead.moco.Moco.jsonPath;
+import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -139,9 +140,8 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
                 assertThat(mediaType.type(), is("application"));
                 assertThat(mediaType.subtype(), is("json"));
-                String content = CharStreams.toString(new InputStreamReader(entity.getContent(), Charset.defaultCharset()));
                 ObjectMapper mapper = new ObjectMapper();
-                PlainA responseA = mapper.readValue(content, PlainA.class);
+                PlainA responseA = mapper.readValue(entity.getContent(), PlainA.class);
                 assertThat(responseA.code, is(1));
                 assertThat(responseA.message, is("message"));
             }
