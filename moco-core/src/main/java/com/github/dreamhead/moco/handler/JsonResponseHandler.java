@@ -7,11 +7,17 @@ import com.google.common.net.MediaType;
 
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
-public class JsonResponseHandler extends AbstractContentResponseHandler {
+public final class JsonResponseHandler extends AbstractContentResponseHandler {
     private final MessageContent content;
+    private final Object pojo;
 
     public JsonResponseHandler(final Object pojo) {
+        this.pojo = pojo;
         this.content = MessageContent.content().withContent(toJson(pojo)).build();
+    }
+
+    public Object getPojo() {
+        return pojo;
     }
 
     @Override

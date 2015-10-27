@@ -1,11 +1,13 @@
 package com.github.dreamhead.moco;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -60,6 +62,18 @@ public class MocoRestTest extends AbstractMocoHttpTest {
                 "1", Moco.toJson(resource1),
                 "2", Moco.toJson(resource2)
         ));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets"));
+                assertThat(response.getStatusLine().getStatusCode(), is(200));
+                HttpEntity entity = response.getEntity();
+                List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
+                });
+                assertThat(plains.size(), is(2));
+            }
+        });
     }
 
     private Plain getResource(String uri) throws IOException {
