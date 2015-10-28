@@ -19,13 +19,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 
-import java.util.Collection;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.util.URLs.join;
+import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 
 public class ActualHttpServer extends HttpConfiguration {
@@ -122,24 +124,25 @@ public class ActualHttpServer extends HttpConfiguration {
 
     @Override
     public void resource(final String name, final Map<String, ? extends ResponseHandler> getHandlers) {
+        checkNotNull(name, "Resource name should not be null");
+        checkNotNull(getHandlers, "Get handlers should not be null");
+
         for (Map.Entry<String, ? extends ResponseHandler> entry : getHandlers.entrySet()) {
-            this.get(by(uri("/" + name + "/" + entry.getKey()))).response(entry.getValue());
+            this.get(by(uri(join(resourceRoot(name), entry.getKey())))).response(entry.getValue());
         }
 
-        Collection<? extends ResponseHandler> values = getHandlers.values();
-        FluentIterable<? extends ResponseHandler> handlers = from(values);
-
+        FluentIterable<? extends ResponseHandler> handlers = from(getHandlers.values());
         if (handlers.allMatch(isJsonHandlers())) {
             ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
-            this.get(by(uri("/" + name))).response(Moco.toJson(objects));
+            this.get(by(uri(resourceRoot(name)))).response(Moco.toJson(objects));
         }
     }
 
     private Function<JsonResponseHandler, Object> toPojo() {
         return new Function<JsonResponseHandler, Object>() {
             @Override
-            public Object apply(final JsonResponseHandler input) {
-                return input.getPojo();
+            public Object apply(final JsonResponseHandler handler) {
+                return handler.getPojo();
             }
         };
     }
@@ -147,8 +150,8 @@ public class ActualHttpServer extends HttpConfiguration {
     private Function<ResponseHandler, JsonResponseHandler> toJsonHandler() {
         return new Function<ResponseHandler, JsonResponseHandler>() {
             @Override
-            public JsonResponseHandler apply(final ResponseHandler input) {
-                return JsonResponseHandler.class.cast(input);
+            public JsonResponseHandler apply(final ResponseHandler handler) {
+                return JsonResponseHandler.class.cast(handler);
             }
         };
     }
