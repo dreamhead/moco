@@ -18,10 +18,12 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
@@ -136,6 +138,8 @@ public class ActualHttpServer extends HttpConfiguration {
             ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
             this.get(by(uri(resourceRoot(name)))).response(Moco.toJson(objects));
         }
+
+        this.get(InternalApis.context(resourceRoot(name))).response(status(HttpResponseStatus.NOT_FOUND.code()));
     }
 
     private Function<JsonResponseHandler, Object> toPojo() {

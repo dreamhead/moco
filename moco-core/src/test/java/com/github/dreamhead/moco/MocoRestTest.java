@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.junit.Test;
@@ -72,6 +73,19 @@ public class MocoRestTest extends AbstractMocoHttpTest {
                 List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
                 });
                 assertThat(plains.size(), is(2));
+            }
+        });
+    }
+
+    @Test
+    public void should_reply_404_for_unknown_resource() throws Exception {
+        server.resource("targets", ImmutableMap.<String, ResponseHandler>of());
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets/1"));
+                assertThat(response.getStatusLine().getStatusCode(), is(404));
             }
         });
     }
