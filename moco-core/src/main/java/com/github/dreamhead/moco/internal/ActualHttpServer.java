@@ -2,35 +2,18 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
-import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
-import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
-import java.util.Map;
-
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.status;
-import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.util.URLs.join;
-import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.FluentIterable.from;
 
 public class ActualHttpServer extends HttpConfiguration {
     private final Optional<HttpsCertificate> certificate;
@@ -122,50 +105,5 @@ public class ActualHttpServer extends HttpConfiguration {
     @Override
     protected HttpSetting newSetting(final RequestMatcher matcher) {
         return new HttpSetting(matcher);
-    }
-
-    @Override
-    public void resource(final String name, final Map<String, ? extends ResponseHandler> getHandlers) {
-        checkNotNull(name, "Resource name should not be null");
-        checkNotNull(getHandlers, "Get handlers should not be null");
-
-        for (Map.Entry<String, ? extends ResponseHandler> entry : getHandlers.entrySet()) {
-            this.get(by(uri(join(resourceRoot(name), entry.getKey())))).response(entry.getValue());
-        }
-
-        FluentIterable<? extends ResponseHandler> handlers = from(getHandlers.values());
-        if (handlers.allMatch(isJsonHandlers())) {
-            ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
-            this.get(by(uri(resourceRoot(name)))).response(Moco.toJson(objects));
-        }
-
-        this.get(InternalApis.context(resourceRoot(name))).response(status(HttpResponseStatus.NOT_FOUND.code()));
-    }
-
-    private Function<JsonResponseHandler, Object> toPojo() {
-        return new Function<JsonResponseHandler, Object>() {
-            @Override
-            public Object apply(final JsonResponseHandler handler) {
-                return handler.getPojo();
-            }
-        };
-    }
-
-    private Function<ResponseHandler, JsonResponseHandler> toJsonHandler() {
-        return new Function<ResponseHandler, JsonResponseHandler>() {
-            @Override
-            public JsonResponseHandler apply(final ResponseHandler handler) {
-                return JsonResponseHandler.class.cast(handler);
-            }
-        };
-    }
-
-    private Predicate<ResponseHandler> isJsonHandlers() {
-        return new Predicate<ResponseHandler>() {
-            @Override
-            public boolean apply(final ResponseHandler handler) {
-                return handler instanceof JsonResponseHandler;
-            }
-        };
     }
 }
