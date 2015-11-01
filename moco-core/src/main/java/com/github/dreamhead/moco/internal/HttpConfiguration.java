@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
@@ -15,6 +14,7 @@ import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.rest.RestSetting;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
 import com.google.common.base.Function;
@@ -26,7 +26,6 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.File;
-import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -37,7 +36,6 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
@@ -103,15 +101,15 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
     }
 
     @Override
-    public void resource(final String name, final Map<String, ? extends ResponseHandler> getHandlers) {
+    public void resource(final String name, final RestSetting... settings) {
         checkNotNull(name, "Resource name should not be null");
-        checkNotNull(getHandlers, "Get handlers should not be null");
+        checkNotNull(settings, "Rest settings should not be null");
 
-        for (Map.Entry<String, ? extends ResponseHandler> entry : getHandlers.entrySet()) {
-            this.get(by(uri(join(resourceRoot(name), entry.getKey())))).response(entry.getValue());
+        for (RestSetting setting : settings) {
+            this.get(by(uri(join(resourceRoot(name), setting.getId())))).response(setting.getHandler());
         }
 
-        FluentIterable<? extends ResponseHandler> handlers = from(getHandlers.values());
+        FluentIterable<? extends RestSetting> handlers = FluentIterable.from(copyOf(settings));
         if (handlers.allMatch(isJsonHandlers())) {
             ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
             this.get(by(uri(resourceRoot(name)))).response(Moco.toJson(objects));
@@ -129,20 +127,20 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
         };
     }
 
-    private Function<ResponseHandler, JsonResponseHandler> toJsonHandler() {
-        return new Function<ResponseHandler, JsonResponseHandler>() {
+    private Function<RestSetting, JsonResponseHandler> toJsonHandler() {
+        return new Function<RestSetting, JsonResponseHandler>() {
             @Override
-            public JsonResponseHandler apply(final ResponseHandler handler) {
-                return JsonResponseHandler.class.cast(handler);
+            public JsonResponseHandler apply(final RestSetting setting) {
+                return JsonResponseHandler.class.cast(setting.getHandler());
             }
         };
     }
 
-    private Predicate<ResponseHandler> isJsonHandlers() {
-        return new Predicate<ResponseHandler>() {
+    private Predicate<RestSetting> isJsonHandlers() {
+        return new Predicate<RestSetting>() {
             @Override
-            public boolean apply(final ResponseHandler handler) {
-                return handler instanceof JsonResponseHandler;
+            public boolean apply(final RestSetting setting) {
+                return setting.getHandler() instanceof JsonResponseHandler;
             }
         };
     }

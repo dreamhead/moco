@@ -2,7 +2,6 @@ package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
-import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -30,10 +28,10 @@ public class MocoRestTest extends AbstractMocoHttpTest {
         resource2.code = 2;
         resource2.message = "world";
 
-        server.resource("targets", of(
-                "1", Moco.toJson(resource1),
-                "2", Moco.toJson(resource2)
-        ));
+        server.resource("targets",
+                MocoRest.get("1", Moco.toJson(resource1)),
+                MocoRest.get("2", Moco.toJson(resource2))
+        );
 
         running(server, new Runnable() {
             @Override
@@ -59,10 +57,10 @@ public class MocoRestTest extends AbstractMocoHttpTest {
         resource2.code = 2;
         resource2.message = "world";
 
-        server.resource("targets", of(
-                "1", Moco.toJson(resource1),
-                "2", Moco.toJson(resource2)
-        ));
+        server.resource("targets",
+                MocoRest.get("1", Moco.toJson(resource1)),
+                MocoRest.get("2", Moco.toJson(resource2))
+        );
 
         running(server, new Runnable() {
             @Override
@@ -79,7 +77,7 @@ public class MocoRestTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_reply_404_for_unknown_resource() throws Exception {
-        server.resource("targets", ImmutableMap.<String, ResponseHandler>of());
+        server.resource("targets");
 
         running(server, new Runnable() {
             @Override

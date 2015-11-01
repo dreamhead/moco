@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
+import com.github.dreamhead.moco.rest.RestSetting;
 
 import java.util.Map;
 
@@ -22,5 +23,5 @@ public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSett
 
     HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover);
 
-    void resource(final String name, final Map<String, ? extends ResponseHandler> getHandlers);
+    void resource(final String name, final RestSetting... settings);
 }
