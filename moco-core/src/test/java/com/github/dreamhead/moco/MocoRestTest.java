@@ -9,14 +9,20 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoRestTest extends AbstractMocoHttpTest {
+public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    @Override
+    protected RestServer createServer(int port) {
+        return restServer(port);
+    }
 
     @Test
     public void should_get_resource_by_id() throws Exception {

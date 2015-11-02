@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountHandler;
@@ -14,27 +13,17 @@ import com.github.dreamhead.moco.mount.MountMatcher;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.resource.Resource;
-import com.github.dreamhead.moco.rest.RestSetting;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.method;
-import static com.github.dreamhead.moco.Moco.status;
-import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.URLs.join;
-import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
@@ -98,51 +87,6 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
     @Override
     public HttpResponseSetting redirectTo(final Resource url) {
         return delegate.redirectTo(this, url);
-    }
-
-    @Override
-    public void resource(final String name, final RestSetting... settings) {
-        checkNotNull(name, "Resource name should not be null");
-        checkNotNull(settings, "Rest settings should not be null");
-
-        for (RestSetting setting : settings) {
-            this.get(by(uri(join(resourceRoot(name), setting.getId())))).response(setting.getHandler());
-        }
-
-        FluentIterable<? extends RestSetting> handlers = FluentIterable.from(copyOf(settings));
-        if (handlers.allMatch(isJsonHandlers())) {
-            ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
-            this.get(by(uri(resourceRoot(name)))).response(Moco.toJson(objects));
-        }
-
-        this.get(InternalApis.context(resourceRoot(name))).response(status(HttpResponseStatus.NOT_FOUND.code()));
-    }
-
-    private Function<JsonResponseHandler, Object> toPojo() {
-        return new Function<JsonResponseHandler, Object>() {
-            @Override
-            public Object apply(final JsonResponseHandler handler) {
-                return handler.getPojo();
-            }
-        };
-    }
-
-    private Function<RestSetting, JsonResponseHandler> toJsonHandler() {
-        return new Function<RestSetting, JsonResponseHandler>() {
-            @Override
-            public JsonResponseHandler apply(final RestSetting setting) {
-                return JsonResponseHandler.class.cast(setting.getHandler());
-            }
-        };
-    }
-
-    private Predicate<RestSetting> isJsonHandlers() {
-        return new Predicate<RestSetting>() {
-            @Override
-            public boolean apply(final RestSetting setting) {
-                return setting.getHandler() instanceof JsonResponseHandler;
-            }
-        };
     }
 
     @Override

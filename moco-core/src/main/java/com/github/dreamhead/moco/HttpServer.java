@@ -22,6 +22,4 @@ public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSett
     HttpResponseSetting proxy(final ProxyConfig config);
 
     HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover);
-
-    void resource(final String name, final RestSetting... settings);
 }
