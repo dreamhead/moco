@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.rest;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -31,19 +32,17 @@ public class RestHandler extends AbstractHttpResponseHandler {
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
-            writeGetResponse(httpRequest, httpResponse);
+            getGetHandler(httpRequest).writeToResponse(new SessionContext(httpRequest, httpResponse));
             return;
         }
 
         throw new UnsupportedOperationException("Unsupported REST request");
-
     }
 
-    private void writeGetResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
         for (RestSetting setting : settings) {
             if (by(uri(join(resourceRoot(name), setting.getId()))).match(httpRequest)) {
-                setting.getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
+                return setting.getHandler();
             }
         }
 
@@ -51,12 +50,11 @@ public class RestHandler extends AbstractHttpResponseHandler {
             FluentIterable<? extends RestSetting> handlers = FluentIterable.from(copyOf(settings));
             if (handlers.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
-                Moco.toJson(objects).writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
+                return Moco.toJson(objects);
             }
         }
 
-        status(HttpResponseStatus.NOT_FOUND.code()).writeToResponse(new SessionContext(httpRequest, httpResponse));
+        return status(HttpResponseStatus.NOT_FOUND.code());
     }
 
     private Function<JsonResponseHandler, Object> toPojo() {
