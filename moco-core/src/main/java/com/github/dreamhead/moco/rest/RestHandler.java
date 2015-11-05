@@ -18,15 +18,16 @@ import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
-import static com.google.common.collect.ImmutableList.copyOf;
 
 public class RestHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final RestSetting[] settings;
+    private final ResponseHandler notFoundHandler;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
         this.settings = settings;
+        this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
     }
 
     @Override
@@ -40,6 +41,8 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
+        FluentIterable<? extends RestSetting> restSettings = FluentIterable.of(settings);
+
         for (RestSetting setting : settings) {
             if (by(uri(join(resourceRoot(name), setting.getId()))).match(httpRequest)) {
                 return setting.getHandler();
@@ -47,14 +50,13 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if (by(uri(resourceRoot(name))).match(httpRequest)) {
-            FluentIterable<? extends RestSetting> handlers = FluentIterable.from(copyOf(settings));
-            if (handlers.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = handlers.transform(toJsonHandler()).transform(toPojo()).toList();
+            if (restSettings.allMatch(isJsonHandlers())) {
+                ImmutableList<Object> objects = restSettings.transform(toJsonHandler()).transform(toPojo()).toList();
                 return Moco.toJson(objects);
             }
         }
 
-        return status(HttpResponseStatus.NOT_FOUND.code());
+        return notFoundHandler;
     }
 
     private Function<JsonResponseHandler, Object> toPojo() {
