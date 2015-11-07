@@ -8,8 +8,8 @@ import com.google.common.base.Optional;
 import static com.google.common.base.Optional.of;
 
 public final class MocoRest {
-    public static RestServer restServer(final int port) {
-        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(), new QuietMonitor());
+    public static RestServer restServer(final int port, final MocoConfig... configs) {
+        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(), new QuietMonitor(), configs);
     }
 
     public static RestSetting get(final String id, final ResponseHandler handler) {

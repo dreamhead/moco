@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.rest;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
@@ -38,6 +39,15 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         throw new UnsupportedOperationException("Unsupported REST request");
+    }
+
+    @Override
+    public ResponseHandler apply(final MocoConfig config) {
+        if (config.isFor(MocoConfig.URI_ID)) {
+            return new RestHandler((String) config.apply(name), settings);
+        }
+
+        return super.apply(config);
     }
 
     private ResponseHandler getGetHandler(final HttpRequest httpRequest) {

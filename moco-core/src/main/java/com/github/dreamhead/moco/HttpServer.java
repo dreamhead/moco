@@ -4,9 +4,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
-import com.github.dreamhead.moco.rest.RestSetting;
-
-import java.util.Map;
 
 public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSetting> {
     HttpResponseSetting get(final RequestMatcher matcher);
