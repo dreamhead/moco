@@ -32,16 +32,11 @@ public class HeaderResponseHandler extends AbstractHttpResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
-        ResponseHandler handler = super.apply(config);
-        if (handler != this) {
-            return handler;
-        }
-
         Resource appliedResource = this.resource.apply(config);
         if (appliedResource != this.resource) {
             return new HeaderResponseHandler(name, appliedResource);
         }
 
-        return this;
+        return super.apply(config);
     }
 }

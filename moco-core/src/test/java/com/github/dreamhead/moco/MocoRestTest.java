@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -96,7 +98,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Test
     public void should_request_server_by_moco_config() throws Exception {
-        RestServer server = restServer(12306, Moco.context("/rest"));
+        RestServer server = restServer(12306, context("/rest"), Moco.response(header("foo", "bar")));
 
         Plain resource1 = new Plain();
         resource1.code = 1;
@@ -121,6 +123,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 Plain response2 = getResource("/rest/targets/2");
                 assertThat(response2.code, is(2));
                 assertThat(response2.message, is("world"));
+
+                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/rest/targets/1"));
+                assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
             }
         });
     }
