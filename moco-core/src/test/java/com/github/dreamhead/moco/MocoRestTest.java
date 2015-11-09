@@ -2,22 +2,34 @@ package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.context;
 import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -128,6 +140,38 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
             }
         });
+    }
+
+    @Test
+    public void should_log_request_and_response() throws Exception {
+        RestServer server = restServer(port(), log());
+
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "0XCAFE";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "0XBABE";
+
+        server.resource("targets",
+                MocoRest.get("1", Moco.toJson(resource1)),
+                MocoRest.get("2", Moco.toJson(resource2))
+        );
+
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                helper.get(remoteUrl("/targets"));
+            }
+        });
+
+        String actual = Files.toString(file, Charset.defaultCharset());
+        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("0XBABE"));
     }
 
     private Plain getResource(String uri) throws IOException {
