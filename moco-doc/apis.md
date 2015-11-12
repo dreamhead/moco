@@ -300,7 +300,7 @@ If you do need other method, feel free to specify method directly:
 * Java API
 
 ```java
-server.request(method("HEAD")).response("bar");
+server.request(by(method("HEAD"))).response("bar");
 ```
 
 * JSON
