@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -52,9 +53,11 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
-        FluentIterable<? extends RestSetting> restSettings = FluentIterable.of(settings);
+        FluentIterable<? extends GetRestSetting> restSettings = FluentIterable.of(settings)
+                .filter(isGetHandler())
+                .transform(toGetHandler());
 
-        for (RestSetting setting : settings) {
+        for (GetRestSetting setting : restSettings) {
             if (by(uri(join(resourceRoot(name), setting.getId()))).match(httpRequest)) {
                 return setting.getHandler();
             }
@@ -68,6 +71,24 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         return notFoundHandler;
+    }
+
+    private Function<RestSetting, ? extends GetRestSetting> toGetHandler() {
+        return new Function<RestSetting, GetRestSetting>() {
+            @Override
+            public GetRestSetting apply(final RestSetting setting) {
+                return GetRestSetting.class.cast(setting);
+            }
+        };
+    }
+
+    private Predicate<RestSetting> isGetHandler() {
+        return new Predicate<RestSetting>() {
+            @Override
+            public boolean apply(final RestSetting setting) {
+                return setting instanceof GetRestSetting;
+            }
+        };
     }
 
     private Function<JsonResponseHandler, Object> toPojo() {

@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RestServer;
+import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.google.common.base.Optional;
