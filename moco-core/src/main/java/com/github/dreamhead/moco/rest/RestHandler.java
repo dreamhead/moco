@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
@@ -57,10 +58,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
                 .filter(isGetHandler())
                 .transform(toGetHandler());
 
-        for (GetRestSetting setting : restSettings) {
-            if (by(uri(join(resourceRoot(name), setting.getId()))).match(httpRequest)) {
-                return setting.getHandler();
-            }
+        Optional<? extends GetRestSetting> matchedSetting = restSettings.firstMatch(matchSingle(httpRequest));
+        if (matchedSetting.isPresent()) {
+            return matchedSetting.get().getHandler();
         }
 
         if (by(uri(resourceRoot(name))).match(httpRequest)) {
@@ -71,6 +71,15 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         return notFoundHandler;
+    }
+
+    private Predicate<GetRestSetting> matchSingle(final HttpRequest request) {
+        return new Predicate<GetRestSetting>() {
+            @Override
+            public boolean apply(final GetRestSetting input) {
+                return by(uri(join(resourceRoot(name), input.getId()))).match(request);
+            }
+        };
     }
 
     private Function<RestSetting, ? extends GetRestSetting> toGetHandler() {
