@@ -58,6 +58,15 @@ public class MocoTestHelper {
         return get(request);
     }
 
+    public HttpResponse getResponseWithHeader(String url, ImmutableMultimap<String, String> headers) throws IOException {
+        Request request = Request.Get(url);
+        for (Map.Entry<String, String> entry : headers.entries()) {
+            request = request.addHeader(entry.getKey(), entry.getValue());
+        }
+
+        return EXECUTOR.execute(request).returnResponse();
+    }
+
     public String getWithVersion(String url, HttpVersion version) throws IOException {
         return get(Request.Get(url).version(version));
     }

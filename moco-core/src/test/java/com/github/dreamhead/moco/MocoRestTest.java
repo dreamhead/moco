@@ -3,8 +3,10 @@ package com.github.dreamhead.moco;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Files;
+import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -17,12 +19,15 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.log;
+import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -49,8 +54,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", Moco.toJson(resource1)),
-                MocoRest.get("2", Moco.toJson(resource2))
+                MocoRest.get("1", toJson(resource1)),
+                MocoRest.get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -78,8 +83,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", Moco.toJson(resource1)),
-                MocoRest.get("2", Moco.toJson(resource2))
+                MocoRest.get("1", toJson(resource1)),
+                MocoRest.get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -121,8 +126,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", Moco.toJson(resource1)),
-                MocoRest.get("2", Moco.toJson(resource2))
+                MocoRest.get("1", toJson(resource1)),
+                MocoRest.get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -155,8 +160,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "0XBABE";
 
         server.resource("targets",
-                MocoRest.get("1", Moco.toJson(resource1)),
-                MocoRest.get("2", Moco.toJson(resource2))
+                MocoRest.get("1", toJson(resource1)),
+                MocoRest.get("2", toJson(resource2))
         );
 
         File file = folder.newFile();
@@ -174,8 +179,49 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         assertThat(actual, containsString("0XBABE"));
     }
 
+    @Test
+    public void should_get_resource_by_id_with_request_config() throws Exception {
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        server.resource("targets",
+                MocoRest.get("1", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource1)),
+                MocoRest.get("2", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource2))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+
+                org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
+                        of(HttpHeaders.CONTENT_TYPE, "application/json"));
+                Plain response1 = asPlain(response);
+                assertThat(response1.code, is(1));
+                assertThat(response1.message, is("hello"));
+
+                org.apache.http.HttpResponse otherResponse = helper.getResponseWithHeader(remoteUrl("/targets/2"),
+                        of(HttpHeaders.CONTENT_TYPE, "application/json"));
+                Plain response2 = asPlain(otherResponse);
+                assertThat(response2.code, is(2));
+                assertThat(response2.message, is("world"));
+
+                org.apache.http.HttpResponse notFoundResponse = helper.getResponse(remoteUrl("/targets/1"));
+                assertThat(notFoundResponse.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
+        return asPlain(response);
+    }
+
+    private Plain asPlain(HttpResponse response) throws IOException {
         HttpEntity entity = response.getEntity();
         MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
         assertThat(mediaType.type(), is("application"));

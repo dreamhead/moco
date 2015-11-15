@@ -19,7 +19,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 
 public class RestHandler extends AbstractHttpResponseHandler {
@@ -77,7 +76,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return new Predicate<GetRestSetting>() {
             @Override
             public boolean apply(final GetRestSetting input) {
-                return by(uri(join(resourceRoot(name), input.getId()))).match(request);
+                return input.getRequestMatcher(name).match(request);
             }
         };
     }
