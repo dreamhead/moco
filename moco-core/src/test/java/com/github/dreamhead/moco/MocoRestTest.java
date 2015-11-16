@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -22,6 +23,7 @@ import static com.github.dreamhead.moco.Moco.context;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.log;
+import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
@@ -215,6 +217,36 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             }
         });
     }
+
+    @Test
+    public void should_query_with_condition() throws Exception {
+        RestServer server = restServer(12306, log());
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        server.resource("targets",
+                MocoRest.get(eq(query("foo"), "bar"), toJson(ImmutableList.of(resource1, resource2)))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+
+                List<Plain> plains = mapper.readValue(helper.get(remoteUrl("/targets?foo=bar")), new TypeReference<List<Plain>>() {
+                });
+                assertThat(plains.size(), is(2));
+
+                HttpResponse response = helper.getResponse(remoteUrl("/targets"));
+                assertThat(response.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
 
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));

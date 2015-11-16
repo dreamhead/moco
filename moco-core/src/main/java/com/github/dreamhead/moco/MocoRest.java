@@ -2,7 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
-import com.github.dreamhead.moco.rest.GetRestSetting;
+import com.github.dreamhead.moco.rest.GetAllRestSetting;
+import com.github.dreamhead.moco.rest.GetSingleRestSetting;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
@@ -25,14 +26,19 @@ public final class MocoRest {
     }
 
     public static RestSetting get(final String id, final ResponseHandler handler) {
-        return new GetRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+        return new GetSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 
     public static RestSetting get(final String id, final RequestMatcher matcher, final ResponseHandler handler) {
-        return new GetRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+        return new GetSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.of(matcher),
+                checkNotNull(handler, "Get response handler should not be null"));
+    }
+
+    public static RestSetting get(final RequestMatcher matcher, final ResponseHandler handler) {
+        return new GetAllRestSetting(matcher,
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 

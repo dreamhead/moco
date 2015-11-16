@@ -53,17 +53,26 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
-        FluentIterable<? extends GetRestSetting> restSettings = FluentIterable.of(settings)
-                .filter(isGetHandler())
-                .transform(toGetHandler());
+        FluentIterable<? extends GetSingleRestSetting> restSettings = FluentIterable.of(settings)
+                .filter(GetSingleRestSetting.class)
+                .transform(toInstance(GetSingleRestSetting.class));
 
-        Optional<? extends GetRestSetting> matchedSetting = restSettings.firstMatch(matchSingle(httpRequest));
+        Optional<? extends GetSingleRestSetting> matchedSetting = restSettings.firstMatch(matchSingle(httpRequest));
         if (matchedSetting.isPresent()) {
             return matchedSetting.get().getHandler();
         }
 
         if (by(uri(resourceRoot(name))).match(httpRequest)) {
-            if (restSettings.allMatch(isJsonHandlers())) {
+            FluentIterable<GetAllRestSetting> allSettings = FluentIterable.of(settings)
+                    .filter(GetAllRestSetting.class)
+                    .transform(toInstance(GetAllRestSetting.class));
+
+            Optional<GetAllRestSetting> allRestSetting = allSettings.firstMatch(matchAll(httpRequest));
+            if (allRestSetting.isPresent()) {
+                return allRestSetting.get().getHandler();
+            }
+
+            if (!restSettings.isEmpty() && restSettings.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = restSettings.transform(toJsonHandler()).transform(toPojo()).toList();
                 return Moco.toJson(objects);
             }
@@ -72,29 +81,29 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return notFoundHandler;
     }
 
-    private Predicate<GetRestSetting> matchSingle(final HttpRequest request) {
-        return new Predicate<GetRestSetting>() {
+    private Predicate<? super GetAllRestSetting> matchAll(final HttpRequest request) {
+        return new Predicate<GetAllRestSetting>() {
             @Override
-            public boolean apply(final GetRestSetting input) {
-                return input.getRequestMatcher(name).match(request);
+            public boolean apply(final GetAllRestSetting input) {
+                return input.getMatcher().match(request);
             }
         };
     }
 
-    private Function<RestSetting, ? extends GetRestSetting> toGetHandler() {
-        return new Function<RestSetting, GetRestSetting>() {
+    private <T> Function<? super T, T> toInstance(final Class<T> clazz) {
+        return new Function<T, T>() {
             @Override
-            public GetRestSetting apply(final RestSetting setting) {
-                return GetRestSetting.class.cast(setting);
+            public T apply(final T input) {
+                return clazz.cast(input);
             }
         };
     }
 
-    private Predicate<RestSetting> isGetHandler() {
-        return new Predicate<RestSetting>() {
+    private Predicate<GetSingleRestSetting> matchSingle(final HttpRequest request) {
+        return new Predicate<GetSingleRestSetting>() {
             @Override
-            public boolean apply(final RestSetting setting) {
-                return setting instanceof GetRestSetting;
+            public boolean apply(final GetSingleRestSetting setting) {
+                return setting.getRequestMatcher(name).match(request);
             }
         };
     }

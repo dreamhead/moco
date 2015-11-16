@@ -11,12 +11,12 @@ import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 
-public class GetRestSetting extends RestSetting {
+public class GetSingleRestSetting extends RestSetting {
     private final String id;
     private final Optional<RequestMatcher> matcher;
     private final ResponseHandler handler;
 
-    public GetRestSetting(final String id, final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
+    public GetSingleRestSetting(final String id, final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
         super(handler);
         this.id = id;
         this.matcher = matcher;

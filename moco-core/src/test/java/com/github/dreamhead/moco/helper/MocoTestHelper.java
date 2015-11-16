@@ -46,24 +46,29 @@ public class MocoTestHelper {
     }
 
     public HttpResponse getResponse(String url) throws IOException {
-        return EXECUTOR.execute(Request.Get(url)).returnResponse();
+        Request request = Request.Get(url);
+        return runRequest(request);
     }
 
     public String getWithHeader(String url, ImmutableMultimap<String, String> headers) throws IOException {
-        Request request = Request.Get(url);
-        for (Map.Entry<String, String> entry : headers.entries()) {
-            request = request.addHeader(entry.getKey(), entry.getValue());
-        }
+        Request request = getRequest(url, headers);
 
         return get(request);
     }
 
-    public HttpResponse getResponseWithHeader(String url, ImmutableMultimap<String, String> headers) throws IOException {
+    private Request getRequest(String url, ImmutableMultimap<String, String> headers) {
         Request request = Request.Get(url);
         for (Map.Entry<String, String> entry : headers.entries()) {
             request = request.addHeader(entry.getKey(), entry.getValue());
         }
+        return request;
+    }
 
+    public HttpResponse getResponseWithHeader(String url, ImmutableMultimap<String, String> headers) throws IOException {
+        return runRequest(getRequest(url, headers));
+    }
+
+    private HttpResponse runRequest(Request request) throws IOException {
         return EXECUTOR.execute(request).returnResponse();
     }
 
@@ -99,7 +104,7 @@ public class MocoTestHelper {
     }
 
     public int getForStatus(String url) throws IOException {
-        return EXECUTOR.execute(Request.Get(url)).returnResponse().getStatusLine().getStatusCode();
+        return runRequest(Request.Get(url)).getStatusLine().getStatusCode();
     }
 
     private static final String PROTOCOL = "TLS";
