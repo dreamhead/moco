@@ -236,7 +236,6 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-
                 List<Plain> plains = mapper.readValue(helper.get(remoteUrl("/targets?foo=bar")), new TypeReference<List<Plain>>() {
                 });
                 assertThat(plains.size(), is(2));
@@ -246,7 +245,6 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             }
         });
     }
-
 
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));

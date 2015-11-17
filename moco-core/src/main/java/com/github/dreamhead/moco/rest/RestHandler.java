@@ -25,11 +25,19 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final RestSetting[] settings;
     private final ResponseHandler notFoundHandler;
+    private final FluentIterable<GetAllRestSetting> getAllSettings;
+    private final FluentIterable<GetSingleRestSetting> getSingleSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
         this.settings = settings;
         this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
+        this.getAllSettings = FluentIterable.of(settings)
+                .filter(GetAllRestSetting.class)
+                .transform(toInstance(GetAllRestSetting.class));
+        this.getSingleSettings = FluentIterable.of(settings)
+                .filter(GetSingleRestSetting.class)
+                .transform(toInstance(GetSingleRestSetting.class));
     }
 
     @Override
@@ -53,27 +61,19 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
-        FluentIterable<? extends GetSingleRestSetting> restSettings = FluentIterable.of(settings)
-                .filter(GetSingleRestSetting.class)
-                .transform(toInstance(GetSingleRestSetting.class));
-
-        Optional<? extends GetSingleRestSetting> matchedSetting = restSettings.firstMatch(matchSingle(httpRequest));
+        Optional<GetSingleRestSetting> matchedSetting = getSingleSettings.firstMatch(matchSingle(httpRequest));
         if (matchedSetting.isPresent()) {
             return matchedSetting.get().getHandler();
         }
 
         if (by(uri(resourceRoot(name))).match(httpRequest)) {
-            FluentIterable<GetAllRestSetting> allSettings = FluentIterable.of(settings)
-                    .filter(GetAllRestSetting.class)
-                    .transform(toInstance(GetAllRestSetting.class));
-
-            Optional<GetAllRestSetting> allRestSetting = allSettings.firstMatch(matchAll(httpRequest));
+            Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(matchAll(httpRequest));
             if (allRestSetting.isPresent()) {
                 return allRestSetting.get().getHandler();
             }
 
-            if (!restSettings.isEmpty() && restSettings.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = restSettings.transform(toJsonHandler()).transform(toPojo()).toList();
+            if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
+                ImmutableList<Object> objects = getSingleSettings.transform(toJsonHandler()).transform(toPojo()).toList();
                 return Moco.toJson(objects);
             }
         }
