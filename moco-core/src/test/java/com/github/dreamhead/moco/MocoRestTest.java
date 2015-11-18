@@ -24,7 +24,10 @@ import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.query;
+import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.MocoRest.get;
+import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -56,8 +59,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", toJson(resource1)),
-                MocoRest.get("2", toJson(resource2))
+                get("1", toJson(resource1)),
+                get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -85,8 +88,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", toJson(resource1)),
-                MocoRest.get("2", toJson(resource2))
+                get("1", toJson(resource1)),
+                get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -128,8 +131,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", toJson(resource1)),
-                MocoRest.get("2", toJson(resource2))
+                get("1", toJson(resource1)),
+                get("2", toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -162,8 +165,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "0XBABE";
 
         server.resource("targets",
-                MocoRest.get("1", toJson(resource1)),
-                MocoRest.get("2", toJson(resource2))
+                get("1", toJson(resource1)),
+                get("2", toJson(resource2))
         );
 
         File file = folder.newFile();
@@ -192,8 +195,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get("1", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource1)),
-                MocoRest.get("2", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource2))
+                get("1", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource1)),
+                get("2", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -220,7 +223,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Test
     public void should_query_with_condition() throws Exception {
-        RestServer server = restServer(12306, log());
+        RestServer server = restServer(12306);
         Plain resource1 = new Plain();
         resource1.code = 1;
         resource1.message = "hello";
@@ -230,7 +233,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                MocoRest.get(eq(query("foo"), "bar"), toJson(ImmutableList.of(resource1, resource2)))
+                get(eq(query("foo"), "bar"), toJson(ImmutableList.of(resource1, resource2)))
         );
 
         running(server, new Runnable() {
@@ -242,6 +245,28 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
                 HttpResponse response = helper.getResponse(remoteUrl("/targets"));
                 assertThat(response.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
+    @Test
+    public void should_post() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                post(status(201), header("Location", "/targets/123"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+                assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
             }
         });
     }

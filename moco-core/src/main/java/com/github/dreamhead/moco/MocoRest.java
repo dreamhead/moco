@@ -1,9 +1,11 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.GetAllRestSetting;
 import com.github.dreamhead.moco.rest.GetSingleRestSetting;
+import com.github.dreamhead.moco.rest.PostRestSetting;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
@@ -41,6 +43,11 @@ public final class MocoRest {
         return new GetAllRestSetting(matcher,
                 checkNotNull(handler, "Get response handler should not be null"));
     }
+
+    public static RestSetting post(final ResponseHandler... handler) {
+        return new PostRestSetting(AndResponseHandler.and(handler));
+    }
+
 
     private MocoRest() {
     }

@@ -27,6 +27,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final ResponseHandler notFoundHandler;
     private final FluentIterable<GetAllRestSetting> getAllSettings;
     private final FluentIterable<GetSingleRestSetting> getSingleSettings;
+    private final FluentIterable<PostRestSetting> postSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
@@ -38,6 +39,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.getSingleSettings = FluentIterable.of(settings)
                 .filter(GetSingleRestSetting.class)
                 .transform(toInstance(GetSingleRestSetting.class));
+        this.postSettings = FluentIterable.of(settings)
+                .filter(PostRestSetting.class)
+                .transform(toInstance(PostRestSetting.class));
     }
 
     @Override
@@ -47,7 +51,24 @@ public class RestHandler extends AbstractHttpResponseHandler {
             return;
         }
 
+        if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<ResponseHandler> postHandler = getPostHandler(httpRequest);
+            if (postHandler.isPresent()) {
+                postHandler.get().writeToResponse(new SessionContext(httpRequest, httpResponse));
+                return;
+            }
+        }
+
         throw new UnsupportedOperationException("Unsupported REST request");
+    }
+
+    private Optional<ResponseHandler> getPostHandler(final HttpRequest httpRequest) {
+        Optional<PostRestSetting> first = postSettings.first();
+        if (first.isPresent()) {
+            return Optional.of(first.get().getHandler());
+        }
+        return Optional.absent();
+
     }
 
     @Override
