@@ -100,7 +100,13 @@ public class MocoTestHelper {
                 .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
                 .bodyByteArray(content.getBytes());
         return EXECUTOR.execute(request).returnResponse();
+    }
 
+    public HttpResponse putForResponse(final String url, String content) throws IOException {
+        Request request = Request.Put(url)
+                .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
+                .bodyByteArray(content.getBytes());
+        return EXECUTOR.execute(request).returnResponse();
     }
 
     public String postStream(String url, InputStream stream) throws IOException {

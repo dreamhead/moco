@@ -28,6 +28,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final FluentIterable<GetAllRestSetting> getAllSettings;
     private final FluentIterable<GetSingleRestSetting> getSingleSettings;
     private final FluentIterable<PostRestSetting> postSettings;
+    private final FluentIterable<PutRestSetting> putSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
@@ -42,6 +43,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.postSettings = FluentIterable.of(settings)
                 .filter(PostRestSetting.class)
                 .transform(toInstance(PostRestSetting.class));
+        this.putSettings = FluentIterable.of(settings)
+                .filter(PutRestSetting.class)
+                .transform(toInstance(PutRestSetting.class));
     }
 
     @Override
@@ -52,9 +56,17 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<ResponseHandler> postHandler = getPostHandler(httpRequest);
+            Optional<ResponseHandler> postHandler = getPostHandler();
             if (postHandler.isPresent()) {
                 postHandler.get().writeToResponse(new SessionContext(httpRequest, httpResponse));
+                return;
+            }
+        }
+
+        if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
+            if (putSetting.isPresent()) {
+                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
                 return;
             }
         }
@@ -62,7 +74,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         throw new UnsupportedOperationException("Unsupported REST request");
     }
 
-    private Optional<ResponseHandler> getPostHandler(final HttpRequest httpRequest) {
+    private Optional<ResponseHandler> getPostHandler() {
         Optional<PostRestSetting> first = postSettings.first();
         if (first.isPresent()) {
             return Optional.of(first.get().getHandler());
@@ -120,10 +132,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
         };
     }
 
-    private Predicate<GetSingleRestSetting> matchSingle(final HttpRequest request) {
-        return new Predicate<GetSingleRestSetting>() {
+    private Predicate<RestSingleSetting> matchSingle(final HttpRequest request) {
+        return new Predicate<RestSingleSetting>() {
             @Override
-            public boolean apply(final GetSingleRestSetting setting) {
+            public boolean apply(final RestSingleSetting setting) {
                 return setting.getRequestMatcher(name).match(request);
             }
         };

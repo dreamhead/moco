@@ -28,6 +28,7 @@ import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.MocoRest.get;
 import static com.github.dreamhead.moco.MocoRest.post;
+import static com.github.dreamhead.moco.MocoRest.put;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -267,6 +268,27 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                         mapper.writeValueAsString(resource1));
                 assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
                 assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
+            }
+        });
+    }
+
+    @Test
+    public void should_put() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                put("1")
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
             }
         });
     }
