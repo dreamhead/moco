@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.DeleteRestSetting;
 import com.github.dreamhead.moco.rest.GetAllRestSetting;
 import com.github.dreamhead.moco.rest.GetSingleRestSetting;
+import com.github.dreamhead.moco.rest.HeadRestSetting;
 import com.github.dreamhead.moco.rest.PostRestSetting;
 import com.github.dreamhead.moco.rest.PutRestSetting;
 import com.google.common.base.Optional;
@@ -56,6 +57,10 @@ public final class MocoRest {
 
     public static RestSetting delete(final String id, final ResponseHandler... handlers) {
         return new DeleteRestSetting(id, and(handlers));
+    }
+
+    public static RestSetting head(final String id, final ResponseHandler... handlers) {
+        return new HeadRestSetting(id, and(handlers));
     }
 
     private MocoRest() {

@@ -28,6 +28,7 @@ import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.MocoRest.delete;
 import static com.github.dreamhead.moco.MocoRest.get;
+import static com.github.dreamhead.moco.MocoRest.head;
 import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.put;
 import static com.github.dreamhead.moco.MocoRest.restServer;
@@ -304,6 +305,21 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             @Override
             public void run() throws Exception {
                 HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_head() throws Exception {
+        server.resource("targets",
+                head("1")
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
                 assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
             }
         });

@@ -114,6 +114,11 @@ public class MocoTestHelper {
         return EXECUTOR.execute(request).returnResponse();
     }
 
+    public HttpResponse headForResponse(final String url) throws IOException {
+        Request request = Request.Head(url);
+        return EXECUTOR.execute(request).returnResponse();
+    }
+
     public String postStream(String url, InputStream stream) throws IOException {
         return postBytes(url, toByteArray(stream));
     }

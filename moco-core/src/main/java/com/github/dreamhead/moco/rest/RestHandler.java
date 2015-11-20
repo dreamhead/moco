@@ -30,6 +30,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final FluentIterable<PostRestSetting> postSettings;
     private final FluentIterable<PutRestSetting> putSettings;
     private final FluentIterable<DeleteRestSetting> deleteSettings;
+    private final FluentIterable<HeadRestSetting> headSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
@@ -50,6 +51,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.deleteSettings = FluentIterable.of(settings)
                 .filter(DeleteRestSetting.class)
                 .transform(toInstance(DeleteRestSetting.class));
+        this.headSettings = FluentIterable.of(settings)
+                .filter(HeadRestSetting.class)
+                .transform(toInstance(HeadRestSetting.class));
     }
 
     @Override
@@ -77,6 +81,14 @@ public class RestHandler extends AbstractHttpResponseHandler {
 
         if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
             Optional<DeleteRestSetting> putSetting = deleteSettings.firstMatch(matchSingle(httpRequest));
+            if (putSetting.isPresent()) {
+                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
+                return;
+            }
+        }
+
+        if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<HeadRestSetting> putSetting = headSettings.firstMatch(matchSingle(httpRequest));
             if (putSetting.isPresent()) {
                 putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
                 return;
@@ -118,7 +130,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
             }
 
             if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = getSingleSettings.transform(toJsonHandler()).transform(toPojo()).toList();
+                ImmutableList<Object> objects = getSingleSettings
+                        .transform(toJsonHandler())
+                        .transform(toPojo()).toList();
                 return Moco.toJson(objects);
             }
         }
