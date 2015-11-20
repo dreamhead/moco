@@ -29,6 +29,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final FluentIterable<GetSingleRestSetting> getSingleSettings;
     private final FluentIterable<PostRestSetting> postSettings;
     private final FluentIterable<PutRestSetting> putSettings;
+    private final FluentIterable<DeleteRestSetting> deleteSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
@@ -46,6 +47,9 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.putSettings = FluentIterable.of(settings)
                 .filter(PutRestSetting.class)
                 .transform(toInstance(PutRestSetting.class));
+        this.deleteSettings = FluentIterable.of(settings)
+                .filter(DeleteRestSetting.class)
+                .transform(toInstance(DeleteRestSetting.class));
     }
 
     @Override
@@ -65,6 +69,14 @@ public class RestHandler extends AbstractHttpResponseHandler {
 
         if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
             Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
+            if (putSetting.isPresent()) {
+                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
+                return;
+            }
+        }
+
+        if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<DeleteRestSetting> putSetting = deleteSettings.firstMatch(matchSingle(httpRequest));
             if (putSetting.isPresent()) {
                 putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
                 return;

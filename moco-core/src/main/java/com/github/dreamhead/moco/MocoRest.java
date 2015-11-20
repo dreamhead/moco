@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
+import com.github.dreamhead.moco.rest.DeleteRestSetting;
 import com.github.dreamhead.moco.rest.GetAllRestSetting;
 import com.github.dreamhead.moco.rest.GetSingleRestSetting;
 import com.github.dreamhead.moco.rest.PostRestSetting;
@@ -51,6 +52,10 @@ public final class MocoRest {
 
     public static RestSetting put(final String id, final ResponseHandler... handlers) {
         return new PutRestSetting(id, and(handlers));
+    }
+
+    public static RestSetting delete(final String id, final ResponseHandler... handlers) {
+        return new DeleteRestSetting(id, and(handlers));
     }
 
     private MocoRest() {
