@@ -52,15 +52,18 @@ public final class MocoRest {
     }
 
     public static RestSetting put(final String id, final ResponseHandler... handlers) {
-        return new PutRestSetting(id, and(handlers));
+        return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                and(checkNotNull(handlers, "Put response handler should not be null")));
     }
 
     public static RestSetting delete(final String id, final ResponseHandler... handlers) {
-        return new DeleteRestSetting(id, and(handlers));
+        return new DeleteRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                and(checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
     public static RestSetting head(final String id, final ResponseHandler... handlers) {
-        return new HeadRestSetting(id, and(handlers));
+        return new HeadRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                and(checkNotNull(handlers, "Head response handler should not be null")));
     }
 
     private MocoRest() {
