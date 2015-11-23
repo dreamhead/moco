@@ -20,6 +20,8 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
 
 public class RestHandler extends AbstractHttpResponseHandler {
     private final String name;
@@ -36,75 +38,70 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.name = name;
         this.settings = settings;
         this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
-        this.getAllSettings = FluentIterable.of(settings)
-                .filter(GetAllRestSetting.class)
-                .transform(toInstance(GetAllRestSetting.class));
-        this.getSingleSettings = FluentIterable.of(settings)
-                .filter(GetSingleRestSetting.class)
-                .transform(toInstance(GetSingleRestSetting.class));
-        this.postSettings = FluentIterable.of(settings)
-                .filter(PostRestSetting.class)
-                .transform(toInstance(PostRestSetting.class));
-        this.putSettings = FluentIterable.of(settings)
-                .filter(PutRestSetting.class)
-                .transform(toInstance(PutRestSetting.class));
-        this.deleteSettings = FluentIterable.of(settings)
-                .filter(DeleteRestSetting.class)
-                .transform(toInstance(DeleteRestSetting.class));
-        this.headSettings = FluentIterable.of(settings)
-                .filter(HeadRestSetting.class)
-                .transform(toInstance(HeadRestSetting.class));
+        this.getAllSettings = toInstances(settings, GetAllRestSetting.class);
+        this.getSingleSettings = toInstances(settings, GetSingleRestSetting.class);
+        this.postSettings = toInstances(settings, PostRestSetting.class);
+        this.putSettings = toInstances(settings, PutRestSetting.class);
+        this.deleteSettings = toInstances(settings, DeleteRestSetting.class);
+        this.headSettings = toInstances(settings, HeadRestSetting.class);
+    }
+
+    private <T extends RestSetting> FluentIterable<T> toInstances(final RestSetting[] settings, final Class<T> type) {
+        return FluentIterable.of(settings)
+                .filter(type)
+                .transform(toInstance(type));
     }
 
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
-            getGetHandler(httpRequest).writeToResponse(new SessionContext(httpRequest, httpResponse));
+        Optional<ResponseHandler> responseHandler = getResponseHandler(httpRequest);
+        if (responseHandler.isPresent()) {
+            responseHandler.get().writeToResponse(new SessionContext(httpRequest, httpResponse));
             return;
-        }
-
-        if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<ResponseHandler> postHandler = getPostHandler();
-            if (postHandler.isPresent()) {
-                postHandler.get().writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
-            }
-        }
-
-        if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
-            if (putSetting.isPresent()) {
-                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
-            }
-        }
-
-        if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<DeleteRestSetting> putSetting = deleteSettings.firstMatch(matchSingle(httpRequest));
-            if (putSetting.isPresent()) {
-                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
-            }
-        }
-
-        if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<HeadRestSetting> putSetting = headSettings.firstMatch(matchSingle(httpRequest));
-            if (putSetting.isPresent()) {
-                putSetting.get().getHandler().writeToResponse(new SessionContext(httpRequest, httpResponse));
-                return;
-            }
         }
 
         throw new UnsupportedOperationException("Unsupported REST request");
     }
 
+    private Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
+        if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
+            return of(getGetHandler(httpRequest));
+        }
+
+        if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
+            return getPostHandler();
+        }
+
+        if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
+            return putSetting.transform(toResponseHandler());
+        }
+
+        if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<DeleteRestSetting> deleteSetting = deleteSettings.firstMatch(matchSingle(httpRequest));
+            return deleteSetting.transform(toResponseHandler());
+        }
+
+        if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
+            Optional<HeadRestSetting> putSetting = headSettings.firstMatch(matchSingle(httpRequest));
+            return putSetting.transform(toResponseHandler());
+        }
+
+        return absent();
+    }
+
+    private Function<RestSetting, ResponseHandler> toResponseHandler() {
+        return new Function<RestSetting, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(final RestSetting input) {
+                return input.getHandler();
+            }
+        };
+    }
+
     private Optional<ResponseHandler> getPostHandler() {
         Optional<PostRestSetting> first = postSettings.first();
-        if (first.isPresent()) {
-            return Optional.of(first.get().getHandler());
-        }
-        return Optional.absent();
-
+        return first.transform(toResponseHandler());
     }
 
     @Override
