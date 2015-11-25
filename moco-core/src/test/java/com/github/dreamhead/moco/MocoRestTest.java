@@ -332,6 +332,21 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_delete_with_response() throws Exception {
+        server.resource("targets",
+                delete("1", status(409))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
+            }
+        });
+    }
+
+    @Test
     public void should_head() throws Exception {
         server.resource("targets",
                 head("1")
