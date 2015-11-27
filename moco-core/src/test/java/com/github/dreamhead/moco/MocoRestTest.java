@@ -296,6 +296,27 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_put_with_unknown_id() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                put("1")
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/2"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
+    @Test
     public void should_put_with_response_handler() throws Exception {
         RestServer server = restServer(12306);
         final Plain resource1 = new Plain();

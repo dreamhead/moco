@@ -74,7 +74,11 @@ public class RestHandler extends AbstractHttpResponseHandler {
 
         if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
             Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
-            return putSetting.transform(toResponseHandler());
+            if (putSetting.isPresent()) {
+                return putSetting.transform(toResponseHandler());
+            }
+
+            return of(notFoundHandler);
         }
 
         if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
