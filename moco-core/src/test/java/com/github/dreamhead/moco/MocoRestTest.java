@@ -296,7 +296,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
-    public void should_put_with_unknown_id() throws Exception {
+    public void should_not_put_with_unknown_id() throws Exception {
         RestServer server = restServer(12306);
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -338,6 +338,21 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_not_delete_with_unknown_id() throws Exception {
+        server.resource("targets",
+                delete("1")
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/2"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
+    @Test
     public void should_delete() throws Exception {
         server.resource("targets",
                 delete("1")
@@ -351,6 +366,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             }
         });
     }
+
 
     @Test
     public void should_delete_with_response() throws Exception {

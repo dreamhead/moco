@@ -54,7 +54,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
 
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        Optional<ResponseHandler> responseHandler = getResponseHandler(httpRequest);
+        Optional<ResponseHandler> responseHandler = getSingleResponseHandler(httpRequest);
         if (responseHandler.isPresent()) {
             responseHandler.get().writeToResponse(new SessionContext(httpRequest, httpResponse));
             return;
@@ -63,7 +63,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         throw new UnsupportedOperationException("Unsupported REST request");
     }
 
-    private Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
+    private Optional<ResponseHandler> getSingleResponseHandler(final HttpRequest httpRequest) {
         if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
             return of(getGetHandler(httpRequest));
         }
@@ -73,17 +73,11 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<PutRestSetting> putSetting = putSettings.firstMatch(matchSingle(httpRequest));
-            if (putSetting.isPresent()) {
-                return putSetting.transform(toResponseHandler());
-            }
-
-            return of(notFoundHandler);
+            return getSingleResponseHandler(putSettings, httpRequest);
         }
 
         if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<DeleteRestSetting> deleteSetting = deleteSettings.firstMatch(matchSingle(httpRequest));
-            return deleteSetting.transform(toResponseHandler());
+            return getSingleResponseHandler(this.deleteSettings, httpRequest);
         }
 
         if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
@@ -92,6 +86,17 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         return absent();
+    }
+
+    private Optional<ResponseHandler> getSingleResponseHandler(
+            final FluentIterable<? extends RestSingleSetting> settings,
+            final HttpRequest httpRequest) {
+        Optional<? extends RestSingleSetting> setting = settings.firstMatch(matchSingle(httpRequest));
+        if (setting.isPresent()) {
+            return setting.transform(toResponseHandler());
+        }
+
+        return of(notFoundHandler);
     }
 
     private Function<RestSetting, ResponseHandler> toResponseHandler() {
