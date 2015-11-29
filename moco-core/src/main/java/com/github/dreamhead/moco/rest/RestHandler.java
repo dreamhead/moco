@@ -81,8 +81,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
-            Optional<HeadRestSetting> putSetting = headSettings.firstMatch(matchSingle(httpRequest));
-            return putSetting.transform(toResponseHandler());
+            return getSingleResponseHandler(this.headSettings, httpRequest);
         }
 
         return absent();
