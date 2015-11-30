@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.Files;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -367,6 +368,21 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
+    @Test
+    public void should_delete_with_matcher() throws Exception {
+        server.resource("targets",
+                delete("1", eq(header(HttpHeaders.IF_MATCH), "moco"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.deleteForResponseWithHeaders(remoteUrl("/targets/1"),
+                        ImmutableMultimap.of(HttpHeaders.IF_MATCH, "moco"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
 
     @Test
     public void should_delete_with_response() throws Exception {
