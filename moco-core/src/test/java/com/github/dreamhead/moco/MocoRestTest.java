@@ -339,6 +339,27 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_put_with_matcher() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                put("1", eq(header(HttpHeaders.IF_MATCH), "moco"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.putForResponseWithHeaders(remoteUrl("/targets/1"),
+                        mapper.writeValueAsString(resource1), of(HttpHeaders.IF_MATCH, "moco"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
     public void should_not_delete_with_unknown_id() throws Exception {
         server.resource("targets",
                 delete("1")

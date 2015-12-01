@@ -109,6 +109,15 @@ public class MocoTestHelper {
         return EXECUTOR.execute(request).returnResponse();
     }
 
+    public HttpResponse putForResponseWithHeaders(final String url, String content, ImmutableMultimap<String, String> headers) throws IOException {
+        Request request = Request.Put(url)
+                .bodyByteArray(content.getBytes());
+        for (Map.Entry<String, String> entry : headers.entries()) {
+            request.addHeader(entry.getKey(), entry.getValue());
+        }
+        return EXECUTOR.execute(request).returnResponse();
+    }
+
     public HttpResponse deleteForResponse(final String url) throws IOException {
         Request request = Request.Delete(url);
         return EXECUTOR.execute(request).returnResponse();

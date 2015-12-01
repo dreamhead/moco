@@ -51,8 +51,15 @@ public final class MocoRest {
         return new PostRestSetting(and(handlers));
     }
 
+    public static RestSetting put(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
+        return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                Optional.of(matcher),
+                and(checkNotNull(handlers, "Put response handler should not be null")));
+    }
+
     public static RestSetting put(final String id, final ResponseHandler... handlers) {
         return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                Optional.<RequestMatcher>absent(),
                 and(checkNotNull(handlers, "Put response handler should not be null")));
     }
 
