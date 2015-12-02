@@ -13,22 +13,21 @@ import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 
 public abstract class RestSingleSetting extends RestSetting {
     private final String id;
+    private final Optional<RequestMatcher> matcher;
 
-    public RestSingleSetting(final String id, final ResponseHandler handler) {
+    public RestSingleSetting(final String id, final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
         super(handler);
         this.id = id;
+        this.matcher = matcher;
     }
 
     public RequestMatcher getRequestMatcher(final String resourceName) {
         RequestMatcher idMatcher = by(uri(join(resourceRoot(resourceName), this.id)));
 
-        Optional<RequestMatcher> matcher = doGetRequestMatcher();
         if (matcher.isPresent()) {
             return and(idMatcher, matcher.get());
         }
 
         return idMatcher;
     }
-
-    protected abstract Optional<RequestMatcher> doGetRequestMatcher();
 }

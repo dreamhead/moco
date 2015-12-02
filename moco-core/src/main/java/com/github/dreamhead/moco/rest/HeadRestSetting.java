@@ -6,11 +6,6 @@ import com.google.common.base.Optional;
 
 public class HeadRestSetting extends RestSingleSetting {
     public HeadRestSetting(final String id, final ResponseHandler handler) {
-        super(id, handler);
-    }
-
-    @Override
-    protected Optional<RequestMatcher> doGetRequestMatcher() {
-        return Optional.absent();
+        super(id, Optional.<RequestMatcher>absent(), handler);
     }
 }
