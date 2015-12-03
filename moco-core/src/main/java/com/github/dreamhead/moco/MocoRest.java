@@ -77,6 +77,13 @@ public final class MocoRest {
 
     public static RestSetting head(final String id, final ResponseHandler... handlers) {
         return new HeadRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                Optional.<RequestMatcher>absent(),
+                and(checkNotNull(handlers, "Head response handler should not be null")));
+    }
+
+    public static RestSetting head(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
+        return new HeadRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+                of(checkNotNull(matcher, "Head matcher should be not null")),
                 and(checkNotNull(handlers, "Head response handler should not be null")));
     }
 

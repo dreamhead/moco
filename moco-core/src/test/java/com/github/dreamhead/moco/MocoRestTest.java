@@ -450,6 +450,22 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
+    @Test
+    public void should_head_with_matcher() throws Exception {
+        server.resource("targets",
+                head("1", eq(query("name"), "foo"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1?name=foo"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
