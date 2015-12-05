@@ -42,8 +42,13 @@ public final class MocoRest {
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 
+    public static RestSetting get(final ResponseHandler handler) {
+        return new GetAllRestSetting(Optional.<RequestMatcher>absent(),
+                checkNotNull(handler, "Get response handler should not be null"));
+    }
+
     public static RestSetting get(final RequestMatcher matcher, final ResponseHandler handler) {
-        return new GetAllRestSetting(matcher,
+        return new GetAllRestSetting(of(matcher),
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 

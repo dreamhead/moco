@@ -92,6 +92,33 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
+                get(toJson(ImmutableList.of(resource1, resource2)))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets"));
+                assertThat(response.getStatusLine().getStatusCode(), is(200));
+                HttpEntity entity = response.getEntity();
+                List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
+                });
+                assertThat(plains.size(), is(2));
+            }
+        });
+    }
+
+    @Test
+    public void should_get_all_resources_by_default() throws Exception {
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        server.resource("targets",
                 get("1", toJson(resource1)),
                 get("2", toJson(resource2))
         );

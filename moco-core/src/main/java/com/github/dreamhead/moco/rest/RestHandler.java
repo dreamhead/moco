@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
@@ -65,7 +66,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
 
     private Optional<ResponseHandler> getSingleResponseHandler(final HttpRequest httpRequest) {
         if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
-            return of(getGetHandler(httpRequest));
+            return getGetHandler(httpRequest);
         }
 
         if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
@@ -122,34 +123,35 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return super.apply(config);
     }
 
-    private ResponseHandler getGetHandler(final HttpRequest httpRequest) {
+    private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
         Optional<GetSingleRestSetting> matchedSetting = getSingleSettings.firstMatch(matchSingle(httpRequest));
         if (matchedSetting.isPresent()) {
-            return matchedSetting.get().getHandler();
+            return matchedSetting.transform(toResponseHandler());
         }
 
         if (by(uri(resourceRoot(name))).match(httpRequest)) {
             Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(matchAll(httpRequest));
             if (allRestSetting.isPresent()) {
-                return allRestSetting.get().getHandler();
+                return allRestSetting.transform(toResponseHandler());
             }
 
             if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = getSingleSettings
                         .transform(toJsonHandler())
                         .transform(toPojo()).toList();
-                return Moco.toJson(objects);
+                return of(Moco.toJson(objects));
             }
         }
 
-        return notFoundHandler;
+        return of(notFoundHandler);
     }
 
     private Predicate<? super GetAllRestSetting> matchAll(final HttpRequest request) {
         return new Predicate<GetAllRestSetting>() {
             @Override
             public boolean apply(final GetAllRestSetting input) {
-                return input.getMatcher().match(request);
+                Optional<RequestMatcher> matcher = input.getMatcher();
+                return !matcher.isPresent() || matcher.get().match(request);
             }
         };
     }

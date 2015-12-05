@@ -6,15 +6,15 @@ import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
 public class GetAllRestSetting extends RestSetting {
-    private final RequestMatcher matcher;
+    private final Optional<RequestMatcher> matcher;
 
-    public GetAllRestSetting(final RequestMatcher matcher,
+    public GetAllRestSetting(final Optional<RequestMatcher> matcher,
                              final ResponseHandler responseHandler) {
         super(responseHandler);
         this.matcher = matcher;
     }
 
-    public RequestMatcher getMatcher() {
+    public Optional<RequestMatcher> getMatcher() {
         return matcher;
     }
 }
