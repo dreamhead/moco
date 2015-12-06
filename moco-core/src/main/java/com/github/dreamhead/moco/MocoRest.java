@@ -38,7 +38,7 @@ public final class MocoRest {
 
     public static RestSetting get(final String id, final RequestMatcher matcher, final ResponseHandler handler) {
         return new GetSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
-                Optional.of(matcher),
+                Optional.of(checkNotNull(matcher, "Get request matcher should no be null")),
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 
@@ -48,7 +48,7 @@ public final class MocoRest {
     }
 
     public static RestSetting get(final RequestMatcher matcher, final ResponseHandler handler) {
-        return new GetAllRestSetting(of(matcher),
+        return new GetAllRestSetting(of(checkNotNull(matcher, "Get request matcher should no be null")),
                 checkNotNull(handler, "Get response handler should not be null"));
     }
 
@@ -58,7 +58,7 @@ public final class MocoRest {
 
     public static RestSetting put(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
         return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
-                Optional.of(matcher),
+                Optional.of(checkNotNull(matcher, "Put request matcher should no be null")),
                 and(checkNotNull(handlers, "Put response handler should not be null")));
     }
 
@@ -76,7 +76,7 @@ public final class MocoRest {
 
     public static RestSetting delete(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
         return new DeleteRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
-                of(checkNotNull(matcher, "Delete matcher should be not null")),
+                of(checkNotNull(matcher, "Delete request matcher should be not null")),
                 and(checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
