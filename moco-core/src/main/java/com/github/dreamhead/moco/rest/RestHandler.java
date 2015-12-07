@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
-import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
@@ -129,12 +128,12 @@ public class RestHandler extends AbstractHttpResponseHandler {
             return matchedSetting.transform(toResponseHandler());
         }
 
-        if (by(uri(resourceRoot(name))).match(httpRequest)) {
-            Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(matchAll(httpRequest));
-            if (allRestSetting.isPresent()) {
-                return allRestSetting.transform(toResponseHandler());
-            }
+        Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(matchAll(httpRequest));
+        if (allRestSetting.isPresent()) {
+            return allRestSetting.transform(toResponseHandler());
+        }
 
+        if (by(uri(resourceRoot(name))).match(httpRequest)) {
             if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = getSingleSettings
                         .transform(toJsonHandler())
@@ -150,8 +149,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return new Predicate<GetAllRestSetting>() {
             @Override
             public boolean apply(final GetAllRestSetting input) {
-                Optional<RequestMatcher> matcher = input.getMatcher();
-                return !matcher.isPresent() || matcher.get().match(request);
+                return input.getRequestMatcher(name).match(request);
             }
         };
     }

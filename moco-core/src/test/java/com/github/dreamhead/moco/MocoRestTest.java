@@ -492,7 +492,6 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
-
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
