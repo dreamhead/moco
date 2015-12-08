@@ -96,8 +96,12 @@ public class MocoTestHelper {
     }
 
     public HttpResponse postForResponse(final String url, String content) throws IOException {
+        return postForResponse(url, content, PLAIN_TEXT_UTF_8.toString());
+    }
+
+    public HttpResponse postForResponse(String url, String content, String contentType) throws IOException {
         Request request = Request.Post(url)
-                .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
+                .addHeader(CONTENT_TYPE, contentType)
                 .bodyByteArray(content.getBytes());
         return EXECUTOR.execute(request).returnResponse();
     }

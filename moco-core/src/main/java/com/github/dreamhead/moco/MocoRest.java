@@ -53,7 +53,11 @@ public final class MocoRest {
     }
 
     public static RestSetting post(final ResponseHandler... handlers) {
-        return new PostRestSetting(and(handlers));
+        return new PostRestSetting(Optional.<RequestMatcher>absent(), and(handlers));
+    }
+
+    public static RestSetting post(final RequestMatcher matcher, final ResponseHandler... handlers) {
+        return new PostRestSetting(of(matcher), and(handlers));
     }
 
     public static RestSetting put(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {

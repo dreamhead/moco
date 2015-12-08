@@ -27,6 +27,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final RestSetting[] settings;
     private final ResponseHandler notFoundHandler;
+    private final ResponseHandler badRequestHandler;
     private final FluentIterable<GetAllRestSetting> getAllSettings;
     private final FluentIterable<GetSingleRestSetting> getSingleSettings;
     private final FluentIterable<PostRestSetting> postSettings;
@@ -38,6 +39,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.name = name;
         this.settings = settings;
         this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
+        this.badRequestHandler = status(HttpResponseStatus.BAD_REQUEST.code());
         this.getAllSettings = toInstances(settings, GetAllRestSetting.class);
         this.getSingleSettings = toInstances(settings, GetSingleRestSetting.class);
         this.postSettings = toInstances(settings, PostRestSetting.class);
@@ -69,7 +71,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
-            return getPostHandler();
+            return getPostHandler(httpRequest);
         }
 
         if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
@@ -107,9 +109,13 @@ public class RestHandler extends AbstractHttpResponseHandler {
         };
     }
 
-    private Optional<ResponseHandler> getPostHandler() {
-        Optional<PostRestSetting> first = postSettings.first();
-        return first.transform(toResponseHandler());
+    private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
+        Optional<PostRestSetting> setting = postSettings.firstMatch(matchAll(request));
+        if (setting.isPresent()) {
+            return setting.transform(toResponseHandler());
+        }
+
+        return of(badRequestHandler);
     }
 
     @Override
@@ -145,10 +151,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return of(notFoundHandler);
     }
 
-    private Predicate<? super GetAllRestSetting> matchAll(final HttpRequest request) {
-        return new Predicate<GetAllRestSetting>() {
+    private Predicate<RestAllSetting> matchAll(final HttpRequest request) {
+        return new Predicate<RestAllSetting>() {
             @Override
-            public boolean apply(final GetAllRestSetting input) {
+            public boolean apply(final RestAllSetting input) {
                 return input.getRequestMatcher(name).match(request);
             }
         };

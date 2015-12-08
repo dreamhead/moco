@@ -303,6 +303,32 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_post_with_header() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                post(eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), status(201), header("Location", "/targets/123"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+                        mapper.writeValueAsString(resource1), "application/json");
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+                assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
+
+                HttpResponse badRequest = helper.postForResponse(remoteUrl("/targets"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(badRequest.getStatusLine().getStatusCode(), is(400));
+            }
+        });
+    }
+
+    @Test
     public void should_put() throws Exception {
         RestServer server = restServer(12306);
         final Plain resource1 = new Plain();
