@@ -92,7 +92,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private Optional<ResponseHandler> getSingleResponseHandler(
             final FluentIterable<? extends RestSingleSetting> settings,
             final HttpRequest httpRequest) {
-        Optional<? extends RestSingleSetting> setting = settings.firstMatch(matchSingle(httpRequest));
+        Optional<? extends RestSingleSetting> setting = settings.firstMatch(match(httpRequest));
         if (setting.isPresent()) {
             return setting.transform(toResponseHandler());
         }
@@ -110,7 +110,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
-        Optional<PostRestSetting> setting = postSettings.firstMatch(matchAll(request));
+        Optional<PostRestSetting> setting = postSettings.firstMatch(match(request));
         if (setting.isPresent()) {
             return setting.transform(toResponseHandler());
         }
@@ -129,12 +129,12 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
-        Optional<GetSingleRestSetting> matchedSetting = getSingleSettings.firstMatch(matchSingle(httpRequest));
+        Optional<GetSingleRestSetting> matchedSetting = getSingleSettings.firstMatch(match(httpRequest));
         if (matchedSetting.isPresent()) {
             return matchedSetting.transform(toResponseHandler());
         }
 
-        Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(matchAll(httpRequest));
+        Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(match(httpRequest));
         if (allRestSetting.isPresent()) {
             return allRestSetting.transform(toResponseHandler());
         }
@@ -151,10 +151,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return of(notFoundHandler);
     }
 
-    private Predicate<RestAllSetting> matchAll(final HttpRequest request) {
-        return new Predicate<RestAllSetting>() {
+    private Predicate<RestSetting> match(final HttpRequest request) {
+        return new Predicate<RestSetting>() {
             @Override
-            public boolean apply(final RestAllSetting input) {
+            public boolean apply(final RestSetting input) {
                 return input.getRequestMatcher(name).match(request);
             }
         };
@@ -165,15 +165,6 @@ public class RestHandler extends AbstractHttpResponseHandler {
             @Override
             public T apply(final T input) {
                 return clazz.cast(input);
-            }
-        };
-    }
-
-    private Predicate<RestSingleSetting> matchSingle(final HttpRequest request) {
-        return new Predicate<RestSingleSetting>() {
-            @Override
-            public boolean apply(final RestSingleSetting setting) {
-                return setting.getRequestMatcher(name).match(request);
             }
         };
     }
