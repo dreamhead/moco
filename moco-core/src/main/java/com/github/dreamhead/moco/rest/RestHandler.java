@@ -40,15 +40,15 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.settings = settings;
         this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
         this.badRequestHandler = status(HttpResponseStatus.BAD_REQUEST.code());
-        this.getAllSettings = toInstances(settings, GetAllRestSetting.class);
-        this.getSingleSettings = toInstances(settings, GetSingleRestSetting.class);
-        this.postSettings = toInstances(settings, PostRestSetting.class);
-        this.putSettings = toInstances(settings, PutRestSetting.class);
-        this.deleteSettings = toInstances(settings, DeleteRestSetting.class);
-        this.headSettings = toInstances(settings, HeadRestSetting.class);
+        this.getAllSettings = filter(settings, GetAllRestSetting.class);
+        this.getSingleSettings = filter(settings, GetSingleRestSetting.class);
+        this.postSettings = filter(settings, PostRestSetting.class);
+        this.putSettings = filter(settings, PutRestSetting.class);
+        this.deleteSettings = filter(settings, DeleteRestSetting.class);
+        this.headSettings = filter(settings, HeadRestSetting.class);
     }
 
-    private <T extends RestSetting> FluentIterable<T> toInstances(final RestSetting[] settings, final Class<T> type) {
+    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings, final Class<T> type) {
         return FluentIterable.of(settings)
                 .filter(type)
                 .transform(toInstance(type));
