@@ -329,6 +329,27 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_return_404_for_post_with_id_by_default() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                post(status(201), header("Location", "/targets/123"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets/1"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
+    @Test
     public void should_put() throws Exception {
         RestServer server = restServer(12306);
         final Plain resource1 = new Plain();

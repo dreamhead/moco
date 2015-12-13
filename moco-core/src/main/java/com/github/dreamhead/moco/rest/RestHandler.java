@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
@@ -19,6 +20,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
@@ -26,6 +28,8 @@ import static com.google.common.base.Optional.of;
 public class RestHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final RestSetting[] settings;
+    private final RequestMatcher allMatcher;
+    private final RequestMatcher singleMatcher;
     private final ResponseHandler notFoundHandler;
     private final ResponseHandler badRequestHandler;
     private final FluentIterable<GetAllRestSetting> getAllSettings;
@@ -46,6 +50,8 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.putSettings = filter(settings, PutRestSetting.class);
         this.deleteSettings = filter(settings, DeleteRestSetting.class);
         this.headSettings = filter(settings, HeadRestSetting.class);
+        this.allMatcher = by(uri(resourceRoot(name)));
+        this.singleMatcher = Moco.match(uri(join(resourceRoot(name), ".*")));
     }
 
     private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings, final Class<T> type) {
@@ -115,6 +121,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
             return setting.transform(toResponseHandler());
         }
 
+        if (singleMatcher.match(request)) {
+            return of(notFoundHandler);
+        }
+
         return of(badRequestHandler);
     }
 
@@ -139,7 +149,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
             return allRestSetting.transform(toResponseHandler());
         }
 
-        if (by(uri(resourceRoot(name))).match(httpRequest)) {
+        if (allMatcher.match(httpRequest)) {
             if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = getSingleSettings
                         .transform(toJsonHandler())
