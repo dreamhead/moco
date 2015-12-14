@@ -106,10 +106,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return of(notFoundHandler);
     }
 
-    private Function<RestSetting, ResponseHandler> toResponseHandler() {
-        return new Function<RestSetting, ResponseHandler>() {
+    private Function<SimpleRestSetting, ResponseHandler> toResponseHandler() {
+        return new Function<SimpleRestSetting, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(final RestSetting input) {
+            public ResponseHandler apply(final SimpleRestSetting input) {
                 return input.getHandler();
             }
         };
@@ -161,10 +161,10 @@ public class RestHandler extends AbstractHttpResponseHandler {
         return of(notFoundHandler);
     }
 
-    private Predicate<RestSetting> match(final HttpRequest request) {
-        return new Predicate<RestSetting>() {
+    private Predicate<SimpleRestSetting> match(final HttpRequest request) {
+        return new Predicate<SimpleRestSetting>() {
             @Override
-            public boolean apply(final RestSetting input) {
+            public boolean apply(final SimpleRestSetting input) {
                 return input.getRequestMatcher(name).match(request);
             }
         };
@@ -188,19 +188,19 @@ public class RestHandler extends AbstractHttpResponseHandler {
         };
     }
 
-    private Function<RestSetting, JsonResponseHandler> toJsonHandler() {
-        return new Function<RestSetting, JsonResponseHandler>() {
+    private Function<SimpleRestSetting, JsonResponseHandler> toJsonHandler() {
+        return new Function<SimpleRestSetting, JsonResponseHandler>() {
             @Override
-            public JsonResponseHandler apply(final RestSetting setting) {
+            public JsonResponseHandler apply(final SimpleRestSetting setting) {
                 return JsonResponseHandler.class.cast(setting.getHandler());
             }
         };
     }
 
-    private Predicate<RestSetting> isJsonHandlers() {
-        return new Predicate<RestSetting>() {
+    private Predicate<SimpleRestSetting> isJsonHandlers() {
+        return new Predicate<SimpleRestSetting>() {
             @Override
-            public boolean apply(final RestSetting setting) {
+            public boolean apply(final SimpleRestSetting setting) {
                 return setting.getHandler() instanceof JsonResponseHandler;
             }
         };
