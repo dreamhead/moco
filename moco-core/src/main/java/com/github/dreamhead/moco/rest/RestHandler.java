@@ -37,7 +37,8 @@ public class RestHandler extends AbstractHttpResponseHandler {
     private final FluentIterable<PostRestSetting> postSettings;
     private final FluentIterable<PutRestSetting> putSettings;
     private final FluentIterable<DeleteRestSetting> deleteSettings;
-    private final FluentIterable<HeadRestSetting> headSettings;
+    private final FluentIterable<HeadSingleRestSetting> headSettings;
+    private final FluentIterable<HeadAllRestSetting> headAllSettings;
 
     public RestHandler(final String name, final RestSetting... settings) {
         this.name = name;
@@ -49,7 +50,8 @@ public class RestHandler extends AbstractHttpResponseHandler {
         this.postSettings = filter(settings, PostRestSetting.class);
         this.putSettings = filter(settings, PutRestSetting.class);
         this.deleteSettings = filter(settings, DeleteRestSetting.class);
-        this.headSettings = filter(settings, HeadRestSetting.class);
+        this.headSettings = filter(settings, HeadSingleRestSetting.class);
+        this.headAllSettings = filter(settings, HeadAllRestSetting.class);
         this.allMatcher = by(uri(resourceRoot(name)));
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), ".*")));
     }
@@ -89,7 +91,7 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
-            return getSingleResponseHandler(this.headSettings, httpRequest);
+            return getHeadHandler(httpRequest);
         }
 
         return absent();
@@ -139,19 +141,16 @@ public class RestHandler extends AbstractHttpResponseHandler {
     }
 
     private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
-        Optional<GetSingleRestSetting> matchedSetting = getSingleSettings.firstMatch(match(httpRequest));
+        Optional<ResponseHandler> matchedSetting = getSingleOrAllHandler(httpRequest,
+                this.getSingleSettings,
+                this.getAllSettings);
         if (matchedSetting.isPresent()) {
-            return matchedSetting.transform(toResponseHandler());
-        }
-
-        Optional<GetAllRestSetting> allRestSetting = getAllSettings.firstMatch(match(httpRequest));
-        if (allRestSetting.isPresent()) {
-            return allRestSetting.transform(toResponseHandler());
+            return matchedSetting;
         }
 
         if (allMatcher.match(httpRequest)) {
-            if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = getSingleSettings
+            if (!this.getSingleSettings.isEmpty() && this.getSingleSettings.allMatch(isJsonHandlers())) {
+                ImmutableList<Object> objects = this.getSingleSettings
                         .transform(toJsonHandler())
                         .transform(toPojo()).toList();
                 return of(Moco.toJson(objects));
@@ -159,6 +158,31 @@ public class RestHandler extends AbstractHttpResponseHandler {
         }
 
         return of(notFoundHandler);
+    }
+
+    private Optional<ResponseHandler> getHeadHandler(final HttpRequest httpRequest) {
+        Optional<ResponseHandler> handler = getSingleOrAllHandler(httpRequest, this.headSettings, this.headAllSettings);
+        if (handler.isPresent()) {
+            return handler;
+        }
+
+        return of(notFoundHandler);
+    }
+
+    private Optional<ResponseHandler> getSingleOrAllHandler(final HttpRequest httpRequest,
+                                                    final FluentIterable<? extends RestSingleSetting> singleSettings,
+                                                    final FluentIterable<? extends RestAllSetting> allSettings) {
+        Optional<? extends RestSingleSetting> matchedSetting = singleSettings.firstMatch(match(httpRequest));
+        if (matchedSetting.isPresent()) {
+            return matchedSetting.transform(toResponseHandler());
+        }
+
+        Optional<? extends RestAllSetting> allRestSetting = allSettings.firstMatch(match(httpRequest));
+        if (allRestSetting.isPresent()) {
+            return allRestSetting.transform(toResponseHandler());
+        }
+
+        return absent();
     }
 
     private Predicate<SimpleRestSetting> match(final HttpRequest request) {

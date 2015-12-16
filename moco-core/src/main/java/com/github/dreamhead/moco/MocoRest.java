@@ -5,7 +5,8 @@ import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.DeleteRestSetting;
 import com.github.dreamhead.moco.rest.GetAllRestSetting;
 import com.github.dreamhead.moco.rest.GetSingleRestSetting;
-import com.github.dreamhead.moco.rest.HeadRestSetting;
+import com.github.dreamhead.moco.rest.HeadAllRestSetting;
+import com.github.dreamhead.moco.rest.HeadSingleRestSetting;
 import com.github.dreamhead.moco.rest.PostRestSetting;
 import com.github.dreamhead.moco.rest.PutRestSetting;
 import com.google.common.base.Optional;
@@ -84,14 +85,19 @@ public final class MocoRest {
                 and(checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
+    public static RestSetting head(final ResponseHandler... handlers) {
+        return new HeadAllRestSetting(Optional.<RequestMatcher>absent(),
+                and(checkNotNull(handlers, "Head response handler should not be null")));
+    }
+
     public static RestSetting head(final String id, final ResponseHandler... handlers) {
-        return new HeadRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+        return new HeadSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
                 and(checkNotNull(handlers, "Head response handler should not be null")));
     }
 
     public static RestSetting head(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
-        return new HeadRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
+        return new HeadSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 of(checkNotNull(matcher, "Head request matcher should be not null")),
                 and(checkNotNull(handlers, "Head response handler should not be null")));
     }

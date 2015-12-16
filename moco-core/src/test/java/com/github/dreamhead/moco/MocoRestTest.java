@@ -495,6 +495,22 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_head_with_all() throws Exception {
+        server.resource("targets",
+                head(header("ETag", "Moco"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets"));
+                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+                assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
+            }
+        });
+    }
+
+    @Test
     public void should_head() throws Exception {
         server.resource("targets",
                 head("1")
