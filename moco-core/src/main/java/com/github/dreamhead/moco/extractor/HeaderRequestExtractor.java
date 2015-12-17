@@ -4,11 +4,11 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
+import static com.github.dreamhead.moco.util.HttpHeaders.isForHeaderName;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.FluentIterable.from;
@@ -24,7 +24,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     protected Optional<String[]> doExtract(final HttpRequest request) {
         final ImmutableMap<String, String> headers = request.getHeaders();
         String[] extractedValues = from(headers.entrySet())
-                .filter(isForName(name))
+                .filter(isForHeaderName(name))
                 .transform(toValue())
                 .toArray(String.class);
 
@@ -40,15 +40,6 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
             @Override
             public String apply(final Map.Entry<String, String> input) {
                 return input.getValue();
-            }
-        };
-    }
-
-    private Predicate<Map.Entry<String, String>> isForName(final String key) {
-        return new Predicate<Map.Entry<String, String>>() {
-            @Override
-            public boolean apply(final Map.Entry<String, String> input) {
-                return key.equalsIgnoreCase(input.getKey());
             }
         };
     }

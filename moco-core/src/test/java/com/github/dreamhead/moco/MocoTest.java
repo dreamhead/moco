@@ -692,4 +692,17 @@ public class MocoTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_return_specified_content_type_with_case_insensitive() throws Exception {
+        server.response(header("content-type", "text/html"), with("foo"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Header[] headers = Request.Get(root()).execute().returnResponse().getHeaders(HttpHeaders.CONTENT_TYPE);
+                assertThat(headers.length, is(1));
+            }
+        });
+    }
 }
