@@ -85,21 +85,25 @@ public final class MocoRest {
                 and(checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
-    public static RestSetting head(final ResponseHandler... handlers) {
+    public static RestSetting head(final ResponseHandler handler, final ResponseHandler... handlers) {
         return new HeadAllRestSetting(Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handlers, "Head response handler should not be null")));
+                and(checkNotNull(handler, "Head response handler should not be null"),
+                        checkNotNull(handlers, "Head response handler should not be null")));
     }
 
-    public static RestSetting head(final String id, final ResponseHandler... handlers) {
+    public static RestSetting head(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
         return new HeadSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handlers, "Head response handler should not be null")));
+                and(checkNotNull(handler, "Head response handler should not be null"),
+                        checkNotNull(handlers, "Head response handler should not be null")));
     }
 
-    public static RestSetting head(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
+    public static RestSetting head(final String id, final RequestMatcher matcher, final ResponseHandler handler,
+                                   final ResponseHandler... handlers) {
         return new HeadSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 of(checkNotNull(matcher, "Head request matcher should be not null")),
-                and(checkNotNull(handlers, "Head response handler should not be null")));
+                and(checkNotNull(handler, "Head response handler should not be null"),
+                        checkNotNull(handlers, "Head response handler should not be null")));
     }
 
     private MocoRest() {

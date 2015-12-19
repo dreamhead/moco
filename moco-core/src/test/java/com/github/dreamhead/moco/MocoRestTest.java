@@ -513,7 +513,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_head() throws Exception {
         server.resource("targets",
-                head("1")
+                head("1", header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -528,7 +528,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_not_head_with_unknown_id() throws Exception {
         server.resource("targets",
-                head("1")
+                head("1", header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -543,7 +543,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_head_with_matcher() throws Exception {
         server.resource("targets",
-                head("1", eq(query("name"), "foo"))
+                head("1", eq(query("name"), "foo"), header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
