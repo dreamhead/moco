@@ -31,26 +31,32 @@ public final class MocoRest {
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
-    public static RestSetting get(final String id, final ResponseHandler handler) {
+    public static RestSetting get(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
         return new GetSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
-                checkNotNull(handler, "Get response handler should not be null"));
+                and(checkNotNull(handler, "Get response handler should not be null"),
+                        checkNotNull(handlers, "Get response handler should not be null")));
     }
 
-    public static RestSetting get(final String id, final RequestMatcher matcher, final ResponseHandler handler) {
+    public static RestSetting get(final String id, final RequestMatcher matcher,
+                                  final ResponseHandler handler, final ResponseHandler... handlers) {
         return new GetSingleRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.of(checkNotNull(matcher, "Get request matcher should no be null")),
-                checkNotNull(handler, "Get response handler should not be null"));
+                and(checkNotNull(handler, "Get response handler should not be null"),
+                        checkNotNull(handlers, "Get response handler should not be null")));
     }
 
-    public static RestSetting get(final ResponseHandler handler) {
+    public static RestSetting get(final ResponseHandler handler, final ResponseHandler... handlers) {
         return new GetAllRestSetting(Optional.<RequestMatcher>absent(),
-                checkNotNull(handler, "Get response handler should not be null"));
+                and(checkNotNull(handler, "Get response handler should not be null"),
+                        checkNotNull(handlers, "Get response handler should not be null")));
     }
 
-    public static RestSetting get(final RequestMatcher matcher, final ResponseHandler handler) {
+    public static RestSetting get(final RequestMatcher matcher,
+                                  final ResponseHandler handler, final ResponseHandler... handlers) {
         return new GetAllRestSetting(of(checkNotNull(matcher, "Get request matcher should no be null")),
-                checkNotNull(handler, "Get response handler should not be null"));
+                and(checkNotNull(handler, "Get response handler should not be null"),
+                        checkNotNull(handlers, "Get response handler should not be null")));
     }
 
     public static RestSetting post(final ResponseHandler... handlers) {
