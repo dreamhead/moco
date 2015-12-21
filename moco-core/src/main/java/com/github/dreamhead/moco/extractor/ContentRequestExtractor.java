@@ -7,12 +7,12 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.of;
 
-public class ContentRequestExtractor implements RequestExtractor<String> {
+public class ContentRequestExtractor implements RequestExtractor<byte[]> {
     @Override
-    public Optional<String> extract(final Request request) {
+    public Optional<byte[]> extract(final Request request) {
         MessageContent content = request.getContent();
         if (content.hasContent()) {
-            return of(content.toString());
+            return of(content.getContent());
         }
 
         return Optional.absent();

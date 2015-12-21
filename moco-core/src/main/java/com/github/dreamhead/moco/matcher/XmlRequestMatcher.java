@@ -26,10 +26,10 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final DocumentBuilder documentBuilder;
-    private final RequestExtractor<String> extractor;
+    private final RequestExtractor<byte[]> extractor;
     private final Resource resource;
 
-    public XmlRequestMatcher(final RequestExtractor<String> extractor, final Resource resource) {
+    public XmlRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.documentBuilder = documentBuilder();
@@ -62,7 +62,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Document extractDocument(final Request request,
-                                     final RequestExtractor<String> extractor) throws SAXException {
+                                     final RequestExtractor<byte[]> extractor) throws SAXException {
         return extractDocument(helper.extractAsInputSource(request, extractor), this);
     }
 

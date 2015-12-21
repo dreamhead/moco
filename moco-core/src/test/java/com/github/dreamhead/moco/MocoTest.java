@@ -158,6 +158,19 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_match_request_with_charset_from_file() throws Exception {
+        server.request(by(file("src/test/resources/gbk.response", Charset.forName("GBK")))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postBytes(root(), toByteArray(new File("src/test/resources/gbk.response"))),
+                        is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_return_expected_response_based_on_specified_uri() throws Exception {
         server.request(by(uri("/foo"))).response("bar");
 

@@ -15,11 +15,11 @@ import java.io.IOException;
 import static com.google.common.base.Optional.of;
 
 public class JsonRequestMatcher extends AbstractRequestMatcher {
-    private final RequestExtractor<String> extractor;
+    private final RequestExtractor<byte[]> extractor;
     private final Resource resource;
     private final ObjectMapper mapper;
 
-    public JsonRequestMatcher(final RequestExtractor<String> extractor, final Resource resource) {
+    public JsonRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
         this.mapper = new ObjectMapper();
@@ -27,11 +27,11 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
 
     @Override
     public boolean match(final Request request) {
-        Optional<String> content = extractor.extract(request);
+        Optional<byte[]> content = extractor.extract(request);
         return content.isPresent() && doMatch(request, content.get());
     }
 
-    private boolean doMatch(final Request request, final String content) {
+    private boolean doMatch(final Request request, final byte[] content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
             JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)).getContent());

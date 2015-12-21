@@ -6,6 +6,8 @@ import com.google.common.base.Optional;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static com.google.common.base.Optional.absent;
@@ -21,14 +23,16 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
 
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
-        String content = extractor.extract(request).get();
+        byte[] content = extractor.extract(request).get();
         try {
-            Object jsonPathContent = jsonPath.read(content);
+            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(content));
             if (jsonPathContent == null) {
                 return absent();
             }
             return of(toStringArray(jsonPathContent));
         } catch (PathNotFoundException e) {
+            return absent();
+        } catch (IOException e) {
             return absent();
         }
     }

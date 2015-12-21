@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import static java.lang.String.format;
 
 public final class Extractors {
-    private static ImmutableMap<String, RequestExtractor<String>> extractors = ImmutableMap.<String, RequestExtractor<String>>builder()
+    private static ImmutableMap<String, RequestExtractor<?>> extractors = ImmutableMap.<String, RequestExtractor<?>>builder()
             .put("file", new ContentRequestExtractor())
             .put("text", new ContentRequestExtractor())
             .put("pathresource", new ContentRequestExtractor())
@@ -14,7 +14,7 @@ public final class Extractors {
             .put("method", new HttpMethodExtractor())
             .put("version", new VersionExtractor()).build();
 
-    public static RequestExtractor<String> extractor(final String id) {
+    public static RequestExtractor<?> extractor(final String id) {
         if (extractors.containsKey(id)) {
             return extractors.get(id);
         }

@@ -11,10 +11,10 @@ import java.util.Arrays;
 
 public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     public EqRequestMatcher(final RequestExtractor<T> extractor, final Resource expected) {
-        super(extractor, expected, new Predicate<String>() {
+        super(extractor, expected, new Predicate<byte[]>() {
             @Override
-            public boolean apply(final String input) {
-                return Arrays.equals(input.getBytes(), expected.readFor(Optional.<Request>absent()).getContent());
+            public boolean apply(final byte[] input) {
+                return Arrays.equals(input, expected.readFor(Optional.<Request>absent()).getContent());
             }
         });
     }

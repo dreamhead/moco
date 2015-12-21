@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
     public MatchMatcher(final RequestExtractor<T> extractor, final Resource expected) {
-        super(extractor, expected, new Predicate<String>() {
+        super(extractor, expected, new Predicate<byte[]>() {
             @Override
-            public boolean apply(final String input) {
+            public boolean apply(final byte[] input) {
                 Pattern pattern = Pattern.compile(expected.readFor(Optional.<Request>absent()).toString());
-                return pattern.matcher(input).matches();
+                return pattern.matcher(new String(input)).matches();
             }
         });
     }

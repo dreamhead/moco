@@ -9,10 +9,10 @@ import com.google.common.base.Predicate;
 
 public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
     public StartsWithMatcher(final RequestExtractor<T> extractor, final Resource expected) {
-        super(extractor, expected, new Predicate<String>() {
+        super(extractor, expected, new Predicate<byte[]>() {
             @Override
-            public boolean apply(final String input) {
-                return input.startsWith(expected.readFor(Optional.<Request>absent()).toString());
+            public boolean apply(final byte[] input) {
+                return new String(input).startsWith(expected.readFor(Optional.<Request>absent()).toString());
             }
         });
     }

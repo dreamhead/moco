@@ -368,7 +368,7 @@ public final class Moco {
 
     public static RequestMatcher xml(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return new XmlRequestMatcher(extractor(resource.id()), resource);
+        return new XmlRequestMatcher((RequestExtractor<byte[]>) extractor(resource.id()), resource);
     }
 
     public static RequestMatcher json(final String jsonText) {
@@ -381,7 +381,7 @@ public final class Moco {
 
     public static RequestMatcher json(final Resource resource) {
         checkNotNull(resource, "Json should not be null");
-        return new JsonRequestMatcher(extractor(resource.id()), resource);
+        return new JsonRequestMatcher((RequestExtractor<byte[]>) extractor(resource.id()), resource);
     }
 
     public static ResponseHandler toJson(final Object pojo) {
