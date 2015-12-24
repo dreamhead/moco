@@ -357,7 +357,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1")
+                put("1", status(200))
         );
 
         running(server, new Runnable() {
@@ -378,7 +378,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1")
+                put("1", status(200))
         );
 
         running(server, new Runnable() {
@@ -420,7 +420,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1", eq(header(HttpHeaders.IF_MATCH), "moco"))
+                put("1", eq(header(HttpHeaders.IF_MATCH), "moco"), status(200))
         );
 
         running(server, new Runnable() {
@@ -436,7 +436,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_not_delete_with_unknown_id() throws Exception {
         server.resource("targets",
-                delete("1")
+                delete("1", status(200))
         );
 
         running(server, new Runnable() {
@@ -451,7 +451,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_delete() throws Exception {
         server.resource("targets",
-                delete("1")
+                delete("1", status(200))
         );
 
         running(server, new Runnable() {
@@ -466,7 +466,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_delete_with_matcher() throws Exception {
         server.resource("targets",
-                delete("1", eq(header(HttpHeaders.IF_MATCH), "moco"))
+                delete("1", eq(header(HttpHeaders.IF_MATCH), "moco"), status(200))
         );
 
         running(server, new Runnable() {

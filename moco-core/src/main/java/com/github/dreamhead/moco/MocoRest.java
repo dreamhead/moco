@@ -59,36 +59,47 @@ public final class MocoRest {
                         checkNotNull(handlers, "Get response handler should not be null")));
     }
 
-    public static RestSetting post(final ResponseHandler... handlers) {
-        return new PostRestSetting(Optional.<RequestMatcher>absent(), and(handlers));
+    public static RestSetting post(final ResponseHandler handler, final ResponseHandler... handlers) {
+        return new PostRestSetting(Optional.<RequestMatcher>absent(),
+                and(checkNotNull(handler, "Post response handler should not be null"),
+                        checkNotNull(handlers, "Post response handler should not be null")));
     }
 
-    public static RestSetting post(final RequestMatcher matcher, final ResponseHandler... handlers) {
-        return new PostRestSetting(of(matcher), and(handlers));
+    public static RestSetting post(final RequestMatcher matcher,
+                                   final ResponseHandler handler, final ResponseHandler... handlers) {
+        return new PostRestSetting(of(matcher), and(checkNotNull(handler, "Post response handler should not be null"),
+                checkNotNull(handlers, "Post response handler should not be null")));
     }
 
-    public static RestSetting put(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
+    public static RestSetting put(final String id, final RequestMatcher matcher,
+                                  final ResponseHandler handler, final ResponseHandler... handlers) {
         return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.of(checkNotNull(matcher, "Put request matcher should no be null")),
-                and(checkNotNull(handlers, "Put response handler should not be null")));
+                and(checkNotNull(handler, "Put response handler should not be null"),
+                        checkNotNull(handlers, "Put response handler should not be null")));
     }
 
-    public static RestSetting put(final String id, final ResponseHandler... handlers) {
+    public static RestSetting put(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
         return new PutRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handlers, "Put response handler should not be null")));
+                and(checkNotNull(handler, "Put response handler should not be null"),
+                        checkNotNull(handlers, "Put response handler should not be null")));
     }
 
-    public static RestSetting delete(final String id, final ResponseHandler... handlers) {
+    public static RestSetting delete(final String id,
+                                     final ResponseHandler handler, final ResponseHandler... handlers) {
         return new DeleteRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handlers, "Delete response handler should not be null")));
+                and(checkNotNull(handler, "Delete response handler should not be null"),
+                        checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
-    public static RestSetting delete(final String id, final RequestMatcher matcher, final ResponseHandler... handlers) {
+    public static RestSetting delete(final String id, final RequestMatcher matcher,
+                                     final ResponseHandler handler, final ResponseHandler... handlers) {
         return new DeleteRestSetting(checkNotNullOrEmpty(id, "ID should not be null or empty"),
                 of(checkNotNull(matcher, "Delete request matcher should be not null")),
-                and(checkNotNull(handlers, "Delete response handler should not be null")));
+                and(checkNotNull(handler, "Delete response handler should not be null"),
+                        checkNotNull(handlers, "Delete response handler should not be null")));
     }
 
     public static RestSetting head(final ResponseHandler handler, final ResponseHandler... handlers) {
