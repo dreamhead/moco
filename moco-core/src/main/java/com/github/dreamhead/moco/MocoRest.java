@@ -67,7 +67,8 @@ public final class MocoRest {
 
     public static RestSetting post(final RequestMatcher matcher,
                                    final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new PostRestSetting(of(matcher), and(checkNotNull(handler, "Post response handler should not be null"),
+        return new PostRestSetting(of(checkNotNull(matcher, "Post request matcher should not be null")),
+                and(checkNotNull(handler, "Post response handler should not be null"),
                 checkNotNull(handlers, "Post response handler should not be null")));
     }
 
