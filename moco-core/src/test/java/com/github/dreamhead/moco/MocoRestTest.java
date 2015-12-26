@@ -555,6 +555,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_get_id_with_slash_to() throws Exception {
+        get("1/1", status(200));
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
