@@ -47,7 +47,7 @@ public class RestRequestDispatcher {
         this.headSettings = filter(settings, HeadSingleRestSetting.class);
         this.headAllSettings = filter(settings, HeadAllRestSetting.class);
         this.allMatcher = by(uri(resourceRoot(name)));
-        this.singleMatcher = Moco.match(uri(join(resourceRoot(name), ".*")));
+        this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
     }
 
     private <T> Function<? super T, T> toInstance(final Class<T> clazz) {
