@@ -181,6 +181,14 @@ public class RestRequestDispatcher {
     }
 
     public Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
+        if (allMatcher.match(httpRequest) || this.singleMatcher.match(httpRequest)) {
+            return doGetResponseHandler(httpRequest);
+        }
+
+        return absent();
+    }
+
+    private Optional<ResponseHandler> doGetResponseHandler(final HttpRequest httpRequest) {
         if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
             return getGetHandler(httpRequest);
         }
