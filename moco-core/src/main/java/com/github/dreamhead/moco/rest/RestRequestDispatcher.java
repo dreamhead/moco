@@ -22,11 +22,12 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class RestRequestDispatcher {
+    private static final ResponseHandler NOT_FOUND_HANLDER = status(HttpResponseStatus.NOT_FOUND.code());
+    private static final ResponseHandler BAD_REQUEST_HANDLER = status(HttpResponseStatus.BAD_REQUEST.code());
+
     private final String name;
     private final RequestMatcher allMatcher;
     private final RequestMatcher singleMatcher;
-    private final ResponseHandler notFoundHandler;
-    private final ResponseHandler badRequestHandler;
     private final FluentIterable<GetAllRestSetting> getAllSettings;
     private final FluentIterable<GetSingleRestSetting> getSingleSettings;
     private final FluentIterable<PostRestSetting> postSettings;
@@ -37,8 +38,7 @@ public class RestRequestDispatcher {
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
         this.name = name;
-        this.notFoundHandler = status(HttpResponseStatus.NOT_FOUND.code());
-        this.badRequestHandler = status(HttpResponseStatus.BAD_REQUEST.code());
+
         this.getAllSettings = filter(settings, GetAllRestSetting.class);
         this.getSingleSettings = filter(settings, GetSingleRestSetting.class);
         this.postSettings = filter(settings, PostRestSetting.class);
@@ -111,9 +111,9 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getSingleOrAllHandler(final HttpRequest httpRequest,
-                                                           final FluentIterable<? extends RestSingleSetting> single,
-                                                           final FluentIterable<? extends RestAllSetting> all,
-                                                           final String name) {
+                                                            final FluentIterable<? extends RestSingleSetting> single,
+                                                            final FluentIterable<? extends RestAllSetting> all,
+                                                            final String name) {
         Optional<? extends RestSingleSetting> matchedSetting = single.firstMatch(match(name, httpRequest));
         if (matchedSetting.isPresent()) {
             return matchedSetting.transform(toResponseHandler());
@@ -133,7 +133,7 @@ public class RestRequestDispatcher {
             return handler;
         }
 
-        return of(notFoundHandler);
+        return of(NOT_FOUND_HANLDER);
     }
 
     private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
@@ -153,7 +153,7 @@ public class RestRequestDispatcher {
             }
         }
 
-        return of(notFoundHandler);
+        return of(NOT_FOUND_HANLDER);
     }
 
     private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
@@ -163,10 +163,10 @@ public class RestRequestDispatcher {
         }
 
         if (singleMatcher.match(request)) {
-            return of(notFoundHandler);
+            return of(NOT_FOUND_HANLDER);
         }
 
-        return of(badRequestHandler);
+        return of(BAD_REQUEST_HANDLER);
     }
 
     private Optional<ResponseHandler> getSingleResponseHandler(
@@ -177,7 +177,7 @@ public class RestRequestDispatcher {
             return setting.transform(toResponseHandler());
         }
 
-        return of(notFoundHandler);
+        return of(NOT_FOUND_HANLDER);
     }
 
     public Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
