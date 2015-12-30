@@ -22,7 +22,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class RestRequestDispatcher {
-    private static final ResponseHandler NOT_FOUND_HANLDER = status(HttpResponseStatus.NOT_FOUND.code());
+    private static final ResponseHandler NOT_FOUND_HANDLER = status(HttpResponseStatus.NOT_FOUND.code());
     private static final ResponseHandler BAD_REQUEST_HANDLER = status(HttpResponseStatus.BAD_REQUEST.code());
 
     private final String name;
@@ -133,7 +133,7 @@ public class RestRequestDispatcher {
             return handler;
         }
 
-        return of(NOT_FOUND_HANLDER);
+        return of(NOT_FOUND_HANDLER);
     }
 
     private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
@@ -153,7 +153,7 @@ public class RestRequestDispatcher {
             }
         }
 
-        return of(NOT_FOUND_HANLDER);
+        return of(NOT_FOUND_HANDLER);
     }
 
     private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
@@ -163,7 +163,7 @@ public class RestRequestDispatcher {
         }
 
         if (singleMatcher.match(request)) {
-            return of(NOT_FOUND_HANLDER);
+            return of(NOT_FOUND_HANDLER);
         }
 
         return of(BAD_REQUEST_HANDLER);
@@ -177,7 +177,7 @@ public class RestRequestDispatcher {
             return setting.transform(toResponseHandler());
         }
 
-        return of(NOT_FOUND_HANLDER);
+        return of(NOT_FOUND_HANDLER);
     }
 
     public Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
