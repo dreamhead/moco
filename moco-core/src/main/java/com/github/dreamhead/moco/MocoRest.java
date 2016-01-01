@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.rest.HeadAllRestSetting;
 import com.github.dreamhead.moco.rest.HeadSingleRestSetting;
 import com.github.dreamhead.moco.rest.PostRestSetting;
 import com.github.dreamhead.moco.rest.PutRestSetting;
+import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
@@ -31,16 +32,18 @@ public final class MocoRest {
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
+    public static RestIdMatcher anyId() {
+        return RestIdMatchers.anyId();
+    }
+
     public static RestSetting get(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new GetSingleRestSetting(checkId(id),
-                Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Get response handler should not be null"),
-                        checkNotNull(handlers, "Get response handler should not be null")));
+        return get(RestIdMatchers.eq(checkId(id)), checkNotNull(handler, "Get response handler should not be null"),
+                checkNotNull(handlers, "Get response handler should not be null"));
     }
 
     public static RestSetting get(final String id, final RequestMatcher matcher,
                                   final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new GetSingleRestSetting(checkId(id),
+        return new GetSingleRestSetting(RestIdMatchers.eq(checkId(id)),
                 Optional.of(checkNotNull(matcher, "Get request matcher should no be null")),
                 and(checkNotNull(handler, "Get response handler should not be null"),
                         checkNotNull(handlers, "Get response handler should not be null")));
@@ -55,6 +58,14 @@ public final class MocoRest {
     public static RestSetting get(final RequestMatcher matcher,
                                   final ResponseHandler handler, final ResponseHandler... handlers) {
         return new GetAllRestSetting(of(checkNotNull(matcher, "Get request matcher should no be null")),
+                and(checkNotNull(handler, "Get response handler should not be null"),
+                        checkNotNull(handlers, "Get response handler should not be null")));
+    }
+
+    public static RestSetting get(final RestIdMatcher idMatcher, final ResponseHandler handler,
+                                  final ResponseHandler... handlers) {
+        return new GetSingleRestSetting(checkNotNull(idMatcher, "ID Matcher should not be null"),
+                Optional.<RequestMatcher>absent(),
                 and(checkNotNull(handler, "Get response handler should not be null"),
                         checkNotNull(handlers, "Get response handler should not be null")));
     }

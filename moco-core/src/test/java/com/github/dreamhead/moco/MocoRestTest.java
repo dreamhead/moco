@@ -27,6 +27,7 @@ import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.MocoRest.anyId;
 import static com.github.dreamhead.moco.MocoRest.delete;
 import static com.github.dreamhead.moco.MocoRest.get;
 import static com.github.dreamhead.moco.MocoRest.head;
@@ -276,6 +277,30 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
                 HttpResponse response = helper.getResponse(remoteUrl("/targets"));
                 assertThat(response.getStatusLine().getStatusCode(), is(404));
+            }
+        });
+    }
+
+    @Test
+    public void should_get_resource_by_any_id() throws Exception {
+        Plain resource = new Plain();
+        resource.code = 1;
+        resource.message = "hello";
+
+        server.resource("targets",
+                get(anyId(), toJson(resource))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Plain response1 = getResource("/targets/1");
+                assertThat(response1.code, is(1));
+                assertThat(response1.message, is("hello"));
+
+                Plain response2 = getResource("/targets/2");
+                assertThat(response2.code, is(1));
+                assertThat(response2.message, is("hello"));
             }
         });
     }

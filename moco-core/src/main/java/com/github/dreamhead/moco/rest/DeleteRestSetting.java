@@ -6,6 +6,6 @@ import com.google.common.base.Optional;
 
 public class DeleteRestSetting extends RestSingleSetting {
     public DeleteRestSetting(final String id, final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
-        super(id, matcher, handler);
+        super(RestIdMatchers.eq(id), matcher, handler);
     }
 }

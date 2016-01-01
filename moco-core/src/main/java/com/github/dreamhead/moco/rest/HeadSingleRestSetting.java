@@ -6,6 +6,6 @@ import com.google.common.base.Optional;
 
 public class HeadSingleRestSetting extends RestSingleSetting {
     public HeadSingleRestSetting(final String id, final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
-        super(id, matcher, handler);
+        super(RestIdMatchers.eq(id), matcher, handler);
     }
 }
