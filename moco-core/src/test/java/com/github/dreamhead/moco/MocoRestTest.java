@@ -64,8 +64,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1", toJson(resource1)),
-                get("2", toJson(resource2))
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -93,7 +93,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get(toJson(ImmutableList.of(resource1, resource2)))
+                get().response(toJson(ImmutableList.of(resource1, resource2)))
         );
 
         running(server, new Runnable() {
@@ -120,8 +120,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1", toJson(resource1)),
-                get("2", toJson(resource2))
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -163,8 +163,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1", toJson(resource1)),
-                get("2", toJson(resource2))
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
         );
 
         running(server, new Runnable() {
@@ -197,8 +197,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "0XBABE";
 
         server.resource("targets",
-                get("1", toJson(resource1)),
-                get("2", toJson(resource2))
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
         );
 
         File file = folder.newFile();
@@ -227,14 +227,13 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource1)),
-                get("2", eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), toJson(resource2))
+                get("1").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(toJson(resource1)),
+                get("2").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(toJson(resource2))
         );
 
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-
                 org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
                         of(HttpHeaders.CONTENT_TYPE, "application/json"));
                 Plain response1 = asPlain(response);
@@ -265,7 +264,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get(eq(query("foo"), "bar"), toJson(ImmutableList.of(resource1, resource2)))
+                get().request(eq(query("foo"), "bar")).response(toJson(ImmutableList.of(resource1, resource2)))
         );
 
         running(server, new Runnable() {
@@ -288,7 +287,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource.message = "hello";
 
         server.resource("targets",
-                get(anyId(), toJson(resource))
+                get(anyId()).response(toJson(resource))
         );
 
         running(server, new Runnable() {
@@ -313,7 +312,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                post(status(201), header("Location", "/targets/123"))
+                post().response(status(201), header("Location", "/targets/123"))
         );
 
         running(server, new Runnable() {
@@ -335,7 +334,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                post(eq(header(HttpHeaders.CONTENT_TYPE), "application/json"), status(201), header("Location", "/targets/123"))
+                post().request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json"))
+                        .response(status(201), header("Location", "/targets/123"))
         );
 
         running(server, new Runnable() {
@@ -361,7 +361,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                post(status(201), header("Location", "/targets/123"))
+                post().response(status(201), header("Location", "/targets/123"))
         );
 
         running(server, new Runnable() {
@@ -382,7 +382,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1", status(200))
+                put("1").response(status(200))
         );
 
         running(server, new Runnable() {
@@ -403,7 +403,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1", status(200))
+                put("1").response(status(200))
         );
 
         running(server, new Runnable() {
@@ -424,7 +424,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1", status(409))
+                put("1").response(status(409))
         );
 
         running(server, new Runnable() {
@@ -445,7 +445,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource1.message = "hello";
 
         server.resource("targets",
-                put("1", eq(header(HttpHeaders.IF_MATCH), "moco"), status(200))
+                put("1").request(eq(header(HttpHeaders.IF_MATCH), "moco")).response(status(200))
         );
 
         running(server, new Runnable() {
@@ -461,7 +461,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_not_delete_with_unknown_id() throws Exception {
         server.resource("targets",
-                delete("1", status(200))
+                delete("1").response(status(200))
         );
 
         running(server, new Runnable() {
@@ -476,7 +476,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_delete() throws Exception {
         server.resource("targets",
-                delete("1", status(200))
+                delete("1").response(status(200))
         );
 
         running(server, new Runnable() {
@@ -491,7 +491,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_delete_with_matcher() throws Exception {
         server.resource("targets",
-                delete("1", eq(header(HttpHeaders.IF_MATCH), "moco"), status(200))
+                delete("1").request(eq(header(HttpHeaders.IF_MATCH), "moco")).response(status(200))
         );
 
         running(server, new Runnable() {
@@ -507,7 +507,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_delete_with_response() throws Exception {
         server.resource("targets",
-                delete("1", status(409))
+                delete("1").response(status(409))
         );
 
         running(server, new Runnable() {
@@ -522,7 +522,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_head_with_all() throws Exception {
         server.resource("targets",
-                head(header("ETag", "Moco"))
+                head().response(header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -538,7 +538,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_head() throws Exception {
         server.resource("targets",
-                head("1", header("ETag", "Moco"))
+                head("1").response(header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -553,7 +553,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_not_head_with_unknown_id() throws Exception {
         server.resource("targets",
-                head("1", header("ETag", "Moco"))
+                head("1").response(header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -568,7 +568,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_head_with_matcher() throws Exception {
         server.resource("targets",
-                head("1", eq(query("name"), "foo"), header("ETag", "Moco"))
+                head("1").request(eq(query("name"), "foo")).response(header("ETag", "Moco"))
         );
 
         running(server, new Runnable() {
@@ -582,7 +582,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_for_get_id_with_slash_to() throws Exception {
-        get("1/1", status(200));
+        get("1/1").response(status(200));
     }
 
     private Plain getResource(String uri) throws IOException {

@@ -12,7 +12,7 @@ import com.github.dreamhead.moco.rest.PutRestSetting;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.google.common.base.Optional;
 
-import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
+import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -36,103 +36,36 @@ public final class MocoRest {
         return RestIdMatchers.anyId();
     }
 
-    public static RestSetting get(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
-        return get(RestIdMatchers.eq(checkId(id)), checkNotNull(handler, "Get response handler should not be null"),
-                checkNotNull(handlers, "Get response handler should not be null"));
+    public static RestSettingBuilder get(final String id) {
+        return get(eq(checkId(id)));
     }
 
-    public static RestSetting get(final String id, final RequestMatcher matcher,
-                                  final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new GetSingleRestSetting(RestIdMatchers.eq(checkId(id)),
-                Optional.of(checkNotNull(matcher, "Get request matcher should no be null")),
-                and(checkNotNull(handler, "Get response handler should not be null"),
-                        checkNotNull(handlers, "Get response handler should not be null")));
+    public static RestSettingBuilder get() {
+        return GetAllRestSetting.builder();
     }
 
-    public static RestSetting get(final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new GetAllRestSetting(Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Get response handler should not be null"),
-                        checkNotNull(handlers, "Get response handler should not be null")));
+    public static RestSettingBuilder get(final RestIdMatcher idMatcher) {
+        return GetSingleRestSetting.builder(checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
-    public static RestSetting get(final RequestMatcher matcher,
-                                  final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new GetAllRestSetting(of(checkNotNull(matcher, "Get request matcher should no be null")),
-                and(checkNotNull(handler, "Get response handler should not be null"),
-                        checkNotNull(handlers, "Get response handler should not be null")));
+    public static RestSettingBuilder post() {
+        return PostRestSetting.builder();
     }
 
-    public static RestSetting get(final RestIdMatcher idMatcher, final ResponseHandler handler,
-                                  final ResponseHandler... handlers) {
-        return new GetSingleRestSetting(checkNotNull(idMatcher, "ID Matcher should not be null"),
-                Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Get response handler should not be null"),
-                        checkNotNull(handlers, "Get response handler should not be null")));
+    public static RestSettingBuilder put(final String id) {
+        return PutRestSetting.builder(eq(id));
     }
 
-    public static RestSetting post(final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new PostRestSetting(Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Post response handler should not be null"),
-                        checkNotNull(handlers, "Post response handler should not be null")));
+    public static RestSettingBuilder delete(final String id) {
+        return DeleteRestSetting.builder(eq(id));
     }
 
-    public static RestSetting post(final RequestMatcher matcher,
-                                   final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new PostRestSetting(of(checkNotNull(matcher, "Post request matcher should not be null")),
-                and(checkNotNull(handler, "Post response handler should not be null"),
-                checkNotNull(handlers, "Post response handler should not be null")));
+    public static RestSettingBuilder head() {
+        return HeadAllRestSetting.builder();
     }
 
-    public static RestSetting put(final String id, final RequestMatcher matcher,
-                                  final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new PutRestSetting(checkId(id),
-                Optional.of(checkNotNull(matcher, "Put request matcher should no be null")),
-                and(checkNotNull(handler, "Put response handler should not be null"),
-                        checkNotNull(handlers, "Put response handler should not be null")));
-    }
-
-    public static RestSetting put(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new PutRestSetting(checkId(id),
-                Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Put response handler should not be null"),
-                        checkNotNull(handlers, "Put response handler should not be null")));
-    }
-
-    public static RestSetting delete(final String id,
-                                     final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new DeleteRestSetting(checkId(id),
-                Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Delete response handler should not be null"),
-                        checkNotNull(handlers, "Delete response handler should not be null")));
-    }
-
-    public static RestSetting delete(final String id, final RequestMatcher matcher,
-                                     final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new DeleteRestSetting(checkId(id),
-                of(checkNotNull(matcher, "Delete request matcher should be not null")),
-                and(checkNotNull(handler, "Delete response handler should not be null"),
-                        checkNotNull(handlers, "Delete response handler should not be null")));
-    }
-
-    public static RestSetting head(final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new HeadAllRestSetting(Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Head response handler should not be null"),
-                        checkNotNull(handlers, "Head response handler should not be null")));
-    }
-
-    public static RestSetting head(final String id, final ResponseHandler handler, final ResponseHandler... handlers) {
-        return new HeadSingleRestSetting(checkId(id),
-                Optional.<RequestMatcher>absent(),
-                and(checkNotNull(handler, "Head response handler should not be null"),
-                        checkNotNull(handlers, "Head response handler should not be null")));
-    }
-
-    public static RestSetting head(final String id, final RequestMatcher matcher, final ResponseHandler handler,
-                                   final ResponseHandler... handlers) {
-        return new HeadSingleRestSetting(checkId(id),
-                of(checkNotNull(matcher, "Head request matcher should be not null")),
-                and(checkNotNull(handler, "Head response handler should not be null"),
-                        checkNotNull(handlers, "Head response handler should not be null")));
+    public static RestSettingBuilder head(final String id) {
+        return HeadSingleRestSetting.builder(eq(id));
     }
 
     private static String checkId(final String id) {
