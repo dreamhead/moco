@@ -8,12 +8,15 @@ import com.google.common.base.Optional;
 import static com.github.dreamhead.moco.Moco.and;
 
 public abstract class SimpleRestSetting implements RestSetting {
+    private final HttpMethod method;
     private final Optional<RequestMatcher> matcher;
     private final ResponseHandler handler;
 
     protected abstract RequestMatcher getBaseRequestMatcher(final String resourceName);
 
-    public SimpleRestSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
+    public SimpleRestSetting(final HttpMethod method,
+                             final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
+        this.method = method;
         this.matcher = matcher;
         this.handler = handler;
     }
@@ -29,5 +32,10 @@ public abstract class SimpleRestSetting implements RestSetting {
         }
 
         return rootMatcher;
+    }
+
+    @Override
+    public boolean isFor(final HttpMethod method) {
+        return this.method == method;
     }
 }

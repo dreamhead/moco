@@ -28,24 +28,24 @@ public class RestRequestDispatcher {
     private final String name;
     private final RequestMatcher allMatcher;
     private final RequestMatcher singleMatcher;
-    private final FluentIterable<GetAllRestSetting> getAllSettings;
-    private final FluentIterable<GetSingleRestSetting> getSingleSettings;
-    private final FluentIterable<PostRestSetting> postSettings;
-    private final FluentIterable<PutRestSetting> putSettings;
-    private final FluentIterable<DeleteRestSetting> deleteSettings;
-    private final FluentIterable<HeadSingleRestSetting> headSettings;
-    private final FluentIterable<HeadAllRestSetting> headAllSettings;
+    private final FluentIterable<? extends RestAllSetting> getAllSettings;
+    private final FluentIterable<? extends RestSingleSetting> getSingleSettings;
+    private final FluentIterable<? extends RestAllSetting> postSettings;
+    private final FluentIterable<? extends RestSingleSetting> putSettings;
+    private final FluentIterable<? extends RestSingleSetting> deleteSettings;
+    private final FluentIterable<? extends RestSingleSetting> headSettings;
+    private final FluentIterable<? extends RestAllSetting> headAllSettings;
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
         this.name = name;
 
-        this.getAllSettings = filter(settings, GetAllRestSetting.class);
-        this.getSingleSettings = filter(settings, GetSingleRestSetting.class);
-        this.postSettings = filter(settings, PostRestSetting.class);
-        this.putSettings = filter(settings, PutRestSetting.class);
-        this.deleteSettings = filter(settings, DeleteRestSetting.class);
-        this.headSettings = filter(settings, HeadSingleRestSetting.class);
-        this.headAllSettings = filter(settings, HeadAllRestSetting.class);
+        this.getAllSettings = filter(settings, RestAllSetting.class, HttpMethod.GET);
+        this.getSingleSettings = filter(settings, RestSingleSetting.class, HttpMethod.GET);
+        this.postSettings = filter(settings, RestAllSetting.class, HttpMethod.POST);
+        this.putSettings = filter(settings, RestSingleSetting.class, HttpMethod.PUT);
+        this.deleteSettings = filter(settings, RestSingleSetting.class, HttpMethod.DELETE);
+        this.headSettings = filter(settings, RestSingleSetting.class, HttpMethod.HEAD);
+        this.headAllSettings = filter(settings, RestAllSetting.class, HttpMethod.HEAD);
         this.allMatcher = by(uri(resourceRoot(name)));
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
     }
@@ -57,6 +57,17 @@ public class RestRequestDispatcher {
                 return clazz.cast(input);
             }
         };
+    }
+
+    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings,
+                                                             final Class<T> type,
+                                                             final HttpMethod method) {
+        return filter(settings, type).filter(new Predicate<T>() {
+            @Override
+            public boolean apply(final T input) {
+                return input.isFor(method);
+            }
+        });
     }
 
     private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings, final Class<T> type) {
@@ -157,7 +168,7 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
-        Optional<PostRestSetting> setting = postSettings.firstMatch(match(name, request));
+        Optional<? extends RestAllSetting> setting = postSettings.firstMatch(match(name, request));
         if (setting.isPresent()) {
             return setting.transform(toResponseHandler());
         }

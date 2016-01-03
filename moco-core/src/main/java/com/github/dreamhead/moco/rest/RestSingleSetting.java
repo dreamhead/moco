@@ -5,12 +5,13 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.google.common.base.Optional;
 
-public abstract class RestSingleSetting extends SimpleRestSetting {
+public class RestSingleSetting extends SimpleRestSetting {
     private final RestIdMatcher id;
 
-    public RestSingleSetting(final RestIdMatcher id, final Optional<RequestMatcher> matcher,
+    public RestSingleSetting(final HttpMethod method, final RestIdMatcher id,
+                             final Optional<RequestMatcher> matcher,
                              final ResponseHandler handler) {
-        super(matcher, handler);
+        super(method, matcher, handler);
         this.id = id;
     }
 

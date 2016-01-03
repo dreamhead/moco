@@ -2,13 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
-import com.github.dreamhead.moco.rest.DeleteRestSetting;
-import com.github.dreamhead.moco.rest.GetAllRestSetting;
-import com.github.dreamhead.moco.rest.GetSingleRestSetting;
-import com.github.dreamhead.moco.rest.HeadAllRestSetting;
-import com.github.dreamhead.moco.rest.HeadSingleRestSetting;
-import com.github.dreamhead.moco.rest.PostRestSetting;
-import com.github.dreamhead.moco.rest.PutRestSetting;
+import com.github.dreamhead.moco.rest.BaseRestSettingBuilder;
+import com.github.dreamhead.moco.rest.HttpMethod;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.google.common.base.Optional;
 
@@ -41,31 +36,31 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder get() {
-        return GetAllRestSetting.builder();
+        return BaseRestSettingBuilder.all(HttpMethod.GET);
     }
 
     public static RestSettingBuilder get(final RestIdMatcher idMatcher) {
-        return GetSingleRestSetting.builder(checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return BaseRestSettingBuilder.single(HttpMethod.GET, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder post() {
-        return PostRestSetting.builder();
+        return BaseRestSettingBuilder.all(HttpMethod.POST);
     }
 
     public static RestSettingBuilder put(final String id) {
-        return PutRestSetting.builder(eq(id));
+        return BaseRestSettingBuilder.single(HttpMethod.PUT, eq(checkId(id)));
     }
 
     public static RestSettingBuilder delete(final String id) {
-        return DeleteRestSetting.builder(eq(id));
+        return BaseRestSettingBuilder.single(HttpMethod.DELETE, eq(checkId(id)));
     }
 
     public static RestSettingBuilder head() {
-        return HeadAllRestSetting.builder();
+        return BaseRestSettingBuilder.all(HttpMethod.HEAD);
     }
 
     public static RestSettingBuilder head(final String id) {
-        return HeadSingleRestSetting.builder(eq(id));
+        return BaseRestSettingBuilder.single(HttpMethod.HEAD, eq(checkId(id)));
     }
 
     private static String checkId(final String id) {
