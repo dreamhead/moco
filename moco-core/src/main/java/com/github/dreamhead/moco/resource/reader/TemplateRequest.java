@@ -44,7 +44,7 @@ public class TemplateRequest {
 
     public String getMethod() {
         if (this.request instanceof HttpRequest) {
-            return ((HttpRequest) this.request).getMethod();
+            return ((HttpRequest) this.request).getMethod().name();
         }
 
         throw new IllegalArgumentException("Request is not HTTP request");

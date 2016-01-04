@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 public interface HttpRequest extends Request, HttpMessage {
     String getUri();
 
-    String getMethod();
+    HttpMethod getMethod();
 
     ImmutableMap<String, String[]> getQueries();
 }

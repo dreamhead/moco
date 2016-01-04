@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.BaseRestSettingBuilder;
-import com.github.dreamhead.moco.rest.HttpMethod;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.google.common.base.Optional;
 

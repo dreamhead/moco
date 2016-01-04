@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
@@ -17,7 +18,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.QueryStringEncoder;
@@ -33,13 +33,13 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     private final Supplier<ImmutableMap<String, String>> formSupplier;
     private final Supplier<ImmutableMap<String, String>> cookieSupplier;
 
-    private final String method;
+    private final HttpMethod method;
 
     private final String uri;
     private final ImmutableMap<String, String[]> queries;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
-                               final String method, final String uri,
+                               final HttpMethod method, final String uri,
                                final ImmutableMap<String, String> headers,
                                final ImmutableMap<String, String[]> queries) {
         super(version, content, headers);
@@ -51,7 +51,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     @Override
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
@@ -170,7 +170,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(getVersion().text()),
-                HttpMethod.valueOf(method), encoder.toString(), buffer);
+                io.netty.handler.codec.http.HttpMethod.valueOf(method.name()), encoder.toString(), buffer);
         for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
             request.headers().add(entry.getKey(), entry.getValue());
         }
@@ -191,7 +191,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         private HttpProtocolVersion version;
         private MessageContent content;
         private ImmutableMap<String, String> headers;
-        private String method;
+        private HttpMethod method;
         private String uri;
         private ImmutableMap<String, String[]> queries;
 
@@ -219,7 +219,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         public Builder withMethod(final String method) {
-            this.method = method;
+            this.method = HttpMethod.valueOf(method.toUpperCase());
             return this;
         }
 

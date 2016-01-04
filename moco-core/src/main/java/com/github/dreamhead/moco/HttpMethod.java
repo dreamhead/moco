@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.rest;
+package com.github.dreamhead.moco;
 
 public enum HttpMethod {
     OPTIONS,

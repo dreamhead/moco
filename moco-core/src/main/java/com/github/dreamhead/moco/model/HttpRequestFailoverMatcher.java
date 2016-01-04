@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.model;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Strings;
@@ -72,5 +73,9 @@ public class HttpRequestFailoverMatcher {
 
     protected boolean doMatch(final MessageContent thisField, final MessageContent thatField) {
         return thisField == null || thisField.equals(thatField);
+    }
+
+    protected boolean doMatch(final HttpMethod thisField, final HttpMethod thatField) {
+        return thisField == null || thisField == thatField;
     }
 }

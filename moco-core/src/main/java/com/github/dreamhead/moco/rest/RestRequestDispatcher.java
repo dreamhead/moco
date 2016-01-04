@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.rest;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestMatcher;
@@ -200,23 +201,23 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> doGetResponseHandler(final HttpRequest httpRequest) {
-        if ("get".equalsIgnoreCase(httpRequest.getMethod())) {
+        if (HttpMethod.GET == httpRequest.getMethod()) {
             return getGetHandler(httpRequest);
         }
 
-        if ("post".equalsIgnoreCase(httpRequest.getMethod())) {
+        if (HttpMethod.POST == httpRequest.getMethod()) {
             return getPostHandler(httpRequest);
         }
 
-        if ("put".equalsIgnoreCase(httpRequest.getMethod())) {
+        if (HttpMethod.PUT == httpRequest.getMethod()) {
             return getSingleResponseHandler(putSettings, httpRequest);
         }
 
-        if ("delete".equalsIgnoreCase(httpRequest.getMethod())) {
+        if (HttpMethod.DELETE == httpRequest.getMethod()) {
             return getSingleResponseHandler(deleteSettings, httpRequest);
         }
 
-        if ("head".equalsIgnoreCase(httpRequest.getMethod())) {
+        if (HttpMethod.HEAD == httpRequest.getMethod()) {
             return getHeadHandler(httpRequest);
         }
 
