@@ -46,20 +46,32 @@ public final class MocoRest {
         return BaseRestSettingBuilder.all(HttpMethod.POST);
     }
 
+    public static RestSettingBuilder put(final RestIdMatcher idMatcher) {
+        return BaseRestSettingBuilder.single(HttpMethod.PUT, checkNotNull(idMatcher, "ID Matcher should not be null"));
+    }
+
     public static RestSettingBuilder put(final String id) {
-        return BaseRestSettingBuilder.single(HttpMethod.PUT, eq(checkId(id)));
+        return put(eq(checkId(id)));
+    }
+
+    public static RestSettingBuilder delete(final RestIdMatcher idMatcher) {
+        return BaseRestSettingBuilder.single(HttpMethod.DELETE, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder delete(final String id) {
-        return BaseRestSettingBuilder.single(HttpMethod.DELETE, eq(checkId(id)));
+        return delete(eq(checkId(id)));
     }
 
     public static RestSettingBuilder head() {
         return BaseRestSettingBuilder.all(HttpMethod.HEAD);
     }
 
+    public static RestSettingBuilder head(final RestIdMatcher idMatcher) {
+        return BaseRestSettingBuilder.single(HttpMethod.HEAD, checkNotNull(idMatcher, "ID Matcher should not be null"));
+    }
+
     public static RestSettingBuilder head(final String id) {
-        return BaseRestSettingBuilder.single(HttpMethod.HEAD, eq(checkId(id)));
+        return head(eq(checkId(id)));
     }
 
     private static String checkId(final String id) {

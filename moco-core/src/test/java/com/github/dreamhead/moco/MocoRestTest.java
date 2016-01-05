@@ -459,6 +459,31 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_put_with_any_id() throws Exception {
+        RestServer server = restServer(12306);
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        server.resource("targets",
+                put(anyId()).response(status(200))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse1 = helper.putForResponse(remoteUrl("/targets/1"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+
+                HttpResponse httpResponse2 = helper.putForResponse(remoteUrl("/targets/2"),
+                        mapper.writeValueAsString(resource1));
+                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
     public void should_not_delete_with_unknown_id() throws Exception {
         server.resource("targets",
                 delete("1").response(status(200))
@@ -520,6 +545,24 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
+    public void should_delete_with_any_id() throws Exception {
+        server.resource("targets",
+                delete(anyId()).response(status(200))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse1 = helper.deleteForResponse(remoteUrl("/targets/1"));
+                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+
+                HttpResponse httpResponse2 = helper.deleteForResponse(remoteUrl("/targets/2"));
+                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
     public void should_head_with_all() throws Exception {
         server.resource("targets",
                 head().response(header("ETag", "Moco"))
@@ -576,6 +619,24 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             public void run() throws Exception {
                 HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1?name=foo"));
                 assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_head_with_any_id() throws Exception {
+        server.resource("targets",
+                head(anyId()).response(header("ETag", "Moco"))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse httpResponse1 = helper.headForResponse(remoteUrl("/targets/1"));
+                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+
+                HttpResponse httpResponse2 = helper.headForResponse(remoteUrl("/targets/2"));
+                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
             }
         });
     }
