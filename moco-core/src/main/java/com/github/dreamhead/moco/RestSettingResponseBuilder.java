@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-public interface RestSettingBuilder {
-    RestSettingResponseBuilder request(final RequestMatcher matcher);
+public interface RestSettingResponseBuilder {
     RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers);
 }

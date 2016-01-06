@@ -6,18 +6,20 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
+import com.github.dreamhead.moco.RestSettingResponseBuilder;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class BaseRestSettingBuilder implements RestSettingBuilder {
+public abstract class BaseRestSettingBuilder implements RestSettingBuilder,
+        RestSettingResponseBuilder {
     protected abstract RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler);
 
     private RequestMatcher matcher;
 
     @Override
-    public RestSettingBuilder request(final RequestMatcher matcher) {
+    public RestSettingResponseBuilder request(final RequestMatcher matcher) {
         this.matcher = checkNotNull(matcher, "Request matcher should not be null");
         return this;
     }
