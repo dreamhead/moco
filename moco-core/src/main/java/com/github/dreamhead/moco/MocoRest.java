@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
-import com.github.dreamhead.moco.rest.BaseRestSettingBuilder;
+import com.github.dreamhead.moco.rest.RestSettingBuilders;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.google.common.base.Optional;
 
@@ -35,19 +35,19 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder get() {
-        return BaseRestSettingBuilder.all(HttpMethod.GET);
+        return RestSettingBuilders.all(HttpMethod.GET);
     }
 
     public static RestSettingBuilder get(final RestIdMatcher idMatcher) {
-        return BaseRestSettingBuilder.single(HttpMethod.GET, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return RestSettingBuilders.single(HttpMethod.GET, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder post() {
-        return BaseRestSettingBuilder.all(HttpMethod.POST);
+        return RestSettingBuilders.all(HttpMethod.POST);
     }
 
     public static RestSettingBuilder put(final RestIdMatcher idMatcher) {
-        return BaseRestSettingBuilder.single(HttpMethod.PUT, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return RestSettingBuilders.single(HttpMethod.PUT, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder put(final String id) {
@@ -55,7 +55,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder delete(final RestIdMatcher idMatcher) {
-        return BaseRestSettingBuilder.single(HttpMethod.DELETE, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return RestSettingBuilders.single(HttpMethod.DELETE, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder delete(final String id) {
@@ -63,11 +63,11 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder head() {
-        return BaseRestSettingBuilder.all(HttpMethod.HEAD);
+        return RestSettingBuilders.all(HttpMethod.HEAD);
     }
 
     public static RestSettingBuilder head(final RestIdMatcher idMatcher) {
-        return BaseRestSettingBuilder.single(HttpMethod.HEAD, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return RestSettingBuilders.single(HttpMethod.HEAD, checkNotNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder head(final String id) {

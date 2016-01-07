@@ -12,7 +12,7 @@ import com.google.common.base.Optional;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class BaseRestSettingBuilder implements RestSettingBuilder,
+public abstract class RestSettingBuilders implements RestSettingBuilder,
         RestSettingResponseBuilder {
     protected abstract RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler);
 
@@ -32,7 +32,7 @@ public abstract class BaseRestSettingBuilder implements RestSettingBuilder,
     }
 
     public static RestSettingBuilder single(final HttpMethod method, final RestIdMatcher id) {
-        return new BaseRestSettingBuilder() {
+        return new RestSettingBuilders() {
             @Override
             protected RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
                 return new RestSingleSetting(method, id, matcher, handler);
@@ -41,7 +41,7 @@ public abstract class BaseRestSettingBuilder implements RestSettingBuilder,
     }
 
     public static RestSettingBuilder all(final HttpMethod method) {
-        return new BaseRestSettingBuilder() {
+        return new RestSettingBuilders() {
             @Override
             protected RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
                 return new RestAllSetting(method, matcher, handler);
