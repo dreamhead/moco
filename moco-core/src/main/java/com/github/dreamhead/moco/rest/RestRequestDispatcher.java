@@ -66,7 +66,7 @@ public class RestRequestDispatcher {
         return filter(settings, type).filter(new Predicate<T>() {
             @Override
             public boolean apply(final T input) {
-                return input.isFor(method);
+                return input.isSimple() && ((SimpleRestSetting) input).isFor(method);
             }
         });
     }

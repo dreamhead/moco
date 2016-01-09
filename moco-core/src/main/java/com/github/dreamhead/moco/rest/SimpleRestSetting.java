@@ -35,8 +35,12 @@ public abstract class SimpleRestSetting implements RestSetting {
         return rootMatcher;
     }
 
-    @Override
     public boolean isFor(final HttpMethod method) {
         return this.method == method;
+    }
+
+    @Override
+    public boolean isSimple() {
+        return true;
     }
 }
