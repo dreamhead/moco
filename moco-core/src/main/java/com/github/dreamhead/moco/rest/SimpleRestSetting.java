@@ -1,12 +1,15 @@
 package com.github.dreamhead.moco.rest;
 
 import com.github.dreamhead.moco.HttpMethod;
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.Moco.and;
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
 
 public abstract class SimpleRestSetting implements RestSetting {
     private final HttpMethod method;
@@ -42,5 +45,14 @@ public abstract class SimpleRestSetting implements RestSetting {
     @Override
     public boolean isSimple() {
         return true;
+    }
+
+    @Override
+    public Optional<ResponseHandler> getMatched(final String name, final HttpRequest httpRequest) {
+        if (getRequestMatcher(name).match(httpRequest)) {
+            return of(handler);
+        }
+
+        return absent();
     }
 }
