@@ -29,26 +29,32 @@ public class RestRequestDispatcher {
     private final String name;
     private final RequestMatcher allMatcher;
     private final RequestMatcher singleMatcher;
-    private final FluentIterable<RestAllSetting> getAllSettings;
-    private final FluentIterable<RestSingleSetting> getSingleSettings;
-    private final FluentIterable<RestAllSetting> postSettings;
-    private final FluentIterable<RestSingleSetting> putSettings;
-    private final FluentIterable<RestSingleSetting> deleteSettings;
-    private final FluentIterable<RestSingleSetting> headSettings;
-    private final FluentIterable<RestAllSetting> headAllSettings;
+    private final CompositeRestSetting<RestAllSetting> getAllSettings;
+    private final CompositeRestSetting<RestSingleSetting> getSingleSettings;
+    private final CompositeRestSetting<RestAllSetting> postSettings;
+    private final CompositeRestSetting<RestSingleSetting> putSettings;
+    private final CompositeRestSetting<RestSingleSetting> deleteSettings;
+    private final CompositeRestSetting<RestSingleSetting> headSettings;
+    private final CompositeRestSetting<RestAllSetting> headAllSettings;
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
         this.name = name;
 
-        this.getAllSettings = filter(settings, RestAllSetting.class, HttpMethod.GET);
-        this.getSingleSettings = filter(settings, RestSingleSetting.class, HttpMethod.GET);
-        this.postSettings = filter(settings, RestAllSetting.class, HttpMethod.POST);
-        this.putSettings = filter(settings, RestSingleSetting.class, HttpMethod.PUT);
-        this.deleteSettings = filter(settings, RestSingleSetting.class, HttpMethod.DELETE);
-        this.headSettings = filter(settings, RestSingleSetting.class, HttpMethod.HEAD);
-        this.headAllSettings = filter(settings, RestAllSetting.class, HttpMethod.HEAD);
+        this.getAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.GET);
+        this.getSingleSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.GET);
+        this.postSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.POST);
+        this.putSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.PUT);
+        this.deleteSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.DELETE);
+        this.headSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.HEAD);
+        this.headAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.HEAD);
         this.allMatcher = by(uri(resourceRoot(name)));
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
+    }
+
+    private <T extends SimpleRestSetting> CompositeRestSetting<T> filterSettings(final RestSetting[] settings,
+                                                                                 final Class<T> type,
+                                                                                 final HttpMethod method) {
+        return new CompositeRestSetting<T>(filter(settings, type, method));
     }
 
     private <T> Function<? super T, T> toInstance(final Class<T> clazz) {
@@ -60,21 +66,23 @@ public class RestRequestDispatcher {
         };
     }
 
-    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings,
-                                                             final Class<T> type,
-                                                             final HttpMethod method) {
-        return filter(settings, type).filter(new Predicate<T>() {
-            @Override
-            public boolean apply(final T input) {
-                return input.isSimple() && ((SimpleRestSetting) input).isFor(method);
-            }
-        });
-    }
-
-    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings, final Class<T> type) {
+    private <T extends SimpleRestSetting> T[] filter(final RestSetting[] settings,
+                                                     final Class<T> type,
+                                                     final HttpMethod method) {
         return FluentIterable.of(settings)
                 .filter(type)
-                .transform(toInstance(type));
+                .transform(toInstance(type))
+                .filter(isForMethod(method))
+                .toArray(type);
+    }
+
+    private <T extends SimpleRestSetting> Predicate<T> isForMethod(final HttpMethod method) {
+        return new Predicate<T>() {
+            @Override
+            public boolean apply(final T input) {
+                return input.isSimple() && input.isFor(method);
+            }
+        };
     }
 
     private Predicate<SimpleRestSetting> isJsonHandlers() {
@@ -114,8 +122,8 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getSingleOrAllHandler(final HttpRequest httpRequest,
-                                                            final CompositeRestSettings<RestSingleSetting> single,
-                                                            final CompositeRestSettings<RestAllSetting> all,
+                                                            final CompositeRestSetting<RestSingleSetting> single,
+                                                            final CompositeRestSetting<RestAllSetting> all,
                                                             final String name) {
         Optional<ResponseHandler> singleHandler = single.getMatched(name, httpRequest);
         if (singleHandler.isPresent()) {
@@ -132,8 +140,8 @@ public class RestRequestDispatcher {
 
     private Optional<ResponseHandler> getHeadHandler(final HttpRequest httpRequest) {
         Optional<ResponseHandler> handler = getSingleOrAllHandler(httpRequest,
-                new CompositeRestSettings<RestSingleSetting>(headSettings),
-                new CompositeRestSettings<RestAllSetting>(headAllSettings),
+                headSettings,
+                headAllSettings,
                 name);
         if (handler.isPresent()) {
             return handler;
@@ -144,15 +152,16 @@ public class RestRequestDispatcher {
 
     private Optional<ResponseHandler> getGetHandler(final HttpRequest httpRequest) {
         Optional<ResponseHandler> matchedSetting = getSingleOrAllHandler(httpRequest,
-                new CompositeRestSettings<RestSingleSetting>(getSingleSettings),
-                new CompositeRestSettings<RestAllSetting>(getAllSettings), name);
+                getSingleSettings,
+                getAllSettings, name);
         if (matchedSetting.isPresent()) {
             return matchedSetting;
         }
 
         if (allMatcher.match(httpRequest)) {
-            if (!getSingleSettings.isEmpty() && getSingleSettings.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = getSingleSettings
+            FluentIterable<RestSingleSetting> settings = FluentIterable.of(getSingleSettings.getSettings());
+            if (!settings.isEmpty() && settings.allMatch(isJsonHandlers())) {
+                ImmutableList<Object> objects = settings
                         .transform(toJsonHandler())
                         .transform(toPojo()).toList();
                 return of(Moco.toJson(objects));
@@ -163,8 +172,7 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getPostHandler(final HttpRequest request) {
-        Optional<ResponseHandler> handler = new CompositeRestSettings<RestAllSetting>(postSettings)
-                .getMatched(name, request);
+        Optional<ResponseHandler> handler = postSettings.getMatched(name, request);
         if (handler.isPresent()) {
             return handler;
         }
@@ -177,7 +185,7 @@ public class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getSingleResponseHandler(
-            final CompositeRestSettings<RestSingleSetting> settings,
+            final CompositeRestSetting<RestSingleSetting> settings,
             final HttpRequest httpRequest) {
         Optional<ResponseHandler> handler = settings.getMatched(name, httpRequest);
         if (handler.isPresent()) {
@@ -205,11 +213,11 @@ public class RestRequestDispatcher {
         }
 
         if (HttpMethod.PUT == httpRequest.getMethod()) {
-            return getSingleResponseHandler(new CompositeRestSettings<RestSingleSetting>(putSettings), httpRequest);
+            return getSingleResponseHandler(putSettings, httpRequest);
         }
 
         if (HttpMethod.DELETE == httpRequest.getMethod()) {
-            return getSingleResponseHandler(new CompositeRestSettings<RestSingleSetting>(deleteSettings), httpRequest);
+            return getSingleResponseHandler(deleteSettings, httpRequest);
         }
 
         if (HttpMethod.HEAD == httpRequest.getMethod()) {

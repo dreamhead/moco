@@ -4,12 +4,11 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
-import com.google.common.collect.FluentIterable;
 
-public class CompositeRestSettings<T extends SimpleRestSetting> implements RestSetting {
-    private final FluentIterable<T> settings;
+public class CompositeRestSetting<T extends SimpleRestSetting> implements RestSetting {
+    private final T[] settings;
 
-    public CompositeRestSettings(final FluentIterable<T> settings) {
+    public CompositeRestSetting(final T[] settings) {
         this.settings = settings;
     }
 
@@ -28,5 +27,9 @@ public class CompositeRestSettings<T extends SimpleRestSetting> implements RestS
         }
 
         return Optional.absent();
+    }
+
+    public T[] getSettings() {
+        return settings;
     }
 }
