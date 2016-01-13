@@ -22,7 +22,7 @@ import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class RestRequestDispatcher {
+public final class RestRequestDispatcher {
     private static final ResponseHandler NOT_FOUND_HANDLER = status(HttpResponseStatus.NOT_FOUND.code());
     private static final ResponseHandler BAD_REQUEST_HANDLER = status(HttpResponseStatus.BAD_REQUEST.code());
 
@@ -36,6 +36,7 @@ public class RestRequestDispatcher {
     private final CompositeRestSetting<RestSingleSetting> deleteSettings;
     private final CompositeRestSetting<RestSingleSetting> headSettings;
     private final CompositeRestSetting<RestAllSetting> headAllSettings;
+    private final FluentIterable<SubResourceSetting> subResourceSettings;
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
         this.name = name;
@@ -47,6 +48,7 @@ public class RestRequestDispatcher {
         this.deleteSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.DELETE);
         this.headSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.HEAD);
         this.headAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.HEAD);
+        this.subResourceSettings = filter(settings, SubResourceSetting.class);
         this.allMatcher = by(uri(resourceRoot(name)));
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
     }
@@ -69,11 +71,16 @@ public class RestRequestDispatcher {
     private <T extends SimpleRestSetting> T[] filter(final RestSetting[] settings,
                                                      final Class<T> type,
                                                      final HttpMethod method) {
-        return FluentIterable.of(settings)
-                .filter(type)
-                .transform(toInstance(type))
+        return filter(settings, type)
                 .filter(isForMethod(method))
                 .toArray(type);
+    }
+
+    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings,
+                                                             final Class<T> type) {
+        return FluentIterable.of(settings)
+                .filter(type)
+                .transform(toInstance(type));
     }
 
     private <T extends SimpleRestSetting> Predicate<T> isForMethod(final HttpMethod method) {
@@ -198,6 +205,13 @@ public class RestRequestDispatcher {
     public Optional<ResponseHandler> getResponseHandler(final HttpRequest httpRequest) {
         if (allMatcher.match(httpRequest) || this.singleMatcher.match(httpRequest)) {
             return doGetResponseHandler(httpRequest);
+        }
+
+        for (SubResourceSetting subResourceSetting : subResourceSettings) {
+            Optional<ResponseHandler> matched = subResourceSetting.getMatched(this.name, httpRequest);
+            if (matched.isPresent()) {
+                return matched;
+            }
         }
 
         return absent();

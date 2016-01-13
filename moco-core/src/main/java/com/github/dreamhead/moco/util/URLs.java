@@ -26,7 +26,16 @@ public final class URLs {
         return baseUri + SEPARATOR;
     }
 
-    public static String join(final String base, final String path) {
+    public static String join(final String base, final String... paths) {
+        String target = base;
+        for (String path : paths) {
+            target = doJoin(target, path);
+        }
+
+        return target;
+    }
+
+    public static String doJoin(final String base, final String path) {
         String joinPath = toJoinPath(path);
         if (base.endsWith(SEPARATOR)) {
             return base + joinPath;

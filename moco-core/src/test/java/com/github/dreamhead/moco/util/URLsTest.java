@@ -13,5 +13,6 @@ public class URLsTest {
         assertThat(URLs.join("base", ""), is("base"));
         assertThat(URLs.join("base", "/path"), is("base/path"));
         assertThat(URLs.join("base/", "/path"), is("base/path"));
+        assertThat(URLs.join("base", "path", "sub"), is("base/path/sub"));
     }
 }

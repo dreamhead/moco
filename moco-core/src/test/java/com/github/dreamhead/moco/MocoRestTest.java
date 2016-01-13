@@ -33,6 +33,7 @@ import static com.github.dreamhead.moco.MocoRest.get;
 import static com.github.dreamhead.moco.MocoRest.head;
 import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.put;
+import static com.github.dreamhead.moco.MocoRest.resource;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -644,6 +645,37 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_for_get_id_with_slash_to() throws Exception {
         get("1/1").response(status(200));
+    }
+
+    @Test
+    public void should_get_sub_resource() throws Exception {
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        server.resource("targets",
+                resource("1", "sub",
+                        get("1").response(toJson(resource1)),
+                        get("2").response(toJson(resource2))
+                )
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Plain response1 = getResource("/targets/1/sub/1");
+                assertThat(response1.code, is(1));
+                assertThat(response1.message, is("hello"));
+
+                Plain response2 = getResource("/targets/1/sub/2");
+                assertThat(response2.code, is(2));
+                assertThat(response2.message, is("world"));
+            }
+        });
     }
 
     private Plain getResource(String uri) throws IOException {

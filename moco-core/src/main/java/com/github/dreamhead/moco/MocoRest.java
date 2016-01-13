@@ -1,9 +1,11 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.RestSettingBuilders;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
+import com.github.dreamhead.moco.rest.SubResourceSetting;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
@@ -30,6 +32,11 @@ public final class MocoRest {
 
     public static RestIdMatcher anyId() {
         return RestIdMatchers.anyId();
+    }
+
+    public static RestSetting resource(final String id, final String name,
+                                       final RestSetting... settings) {
+        return new SubResourceSetting(id, name, settings);
     }
 
     public static RestSettingBuilder get(final String id) {
