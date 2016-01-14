@@ -1,9 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
-import com.github.dreamhead.moco.rest.RestSettingBuilders;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.github.dreamhead.moco.rest.SubResourceSetting;
 import com.google.common.base.Optional;
@@ -36,7 +34,9 @@ public final class MocoRest {
 
     public static RestSetting resource(final String id, final String name,
                                        final RestSetting... settings) {
-        return new SubResourceSetting(id, name, settings);
+        return new SubResourceSetting(checkId(id),
+                checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
+                checkNotNull(settings, "Rest settings should not be null"));
     }
 
     public static RestSettingBuilder get(final String id) {
