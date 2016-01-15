@@ -643,8 +643,13 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throw_exception_for_get_id_with_slash_to() throws Exception {
+    public void should_throw_exception_for_get_id_with_slash() throws Exception {
         get("1/1").response(status(200));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_get_id_with_space() {
+        get("1 1").response(status(200));
     }
 
     @Test

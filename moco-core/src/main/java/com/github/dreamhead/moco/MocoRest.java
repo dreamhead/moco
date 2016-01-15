@@ -6,6 +6,10 @@ import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.github.dreamhead.moco.rest.SubResourceSetting;
 import com.google.common.base.Optional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.rest.RestSettingBuilders.all;
 import static com.github.dreamhead.moco.rest.RestSettingBuilders.single;
@@ -85,8 +89,17 @@ public final class MocoRest {
 
     private static String checkId(final String id) {
         checkNotNullOrEmpty(id, "ID should not be null or empty");
+
         if (id.contains("/")) {
             throw new IllegalArgumentException("REST ID should not contain '/'");
+        }
+
+        try {
+            String encode = URLEncoder.encode(id, Charset.defaultCharset().name());
+            if (!id.equals(encode)) {
+                throw new IllegalArgumentException("ID should not contains invalid URI character");
+            }
+        } catch (UnsupportedEncodingException ignored) {
         }
 
         return id;
