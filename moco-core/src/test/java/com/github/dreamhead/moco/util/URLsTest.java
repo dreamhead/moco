@@ -15,4 +15,10 @@ public class URLsTest {
         assertThat(URLs.join("base/", "/path"), is("base/path"));
         assertThat(URLs.join("base", "path", "sub"), is("base/path/sub"));
     }
+
+    @Test
+    public void should_know_valid_url_character() {
+        assertThat(URLs.isValidUrl("base"), is(true));
+        assertThat(URLs.isValidUrl("base path"), is(false));
+    }
 }

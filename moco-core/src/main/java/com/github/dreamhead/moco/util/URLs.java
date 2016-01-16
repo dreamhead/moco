@@ -2,8 +2,11 @@ package com.github.dreamhead.moco.util;
 
 import com.google.common.base.Strings;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
@@ -69,5 +72,16 @@ public final class URLs {
     }
 
     private URLs() {
+    }
+
+    public static boolean isValidUrl(final String url) {
+        try {
+            String encodedURL = URLEncoder.encode(url, Charset.defaultCharset().name());
+            return url.equals(encodedURL);
+        } catch (UnsupportedEncodingException e) {
+            return false;
+        }
+
+
     }
 }

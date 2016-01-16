@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.github.dreamhead.moco.rest.SubResourceSetting;
+import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 
 import java.io.UnsupportedEncodingException;
@@ -94,12 +95,8 @@ public final class MocoRest {
             throw new IllegalArgumentException("REST ID should not contain '/'");
         }
 
-        try {
-            String encode = URLEncoder.encode(id, Charset.defaultCharset().name());
-            if (!id.equals(encode)) {
-                throw new IllegalArgumentException("ID should not contains invalid URI character");
-            }
-        } catch (UnsupportedEncodingException ignored) {
+        if (!URLs.isValidUrl(id)) {
+            throw new IllegalArgumentException("ID should not contains invalid URI character");
         }
 
         return id;
