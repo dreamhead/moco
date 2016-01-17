@@ -38,7 +38,7 @@ public final class URLs {
         return target;
     }
 
-    public static String doJoin(final String base, final String path) {
+    private static String doJoin(final String base, final String path) {
         String joinPath = toJoinPath(path);
         if (base.endsWith(SEPARATOR)) {
             return base + joinPath;
