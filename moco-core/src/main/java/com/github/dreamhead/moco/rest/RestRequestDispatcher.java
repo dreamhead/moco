@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.google.common.base.Function;
@@ -17,6 +18,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Optional.absent;
@@ -26,7 +28,7 @@ public final class RestRequestDispatcher {
     private static final ResponseHandler NOT_FOUND_HANDLER = status(HttpResponseStatus.NOT_FOUND.code());
     private static final ResponseHandler BAD_REQUEST_HANDLER = status(HttpResponseStatus.BAD_REQUEST.code());
 
-    private final String name;
+    private final RestIdMatcher name;
     private final RequestMatcher allMatcher;
     private final RequestMatcher singleMatcher;
     private final CompositeRestSetting<RestAllSetting> getAllSettings;
@@ -39,7 +41,7 @@ public final class RestRequestDispatcher {
     private final FluentIterable<SubResourceSetting> subResourceSettings;
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
-        this.name = name;
+        this.name = eq(name);
 
         this.getAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.GET);
         this.getSingleSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.GET);
@@ -119,19 +121,10 @@ public final class RestRequestDispatcher {
         };
     }
 
-    public Predicate<SimpleRestSetting> match(final String name, final HttpRequest request) {
-        return new Predicate<SimpleRestSetting>() {
-            @Override
-            public boolean apply(final SimpleRestSetting input) {
-                return input.getRequestMatcher(name).match(request);
-            }
-        };
-    }
-
     private Optional<ResponseHandler> getSingleOrAllHandler(final HttpRequest httpRequest,
                                                             final CompositeRestSetting<RestSingleSetting> single,
                                                             final CompositeRestSetting<RestAllSetting> all,
-                                                            final String name) {
+                                                            final RestIdMatcher name) {
         Optional<ResponseHandler> singleHandler = single.getMatched(name, httpRequest);
         if (singleHandler.isPresent()) {
             return singleHandler;
@@ -208,7 +201,7 @@ public final class RestRequestDispatcher {
         }
 
         for (SubResourceSetting subResourceSetting : subResourceSettings) {
-            Optional<ResponseHandler> matched = subResourceSetting.getMatched(this.name, httpRequest);
+            Optional<ResponseHandler> matched = subResourceSetting.getMatched(name, httpRequest);
             if (matched.isPresent()) {
                 return matched;
             }

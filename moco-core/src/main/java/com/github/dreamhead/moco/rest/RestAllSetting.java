@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.rest;
 import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestIdMatcher;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -17,7 +18,7 @@ public class RestAllSetting extends SimpleRestSetting {
     }
 
     @Override
-    protected RequestMatcher getBaseRequestMatcher(final String resourceName) {
-        return by(uri(resourceRoot(resourceName)));
+    protected RequestMatcher getBaseRequestMatcher(final RestIdMatcher resourceName) {
+        return by(uri(resourceRoot(resourceName.resourceUri(Optional.<RestIdMatcher>absent()))));
     }
 }

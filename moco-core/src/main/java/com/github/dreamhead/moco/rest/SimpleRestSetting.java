@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
@@ -16,7 +17,7 @@ public abstract class SimpleRestSetting implements RestSetting {
     private final Optional<RequestMatcher> matcher;
     private final ResponseHandler handler;
 
-    protected abstract RequestMatcher getBaseRequestMatcher(final String resourceName);
+    protected abstract RequestMatcher getBaseRequestMatcher(final RestIdMatcher resourceName);
 
     public SimpleRestSetting(final HttpMethod method,
                              final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
@@ -29,7 +30,7 @@ public abstract class SimpleRestSetting implements RestSetting {
         return handler;
     }
 
-    public RequestMatcher getRequestMatcher(final String resourceName) {
+    public RequestMatcher getRequestMatcher(final RestIdMatcher resourceName) {
         RequestMatcher rootMatcher = getBaseRequestMatcher(resourceName);
         if (this.matcher.isPresent()) {
             return and(rootMatcher, this.matcher.get());
@@ -48,8 +49,8 @@ public abstract class SimpleRestSetting implements RestSetting {
     }
 
     @Override
-    public Optional<ResponseHandler> getMatched(final String name, final HttpRequest httpRequest) {
-        if (getRequestMatcher(name).match(httpRequest)) {
+    public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
+        if (getRequestMatcher(resourceName).match(httpRequest)) {
             return of(handler);
         }
 

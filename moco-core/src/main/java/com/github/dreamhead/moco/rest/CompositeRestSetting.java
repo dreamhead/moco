@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.rest;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
@@ -18,9 +19,9 @@ public class CompositeRestSetting<T extends SimpleRestSetting> implements RestSe
     }
 
     @Override
-    public Optional<ResponseHandler> getMatched(final String name, final HttpRequest httpRequest) {
+    public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
         for (RestSetting setting : settings) {
-            Optional<ResponseHandler> responseHandler = setting.getMatched(name, httpRequest);
+            Optional<ResponseHandler> responseHandler = setting.getMatched(resourceName, httpRequest);
             if (responseHandler.isPresent()) {
                 return responseHandler;
             }

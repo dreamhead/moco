@@ -7,10 +7,6 @@ import com.github.dreamhead.moco.rest.SubResourceSetting;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.rest.RestSettingBuilders.all;
 import static com.github.dreamhead.moco.rest.RestSettingBuilders.single;
@@ -39,7 +35,14 @@ public final class MocoRest {
 
     public static RestSetting resource(final String id, final String name,
                                        final RestSetting... settings) {
-        return new SubResourceSetting(checkId(id),
+        return new SubResourceSetting(eq(checkId(id)),
+                checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
+                checkNotNull(settings, "Rest settings should not be null"));
+    }
+
+    public static RestSetting resource(final RestIdMatcher id, final String name,
+                                       final RestSetting... settings) {
+        return new SubResourceSetting(id,
                 checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
                 checkNotNull(settings, "Rest settings should not be null"));
     }

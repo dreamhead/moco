@@ -81,7 +81,5 @@ public final class URLs {
         } catch (UnsupportedEncodingException e) {
             return false;
         }
-
-
     }
 }
