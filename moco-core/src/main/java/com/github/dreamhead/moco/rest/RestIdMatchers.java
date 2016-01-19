@@ -3,43 +3,25 @@ package com.github.dreamhead.moco.rest;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.RestIdMatcher;
-import com.google.common.base.Optional;
 
-import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
-import static com.google.common.base.Optional.of;
 
 public final class RestIdMatchers {
     public static RestIdMatcher anyId() {
-        return new BaseRestIdMatcher("[^/]*") {
-            @Override
-            public RequestMatcher matcher(final RestIdMatcher resourceName) {
-                return Moco.match(uri(resourceUri(of(resourceName))));
-            }
-        };
+        return new BaseRestIdMatcher("[^/]*");
     }
 
     public static RestIdMatcher eq(final String id) {
-        return new BaseRestIdMatcher(id) {
-            @Override
-            public RequestMatcher matcher(final RestIdMatcher resourceName) {
-                return Moco.match(uri(resourceUri(of(resourceName))));
-            }
-        };
+        return new BaseRestIdMatcher(id);
     }
 
     public static RestIdMatcher match(final String uri) {
-        return new BaseRestIdMatcher(uri) {
-            @Override
-            public RequestMatcher matcher(final RestIdMatcher resourceName) {
-                return Moco.match(uri(resourceUri(of(resourceName))));
-            }
-        };
+        return new BaseRestIdMatcher(uri);
     }
 
-    private abstract static class BaseRestIdMatcher implements RestIdMatcher {
+    private static class BaseRestIdMatcher implements RestIdMatcher {
         private String uriPart;
 
         BaseRestIdMatcher(final String uriPart) {
@@ -47,12 +29,17 @@ public final class RestIdMatchers {
         }
 
         @Override
-        public String resourceUri(final Optional<RestIdMatcher> resourceName) {
-            if (!resourceName.isPresent()) {
-                return this.uriPart;
-            }
+        public String resourceUri() {
+            return this.uriPart;
+        }
 
-            return join(resourceRoot(resourceName.get().resourceUri(Optional.<RestIdMatcher>absent())), this.uriPart);
+        @Override
+        public RequestMatcher matcher(final RestIdMatcher resourceName) {
+            return Moco.match(uri(subResourceUri(resourceName)));
+        }
+
+        private String subResourceUri(final RestIdMatcher resourceName) {
+            return join(resourceRoot(resourceName.resourceUri()), this.uriPart);
         }
     }
 

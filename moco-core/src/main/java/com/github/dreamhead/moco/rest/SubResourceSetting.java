@@ -30,8 +30,8 @@ public class SubResourceSetting implements RestSetting {
     @Override
     public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
         for (RestSetting setting : settings) {
-            RestIdMatcher idMatcher = RestIdMatchers.match(join(resourceName.resourceUri(Optional.<RestIdMatcher>absent()),
-                    this.id.resourceUri(Optional.<RestIdMatcher>absent()),
+            RestIdMatcher idMatcher = RestIdMatchers.match(join(resourceName.resourceUri(),
+                    this.id.resourceUri(),
                     this.name));
             Optional<ResponseHandler> responseHandler = setting.getMatched(idMatcher,
                     httpRequest);
