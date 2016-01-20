@@ -42,7 +42,7 @@ public final class MocoRest {
 
     public static RestSetting resource(final RestIdMatcher id, final String name,
                                        final RestSetting... settings) {
-        return new SubResourceSetting(id,
+        return new SubResourceSetting(checkNotNull(id, "ID matcher should not be null"),
                 checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
                 checkNotNull(settings, "Rest settings should not be null"));
     }

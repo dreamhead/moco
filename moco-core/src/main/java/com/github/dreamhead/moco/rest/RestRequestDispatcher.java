@@ -200,6 +200,10 @@ public final class RestRequestDispatcher {
             return doGetResponseHandler(httpRequest);
         }
 
+        return getSubResponseHandler(httpRequest);
+    }
+
+    private Optional<ResponseHandler> getSubResponseHandler(final HttpRequest httpRequest) {
         for (SubResourceSetting subResourceSetting : subResourceSettings) {
             Optional<ResponseHandler> matched = subResourceSetting.getMatched(name, httpRequest);
             if (matched.isPresent()) {
