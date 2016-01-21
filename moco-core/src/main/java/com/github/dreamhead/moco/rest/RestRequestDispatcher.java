@@ -38,6 +38,7 @@ public final class RestRequestDispatcher {
     private final CompositeRestSetting<RestSingleSetting> deleteSettings;
     private final CompositeRestSetting<RestSingleSetting> headSettings;
     private final CompositeRestSetting<RestAllSetting> headAllSettings;
+    private final CompositeRestSetting<RestSingleSetting> patchSettings;
     private final FluentIterable<SubResourceSetting> subResourceSettings;
 
     public RestRequestDispatcher(final String name, final RestSetting[] settings) {
@@ -50,6 +51,7 @@ public final class RestRequestDispatcher {
         this.deleteSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.DELETE);
         this.headSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.HEAD);
         this.headAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.HEAD);
+        this.patchSettings = filterSettings(settings, RestSingleSetting.class, HttpMethod.PATCH);
         this.subResourceSettings = filter(settings, SubResourceSetting.class);
         this.allMatcher = by(uri(resourceRoot(name)));
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
@@ -233,6 +235,10 @@ public final class RestRequestDispatcher {
 
         if (HttpMethod.HEAD == httpRequest.getMethod()) {
             return getHeadHandler(httpRequest);
+        }
+
+        if (HttpMethod.PATCH == httpRequest.getMethod()) {
+            return getSingleResponseHandler(patchSettings, httpRequest);
         }
 
         return absent();

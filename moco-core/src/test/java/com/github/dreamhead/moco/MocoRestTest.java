@@ -26,11 +26,14 @@ import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoRest.anyId;
 import static com.github.dreamhead.moco.MocoRest.delete;
 import static com.github.dreamhead.moco.MocoRest.get;
 import static com.github.dreamhead.moco.MocoRest.head;
+import static com.github.dreamhead.moco.MocoRest.patch;
 import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.put;
 import static com.github.dreamhead.moco.MocoRest.resource;
@@ -638,6 +641,34 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
                 HttpResponse httpResponse2 = helper.headForResponse(remoteUrl("/targets/2"));
                 assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_patch() throws Exception {
+        server.resource("targets",
+                patch("1").response(with(text("patch result")))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
+            }
+        });
+    }
+
+    @Test
+    public void should_patch_with_any_id() throws Exception {
+        server.resource("targets",
+                patch(anyId()).response(with(text("patch result")))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
             }
         });
     }

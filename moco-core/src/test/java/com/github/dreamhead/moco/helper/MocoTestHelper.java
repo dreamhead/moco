@@ -152,6 +152,11 @@ public class MocoTestHelper {
         return runRequest(Request.Get(url)).getStatusLine().getStatusCode();
     }
 
+    public String patchForResponse(final String url, String content) throws IOException {
+        Request request = Request.Patch(url).bodyByteArray(content.getBytes());
+        return EXECUTOR.execute(request).returnContent().asString();
+    }
+
     private static final String PROTOCOL = "TLS";
 
     private static SSLContext createClientContext() {

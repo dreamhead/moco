@@ -91,6 +91,14 @@ public final class MocoRest {
         return head(eq(checkId(id)));
     }
 
+    public static RestSettingBuilder patch(final RestIdMatcher idMatcher) {
+        return single(HttpMethod.PATCH, checkNotNull(idMatcher, "ID Matcher should not be null"));
+    }
+
+    public static RestSettingBuilder patch(final String id) {
+        return patch(eq(checkId(id)));
+    }
+
     private static String checkId(final String id) {
         checkNotNullOrEmpty(id, "ID should not be null or empty");
 
