@@ -109,7 +109,6 @@ public class MocoRunnerTest {
         server.response("foo");
         runner = runner(server);
         runner.start();
-        helper = new MocoTestHelper();
     }
 
     @After
