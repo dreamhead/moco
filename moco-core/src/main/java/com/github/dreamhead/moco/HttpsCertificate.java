@@ -44,7 +44,7 @@ public final class HttpsCertificate {
             serverContext.init(factory.getKeyManagers(), null, null);
             return serverContext;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize the server-side SSLContext", e);
+            throw new MocoException("Failed to initialize the server-side SSLContext", e);
         } finally {
             Closeables.closeQuietly(is);
         }

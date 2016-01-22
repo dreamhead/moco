@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -28,7 +29,7 @@ public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<Str
         } catch (HttpPostRequestDecoder.IncompatibleDataDecoderException idde) {
             return absent();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } finally {
             if (decoder != null) {
                 decoder.destroy();

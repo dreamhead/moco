@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.collect.ImmutableMap;
@@ -30,7 +31,7 @@ public final class ResponseHandlers {
             Constructor[] constructors = clazz.getConstructors();
             return (ResponseHandler) constructors[0].newInstance(resource);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 

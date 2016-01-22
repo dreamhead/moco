@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.MocoMonitor;
-import com.github.dreamhead.moco.SocketRequest;
-import com.github.dreamhead.moco.SocketResponse;
-import com.github.dreamhead.moco.SocketResponseSetting;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.model.DefaultSocketRequest;
 import com.github.dreamhead.moco.model.DefaultSocketResponse;
 import com.github.dreamhead.moco.model.MessageContent;
@@ -65,7 +62,7 @@ public class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf> {
         }
 
         this.monitor.onUnexpectedMessage(context.getRequest());
-        throw new RuntimeException(format("No handler found for request: %s", context.getRequest().getContent()));
+        throw new MocoException(format("No handler found for request: %s", context.getRequest().getContent()));
     }
 
     @Override

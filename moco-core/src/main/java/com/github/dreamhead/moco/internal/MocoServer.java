@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.MocoException;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -32,7 +33,7 @@ public class MocoServer {
             SocketAddress socketAddress = future.channel().localAddress();
             return ((InetSocketAddress) socketAddress).getPort();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 

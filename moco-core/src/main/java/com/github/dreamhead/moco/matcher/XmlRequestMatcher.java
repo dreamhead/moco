@@ -1,9 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.RequestExtractor;
-import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.Document;
@@ -97,7 +94,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         try {
             return dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 
@@ -109,7 +106,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
             trimNode(document);
             return document;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 }

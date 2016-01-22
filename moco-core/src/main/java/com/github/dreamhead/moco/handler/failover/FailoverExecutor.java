@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.MocoException;
 
 public interface FailoverExecutor {
     void onCompleteResponse(final HttpRequest request, final HttpResponse response);
@@ -14,7 +15,7 @@ public interface FailoverExecutor {
 
         @Override
         public HttpResponse failover(final HttpRequest request) {
-            throw new RuntimeException("no failover response found");
+            throw new MocoException("no failover response found");
         }
     };
 }

@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -65,11 +66,11 @@ public class TemplateResourceReader implements ContentResourceReader {
             return content().withContent(stream.toByteArray()).build();
         } catch (ParseException e) {
             logger.error("Fail to parse template: {}", content.toString());
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } catch (TemplateException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 

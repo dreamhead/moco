@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.MocoException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -25,7 +26,7 @@ public class MocoClient {
             ChannelFuture future = channel.closeFuture().sync();
             future.addListener(ChannelFutureListener.CLOSE);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } finally {
             group.shutdownGracefully();
         }
