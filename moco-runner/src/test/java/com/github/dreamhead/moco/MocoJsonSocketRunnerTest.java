@@ -40,10 +40,10 @@ public class MocoJsonSocketRunnerTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                MocoSocketHelper helper = new MocoSocketHelper(local(), server.port());
-                helper.connect();
-                assertThat(helper.send("foo", 3), is("bar"));
-                helper.close();
+                MocoSocketHelper mocoSocketHelper = new MocoSocketHelper(local(), server.port());
+                mocoSocketHelper.connect();
+                assertThat(mocoSocketHelper.send("foo", 3), is("bar"));
+                mocoSocketHelper.close();
             }
         });
     }
