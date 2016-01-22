@@ -82,10 +82,10 @@ public class MocoSocketTest {
     @Test
     public void should_log_request_and_response_into_file() throws Exception {
         File file = folder.newFile();
-        SocketServer server = socketServer(port(), log(file.getAbsolutePath()));
-        server.request(by("0XCAFE")).response(line("0XBABE"));
+        SocketServer socketServer = socketServer(port(), log(file.getAbsolutePath()));
+        socketServer.request(by("0XCAFE")).response(line("0XBABE"));
 
-        running(server, new Runnable() {
+        running(socketServer, new Runnable() {
             @Override
             public void run() throws Exception {
                 helper.connect();
@@ -102,10 +102,10 @@ public class MocoSocketTest {
     @Test
     public void should_monitor_socket_server_behavior() throws Exception {
         RequestHit hit = requestHit();
-        SocketServer server = socketServer(port(), hit);
-        server.request(by("0XCAFE")).response(line("0XBABE"));
+        SocketServer socketServer = socketServer(port(), hit);
+        socketServer.request(by("0XCAFE")).response(line("0XBABE"));
 
-        running(server, new Runnable() {
+        running(socketServer, new Runnable() {
             @Override
             public void run() throws Exception {
                 helper.connect();
@@ -119,13 +119,13 @@ public class MocoSocketTest {
 
     @Test
     public void should_create_socket_server_without_specific_port() throws Exception {
-        final SocketServer server = socketServer();
-        server.request(by("foo")).response(line("bar"));
+        final SocketServer socketServer = socketServer();
+        socketServer.request(by("foo")).response(line("bar"));
 
-        running(server, new Runnable() {
+        running(socketServer, new Runnable() {
             @Override
             public void run() throws Exception {
-                helper = new MocoSocketHelper(local(), server.port());
+                helper = new MocoSocketHelper(local(), socketServer.port());
                 helper.connect();
                 assertThat(helper.send("foo"), is("bar"));
                 helper.close();
@@ -136,13 +136,13 @@ public class MocoSocketTest {
     @Test
     public void should_verify_expected_request_and_log_at_same_time() throws Exception {
         RequestHit hit = requestHit();
-        final SocketServer server = socketServer(port(), hit, log());
-        server.request(by("foo")).response(line("bar"));
+        final SocketServer socketServer = socketServer(port(), hit, log());
+        socketServer.request(by("foo")).response(line("bar"));
 
-        running(server, new Runnable() {
+        running(socketServer, new Runnable() {
             @Override
             public void run() throws Exception {
-                helper = new MocoSocketHelper(local(), server.port());
+                helper = new MocoSocketHelper(local(), socketServer.port());
                 helper.connect();
                 assertThat(helper.send("foo"), is("bar"));
                 helper.close();

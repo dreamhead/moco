@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoPortTest {
-    private HttpServer server;
+    
     private MocoTestHelper helper;
 
     @Before
