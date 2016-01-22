@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.action;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
@@ -38,7 +39,7 @@ public class MocoRequestAction implements MocoEventAction {
         try {
             doExecute(client);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } finally {
             try {
                 client.close();
@@ -69,7 +70,7 @@ public class MocoRequestAction implements MocoEventAction {
             return new HttpPost(url);
         }
 
-        throw new RuntimeException(format("unknown HTTP method: %s", method));
+        throw new MocoException(format("unknown HTTP method: %s", method));
     }
 
     @Override

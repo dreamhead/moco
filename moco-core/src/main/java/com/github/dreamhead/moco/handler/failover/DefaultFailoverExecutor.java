@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.model.Session;
 import com.google.common.base.Optional;
@@ -42,7 +43,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
             Session targetSession = Session.newSession(request, httpResponse);
             writer.writeValue(this.file, prepareTargetSessions(targetSession));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 
@@ -74,7 +75,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
             logger.error("exception found", jme);
             return of();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 
@@ -87,7 +88,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         }
 
         logger.error("No match request found: {}", request);
-        throw new RuntimeException("no failover response found");
+        throw new MocoException("no failover response found");
     }
 
     private Predicate<Session> isForRequest(final HttpRequest dumpedRequest) {

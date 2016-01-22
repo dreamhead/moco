@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
+import com.github.dreamhead.moco.MocoException;
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
 
@@ -20,7 +21,7 @@ public class FileLogWriter implements LogWriter {
         try {
             Files.append(content, file, charset.or(Charset.defaultCharset()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 }

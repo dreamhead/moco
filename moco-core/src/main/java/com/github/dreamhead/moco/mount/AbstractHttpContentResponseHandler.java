@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.mount;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
@@ -11,7 +12,7 @@ public abstract class AbstractHttpContentResponseHandler extends AbstractContent
     @Override
     protected MessageContent responseContent(final Request request) {
         if (!HttpRequest.class.isInstance(request)) {
-            throw new RuntimeException("Only HTTP request is allowed");
+            throw new MocoException("Only HTTP request is allowed");
         }
 
         return responseContent((HttpRequest) request);

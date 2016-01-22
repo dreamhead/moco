@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
@@ -35,7 +36,7 @@ public class FileResourceReader extends AbstractFileResourceReader {
         try {
             return toByteArray(file);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 

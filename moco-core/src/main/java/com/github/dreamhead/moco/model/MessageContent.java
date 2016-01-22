@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.dumper.MessageContentDeserializer;
 import com.github.dreamhead.moco.dumper.MessageContentSerializer;
 import com.google.common.base.Objects;
@@ -83,7 +84,7 @@ public class MessageContent {
                 this.content = toByteArray(is);
                 return this;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new MocoException(e);
             }
         }
 

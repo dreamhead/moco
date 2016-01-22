@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
@@ -138,7 +139,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             return new HttpTrace(url.toString());
         }
 
-        throw new RuntimeException("unknown HTTP method");
+        throw new MocoException("unknown HTTP method");
     }
 
     protected HttpResponse setupResponse(final HttpRequest request,
