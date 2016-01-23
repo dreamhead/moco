@@ -33,10 +33,10 @@ import static com.github.dreamhead.moco.MocoRest.anyId;
 import static com.github.dreamhead.moco.MocoRest.delete;
 import static com.github.dreamhead.moco.MocoRest.get;
 import static com.github.dreamhead.moco.MocoRest.head;
+import static com.github.dreamhead.moco.MocoRest.id;
 import static com.github.dreamhead.moco.MocoRest.patch;
 import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.put;
-import static com.github.dreamhead.moco.MocoRest.resource;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -694,7 +694,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                resource("1", "sub",
+                id("1").name("sub").settings(
                         get("1").response(toJson(resource1)),
                         get("2").response(toJson(resource2))
                 )
@@ -725,7 +725,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                resource(anyId(), "sub",
+                id(anyId()).name("sub").settings(
                         get("1").response(toJson(resource1)),
                         get("2").response(toJson(resource2))
                 )

@@ -2,8 +2,9 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
+import com.github.dreamhead.moco.rest.ActualSubResourceSettingBuilder;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
-import com.github.dreamhead.moco.rest.SubResourceSetting;
+import com.github.dreamhead.moco.rest.SubResourceSettingBuilder;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 
@@ -33,18 +34,12 @@ public final class MocoRest {
         return RestIdMatchers.anyId();
     }
 
-    public static RestSetting resource(final String id, final String name,
-                                       final RestSetting... settings) {
-        return new SubResourceSetting(eq(checkId(id)),
-                checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
-                checkNotNull(settings, "Rest settings should not be null"));
+    public static SubResourceSettingBuilder id(final String id) {
+        return new ActualSubResourceSettingBuilder(eq(checkId(id)));
     }
 
-    public static RestSetting resource(final RestIdMatcher id, final String name,
-                                       final RestSetting... settings) {
-        return new SubResourceSetting(checkNotNull(id, "ID matcher should not be null"),
-                checkNotNullOrEmpty(name, "Resource name should not be null or empty"),
-                checkNotNull(settings, "Rest settings should not be null"));
+    public static SubResourceSettingBuilder id(final RestIdMatcher id) {
+        return new ActualSubResourceSettingBuilder(checkNotNull(id, "ID matcher should not be null"));
     }
 
     public static RestSettingBuilder get(final String id) {
