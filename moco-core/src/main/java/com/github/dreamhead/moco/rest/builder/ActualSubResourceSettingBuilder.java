@@ -1,7 +1,8 @@
-package com.github.dreamhead.moco.rest;
+package com.github.dreamhead.moco.rest.builder;
 
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
+import com.github.dreamhead.moco.rest.SubResourceSetting;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;

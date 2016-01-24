@@ -2,15 +2,15 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
-import com.github.dreamhead.moco.rest.ActualSubResourceSettingBuilder;
+import com.github.dreamhead.moco.rest.builder.ActualSubResourceSettingBuilder;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
-import com.github.dreamhead.moco.rest.SubResourceSettingBuilder;
+import com.github.dreamhead.moco.rest.builder.SubResourceSettingBuilder;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
-import static com.github.dreamhead.moco.rest.RestSettingBuilders.all;
-import static com.github.dreamhead.moco.rest.RestSettingBuilders.single;
+import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.all;
+import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.single;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;

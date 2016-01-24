@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.rest;
+package com.github.dreamhead.moco.rest.builder;
 
 import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.RequestMatcher;
@@ -7,6 +7,8 @@ import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.github.dreamhead.moco.RestSettingResponseBuilder;
+import com.github.dreamhead.moco.rest.RestAllSetting;
+import com.github.dreamhead.moco.rest.RestSingleSetting;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;

@@ -54,7 +54,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Override
     protected RestServer createServer(int port) {
-        return restServer(port);
+        return restServer(port, log());
     }
 
     @Test

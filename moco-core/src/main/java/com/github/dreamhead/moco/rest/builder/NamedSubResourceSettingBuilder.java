@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.rest;
+package com.github.dreamhead.moco.rest.builder;
 
 import com.github.dreamhead.moco.RestSetting;
 
