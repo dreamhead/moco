@@ -11,11 +11,11 @@ import static com.github.dreamhead.moco.util.URLs.join;
 public class SubResourceSetting implements RestSetting {
     private final RestIdMatcher id;
     private final String name;
-    private final RestSetting[] settings;
+    private final Iterable<RestSetting> settings;
 
     public SubResourceSetting(final RestIdMatcher id,
                               final String name,
-                              final RestSetting[] settings) {
+                              final Iterable<RestSetting> settings) {
         this.id = id;
         this.name = name;
         this.settings = settings;
