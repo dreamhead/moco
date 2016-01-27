@@ -32,13 +32,9 @@ public class MountSetting extends ResponseSetting {
     }
 
     public MountPredicate[] getMountPredicates() {
-        return toArray(toMountPredicates(), MountPredicate.class);
-    }
-
-    private Iterable<MountPredicate> toMountPredicates() {
-        return unmodifiableIterable(concat(
+        return toArray(concat(
                 transform(includes, toInclude()),
-                transform(excludes, toExclude())));
+                transform(excludes, toExclude())), MountPredicate.class);
     }
 
     private Function<String, MountPredicate> toInclude() {
