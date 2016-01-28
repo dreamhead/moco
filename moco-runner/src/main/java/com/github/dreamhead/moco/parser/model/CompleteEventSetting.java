@@ -24,7 +24,6 @@ public class CompleteEventSetting {
         }
 
         return action;
-
     }
 
     private MocoEventAction doCreateAction() {
@@ -36,7 +35,7 @@ public class CompleteEventSetting {
             return post.createAction();
         }
 
-        return null;
+        throw new IllegalArgumentException("At least one action is expected");
     }
 
     @Override
