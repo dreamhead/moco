@@ -14,8 +14,7 @@ import com.google.common.base.Optional;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class RestSettingBuilders implements RestSettingBuilder,
-        RestSettingResponseBuilder {
+public abstract class RestSettingBuilders implements RestSettingBuilder, RestSettingResponseBuilder {
     protected abstract RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler);
 
     private RequestMatcher matcher;
@@ -29,8 +28,8 @@ public abstract class RestSettingBuilders implements RestSettingBuilder,
     @Override
     public RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers) {
         return createSetting(Optional.fromNullable(matcher),
-                and(checkNotNull(handler, "Post response handler should not be null"),
-                        checkNotNull(handlers, "Post response handler should not be null")));
+                and(checkNotNull(handler, "Response handler should not be null"),
+                        checkNotNull(handlers, "Response handler should not be null")));
     }
 
     public static RestSettingBuilder single(final HttpMethod method, final RestIdMatcher id) {
