@@ -1,0 +1,16 @@
+[
+  {
+    "responseSeq": [
+      {
+        "text": "bar"
+      },
+      {
+        "path_resource":
+        {
+          "name": "path.response",
+          "charset": "utf-8"
+        }
+      }
+    ]
+  }
+]
