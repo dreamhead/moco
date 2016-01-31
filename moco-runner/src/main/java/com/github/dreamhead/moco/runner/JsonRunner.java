@@ -13,6 +13,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
+import com.google.common.net.MediaType;
 
 import java.io.InputStream;
 
@@ -72,15 +73,17 @@ public final class JsonRunner implements Runner {
     private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         HttpServer targetServer = createBaseHttpServer(settings, startArgs);
         targetServer.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")),
-                header(HttpHeaders.CONTENT_TYPE, "image/png"));
+                header(HttpHeaders.CONTENT_TYPE, MediaType.PNG.toString()));
         return targetServer;
     }
 
-    private HttpServer createBaseHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
+    private HttpServer createBaseHttpServer(final Iterable<? extends RunnerSetting> settings,
+                                            final StartArgs startArgs) {
         HttpServer targetServer = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = httpParser.parseServer(setting.getStream(), startArgs.getPort(), toConfigs(setting));
+            HttpServer parsedServer = httpParser.parseServer(setting.getStream(),
+                    startArgs.getPort(), toConfigs(setting));
             targetServer = mergeServer(targetServer, parsedServer);
         }
 
@@ -117,7 +120,8 @@ public final class JsonRunner implements Runner {
         return thisServer.mergeHttpServer((ActualHttpServer) parsedServer);
     }
 
-    public static JsonRunner newJsonRunnerWithStreams(final Iterable<? extends InputStream> streams, final StartArgs startArgs) {
+    public static JsonRunner newJsonRunnerWithStreams(final Iterable<? extends InputStream> streams,
+                                                      final StartArgs startArgs) {
         return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), startArgs);
     }
 
