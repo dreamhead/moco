@@ -4,13 +4,20 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.HttpsCertificate;
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
+import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Optional;
 
+import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoMount.to;
@@ -25,6 +32,7 @@ public class SessionSetting {
     private MountSetting mount;
     private EventSetting on;
     private ProxyContainer proxy;
+    private ResourceSetting resource;
 
     private boolean isMount() {
         return this.mount != null;
@@ -134,5 +142,22 @@ public class SessionSetting {
 
     private boolean hasEvent() {
         return this.on != null;
+    }
+
+    public boolean isResource() {
+        return resource != null;
+    }
+
+    public ActualHttpServer newHttpServer(final Optional<Integer> port,
+                                          final MocoConfig[] configs) {
+        if (isResource()) {
+            ActualRestServer server = new ActualRestServer(port, Optional.<HttpsCertificate>absent(), log(), configs);
+            server.resource(resource.getName(), resource.getSettings());
+            return server;
+        }
+
+        ActualHttpServer server = ActualHttpServer.createLogServer(port, configs);
+        bindTo(server);
+        return server;
     }
 }

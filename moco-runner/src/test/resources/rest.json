@@ -1,0 +1,18 @@
+[
+  {
+    "resource": {
+      "name": "targets",
+      "get": [
+        {
+          "id": "1",
+          "response" : {
+            "json" : {
+              "code" : 1,
+              "message" : "foo"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

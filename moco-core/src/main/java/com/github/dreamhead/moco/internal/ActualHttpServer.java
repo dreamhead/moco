@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
@@ -33,7 +32,7 @@ public class ActualHttpServer extends HttpConfiguration {
         return certificate;
     }
 
-    public HttpServer mergeHttpServer(final ActualHttpServer thatServer) {
+    public ActualHttpServer mergeHttpServer(final ActualHttpServer thatServer) {
         ActualHttpServer newServer = newBaseServer(newServerCertificate(thatServer.certificate));
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
