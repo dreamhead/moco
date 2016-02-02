@@ -18,9 +18,27 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_resource() throws IOException {
         runWithConfiguration("rest.json");
 
-        Plain response = getResource("/targets/1");
-        assertThat(response.code, is(1));
-        assertThat(response.message, is("foo"));
+        Plain response1 = getResource("/targets/1");
+        assertThat(response1.code, is(1));
+        assertThat(response1.message, is("foo"));
+
+        Plain response2 = getResource("/targets/2");
+        assertThat(response2.code, is(2));
+        assertThat(response2.message, is("bar"));
+    }
+
+    @Test
+    public void should_post() throws IOException {
+        runWithConfiguration("rest.json");
+
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        org.apache.http.HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+                mapper.writeValueAsString(resource1));
+        assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+        assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
     }
 
     private Plain getResource(String uri) throws IOException {

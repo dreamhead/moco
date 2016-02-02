@@ -11,6 +11,25 @@
               "message" : "foo"
             }
           }
+        },
+        {
+          "id": "2",
+          "response" : {
+            "json" : {
+              "code" : 2,
+              "message" : "bar"
+            }
+          }
+        }
+      ],
+      "post" : [
+        {
+          "response" : {
+            "status" : 201,
+            "headers" : {
+              "Location" : "/targets/123"
+            }
+          }
         }
       ]
     }
