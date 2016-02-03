@@ -6,14 +6,12 @@ import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Function;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RestPostSetting {
-    private ResponseSetting response;
-
+public class RestPostSetting extends RestBaseSetting {
     public static Function<RestPostSetting, RestSetting> toPostSetting() {
         return new Function<RestPostSetting, RestSetting>() {
             @Override
             public RestSetting apply(final RestPostSetting postSetting) {
-                return MocoRest.post().response(postSetting.response.getResponseHandler());
+                return MocoRest.post().response(postSetting.getResponseHandler());
             }
         };
     }

@@ -41,6 +41,19 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
     }
 
+    @Test
+    public void should_put() throws IOException {
+        runWithConfiguration("rest.json");
+
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        org.apache.http.HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
+                mapper.writeValueAsString(resource1));
+        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);

@@ -6,15 +6,16 @@ import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Function;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RestGetSetting extends RestBaseSetting {
+public class RestPutSetting extends RestBaseSetting {
     private String id;
 
-    public static Function<RestGetSetting, RestSetting> toGetRestSetting() {
-        return new Function<RestGetSetting, RestSetting>() {
+    public static Function<RestPutSetting, RestSetting> toPutSetting() {
+        return new Function<RestPutSetting, RestSetting>() {
             @Override
-            public RestSetting apply(final RestGetSetting setting) {
-                return MocoRest.get(setting.id).response(setting.getResponseHandler());
+            public RestSetting apply(final RestPutSetting putSetting) {
+                return MocoRest.put(putSetting.id).response(putSetting.getResponseHandler());
             }
         };
     }
+
 }
