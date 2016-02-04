@@ -39,6 +39,14 @@
             "status" : 200
           }
         }
+      ],
+      "delete" : [
+        {
+          "id": "1",
+          "response" : {
+            "status" : 200
+          }
+        }
       ]
     }
   }
