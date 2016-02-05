@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.parser.model.RestDeleteSetting.toDeleteSetting;
 import static com.github.dreamhead.moco.parser.model.RestGetSetting.toGetSetting;
+import static com.github.dreamhead.moco.parser.model.RestHeadSetting.toHeadSetting;
 import static com.github.dreamhead.moco.parser.model.RestPostSetting.toPostSetting;
 import static com.github.dreamhead.moco.parser.model.RestPutSetting.toPutSetting;
 
@@ -18,6 +19,7 @@ public class ResourceSetting {
     private List<RestPostSetting> post;
     private List<RestPutSetting> put;
     private List<RestDeleteSetting> delete;
+    private List<RestHeadSetting> head;
 
     public String getName() {
         return name;
@@ -28,7 +30,9 @@ public class ResourceSetting {
         FluentIterable<RestSetting> postSettings = FluentIterable.from(post).transform(toPostSetting());
         FluentIterable<RestSetting> putSettings = FluentIterable.from(put).transform(toPutSetting());
         FluentIterable<RestSetting> deleteSettings = FluentIterable.from(delete).transform(toDeleteSetting());
+        FluentIterable<RestSetting> headSettings = FluentIterable.from(head).transform(toHeadSetting());
 
-        return getSettings.append(postSettings).append(putSettings).append(deleteSettings).toArray(RestSetting.class);
+        return getSettings.append(postSettings).append(putSettings).append(deleteSettings).append(headSettings)
+                .toArray(RestSetting.class);
     }
 }

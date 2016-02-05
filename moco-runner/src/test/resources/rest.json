@@ -47,6 +47,17 @@
             "status" : 200
           }
         }
+      ],
+      "head" : [
+        {
+          "id": "1",
+          "response" : {
+            "status" : 200,
+            "headers" : {
+              "ETag": "Moco"
+            }
+          }
+        }
       ]
     }
   }
