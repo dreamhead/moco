@@ -6,12 +6,8 @@ import com.google.common.collect.FluentIterable;
 
 import java.util.List;
 
-import static com.github.dreamhead.moco.parser.model.RestDeleteSetting.toDeleteSetting;
-import static com.github.dreamhead.moco.parser.model.RestGetSetting.toGetSetting;
-import static com.github.dreamhead.moco.parser.model.RestHeadSetting.toHeadSetting;
-import static com.github.dreamhead.moco.parser.model.RestPatchSetting.toPatchSetting;
-import static com.github.dreamhead.moco.parser.model.RestPostSetting.toPostSetting;
-import static com.github.dreamhead.moco.parser.model.RestPutSetting.toPutSetting;
+import static com.github.dreamhead.moco.parser.model.RestBaseSetting.toSetting;
+import static com.google.common.collect.FluentIterable.from;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResourceSetting {
@@ -28,12 +24,12 @@ public class ResourceSetting {
     }
 
     public RestSetting[] getSettings() {
-        FluentIterable<RestSetting> getSettings = FluentIterable.from(get).transform(toGetSetting());
-        FluentIterable<RestSetting> postSettings = FluentIterable.from(post).transform(toPostSetting());
-        FluentIterable<RestSetting> putSettings = FluentIterable.from(put).transform(toPutSetting());
-        FluentIterable<RestSetting> deleteSettings = FluentIterable.from(delete).transform(toDeleteSetting());
-        FluentIterable<RestSetting> headSettings = FluentIterable.from(head).transform(toHeadSetting());
-        FluentIterable<RestSetting> patchSettings = FluentIterable.from(patch).transform(toPatchSetting());
+        FluentIterable<RestSetting> getSettings = from(get).transform(toSetting());
+        FluentIterable<RestSetting> postSettings = from(post).transform(toSetting());
+        FluentIterable<RestSetting> putSettings = from(put).transform(toSetting());
+        FluentIterable<RestSetting> deleteSettings = from(delete).transform(toSetting());
+        FluentIterable<RestSetting> headSettings = from(head).transform(toSetting());
+        FluentIterable<RestSetting> patchSettings = from(patch).transform(toSetting());
 
         return getSettings.append(postSettings)
                 .append(putSettings).append(deleteSettings)
