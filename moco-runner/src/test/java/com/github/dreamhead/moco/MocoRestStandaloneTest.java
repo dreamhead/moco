@@ -79,6 +79,17 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
+    @Test
+    public void should_patch() throws IOException {
+        runWithConfiguration("rest.json");
+
+        final Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);

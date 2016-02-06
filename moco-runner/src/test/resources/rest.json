@@ -58,6 +58,14 @@
             }
           }
         }
+      ],
+      "patch" : [
+        {
+          "id": "1",
+          "response" : {
+            "text" : "patch result"
+          }
+        }
       ]
     }
   }
