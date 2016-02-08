@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -18,9 +20,12 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_resource() throws IOException {
         runWithConfiguration("rest.json");
 
-        Plain response1 = getResource("/targets/1");
-        assertThat(response1.code, is(1));
-        assertThat(response1.message, is("foo"));
+        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
+                of(HttpHeaders.CONTENT_TYPE, "application/json"));
+        Plain plain = asPlain(response);
+
+        assertThat(plain.code, is(1));
+        assertThat(plain.message, is("foo"));
 
         Plain response2 = getResource("/targets/2");
         assertThat(response2.code, is(2));

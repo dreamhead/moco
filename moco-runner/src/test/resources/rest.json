@@ -5,6 +5,11 @@
       "get": [
         {
           "id": "1",
+          "request": {
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
           "response" : {
             "json" : {
               "code" : 1,
