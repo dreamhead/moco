@@ -5,11 +5,9 @@ import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSettingBuilder;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RestPatchSetting extends RestBaseSetting {
-    private String id;
-
+public class RestPatchSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder startRestSetting() {
-        return MocoRest.patch(id);
+        return MocoRest.patch(id());
     }
 }
