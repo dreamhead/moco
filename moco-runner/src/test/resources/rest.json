@@ -10,65 +10,86 @@
               "Content-Type": "application/json"
             }
           },
-          "response" : {
-            "json" : {
-              "code" : 1,
-              "message" : "foo"
+          "response": {
+            "json": {
+              "code": 1,
+              "message": "foo"
             }
           }
         },
         {
           "id": "2",
-          "response" : {
-            "json" : {
-              "code" : 2,
-              "message" : "bar"
+          "response": {
+            "json": {
+              "code": 2,
+              "message": "bar"
             }
           }
         }
       ],
-      "post" : [
+      "post": [
         {
-          "response" : {
-            "status" : 201,
-            "headers" : {
-              "Location" : "/targets/123"
+          "response": {
+            "status": 201,
+            "headers": {
+              "Location": "/targets/123"
             }
           }
         }
       ],
-      "put" : [
+      "put": [
         {
           "id": "1",
-          "response" : {
-            "status" : 200
+          "response": {
+            "status": 200
           }
         }
       ],
-      "delete" : [
+      "delete": [
         {
           "id": "1",
-          "response" : {
-            "status" : 200
+          "response": {
+            "status": 200
           }
         }
       ],
-      "head" : [
+      "head": [
         {
           "id": "1",
-          "response" : {
-            "status" : 200,
-            "headers" : {
+          "response": {
+            "status": 200,
+            "headers": {
               "ETag": "Moco"
             }
           }
         }
       ],
-      "patch" : [
+      "patch": [
         {
           "id": "1",
-          "response" : {
-            "text" : "patch result"
+          "response": {
+            "text": "patch result"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resource": {
+      "name": "another",
+      "get": [
+        {
+          "id": "1",
+          "request": {
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          "response": {
+            "json": {
+              "code": 1,
+              "message": "foo"
+            }
           }
         }
       ]

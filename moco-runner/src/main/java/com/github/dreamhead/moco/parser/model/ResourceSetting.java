@@ -2,12 +2,14 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
 import static com.github.dreamhead.moco.parser.model.RestBaseSetting.toSetting;
 import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.toArray;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResourceSetting {
@@ -24,16 +26,17 @@ public class ResourceSetting {
     }
 
     public RestSetting[] getSettings() {
-        FluentIterable<RestSetting> getSettings = from(get).transform(toSetting());
-        FluentIterable<RestSetting> postSettings = from(post).transform(toSetting());
-        FluentIterable<RestSetting> putSettings = from(put).transform(toSetting());
-        FluentIterable<RestSetting> deleteSettings = from(delete).transform(toSetting());
-        FluentIterable<RestSetting> headSettings = from(head).transform(toSetting());
-        FluentIterable<RestSetting> patchSettings = from(patch).transform(toSetting());
+        return toArray(concat(asRestSetting(get), asRestSetting(post),
+                asRestSetting(put), asRestSetting(delete),
+                asRestSetting(head), asRestSetting(patch)),
+                RestSetting.class);
+    }
 
-        return getSettings.append(postSettings)
-                .append(putSettings).append(deleteSettings)
-                .append(headSettings).append(patchSettings)
-                .toArray(RestSetting.class);
+    private Iterable<RestSetting> asRestSetting(final List<? extends RestBaseSetting> setting) {
+        if (setting == null || setting.isEmpty()) {
+            return ImmutableList.of();
+        }
+
+        return from(setting).transform(toSetting());
     }
 }
