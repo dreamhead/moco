@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
@@ -17,6 +18,10 @@ public abstract class RestBaseSetting {
         return request != null;
     }
 
+    protected boolean hasResponse() {
+        return response != null;
+    }
+
     protected ResponseHandler getResponseHandler() {
         return response.getResponseHandler();
     }
@@ -29,12 +34,16 @@ public abstract class RestBaseSetting {
         return new Function<T, RestSetting>() {
             @Override
             public RestSetting apply(final T setting) {
+                if (!setting.hasResponse()) {
+                    throw new IllegalArgumentException("Response is expected in rest setting");
+                }
+
                 return getRestSettingBuilder(setting).response(setting.getResponseHandler());
             }
         };
     }
 
-    private static <T extends RestBaseSetting> RestSettingResponseBuilder getRestSettingBuilder(T setting) {
+    private static <T extends RestBaseSetting> RestSettingResponseBuilder getRestSettingBuilder(final T setting) {
         RestSettingBuilder builder = setting.startRestSetting();
         if (setting.hasRequest()) {
             return builder.request(setting.getRequestMatcher());

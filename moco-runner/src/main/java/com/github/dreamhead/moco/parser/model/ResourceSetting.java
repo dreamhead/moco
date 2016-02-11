@@ -27,8 +27,8 @@ public class ResourceSetting {
 
     public RestSetting[] getSettings() {
         return toArray(concat(asRestSetting(get), asRestSetting(post),
-                asRestSetting(put), asRestSetting(delete),
-                asRestSetting(head), asRestSetting(patch)),
+                        asRestSetting(put), asRestSetting(delete),
+                        asRestSetting(head), asRestSetting(patch)),
                 RestSetting.class);
     }
 

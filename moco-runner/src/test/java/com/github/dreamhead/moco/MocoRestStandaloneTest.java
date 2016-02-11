@@ -95,6 +95,11 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_while_no_response_found_in_rest_setting() {
+        runWithConfiguration("rest_error_without_response.json");
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);

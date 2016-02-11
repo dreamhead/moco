@@ -1,0 +1,12 @@
+[
+  {
+    "resource": {
+      "name": "targets",
+      "get": [
+        {
+          "id": "1"
+        }
+      ]
+    }
+  }
+]
