@@ -12,6 +12,7 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
@@ -153,7 +154,7 @@ public class MocoTestHelper {
     }
 
     public String patchForResponse(final String url, String content) throws IOException {
-        Request request = Request.Patch(url).bodyByteArray(content.getBytes());
+        Request request = Request.Patch(url).bodyByteArray(content.getBytes(), ContentType.DEFAULT_TEXT);
         return EXECUTOR.execute(request).returnContent().asString();
     }
 

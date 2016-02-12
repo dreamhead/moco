@@ -18,7 +18,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_get_resource() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
@@ -34,7 +34,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_post() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -48,7 +48,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_put() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -61,7 +61,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_delete() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -73,7 +73,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_head() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -86,7 +86,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_patch() throws IOException {
-        runWithConfiguration("rest.json");
+        runWithConfiguration("rest/rest.json");
 
         final Plain resource1 = new Plain();
         resource1.code = 1;
@@ -95,9 +95,27 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
     }
 
+    @Test
+    public void should_get_resource_with_any_id() throws IOException {
+        runWithConfiguration("rest/rest.json");
+
+        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
+                of(HttpHeaders.CONTENT_TYPE, "application/json"));
+        Plain plain = asPlain(response);
+
+        assertThat(plain.code, is(1));
+        assertThat(plain.message, is("any"));
+
+        org.apache.http.HttpResponse response2 = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
+                of(HttpHeaders.CONTENT_TYPE, "application/json"));
+        Plain plain2 = asPlain(response2);
+        assertThat(plain2.code, is(1));
+        assertThat(plain2.message, is("any"));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_while_no_response_found_in_rest_setting() {
-        runWithConfiguration("rest_error_without_response.json");
+        runWithConfiguration("rest/rest_error_without_response.json");
     }
 
     private Plain getResource(String uri) throws IOException {

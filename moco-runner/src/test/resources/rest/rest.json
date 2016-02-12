@@ -76,10 +76,10 @@
   },
   {
     "resource": {
-      "name": "another",
+      "name": "any-targets",
       "get": [
         {
-          "id": "1",
+          "id": "*",
           "request": {
             "headers": {
               "Content-Type": "application/json"
@@ -88,7 +88,7 @@
           "response": {
             "json": {
               "code": 1,
-              "message": "foo"
+              "message": "any"
             }
           }
         }

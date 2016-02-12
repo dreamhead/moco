@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.parser.model;
 
-import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
