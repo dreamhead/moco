@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
-import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.SocketServer;

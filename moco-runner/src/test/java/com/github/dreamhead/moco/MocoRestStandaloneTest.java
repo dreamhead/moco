@@ -113,6 +113,18 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(plain2.message, is("any"));
     }
 
+    @Test
+    public void should_get_sub_resource() throws IOException {
+        runWithConfiguration("rest/rest.json");
+
+        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1"),
+                of(HttpHeaders.CONTENT_TYPE, "application/json"));
+        Plain plain = asPlain(response);
+
+        assertThat(plain.code, is(3));
+        assertThat(plain.message, is("sub"));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_while_no_response_found_in_rest_setting() {
         runWithConfiguration("rest/rest_error_without_response.json");

@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.rest.builder;
 
-import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.rest.SubResourceSetting;

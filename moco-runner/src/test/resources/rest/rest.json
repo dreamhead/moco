@@ -71,6 +71,23 @@
             "text": "patch result"
           }
         }
+      ],
+      "resource" : [
+        {
+          "id": "1",
+          "name" : "subs",
+          "get" : [
+            {
+              "id": "1",
+              "response": {
+                "json": {
+                  "code": 3,
+                  "message": "sub"
+                }
+              }
+            }
+          ]
+        }
       ]
     }
   },
