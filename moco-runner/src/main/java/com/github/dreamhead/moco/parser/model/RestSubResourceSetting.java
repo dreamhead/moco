@@ -16,8 +16,10 @@ public class RestSubResourceSetting extends ResourceSetting {
             @Override
             public RestSetting apply(final RestSubResourceSetting input) {
                 RestSetting[] settings = input.getSettings();
-                return MocoRest.id(input.id).name(input.getName()).settings(settings[0],
-                        Arrays.copyOfRange(settings, 1, settings.length));
+
+                return MocoRest.id(RestIds.asIdMatcher(input.id))
+                        .name(input.getName()).settings(settings[0],
+                                Arrays.copyOfRange(settings, 1, settings.length));
             }
         };
     }
