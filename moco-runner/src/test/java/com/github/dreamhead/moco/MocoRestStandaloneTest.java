@@ -126,6 +126,18 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_get_sub_sub_resource() throws IOException {
+        runWithConfiguration("rest/rest.json");
+
+        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1/sub-subs/1"),
+                of(HttpHeaders.CONTENT_TYPE, "application/json"));
+        Plain plain = asPlain(response);
+
+        assertThat(plain.code, is(4));
+        assertThat(plain.message, is("sub-sub"));
+    }
+
+    @Test
     public void should_get_sub_resource_with_any_id() throws IOException {
         runWithConfiguration("rest/rest.json");
 

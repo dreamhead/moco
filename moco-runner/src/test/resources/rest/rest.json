@@ -86,6 +86,23 @@
                 }
               }
             }
+          ],
+          "resource" : [
+            {
+              "id" : "1",
+              "name" : "sub-subs",
+              "get" : [
+                {
+                  "id" : "1",
+                  "response" : {
+                    "json" : {
+                      "code" : 4,
+                      "message" : "sub-sub"
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
