@@ -745,6 +745,39 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
+    @Test
+    public void should_work_with_other_http_configuration() throws Exception {
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        server.resource("targets",
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
+        );
+
+        server.response("hello");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Plain response1 = getResource("/targets/1");
+                assertThat(response1.code, is(1));
+                assertThat(response1.message, is("hello"));
+
+                Plain response2 = getResource("/targets/2");
+                assertThat(response2.code, is(2));
+                assertThat(response2.message, is("world"));
+
+                assertThat(helper.get(remoteUrl("/hello")), is("hello"));
+            }
+        });
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
