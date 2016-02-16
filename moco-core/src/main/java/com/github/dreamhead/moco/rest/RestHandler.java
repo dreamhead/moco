@@ -12,9 +12,9 @@ import com.google.common.base.Optional;
 public class RestHandler extends AbstractHttpResponseHandler {
     private final RestRequestDispatcher dispatcher;
     private final String name;
-    private final RestSetting[] settings;
+    private final Iterable<RestSetting> settings;
 
-    public RestHandler(final String name, final RestSetting... settings) {
+    public RestHandler(final String name, final Iterable<RestSetting> settings) {
         this.name = name;
         this.dispatcher = new RestRequestDispatcher(name, settings);
         this.settings = settings;

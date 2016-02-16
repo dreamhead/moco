@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
@@ -22,10 +23,14 @@ public class ActualRestServer extends ActualHttpServer implements RestServer {
     }
 
     @Override
-    public void resource(final String name, final RestSetting... settings) {
+    public void resource(final String name, final RestSetting setting, final RestSetting... settings) {
         checkNotNullOrEmpty(name, "Resource name should not be null");
-        checkNotNull(settings, "Rest settings should not be null");
 
-        this.request(InternalApis.context(resourceRoot(name))).response(new RestHandler(name, settings));
+        ImmutableList<RestSetting> targets = ImmutableList.<RestSetting>builder()
+                .add(checkNotNull(setting, "Rest setting should not be null"))
+                .add(checkNotNull(settings, "Rest settings should not be null"))
+                .build();
+
+        this.request(InternalApis.context(resourceRoot(name))).response(new RestHandler(name, targets));
     }
 }

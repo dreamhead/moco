@@ -7,9 +7,9 @@ import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
 public class CompositeRestSetting<T extends SimpleRestSetting> implements RestSetting {
-    private final T[] settings;
+    private final Iterable<T> settings;
 
-    public CompositeRestSetting(final T[] settings) {
+    public CompositeRestSetting(final Iterable<T> settings) {
         this.settings = settings;
     }
 
@@ -30,7 +30,7 @@ public class CompositeRestSetting<T extends SimpleRestSetting> implements RestSe
         return Optional.absent();
     }
 
-    public T[] getSettings() {
+    public Iterable<T> getSettings() {
         return settings;
     }
 }

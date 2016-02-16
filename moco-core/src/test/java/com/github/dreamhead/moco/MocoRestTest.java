@@ -143,7 +143,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Test
     public void should_reply_404_for_unknown_resource() throws Exception {
-        server.resource("targets");
+        server.resource("targets", get("2").response(with(text("hello"))));
 
         running(server, new Runnable() {
             @Override

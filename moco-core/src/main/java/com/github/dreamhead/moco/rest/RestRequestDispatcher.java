@@ -41,7 +41,7 @@ public final class RestRequestDispatcher {
     private final CompositeRestSetting<RestSingleSetting> patchSettings;
     private final FluentIterable<SubResourceSetting> subResourceSettings;
 
-    public RestRequestDispatcher(final String name, final RestSetting[] settings) {
+    public RestRequestDispatcher(final String name, final Iterable<RestSetting> settings) {
         this.name = eq(name);
 
         this.getAllSettings = filterSettings(settings, RestAllSetting.class, HttpMethod.GET);
@@ -57,7 +57,7 @@ public final class RestRequestDispatcher {
         this.singleMatcher = Moco.match(uri(join(resourceRoot(name), "[^/]*")));
     }
 
-    private <T extends SimpleRestSetting> CompositeRestSetting<T> filterSettings(final RestSetting[] settings,
+    private <T extends SimpleRestSetting> CompositeRestSetting<T> filterSettings(final Iterable<RestSetting> settings,
                                                                                  final Class<T> type,
                                                                                  final HttpMethod method) {
         return new CompositeRestSetting<T>(filter(settings, type, method));
@@ -72,17 +72,16 @@ public final class RestRequestDispatcher {
         };
     }
 
-    private <T extends SimpleRestSetting> T[] filter(final RestSetting[] settings,
+    private <T extends SimpleRestSetting> FluentIterable<T> filter(final Iterable<RestSetting> settings,
                                                      final Class<T> type,
                                                      final HttpMethod method) {
         return filter(settings, type)
-                .filter(isForMethod(method))
-                .toArray(type);
+                .filter(isForMethod(method));
     }
 
-    private <T extends RestSetting> FluentIterable<T> filter(final RestSetting[] settings,
+    private <T extends RestSetting> FluentIterable<T> filter(final Iterable<RestSetting> settings,
                                                              final Class<T> type) {
-        return FluentIterable.of(settings)
+        return FluentIterable.from(settings)
                 .filter(type)
                 .transform(toInstance(type));
     }
@@ -161,7 +160,7 @@ public final class RestRequestDispatcher {
         }
 
         if (allMatcher.match(httpRequest)) {
-            FluentIterable<RestSingleSetting> settings = FluentIterable.of(getSingleSettings.getSettings());
+            FluentIterable<RestSingleSetting> settings = FluentIterable.from(getSingleSettings.getSettings());
             if (!settings.isEmpty() && settings.allMatch(isJsonHandlers())) {
                 ImmutableList<Object> objects = settings
                         .transform(toJsonHandler())
