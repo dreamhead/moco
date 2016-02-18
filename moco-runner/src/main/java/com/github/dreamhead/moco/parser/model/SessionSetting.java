@@ -9,12 +9,15 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
+
+import java.util.Arrays;
 
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.template;
@@ -151,7 +154,9 @@ public class SessionSetting {
                                           final MocoConfig[] configs) {
         if (isResource()) {
             ActualRestServer server = new ActualRestServer(port, Optional.<HttpsCertificate>absent(), log(), configs);
-            server.resource(resource.getName(), resource.getSettings());
+            RestSetting[] settings = resource.getSettings();
+            server.resource(resource.getName(), settings[0],
+                    Arrays.copyOfRange(settings, 1, settings.length));
             return server;
         }
 

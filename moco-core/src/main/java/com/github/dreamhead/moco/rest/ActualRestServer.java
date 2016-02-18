@@ -8,17 +8,17 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
+import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ActualRestServer extends ActualHttpServer implements RestServer {
     public ActualRestServer(final Optional<Integer> port,
-                               final Optional<HttpsCertificate> certificate,
-                               final MocoMonitor monitor,
-                               final MocoConfig... configs) {
+                            final Optional<HttpsCertificate> certificate,
+                            final MocoMonitor monitor,
+                            final MocoConfig... configs) {
         super(port, certificate, monitor, configs);
     }
 
@@ -26,11 +26,9 @@ public class ActualRestServer extends ActualHttpServer implements RestServer {
     public void resource(final String name, final RestSetting setting, final RestSetting... settings) {
         checkNotNullOrEmpty(name, "Resource name should not be null");
 
-        ImmutableList<RestSetting> targets = ImmutableList.<RestSetting>builder()
-                .add(checkNotNull(setting, "Rest setting should not be null"))
-                .add(checkNotNull(settings, "Rest settings should not be null"))
-                .build();
-
-        this.request(InternalApis.context(resourceRoot(name))).response(new RestHandler(name, targets));
+        RestHandler handler = new RestHandler(name, asIterable(
+                checkNotNull(setting, "Rest setting should not be null"),
+                checkNotNull(settings, "Rest settings should not be null")));
+        this.request(InternalApis.context(resourceRoot(name))).response(handler);
     }
 }

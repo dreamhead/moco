@@ -29,7 +29,7 @@ public abstract class RestSettingBuilders implements RestSettingBuilder, RestSet
     public RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers) {
         return createSetting(Optional.fromNullable(matcher),
                 and(checkNotNull(handler, "Response handler should not be null"),
-                        checkNotNull(handlers, "Response handler should not be null")));
+                        checkNotNull(handlers, "Response handlers should not be null")));
     }
 
     public static RestSettingBuilder single(final HttpMethod method, final RestIdMatcher id) {

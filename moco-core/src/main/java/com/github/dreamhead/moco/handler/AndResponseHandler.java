@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 
+import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
@@ -54,10 +54,6 @@ public class AndResponseHandler extends AbstractResponseHandler {
             return handler;
         }
 
-        ImmutableList<ResponseHandler> targets = ImmutableList.<ResponseHandler>builder()
-                .add(handler)
-                .add(handlers)
-                .build();
-        return new AndResponseHandler(targets);
+        return new AndResponseHandler(asIterable(handler, handlers));
     }
 }

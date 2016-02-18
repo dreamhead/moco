@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.rest.SubResourceSetting;
 import com.google.common.collect.ImmutableList;
 
+import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,10 +25,9 @@ public class ActualSubResourceSettingBuilder implements SubResourceSettingBuilde
 
     @Override
     public RestSetting settings(final RestSetting restSetting, final RestSetting... restSettings) {
-        ImmutableList<RestSetting> targets = ImmutableList.<RestSetting>builder()
-                .add(checkNotNull(restSetting, "Rest setting should not be null"))
-                .add(checkNotNull(restSettings, "Rest settings should not be null"))
-                .build();
+        Iterable<RestSetting> targets = asIterable(
+                checkNotNull(restSetting, "Rest setting should not be null"),
+                checkNotNull(restSettings, "Rest settings should not be null"));
 
         return new SubResourceSetting(this.id, this.name, targets);
     }
