@@ -7,11 +7,9 @@ public interface ResponseSetting<T extends ResponseSetting> {
 
     T response(final Resource resource);
 
-    T response(final ResponseHandler handler);
-
     T response(final MocoProcedure procedure);
 
-    T response(final ResponseHandler... handlers);
+    T response(final ResponseHandler handler, final ResponseHandler... handlers);
 
     T on(final MocoEventTrigger trigger);
 }

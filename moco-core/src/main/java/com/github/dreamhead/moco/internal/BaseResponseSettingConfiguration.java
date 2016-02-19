@@ -47,13 +47,10 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
     }
 
     @Override
-    public T response(final ResponseHandler... handlers) {
-        return this.response(and(handlers));
-    }
-
-    @Override
-    public T response(final ResponseHandler handler) {
-        this.handler = targetHandler(checkNotNull(handler, "Handler should not be null"));
+    public T response(final ResponseHandler handler, final ResponseHandler... handlers) {
+        ResponseHandler responseHandler = and(checkNotNull(handler, "Handler should not be null"),
+                checkNotNull(handlers, "Handlers should not be null"));
+        this.handler = targetHandler(responseHandler);
         return self();
     }
 
