@@ -72,11 +72,11 @@
           }
         }
       ],
-      "resource" : [
+      "resource": [
         {
           "id": "1",
-          "name" : "subs",
-          "get" : [
+          "name": "subs",
+          "get": [
             {
               "id": "1",
               "response": {
@@ -87,17 +87,17 @@
               }
             }
           ],
-          "resource" : [
+          "resource": [
             {
-              "id" : "1",
-              "name" : "sub-subs",
-              "get" : [
+              "id": "1",
+              "name": "sub-subs",
+              "get": [
                 {
-                  "id" : "1",
-                  "response" : {
-                    "json" : {
-                      "code" : 4,
-                      "message" : "sub-sub"
+                  "id": "1",
+                  "response": {
+                    "json": {
+                      "code": 4,
+                      "message": "sub-sub"
                     }
                   }
                 }
@@ -107,8 +107,8 @@
         },
         {
           "id": "*",
-          "name" : "any-subs",
-          "get" : [
+          "name": "any-subs",
+          "get": [
             {
               "id": "1",
               "response": {
@@ -140,6 +140,23 @@
               "message": "any"
             }
           }
+        }
+      ],
+      "resource": [
+        {
+          "id": "*",
+          "name": "any-subs",
+          "get": [
+            {
+              "id": "*",
+              "response": {
+                "json": {
+                  "code": 100,
+                  "message": "any-sub"
+                }
+              }
+            }
+          ]
         }
       ]
     }
