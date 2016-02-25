@@ -160,5 +160,26 @@
         }
       ]
     }
+  },
+  {
+    "resource": {
+      "name": "all-resources",
+      "get": [
+        {
+          "response": {
+            "json": [
+              {
+                "code": 1000,
+                "message": "all-1"
+              },
+              {
+                "code": 100,
+                "message": "all-2"
+              }
+            ]
+          }
+        }
+      ]
+    }
   }
 ]
