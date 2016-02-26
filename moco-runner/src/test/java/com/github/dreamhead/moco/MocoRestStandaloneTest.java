@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
+import org.apache.http.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -186,6 +186,15 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
         });
         assertThat(plains.size(), is(2));
+    }
+
+    @Test
+    public void should_head_all_resource() throws IOException {
+        runWithConfiguration("rest/rest.json");
+
+        org.apache.http.HttpResponse httpResponse = helper.headForResponse(remoteUrl("/all-resources"));
+        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+        assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
     private Plain getResource(String uri) throws IOException {

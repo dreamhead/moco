@@ -8,6 +8,10 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 public class RestHeadSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder startRestSetting() {
-        return MocoRest.head(id());
+        if (hasId()) {
+            return MocoRest.head(id());
+        }
+
+        return MocoRest.head();
     }
 }

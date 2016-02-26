@@ -179,6 +179,15 @@
             ]
           }
         }
+      ],
+      "head": [
+        {
+          "response": {
+            "headers" : {
+              "ETag": "Moco"
+            }
+          }
+        }
       ]
     }
   }
