@@ -417,7 +417,6 @@ server.post(eq(form("name"), "foo")).response("bar");
 
 * JSON
 
-
 ```json
 {
   "request" :
@@ -957,7 +956,6 @@ server.response(version(HttpProtocolVersion.VERSION_1_0));
 
 * JSON
 
-
 ```json
 {
   "request": 
@@ -1209,40 +1207,40 @@ server.proxy(from("/proxy").to("http://localhost:12306/target"));
 Same with failover
 
 * Java API
-```java
-server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("failover.response"));
-```
+  ```java
+  server.proxy(from("/proxy").to("http://localhost:12306/unknown"), failover("failover.response"));
+  ```
 
 * JSON
-```json
-{
+  ```json
+  {
     "proxy" :
     {
         "from" : "/failover",
         "to" : "http://localhost:12306/unknown",
         "failover" : "failover.response"
     }
-}
-```
+  }
+  ```
 
 and playback
 
 * Java API
-```java
-server.proxy(from("/proxy").to("http://localhost:12306/unknown"), playback("playback.response"));
-```
+  ```java
+  server.proxy(from("/proxy").to("http://localhost:12306/unknown"), playback("playback.response"));
+  ```
 
 * JSON
-```json
-{
+  ```json
+  {
     "proxy" :
     {
         "from" : "/failover",
         "to" : "http://localhost:12306/unknown",
         "playback" : "playback.response"
     }
-}
-```
+  }
+  ```
 
 ### Redirect
 **@Since 0.7**
