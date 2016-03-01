@@ -27,6 +27,7 @@ public class ResourceSetting {
         return name;
     }
 
+    @SuppressWarnings("unchecked")
     public RestSetting[] getSettings() {
         return toArray(concat(asRestSetting(get), asRestSetting(post),
                         asRestSetting(put), asRestSetting(delete),
