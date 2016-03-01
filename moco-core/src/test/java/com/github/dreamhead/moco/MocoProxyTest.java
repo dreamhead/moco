@@ -265,17 +265,17 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test
-    public void should_be_able_to_connect_to_external_website_successfully() throws Exception {
-        server.response(proxy("http://www.baidu.com/"));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getForStatus(root()), is(200));
-            }
-        });
-    }
+//    @Test
+//    public void should_be_able_to_connect_to_external_website_successfully() throws Exception {
+//        server.response(proxy("http://www.baidu.com/"));
+//
+//        running(server, new Runnable() {
+//            @Override
+//            public void run() throws IOException {
+//                assertThat(helper.getForStatus(root()), is(200));
+//            }
+//        });
+//    }
 
     @Test
     public void should_proxy_a_batch_of_urls() throws Exception {
