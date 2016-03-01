@@ -14,6 +14,8 @@
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
 -keep public class com.github.dreamhead.moco.resource.reader.TemplateRequest{*;}
 -keep public class com.github.dreamhead.moco.Moco{*;}
+-keep public class com.github.dreamhead.moco.MocoRest{*;}
+-keep public class com.github.dreamhead.moco.HttpMethod{*;}
 -keep public class com.github.dreamhead.moco.Runner{*;}
 -keep public class com.github.dreamhead.moco.Runnable{*;}
 -keep public class com.github.dreamhead.moco.MocoRunner{*;}
@@ -39,6 +41,7 @@
 -keep public class org.apache.commons.logging.impl.**{*;}
 -keep public class com.fasterxml.jackson.databind.**{*;}
 -keep public class com.fasterxml.jackson.annotation.**{*;}
+-keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
 
 #jce.jar
 -dontwarn org.apache.http.impl.auth.**
@@ -48,6 +51,9 @@
 
 -dontwarn io.netty.**
 -dontwarn com.jayway.jsonpath.spi.impl.JacksonProvider
+-dontwarn com.jayway.jsonpath.spi.json.JsonOrgJsonProvider
+-dontwarn com.jayway.jsonpath.spi.json.TapestryJsonProvider
+-dontwarn com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider
 -dontwarn ch.qos.logback.core.**
 -dontwarn ch.qos.logback.classic.**
 -dontwarn freemarker.**
