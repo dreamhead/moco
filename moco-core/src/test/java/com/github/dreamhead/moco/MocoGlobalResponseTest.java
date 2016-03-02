@@ -102,20 +102,20 @@ public class MocoGlobalResponseTest {
         });
     }
 
-    @Test
-    public void should_return_all_response_for_proxy_with_header() throws Exception {
-        server = httpServer(port(), response(header("foo", "bar")));
-        server.response(proxy("https://github.com/"));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
-        });
-    }
+//    @Test
+//    public void should_return_all_response_for_proxy_with_header() throws Exception {
+//        server = httpServer(port(), response(header("foo", "bar")));
+//        server.response(proxy("https://github.com/"));
+//
+//        running(server, new Runnable() {
+//            @Override
+//            public void run() throws Exception {
+//                HttpResponse response = Request.Get(root()).execute().returnResponse();
+//                Header header = response.getFirstHeader("foo");
+//                assertThat(header.getValue(), is("bar"));
+//            }
+//        });
+//    }
 
     @Test
     public void should_return_all_response_for_mount_with_header() throws Exception {
