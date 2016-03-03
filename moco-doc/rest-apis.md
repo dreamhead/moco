@@ -201,7 +201,7 @@ server.resource("targets",
 
 ### PUT
 
-PUT method is used to update a specified resource. The following setting could be visited with `/targets` in PUT method.
+PUT method is used to update a specified resource. The following setting could be visited with `/targets/1` in PUT method.
 
 * Java
 
@@ -218,6 +218,7 @@ server.resource("targets",
   "name": "targets",
   "put": [
     {
+      "id": 1,
       "response": {
         "status": 200,
       }
@@ -228,7 +229,7 @@ server.resource("targets",
 
 ### DELETE
 
-DELETE method is used to delete a specified resource. The following setting could be visited with `/targets` in DELETE method.
+DELETE method is used to delete a specified resource. The following setting could be visited with `/targets/1` in DELETE method.
 
 * Java
 
@@ -245,6 +246,96 @@ server.resource("targets",
   "name": "targets",
   "delete": [
     {
+      "id": 1,
+      "response": {
+        "status": 200,
+      }
+    }
+  ]
+}
+```
+
+### HEAD
+
+#### HEAD with ID
+
+HEAD method is used to query resource metadata. If an ID is specified, it is used to query a single resource. The following setting could be visited with `/targets/1` in HEAD method.
+
+* Java
+
+```java
+server.resource("targets",
+	head("1").response(header("ETag", "Moco"))
+);
+```
+
+* JSON
+
+```
+"resource": {
+  "name": "targets",
+  "get": [
+    {
+      "id": "1",
+      "response": {
+        "headers": {
+          "ETag": "Moco"
+        }
+      }
+    }
+  ]
+}
+```
+
+#### HEAD All
+
+If no id specified, all related resource metadata will be returned. The following setting could be visited with `/targets` in HEAD method.
+
+* Java
+
+```java
+server.resource("targets",
+	head().response(header("ETag", "Moco"))
+);
+```
+
+* JSON
+
+```
+"resource": {
+  "name": "targets",
+  "get": [
+    {
+      "response": {
+        "headers": {
+          "ETag": "Moco"
+        }
+      }
+    }
+  ]
+}
+```
+
+### PATCH
+
+PATCH method is used to update a specified resource. The following setting could be visited with `/targets/1` in PATCH method.
+
+- Java
+
+```java
+server.resource("targets",
+	patch("1").response(status(200))
+);
+```
+
+- JSON
+
+```json
+"resource": {
+  "name": "targets",
+  "patch": [
+    {
+      "id": 1,
       "response": {
         "status": 200,
       }
