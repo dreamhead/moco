@@ -1,7 +1,20 @@
-# Release 0.10.3 
+# Release 0.11.0 
  
 ## Usage
 * JUnit Integration
+
+## APIs
+### REST API
+* get
+* post
+* put
+* delete
+* head
+* patch
+* subresource
+
+## Implementation Details
+* Fix response handler case issue
 
 # Release 0.10.2 (1-Sep-2015)
 
