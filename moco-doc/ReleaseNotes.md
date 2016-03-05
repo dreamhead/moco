@@ -11,7 +11,7 @@
 * delete
 * head
 * patch
-* subresource
+* sub-resource
 
 ## Implementation Details
 * Fix response handler case issue

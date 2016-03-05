@@ -343,3 +343,44 @@ server.resource("targets",
   ]
 }
 ```
+
+### Sub-resource
+
+Sub-resource is used to build relationship for resource. The following setting could be visited with `/targets/1/subs/1` in GET method.
+
+* Java
+
+```java
+server.resource("targets",
+	id("1").name("subs").settings(
+      get("1").response(toJson(resource)),
+    )
+);
+```
+
+* JSON
+
+```json
+"resource": {
+  "name": "targets",
+  "resource": [
+  	{
+      "id": "1",
+      "name": "subs",
+      "get": [
+      	{
+          "id": "1",
+          "response": {
+            "json": {
+              "code": 3,
+              "message": "sub"
+            }
+          }
+        }
+      ]
+	}
+  ]
+}
+```
+
+The REST settings in sub-resource are the same as regular REST API.
