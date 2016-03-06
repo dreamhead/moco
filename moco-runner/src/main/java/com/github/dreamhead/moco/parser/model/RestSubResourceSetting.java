@@ -5,9 +5,9 @@ import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Function;
 
-import java.util.Arrays;
-
 import static com.github.dreamhead.moco.parser.model.RestIds.asIdMatcher;
+import static com.github.dreamhead.moco.util.Iterables.head;
+import static com.github.dreamhead.moco.util.Iterables.tail;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestSubResourceSetting extends ResourceSetting {
@@ -20,8 +20,7 @@ public class RestSubResourceSetting extends ResourceSetting {
                 RestSetting[] settings = input.getSettings();
 
                 return MocoRest.id(asIdMatcher(input.id))
-                        .name(input.getName()).settings(settings[0],
-                                Arrays.copyOfRange(settings, 1, settings.length));
+                        .name(input.getName()).settings(head(settings), tail(settings));
             }
         };
     }

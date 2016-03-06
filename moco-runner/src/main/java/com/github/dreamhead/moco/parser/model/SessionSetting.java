@@ -17,13 +17,13 @@ import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
-import java.util.Arrays;
-
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
+import static com.github.dreamhead.moco.util.Iterables.head;
+import static com.github.dreamhead.moco.util.Iterables.tail;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -155,8 +155,7 @@ public class SessionSetting {
         if (isResource()) {
             ActualRestServer server = new ActualRestServer(port, Optional.<HttpsCertificate>absent(), log(), configs);
             RestSetting[] settings = resource.getSettings();
-            server.resource(resource.getName(), settings[0],
-                    Arrays.copyOfRange(settings, 1, settings.length));
+            server.resource(resource.getName(), head(settings), tail(settings));
             return server;
         }
 
