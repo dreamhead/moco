@@ -1,0 +1,14 @@
+[
+  {
+    "resource" : {
+      "name" : "error",
+      "put": [
+        {
+          "response": {
+            "status": 200
+          }
+        }
+      ]
+    }
+  }
+]

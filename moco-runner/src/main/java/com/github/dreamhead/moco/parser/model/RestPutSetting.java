@@ -8,6 +8,10 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 public class RestPutSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder startRestSetting() {
-        return MocoRest.put(this.id());
+        if (hasId()) {
+            return MocoRest.put(this.id());
+        }
+
+        throw new IllegalArgumentException("Put ID is missing");
     }
 }

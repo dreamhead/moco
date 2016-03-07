@@ -197,6 +197,11 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_without_put_id() {
+        runWithConfiguration("rest/rest_error_without_put_id.json");
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
