@@ -8,6 +8,10 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 public class RestDeleteSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder startRestSetting() {
-        return MocoRest.delete(id());
+        if (hasId()) {
+            return MocoRest.delete(id());
+        }
+
+        throw new IllegalArgumentException("Delete ID is missing");
     }
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "resource" : {
+      "name" : "error",
+      "delete": [
+        {
+          "response": {
+            "status": 200
+          }
+        }
+      ]
+    }
+  }
+]
