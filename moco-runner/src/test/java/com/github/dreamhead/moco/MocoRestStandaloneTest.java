@@ -207,6 +207,11 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("rest/rest_error_without_delete_id.json");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_without_patch_id() {
+        runWithConfiguration("rest/rest_error_without_patch_id.json");
+    }
+
     private Plain getResource(String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);

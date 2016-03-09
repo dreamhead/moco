@@ -1,0 +1,14 @@
+[
+  {
+    "resource" : {
+      "name" : "error",
+      "patch": [
+        {
+          "response": {
+            "status": 200
+          }
+        }
+      ]
+    }
+  }
+]

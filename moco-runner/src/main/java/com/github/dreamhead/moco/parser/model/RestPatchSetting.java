@@ -8,6 +8,10 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 public class RestPatchSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder startRestSetting() {
-        return MocoRest.patch(id());
+        if (hasId()) {
+            return MocoRest.patch(id());
+        }
+
+        throw new IllegalArgumentException("Patch ID is missing");
     }
 }
