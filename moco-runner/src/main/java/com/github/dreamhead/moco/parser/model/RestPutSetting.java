@@ -7,11 +7,12 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestPutSetting extends RestSingleSetting {
     @Override
-    protected RestSettingBuilder startRestSetting() {
-        if (hasId()) {
-            return MocoRest.put(this.id());
-        }
+    protected RestSettingBuilder doStartRestSetting() {
+        return MocoRest.put(this.id());
+    }
 
-        throw new IllegalArgumentException("Put ID is missing");
+    @Override
+    protected boolean isIdRequired() {
+        return true;
     }
 }

@@ -7,11 +7,12 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestDeleteSetting extends RestSingleSetting {
     @Override
-    protected RestSettingBuilder startRestSetting() {
-        if (hasId()) {
-            return MocoRest.delete(id());
-        }
+    protected RestSettingBuilder doStartRestSetting() {
+        return MocoRest.delete(id());
+    }
 
-        throw new IllegalArgumentException("Delete ID is missing");
+    @Override
+    protected boolean isIdRequired() {
+        return true;
     }
 }

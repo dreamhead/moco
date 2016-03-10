@@ -7,11 +7,12 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestPatchSetting extends RestSingleSetting {
     @Override
-    protected RestSettingBuilder startRestSetting() {
-        if (hasId()) {
-            return MocoRest.patch(id());
-        }
+    protected RestSettingBuilder doStartRestSetting() {
+        return MocoRest.patch(id());
+    }
 
-        throw new IllegalArgumentException("Patch ID is missing");
+    @Override
+    protected boolean isIdRequired() {
+        return true;
     }
 }

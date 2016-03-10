@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestHeadSetting extends RestSingleSetting {
     @Override
-    protected RestSettingBuilder startRestSetting() {
+    protected RestSettingBuilder doStartRestSetting() {
         if (hasId()) {
             return MocoRest.head(id());
         }
