@@ -25,10 +25,8 @@ public class ActualSubResourceSettingBuilder implements SubResourceSettingBuilde
 
     @Override
     public RestSetting settings(final RestSetting restSetting, final RestSetting... restSettings) {
-        Iterable<RestSetting> targets = asIterable(
+        return new SubResourceSetting(this.id, this.name, asIterable(
                 checkNotNull(restSetting, "Rest setting should not be null"),
-                checkNotNull(restSettings, "Rest settings should not be null"));
-
-        return new SubResourceSetting(this.id, this.name, targets);
+                checkNotNull(restSettings, "Rest settings should not be null")));
     }
 }

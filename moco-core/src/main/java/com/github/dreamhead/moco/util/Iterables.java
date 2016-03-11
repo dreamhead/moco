@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class Iterables {
@@ -19,10 +20,18 @@ public final class Iterables {
     }
 
     public static <T> T head(final T[] elements) {
+        checkNotNull(elements);
+
+        if (elements.length == 0) {
+            return null;
+        }
+
         return elements[0];
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] tail(final T[] elements) {
+        checkNotNull(elements);
         return Arrays.copyOfRange(elements, 1, elements.length);
     }
 
