@@ -23,9 +23,9 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
 
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
-        byte[] content = extractor.extract(request).get();
-        try {
-            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(content));
+        Optional<byte[]> requestBody = extractor.extract(request);
+		try {
+            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(requestBody.get()));
             if (jsonPathContent == null) {
                 return absent();
             }
@@ -33,6 +33,8 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
         } catch (PathNotFoundException e) {
             return absent();
         } catch (IOException e) {
+            return absent();
+        } catch (IllegalStateException e) {
             return absent();
         }
     }

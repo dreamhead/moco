@@ -12,3 +12,4 @@ reports
 *.output
 .gmoco_pid
 gmoco.log
+bin/
