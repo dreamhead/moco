@@ -9,6 +9,9 @@ import static com.google.common.collect.ImmutableList.of;
 
 public final class Iterables {
     public static <T> Iterable<T> asIterable(final T handler, final T[] handlers) {
+        checkNotNull(handler);
+        checkNotNull(handlers);
+
         if (handlers.length == 0) {
             return of(handler);
         }
