@@ -1,22 +1,20 @@
 package com.github.dreamhead.moco.extractor;
 
-import com.google.common.base.Optional;
-import org.junit.Test;
-
 import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
-public class JsonPathRequestExtractorTest {
-
+public class XPathRequestExtractorTest {
     @Test
     public void should_extract_empty_content_as_absent() {
-        JsonPathRequestExtractor unitUnderTest = new JsonPathRequestExtractor("$..account");
+        XPathRequestExtractor unitUnderTest = new XPathRequestExtractor("/request/parameters/id/text()");
         HttpRequest request = new HttpRequest() {
 
             @Override
@@ -49,7 +47,8 @@ public class JsonPathRequestExtractorTest {
                 return HttpMethod.GET;
             }
         };
-        Optional<Object> result = unitUnderTest.extract(request);
+        Optional<String[]> result = unitUnderTest.extract(request);
         assertThat(result.isPresent(), is(false));
     }
+
 }

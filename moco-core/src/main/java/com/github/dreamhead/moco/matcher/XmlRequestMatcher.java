@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.base.Optional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,7 +61,11 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
 
     private Document extractDocument(final Request request,
                                      final RequestExtractor<byte[]> extractor) throws SAXException {
-        return extractDocument(helper.extractAsInputSource(request, extractor), this);
+        Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
+        if (!inputSourceOptional.isPresent()) {
+            return null;
+        }
+        return extractDocument(inputSourceOptional.get(), this);
     }
 
     public void trimChild(final Node node, final Node child) {
