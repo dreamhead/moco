@@ -14,7 +14,10 @@
 * sub-resource
 
 ## Implementation Details
-* Fix response handler case issue
+* Fix: response handler case issue
+* Write JSON content to log
+* Fix: empty content for jsonpath
+* Fix: empty content for xpath
 
 # Release 0.10.2 (1-Sep-2015)
 
