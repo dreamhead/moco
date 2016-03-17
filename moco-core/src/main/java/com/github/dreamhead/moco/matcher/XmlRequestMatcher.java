@@ -37,6 +37,10 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     public boolean match(final Request request) {
         try {
             Document requestDocument = extractDocument(request, extractor);
+            if (requestDocument == null) {
+                return false;
+            }
+
             Document resourceDocument = getResourceDocument(request, this.resource);
             return requestDocument.isEqualNode(resourceDocument);
         } catch (SAXException e) {
@@ -56,7 +60,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
 
     private Document getResourceDocument(final Request request, final Resource resource) throws SAXException {
         InputStream stream = resource.readFor(of(request)).toInputStream();
-        return extractDocument(new InputSource(stream), this);
+        return extractDocument(new InputSource(stream), documentBuilder);
     }
 
     private Document extractDocument(final Request request,
@@ -65,7 +69,8 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         if (!inputSourceOptional.isPresent()) {
             return null;
         }
-        return extractDocument(inputSourceOptional.get(), this);
+
+        return extractDocument(inputSourceOptional.get(), documentBuilder);
     }
 
     public void trimChild(final Node node, final Node child) {
@@ -103,10 +108,9 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    public Document extractDocument(final InputSource inputSource,
-                                    final XmlRequestMatcher xmlRequestMatcher) throws SAXException {
+    private Document extractDocument(InputSource inputSource, DocumentBuilder documentBuilder) throws SAXException {
         try {
-            Document document = xmlRequestMatcher.documentBuilder.parse(inputSource);
+            Document document = documentBuilder.parse(inputSource);
             document.normalizeDocument();
             trimNode(document);
             return document;
