@@ -73,7 +73,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         return extractDocument(inputSourceOptional.get(), documentBuilder);
     }
 
-    public void trimChild(final Node node, final Node child) {
+    private void trimChild(final Node node, final Node child) {
         if (child instanceof Text) {
             if (isNullOrEmpty(child.getNodeValue().trim())) {
                 node.removeChild(child);
@@ -94,7 +94,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    public DocumentBuilder documentBuilder() {
+    private DocumentBuilder documentBuilder() {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         dbf.setCoalescing(true);
