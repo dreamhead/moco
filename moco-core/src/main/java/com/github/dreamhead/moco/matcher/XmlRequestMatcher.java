@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -36,13 +37,13 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     @Override
     public boolean match(final Request request) {
         try {
-            Document requestDocument = extractDocument(request, extractor);
-            if (requestDocument == null) {
+            Optional<Document> requestDocument = extractDocument(request, extractor);
+            if (!requestDocument.isPresent()) {
                 return false;
             }
 
             Document resourceDocument = getResourceDocument(request, this.resource);
-            return requestDocument.isEqualNode(resourceDocument);
+            return requestDocument.get().isEqualNode(resourceDocument);
         } catch (SAXException e) {
             return false;
         }
@@ -63,14 +64,14 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         return extractDocument(new InputSource(stream), documentBuilder);
     }
 
-    private Document extractDocument(final Request request,
+    private Optional<Document> extractDocument(final Request request,
                                      final RequestExtractor<byte[]> extractor) throws SAXException {
         Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
         if (!inputSourceOptional.isPresent()) {
-            return null;
+            return absent();
         }
 
-        return extractDocument(inputSourceOptional.get(), documentBuilder);
+        return of(extractDocument(inputSourceOptional.get(), documentBuilder));
     }
 
     private void trimChild(final Node node, final Node child) {
