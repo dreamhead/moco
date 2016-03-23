@@ -38,15 +38,15 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     public boolean match(final Request request) {
         try {
             Optional<Document> requestDocument = extractDocument(request, extractor);
-            if (!requestDocument.isPresent()) {
-                return false;
-            }
-
-            Document resourceDocument = getResourceDocument(request, this.resource);
-            return requestDocument.get().isEqualNode(resourceDocument);
+            return requestDocument.isPresent() && tryToMatch(request, requestDocument.get());
         } catch (SAXException e) {
             return false;
         }
+    }
+
+    private boolean tryToMatch(Request request, Document document) throws SAXException {
+        Document resourceDocument = getResourceDocument(request, this.resource);
+        return document.isEqualNode(resourceDocument);
     }
 
     @Override

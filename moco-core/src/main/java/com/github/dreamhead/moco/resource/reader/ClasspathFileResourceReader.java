@@ -30,5 +30,4 @@ public class ClasspathFileResourceReader extends AbstractFileResourceReader {
             throw new MocoException(e);
         }
     }
-
 }

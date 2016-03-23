@@ -18,5 +18,4 @@ public class XmlRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder().withContent(MessageContent.content("")).build();
         assertThat(unitUnderTest.match(request), is(false));
     }
-
 }
