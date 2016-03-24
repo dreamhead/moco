@@ -2,16 +2,16 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
+import com.github.dreamhead.moco.rest.RestIds;
 import com.github.dreamhead.moco.rest.builder.ActualSubResourceSettingBuilder;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.github.dreamhead.moco.rest.builder.SubResourceSettingBuilder;
-import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
+import static com.github.dreamhead.moco.rest.RestIds.checkId;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.all;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.single;
-import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -92,20 +92,6 @@ public final class MocoRest {
 
     public static RestSettingBuilder patch(final String id) {
         return patch(eq(checkId(id)));
-    }
-
-    private static String checkId(final String id) {
-        checkNotNullOrEmpty(id, "ID should not be null or empty");
-
-        if (id.contains("/")) {
-            throw new IllegalArgumentException("REST ID should not contain '/'");
-        }
-
-        if (!URLs.isValidUrl(id)) {
-            throw new IllegalArgumentException("ID should not contains invalid URI character");
-        }
-
-        return id;
     }
 
     private MocoRest() {

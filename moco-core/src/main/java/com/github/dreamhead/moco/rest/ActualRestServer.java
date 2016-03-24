@@ -24,7 +24,7 @@ public class ActualRestServer extends ActualHttpServer implements RestServer {
 
     @Override
     public void resource(final String name, final RestSetting setting, final RestSetting... settings) {
-        checkNotNullOrEmpty(name, "Resource name should not be null");
+        RestIds.checkId(name);
 
         RestHandler handler = new RestHandler(name, asIterable(
                 checkNotNull(setting, "Rest setting should not be null"),
