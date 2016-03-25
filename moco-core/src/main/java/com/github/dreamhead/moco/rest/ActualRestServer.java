@@ -9,8 +9,8 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.google.common.base.Optional;
 
+import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,7 +24,7 @@ public class ActualRestServer extends ActualHttpServer implements RestServer {
 
     @Override
     public void resource(final String name, final RestSetting setting, final RestSetting... settings) {
-        RestIds.checkId(name);
+        checkResourceName(name);
 
         RestHandler handler = new RestHandler(name, asIterable(
                 checkNotNull(setting, "Rest setting should not be null"),

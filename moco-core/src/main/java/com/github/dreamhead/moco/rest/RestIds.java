@@ -6,14 +6,22 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
 public class RestIds {
     public static String checkId(final String id) {
-        checkNotNullOrEmpty(id, "ID should not be null or empty");
+        return checkValidUrlItem(id, "Rest ID");
+    }
+
+    public static String checkResourceName(final String name) {
+        return checkValidUrlItem(name, "Resource name");
+    }
+
+    private static String checkValidUrlItem(String id, String item) {
+        checkNotNullOrEmpty(id, item + " should not be null or empty");
 
         if (id.contains("/")) {
-            throw new IllegalArgumentException("REST ID should not contain '/'");
+            throw new IllegalArgumentException(item + " should not contain '/'");
         }
 
         if (!URLs.isValidUrl(id)) {
-            throw new IllegalArgumentException("ID should not contains invalid URI character");
+            throw new IllegalArgumentException(item + " should not contains invalid URI character");
         }
 
         return id;
