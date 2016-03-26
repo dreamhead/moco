@@ -688,6 +688,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         server.resource("hello/world", get().response(with(text("hello"))));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_resource_name_with_space() {
+        server.resource("hello world", get().response(with(text("hello"))));
+    }
+
     @Test
     public void should_get_sub_resource() throws Exception {
         Plain resource1 = new Plain();
