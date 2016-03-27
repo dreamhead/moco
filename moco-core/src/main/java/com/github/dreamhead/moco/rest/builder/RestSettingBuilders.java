@@ -1,17 +1,22 @@
 package com.github.dreamhead.moco.rest.builder;
 
 import com.github.dreamhead.moco.HttpMethod;
+import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.github.dreamhead.moco.RestSettingResponseBuilder;
+import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.rest.RestAllSetting;
 import com.github.dreamhead.moco.rest.RestSingleSetting;
 import com.google.common.base.Optional;
 
+import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class RestSettingBuilders implements RestSettingBuilder, RestSettingResponseBuilder {
@@ -30,6 +35,21 @@ public abstract class RestSettingBuilders implements RestSettingBuilder, RestSet
         return createSetting(Optional.fromNullable(matcher),
                 and(checkNotNull(handler, "Response handler should not be null"),
                         checkNotNull(handlers, "Response handlers should not be null")));
+    }
+
+    @Override
+    public RestSetting response(final String content) {
+        return this.response(text(checkNotNullOrEmpty(content, "Content should not be null")));
+    }
+
+    @Override
+    public RestSetting response(final Resource resource) {
+        return this.response(with(checkNotNull(resource, "Resource should not be null")));
+    }
+
+    @Override
+    public RestSetting response(final MocoProcedure procedure) {
+        return this.response(with(checkNotNull(procedure, "Procedure should not be null")));
     }
 
     public static RestSettingBuilder single(final HttpMethod method, final RestIdMatcher id) {

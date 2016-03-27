@@ -685,12 +685,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_for_resource_name_with_slash() {
-        server.resource("hello/world", get().response(with(text("hello"))));
+        server.resource("hello/world", get().response("hello"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_for_resource_name_with_space() {
-        server.resource("hello world", get().response(with(text("hello"))));
+        server.resource("hello world", get().response("hello"));
     }
 
     @Test
