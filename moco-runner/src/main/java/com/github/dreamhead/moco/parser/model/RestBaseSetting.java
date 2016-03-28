@@ -1,10 +1,10 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
-import com.github.dreamhead.moco.RestSettingResponseBuilder;
 import com.google.common.base.Function;
 
 public abstract class RestBaseSetting {
@@ -42,7 +42,7 @@ public abstract class RestBaseSetting {
         };
     }
 
-    private static <T extends RestBaseSetting> RestSettingResponseBuilder getRestSettingBuilder(final T setting) {
+    private static <T extends RestBaseSetting> ResponseBase<RestSetting> getRestSettingBuilder(final T setting) {
         RestSettingBuilder builder = setting.startRestSetting();
         if (setting.hasRequest()) {
             return builder.request(setting.getRequestMatcher());

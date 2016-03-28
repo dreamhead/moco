@@ -1,5 +1,5 @@
 package com.github.dreamhead.moco;
 
-public interface RestSettingBuilder extends RestSettingResponseBuilder {
-    RestSettingResponseBuilder request(final RequestMatcher matcher);
+public interface RestSettingBuilder extends ResponseBase<RestSetting> {
+    ResponseBase<RestSetting> request(final RequestMatcher matcher);
 }
