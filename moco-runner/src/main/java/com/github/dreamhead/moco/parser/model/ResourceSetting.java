@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.RestSetting;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -27,6 +28,21 @@ public class ResourceSetting {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("name", name)
+                .add("get", get)
+                .add("post", post)
+                .add("put", put)
+                .add("delete", delete)
+                .add("head", head)
+                .add("patch", patch)
+                .add("sub resource", resource)
+                .toString();
+    }
+
     @SuppressWarnings("unchecked")
     public RestSetting[] getSettings() {
         return toArray(concat(asRestSetting(get), asRestSetting(post),
@@ -50,5 +66,4 @@ public class ResourceSetting {
 
         return from(setting).transform(toSubResourceSetting());
     }
-
 }

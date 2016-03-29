@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSettingBuilder;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 
 import static com.github.dreamhead.moco.parser.model.RestIds.asIdMatcher;
@@ -30,5 +31,15 @@ public abstract class RestSingleSetting extends RestBaseSetting {
         }
 
         return doStartRestSetting();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("request", request)
+                .add("response", response)
+                .toString();
     }
 }

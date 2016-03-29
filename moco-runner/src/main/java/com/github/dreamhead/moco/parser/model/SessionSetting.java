@@ -54,6 +54,7 @@ public class SessionSetting {
                 .add("mount", mount)
                 .add("proxy", proxy)
                 .add("on", on)
+                .add("resource", resource)
                 .toString();
     }
 

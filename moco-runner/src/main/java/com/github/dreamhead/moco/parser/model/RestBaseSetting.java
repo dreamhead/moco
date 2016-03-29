@@ -8,8 +8,8 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 import com.google.common.base.Function;
 
 public abstract class RestBaseSetting {
-    private RequestSetting request;
-    private ResponseSetting response;
+    protected RequestSetting request;
+    protected ResponseSetting response;
 
     protected abstract RestSettingBuilder startRestSetting();
 
