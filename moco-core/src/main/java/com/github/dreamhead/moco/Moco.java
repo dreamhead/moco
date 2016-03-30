@@ -312,7 +312,7 @@ public final class Moco {
     }
 
     public static Resource uri(final String uri) {
-        return uriResource(checkNotNull(uri, "URI should not be null"));
+        return uriResource(checkNotNullOrEmpty(uri, "URI should not be null"));
     }
 
     public static Resource method(final String httpMethod) {
