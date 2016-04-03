@@ -13,7 +13,7 @@ import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
@@ -51,14 +51,14 @@ public class MocoRequestAction implements MocoEventAction {
     private void doExecute(final CloseableHttpClient client) throws IOException {
         HttpRequestBase request = createRequest(url, method);
         if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-            ((HttpEntityEnclosingRequest) request).setEntity(asEntity());
+            ((HttpEntityEnclosingRequest) request).setEntity(asEntity(content.get()));
         }
 
         client.execute(request);
     }
 
-    private HttpEntity asEntity() {
-        return new ByteArrayEntity(content.get().readFor(Optional.<Request>absent()).getContent());
+    private HttpEntity asEntity(ContentResource resource) {
+        return new InputStreamEntity(resource.readFor(Optional.<Request>absent()).toInputStream());
     }
 
     private HttpRequestBase createRequest(final String url, final String method) {
