@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 
 public abstract class RestBaseSetting {
     protected RequestSetting request;
@@ -27,6 +28,15 @@ public abstract class RestBaseSetting {
 
     protected RequestMatcher getRequestMatcher() {
         return request.getRequestMatcher();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("request", request)
+                .add("response", response)
+                .toString();
     }
 
     public static <T extends RestBaseSetting> Function<T, RestSetting> toSetting() {
