@@ -2,6 +2,25 @@
 
 Restful service is a defacto service design style. Moco provides REST APIs which facilitate restful service stub implementation.
 
+Table of Contents
+=================
+* [Basic Usage](#basic-usage)
+* [Composite REST Settings](#composite-rest-settings)
+* [Request and Response](#request-and-response)
+* [ID Matcher](#id-matcher)
+* [Methods](#methods)
+  * [GET](#get)
+    * [Get with ID](#get-with-id)
+    * [Get All](#get-all)
+  * [POST](#post)
+  * [PUT](#put)
+  * [DELETE](#delete)
+  * [HEAD](#head)
+    * [HEAD with ID](#head-with-id)
+    * [HEAD All](#head-all)
+  * [PATCH](#patch)
+  * [Sub\-resource](#sub-resource)
+
 ## Basic Usage
 
 You will create a rest server with `restServer` as follows:

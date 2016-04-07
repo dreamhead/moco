@@ -10,7 +10,6 @@
 * Path variables extraction
 
 ## More
-* REST
 * Client
 
 # Document
