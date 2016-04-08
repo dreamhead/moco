@@ -319,6 +319,10 @@ public final class Moco {
         return methodResource(checkNotNullOrEmpty(httpMethod, "HTTP method should not be null"));
     }
 
+    public static Resource method(final HttpMethod httpMethod) {
+        return methodResource(checkNotNull(httpMethod, "HTTP method should not be null").toString());
+    }
+
     public static RequestExtractor<String[]> header(final String header) {
         return new HeaderRequestExtractor(checkNotNullOrEmpty(header, "Header name should not be null"));
     }

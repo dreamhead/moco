@@ -245,6 +245,18 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_match_get_method_by_method_api_with_http_method() throws Exception {
+        server.request(and(by(uri("/foo")), by(method(HttpMethod.GET)))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_get_method_by_method_api() throws Exception {
         server.request(and(by(uri("/foo")), by(method("get")))).response("bar");
 
