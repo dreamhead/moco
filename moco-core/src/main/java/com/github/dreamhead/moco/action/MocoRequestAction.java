@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.action;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.MocoException;
@@ -7,7 +8,6 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.HttpMethod;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.methods.HttpGet;
@@ -24,10 +24,10 @@ import static java.lang.String.format;
 
 public class MocoRequestAction implements MocoEventAction {
     private final String url;
-    private final String method;
+    private final HttpMethod method;
     private final Optional<ContentResource> content;
 
-    public MocoRequestAction(final String url, final String method, final Optional<ContentResource> content) {
+    public MocoRequestAction(final String url, final HttpMethod method, final Optional<ContentResource> content) {
         this.url = url;
         this.method = method;
         this.content = content;
@@ -61,12 +61,12 @@ public class MocoRequestAction implements MocoEventAction {
         return new InputStreamEntity(resource.readFor(Optional.<Request>absent()).toInputStream());
     }
 
-    private HttpRequestBase createRequest(final String url, final String method) {
-        if (HttpMethod.GET.name().equalsIgnoreCase(method)) {
+    private HttpRequestBase createRequest(final String url, final HttpMethod method) {
+        if (HttpMethod.GET == method) {
             return new HttpGet(url);
         }
 
-        if (HttpMethod.POST.name().equalsIgnoreCase(method)) {
+        if (HttpMethod.POST == method) {
             return new HttpPost(url);
         }
 

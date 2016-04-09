@@ -360,7 +360,6 @@ public class MocoTest extends AbstractMocoHttpTest {
         });
     }
 
-
     @Test
     public void should_match() throws Exception {
         server.request(match(uri("/\\w*/foo"))).response("bar");
