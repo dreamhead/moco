@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.HttpsServer;
 import com.github.dreamhead.moco.Moco;
@@ -16,7 +17,6 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;
 
@@ -63,7 +63,7 @@ public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSet
     }
 
     private HttpResponseSetting requestByHttpMethod(final HttpMethod method, final RequestMatcher matcher) {
-        return request(and(by(method(method.name())), matcher));
+        return request(and(by(method(method)), matcher));
     }
 
     @Override
