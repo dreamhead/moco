@@ -374,6 +374,19 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_match_method() throws Exception {
+        server.request(match(method("get|post"))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/bar/foo")), is("bar"));
+                assertThat(helper.postContent(remoteUrl("/blah/foo"), "content"), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_header() throws Exception {
         server.request(match(header("foo"), "bar|blah")).response("header");
 
