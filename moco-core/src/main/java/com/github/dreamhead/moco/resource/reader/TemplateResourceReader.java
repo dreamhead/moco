@@ -43,7 +43,6 @@ public class TemplateResourceReader implements ContentResourceReader {
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
 
-
     public TemplateResourceReader(final ContentResource template,
                                   final ImmutableMap<String, ? extends Variable> variables) {
         this.template = template;

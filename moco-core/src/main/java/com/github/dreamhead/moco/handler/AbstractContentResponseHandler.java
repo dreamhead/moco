@@ -32,7 +32,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         mutableResponse.setContent(requireResponseContent(request));
     }
 
-    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    private void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         MessageContent content = requireResponseContent(httpRequest);
         httpResponse.setContent(content);
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);
