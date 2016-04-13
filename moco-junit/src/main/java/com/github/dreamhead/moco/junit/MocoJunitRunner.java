@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.junit;
 
 import com.github.dreamhead.moco.HttpServer;
+import com.github.dreamhead.moco.RestServer;
 import com.github.dreamhead.moco.Runner;
 import com.github.dreamhead.moco.SocketServer;
 import org.junit.rules.ExternalResource;
@@ -29,6 +30,11 @@ public final class MocoJunitRunner extends ExternalResource {
     public static MocoJunitRunner httpRunner(final HttpServer server) {
         checkNotNull(server, "Server should not be null");
         return new MocoJunitRunner(runner(server));
+    }
+
+    public static MocoJunitRunner restRunner(final RestServer server) {
+        checkNotNull(server, "Server should not be null");
+        return httpRunner(server);
     }
 
     public static MocoJunitRunner jsonSocketRunner(final int port, final String filename) {
