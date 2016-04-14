@@ -1,0 +1,17 @@
+[
+  {
+    "resource": {
+      "name": "targets",
+      "post": [
+        {
+          "response": {
+            "status": 201,
+            "headers": {
+              "Location": "/targets/123"
+            }
+          }
+        }
+      ]
+    }
+  }
+]
