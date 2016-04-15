@@ -7,7 +7,6 @@ import com.google.common.base.Function;
 
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableList.copyOf;
 
 public class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
@@ -45,11 +44,7 @@ public class AndResponseHandler extends AbstractResponseHandler {
         return new AndResponseHandler(handlers);
     }
 
-    public static ResponseHandler and(final ResponseHandler... handlers) {
-        return new AndResponseHandler(copyOf(handlers));
-    }
-
-    public static ResponseHandler and(final ResponseHandler handler, final ResponseHandler[] handlers) {
+    public static ResponseHandler and(final ResponseHandler handler, final ResponseHandler... handlers) {
         if (handlers.length == 0) {
             return handler;
         }
