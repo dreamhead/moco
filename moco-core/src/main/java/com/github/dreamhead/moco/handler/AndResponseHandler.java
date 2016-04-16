@@ -11,7 +11,7 @@ import static com.google.common.collect.FluentIterable.from;
 public class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
 
-    public AndResponseHandler(final Iterable<ResponseHandler> handlers) {
+    private AndResponseHandler(final Iterable<ResponseHandler> handlers) {
         this.handlers = handlers;
     }
 
