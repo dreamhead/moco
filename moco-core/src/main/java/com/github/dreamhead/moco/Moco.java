@@ -55,7 +55,6 @@ import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
@@ -66,6 +65,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
+import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
@@ -399,22 +399,17 @@ public final class Moco {
 
     public static ResponseHandler seq(final String... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return seq(FluentIterable.from(copyOf(contents)).transform(textToResource()).toList());
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(textToResource()));
     }
 
     public static ResponseHandler seq(final Resource... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return seq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()).toList());
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()));
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
         checkArgument(handlers.length > 0, "Sequence contents should not be null");
-        return seq(copyOf(handlers));
-    }
-
-    private static ResponseHandler seq(final ImmutableList<ResponseHandler> handlers) {
-        checkArgument(handlers.size() > 0, "Sequence contents should not be null");
-        return new SequenceHandler(handlers);
+        return newSeq(copyOf(handlers));
     }
 
     public static ContentResource file(final String filename) {
