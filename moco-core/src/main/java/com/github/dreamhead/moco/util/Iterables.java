@@ -32,7 +32,6 @@ public final class Iterables {
         return elements[0];
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T[] tail(final T[] elements) {
         checkNotNull(elements);
         return Arrays.copyOfRange(elements, 1, elements.length);
