@@ -255,4 +255,4 @@ It will download the latest moco automatically if you don't have locally.
 
 Scala fans can find Scala wrapper in
 
-https://github.com/nicholasren/moco-scala
+https://github.com/treppo/moco-scala
