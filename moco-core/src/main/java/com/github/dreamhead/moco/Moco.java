@@ -20,7 +20,6 @@ import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
-import com.github.dreamhead.moco.handler.SequenceHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
