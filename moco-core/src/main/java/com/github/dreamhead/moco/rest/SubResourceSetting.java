@@ -21,7 +21,6 @@ public class SubResourceSetting implements RestSetting {
         this.settings = settings;
     }
 
-
     @Override
     public boolean isSimple() {
         return false;

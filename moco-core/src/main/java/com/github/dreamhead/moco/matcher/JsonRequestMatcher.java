@@ -13,12 +13,12 @@ import static com.google.common.base.Optional.of;
 
 public class JsonRequestMatcher extends AbstractRequestMatcher {
     private final RequestExtractor<byte[]> extractor;
-    private final Resource resource;
+    private final Resource expected;
     private final ObjectMapper mapper;
 
-    public JsonRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource resource) {
+    public JsonRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource expected) {
         this.extractor = extractor;
-        this.resource = resource;
+        this.expected = expected;
         this.mapper = new ObjectMapper();
     }
 
@@ -31,7 +31,7 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
     private boolean doMatch(final Request request, final byte[] content) {
         try {
             JsonNode requestNode = mapper.readTree(content);
-            JsonNode resourceNode = mapper.readTree(resource.readFor(of(request)).getContent());
+            JsonNode resourceNode = mapper.readTree(expected.readFor(of(request)).getContent());
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;
@@ -43,8 +43,8 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
     @Override
     @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
-        Resource appliedResource = this.resource.apply(config);
-        if (appliedResource == this.resource) {
+        Resource appliedResource = this.expected.apply(config);
+        if (appliedResource == this.expected) {
             return this;
         }
 
