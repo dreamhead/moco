@@ -755,6 +755,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_invalid_sub_resource_name() {
+        id(anyId()).name("hello world");
+    }
+
     @Test
     public void should_work_with_other_http_configuration() throws Exception {
         Plain resource1 = new Plain();

@@ -3,10 +3,9 @@ package com.github.dreamhead.moco.rest.builder;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.rest.SubResourceSetting;
-import com.google.common.collect.ImmutableList;
 
+import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ActualSubResourceSettingBuilder implements SubResourceSettingBuilder, NamedSubResourceSettingBuilder {
@@ -19,7 +18,7 @@ public class ActualSubResourceSettingBuilder implements SubResourceSettingBuilde
 
     @Override
     public NamedSubResourceSettingBuilder name(final String name) {
-        this.name = checkNotNullOrEmpty(name, "Resource name should not be null or empty");
+        this.name = checkResourceName(name);
         return this;
     }
 
