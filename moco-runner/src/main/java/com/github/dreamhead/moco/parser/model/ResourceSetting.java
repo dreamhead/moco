@@ -3,13 +3,11 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.github.dreamhead.moco.parser.model.RestBaseSetting.toSetting;
-import static com.github.dreamhead.moco.parser.model.RestSubResourceSetting.toSubResourceSetting;
-import static com.google.common.collect.FluentIterable.from;
+import static com.github.dreamhead.moco.parser.model.RestBaseSetting.asRestSetting;
+import static com.github.dreamhead.moco.parser.model.RestSubResourceSetting.asSubRestSetting;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.toArray;
 
@@ -49,21 +47,5 @@ public class ResourceSetting {
                         asRestSetting(put), asRestSetting(delete),
                         asRestSetting(head), asRestSetting(patch), asSubRestSetting(resource)),
                 RestSetting.class);
-    }
-
-    private Iterable<RestSetting> asRestSetting(final List<? extends RestBaseSetting> setting) {
-        if (setting == null || setting.isEmpty()) {
-            return ImmutableList.of();
-        }
-
-        return from(setting).transform(toSetting());
-    }
-
-    private Iterable<RestSetting> asSubRestSetting(final List<RestSubResourceSetting> setting) {
-        if (setting == null || setting.isEmpty()) {
-            return ImmutableList.of();
-        }
-
-        return from(setting).transform(toSubResourceSetting());
     }
 }
