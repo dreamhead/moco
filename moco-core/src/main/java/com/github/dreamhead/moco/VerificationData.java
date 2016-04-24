@@ -1,17 +1,16 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 
 import static com.google.common.collect.FluentIterable.from;
 import static java.lang.String.format;
 
 public class VerificationData {
-    private final ImmutableList<Request> requests;
+    private final Iterable<Request> requests;
     private final RequestMatcher matcher;
     private final String mismatchFormat;
 
-    public VerificationData(final ImmutableList<Request> requests,
+    public VerificationData(final Iterable<Request> requests,
                             final RequestMatcher matcher,
                             final String mismatchFormat) {
         this.requests = requests;

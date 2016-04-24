@@ -10,7 +10,6 @@ import com.github.dreamhead.moco.VerificationMode;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
@@ -30,14 +29,14 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     @Override
     public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
         checkNotNull(mode, "Verification mode should not be null")
-                .verify(new VerificationData(copyOf(unexpectedRequests),
+                .verify(new VerificationData(unexpectedRequests,
                         checkNotNull(matcher, "Matcher should not be null"),
                         "expect unexpected request hit %s times but %d times"));
     }
 
     @Override
     public void verify(final RequestMatcher matcher, final VerificationMode mode) {
-        checkNotNull(mode, "Verification mode should not be null").verify(new VerificationData(copyOf(requests),
+        checkNotNull(mode, "Verification mode should not be null").verify(new VerificationData(requests,
                 checkNotNull(matcher, "Matcher should not be null"),
                 "expect request hit %s times but %d times"));
     }
