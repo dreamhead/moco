@@ -8,14 +8,10 @@ import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 
-import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
-import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.net.HttpHeaders.COOKIE;
 
 public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
@@ -31,21 +27,16 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
         return of(doExtractCookies(cookieString.get()));
     }
 
-    private static ImmutableMap<String, String> doExtractCookies(final String[] cookieString) {
-        Set<Cookie> cookies = toCookies(cookieString);
-        Map<String, String> target = newHashMap();
-        for (Cookie cookie : cookies) {
-            target.put(cookie.name(), cookie.value());
+    private static ImmutableMap<String, String> doExtractCookies(final String[] cookieStrings) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+
+        for (String cookie : cookieStrings) {
+            Set<Cookie> decodeCookies = ServerCookieDecoder.STRICT.decode(cookie);
+            for (Cookie decodeCookie : decodeCookies) {
+                builder.put(decodeCookie.name(), decodeCookie.value());
+            }
         }
 
-        return copyOf(target);
-    }
-
-    private static Set<Cookie> toCookies(final String[] headers) {
-        Set<Cookie> cookies = newHashSet();
-        for (String header : headers) {
-            cookies.addAll(ServerCookieDecoder.STRICT.decode(header));
-        }
-        return cookies;
+        return builder.build();
     }
 }
