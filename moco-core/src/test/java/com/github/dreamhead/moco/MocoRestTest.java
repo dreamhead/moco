@@ -104,10 +104,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             @Override
             public void run() throws Exception {
                 org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets"));
-                assertThat(response.getStatusLine().getStatusCode(), is(200));
-                HttpEntity entity = response.getEntity();
-                List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
-                });
+                List<Plain> plains = asPlains(response);
                 assertThat(plains.size(), is(2));
             }
         });
@@ -132,10 +129,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             @Override
             public void run() throws Exception {
                 org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets"));
-                assertThat(response.getStatusLine().getStatusCode(), is(200));
-                HttpEntity entity = response.getEntity();
-                List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
-                });
+                List<Plain> plains = asPlains(response);
                 assertThat(plains.size(), is(2));
             }
         });
@@ -799,12 +793,23 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     private Plain asPlain(HttpResponse response) throws IOException {
+        HttpEntity entity = checkJsonResponse(response);
+        return mapper.readValue(entity.getContent(), Plain.class);
+    }
+
+    private List<Plain> asPlains(HttpResponse response) throws IOException {
+        HttpEntity entity = checkJsonResponse(response);
+        return mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
+        });
+    }
+
+    private HttpEntity checkJsonResponse(HttpResponse response) {
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         HttpEntity entity = response.getEntity();
         MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
-        return mapper.readValue(entity.getContent(), Plain.class);
+        return entity;
     }
 
     private static class Plain {
