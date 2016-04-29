@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
@@ -140,8 +140,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
                 assertThat(mediaType.type(), is("application"));
                 assertThat(mediaType.subtype(), is("json"));
-                ObjectMapper mapper = new ObjectMapper();
-                PlainA responseA = mapper.readValue(entity.getContent(), PlainA.class);
+                PlainA responseA = Jsons.toObject(entity.getContent(), PlainA.class);
                 assertThat(responseA.code, is(1));
                 assertThat(responseA.message, is("message"));
             }
@@ -158,8 +157,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 String content = helper.get(remoteUrl(root()));
-                ObjectMapper mapper = new ObjectMapper();
-                PlainA responseA = mapper.readValue(content, PlainA.class);
+                PlainA responseA = Jsons.toObject(content, PlainA.class);
                 assertThat(responseA.code, is(1));
                 assertThat(responseA.message, is("消息"));
             }

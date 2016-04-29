@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -50,8 +49,6 @@ import static org.junit.Assert.assertThat;
 public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected RestServer createServer(int port) {
@@ -268,7 +265,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                List<Plain> plains = mapper.readValue(helper.get(remoteUrl("/targets?foo=bar")), new TypeReference<List<Plain>>() {
+                List<Plain> plains = Jsons.toObject(helper.get(remoteUrl("/targets?foo=bar")), new TypeReference<List<Plain>>() {
                 });
                 assertThat(plains.size(), is(2));
 
@@ -794,7 +791,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     private Plain asPlain(HttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
-        return mapper.readValue(entity.getContent(), Plain.class);
+        return Jsons.toObject(entity.getContent(), Plain.class);
     }
 
     private List<Plain> getResources(final String uri) throws IOException {
@@ -804,7 +801,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     private List<Plain> asPlains(HttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
-        return mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
+        return Jsons.toObject(entity.getContent(), new TypeReference<List<Plain>>() {
         });
     }
 

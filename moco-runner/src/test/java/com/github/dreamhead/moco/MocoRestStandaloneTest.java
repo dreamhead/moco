@@ -1,10 +1,10 @@
 package com.github.dreamhead.moco;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import org.apache.http.*;
+import org.apache.http.HttpEntity;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,8 +16,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
-    private final ObjectMapper mapper = new ObjectMapper();
-
     @Test
     public void should_get_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
@@ -43,7 +41,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.message = "hello";
 
         org.apache.http.HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
-                mapper.writeValueAsString(resource1));
+                Jsons.toJson(resource1));
         assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
         assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
     }
@@ -57,7 +55,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.message = "hello";
 
         org.apache.http.HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
-                mapper.writeValueAsString(resource1));
+                Jsons.toJson(resource1));
         assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
     }
 
@@ -183,7 +181,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         HttpEntity entity = response.getEntity();
-        List<Plain> plains = mapper.readValue(entity.getContent(), new TypeReference<List<Plain>>() {
+        List<Plain> plains = Jsons.toObject(entity.getContent(), new TypeReference<List<Plain>>() {
         });
         assertThat(plains.size(), is(2));
     }
@@ -223,7 +221,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
-        return mapper.readValue(entity.getContent(), Plain.class);
+        return Jsons.toObject(entity.getContent(), Plain.class);
     }
 
     private static class Plain {
