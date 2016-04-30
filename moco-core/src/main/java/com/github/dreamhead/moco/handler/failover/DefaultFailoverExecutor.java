@@ -1,14 +1,15 @@
 package com.github.dreamhead.moco.handler.failover;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.model.Session;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -28,7 +29,6 @@ import static com.google.common.collect.Iterables.tryFind;
 public class DefaultFailoverExecutor implements FailoverExecutor {
     private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
 
-    private final TypeFactory factory = TypeFactory.defaultInstance();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File file;
 
@@ -69,7 +69,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
 
     private ImmutableList<Session> restoreSessions(final File file) {
         try {
-            List<Session> sessions = mapper.readValue(file, factory.constructCollectionType(List.class, Session.class));
+            List<Session> sessions = mapper.readValue(file, new TypeReference<List<Session>>() {});
             return copyOf(sessions);
         } catch (JsonMappingException jme) {
             logger.error("exception found", jme);
