@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.handler.failover;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.dreamhead.moco.HttpRequest;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -69,10 +69,10 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
 
     private ImmutableList<Session> restoreSessions(final File file) {
         try {
-            List<Session> sessions = mapper.readValue(file, new TypeReference<List<Session>>() {});
+            List<Session> sessions = Jsons.toObject(new FileInputStream(file), new TypeReference<List<Session>>() {});
             return copyOf(sessions);
-        } catch (JsonMappingException jme) {
-            logger.error("exception found", jme);
+        } catch (MocoException me) {
+            logger.error("exception found", me);
             return of();
         } catch (IOException e) {
             throw new MocoException(e);
