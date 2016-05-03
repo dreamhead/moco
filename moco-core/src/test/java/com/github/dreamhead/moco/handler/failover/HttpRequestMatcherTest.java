@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler.failover;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
@@ -16,7 +17,7 @@ public class HttpRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -29,7 +30,7 @@ public class HttpRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -37,7 +38,7 @@ public class HttpRequestMatcherTest {
         HttpRequest another = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("different")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -50,7 +51,7 @@ public class HttpRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withUri("/foo")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
@@ -59,7 +60,7 @@ public class HttpRequestMatcherTest {
         HttpRequest another = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withUri("/bar")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
@@ -73,14 +74,14 @@ public class HttpRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
                 .withUri("/uri")
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -93,7 +94,7 @@ public class HttpRequestMatcherTest {
         HttpRequest request = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -101,7 +102,7 @@ public class HttpRequestMatcherTest {
         HttpRequest failover = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
-                .withMethod("POST")
+                .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withHeaders(of("Host", "localhost:12306"))
                 .build();

@@ -138,7 +138,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().text()))
                 .withHeaders(collectHeaders(request.headers()))
-                .withMethod(request.getMethod().toString().toUpperCase())
+                .withMethod(HttpMethod.valueOf(request.getMethod().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
                 .withContent(toMessageContent(request))
@@ -218,8 +218,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
-        public Builder withMethod(final String method) {
-            this.method = HttpMethod.valueOf(method.toUpperCase());
+        public Builder withMethod(final HttpMethod method) {
+            this.method = method;
             return this;
         }
 
