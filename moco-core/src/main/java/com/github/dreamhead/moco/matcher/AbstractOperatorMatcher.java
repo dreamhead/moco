@@ -51,7 +51,7 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
         return false;
     }
 
-    protected Predicate<String> toStringPredicate(final Predicate<byte[]> predicate) {
+    private Predicate<String> toStringPredicate(final Predicate<byte[]> predicate) {
         return new Predicate<String>() {
             @Override
             public boolean apply(final String input) {

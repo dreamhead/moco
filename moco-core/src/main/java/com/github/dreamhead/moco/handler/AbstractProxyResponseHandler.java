@@ -67,7 +67,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         this.failover = failover;
     }
 
-    protected HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
+    private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createRemoteRequest(request, url);
         RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
         remoteRequest.setConfig(config);
@@ -142,7 +142,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         throw new MocoException("unknown HTTP method");
     }
 
-    protected HttpResponse setupResponse(final HttpRequest request,
+    private HttpResponse setupResponse(final HttpRequest request,
                                          final org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
@@ -181,7 +181,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     @Override
-    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    protected final void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
         if (!url.isPresent()) {
             return;
@@ -227,7 +227,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
     }
 
-    protected Optional<URL> remoteUrl(final HttpRequest request) {
+    private Optional<URL> remoteUrl(final HttpRequest request) {
         Optional<String> remoteUrl = this.remoteUrl(request.getUri());
         if (!remoteUrl.isPresent()) {
             return absent();
