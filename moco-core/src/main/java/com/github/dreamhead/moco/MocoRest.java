@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
@@ -7,6 +8,7 @@ import com.github.dreamhead.moco.rest.builder.ActualSubResourceSettingBuilder;
 import com.github.dreamhead.moco.rest.builder.SubResourceSettingBuilder;
 import com.google.common.base.Optional;
 
+import static com.github.dreamhead.moco.internal.ApiUtils.mergeMonitor;
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.rest.RestIds.checkId;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.all;
@@ -27,6 +29,12 @@ public final class MocoRest {
         checkNotNull(configs, "Config should not be null");
         return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
+    }
+
+    public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
+                mergeMonitor(monitor, monitor2, monitors));
     }
 
     public static RestIdMatcher anyId() {

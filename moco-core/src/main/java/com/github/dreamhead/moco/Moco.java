@@ -27,6 +27,7 @@ import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
+import com.github.dreamhead.moco.internal.ApiUtils;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.matcher.ContainMatcher;
 import com.github.dreamhead.moco.matcher.EndsWithMatcher;
@@ -38,7 +39,6 @@ import com.github.dreamhead.moco.matcher.NotRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.matcher.XmlRequestMatcher;
-import com.github.dreamhead.moco.monitor.CompositeMonitor;
 import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
 import com.github.dreamhead.moco.monitor.FileLogWriter;
 import com.github.dreamhead.moco.monitor.LogMonitor;
@@ -48,14 +48,11 @@ import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
-import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.URLs;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
 
 import java.io.File;
@@ -78,7 +75,6 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
-import static com.google.common.collect.Maps.transformEntries;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
 
@@ -96,18 +92,7 @@ public final class Moco {
 
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
-    }
-
-    private static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor[] monitors) {
-        MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
-        targetMonitors[0] = checkNotNull(monitor, "Monitor should not be null");
-        targetMonitors[1] = checkNotNull(monitor2, "Monitor should not be null");
-        if (monitors.length > 0) {
-            System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
-        }
-
-        return new CompositeMonitor(targetMonitors);
+        return ActualHttpServer.createHttpServerWithMonitor(of(port), ApiUtils.mergeMonitor(monitor, monitor2, monitors));
     }
 
     public static HttpServer httpServer(final MocoConfig... configs) {
@@ -143,7 +128,7 @@ public final class Moco {
     public static HttpServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(of(port), checkNotNull(certificate, "Certificate should not be null"),
-                mergeMonitor(monitor, monitor2, monitors));
+                ApiUtils.mergeMonitor(monitor, monitor2, monitors));
     }
 
     public static SocketServer socketServer() {
@@ -162,7 +147,7 @@ public final class Moco {
 
     public static SocketServer socketServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualSocketServer.createServerWithMonitor(of(port), mergeMonitor(monitor, monitor2, monitors));
+        return ActualSocketServer.createServerWithMonitor(of(port), ApiUtils.mergeMonitor(monitor, monitor2, monitors));
     }
 
 
@@ -398,12 +383,12 @@ public final class Moco {
 
     public static ResponseHandler seq(final String... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(textToResource()));
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(ApiUtils.textToResource()));
     }
 
     public static ResponseHandler seq(final Resource... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()));
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(ApiUtils.resourceToResourceHandler()));
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
@@ -572,7 +557,7 @@ public final class Moco {
 
     public static Resource template(final ContentResource template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
-                toVariables(checkNotNull(variables, "Template variable should not be null")));
+                ApiUtils.toVariables(checkNotNull(variables, "Template variable should not be null")));
     }
 
     public static RequestExtractor<Object> var(final Object text) {
@@ -619,38 +604,6 @@ public final class Moco {
         return AndResponseHandler.and(
                 header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty"))),
                 with(checkNotNull(resource, "Resource should not be null")));
-    }
-
-    private static Function<String, ResponseHandler> textToResource() {
-        return new Function<String, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final String content) {
-                return with(text(content));
-            }
-        };
-    }
-
-    private static Function<Resource, ResponseHandler> resourceToResourceHandler() {
-        return new Function<Resource, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final Resource content) {
-                return with(content);
-            }
-        };
-    }
-
-    private static ImmutableMap<String, Variable> toVariables(final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
-        return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
-    }
-
-    private static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
-        return new Maps.EntryTransformer<String, RequestExtractor<?>, Variable>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public Variable transformEntry(final String key, final RequestExtractor<?> value) {
-                return new ExtractorVariable(value);
-            }
-        };
     }
 
     private Moco() {

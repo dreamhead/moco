@@ -109,7 +109,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    private Document extractDocument(InputSource inputSource, DocumentBuilder documentBuilder) throws SAXException {
+    private Document extractDocument(final InputSource inputSource, final DocumentBuilder documentBuilder) throws SAXException {
         try {
             Document document = documentBuilder.parse(inputSource);
             document.normalizeDocument();

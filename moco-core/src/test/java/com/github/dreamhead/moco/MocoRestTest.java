@@ -20,15 +20,20 @@ import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.context;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
+import static com.github.dreamhead.moco.MocoRequestHit.times;
 import static com.github.dreamhead.moco.MocoRest.anyId;
 import static com.github.dreamhead.moco.MocoRest.delete;
 import static com.github.dreamhead.moco.MocoRest.get;
@@ -782,6 +787,40 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 assertThat(helper.get(remoteUrl("/hello")), is("hello"));
             }
         });
+    }
+
+    @Test
+    public void should_verify_expected_request_and_log_at_same_time() throws Exception {
+        Plain resource1 = new Plain();
+        resource1.code = 1;
+        resource1.message = "hello";
+
+        Plain resource2 = new Plain();
+        resource2.code = 2;
+        resource2.message = "world";
+
+        final RequestHit hit = requestHit();
+        final RestServer server = restServer(port(), hit, log());
+        server.resource("targets",
+                get("1").response(toJson(resource1)),
+                get("2").response(toJson(resource2))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Plain response1 = getResource("/targets/1");
+                assertThat(response1.code, is(1));
+                assertThat(response1.message, is("hello"));
+
+                Plain response2 = getResource("/targets/2");
+                assertThat(response2.code, is(2));
+                assertThat(response2.message, is("world"));
+            }
+        });
+
+        hit.verify(by(uri("/targets/1")), times(1));
+        hit.verify(by(uri("/targets/2")), times(1));
     }
 
     private Plain getResource(String uri) throws IOException {
