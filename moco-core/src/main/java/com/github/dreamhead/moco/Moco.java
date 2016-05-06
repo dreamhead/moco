@@ -29,6 +29,7 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.internal.ApiUtils;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.github.dreamhead.moco.matcher.ConditionalRequestMatcher;
 import com.github.dreamhead.moco.matcher.ContainMatcher;
 import com.github.dreamhead.moco.matcher.EndsWithMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
@@ -51,6 +52,7 @@ import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
+import com.google.common.base.Supplier;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
@@ -265,6 +267,10 @@ public final class Moco {
     private static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
         return new ContainMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
                 checkNotNull(resource, "Expected resource should not be null"));
+    }
+    
+    public static RequestMatcher conditional(final Supplier<Boolean> condition) {
+    	return new ConditionalRequestMatcher(checkNotNull(condition, "Condition should not be null"));
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {

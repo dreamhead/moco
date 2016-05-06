@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.base.Supplier;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
@@ -289,6 +292,33 @@ public class MocoTest extends AbstractMocoHttpTest {
             public void run() throws IOException {
                 String response = Request.Put(remoteUrl("/foo")).execute().returnContent().toString();
                 assertThat(response, is("bar"));
+            }
+        });
+    }
+    
+    @Test
+    public void should_return_expected_response_based_on_condition() throws Exception {
+    	List<String> responses = new ArrayList<>();
+    	
+    	Supplier<Boolean> condition = new Supplier<Boolean>() {
+			@Override
+			public Boolean get() {
+				return responses.size() % 2 == 0;
+			}  		
+		};
+		
+        server.request(and(by(uri("/foo")), conditional(condition))).response("bar");
+        server.request(and(by(uri("/foo")), not(conditional(condition)))).response("blah");
+        
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                responses.add(Request.Get(remoteUrl("/foo")).execute().returnContent().toString());                
+                responses.add(Request.Get(remoteUrl("/foo")).execute().returnContent().toString());
+                responses.add(Request.Get(remoteUrl("/foo")).execute().returnContent().toString());
+                assertThat(responses.get(0), is("bar"));
+                assertThat(responses.get(1), is("blah"));               
+                assertThat(responses.get(2), is("bar"));               
             }
         });
     }
