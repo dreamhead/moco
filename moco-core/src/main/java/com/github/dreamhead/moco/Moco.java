@@ -21,7 +21,6 @@ import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
-import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
@@ -29,20 +28,12 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.internal.ApiUtils;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
-import com.github.dreamhead.moco.matcher.ContainMatcher;
-import com.github.dreamhead.moco.matcher.EndsWithMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.ExistMatcher;
 import com.github.dreamhead.moco.matcher.JsonRequestMatcher;
-import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.matcher.NotRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
-import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.matcher.XmlRequestMatcher;
-import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
-import com.github.dreamhead.moco.monitor.FileLogWriter;
-import com.github.dreamhead.moco.monitor.LogMonitor;
-import com.github.dreamhead.moco.monitor.LogWriter;
 import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.resource.ContentResource;
@@ -55,7 +46,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
-import java.io.File;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
@@ -168,23 +158,15 @@ public final class Moco {
     }
 
     public static MocoMonitor log() {
-        return log(new StdLogWriter());
+        return ApiUtils.log(new StdLogWriter());
     }
 
     public static MocoMonitor log(final String filename) {
-        return log(fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
+        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
     }
 
     public static MocoMonitor log(final String filename, final Charset charset) {
-        return log(fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
-    }
-
-    private static LogWriter fileLogWriter(final String filename, final Optional<Charset> charset) {
-        return new FileLogWriter(filename, charset);
-    }
-
-    private static MocoMonitor log(final LogWriter writer) {
-        return new LogMonitor(new DefaultLogFormatter(), writer);
+        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
     }
 
     public static RequestMatcher by(final String content) {
@@ -206,16 +188,11 @@ public final class Moco {
 
     public static RequestMatcher match(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return match(extractor(resource.id()), resource);
+        return ApiUtils.match(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final String expected) {
-        return match(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
-    }
-
-    private static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
-        return new MatchMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(expected, "Expected resource should not be null"));
+        return ApiUtils.match(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
     }
 
     public static <T> RequestMatcher exist(final RequestExtractor<T> extractor) {
@@ -224,47 +201,32 @@ public final class Moco {
 
     public static RequestMatcher startsWith(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return startsWith(extractor(resource.id()), resource);
+        return ApiUtils.startsWith(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final String expected) {
-        return startsWith(checkNotNull(extractor, "Extractor should not be null"),
+        return ApiUtils.startsWith(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
-    }
-
-    private static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new StartsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher endsWith(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return endsWith(extractor(resource.id()), resource);
+        return ApiUtils.endsWith(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final String expected) {
-        return endsWith(checkNotNull(extractor, "Extractor should not be null"),
+        return ApiUtils.endsWith(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
-    }
-
-    private static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new EndsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher contain(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return contain(extractor(resource.id()), resource);
+        return ApiUtils.contain(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final String expected) {
-        return contain(checkNotNull(extractor, "Extractor should not be null"),
+        return ApiUtils.contain(checkNotNull(extractor, "Extractor should not be null"),
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
-    }
-
-    private static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
-        return new ContainMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
     }
 
     public static RequestMatcher and(final RequestMatcher... matchers) {
@@ -565,15 +527,11 @@ public final class Moco {
     }
 
     public static Failover failover(final String file) {
-        return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
-    }
-
-    private static DefaultFailoverExecutor failoverExecutor(final String file) {
-        return new DefaultFailoverExecutor(new File(checkNotNullOrEmpty(file, "Filename should not be null")));
+        return new Failover(ApiUtils.failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
     }
 
     public static Failover playback(final String file) {
-        return new Failover(failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
+        return new Failover(ApiUtils.failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
     }
 
     public static MocoEventTrigger complete(final MocoEventAction action) {
