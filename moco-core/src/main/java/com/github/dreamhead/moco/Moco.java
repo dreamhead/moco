@@ -187,8 +187,7 @@ public final class Moco {
     }
 
     public static RequestMatcher match(final Resource resource) {
-        checkNotNull(resource, "Resource should not be null");
-        return ApiUtils.match(extractor(resource.id()), resource);
+        return ApiUtils.match(extractor(resource.id()), checkNotNull(resource, "Resource should not be null"));
     }
 
     public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final String expected) {
@@ -200,8 +199,7 @@ public final class Moco {
     }
 
     public static RequestMatcher startsWith(final Resource resource) {
-        checkNotNull(resource, "Resource should not be null");
-        return ApiUtils.startsWith(extractor(resource.id()), resource);
+        return ApiUtils.startsWith(extractor(resource.id()), checkNotNull(resource, "Resource should not be null"));
     }
 
     public static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final String expected) {
@@ -210,8 +208,7 @@ public final class Moco {
     }
 
     public static RequestMatcher endsWith(final Resource resource) {
-        checkNotNull(resource, "Resource should not be null");
-        return ApiUtils.endsWith(extractor(resource.id()), resource);
+        return ApiUtils.endsWith(extractor(resource.id()), checkNotNull(resource, "Resource should not be null"));
     }
 
     public static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final String expected) {
@@ -220,8 +217,7 @@ public final class Moco {
     }
 
     public static RequestMatcher contain(final Resource resource) {
-        checkNotNull(resource, "Resource should not be null");
-        return ApiUtils.contain(extractor(resource.id()), resource);
+        return ApiUtils.contain(extractor(resource.id()), checkNotNull(resource, "Resource should not be null"));
     }
 
     public static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final String expected) {

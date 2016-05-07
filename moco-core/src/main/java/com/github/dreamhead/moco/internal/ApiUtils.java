@@ -91,18 +91,15 @@ public class ApiUtils {
     }
 
     public static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new StartsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
+        return new StartsWithMatcher<T>(extractor, resource);
     }
 
     public static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new EndsWithMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
+        return new EndsWithMatcher<T>(extractor, resource);
     }
 
     public static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
-        return new ContainMatcher<T>(checkNotNull(extractor, "Extractor should not be null"),
-                checkNotNull(resource, "Expected resource should not be null"));
+        return new ContainMatcher<T>(extractor, resource);
     }
 
     private ApiUtils() {
