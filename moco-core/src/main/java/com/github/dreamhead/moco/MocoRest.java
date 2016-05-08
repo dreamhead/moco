@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.internal.ApiUtils;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
@@ -34,7 +35,8 @@ public final class MocoRest {
     public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
-                mergeMonitor(monitor, monitor2, monitors));
+                ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
+                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
     public static RestIdMatcher anyId() {

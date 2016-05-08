@@ -82,7 +82,9 @@ public final class Moco {
 
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpServerWithMonitor(of(port), ApiUtils.mergeMonitor(monitor, monitor2, monitors));
+        return ActualHttpServer.createHttpServerWithMonitor(of(port),
+                ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
+                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
     public static HttpServer httpServer(final MocoConfig... configs) {
@@ -118,7 +120,8 @@ public final class Moco {
     public static HttpServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(of(port), checkNotNull(certificate, "Certificate should not be null"),
-                ApiUtils.mergeMonitor(monitor, monitor2, monitors));
+                ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
+                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
     public static SocketServer socketServer() {
@@ -137,9 +140,10 @@ public final class Moco {
 
     public static SocketServer socketServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualSocketServer.createServerWithMonitor(of(port), ApiUtils.mergeMonitor(monitor, monitor2, monitors));
+        return ActualSocketServer.createServerWithMonitor(of(port),
+                ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
+                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
-
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
