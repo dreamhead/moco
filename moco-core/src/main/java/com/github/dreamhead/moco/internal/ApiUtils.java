@@ -26,18 +26,12 @@ import com.google.common.collect.Maps;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.Maps.transformEntries;
 
 public class ApiUtils {
     public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor[] monitors) {
-        MocoMonitor[] targetMonitors = new MocoMonitor[2 + monitors.length];
-        targetMonitors[0] = monitor;
-        targetMonitors[1] = monitor2;
-        if (monitors.length > 0) {
-            System.arraycopy(monitors, 0, targetMonitors, 2, monitors.length);
-        }
-
-        return new CompositeMonitor(targetMonitors);
+        return new CompositeMonitor(asIterable(monitor, monitor2, monitors));
     }
 
     public static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {

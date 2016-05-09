@@ -5,9 +5,9 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
 public class CompositeMonitor implements MocoMonitor {
-    private final MocoMonitor[] monitors;
+    private final Iterable<MocoMonitor> monitors;
 
-    public CompositeMonitor(final MocoMonitor[] monitors) {
+    public CompositeMonitor(final Iterable<MocoMonitor> monitors) {
         this.monitors = monitors;
     }
 
