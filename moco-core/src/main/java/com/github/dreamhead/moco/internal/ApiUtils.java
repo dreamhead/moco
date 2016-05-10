@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
+import com.github.dreamhead.moco.handler.failover.FailoverExecutor;
 import com.github.dreamhead.moco.matcher.ContainMatcher;
 import com.github.dreamhead.moco.matcher.EndsWithMatcher;
 import com.github.dreamhead.moco.matcher.MatchMatcher;
@@ -66,7 +67,7 @@ public class ApiUtils {
         };
     }
 
-    public static DefaultFailoverExecutor failoverExecutor(final String file) {
+    public static FailoverExecutor failoverExecutor(final String file) {
         return new DefaultFailoverExecutor(new File(file));
     }
 

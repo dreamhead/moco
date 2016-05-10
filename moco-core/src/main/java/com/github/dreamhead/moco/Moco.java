@@ -84,7 +84,7 @@ public final class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
     public static HttpServer httpServer(final MocoConfig... configs) {
@@ -142,8 +142,9 @@ public final class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualSocketServer.createServerWithMonitor(of(port),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
+
 
     public static MocoConfig context(final String context) {
         return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
