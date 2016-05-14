@@ -52,6 +52,8 @@ import java.util.concurrent.TimeUnit;
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
+import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
+import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
@@ -346,12 +348,12 @@ public final class Moco {
 
     public static ResponseHandler seq(final String... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(ApiUtils.textToResource()));
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(textToResource()));
     }
 
     public static ResponseHandler seq(final Resource... contents) {
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(ApiUtils.resourceToResourceHandler()));
+        return newSeq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()));
     }
 
     public static ResponseHandler seq(final ResponseHandler... handlers) {
@@ -407,12 +409,12 @@ public final class Moco {
         return classpathFileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 
-    public static Resource version(final Resource resource) {
-        return versionResource(checkNotNull(resource, "Version should not be null"));
+    public static Resource version(final String version) {
+        return version(HttpProtocolVersion.versionOf(checkNotNullOrEmpty(version, "Version should not be null")));
     }
 
-    public static Resource version(final String version) {
-        return versionResource(HttpProtocolVersion.versionOf(checkNotNullOrEmpty(version, "Version should not be null")));
+    public static Resource version(final Resource resource) {
+        return versionResource(checkNotNull(resource, "Version should not be null"));
     }
 
     public static Resource version(final HttpProtocolVersion version) {
