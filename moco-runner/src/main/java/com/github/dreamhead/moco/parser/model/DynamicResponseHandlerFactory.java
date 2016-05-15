@@ -10,7 +10,6 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -46,15 +45,15 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         FluentIterable<ResponseHandler> handlers = from(getFields(responseSetting.getClass()))
                 .filter(isValidField(responseSetting))
                 .transform(fieldToResponseHandler(responseSetting));
-        return getResponseHandler(handlers.toList());
+        return getResponseHandler(handlers);
     }
 
-    private ResponseHandler getResponseHandler(final ImmutableList<ResponseHandler> list) {
-        if (list.size() == 1) {
-            return list.get(0);
+    private ResponseHandler getResponseHandler(final FluentIterable<ResponseHandler> handlers) {
+        if (handlers.size() == 1) {
+            return handlers.get(0);
         }
 
-        return and(list);
+        return and(handlers);
     }
 
     private boolean isResource(final String name) {
@@ -135,7 +134,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     }
 
     private ResponseHandler createCompositeHandler(final String name, final Map<String, TextContainer> map) {
-        ImmutableList<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name)).toList();
+        FluentIterable<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name));
         return getResponseHandler(handlers);
     }
 
