@@ -144,7 +144,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             public ResponseHandler apply(final Map.Entry<String, TextContainer> pair) {
                 String result = COMPOSITES.get(name);
                 if (result == null) {
-                    throw new RuntimeException("unknown composite handler name [" + name + "]");
+                    throw new IllegalArgumentException("unknown composite handler name [" + name + "]");
                 }
 
                 return createResponseHandler(pair, result);
