@@ -71,6 +71,7 @@ task proguardCheck(type: Test, dependsOn: proguard) {
     classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile)
 }
 
+uploadArchives.dependsOn proguard
 uploadArchives.dependsOn proguardCheck
 
 artifacts {
