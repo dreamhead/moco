@@ -1,4 +1,4 @@
-# Release 0.11.0 
+# Release 0.11.0 (20-May-2016)
  
 ## Usage
 * JUnit Integration
@@ -12,6 +12,7 @@
 * head
 * patch
 * sub-resource
+* any id
 
 ## Implementation Details
 * Fix: response handler case issue
