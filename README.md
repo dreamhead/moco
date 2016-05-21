@@ -47,6 +47,7 @@ java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 ## Documents
 * More [Usages](moco-doc/usage.md)
 * Detailed [HTTP APIs](moco-doc/apis.md) or [Socket APIs](moco-doc/socket-apis.md)
+* Detailed [REST API](moco-doc/rest-apis.md)
 * [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
 * [Command Line Usages](moco-doc/cmd.md)
 

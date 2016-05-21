@@ -129,6 +129,8 @@ server.resource("targets",
 
 #### Get with ID
 
+**@Since 0.11.0**
+
 In REST API design, GET method is used to query. If an ID is specified, it is used to query a single resource. The following setting could be visited with `/targets/1` in GET method.
 
 * Java
@@ -160,6 +162,8 @@ server.resource("targets",
 
 #### Get All
 
+**@Since 0.11.0**
+
 If no id specified, all related resource will be returned. The following setting could be visited with `/targets` in GET method.
 
 * Java
@@ -189,6 +193,8 @@ server.resource("targets",
 ```
 
 ### POST
+
+**@Since 0.11.0**
 
 POST method is used to create new resource. The following setting could be visited with `/targets` in POST method.
 
@@ -220,6 +226,8 @@ server.resource("targets",
 
 ### PUT
 
+**@Since 0.11.0**
+
 PUT method is used to update a specified resource. The following setting could be visited with `/targets/1` in PUT method.
 
 * Java
@@ -247,6 +255,8 @@ server.resource("targets",
 ```
 
 ### DELETE
+
+**@Since 0.11.0**
 
 DELETE method is used to delete a specified resource. The following setting could be visited with `/targets/1` in DELETE method.
 
@@ -278,6 +288,8 @@ server.resource("targets",
 
 #### HEAD with ID
 
+**@Since 0.11.0**
+
 HEAD method is used to query resource metadata. If an ID is specified, it is used to query a single resource. The following setting could be visited with `/targets/1` in HEAD method.
 
 * Java
@@ -308,6 +320,8 @@ server.resource("targets",
 
 #### HEAD All
 
+**@Since 0.11.0**
+
 If no id specified, all related resource metadata will be returned. The following setting could be visited with `/targets` in HEAD method.
 
 * Java
@@ -337,6 +351,8 @@ server.resource("targets",
 
 ### PATCH
 
+**@Since 0.11.0**
+
 PATCH method is used to update a specified resource. The following setting could be visited with `/targets/1` in PATCH method.
 
 - Java
@@ -364,6 +380,8 @@ server.resource("targets",
 ```
 
 ### Sub-resource
+
+**@Since 0.11.0**
 
 Sub-resource is used to build relationship for resource. The following setting could be visited with `/targets/1/subs/1` in GET method.
 

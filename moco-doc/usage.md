@@ -216,7 +216,7 @@ More socket APIs can be found [here](/moco-doc/socket-apis.md).
 
 ## JUnit Integration
 
-**@Since will be at next release**
+**@Since 0.11.0**
 
 Moco provides JUnit integration to simplify the use of Moco in JUnit.
  

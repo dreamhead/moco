@@ -15,6 +15,8 @@ Moco make use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitRu
 
 ### POJO HTTP Server
 
+**@Since 0.11.0**
+
 **httpRunner** can reference a HttpServer object.
 
 ```java
@@ -35,6 +37,8 @@ public class MocoJunitPojoHttpRunnerTest {
 
 ### JSON HTTP Server
 
+**@Since 0.11.0**
+
 **jsonHttpRunner** can reference a JSON file as a HTTP server.
 
 ```java
@@ -49,6 +53,8 @@ public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
 ## Socket Server
 
 ### POJO Socket Server
+
+**@Since 0.11.0**
 
 **socketRunner** can reference a SocketServer object.
 
@@ -69,6 +75,8 @@ public class MocoJunitPojoSocketRunnerTest {
 ```
 
 ### JSON Socket Server
+
+**@Since 0.11.0**
 
 **jsonHttpRunner** can reference a JSON file as a Socket server.
 
