@@ -75,7 +75,7 @@ subprojects {
         guavaVersion = '19.0'
         nettyVersion = '4.0.36.Final'
         slf4jVersion = '1.7.21'
-        commonsIoVersion = '2.4'
+        commonsIoVersion = '2.5'
         jacksonVersion = '2.7.4'
         junitVersion = '4.12'
         hamcrestVersion = '1.3'
