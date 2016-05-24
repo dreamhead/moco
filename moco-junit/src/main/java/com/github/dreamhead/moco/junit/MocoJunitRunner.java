@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.RestServer;
 import com.github.dreamhead.moco.Runner;
 import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.resource.Resource;
 import org.junit.rules.ExternalResource;
 
 import static com.github.dreamhead.moco.Moco.file;
@@ -26,6 +27,13 @@ public final class MocoJunitRunner extends ExternalResource {
         checkNotNullOrEmpty(filename, "Filename should not be null");
         return new MocoJunitRunner(runner(jsonHttpServer(port, file(filename))));
     }
+
+    public static MocoJunitRunner jsonHttpRunner(final int port, final Resource file) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        checkNotNull(file, "Filename should not be null");
+        return new MocoJunitRunner(runner(jsonHttpServer(port, file)));
+    }
+
 
     public static MocoJunitRunner httpRunner(final HttpServer server) {
         checkNotNull(server, "Server should not be null");
