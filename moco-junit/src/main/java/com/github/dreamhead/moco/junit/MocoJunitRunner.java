@@ -51,6 +51,12 @@ public final class MocoJunitRunner extends ExternalResource {
         return new MocoJunitRunner(runner(jsonSocketServer(port, file(filename))));
     }
 
+    public static MocoJunitRunner jsonSocketRunner(final int port, final Resource filename) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        checkNotNull(filename, "Filename should not be null");
+        return new MocoJunitRunner(runner(jsonSocketServer(port, filename)));
+    }
+
     public static MocoJunitRunner socketRunner(final SocketServer server) {
         checkNotNull(server, "Server should not be null");
         return new MocoJunitRunner(runner(server));
