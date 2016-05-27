@@ -64,6 +64,12 @@ public final class MocoJunitRunner extends ExternalResource {
     public static MocoJunitRunner jsonRestRunner(int port, String filename) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNullOrEmpty(filename, "Filename should not be null");
+        return jsonRestRunner(port, file(filename));
+    }
+
+    public static MocoJunitRunner jsonRestRunner(int port, Resource filename) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        checkNotNull(filename, "Filename should not be null");
         return jsonHttpRunner(port, filename);
     }
 
