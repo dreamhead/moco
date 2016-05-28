@@ -50,10 +50,10 @@ public final class MocoJunitRunner extends ExternalResource {
         return jsonSocketRunner(port, file(filename));
     }
 
-    public static MocoJunitRunner jsonSocketRunner(final int port, final Resource filename) {
+    public static MocoJunitRunner jsonSocketRunner(final int port, final Resource file) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(filename, "Filename should not be null");
-        return new MocoJunitRunner(runner(jsonSocketServer(port, filename)));
+        checkNotNull(file, "File should not be null");
+        return new MocoJunitRunner(runner(jsonSocketServer(port, file)));
     }
 
     public static MocoJunitRunner socketRunner(final SocketServer server) {
@@ -67,10 +67,10 @@ public final class MocoJunitRunner extends ExternalResource {
         return jsonRestRunner(port, file(filename));
     }
 
-    public static MocoJunitRunner jsonRestRunner(int port, Resource filename) {
+    public static MocoJunitRunner jsonRestRunner(int port, Resource file) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(filename, "Filename should not be null");
-        return jsonHttpRunner(port, filename);
+        checkNotNull(file, "File should not be null");
+        return jsonHttpRunner(port, file);
     }
 
     @Override
