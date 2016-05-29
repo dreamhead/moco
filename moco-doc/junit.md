@@ -50,6 +50,19 @@ public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
 }
 ```
 
+**@Since will be at next release
+
+JSON configuration can be retrieved from the classpath.
+
+```java
+public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonHttpRunner(12306, Moco.pathResource("foo.json"));
+
+  ...
+}
+```
+
 ## Socket Server
 
 ### POJO Socket Server
@@ -84,6 +97,19 @@ public class MocoJunitPojoSocketRunnerTest {
 public class MocoJunitJsonSocketRunnerTest {
   @Rule
   public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, "foo.json");
+
+  ...
+}
+```
+
+**@Since will be at next release
+
+JSON configuration can be retrieved from the classpath.
+
+```java
+public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, Moco.pathResource("foo.json"));
 
   ...
 }

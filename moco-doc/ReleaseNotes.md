@@ -1,3 +1,9 @@
+# Release
+
+# JUnit
+* Http JSON Runner with path resource
+* Socket JSON Runner with path resource
+
 # Release 0.11.0 (20-May-2016)
  
 ## Usage
