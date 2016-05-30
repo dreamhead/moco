@@ -73,7 +73,7 @@ subprojects {
 
     project.ext {
         guavaVersion = '19.0'
-        nettyVersion = '4.0.36.Final'
+        nettyVersion = '4.1.0.Final'
         slf4jVersion = '1.7.21'
         commonsIoVersion = '2.5'
         jacksonVersion = '2.7.4'
@@ -102,6 +102,7 @@ subprojects {
         compile(
                 "com.google.guava:guava:$guavaVersion",
                 "io.netty:netty-codec-http:$nettyVersion",
+                "io.netty:netty-handler:$nettyVersion",
                 "commons-io:commons-io:$commonsIoVersion",
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
