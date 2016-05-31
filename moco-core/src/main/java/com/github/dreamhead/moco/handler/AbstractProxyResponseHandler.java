@@ -15,9 +15,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringEncoder;
 import org.apache.http.Header;
@@ -73,7 +73,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         remoteRequest.setConfig(config);
         remoteRequest.setProtocolVersion(createVersion(request));
 
-        long contentLength = HttpHeaders.getContentLength(request, -1);
+        long contentLength = HttpUtil.getContentLength(request, -1);
         if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
             HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
             entityRequest.setEntity(createEntity(request.content(), contentLength));
@@ -83,7 +83,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpRequestBase createRemoteRequest(final FullHttpRequest request, final URL url) {
-        HttpRequestBase remoteRequest = createBaseRequest(url, request.getMethod());
+        HttpRequestBase remoteRequest = createBaseRequest(url, request.method());
         for (Map.Entry<String, String> entry : request.headers()) {
             if (isRequestHeader(entry)) {
                 remoteRequest.addHeader(entry.getKey(), entry.getValue());
@@ -98,7 +98,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private org.apache.http.HttpVersion createVersion(final FullHttpRequest request) {
-        HttpVersion protocolVersion = request.getProtocolVersion();
+        HttpVersion protocolVersion = request.protocolVersion();
         return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 

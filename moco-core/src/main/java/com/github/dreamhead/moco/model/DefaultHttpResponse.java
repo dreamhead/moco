@@ -35,8 +35,8 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
         }
 
         return builder()
-                .withVersion(HttpProtocolVersion.versionOf(response.getProtocolVersion().text()))
-                .withStatus(response.getStatus().code())
+                .withVersion(HttpProtocolVersion.versionOf(response.protocolVersion().text()))
+                .withStatus(response.status().code())
                 .withHeaders(headerBuilder.build())
                 .withContent(content()
                         .withContent(new ByteBufInputStream(response.content()))

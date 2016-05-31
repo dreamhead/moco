@@ -17,7 +17,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.QueryStringEncoder;
@@ -123,7 +123,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     private static MessageContent toMessageContent(final FullHttpRequest request) {
-        long contentLength = HttpHeaders.getContentLength(request, -1);
+        long contentLength = HttpUtil.getContentLength(request, -1);
         if (contentLength <= 0) {
             return content().build();
         }
@@ -132,13 +132,13 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     public static HttpRequest newRequest(final FullHttpRequest request) {
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+        QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
         ImmutableMap<String, String[]> queries = toQueries(decoder);
 
         return builder()
-                .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().text()))
+                .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
                 .withHeaders(collectHeaders(request.headers()))
-                .withMethod(HttpMethod.valueOf(request.getMethod().toString().toUpperCase()))
+                .withMethod(HttpMethod.valueOf(request.method().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
                 .withContent(toMessageContent(request))
