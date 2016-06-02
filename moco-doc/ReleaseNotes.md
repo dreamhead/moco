@@ -4,6 +4,9 @@
 * Http JSON Runner with path resource
 * Socket JSON Runner with path resource
 
+## Implementation Details
+* Fix: get Moco standalone version from manifest
+
 # Release 0.11.0 (20-May-2016)
  
 ## Usage
