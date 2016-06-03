@@ -42,7 +42,7 @@ public class MocoJunitPojoHttpRunnerTest {
 **jsonHttpRunner** can reference a JSON file as a HTTP server.
 
 ```java
-public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+public class MocoJunitJsonHttpRunnerTest {
   @Rule
   public MocoJunitRunner runner = MocoJunitRunner.jsonHttpRunner(12306, "foo.json");
   
@@ -50,12 +50,12 @@ public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
 }
 ```
 
-**@Since will be at next release
+**@Since will be at next release**
 
 JSON configuration can be retrieved from the classpath.
 
 ```java
-public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+public class MocoJunitJsonHttpRunnerTest {
   @Rule
   public MocoJunitRunner runner = MocoJunitRunner.jsonHttpRunner(12306, Moco.pathResource("foo.json"));
 
@@ -102,14 +102,68 @@ public class MocoJunitJsonSocketRunnerTest {
 }
 ```
 
-**@Since will be at next release
+**@Since will be at next release**
 
 JSON configuration can be retrieved from the classpath.
 
 ```java
-public class MocoJunitJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
+public class MocoJunitJsonHttpRunnerTest {
   @Rule
   public MocoJunitRunner runner = MocoJunitRunner.jsonSocketRunner(12306, Moco.pathResource("foo.json"));
+
+  ...
+}
+```
+
+## Rest Server
+
+### POJO HTTP Server
+
+**@Since 0.11.0**
+
+**restRunner** can reference a RestServer object.
+
+```java
+public class MocoJunitPojoRestRunnerTest {
+  private static RestServer server;
+
+  static {
+    server = restServer(12306);
+    server.resource("targets",
+      post().response(status(201), header("Location", "/targets/123"))
+    );
+  }
+
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.restRunner(server);
+
+  ...
+}
+```
+
+### JSON Rest Server
+
+**@Since 0.11.0**
+
+**jsonRestRunner** can reference a JSON file as a HTTP server.
+
+```java
+public class MocoJunitJsonRestRunnerTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonRestRunner(12306, "rest.json");
+
+  ...
+}
+```
+
+**@Since will be at next release**
+
+JSON configuration can be retrieved from the classpath.
+
+```java
+public class MocoJunitJsonRestRunnerTest {
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonRestRunner(12306, Moco.pathResource("foo.json"));
 
   ...
 }
