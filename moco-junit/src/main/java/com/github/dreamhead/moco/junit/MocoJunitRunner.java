@@ -61,13 +61,13 @@ public final class MocoJunitRunner extends ExternalResource {
         return new MocoJunitRunner(runner(server));
     }
 
-    public static MocoJunitRunner jsonRestRunner(int port, String filename) {
+    public static MocoJunitRunner jsonRestRunner(final int port, final String filename) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNullOrEmpty(filename, "Filename should not be null");
         return jsonRestRunner(port, file(filename));
     }
 
-    public static MocoJunitRunner jsonRestRunner(int port, Resource file) {
+    public static MocoJunitRunner jsonRestRunner(final int port, final Resource file) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(file, "File should not be null");
         return jsonHttpRunner(port, file);
