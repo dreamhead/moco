@@ -1,6 +1,6 @@
 # JUnit Integration
 
-Moco make use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitRunner** provices several ways to run Moco server as Test Rule, which can start Moco server before your test and stop after the test.
+Moco makes use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitRunner** provides several ways to run Moco server as Test Rule, which can start Moco server before your test and stop after the test.
 
 **Table of Contents**
 
@@ -10,6 +10,9 @@ Moco make use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitRu
 * [Socket Server](#socket-server)
   * [POJO Socket Server](#pojo-socket-server)
   * [JSON Socket Server](#json-socket-server)
+* [Rest Server](#rest-server)
+  * [POJO Socket Server](#pojo-rest-server)
+  * [JSON Socket Server](#json-rest-server)
 
 ## HTTP Server
 
