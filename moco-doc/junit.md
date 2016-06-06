@@ -11,8 +11,8 @@ Moco makes use of Test Rule in JUnit to simplify JUnit integration. **MocoJunitR
   * [POJO Socket Server](#pojo-socket-server)
   * [JSON Socket Server](#json-socket-server)
 * [Rest Server](#rest-server)
-  * [POJO Socket Server](#pojo-rest-server)
-  * [JSON Socket Server](#json-rest-server)
+  * [POJO Rest Server](#pojo-rest-server)
+  * [JSON Rest Server](#json-rest-server)
 
 ## HTTP Server
 
@@ -120,7 +120,7 @@ public class MocoJunitJsonHttpRunnerTest {
 
 ## Rest Server
 
-### POJO HTTP Server
+### POJO Rest Server
 
 **@Since 0.11.0**
 
