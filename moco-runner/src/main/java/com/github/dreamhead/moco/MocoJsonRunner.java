@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.github.dreamhead.moco.resource.Resource;
@@ -20,6 +21,18 @@ public final class MocoJsonRunner {
     public static HttpServer jsonHttpServer(final Resource resource) {
         Optional<Integer> port = Optional.absent();
         return jsonHttpServer(checkNotNull(resource, "resource should not be null"), port);
+    }
+
+    public static HttpsServer jsonHttpsServer(final Resource resource,
+                                              final HttpsCertificate certificate) {
+        ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(certificate);
+        return httpsServer.mergeHttpServer((ActualHttpServer)jsonHttpServer(resource));
+    }
+
+    public static HttpsServer jsonHttpsServer(final int port, final Resource resource,
+                                              final HttpsCertificate certificate) {
+        ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(port, certificate);
+        return httpsServer.mergeHttpServer((ActualHttpServer)jsonHttpServer(port, resource));
     }
 
     public static SocketServer jsonSocketServer(final int port, final Resource resource) {
