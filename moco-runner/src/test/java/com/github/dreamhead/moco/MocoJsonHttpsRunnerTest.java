@@ -5,12 +5,10 @@ import org.junit.Test;
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpServer;
 import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpsServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
