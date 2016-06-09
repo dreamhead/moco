@@ -40,8 +40,16 @@ public final class MocoJunitRunner extends ExternalResource {
                                                   final HttpsCertificate certificate) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNullOrEmpty(filename, "Filename should not be null");
-        checkNotNull(certificate, "Filename should not be null");
-        return new MocoJunitRunner(runner(jsonHttpsServer(port, file(filename), certificate)));
+        checkNotNull(certificate, "Certificate should not be null");
+        return jsonHttpsRunner(port, file(filename), certificate);
+    }
+
+    public static MocoJunitRunner jsonHttpsRunner(final int port, final Resource file,
+                                                  final HttpsCertificate certificate) {
+        checkArgument(port > 0, "Port must be greater than zero");
+        checkNotNull(file, "File should not be null");
+        checkNotNull(certificate, "Certificate should not be null");
+        return new MocoJunitRunner(runner(jsonHttpsServer(port, file, certificate)));
     }
 
     public static MocoJunitRunner httpRunner(final HttpServer server) {
