@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.junit;
 
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
+import com.github.dreamhead.moco.HttpsServer;
 import com.github.dreamhead.moco.RestServer;
 import com.github.dreamhead.moco.Runner;
 import com.github.dreamhead.moco.SocketServer;
@@ -53,6 +54,11 @@ public final class MocoJunitRunner extends ExternalResource {
     }
 
     public static MocoJunitRunner httpRunner(final HttpServer server) {
+        checkNotNull(server, "Server should not be null");
+        return new MocoJunitRunner(runner(server));
+    }
+
+    public static MocoJunitRunner httpsRunner(final HttpsServer server) {
         checkNotNull(server, "Server should not be null");
         return new MocoJunitRunner(runner(server));
     }
