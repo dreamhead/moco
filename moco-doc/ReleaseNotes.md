@@ -1,8 +1,9 @@
 # Release
 
 # JUnit
-* Http JSON Runner with path resource
-* Socket JSON Runner with path resource
+* HTTPS JUnit runner for POJO, JSON and from path resource
+* Http JSON runner with path resource
+* Socket JSON runner with path resource
 
 ## Implementation Details
 * Fix: get Moco standalone version from manifest

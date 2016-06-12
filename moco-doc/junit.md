@@ -66,6 +66,61 @@ public class MocoJunitJsonHttpRunnerTest {
 }
 ```
 
+## HTTPS Server
+
+### POJO HTTPS Server
+
+**@Since will be at next release**
+
+**httpsRunner** can reference a HttpsServer object.
+
+```java
+public class MocoJunitPojoHttpRunnerTest {
+  private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+  private static HttpServer server;
+
+  static {
+    server = httpsServer(12306, DEFAULT_CERTIFICATE);
+    server.response("foo");
+  }
+
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.httpsRunner(server);
+
+  ...
+}
+```
+
+### JSON HTTPS Server
+
+**@Since will be at next release**
+
+**jsonHttpsRunner** can reference a JSON file as a HTTP server.
+
+```java
+public class MocoJunitJsonHttpRunnerTest {
+  private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonHttpsRunner(12306, "foo.json", DEFAULT_CERTIFICATE);
+
+  ...
+}
+```
+
+**@Since will be at next release**
+
+JSON configuration can be retrieved from the classpath.
+
+```java
+public class MocoJunitJsonHttpRunnerTest {
+  private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+  @Rule
+  public MocoJunitRunner runner = MocoJunitRunner.jsonHttpsRunner(12306, Moco.pathResource("foo.json"), DEFAULT_CERTIFICATE);
+
+  ...
+}
+```
+
 ## Socket Server
 
 ### POJO Socket Server
