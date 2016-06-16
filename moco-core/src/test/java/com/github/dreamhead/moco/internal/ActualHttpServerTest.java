@@ -127,4 +127,17 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_merge_http_server_with_same_port() throws Exception {
+        httpServer = httpServer(12306, context("/foo"));
+        anotherServer = httpServer(12306, context("/bar"));
+        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        running(mergedServer, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(mergedServer.port(), is(12306));
+            }
+        });
+    }
 }
