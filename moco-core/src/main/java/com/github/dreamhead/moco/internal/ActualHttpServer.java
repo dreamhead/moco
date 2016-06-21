@@ -33,7 +33,8 @@ public class ActualHttpServer extends HttpConfiguration {
     }
 
     public ActualHttpServer mergeHttpServer(final ActualHttpServer thatServer) {
-        ActualHttpServer newServer = newBaseServer(newPort(thatServer.getPort()), newServerCertificate(thatServer.certificate));
+        ActualHttpServer newServer = newBaseServer(this.getPort().or(thatServer.getPort()),
+                newServerCertificate(thatServer.certificate));
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
@@ -44,18 +45,6 @@ public class ActualHttpServer extends HttpConfiguration {
         newServer.addEvents(thatServer.eventTriggers);
 
         return newServer;
-    }
-
-    private Optional<Integer> newPort(final Optional<Integer> port) {
-        if (this.getPort().isPresent()) {
-            return this.getPort();
-        }
-
-        if (port.isPresent()) {
-            return port;
-        }
-
-        return absent();
     }
 
     private Optional<HttpsCertificate> newServerCertificate(final Optional<HttpsCertificate> certificate) {
