@@ -116,6 +116,22 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_merge_two_https_servers() throws Exception {
+        httpServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/foo"));
+        httpServer.response("foo");
+        anotherServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/bar"));
+        anotherServer.request(by(uri("/bar"))).response("bar");
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        running(mergedServer, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo"));
+                assertThat(helper.get(remoteHttpsUrl("/bar/bar")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_merge_https_server_into_http_server() throws Exception {
         httpServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/foo"));
         httpServer.response("foo");
@@ -127,6 +143,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
             }
         });
     }
+
 
     @Test
     public void should_merge_http_server_with_same_port() throws Exception {
