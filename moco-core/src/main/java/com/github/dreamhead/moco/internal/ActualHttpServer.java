@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
-
-import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class ActualHttpServer extends HttpConfiguration {
@@ -34,7 +32,7 @@ public class ActualHttpServer extends HttpConfiguration {
 
     public ActualHttpServer mergeHttpServer(final ActualHttpServer thatServer) {
         ActualHttpServer newServer = newBaseServer(this.getPort().or(thatServer.getPort()),
-                newServerCertificate(thatServer.certificate));
+                this.certificate.or(thatServer.certificate));
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
@@ -45,18 +43,6 @@ public class ActualHttpServer extends HttpConfiguration {
         newServer.addEvents(thatServer.eventTriggers);
 
         return newServer;
-    }
-
-    private Optional<HttpsCertificate> newServerCertificate(final Optional<HttpsCertificate> certificate) {
-        if (this.isSecure()) {
-            return this.certificate;
-        }
-
-        if (certificate.isPresent()) {
-            return certificate;
-        }
-
-        return absent();
     }
 
     private ActualHttpServer newBaseServer(final Optional<Integer> port, final Optional<HttpsCertificate> certificate) {
