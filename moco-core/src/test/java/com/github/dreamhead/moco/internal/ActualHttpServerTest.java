@@ -144,7 +144,6 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         });
     }
 
-
     @Test
     public void should_merge_http_server_with_same_port() throws Exception {
         httpServer = httpServer(12306, context("/foo"));
