@@ -19,8 +19,7 @@ public final class MocoJsonRunner {
     }
 
     public static HttpServer jsonHttpServer(final Resource resource) {
-        Optional<Integer> port = Optional.absent();
-        return jsonHttpServer(checkNotNull(resource, "resource should not be null"), port);
+        return jsonHttpServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
     }
 
     public static HttpsServer jsonHttpsServer(final Resource resource,
@@ -46,8 +45,7 @@ public final class MocoJsonRunner {
     }
 
     public static SocketServer jsonSocketServer(final Resource resource) {
-        Optional<Integer> port = Optional.absent();
-        return jsonSocketServer(checkNotNull(resource, "resource should not be null"), port);
+        return jsonSocketServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
     }
 
     private static SocketServer jsonSocketServer(final Resource resource, final Optional<Integer> port) {
