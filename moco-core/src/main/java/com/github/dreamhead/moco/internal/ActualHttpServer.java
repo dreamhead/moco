@@ -30,7 +30,7 @@ public class ActualHttpServer extends HttpConfiguration {
         return certificate;
     }
 
-    public ActualHttpServer mergeHttpServer(final ActualHttpServer thatServer) {
+    public ActualHttpServer mergeServer(final ActualHttpServer thatServer) {
         ActualHttpServer newServer = newBaseServer(this.getPort().or(thatServer.getPort()),
                 this.certificate.or(thatServer.certificate));
         newServer.addSettings(this.getSettings());

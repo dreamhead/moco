@@ -67,7 +67,7 @@ public final class JsonRunner implements Runner {
 
     private SocketServer mergeServer(final SocketServer socketServer, final SocketServer parsedServer) {
         ActualSocketServer thisServer = (ActualSocketServer) socketServer;
-        return thisServer.mergeHttpServer((ActualSocketServer) parsedServer);
+        return thisServer.mergeServer((ActualSocketServer) parsedServer);
     }
 
     private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
@@ -117,7 +117,7 @@ public final class JsonRunner implements Runner {
 
     private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {
         ActualHttpServer thisServer = (ActualHttpServer) server;
-        return thisServer.mergeHttpServer((ActualHttpServer) parsedServer);
+        return thisServer.mergeServer((ActualHttpServer) parsedServer);
     }
 
     public static JsonRunner newJsonRunnerWithStreams(final Iterable<? extends InputStream> streams,

@@ -26,7 +26,7 @@ public final class MocoJsonRunner {
                                               final HttpsCertificate certificate) {
         checkNotNull(certificate, "Certificate should not be null");
         ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(certificate);
-        return httpsServer.mergeHttpServer((ActualHttpServer)jsonHttpServer(
+        return httpsServer.mergeServer((ActualHttpServer)jsonHttpServer(
                 checkNotNull(resource, "resource should not be null")));
     }
 
@@ -35,7 +35,7 @@ public final class MocoJsonRunner {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(certificate, "Certificate should not be null");
         ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(port, certificate);
-        return httpsServer.mergeHttpServer((ActualHttpServer)jsonHttpServer(port,
+        return httpsServer.mergeServer((ActualHttpServer)jsonHttpServer(port,
                  checkNotNull(resource, "resource should not be null")));
     }
 

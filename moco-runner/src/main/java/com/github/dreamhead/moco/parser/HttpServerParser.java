@@ -20,7 +20,7 @@ public class HttpServerParser extends BaseParser<HttpServer> {
 
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
-            targetServer = targetServer.mergeHttpServer(session.newHttpServer(port, configs));
+            targetServer = targetServer.mergeServer(session.newHttpServer(port, configs));
         }
 
         return targetServer;

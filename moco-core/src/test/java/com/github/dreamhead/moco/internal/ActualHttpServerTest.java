@@ -31,7 +31,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_merge_http_server_with_any_handler_one_side() throws Exception {
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -42,7 +42,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_for_merging_http_server_with_any_handler_one_side() throws Exception {
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -53,7 +53,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_merge_http_server_with_any_handler_other_side() throws Exception {
-        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
+        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -64,7 +64,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_for_merging_http_server_with_any_handler_other_side() throws Exception {
-        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
+        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -77,7 +77,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_config_handler_correctly_while_merging() throws Exception {
         httpServer = httpServer(12306, fileRoot("src/test/resources"));
         httpServer.response(file("foo.response"));
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
 
         running(mergedServer, new Runnable() {
             @Override
@@ -91,7 +91,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_config_handler_correctly_other_side_while_merging() throws Exception {
         httpServer = httpServer(12306, fileRoot("src/test/resources"));
         httpServer.response(file("foo.response"));
-        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeHttpServer((ActualHttpServer) anotherServer);
+        HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
 
         running(mergedServer, new Runnable() {
             @Override
@@ -106,7 +106,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     @Test
     public void should_merge_https_server() throws Exception {
         anotherServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/bar"));
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -121,7 +121,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer.response("foo");
         anotherServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/bar"));
         anotherServer.request(by(uri("/bar"))).response("bar");
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -135,7 +135,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_https_server_into_http_server() throws Exception {
         httpServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/foo"));
         httpServer.response("foo");
-        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -148,7 +148,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_http_server_with_same_port() throws Exception {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(12306, context("/bar"));
-        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -161,7 +161,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_http_server_with_different_port() throws Exception {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(12307, context("/bar"));
-        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -174,7 +174,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_http_server_without_port_for_first_server() throws Exception {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(context("/bar"));
-        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -187,7 +187,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_http_server_without_port_for_second_server() throws Exception {
         httpServer = httpServer(context("/foo"));
         anotherServer = httpServer(12307, context("/bar"));
-        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         running(mergedServer, new Runnable() {
             @Override
             public void run() throws Exception {
@@ -200,7 +200,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_http_server_without_port_for_both_servers() throws Exception {
         httpServer = httpServer(context("/foo"));
         anotherServer = httpServer(context("/bar"));
-        final ActualHttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeHttpServer((ActualHttpServer) httpServer);
+        final ActualHttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
         assertThat(mergedServer.getPort().isPresent(), is(false));
     }
 }

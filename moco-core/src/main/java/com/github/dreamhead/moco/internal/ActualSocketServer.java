@@ -30,7 +30,7 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
         return baseSetting;
     }
 
-    public SocketServer mergeHttpServer(final ActualSocketServer thatServer) {
+    public SocketServer mergeServer(final ActualSocketServer thatServer) {
         ActualSocketServer newServer = newBaseServer(this.getPort().or(thatServer.getPort()));
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
