@@ -43,6 +43,37 @@ public class ActualSocketServerTest {
         });
     }
 
+    @Test
+    public void should_merge_socket_servers_with_first_port() throws Exception {
+        SocketServer server = socketServer(12306);
+        SocketServer secondServer = socketServer();
+
+
+        final SocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
+
+        running(newServer, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(newServer.port(), is(12306));
+            }
+        });
+    }
+
+    @Test
+    public void should_merge_socket_servers_with_second_port() throws Exception {
+        SocketServer server = socketServer();
+        SocketServer secondServer = socketServer(12307);
+
+        final SocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
+
+        running(newServer, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(newServer.port(), is(12307));
+            }
+        });
+    }
+
     private String line(String text) {
         return text + "\r\n";
     }
