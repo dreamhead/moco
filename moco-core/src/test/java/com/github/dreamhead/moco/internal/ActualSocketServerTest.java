@@ -74,6 +74,15 @@ public class ActualSocketServerTest {
         });
     }
 
+    @Test
+    public void should_merge_socket_servers_without_ports_for_both_server() throws Exception {
+        SocketServer server = socketServer();
+        SocketServer secondServer = socketServer();
+
+        final ActualSocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
+        assertThat(newServer.getPort().isPresent(), is(false));
+    }
+
     private String line(String text) {
         return text + "\r\n";
     }
