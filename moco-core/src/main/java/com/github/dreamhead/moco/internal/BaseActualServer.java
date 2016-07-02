@@ -21,7 +21,7 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class BaseActualServer<T extends ResponseSetting<T>> extends BaseServer<T> {
+public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T> {
     protected abstract Setting<T> newSetting(final RequestMatcher matcher);
 
     private final MocoConfig[] configs;
@@ -74,7 +74,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
 
     public Setting<T> getAnySetting() {
         Setting<T> setting = newSetting(configuredMatcher());
-        ResponseHandler configuredHandler = configured(this.handler);
+        ResponseHandler configuredHandler = configuredResponseHandler();
         if (configuredHandler != null) {
             setting.response(configuredHandler);
         }
@@ -120,4 +120,25 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>> extends Bas
     protected RequestMatcher configuredMatcher() {
         return configured(this.matcher);
     }
+
+    public U mergeServer(final U thatServer) {
+        U newServer = doCreateServer(thatServer);
+        newServer.addSettings(this.getSettings());
+        newServer.addSettings(thatServer.getSettings());
+
+        newServer.anySetting(configuredMatcher(), this.configuredResponseHandler());
+        ResponseHandler configured = thatServer.configuredResponseHandler();
+        newServer.anySetting(thatServer.configuredMatcher(), configured);
+
+        newServer.addEvents(this.eventTriggers);
+        newServer.addEvents(thatServer.eventTriggers);
+
+        return newServer;
+    }
+
+    protected ResponseHandler configuredResponseHandler() {
+        return configured(this.handler);
+    }
+
+    protected abstract U doCreateServer(final U thatServer);
 }

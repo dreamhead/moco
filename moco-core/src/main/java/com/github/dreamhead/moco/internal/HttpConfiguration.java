@@ -27,7 +27,8 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public abstract class HttpConfiguration extends BaseActualServer<HttpResponseSetting> implements HttpsServer {
+public abstract class HttpConfiguration<T extends BaseActualServer>
+        extends BaseActualServer<HttpResponseSetting, T> implements HttpsServer {
     private final RedirectDelegate delegate = new RedirectDelegate();
 
     protected HttpConfiguration(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {

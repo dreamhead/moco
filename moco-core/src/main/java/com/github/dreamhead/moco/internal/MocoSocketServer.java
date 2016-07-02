@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
-public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting> {
+public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting, ActualSocketServer> {
     private final ActualSocketServer serverSetting;
 
     public MocoSocketServer(final ActualSocketServer serverSetting) {
@@ -13,7 +13,7 @@ public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting> {
     }
 
     @Override
-    protected BaseActualServer<SocketResponseSetting> serverSetting() {
+    protected ActualSocketServer serverSetting() {
         return this.serverSetting;
     }
 
