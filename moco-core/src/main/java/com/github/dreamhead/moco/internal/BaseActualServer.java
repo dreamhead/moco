@@ -74,9 +74,8 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
 
     public Setting<T> getAnySetting() {
         Setting<T> setting = newSetting(configuredMatcher());
-        ResponseHandler configuredHandler = configuredResponseHandler();
-        if (configuredHandler != null) {
-            setting.response(configuredHandler);
+        if (this.handler != null) {
+            setting.response(configuredResponseHandler());
         }
         for (MocoEventTrigger trigger : eventTriggers) {
             setting.on(trigger);
@@ -113,7 +112,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    protected  <T extends ConfigApplier<T>> T configured(final T source) {
+    protected  <V extends ConfigApplier<V>> V configured(final V source) {
         return configItem(source, this.configs);
     }
 
@@ -121,14 +120,17 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return configured(this.matcher);
     }
 
+    protected ResponseHandler configuredResponseHandler() {
+        return configured(this.handler);
+    }
+
     public U mergeServer(final U thatServer) {
-        U newServer = doCreateServer(thatServer);
+        U newServer = createMergeServer(thatServer);
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
         newServer.anySetting(configuredMatcher(), this.configuredResponseHandler());
-        ResponseHandler configured = thatServer.configuredResponseHandler();
-        newServer.anySetting(thatServer.configuredMatcher(), configured);
+        newServer.anySetting(thatServer.configuredMatcher(), thatServer.configuredResponseHandler());
 
         newServer.addEvents(this.eventTriggers);
         newServer.addEvents(thatServer.eventTriggers);
@@ -136,9 +138,5 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return newServer;
     }
 
-    protected ResponseHandler configuredResponseHandler() {
-        return configured(this.handler);
-    }
-
-    protected abstract U doCreateServer(final U thatServer);
+    protected abstract U createMergeServer(final U thatServer);
 }

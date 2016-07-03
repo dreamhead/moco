@@ -31,7 +31,7 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
     }
 
     @Override
-    protected ActualSocketServer doCreateServer(final ActualSocketServer thatServer) {
+    protected ActualSocketServer createMergeServer(final ActualSocketServer thatServer) {
         return newBaseServer(this.getPort().or(thatServer.getPort()));
     }
 

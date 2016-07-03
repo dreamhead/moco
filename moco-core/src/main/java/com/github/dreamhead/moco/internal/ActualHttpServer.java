@@ -31,7 +31,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return certificate;
     }
 
-    protected ActualHttpServer doCreateServer(final ActualHttpServer thatServer) {
+    protected ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
         return newBaseServer(this.getPort().or(thatServer.getPort()), this.certificate.or(thatServer.certificate));
     }
 
