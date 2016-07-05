@@ -4,18 +4,16 @@ import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.MocoMonitor;
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
-import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import static com.github.dreamhead.moco.internal.InternalApis.context;
+import static com.github.dreamhead.moco.RequestMatcher.ANY_REQUEST_MATCHER;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.base.Optional.of;
@@ -28,31 +26,12 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
     private Optional<Integer> port;
-    private RequestMatcher matcher = anyRequest();
+    private RequestMatcher matcher = ANY_REQUEST_MATCHER;
 
     public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
-    }
-
-    private static RequestMatcher anyRequest() {
-        return new AbstractRequestMatcher() {
-            @Override
-            public boolean match(final Request request) {
-                return true;
-            }
-
-            @Override
-            @SuppressWarnings("unchecked")
-            public RequestMatcher doApply(final MocoConfig config) {
-                if (config.isFor(MocoConfig.URI_ID)) {
-                    return context((String) config.apply(""));
-                }
-
-                return this;
-            }
-        };
     }
 
     @Override
