@@ -26,7 +26,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
     private Optional<Integer> port;
-    private RequestMatcher matcher = ANY_REQUEST_MATCHER;
+    private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
 
     public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
         this.port = port;
@@ -52,9 +52,9 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     public Setting<T> getAnySetting() {
-        Setting<T> setting = newSetting(configuredMatcher());
+        Setting<T> setting = newSetting(configuredAnyMatcher());
         if (this.handler != null) {
-            setting.response(configuredResponseHandler());
+            setting.response(configuredAnyResponseHandler());
         }
         for (MocoEventTrigger trigger : eventTriggers) {
             setting.on(trigger);
@@ -78,10 +78,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         this.eventTriggers.addAll(eventTriggers);
     }
 
-    protected void anySetting(final RequestMatcher matcher, final ResponseHandler handler) {
+    protected void anySetting(final RequestMatcher anyMatcher, final ResponseHandler handler) {
         if (handler != null) {
             this.response(handler);
-            this.matcher = matcher;
+            this.anyMatcher = anyMatcher;
         }
     }
 
@@ -95,11 +95,11 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return configItem(source, this.configs);
     }
 
-    protected RequestMatcher configuredMatcher() {
-        return configured(this.matcher);
+    protected RequestMatcher configuredAnyMatcher() {
+        return configured(this.anyMatcher);
     }
 
-    protected ResponseHandler configuredResponseHandler() {
+    protected ResponseHandler configuredAnyResponseHandler() {
         return configured(this.handler);
     }
 
@@ -108,8 +108,8 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
 
-        newServer.anySetting(configuredMatcher(), this.configuredResponseHandler());
-        newServer.anySetting(thatServer.configuredMatcher(), thatServer.configuredResponseHandler());
+        newServer.anySetting(configuredAnyMatcher(), this.configuredAnyResponseHandler());
+        newServer.anySetting(thatServer.configuredAnyMatcher(), thatServer.configuredAnyResponseHandler());
 
         newServer.addEvents(this.eventTriggers);
         newServer.addEvents(thatServer.eventTriggers);
