@@ -103,6 +103,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return configured(this.handler);
     }
 
+    @SuppressWarnings("unchecked")
     public U mergeServer(final U thatServer) {
         U newServer = createMergeServer(thatServer);
         newServer.addSettings(this.getSettings());
