@@ -15,19 +15,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class MocoJsonRunner {
     public static HttpServer jsonHttpServer(final int port, final Resource resource) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return jsonHttpServer(checkNotNull(resource, "resource should not be null"), of(port));
+        return parseHttpServer(checkNotNull(resource, "resource should not be null"), of(port));
     }
 
     public static HttpServer jsonHttpServer(final Resource resource) {
-        return jsonHttpServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
+        return parseHttpServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
     }
 
     public static HttpsServer jsonHttpsServer(final Resource resource,
                                               final HttpsCertificate certificate) {
         checkNotNull(certificate, "Certificate should not be null");
         ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(certificate);
-        return httpsServer.mergeServer((ActualHttpServer)jsonHttpServer(
-                checkNotNull(resource, "resource should not be null")));
+        return httpsServer.mergeServer((ActualHttpServer) parseHttpServer(
+                checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent()));
     }
 
     public static HttpsServer jsonHttpsServer(final int port, final Resource resource,
@@ -35,8 +35,8 @@ public final class MocoJsonRunner {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(certificate, "Certificate should not be null");
         ActualHttpServer httpsServer = (ActualHttpServer)Moco.httpsServer(port, certificate);
-        return httpsServer.mergeServer((ActualHttpServer)jsonHttpServer(port,
-                 checkNotNull(resource, "resource should not be null")));
+        return httpsServer.mergeServer((ActualHttpServer) parseHttpServer(
+                 checkNotNull(resource, "resource should not be null"), of(port)));
     }
 
     public static SocketServer jsonSocketServer(final int port, final Resource resource) {
@@ -53,7 +53,7 @@ public final class MocoJsonRunner {
         return parser.parseServer(toStream(checkNotNull(resource, "resource should not be null")), port);
     }
 
-    private static HttpServer jsonHttpServer(final Resource resource, final Optional<Integer> port) {
+    private static HttpServer parseHttpServer(final Resource resource, final Optional<Integer> port) {
         HttpServerParser parser = new HttpServerParser();
         return parser.parseServer(toStream(resource), port);
     }
