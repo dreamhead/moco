@@ -25,5 +25,4 @@ public class HttpServerParser extends BaseParser<HttpServer> {
 
         return targetServer;
     }
-
 }

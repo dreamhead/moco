@@ -19,16 +19,21 @@ First of all, a JSON configuration file needs to be provided to start Moco.
 
 **Table of Contents**
 
-* [HTTP Server](#http-server)
-* [HTTPS Server](#https-server)
-* [Socket Server](#socket-server)
+* [Server Type](#server-type)
+  * [HTTP Server](#http-server)
+  * [HTTPS Server](#https-server)
+  * [Socket Server](#socket-server)
 * [Port](#port)
 * [Version](#version)
 * [Global Settings](#global-settings)
   * [Environment](#environment)
 * [Shutdown](#shutdown)
 
-## HTTP Server
+## Server Type
+
+A server type is a must for Moco, you need specify your server type as first argument. Different server type will support different arguments.
+
+### HTTP Server
 
 You can start a HTTP server by the following command:
 
@@ -36,7 +41,7 @@ You can start a HTTP server by the following command:
 java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 ```
 
-## HTTPS Server
+### HTTPS Server
 
 A HTTPS server can be started by the following command:
 
@@ -44,7 +49,7 @@ A HTTPS server can be started by the following command:
 java -jar moco-runner-<version>-standalone.jar https -p 12306 -c foo.json --https /path/to/cert.jks --cert mocohttps --keystore mocohttps
 ```
 
-## Socket Server
+### Socket Server
 
 A socket server can be started by the following command:
 
