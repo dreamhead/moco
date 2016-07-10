@@ -550,11 +550,15 @@ public final class Moco {
     }
 
     public static MocoEventAction get(final String url) {
-        return new MocoRequestAction(checkNotNullOrEmpty(url, "URL should not be null"), HttpMethod.GET, Optional.<ContentResource>absent());
+        return get(text(checkNotNullOrEmpty(url, "URL should not be null")));
+    }
+
+    public static MocoEventAction get(final Resource url) {
+        return new MocoRequestAction(checkNotNull(url, "URL should not be null"), HttpMethod.GET, Optional.<ContentResource>absent());
     }
 
     public static MocoEventAction post(final String url, final ContentResource content) {
-        return new MocoRequestAction(checkNotNullOrEmpty(url, "URL should not be null"), HttpMethod.POST, of(checkNotNull(content, "Content should not be null")));
+        return new MocoRequestAction(text(checkNotNullOrEmpty(url, "URL should not be null")), HttpMethod.POST, of(checkNotNull(content, "Content should not be null")));
     }
 
     public static MocoEventAction post(final String url, final String content) {

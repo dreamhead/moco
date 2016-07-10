@@ -23,11 +23,11 @@ import static com.google.common.base.Optional.of;
 import static java.lang.String.format;
 
 public class MocoRequestAction implements MocoEventAction {
-    private final String url;
+    private final Resource url;
     private final HttpMethod method;
     private final Optional<ContentResource> content;
 
-    public MocoRequestAction(final String url, final HttpMethod method, final Optional<ContentResource> content) {
+    public MocoRequestAction(final Resource url, final HttpMethod method, final Optional<ContentResource> content) {
         this.url = url;
         this.method = method;
         this.content = content;
@@ -61,13 +61,14 @@ public class MocoRequestAction implements MocoEventAction {
         return new InputStreamEntity(resource.readFor(Optional.<Request>absent()).toInputStream());
     }
 
-    private HttpRequestBase createRequest(final String url, final HttpMethod method) {
+    private HttpRequestBase createRequest(final Resource url, final HttpMethod method) {
+        String targetUrl = url.readFor(Optional.<Request>absent()).toString();
         if (HttpMethod.GET == method) {
-            return new HttpGet(url);
+            return new HttpGet(targetUrl);
         }
 
         if (HttpMethod.POST == method) {
-            return new HttpPost(url);
+            return new HttpPost(targetUrl);
         }
 
         throw new MocoException(format("unknown HTTP method: %s", method));
