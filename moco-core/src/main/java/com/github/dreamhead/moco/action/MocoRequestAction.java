@@ -34,10 +34,10 @@ public class MocoRequestAction implements MocoEventAction {
     }
 
     @Override
-    public void execute() {
+    public void execute(final Request request) {
         CloseableHttpClient client = HttpClients.createDefault();
         try {
-            doExecute(client);
+            doExecute(client, request);
         } catch (IOException e) {
             throw new MocoException(e);
         } finally {
@@ -48,21 +48,21 @@ public class MocoRequestAction implements MocoEventAction {
         }
     }
 
-    private void doExecute(final CloseableHttpClient client) throws IOException {
-        HttpRequestBase request = createRequest(url, method);
-        if (request instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-            ((HttpEntityEnclosingRequest) request).setEntity(asEntity(content.get()));
+    private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
+        HttpRequestBase targetRequest = createRequest(url, method, request);
+        if (targetRequest instanceof HttpEntityEnclosingRequest && content.isPresent()) {
+            ((HttpEntityEnclosingRequest) targetRequest).setEntity(asEntity(content.get()));
         }
 
-        client.execute(request);
+        client.execute(targetRequest);
     }
 
     private HttpEntity asEntity(ContentResource resource) {
         return new InputStreamEntity(resource.readFor(Optional.<Request>absent()).toInputStream());
     }
 
-    private HttpRequestBase createRequest(final Resource url, final HttpMethod method) {
-        String targetUrl = url.readFor(Optional.<Request>absent()).toString();
+    private HttpRequestBase createRequest(final Resource url, final HttpMethod method, final Request request) {
+        String targetUrl = url.readFor(of(request)).toString();
         if (HttpMethod.GET == method) {
             return new HttpGet(targetUrl);
         }

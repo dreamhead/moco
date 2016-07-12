@@ -13,8 +13,8 @@ public class MocoEventTrigger implements ConfigApplier<MocoEventTrigger> {
         return this.event == event;
     }
 
-    public void fireEvent() {
-        action.execute();
+    public void fireEvent(final Request request) {
+        action.execute(request);
     }
 
     @Override

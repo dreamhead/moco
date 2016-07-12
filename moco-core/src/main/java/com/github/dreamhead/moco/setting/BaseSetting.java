@@ -33,13 +33,13 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
     @Override
     public void writeToResponse(final SessionContext context) {
         this.handler.writeToResponse(context);
-        this.fireCompleteEvent();
+        this.fireCompleteEvent(context.getRequest());
     }
 
-    public void fireCompleteEvent() {
+    public void fireCompleteEvent(final Request request) {
         for (MocoEventTrigger eventTrigger : eventTriggers) {
             if (eventTrigger.isFor(MocoEvent.COMPLETE)) {
-                eventTrigger.fireEvent();
+                eventTrigger.fireEvent(request);
             }
         }
     }

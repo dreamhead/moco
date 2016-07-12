@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.action;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 
 import java.util.concurrent.ExecutorService;
@@ -18,12 +19,12 @@ public class MocoAsyncAction implements MocoEventAction {
     }
 
     @Override
-    public void execute() {
+    public void execute(final Request request) {
         service.execute(new Runnable() {
             @Override
             public void run() {
                 procedure.execute();
-                action.execute();
+                action.execute(request);
             }
         });
     }

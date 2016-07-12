@@ -28,7 +28,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(action).execute();
+        verify(action).execute(any(Request.class));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(action).execute();
+        verify(action).execute(any(Request.class));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(action, Mockito.never()).execute();
+        verify(action, Mockito.never()).execute(any(Request.class));
     }
 
     @Test
@@ -94,6 +94,21 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
 
+    @Test
+    public void should_send_get_request_to_target_on_complete_with_template() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(template("${var}", "var", remoteUrl("/target")))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
 
     @Test
     public void should_send_post_request_to_target_on_complete_with_string() throws Exception {
@@ -209,7 +224,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(action).execute();
+        verify(action).execute(any(Request.class));
     }
 
     @Test
