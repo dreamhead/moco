@@ -2,18 +2,37 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Idles;
+import com.google.common.collect.ImmutableMultimap;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.Moco.async;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.complete;
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.fileRoot;
+import static com.github.dreamhead.moco.Moco.get;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.latency;
+import static com.github.dreamhead.moco.Moco.post;
+import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
@@ -88,6 +107,22 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
+
+    @Test
+    public void should_send_get_request_to_target_on_complete_with_template_fetching_var_from_request() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(template("${base}/${req.headers['foo']}", "base", root()))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event"));
             }
         });
 
