@@ -447,17 +447,17 @@ public final class Moco {
         return ProxyConfig.builder(checkNotNullOrEmpty(localBase, "Local base should not be null"));
     }
 
-    public static Resource template(final String template) {
+    public static ContentResource template(final String template) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")));
     }
 
-    public static Resource template(final String template, final String name, final String value) {
+    public static ContentResource template(final String template, final String name, final String value) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name, "Template variable name should not be null"),
                 checkNotNullOrEmpty(value, "Template variable value should not be null"));
     }
 
-    public static Resource template(final String template, final String name1, final String value1, final String name2, final String value2) {
+    public static ContentResource template(final String template, final String name1, final String value1, final String name2, final String value2) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                 checkNotNullOrEmpty(value1, "Template variable value should not be null"),
@@ -465,17 +465,17 @@ public final class Moco {
                 checkNotNullOrEmpty(value2, "Template variable value should not be null"));
     }
 
-    public static Resource template(final ContentResource resource) {
+    public static ContentResource template(final ContentResource resource) {
         return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, RequestExtractor<?>>of());
     }
 
-    public static Resource template(final ContentResource template, final String name, final String value) {
+    public static ContentResource template(final ContentResource template, final String name, final String value) {
         return template(checkNotNull(template, "Template should not be null"),
                 checkNotNullOrEmpty(name, "Template variable name should not be null"),
                 var(checkNotNullOrEmpty(value, "Template variable value should not be null")));
     }
 
-    public static Resource template(final ContentResource template, final String name1, final String value1, final String name2, final String value2) {
+    public static ContentResource template(final ContentResource template, final String name1, final String value1, final String name2, final String value2) {
         return template(checkNotNull(template, "Template should not be null"),
                 checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                 var(checkNotNullOrEmpty(value1, "Template variable value should not be null")),
@@ -483,13 +483,13 @@ public final class Moco {
                 var(checkNotNullOrEmpty(value2, "Template variable value should not be null")));
     }
 
-    public static <T> Resource template(final String template, final String name, final RequestExtractor<T> extractor) {
+    public static <T> ContentResource template(final String template, final String name, final RequestExtractor<T> extractor) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name, "Template variable name should not be null"),
                 checkNotNull(extractor, "Template variable extractor should not be null"));
     }
 
-    public static <ExtractorType1, ExtractorType2> Resource template(final String template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
+    public static <ExtractorType1, ExtractorType2> ContentResource template(final String template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
                                                                      final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name1, "Template variable name should not be null"),
@@ -498,14 +498,14 @@ public final class Moco {
                 checkNotNull(extractor2, "Template variable extractor should not be null"));
     }
 
-    public static <T> Resource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
+    public static <T> ContentResource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
                         new ExtractorVariable<T>(checkNotNull(extractor, "Template variable extractor should not be null")))
         );
     }
 
-    public static <ExtractorType1, ExtractorType2> Resource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
+    public static <ExtractorType1, ExtractorType2> ContentResource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
                                                                      final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
@@ -515,12 +515,12 @@ public final class Moco {
         );
     }
 
-    public static Resource template(final String template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    public static ContentResource template(final String template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return template(text(checkNotNull(template, "Template should not be null")),
                 checkNotNull(variables, "Template variable should not be null"));
     }
 
-    public static Resource template(final ContentResource template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    public static ContentResource template(final ContentResource template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ApiUtils.toVariables(checkNotNull(variables, "Template variable should not be null")));
     }

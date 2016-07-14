@@ -51,14 +51,14 @@ public class MocoRequestAction implements MocoEventAction {
     private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
         HttpRequestBase targetRequest = createRequest(url, method, request);
         if (targetRequest instanceof HttpEntityEnclosingRequest && content.isPresent()) {
-            ((HttpEntityEnclosingRequest) targetRequest).setEntity(asEntity(content.get()));
+            ((HttpEntityEnclosingRequest) targetRequest).setEntity(asEntity(content.get(), request));
         }
 
         client.execute(targetRequest);
     }
 
-    private HttpEntity asEntity(ContentResource resource) {
-        return new InputStreamEntity(resource.readFor(Optional.<Request>absent()).toInputStream());
+    private HttpEntity asEntity(final ContentResource resource, final Request request) {
+        return new InputStreamEntity(resource.readFor(of(request)).toInputStream());
     }
 
     private HttpRequestBase createRequest(final Resource url, final HttpMethod method, final Request request) {

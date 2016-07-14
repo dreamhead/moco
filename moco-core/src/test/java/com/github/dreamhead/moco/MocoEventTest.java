@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.async;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.complete;
@@ -148,7 +149,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_to_target_on_complete_with_string() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), "content")));
 
         running(server, new Runnable() {
@@ -164,7 +165,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_to_target_on_complete_with_string_and_resource_url() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), "content")));
 
         running(server, new Runnable() {
@@ -180,7 +181,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_to_target_on_complete() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), text("content"))));
 
         running(server, new Runnable() {
@@ -194,9 +195,25 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_send_post_request_to_target_on_complete_with_template_content() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), template("${req.headers['foo']}"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "content")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
+
+    @Test
     public void should_send_post_request_to_target_on_complete_with_resource_url() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"))));
 
         running(server, new Runnable() {
@@ -212,7 +229,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_to_target_on_complete_asyc() throws Exception {
         final ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")))));
 
         running(server, new Runnable() {
@@ -230,7 +247,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_to_target_on_complete_async_after_awhile() throws Exception {
         final ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target")), by("content")).response(handler);
+        server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")), latency(1, TimeUnit.SECONDS))));
 
         running(server, new Runnable() {
