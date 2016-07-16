@@ -1906,7 +1906,7 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://ano
 }
 ```
 
-Let me know if you need more method.
+Let me know if you need more methods.
 
 ### Asynchronous
 **@Since 0.9**
