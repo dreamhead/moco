@@ -10,6 +10,7 @@
 
 ## Implementation Details
 * Fix: get Moco standalone version from manifest
+* Fix: merge server with port
 
 # Release 0.11.0 (20-May-2016)
  
