@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.HttpResponse;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.Map;
 
@@ -35,13 +36,17 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
         }
 
         return builder()
-                .withVersion(HttpProtocolVersion.versionOf(response.protocolVersion().text()))
+                .withVersion(toHttpProtocolVersion(response.protocolVersion()))
                 .withStatus(response.status().code())
                 .withHeaders(headerBuilder.build())
                 .withContent(content()
                         .withContent(new ByteBufInputStream(response.content()))
                         .build())
                 .build();
+    }
+
+    private static HttpProtocolVersion toHttpProtocolVersion(final HttpVersion httpVersion) {
+        return HttpProtocolVersion.versionOf(httpVersion.text());
     }
 
     public static Builder builder() {
