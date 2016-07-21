@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -16,6 +17,22 @@ import static com.google.common.collect.FluentIterable.from;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestSubResourceSetting extends ResourceSetting {
     private String id;
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("name", name)
+                .add("get", get)
+                .add("post", post)
+                .add("put", put)
+                .add("delete", delete)
+                .add("head", head)
+                .add("patch", patch)
+                .add("sub resource", resource)
+                .add("id", id)
+                .toString();
+    }
 
     private static Function<RestSubResourceSetting, RestSetting> toSubResourceSetting() {
         return new Function<RestSubResourceSetting, RestSetting>() {
