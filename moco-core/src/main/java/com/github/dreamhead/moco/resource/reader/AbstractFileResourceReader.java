@@ -26,7 +26,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     }
 
     @Override
-    public MessageContent readFor(final Optional<? extends Request> request) {
+    public final MessageContent readFor(final Optional<? extends Request> request) {
         return asMessageContent(doReadFor(request));
     }
 
@@ -40,12 +40,12 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     }
 
     @Override
-    public MediaType getContentType(final HttpRequest request) {
+    public final MediaType getContentType(final HttpRequest request) {
         String targetFilename = this.filename(of(request));
         return new FileContentType(targetFilename, charset).getContentType();
     }
 
-    protected String filename(final Optional<? extends Request> request) {
+    protected final String filename(final Optional<? extends Request> request) {
         MessageContent messageContent = this.filename.readFor(request);
         return messageContent.toString();
     }

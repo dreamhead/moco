@@ -17,7 +17,7 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
     protected abstract MediaType getContentType(final HttpRequest request);
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         Request request = context.getRequest();
         Response response = context.getResponse();
 
