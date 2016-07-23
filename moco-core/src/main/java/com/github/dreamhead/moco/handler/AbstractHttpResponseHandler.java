@@ -10,7 +10,7 @@ public abstract class AbstractHttpResponseHandler extends AbstractResponseHandle
     protected abstract void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse);
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         Request request = context.getRequest();
         Response response = context.getResponse();
 

@@ -28,7 +28,7 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
         if (!extractContent.isPresent()) {
             return false;
@@ -62,7 +62,7 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher doApply(final MocoConfig config) {
+    public final RequestMatcher doApply(final MocoConfig config) {
         Resource appliedResource = expected.apply(config);
         if (appliedResource == expected) {
             return this;

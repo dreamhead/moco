@@ -11,17 +11,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
     @Override
-    public T response(final String content) {
+    public final T response(final String content) {
         return this.response(text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
     @Override
-    public T response(final Resource resource) {
+    public final T response(final Resource resource) {
         return this.response(with(checkNotNull(resource, "Resource should not be null")));
     }
 
     @Override
-    public T response(final MocoProcedure procedure) {
+    public final T response(final MocoProcedure procedure) {
         return this.response(with(checkNotNull(procedure, "Procedure should not be null")));
     }
 }

@@ -9,7 +9,7 @@ public abstract class AbstractTimesVerification implements VerificationMode {
     protected abstract String expectedTip();
 
     @Override
-    public void verify(final VerificationData data) {
+    public final void verify(final VerificationData data) {
         int actualSize = data.matchedSize();
         if (!meet(actualSize)) {
             throw new VerificationException(data.mismatchDescription(actualSize, expectedTip()));

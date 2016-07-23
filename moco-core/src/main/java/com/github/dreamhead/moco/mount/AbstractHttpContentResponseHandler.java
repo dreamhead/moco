@@ -10,7 +10,7 @@ public abstract class AbstractHttpContentResponseHandler extends AbstractContent
     protected abstract MessageContent responseContent(HttpRequest httpRequest);
 
     @Override
-    protected MessageContent responseContent(final Request request) {
+    protected final MessageContent responseContent(final Request request) {
         if (!HttpRequest.class.isInstance(request)) {
             throw new MocoException("Only HTTP request is allowed");
         }
