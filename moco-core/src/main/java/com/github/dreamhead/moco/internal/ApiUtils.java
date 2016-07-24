@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.Maps.transformEntries;
 
-public class ApiUtils {
+public final class ApiUtils {
     public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor[] monitors) {
         return new CompositeMonitor(asIterable(monitor, monitor2, monitors));
     }
