@@ -48,7 +48,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    private boolean tryToMatch(Request request, Document document) throws SAXException {
+    private boolean tryToMatch(final Request request, final Document document) throws SAXException {
         Document resourceDocument = getResourceDocument(request, this.resource);
         return document.isEqualNode(resourceDocument);
     }
@@ -113,9 +113,9 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    private Document extractDocument(final InputSource inputSource, final DocumentBuilder documentBuilder) throws SAXException {
+    private Document extractDocument(final InputSource inputSource, final DocumentBuilder builder) throws SAXException {
         try {
-            Document document = documentBuilder.parse(inputSource);
+            Document document = builder.parse(inputSource);
             document.normalizeDocument();
             trimNode(document);
             return document;
