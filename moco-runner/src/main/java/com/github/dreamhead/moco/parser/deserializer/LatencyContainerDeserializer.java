@@ -26,7 +26,7 @@ public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContai
                     TimeUnit.valueOf(container.unit.toUpperCase() + 'S'));
         }
 
-        throw ctxt.mappingException(LatencyContainer.class, currentToken);
+        return (LatencyContainer)ctxt.handleUnexpectedToken(LatencyContainer.class, jp);
     }
 
     private static class InternalLatencyContainer {

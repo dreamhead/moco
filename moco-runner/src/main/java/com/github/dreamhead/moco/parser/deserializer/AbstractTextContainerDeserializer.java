@@ -45,7 +45,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
             }
         }
 
-        throw ctxt.mappingException(TextContainer.class, jp.getCurrentToken());
+        return (TextContainer)ctxt.handleUnexpectedToken(TextContainer.class, jp);
     }
 
     private TextContainer template(final JsonParser jp, final TextContainer.Builder builder) throws IOException {

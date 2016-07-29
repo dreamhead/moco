@@ -32,7 +32,7 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
             return asFileContainer(textContainer(jp, ctxt));
         }
 
-        throw ctxt.mappingException(TextContainer.class, currentToken);
+        return (FileContainer)ctxt.handleUnexpectedToken(FileContainer.class, jp);
     }
 
     private FileContainer toFileContainer(final JsonParser jp) throws IOException {

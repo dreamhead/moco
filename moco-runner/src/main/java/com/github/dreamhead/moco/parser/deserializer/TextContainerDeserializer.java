@@ -20,6 +20,6 @@ public class TextContainerDeserializer extends AbstractTextContainerDeserializer
             return textContainer(jp, ctxt);
         }
 
-        throw ctxt.mappingException(TextContainer.class, currentToken);
+        return (TextContainer)ctxt.handleUnexpectedToken(TextContainer.class, jp);
     }
 }
