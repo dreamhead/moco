@@ -5,13 +5,23 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.get;
+import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GetSetting {
-    private String url;
+    private TextContainer url;
 
     public MocoEventAction createAction() {
-        return get(url);
+        if (url.isRawText()) {
+            return get(url.getText());
+        }
+
+        if (url.isForTemplate()) {
+            return get(template(url.getText(), toVariables(url.getProps())));
+        }
+
+        throw new IllegalArgumentException("Unknown " + url);
     }
 
     @Override

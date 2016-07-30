@@ -47,6 +47,17 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_fire_get_event_with_template() throws IOException {
+        runWithConfiguration("event.json");
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+        assertThat(helper.get(remoteUrl("/get_event_template")), is("get_foo"));
+        idle(IDLE, TimeUnit.MILLISECONDS);
+
+        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
+    }
+
+    @Test
     public void should_fire_event_with_unit() throws IOException {
         runWithConfiguration("event.json");
         File file = folder.newFile();
