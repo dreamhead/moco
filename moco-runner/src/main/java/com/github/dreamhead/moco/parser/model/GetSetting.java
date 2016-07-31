@@ -21,7 +21,7 @@ public class GetSetting {
             return get(template(url.getText(), toVariables(url.getProps())));
         }
 
-        throw new IllegalArgumentException("Unknown " + url);
+        throw new IllegalArgumentException("Unknown " + url + " for get setting");
     }
 
     @Override

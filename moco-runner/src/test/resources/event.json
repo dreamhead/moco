@@ -1,17 +1,17 @@
 [
     {
         "request": {
-            "uri" : "/event"
+            "uri": "/event"
         },
         "response": {
             "text": "post_foo"
         },
         "on": {
             "complete": {
-                "async" : "true",
-                "latency" : 500,
-                "post" : {
-                    "url" : "http://localhost:12306/target",
+                "async": "true",
+                "latency": 500,
+                "post": {
+                    "url": "http://localhost:12306/target",
                     "content": "content"
                 }
             }
@@ -37,8 +37,7 @@
               }
           }
       }
-  },
-
+    },
     {
         "request": {
             "uri" : "/get_event"
@@ -80,7 +79,31 @@
             }
         }
     },
-
+    {
+      "request": {
+        "uri": "/post-event-with-template-url"
+      },
+      "response": {
+        "text": "post_foo"
+      },
+      "on": {
+        "complete": {
+          "async": "true",
+          "latency": 500,
+          "post": {
+            "url" : {
+              "template": {
+                "with": "http://localhost:12306/${target}",
+                "vars": {
+                  "target" : "target"
+                }
+              }
+            },
+            "content": "content"
+          }
+        }
+      }
+    },
     {
         "request": {
             "uri" : "/target"
