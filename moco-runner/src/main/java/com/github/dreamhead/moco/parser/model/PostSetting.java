@@ -11,6 +11,7 @@ import static com.github.dreamhead.moco.Moco.post;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
+import static com.github.dreamhead.moco.parser.model.EventActionSettings.urlResource;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostSetting {
@@ -19,18 +20,6 @@ public class PostSetting {
 
     public MocoEventAction createAction() {
         return post(urlResource(this.url), Moco.text(content));
-    }
-
-    private Resource urlResource(final TextContainer url) {
-        if (url.isRawText()) {
-            return text(url.getText());
-        }
-
-        if (url.isForTemplate()) {
-            return template(url.getText(), toVariables(url.getProps()));
-        }
-
-        throw new IllegalArgumentException("Unknown " + url + " for post setting");
     }
 
     @Override

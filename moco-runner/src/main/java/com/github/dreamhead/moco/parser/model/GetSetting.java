@@ -9,6 +9,7 @@ import static com.github.dreamhead.moco.Moco.get;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
+import static com.github.dreamhead.moco.parser.model.EventActionSettings.urlResource;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GetSetting {
@@ -16,18 +17,6 @@ public class GetSetting {
 
     public MocoEventAction createAction() {
         return get(urlResource(url));
-    }
-
-    private Resource urlResource(final TextContainer url) {
-        if (url.isRawText()) {
-            return text(url.getText());
-        }
-
-        if (url.isForTemplate()) {
-            return template(url.getText(), toVariables(url.getProps()));
-        }
-
-        throw new IllegalArgumentException("Unknown " + url + " for get setting");
     }
 
     @Override
