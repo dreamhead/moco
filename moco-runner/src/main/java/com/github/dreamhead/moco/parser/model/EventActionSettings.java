@@ -13,7 +13,11 @@ public class EventActionSettings {
         }
 
         if (url.isForTemplate()) {
-            return template(url.getText(), toVariables(url.getProps()));
+            if (url.hasProperties()) {
+                return template(url.getText(), toVariables(url.getProps()));
+            }
+
+            return template(url.getText());
         }
 
         throw new IllegalArgumentException("Unknown " + url + " for event action setting");
