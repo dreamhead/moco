@@ -105,6 +105,31 @@
       }
     },
     {
+      "request": {
+        "uri": "/post-event-with-template-content"
+      },
+      "response": {
+        "text": "post_foo"
+      },
+      "on": {
+        "complete": {
+          "async": "true",
+          "latency": 500,
+          "post": {
+            "url": "http://localhost:12306/target",
+            "content": {
+              "template": {
+                "with": "${target}",
+                "vars": {
+                  "target" : "target"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
         "request": {
             "uri" : "/target"
         },

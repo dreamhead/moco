@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 
 import static com.github.dreamhead.moco.Moco.template;
@@ -7,7 +8,7 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 
 public class EventActionSettings {
-    public static Resource urlResource(final TextContainer url) {
+    public static ContentResource asResource(final TextContainer url) {
         if (url.isRawText()) {
             return text(url.getText());
         }
