@@ -5,14 +5,13 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.get;
-import static com.github.dreamhead.moco.parser.model.EventActionSettings.asResource;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GetSetting {
     private TextContainer url;
 
     public MocoEventAction createAction() {
-        return get(asResource(url));
+        return get(url.asResource());
     }
 
     @Override

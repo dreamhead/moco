@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.post;
-import static com.github.dreamhead.moco.parser.model.EventActionSettings.asResource;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostSetting {
@@ -13,7 +12,7 @@ public class PostSetting {
     private TextContainer content;
 
     public MocoEventAction createAction() {
-        return post(asResource(this.url), asResource(content));
+        return post(this.url.asResource(), content.asResource());
     }
 
     @Override

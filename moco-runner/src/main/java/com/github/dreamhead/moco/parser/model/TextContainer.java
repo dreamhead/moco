@@ -2,10 +2,15 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
+
+import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
 
 @JsonDeserialize(using = TextContainerDeserializer.class)
 public class TextContainer {
@@ -22,6 +27,22 @@ public class TextContainer {
     }
 
     public TextContainer() {
+    }
+
+    public ContentResource asResource() {
+        if (isRawText()) {
+            return text(getText());
+        }
+
+        if (isForTemplate()) {
+            if (hasProperties()) {
+                return template(getText(), toVariables(getProps()));
+            }
+
+            return template(getText());
+        }
+
+        throw new IllegalArgumentException("Unknown " + this + " for event action setting");
     }
 
     public boolean isRawText() {
