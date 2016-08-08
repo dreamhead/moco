@@ -31,15 +31,15 @@ public class TextContainer {
 
     public ContentResource asResource() {
         if (isRawText()) {
-            return text(getText());
+            return text(this.text);
         }
 
         if (isForTemplate()) {
             if (hasProperties()) {
-                return template(getText(), toVariables(getProps()));
+                return template(this.text, toVariables(this.props));
             }
 
-            return template(getText());
+            return template(text);
         }
 
         throw new IllegalArgumentException("Unknown " + this + " for event action setting");
