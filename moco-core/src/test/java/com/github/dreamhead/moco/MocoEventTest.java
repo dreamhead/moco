@@ -19,6 +19,7 @@ import static com.github.dreamhead.moco.Moco.fileRoot;
 import static com.github.dreamhead.moco.Moco.get;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.latency;
+import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.post;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
@@ -129,6 +130,23 @@ public class MocoEventTest extends AbstractMocoHttpTest {
 
         verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
     }
+
+    @Test
+    public void should_send_get_request_to_target_on_complete_with_path_resource() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(pathResource("template.url"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
+
 
     @Test
     public void should_send_get_request_to_target_on_complete_with_template() throws Exception {
