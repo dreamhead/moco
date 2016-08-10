@@ -140,7 +140,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event"));
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
             }
         });
 
@@ -185,6 +185,22 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), "content")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
+
+    @Test
+    public void should_send_post_request_to_target_on_complete_with_path_resource() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(pathResource("template.url"), "content")));
 
         running(server, new Runnable() {
             @Override
