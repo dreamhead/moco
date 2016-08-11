@@ -197,10 +197,26 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_send_post_request_to_target_on_complete_with_path_resource() throws Exception {
+    public void should_send_post_request_to_target_on_complete_with_path_resource_url() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(pathResource("template.url"), "content")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+    }
+
+    @Test
+    public void should_send_post_request_to_target_on_complete_with_path_resource_content() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), pathResource("foo.request"))));
 
         running(server, new Runnable() {
             @Override
