@@ -31,5 +31,15 @@
                 }
             }
         }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/redirect-with-path-resource"
+        },
+
+        "redirectTo" : {
+            "path_resource": "redirect.url"
+        }
     }
 ]

@@ -11,6 +11,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.toVariables;
+import static com.github.dreamhead.moco.parser.model.Dynamics.invokeTarget;
 
 @JsonDeserialize(using = TextContainerDeserializer.class)
 public class TextContainer {
@@ -39,10 +40,18 @@ public class TextContainer {
                 return template(this.text, toVariables(this.props));
             }
 
-            return template(text);
+            return template(this.text);
         }
 
-        throw new IllegalArgumentException("Unknown " + this + " for event action setting");
+        return invokeTarget(getMethodName(), this.text, ContentResource.class);
+    }
+
+    private String getMethodName() {
+        if (this.operation.equalsIgnoreCase("path_resource")) {
+            return "pathResource";
+        }
+
+        return this.operation;
     }
 
     public boolean isRawText() {

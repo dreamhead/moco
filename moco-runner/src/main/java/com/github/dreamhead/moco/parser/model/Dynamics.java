@@ -80,11 +80,11 @@ public class Dynamics {
         return and(not(or(isClassField(), isFinalField())), fieldExist(target));
     }
 
-    protected <T> T invokeTarget(final String name, final Object value, final Class<T> clazz) {
+    public static <T> T invokeTarget(final String name, final Object value, final Class<T> clazz) {
         return invokeTarget(name, value, clazz, value.getClass());
     }
 
-    private <T> T invokeTarget(final String name, final Object value, final Class<T> clazz, final Class<?> argClass) {
+    public static <T> T invokeTarget(final String name, final Object value, final Class<T> clazz, final Class<?> argClass) {
         try {
             Method method = Moco.class.getMethod(name, argClass);
             Object result = method.invoke(null, value);
@@ -94,7 +94,7 @@ public class Dynamics {
         }
     }
 
-    protected <T> T invokeTarget(final String name, final Object arg1, final Object arg2,
+    public static <T> T invokeTarget(final String name, final Object arg1, final Object arg2,
                                  final Class<T> clazz, final Class<?> arg1Class, final Class<?> arg2Class) {
         try {
             Method method = Moco.class.getMethod(name, arg1Class, arg2Class);
