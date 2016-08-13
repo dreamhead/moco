@@ -401,11 +401,7 @@ public final class Moco {
         return pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
-    public static ContentResource pathResource(final String filename, final Optional<Charset> charset) {
-        return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
-    }
-
-    public static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
+    private static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
         return classpathFileResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 

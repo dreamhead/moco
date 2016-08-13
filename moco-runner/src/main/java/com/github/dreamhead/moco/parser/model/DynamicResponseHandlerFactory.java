@@ -16,6 +16,7 @@ import com.google.common.collect.Maps;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.attachment;
@@ -200,8 +201,15 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         FileContainer fileContainer = FileContainer.class.cast(container);
         TextContainer filename = fileContainer.getName();
         if (filename.isRawText()) {
-            return Optional.of(invokeTarget(name, fileContainer.getName().getText(), fileContainer.getCharset(),
-                    Resource.class, String.class, Optional.class));
+            Optional<Charset> charset = fileContainer.getCharset();
+            if (charset.isPresent()) {
+                return Optional.of(invokeTarget(name, fileContainer.getName().getText(), charset.get(),
+                        Resource.class, String.class, Charset.class));
+            } else {
+                return Optional.of(invokeTarget(name, fileContainer.getName().getText(),
+                        Resource.class, String.class));
+
+            }
         }
 
         if (filename.isForTemplate()) {
