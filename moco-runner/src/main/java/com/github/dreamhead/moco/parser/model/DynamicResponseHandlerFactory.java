@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.attachment;
+import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.latency;
 import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.status;
@@ -201,23 +202,33 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         FileContainer fileContainer = FileContainer.class.cast(container);
         TextContainer filename = fileContainer.getName();
         if (filename.isRawText()) {
-            Optional<Charset> charset = fileContainer.getCharset();
-            if (charset.isPresent()) {
-                return Optional.of(invokeTarget(name, fileContainer.getName().getText(), charset.get(),
-                        Resource.class, String.class, Charset.class));
-            } else {
-                return Optional.of(invokeTarget(name, fileContainer.getName().getText(),
-                        Resource.class, String.class));
-
-            }
+            return Optional.of(asRawResource(name, fileContainer));
         }
 
         if (filename.isForTemplate()) {
-            return Optional.of(invokeTarget(name, createTemplate("text", filename), fileContainer.getCharset(),
-                    Resource.class, Resource.class, Optional.class));
+            Optional<Charset> charset = fileContainer.getCharset();
+            Resource resource = createTemplate("text", filename);
+            return Optional.of(asResource(name, resource, charset));
         }
 
         return Optional.absent();
+    }
+
+    private Resource asResource(final String name, final Resource resource, final Optional<Charset> charset) {
+        if (charset.isPresent()) {
+            return invokeTarget(name, resource, charset.get(),
+                    Resource.class, Resource.class, Charset.class);
+        } else {
+            return invokeTarget(name, resource,
+                    Resource.class, Resource.class);
+        }
+    }
+
+    private Resource asRawResource(final String name, final FileContainer fileContainer) {
+        Optional<Charset> charset = fileContainer.getCharset();
+        String text = fileContainer.getName().getText();
+        return asResource(name, Moco.text(text), charset);
+
     }
 
     private Resource createTemplate(final String name, final TextContainer container) {
