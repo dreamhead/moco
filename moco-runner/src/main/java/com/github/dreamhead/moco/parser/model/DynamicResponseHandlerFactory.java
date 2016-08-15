@@ -202,7 +202,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         FileContainer fileContainer = FileContainer.class.cast(container);
         TextContainer filename = fileContainer.getName();
         if (filename.isRawText()) {
-            return Optional.of(asRawResource(name, fileContainer));
+            return Optional.of(asResource(name, fileContainer));
         }
 
         if (filename.isForTemplate()) {
@@ -218,17 +218,15 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         if (charset.isPresent()) {
             return invokeTarget(name, resource, charset.get(),
                     Resource.class, Resource.class, Charset.class);
-        } else {
-            return invokeTarget(name, resource,
-                    Resource.class, Resource.class);
         }
+
+        return invokeTarget(name, resource, Resource.class);
     }
 
-    private Resource asRawResource(final String name, final FileContainer fileContainer) {
+    private Resource asResource(final String name, final FileContainer fileContainer) {
         Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
         return asResource(name, Moco.text(text), charset);
-
     }
 
     private Resource createTemplate(final String name, final TextContainer container) {
