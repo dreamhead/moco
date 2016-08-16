@@ -220,7 +220,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
                     Resource.class, Resource.class, Charset.class);
         }
 
-        return invokeTarget(name, resource, Resource.class);
+        return invokeTarget(name, resource, Resource.class, Resource.class);
     }
 
     private Resource asResource(final String name, final FileContainer fileContainer) {
