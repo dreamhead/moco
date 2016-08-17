@@ -89,5 +89,4 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
     }
-
 }

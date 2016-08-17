@@ -36,14 +36,18 @@ public class TextContainer {
         }
 
         if (isForTemplate()) {
-            if (hasProperties()) {
-                return template(this.text, toVariables(this.props));
-            }
-
-            return template(this.text);
+            return asTemplateResource();
         }
 
         return invokeTarget(getMethodName(), this.text, ContentResource.class);
+    }
+
+    private ContentResource asTemplateResource() {
+        if (hasProperties()) {
+            return template(this.text, toVariables(this.props));
+        }
+
+        return template(this.text);
     }
 
     private String getMethodName() {
