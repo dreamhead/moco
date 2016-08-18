@@ -207,7 +207,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
         if (filename.isForTemplate()) {
             Optional<Charset> charset = fileContainer.getCharset();
-            Resource resource = createTemplate("text", filename);
+            Resource resource = filename.asTemplateResource();
             return Optional.of(asResource(name, resource, charset));
         }
 

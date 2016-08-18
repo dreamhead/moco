@@ -42,7 +42,11 @@ public class TextContainer {
         return invokeTarget(getMethodName(), this.text, ContentResource.class);
     }
 
-    private ContentResource asTemplateResource() {
+    public ContentResource asTemplateResource() {
+        if (!isForTemplate()) {
+            throw new IllegalArgumentException(this + " is not a template");
+        }
+
         if (hasProperties()) {
             return template(this.text, toVariables(this.props));
         }
