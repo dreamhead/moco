@@ -43,15 +43,29 @@ public class TextContainer {
     }
 
     public ContentResource asTemplateResource() {
-        if (!isForTemplate()) {
-            throw new IllegalArgumentException(this + " is not a template");
-        }
+        ensureTemplate();
 
         if (hasProperties()) {
             return template(this.text, toVariables(this.props));
         }
 
         return template(this.text);
+    }
+
+    private void ensureTemplate() {
+        if (!isForTemplate()) {
+            throw new IllegalArgumentException(this + " is not a template");
+        }
+    }
+
+    public ContentResource asTemplateResource(final String resourceName) {
+        ensureTemplate();
+
+        if (hasProperties()) {
+            return template(invokeTarget(resourceName, this.text, ContentResource.class), toVariables(this.props));
+        }
+
+        return template(invokeTarget(resourceName, this.text, ContentResource.class));
     }
 
     private String getMethodName() {

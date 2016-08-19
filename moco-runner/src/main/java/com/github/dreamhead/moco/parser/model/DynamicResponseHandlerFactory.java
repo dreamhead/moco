@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
-import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -185,7 +184,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
                 return version(template(container.getText()));
             }
 
-            return createTemplate(name, container);
+            return container.asTemplateResource(name);
         }
 
         if (container.isFileContainer()) {
@@ -227,15 +226,6 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
         return asResource(name, Moco.text(text), charset);
-    }
-
-    private Resource createTemplate(final String name, final TextContainer container) {
-        if (container.hasProperties()) {
-            return template(invokeTarget(name, container.getText(), ContentResource.class),
-                    toVariables(container.getProps()));
-        }
-
-        return template(invokeTarget(name, container.getText(), ContentResource.class));
     }
 
     public static ImmutableMap<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
