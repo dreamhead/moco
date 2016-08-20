@@ -181,7 +181,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
         if (container.isForTemplate()) {
             if ("version".equalsIgnoreCase(name)) {
-                return version(template(container.getText()));
+                return version(container.asTemplateResource());
             }
 
             return container.asTemplateResource(name);
