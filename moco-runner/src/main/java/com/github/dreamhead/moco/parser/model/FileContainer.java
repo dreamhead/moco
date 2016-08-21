@@ -18,6 +18,7 @@ public final class FileContainer extends TextContainer {
 
     private FileContainer(final TextContainer container) {
         super(container.getText(), container.getOperation(), container.getProps());
+        this.name = container;
     }
 
     private FileContainer(final TextContainer name, final Optional<Charset> charset) {
@@ -44,7 +45,7 @@ public final class FileContainer extends TextContainer {
 
     @Override
     public boolean isFileContainer() {
-        return name != null;
+        return true;
     }
 
     public static FileContainer asFileContainer(final TextContainer container) {
