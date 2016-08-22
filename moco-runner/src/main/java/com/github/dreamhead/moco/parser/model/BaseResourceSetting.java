@@ -13,23 +13,11 @@ public abstract class BaseResourceSetting {
         return text;
     }
 
-    public boolean hasText() {
-        return text != null;
-    }
-
     public FileContainer getFile() {
         return file;
     }
 
-    public boolean hasFile() {
-        return file != null;
-    }
-
     public TextContainer getPathResource() {
         return pathResource;
-    }
-
-    public boolean hasPathResource() {
-        return pathResource != null;
     }
 }
