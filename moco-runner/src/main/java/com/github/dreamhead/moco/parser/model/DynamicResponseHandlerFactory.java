@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -99,7 +98,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if (ProxyContainer.class.isInstance(value)) {
-            return createProxy((ProxyContainer) value);
+            return ((ProxyContainer) value).asResponseHandler();
         }
 
         if ("attachment".equalsIgnoreCase(name)) {
@@ -245,13 +244,4 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
-    private ResponseHandler createProxy(final ProxyContainer proxy) {
-        Failover failover = proxy.getFailover();
-
-        if (proxy.hasProxyConfig()) {
-            return proxy(proxy.getProxyConfig(), failover);
-        }
-
-        return proxy(proxy.getUrl(), failover);
-    }
 }

@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
@@ -59,8 +61,18 @@ public class ProxyContainer {
         return from(from).to(to);
     }
 
-    public boolean hasProxyConfig() {
+    private boolean hasProxyConfig() {
         return from != null && to != null;
+    }
+
+    public ResponseHandler asResponseHandler() {
+        Failover failover = getFailover();
+
+        if (hasProxyConfig()) {
+            return Moco.proxy(getProxyConfig(), failover);
+        }
+
+        return Moco.proxy(getUrl(), failover);
     }
 
     public static class Builder {
