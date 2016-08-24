@@ -21,10 +21,6 @@ public class ProxyContainer {
     private String failover;
     private String playback;
 
-    public String getUrl() {
-        return url;
-    }
-
     public boolean hasUrl() {
         return url != null;
     }
@@ -72,7 +68,7 @@ public class ProxyContainer {
             return Moco.proxy(getProxyConfig(), failover);
         }
 
-        return Moco.proxy(getUrl(), failover);
+        return Moco.proxy(url, failover);
     }
 
     public static class Builder {
