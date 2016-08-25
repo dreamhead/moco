@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
-import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
@@ -201,7 +200,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse doProxy(final HttpRequest request, final URL remoteUrl) {
-        if (failover.getStrategy() == FailoverStrategy.PLAYBACK) {
+        if (failover.isPlayback()) {
             try {
                 return failover.failover(request);
             } catch (RuntimeException ignored) {

@@ -15,15 +15,15 @@ public class Failover {
         this.strategy = strategy;
     }
 
-    public FailoverStrategy getStrategy() {
-        return strategy;
-    }
-
     public HttpResponse failover(final HttpRequest request) {
         return executor.failover(request);
     }
 
     public void onCompleteResponse(final HttpRequest request, final HttpResponse httpResponse) {
         executor.onCompleteResponse(request, httpResponse);
+    }
+
+    public boolean isPlayback() {
+        return strategy == FailoverStrategy.PLAYBACK;
     }
 }
