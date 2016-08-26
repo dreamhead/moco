@@ -107,7 +107,11 @@ public class Dynamics {
 
     protected static Method getExtractorMethod(final String name) {
         try {
-            return Moco.class.getMethod(EXTRACTORS.get(name), String.class);
+            if (EXTRACTORS.containsKey(name)) {
+                return Moco.class.getMethod(EXTRACTORS.get(name), String.class);
+            }
+
+            throw new RuntimeException("No [" + name + "] extractor found");
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
