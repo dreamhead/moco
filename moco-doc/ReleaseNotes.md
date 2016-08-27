@@ -2,6 +2,7 @@
 
 # APIs
 * Template for Event action
+* Remove publish API with Optional, e.g. file and pathResource
 
 # JUnit
 * HTTPS JUnit runner for POJO, JSON and from path resource
