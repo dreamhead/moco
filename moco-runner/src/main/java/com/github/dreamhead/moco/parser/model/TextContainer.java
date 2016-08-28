@@ -27,7 +27,7 @@ public class TextContainer {
         this.props = props;
     }
 
-    public TextContainer() {
+    protected TextContainer() {
     }
 
     public ContentResource asResource() {
