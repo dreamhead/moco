@@ -17,7 +17,7 @@ public abstract class BaseResourceSetting {
         return file;
     }
 
-    public TextContainer getPathResource() {
+    public FileContainer getPathResource() {
         return pathResource;
     }
 }
