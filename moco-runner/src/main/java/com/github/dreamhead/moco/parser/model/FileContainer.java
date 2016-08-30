@@ -19,6 +19,7 @@ public final class FileContainer extends TextContainer {
     private FileContainer(final TextContainer container) {
         super(container.getText(), container.getOperation(), container.getProps());
         this.name = container;
+        this.charset = absent();
     }
 
     private FileContainer(final TextContainer name, final Optional<Charset> charset) {
