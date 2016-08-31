@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.deserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
@@ -13,12 +14,14 @@ import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContaine
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
 import static com.google.common.collect.Iterators.get;
 
-public class FileContainerDeserializer extends AbstractTextContainerDeserializer<FileContainer> {
+public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
+    private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
+
     @Override
     public FileContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return asFileContainer(text(jp));
+            return asFileContainer(helper.text(jp));
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
@@ -29,7 +32,7 @@ public class FileContainerDeserializer extends AbstractTextContainerDeserializer
                 return toFileContainer(jp);
             }
 
-            return asFileContainer(textContainer(jp, ctxt));
+            return asFileContainer(helper.textContainer(jp, ctxt));
         }
 
         return (FileContainer)ctxt.handleUnexpectedToken(FileContainer.class, jp);

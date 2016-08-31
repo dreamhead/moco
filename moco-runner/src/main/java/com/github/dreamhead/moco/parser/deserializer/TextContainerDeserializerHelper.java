@@ -18,7 +18,7 @@ import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
-public abstract class AbstractTextContainerDeserializer<T extends TextContainer> extends JsonDeserializer<T> {
+public class TextContainerDeserializerHelper {
     private final ImmutableMap<String, String> names = ImmutableMap.<String, String>builder()
         .put("json_path", "jsonPaths")
         .put("xpath", "xpaths")
@@ -27,7 +27,7 @@ public abstract class AbstractTextContainerDeserializer<T extends TextContainer>
         .put("form", "forms")
         .build();
 
-    protected TextContainer textContainer(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
+    public TextContainer textContainer(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.FIELD_NAME) {
             TextContainer.Builder builder = builder();
