@@ -18,9 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.attachment;
-import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.latency;
-import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.toJson;
@@ -174,6 +172,13 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     }
 
     private Resource resourceFrom(final String name, final TextContainer container) {
+        if (container.isFileContainer()) {
+            Optional<Resource> resource = fileResource(name, FileContainer.class.cast(container));
+            if (resource.isPresent()) {
+                return resource.get();
+            }
+        }
+
         if (container.isRawText()) {
             return invokeTarget(name, container.getText(), Resource.class);
         }
@@ -186,17 +191,18 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return container.asTemplateResource(name);
         }
 
-        if (container.isFileContainer()) {
-            Optional<Resource> resource = fileResource(name, FileContainer.class.cast(container));
-            if (resource.isPresent()) {
-                return resource.get();
-            }
-        }
-
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
     private Optional<Resource> fileResource(final String name, final FileContainer fileContainer) {
+        if (fileContainer.isForTemplate()) {
+            if ("version".equalsIgnoreCase(name)) {
+                return Optional.of(version(fileContainer.asTemplateResource()));
+            }
+
+            return Optional.<Resource>of(fileContainer.asTemplateResource(name));
+        }
+
         TextContainer filename = fileContainer.getName();
         if (filename.isRawText()) {
             return Optional.of(asResource(name, fileContainer));
