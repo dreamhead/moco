@@ -173,10 +173,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
     private Resource resourceFrom(final String name, final TextContainer container) {
         if (container.isFileContainer()) {
-            Optional<Resource> resource = fileResource(name, FileContainer.class.cast(container));
-            if (resource.isPresent()) {
-                return resource.get();
-            }
+            return fileResource(name, FileContainer.class.cast(container));
         }
 
         if (container.isRawText()) {
@@ -194,27 +191,27 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
     }
 
-    private Optional<Resource> fileResource(final String name, final FileContainer fileContainer) {
+    private Resource fileResource(final String name, final FileContainer fileContainer) {
         if (fileContainer.isForTemplate()) {
             if ("version".equalsIgnoreCase(name)) {
-                return Optional.of(version(fileContainer.asTemplateResource()));
+                return version(fileContainer.asTemplateResource());
             }
 
-            return Optional.<Resource>of(fileContainer.asTemplateResource(name));
+            return fileContainer.asTemplateResource(name);
         }
 
         TextContainer filename = fileContainer.getName();
         if (filename.isRawText()) {
-            return Optional.of(asResource(name, fileContainer));
+            return asResource(name, fileContainer);
         }
 
         if (filename.isForTemplate()) {
             Optional<Charset> charset = fileContainer.getCharset();
             Resource resource = filename.asTemplateResource();
-            return Optional.of(asResource(name, resource, charset));
+            return asResource(name, resource, charset);
         }
 
-        return Optional.absent();
+        throw new IllegalArgumentException(format("unknown file container:[%s]", fileContainer));
     }
 
     private Resource asResource(final String name, final Resource resource, final Optional<Charset> charset) {
