@@ -176,6 +176,10 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return fileResource(name, FileContainer.class.cast(container));
         }
 
+        return textResource(name, container);
+    }
+
+    private Resource textResource(final String name, final TextContainer container) {
         if (container.isRawText()) {
             return invokeTarget(name, container.getText(), Resource.class);
         }
