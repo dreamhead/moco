@@ -192,7 +192,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
             return container.asTemplateResource(name);
         }
 
-        throw new IllegalArgumentException(format("unknown operation [%s]", container.getOperation()));
+        throw new IllegalArgumentException(format("unknown text container:[%s]", container));
     }
 
     private Resource fileResource(final String name, final FileContainer fileContainer) {
