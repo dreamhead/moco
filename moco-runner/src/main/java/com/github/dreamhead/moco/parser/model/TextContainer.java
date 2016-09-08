@@ -18,7 +18,7 @@ public class TextContainer {
     private static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
-    private Map<String, TextContainer> props;
+    private Map<String, TextContainer> props = ImmutableMap.of();
 
     protected TextContainer(final String text, final String operation,
                             final Map<String, TextContainer> props) {
