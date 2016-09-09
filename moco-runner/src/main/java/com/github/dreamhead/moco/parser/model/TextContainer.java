@@ -43,13 +43,7 @@ public class TextContainer {
     }
 
     public ContentResource asTemplateResource() {
-        ensureTemplate();
-
-        if (hasProperties()) {
-            return template(this.text, toVariables(this.props));
-        }
-
-        return template(this.text);
+        return asTemplateResource("text");
     }
 
     private void ensureTemplate() {
