@@ -137,11 +137,7 @@ public class TextContainer {
         }
 
         public TextContainer build() {
-            TextContainer container = new TextContainer();
-            container.text = text;
-            container.operation = operation;
-            container.props = asProps(props);
-            return container;
+            return new TextContainer(text, operation, asProps(props));
         }
 
         private Map<String, TextContainer> asProps(final Map<String, TextContainer> props) {
