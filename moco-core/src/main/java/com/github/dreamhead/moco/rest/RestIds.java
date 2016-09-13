@@ -16,7 +16,7 @@ public class RestIds {
     private static String checkValidUrlItem(String id, String item) {
         checkNotNullOrEmpty(id, item + " should not be null or empty");
 
-        if (id.contains("/")) {
+        if (id.contains(URLs.SEPARATOR)) {
             throw new IllegalArgumentException(item + " should not contain '/'");
         }
 

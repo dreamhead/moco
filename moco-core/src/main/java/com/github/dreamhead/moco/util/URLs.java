@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
 public final class URLs {
-    private static final String SEPARATOR = "/";
+    public static final String SEPARATOR = "/";
 
     public static String resourceRoot(final String name) {
         if (name.startsWith(SEPARATOR)) {
