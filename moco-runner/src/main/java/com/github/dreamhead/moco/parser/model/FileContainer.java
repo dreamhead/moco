@@ -2,11 +2,13 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Map;
 
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
@@ -15,16 +17,19 @@ import static com.google.common.base.Optional.of;
 public final class FileContainer extends TextContainer {
     private TextContainer name;
     private Optional<Charset> charset;
+    private TextContainer content;
 
     private FileContainer(final TextContainer container) {
-        super(container.getText(), container.getOperation(), container.getProps());
+//        super(container.getText(), container.getOperation(), container.getProps());
         this.name = container;
         this.charset = absent();
+        this.content = container;
     }
 
     private FileContainer(final TextContainer name, final Optional<Charset> charset) {
         this.name = name;
         this.charset = charset;
+        this.content = null;
     }
 
     public TextContainer getName() {
@@ -33,6 +38,76 @@ public final class FileContainer extends TextContainer {
 
     public Optional<Charset> getCharset() {
         return charset;
+    }
+
+    @Override
+    public ContentResource asResource() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.asResource();
+    }
+
+    @Override
+    public ContentResource asTemplateResource() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.asTemplateResource();
+    }
+
+    @Override
+    public ContentResource asTemplateResource(final String resourceName) {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.asTemplateResource(resourceName);
+    }
+
+    @Override
+    public boolean isRawText() {
+        return this.content != null && this.content.isRawText();
+
+    }
+
+    @Override
+    public String getText() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.getText();
+    }
+
+    @Override
+    public String getOperation() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.getOperation();
+    }
+
+    @Override
+    public boolean hasProperties() {
+        return this.content != null && this.content.hasProperties();
+    }
+
+    @Override
+    public Map<String, TextContainer> getProps() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return this.content.getProps();
+    }
+
+    @Override
+    public boolean isForTemplate() {
+        return this.content != null && this.content.isForTemplate();
     }
 
     @Override
