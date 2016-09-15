@@ -20,7 +20,6 @@ public final class FileContainer extends TextContainer {
     private TextContainer content;
 
     private FileContainer(final TextContainer container) {
-//        super(container.getText(), container.getOperation(), container.getProps());
         this.name = container;
         this.charset = absent();
         this.content = container;
