@@ -20,7 +20,7 @@ public class CompleteEventSetting {
         MocoEventAction action = doCreateAction();
 
         if (this.async) {
-            return Moco.async(action, Moco.latency(latency.getLatency(), latency.getUnit()));
+            return Moco.async(action, latency.asProcedure());
         }
 
         return action;

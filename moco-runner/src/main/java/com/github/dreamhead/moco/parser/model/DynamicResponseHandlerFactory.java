@@ -18,7 +18,6 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.attachment;
-import static com.github.dreamhead.moco.Moco.latency;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.toJson;
@@ -92,7 +91,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
         if ("latency".equalsIgnoreCase(name)) {
             LatencyContainer container = LatencyContainer.class.cast(value);
-            return with(latency(container.getLatency(), container.getUnit()));
+            return with(container.asProcedure());
         }
 
         if (ProxyContainer.class.isInstance(value)) {
