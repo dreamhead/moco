@@ -20,7 +20,7 @@ public class TextContainer {
     private String operation;
     private Map<String, TextContainer> props = ImmutableMap.of();
 
-    protected TextContainer(final String text, final String operation,
+    private TextContainer(final String text, final String operation,
                             final Map<String, TextContainer> props) {
         this.text = text;
         this.operation = operation;
