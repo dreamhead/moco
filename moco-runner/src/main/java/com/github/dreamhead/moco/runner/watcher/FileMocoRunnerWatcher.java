@@ -8,9 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.concurrent.TimeUnit;
 
 public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
-    public static final long INTERVAL = 1000;
+    public static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
+
     private static Logger logger = LoggerFactory.getLogger(FileMocoRunnerWatcher.class);
 
     private final FileAlterationMonitor monitor;
