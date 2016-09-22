@@ -91,7 +91,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    protected  <V extends ConfigApplier<V>> V configured(final V source) {
+    private  <V extends ConfigApplier<V>> V configured(final V source) {
         return configItem(source, this.configs);
     }
 
