@@ -5,7 +5,7 @@ import com.google.common.base.Predicate;
 import java.util.Map;
 
 public final class HttpHeaders {
-    public static boolean isSameHeaderName(final String name, final String key) {
+    private static boolean isSameHeaderName(final String name, final String key) {
         return key.equalsIgnoreCase(name);
     }
 
