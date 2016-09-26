@@ -216,27 +216,28 @@ public final class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> doGetResponseHandler(final HttpRequest httpRequest) {
-        if (HttpMethod.GET == httpRequest.getMethod()) {
+        HttpMethod method = httpRequest.getMethod();
+        if (HttpMethod.GET == method) {
             return getGetHandler(httpRequest);
         }
 
-        if (HttpMethod.POST == httpRequest.getMethod()) {
+        if (HttpMethod.POST == method) {
             return getPostHandler(httpRequest);
         }
 
-        if (HttpMethod.PUT == httpRequest.getMethod()) {
+        if (HttpMethod.PUT == method) {
             return getSingleResponseHandler(putSettings, httpRequest);
         }
 
-        if (HttpMethod.DELETE == httpRequest.getMethod()) {
+        if (HttpMethod.DELETE == method) {
             return getSingleResponseHandler(deleteSettings, httpRequest);
         }
 
-        if (HttpMethod.HEAD == httpRequest.getMethod()) {
+        if (HttpMethod.HEAD == method) {
             return getHeadHandler(httpRequest);
         }
 
-        if (HttpMethod.PATCH == httpRequest.getMethod()) {
+        if (HttpMethod.PATCH == method) {
             return getSingleResponseHandler(patchSettings, httpRequest);
         }
 
