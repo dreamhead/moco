@@ -20,7 +20,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     private final Resource filename;
     private final Optional<Charset> charset;
 
-    public AbstractFileResourceReader(final Resource filename, final Optional<Charset> charset) {
+    protected AbstractFileResourceReader(final Resource filename, final Optional<Charset> charset) {
         this.charset = charset;
         this.filename = filename;
     }
