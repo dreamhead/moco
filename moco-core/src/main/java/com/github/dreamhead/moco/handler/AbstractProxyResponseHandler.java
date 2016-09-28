@@ -62,7 +62,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private final Failover failover;
 
-    public AbstractProxyResponseHandler(final Failover failover) {
+    protected AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
     }
 
