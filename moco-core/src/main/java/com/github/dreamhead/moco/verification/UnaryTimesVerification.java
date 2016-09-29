@@ -5,7 +5,7 @@ public abstract class UnaryTimesVerification extends AbstractTimesVerification {
 
     private final int count;
 
-    public UnaryTimesVerification(final int count) {
+    protected UnaryTimesVerification(final int count) {
         this.count = count;
     }
 
