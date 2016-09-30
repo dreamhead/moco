@@ -43,6 +43,7 @@ import java.net.URL;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
+import static com.github.dreamhead.moco.util.URLs.toUrl;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
@@ -240,8 +241,8 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
 
         try {
-            return of(new URL(encoder.toString()));
-        } catch (MalformedURLException e) {
+            return of(toUrl(encoder.toString()));
+        } catch (IllegalArgumentException e) {
             return absent();
         }
     }
