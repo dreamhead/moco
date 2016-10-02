@@ -55,7 +55,7 @@ public class MessageContent {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this.content, this.charset);
+        return Objects.hashCode(Arrays.hashCode(this.content), this.charset);
     }
 
     public static Builder content() {
