@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.google.common.base.Optional;
@@ -18,7 +19,7 @@ public class ProxyResponseHandler extends AbstractProxyResponseHandler implement
     }
 
     @Override
-    protected Optional<String> remoteUrl(final String uri) {
+    protected Optional<String> doRemoteUrl(final HttpRequest request) {
         return of(this.url.get().toString());
     }
 }

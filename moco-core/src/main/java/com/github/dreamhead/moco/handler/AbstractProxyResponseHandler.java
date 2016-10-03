@@ -57,7 +57,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(HOST, CONTENT_LENGTH);
     private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(DATE, SERVER);
 
-    protected abstract Optional<String> remoteUrl(final String uri);
+    protected abstract Optional<String> doRemoteUrl(final HttpRequest request);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
@@ -228,7 +228,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private Optional<URL> remoteUrl(final HttpRequest request) {
-        Optional<String> remoteUrl = this.remoteUrl(request.getUri());
+        Optional<String> remoteUrl = this.doRemoteUrl(request);
         if (!remoteUrl.isPresent()) {
             return absent();
         }

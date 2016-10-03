@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -19,7 +20,8 @@ public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     }
 
     @Override
-    protected Optional<String> remoteUrl(final String uri) {
+    protected Optional<String> doRemoteUrl(final HttpRequest request) {
+        String uri = request.getUri();
         if (!proxyConfig.canAccessedBy(uri)) {
             return absent();
         }
