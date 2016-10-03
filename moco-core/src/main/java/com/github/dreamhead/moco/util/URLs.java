@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.base.Strings;
+import com.google.common.base.Supplier;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -9,6 +10,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Suppliers.ofInstance;
 
 public final class URLs {
     public static final String SEPARATOR = "/";
@@ -69,6 +71,10 @@ public final class URLs {
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public static Supplier<URL> toUrlSupplier(final String url) {
+        return ofInstance(toUrl(checkNotNullOrEmpty(url, "URL should not be null")));
     }
 
     private URLs() {

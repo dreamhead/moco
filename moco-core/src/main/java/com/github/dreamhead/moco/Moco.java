@@ -40,7 +40,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
-import com.github.dreamhead.moco.util.URLs;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
@@ -63,11 +62,10 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.URLs.toUrl;
+import static com.github.dreamhead.moco.util.URLs.toUrlSupplier;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Suppliers.ofInstance;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
@@ -425,7 +423,7 @@ public final class Moco {
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
-        return new ProxyResponseHandler(ofInstance(toUrl(checkNotNullOrEmpty(url, "URL should not be null"))),
+        return new ProxyResponseHandler(toUrlSupplier(checkNotNullOrEmpty(url, "URL should not be null")),
                 checkNotNull(failover, "Failover should not be null"));
     }
 
