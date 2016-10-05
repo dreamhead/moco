@@ -1,7 +1,8 @@
 package com.github.dreamhead.moco.util;
 
+import com.github.dreamhead.moco.HttpRequest;
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.base.Supplier;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -10,7 +11,6 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Suppliers.ofInstance;
 
 public final class URLs {
     public static final String SEPARATOR = "/";
@@ -73,8 +73,17 @@ public final class URLs {
         }
     }
 
-    public static Supplier<URL> toUrlSupplier(final String url) {
-        return ofInstance(toUrl(checkNotNullOrEmpty(url, "URL should not be null")));
+    public static Function<HttpRequest, URL> toUrlFunction(final String url) {
+        return constant(toUrl(checkNotNullOrEmpty(url, "URL should not be null")));
+    }
+
+    private static <F, T> Function<F, T> constant(final T constant) {
+        return new Function<F, T>() {
+            @Override
+            public T apply(final F input) {
+                return constant;
+            }
+        };
     }
 
     private URLs() {

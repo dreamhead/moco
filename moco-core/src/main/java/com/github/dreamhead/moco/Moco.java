@@ -62,7 +62,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.URLs.toUrlSupplier;
+import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -423,7 +423,7 @@ public final class Moco {
     }
 
     public static ResponseHandler proxy(final String url, final Failover failover) {
-        return new ProxyResponseHandler(toUrlSupplier(checkNotNullOrEmpty(url, "URL should not be null")),
+        return new ProxyResponseHandler(toUrlFunction(checkNotNullOrEmpty(url, "URL should not be null")),
                 checkNotNull(failover, "Failover should not be null"));
     }
 
