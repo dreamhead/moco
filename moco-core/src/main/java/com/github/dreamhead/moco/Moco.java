@@ -422,8 +422,17 @@ public final class Moco {
         return proxy(checkNotNullOrEmpty(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
+    public static ResponseHandler proxy(final Resource url) {
+        return proxy(checkNotNull(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
+    }
+
     public static ResponseHandler proxy(final String url, final Failover failover) {
         return new ProxyResponseHandler(toUrlFunction(checkNotNullOrEmpty(url, "URL should not be null")),
+                checkNotNull(failover, "Failover should not be null"));
+    }
+
+    public static ResponseHandler proxy(final Resource url, final Failover failover) {
+        return new ProxyResponseHandler(toUrlFunction(checkNotNull(url, "URL should not be null")),
                 checkNotNull(failover, "Failover should not be null"));
     }
 

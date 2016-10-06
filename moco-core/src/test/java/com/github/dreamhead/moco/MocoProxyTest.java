@@ -422,4 +422,17 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_work_with_file_resource_url() throws Exception {
+        server.get(by(uri("/target"))).response("get_proxy");
+        server.request(by(uri("/proxy"))).response(proxy(file("src/test/resources/remote_url.resource")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+            }
+        });
+    }
 }
