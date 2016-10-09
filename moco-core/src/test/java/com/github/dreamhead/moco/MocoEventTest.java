@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Idles;
 import com.google.common.collect.ImmutableMultimap;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import java.util.concurrent.TimeUnit;
@@ -96,7 +95,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -112,7 +111,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -144,7 +143,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
 
@@ -161,7 +160,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -177,7 +176,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -193,7 +192,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -209,7 +208,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -225,7 +224,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -241,7 +240,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -257,7 +256,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -273,7 +272,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -286,12 +285,12 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
+                verify(handler, never()).writeToResponse(any(SessionContext.class));
                 Idles.idle(2, TimeUnit.SECONDS);
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
@@ -304,18 +303,18 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(Matchers.<SessionContext>anyObject());
+                verify(handler, never()).writeToResponse(any(SessionContext.class));
                 Idles.idle(2, TimeUnit.SECONDS);
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     @Test
     public void should_fire_event_for_context_configuration() throws Exception {
         MocoEventAction action = mock(MocoEventAction.class);
-        when(action.apply(Matchers.<MocoConfig>anyObject())).thenReturn(action);
+        when(action.apply(any(MocoConfig.class))).thenReturn(action);
         server = httpServer(port(), context("/context"));
         server.get(by(uri("/foo"))).response("foo").on(complete(action));
 
@@ -332,7 +331,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     @Test
     public void should_send_post_request_with_file_root_configuration() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        when(handler.apply(Matchers.<MocoConfig>anyObject())).thenReturn(handler);
+        when(handler.apply(any(MocoConfig.class))).thenReturn(handler);
 
         server = httpServer(port(), fileRoot("src/test/resources"));
         server.request(by(uri("/target")), by(file("foo.request"))).response(handler);
@@ -345,6 +344,6 @@ public class MocoEventTest extends AbstractMocoHttpTest {
             }
         });
 
-        verify(handler).writeToResponse(Matchers.<SessionContext>anyObject());
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 }
