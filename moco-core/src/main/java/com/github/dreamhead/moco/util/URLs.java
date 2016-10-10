@@ -75,24 +75,11 @@ public final class URLs {
         }
     }
 
-    public static Function<HttpRequest, URL> toUrlFunction(final String url) {
-        return constant(toUrl(checkNotNullOrEmpty(url, "URL should not be null")));
-    }
-
     public static Function<HttpRequest, URL> toUrlFunction(final Resource url) {
         return new Function<HttpRequest, URL>() {
             @Override
             public URL apply(final HttpRequest input) {
                 return toUrl(url.readFor(Optional.of(input)).toString());
-            }
-        };
-    }
-
-    private static <F, T> Function<F, T> constant(final T constant) {
-        return new Function<F, T>() {
-            @Override
-            public T apply(final F input) {
-                return constant;
             }
         };
     }
