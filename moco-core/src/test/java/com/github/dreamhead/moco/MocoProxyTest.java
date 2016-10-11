@@ -435,4 +435,17 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_work_with_template() throws Exception {
+        server.get(by(uri("/target"))).response("get_proxy");
+        server.request(by(uri("/proxy"))).response(proxy(template("http://localhost:12306/${var}", "var", "target")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+            }
+        });
+    }
 }
