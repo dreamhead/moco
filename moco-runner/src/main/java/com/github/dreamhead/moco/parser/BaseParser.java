@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(final ImmutableList<SessionSetting> read,
-                                      final Optional<Integer> port, final MocoConfig[] configs);
+                                      final Optional<Integer> port, final MocoConfig... configs);
 
     private final CollectionReader reader;
 
