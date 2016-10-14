@@ -9,6 +9,7 @@ import com.google.common.base.Supplier;
 
 import java.net.URL;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class ProxyResponseHandler extends AbstractProxyResponseHandler implements ResponseHandler {
@@ -21,7 +22,10 @@ public class ProxyResponseHandler extends AbstractProxyResponseHandler implement
 
     @Override
     protected Optional<String> doRemoteUrl(final HttpRequest request) {
-
-        return of(url.apply(request).toString());
+        try {
+            return of(url.apply(request).toString());
+        } catch (IllegalArgumentException e) {
+            return absent();
+        }
     }
 }
