@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Supplier;
 
 import java.net.URL;
 
@@ -23,7 +22,12 @@ public class ProxyResponseHandler extends AbstractProxyResponseHandler implement
     @Override
     protected Optional<String> doRemoteUrl(final HttpRequest request) {
         try {
-            return of(url.apply(request).toString());
+            URL targetUrl = url.apply(request);
+            if (targetUrl != null) {
+                return of(targetUrl.toString());
+            }
+
+            return absent();
         } catch (IllegalArgumentException e) {
             return absent();
         }
