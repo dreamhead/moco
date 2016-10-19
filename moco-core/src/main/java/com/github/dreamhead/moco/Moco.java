@@ -289,14 +289,17 @@ public final class Moco {
         return new CookieRequestExtractor(checkNotNullOrEmpty(key, "Cookie key should not be null"));
     }
 
-    public static ResponseHandler cookie(final String key, final String value) {
-        return cookie(checkNotNullOrEmpty(key, "Cookie key should not be null"), text(checkNotNullOrEmpty(value, "Cookie value should not be null")));
+    public static ResponseHandler cookie(final String key, final String value, final CookieOption... options) {
+        return cookie(checkNotNullOrEmpty(key, "Cookie key should not be null"),
+                text(checkNotNullOrEmpty(value, "Cookie value should not be null")),
+                options);
     }
 
-    public static ResponseHandler cookie(final String key, final Resource resource) {
+    public static ResponseHandler cookie(final String key, final Resource resource, final CookieOption... options) {
         return header(SET_COOKIE, cookieResource(
                 checkNotNullOrEmpty(key, "Cookie key should not be null"),
-                checkNotNull(resource, "Cookie value should not be null")));
+                checkNotNull(resource, "Cookie value should not be null"),
+                options));
     }
 
     public static RequestExtractor<String> form(final String key) {

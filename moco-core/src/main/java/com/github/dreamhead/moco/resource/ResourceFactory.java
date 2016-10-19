@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.resource;
 
+import com.github.dreamhead.moco.CookieOption;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
@@ -80,12 +81,12 @@ public final class ResourceFactory {
         });
     }
 
-    public static Resource cookieResource(final String key, final Resource resource) {
+    public static Resource cookieResource(final String key, final Resource resource, final CookieOption... options) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
                 MessageContent messageContent = resource.readFor(request);
-                return content(new Cookies().encodeCookie(key, messageContent.toString()));
+                return content(new Cookies().encodeCookie(key, messageContent.toString(), options));
             }
         });
     }

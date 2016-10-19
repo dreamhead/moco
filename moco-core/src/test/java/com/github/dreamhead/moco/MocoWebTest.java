@@ -1,10 +1,16 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.net.*;
+import com.google.common.net.HttpHeaders;
+import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
+import io.netty.handler.codec.http.cookie.Cookie;
+import org.apache.http.*;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.CookieOption.path;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -50,6 +56,22 @@ public class MocoWebTest extends AbstractMocoHttpTest {
             public void run() throws IOException {
                 assertThat(helper.getForStatus(root()), is(302));
                 assertThat(helper.getForStatus(root()), is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_path() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", path("/")), status(302));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+                assertThat(decodeCookie.path(), is("/"));
             }
         });
     }
