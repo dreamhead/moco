@@ -10,7 +10,7 @@ public class PathCookieOption extends ActualCookieOption {
     }
 
     @Override
-    public void visit(Cookie cookie) {
+    public void visit(final Cookie cookie) {
         cookie.setPath(path);
     }
 }
