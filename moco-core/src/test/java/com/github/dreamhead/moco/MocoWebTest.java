@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.CookieOption.maxAge;
 import static com.github.dreamhead.moco.CookieOption.path;
+import static com.github.dreamhead.moco.CookieOption.secure;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -89,6 +90,22 @@ public class MocoWebTest extends AbstractMocoHttpTest {
                 String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
                 Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
                 assertThat(decodeCookie.maxAge(), is(3600L));
+            }
+        });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_secure() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", secure(true)), status(302));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+                assertThat(decodeCookie.isSecure(), is(true));
             }
         });
     }
