@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.CookieOption;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseHandler;
@@ -154,8 +155,18 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         TextContainer container = pair.getValue();
         try {
             if (container.isForTemplate()) {
+                if ("cookie".equals(targetMethodName)) {
+                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
+                    return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()), new CookieOption[0]);
+                }
+
                 Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
                 return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()));
+            }
+
+            if ("cookie".equals(targetMethodName)) {
+                Method method = Moco.class.getMethod(targetMethodName, String.class, String.class, CookieOption[].class);
+                return (ResponseHandler) method.invoke(null, pair.getKey(), container.getText(), new CookieOption[0]);
             }
 
             Method method = Moco.class.getMethod(targetMethodName, String.class, String.class);
