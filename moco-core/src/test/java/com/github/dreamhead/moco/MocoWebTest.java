@@ -97,7 +97,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     @Test
     public void should_set_and_recognize_cookie_with_secure() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
-        server.response(cookie("loggedIn", "true", secure(true)), status(302));
+        server.response(cookie("loggedIn", "true", secure()), status(302));
 
         running(server, new Runnable() {
             @Override

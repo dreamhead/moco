@@ -13,7 +13,7 @@ public abstract class CookieOption {
         return new MaxAgeCookieOption(maxAge);
     }
 
-    public static CookieOption secure(final boolean secure) {
-        return new SecureCookieOption(secure);
+    public static CookieOption secure() {
+        return new SecureCookieOption();
     }
 }
