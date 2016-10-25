@@ -1,19 +1,25 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.net.*;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
-import org.apache.http.*;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.CookieOption.httpOnly;
 import static com.github.dreamhead.moco.CookieOption.maxAge;
 import static com.github.dreamhead.moco.CookieOption.path;
 import static com.github.dreamhead.moco.CookieOption.secure;
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.attachment;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.cookie;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.form;
+import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -106,6 +112,22 @@ public class MocoWebTest extends AbstractMocoHttpTest {
                 String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
                 Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
                 assertThat(decodeCookie.isSecure(), is(true));
+            }
+        });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_httponly() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", httpOnly()), status(302));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+                assertThat(decodeCookie.isHttpOnly(), is(true));
             }
         });
     }
