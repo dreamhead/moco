@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.CookieOption.domain;
 import static com.github.dreamhead.moco.CookieOption.httpOnly;
 import static com.github.dreamhead.moco.CookieOption.maxAge;
 import static com.github.dreamhead.moco.CookieOption.path;
@@ -128,6 +129,21 @@ public class MocoWebTest extends AbstractMocoHttpTest {
                 String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
                 Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
                 assertThat(decodeCookie.isHttpOnly(), is(true));
+            }
+        });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_domain() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+                assertThat(decodeCookie.domain(), is("github.com"));
             }
         });
     }
