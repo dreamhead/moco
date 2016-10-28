@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.Moco.var;
 import static com.github.dreamhead.moco.Moco.version;
@@ -150,27 +151,27 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         };
     }
 
+    private Resource getResource(final TextContainer container) {
+        if (container.isForTemplate()) {
+            return template(container.getText());
+        }
+
+        return text(container.getText());
+    }
+
     private ResponseHandler createResponseHandler(final Map.Entry<String, TextContainer> pair,
                                                   final String targetMethodName) {
         TextContainer container = pair.getValue();
+        Resource resource = getResource(container);
         try {
-            if (container.isForTemplate()) {
-                if ("cookie".equals(targetMethodName)) {
-                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
-                    return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()), new CookieOption[0]);
-                }
-
-                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
-                return (ResponseHandler) method.invoke(null, pair.getKey(), template(container.getText()));
-            }
-
             if ("cookie".equals(targetMethodName)) {
-                Method method = Moco.class.getMethod(targetMethodName, String.class, String.class, CookieOption[].class);
-                return (ResponseHandler) method.invoke(null, pair.getKey(), container.getText(), new CookieOption[0]);
+                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
+                return (ResponseHandler) method.invoke(null, pair.getKey(), resource, new CookieOption[0]);
             }
 
-            Method method = Moco.class.getMethod(targetMethodName, String.class, String.class);
-            return (ResponseHandler) method.invoke(null, pair.getKey(), container.getText());
+            Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
+            return (ResponseHandler) method.invoke(null, pair.getKey(), resource);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -240,7 +241,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     private Resource asResource(final String name, final FileContainer fileContainer) {
         Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
-        return asResource(name, Moco.text(text), charset);
+        return asResource(name, text(text), charset);
     }
 
     public static ImmutableMap<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {

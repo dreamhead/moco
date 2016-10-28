@@ -94,6 +94,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 org.apache.http.HttpResponse response = helper.getResponse(root());
+
                 String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
                 Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
                 assertThat(decodeCookie.maxAge(), is(3600L));
