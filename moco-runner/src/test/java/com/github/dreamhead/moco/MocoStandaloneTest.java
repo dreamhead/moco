@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.net.HttpHeaders;
+import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
+import io.netty.handler.codec.http.cookie.Cookie;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -184,8 +186,12 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie() throws IOException {
         runWithConfiguration("foo.json");
-        helper.get(remoteUrl("/cookie"));
-        assertThat(helper.get(remoteUrl("/cookie")), is("success"));
+        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie"));
+
+        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        assertThat(decodeCookie.name(), is("login"));
+        assertThat(decodeCookie.value(), is("true"));
     }
 
     @Test
