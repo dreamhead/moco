@@ -1,0 +1,12 @@
+[
+  {
+    "request": {
+      "uri": "/cookie"
+    },
+    "response": {
+      "cookies": {
+        "login": "true"
+      }
+    }
+  }
+]

@@ -184,17 +184,6 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_set_and_recognize_cookie() throws IOException {
-        runWithConfiguration("foo.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-        assertThat(decodeCookie.name(), is("login"));
-        assertThat(decodeCookie.value(), is("true"));
-    }
-
-    @Test
     public void should_wait_for_awhile() throws IOException {
         final long latency = 1000;
         final long delta = 200;
