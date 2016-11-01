@@ -33,14 +33,14 @@ public class TextContainerDeserializerHelper {
             String operation = jp.getText().trim();
             builder.withOperation(operation);
             JsonToken token = jp.nextToken();
+            if (isForTemplate(operation) && token == JsonToken.START_OBJECT) {
+                return template(jp, builder);
+            }
+
             if (token == JsonToken.VALUE_STRING) {
                 String text = jp.getText().trim();
                 jp.nextToken();
                 return builder.withText(text).build();
-            }
-
-            if (isForTemplate(operation) && token == JsonToken.START_OBJECT) {
-                return template(jp, builder);
             }
         }
 
