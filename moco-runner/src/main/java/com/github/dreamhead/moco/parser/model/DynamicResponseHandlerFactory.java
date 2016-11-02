@@ -132,15 +132,15 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         throw new IllegalArgumentException("resourceSetting is expected");
     }
 
-    private ResponseHandler createCompositeHandler(final String name, final Map<String, TextContainer> map) {
+    private ResponseHandler createCompositeHandler(final String name, final Map<String, Container> map) {
         FluentIterable<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name));
         return getResponseHandler(handlers);
     }
 
-    private Function<Map.Entry<String, TextContainer>, ResponseHandler> toTargetHandler(final String name) {
-        return new Function<Map.Entry<String, TextContainer>, ResponseHandler>() {
+    private Function<Map.Entry<String, Container>, ResponseHandler> toTargetHandler(final String name) {
+        return new Function<Map.Entry<String, Container>, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(final Map.Entry<String, TextContainer> pair) {
+            public ResponseHandler apply(final Map.Entry<String, Container> pair) {
                 String result = COMPOSITES.get(name);
                 if (result == null) {
                     throw new IllegalArgumentException("unknown composite handler name [" + name + "]");
@@ -159,26 +159,51 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         return text(container.getText());
     }
 
-    private ResponseHandler createResponseHandler(final Map.Entry<String, TextContainer> pair,
-                                                  final String targetMethodName) {
-        TextContainer container = pair.getValue();
-        Resource resource = getResource(container);
-        try {
-            if ("cookie".equals(targetMethodName)) {
-                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
-                return (ResponseHandler) method.invoke(null, pair.getKey(), resource, new CookieOption[0]);
-            }
-
-            Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
-            return (ResponseHandler) method.invoke(null, pair.getKey(), resource);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    private Resource getResource(final CookieContainer container) {
+        if (container.isForTemplate()) {
+            return template(container.getTemplate());
         }
+
+        return text(container.getValue());
+    }
+
+    private ResponseHandler createResponseHandler(final Map.Entry<String, Container> pair,
+                                                  final String targetMethodName) {
+        Container container = pair.getValue();
+        if (container instanceof TextContainer) {
+            TextContainer textContainer = (TextContainer) container;
+            Resource resource = getResource(textContainer);
+            try {
+                if ("cookie".equals(targetMethodName)) {
+                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
+                    return (ResponseHandler) method.invoke(null, pair.getKey(), resource, new CookieOption[0]);
+                }
+
+                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
+                return (ResponseHandler) method.invoke(null, pair.getKey(), resource);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (container instanceof CookieContainer) {
+            CookieContainer cookieContainer = (CookieContainer)container;
+            try {
+                if ("cookie".equals(targetMethodName)) {
+                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
+                    return (ResponseHandler) method.invoke(null, pair.getKey(), getResource(cookieContainer), new CookieOption[0]);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        throw new IllegalArgumentException();
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, TextContainer> castToMap(final Object value) {
+    private Map<String, Container> castToMap(final Object value) {
         return Map.class.cast(value);
     }
 
