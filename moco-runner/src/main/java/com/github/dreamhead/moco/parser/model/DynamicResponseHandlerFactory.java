@@ -170,36 +170,36 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
     private ResponseHandler createResponseHandler(final Map.Entry<String, Container> pair,
                                                   final String targetMethodName) {
         Container container = pair.getValue();
+        String key = pair.getKey();
         if (container instanceof TextContainer) {
-            TextContainer textContainer = (TextContainer) container;
-            Resource resource = getResource(textContainer);
-            try {
-                if ("cookie".equals(targetMethodName)) {
-                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
-                    return (ResponseHandler) method.invoke(null, pair.getKey(), resource, new CookieOption[0]);
-                }
-
-                Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class);
-                return (ResponseHandler) method.invoke(null, pair.getKey(), resource);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return createResponseHandler(targetMethodName, key, (TextContainer) container);
         }
 
         if (container instanceof CookieContainer) {
-            CookieContainer cookieContainer = (CookieContainer)container;
-            try {
-                if ("cookie".equals(targetMethodName)) {
-                    Method method = Moco.class.getMethod(targetMethodName, String.class, Resource.class, CookieOption[].class);
-                    return (ResponseHandler) method.invoke(null, pair.getKey(), getResource(cookieContainer), new CookieOption[0]);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return createResponseHandler(targetMethodName, key, (CookieContainer) container);
         }
 
         throw new IllegalArgumentException();
+    }
+
+    private ResponseHandler createResponseHandler(final String target, final String key,
+                                                  final TextContainer textContainer) {
+        try {
+            Method method = Moco.class.getMethod(target, String.class, Resource.class);
+            return (ResponseHandler) method.invoke(null, key, getResource(textContainer));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private ResponseHandler createResponseHandler(final String target, final String key,
+                                                  final CookieContainer cookieContainer) {
+        try {
+            Method method = Moco.class.getMethod(target, String.class, Resource.class, CookieOption[].class);
+            return (ResponseHandler) method.invoke(null, key, getResource(cookieContainer), new CookieOption[0]);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")
