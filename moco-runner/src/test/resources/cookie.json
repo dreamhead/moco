@@ -8,5 +8,18 @@
         "login": "true"
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-path"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "path": "/"
+        }
+      }
+    }
   }
 ]

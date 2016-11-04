@@ -1,7 +1,12 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.CookieOption;
 import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
+
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @JsonDeserialize(using = CookieContainerDeserializer.class)
 public class CookieContainer implements Container{
@@ -44,5 +49,13 @@ public class CookieContainer implements Container{
 
     public String getTemplate() {
         return template;
+    }
+
+    public CookieOption[] getOptions() {
+        List<CookieOption> options = newArrayList();
+        if (this.path != null) {
+            options.add(CookieOption.path(this.path));
+        }
+        return options.toArray(new CookieOption[options.size()]);
     }
 }
