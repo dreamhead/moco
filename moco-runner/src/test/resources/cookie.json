@@ -21,5 +21,18 @@
         }
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-domain"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "domain": "github.com"
+        }
+      }
+    }
   }
 ]

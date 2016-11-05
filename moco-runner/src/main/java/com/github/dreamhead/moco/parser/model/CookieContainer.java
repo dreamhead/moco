@@ -56,6 +56,11 @@ public class CookieContainer implements Container{
         if (this.path != null) {
             options.add(CookieOption.path(this.path));
         }
+
+        if (this.domain != null) {
+            options.add(CookieOption.domain(this.domain));
+        }
+
         return options.toArray(new CookieOption[options.size()]);
     }
 }
