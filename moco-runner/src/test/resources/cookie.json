@@ -34,5 +34,18 @@
         }
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-secure"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "secure": "true"
+        }
+      }
+    }
   }
 ]

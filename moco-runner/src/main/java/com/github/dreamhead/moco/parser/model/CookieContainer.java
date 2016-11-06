@@ -61,6 +61,10 @@ public class CookieContainer implements Container{
             options.add(CookieOption.domain(this.domain));
         }
 
+        if (this.secure) {
+            options.add(CookieOption.secure());
+        }
+
         return options.toArray(new CookieOption[options.size()]);
     }
 }
