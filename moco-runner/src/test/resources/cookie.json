@@ -47,5 +47,18 @@
         }
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-http-only"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "httpOnly": "true"
+        }
+      }
+    }
   }
 ]

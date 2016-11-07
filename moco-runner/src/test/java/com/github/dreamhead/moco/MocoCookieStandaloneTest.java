@@ -58,4 +58,16 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.isSecure(), is(true));
     }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_http_only() throws IOException {
+        runWithConfiguration("cookie.json");
+        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie-with-http-only"));
+
+        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        assertThat(decodeCookie.name(), is("login"));
+        assertThat(decodeCookie.value(), is("true"));
+        assertThat(decodeCookie.isHttpOnly(), is(true));
+    }
 }
