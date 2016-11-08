@@ -6,6 +6,8 @@ import com.github.dreamhead.moco.cookie.MaxAgeCookieOption;
 import com.github.dreamhead.moco.cookie.PathCookieOption;
 import com.github.dreamhead.moco.cookie.SecureCookieOption;
 
+import java.util.concurrent.TimeUnit;
+
 public abstract class CookieOption {
     public static CookieOption path(final String path) {
         return new PathCookieOption(path);
@@ -15,8 +17,8 @@ public abstract class CookieOption {
         return new DomainCookieOption(domain);
     }
 
-    public static CookieOption maxAge(final long maxAge) {
-        return new MaxAgeCookieOption(maxAge);
+    public static CookieOption maxAge(final long maxAge, final TimeUnit unit) {
+        return new MaxAgeCookieOption(maxAge, unit);
     }
 
     public static CookieOption secure() {

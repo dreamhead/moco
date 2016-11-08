@@ -7,6 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.CookieOption.domain;
 import static com.github.dreamhead.moco.CookieOption.httpOnly;
@@ -88,7 +89,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     @Test
     public void should_set_and_recognize_cookie_with_max_age() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
-        server.response(cookie("loggedIn", "true", maxAge(3600)), status(302));
+        server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(302));
 
         running(server, new Runnable() {
             @Override
