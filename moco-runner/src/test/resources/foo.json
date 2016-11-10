@@ -129,17 +129,6 @@
     },
     {
         "request": {
-            "uri": "/cookie",
-            "cookies": {
-                "login": "true"
-            }
-        },
-        "response": {
-            "text": "success"
-        }
-    },
-    {
-        "request": {
             "version": "HTTP/1.0"
         },
         "response": {
