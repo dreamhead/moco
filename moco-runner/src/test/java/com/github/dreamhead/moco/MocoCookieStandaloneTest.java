@@ -15,10 +15,7 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie() throws IOException {
         runWithConfiguration("cookie.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        Cookie decodeCookie = getCookie("/cookie");
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
     }
@@ -26,10 +23,7 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie_with_path() throws IOException {
         runWithConfiguration("cookie.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie-with-path"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        Cookie decodeCookie = getCookie("/cookie-with-path");
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.path(), is("/"));
@@ -38,10 +32,7 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie_with_domain() throws IOException {
         runWithConfiguration("cookie.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie-with-domain"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        Cookie decodeCookie = getCookie("/cookie-with-domain");
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.domain(), is("github.com"));
@@ -50,10 +41,7 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie_with_secure() throws IOException {
         runWithConfiguration("cookie.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie-with-secure"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        Cookie decodeCookie = getCookie("/cookie-with-secure");
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.isSecure(), is(true));
@@ -62,12 +50,17 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie_with_http_only() throws IOException {
         runWithConfiguration("cookie.json");
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/cookie-with-http-only"));
-
-        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+        String uri = "/cookie-with-http-only";
+        Cookie decodeCookie = getCookie(uri);
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.isHttpOnly(), is(true));
+    }
+
+    private Cookie getCookie(String uri) throws IOException {
+        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
+
+        String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+        return ClientCookieDecoder.STRICT.decode(value);
     }
 }
