@@ -60,5 +60,21 @@
         }
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-max-age"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "maxAge": {
+            "duration": 1,
+            "unit": "hour"
+          }
+        }
+      }
+    }
   }
 ]

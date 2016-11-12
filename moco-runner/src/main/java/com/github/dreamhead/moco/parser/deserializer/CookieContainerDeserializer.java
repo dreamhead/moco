@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.CookieContainer;
+import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ public class CookieContainerDeserializer extends JsonDeserializer<CookieContaine
         public String value;
         public String path;
         public String domain;
-        public int maxAge;
+        public LatencyContainer maxAge;
         public boolean secure;
         public boolean httpOnly;
         public String template;

@@ -50,11 +50,19 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_set_and_recognize_cookie_with_http_only() throws IOException {
         runWithConfiguration("cookie.json");
-        String uri = "/cookie-with-http-only";
-        Cookie decodeCookie = getCookie(uri);
+        Cookie decodeCookie = getCookie("/cookie-with-http-only");
         assertThat(decodeCookie.name(), is("login"));
         assertThat(decodeCookie.value(), is("true"));
         assertThat(decodeCookie.isHttpOnly(), is(true));
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_max_age() throws IOException {
+        runWithConfiguration("cookie.json");
+        Cookie decodeCookie = getCookie("/cookie-with-max-age");
+        assertThat(decodeCookie.name(), is("login"));
+        assertThat(decodeCookie.value(), is("true"));
+        assertThat(decodeCookie.maxAge(), is(3600L));
     }
 
     private Cookie getCookie(String uri) throws IOException {

@@ -22,6 +22,14 @@ public class LatencyContainer {
                 .toString();
     }
 
+    public long getLatency() {
+        return latency;
+    }
+
+    public TimeUnit getUnit() {
+        return unit;
+    }
+
     public static LatencyContainer latency(final long latency) {
         return latencyWithUnit(latency, TimeUnit.MILLISECONDS);
     }
