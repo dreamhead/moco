@@ -1294,6 +1294,44 @@ server.response(cookie("loggedIn", "true"), status(302));
 }
 ```
 
+#### Cookie Attributes
+
+Cookie attributes are an important part in cookie usage.
+
+##### Path
+
+Path cookie attribute defines the scope of the cookie. You can add your own `path` cookie attribute to your response.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", path("/")), status(302));
+```
+
+* JSON
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+            "path" : "/"
+        }
+      }
+    }
+}
+```
+
+
 ### Attachment
 **@Since 0.10.0**
 
