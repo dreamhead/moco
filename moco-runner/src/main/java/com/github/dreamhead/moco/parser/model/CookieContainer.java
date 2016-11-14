@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.github.dreamhead.moco.CookieOption;
+import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
 
 import java.util.List;
@@ -51,28 +51,28 @@ public class CookieContainer implements Container{
         return template;
     }
 
-    public CookieOption[] getOptions() {
-        List<CookieOption> options = newArrayList();
+    public CookieAttribute[] getOptions() {
+        List<CookieAttribute> options = newArrayList();
         if (this.path != null) {
-            options.add(CookieOption.path(this.path));
+            options.add(CookieAttribute.path(this.path));
         }
 
         if (this.domain != null) {
-            options.add(CookieOption.domain(this.domain));
+            options.add(CookieAttribute.domain(this.domain));
         }
 
         if (this.secure) {
-            options.add(CookieOption.secure());
+            options.add(CookieAttribute.secure());
         }
 
         if (this.httpOnly) {
-            options.add(CookieOption.httpOnly());
+            options.add(CookieAttribute.httpOnly());
         }
 
         if (this.maxAge != null) {
-            options.add(CookieOption.maxAge(this.maxAge.getLatency(), this.maxAge.getUnit()));
+            options.add(CookieAttribute.maxAge(this.maxAge.getLatency(), this.maxAge.getUnit()));
         }
 
-        return options.toArray(new CookieOption[options.size()]);
+        return options.toArray(new CookieAttribute[options.size()]);
     }
 }

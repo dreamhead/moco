@@ -1300,6 +1300,8 @@ Cookie attributes are an important part in cookie usage.
 
 ##### Path
 
+@Since will be at next version
+
 Path cookie attribute defines the scope of the cookie. You can add your own `path` cookie attribute to your response.
 
 * Java
@@ -1330,7 +1332,6 @@ server.response(cookie("loggedIn", "true", path("/")), status(302));
     }
 }
 ```
-
 
 ### Attachment
 **@Since 0.10.0**

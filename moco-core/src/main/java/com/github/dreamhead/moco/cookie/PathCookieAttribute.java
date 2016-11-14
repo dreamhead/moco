@@ -2,10 +2,10 @@ package com.github.dreamhead.moco.cookie;
 
 import io.netty.handler.codec.http.cookie.Cookie;
 
-public class PathCookieOption extends ActualCookieOption {
+public class PathCookieAttribute extends ActualCookieAttribute {
     private final String path;
 
-    public PathCookieOption(final String path) {
+    public PathCookieAttribute(final String path) {
         this.path = path;
     }
 

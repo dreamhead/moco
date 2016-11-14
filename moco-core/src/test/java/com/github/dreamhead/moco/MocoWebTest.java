@@ -9,11 +9,11 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dreamhead.moco.CookieOption.domain;
-import static com.github.dreamhead.moco.CookieOption.httpOnly;
-import static com.github.dreamhead.moco.CookieOption.maxAge;
-import static com.github.dreamhead.moco.CookieOption.path;
-import static com.github.dreamhead.moco.CookieOption.secure;
+import static com.github.dreamhead.moco.CookieAttribute.domain;
+import static com.github.dreamhead.moco.CookieAttribute.httpOnly;
+import static com.github.dreamhead.moco.CookieAttribute.maxAge;
+import static com.github.dreamhead.moco.CookieAttribute.path;
+import static com.github.dreamhead.moco.CookieAttribute.secure;
 import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.cookie;

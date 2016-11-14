@@ -2,10 +2,10 @@ package com.github.dreamhead.moco.cookie;
 
 import io.netty.handler.codec.http.cookie.Cookie;
 
-public class DomainCookieOption extends ActualCookieOption {
+public class DomainCookieAttribute extends ActualCookieAttribute {
     private final String domain;
 
-    public DomainCookieOption(final String domain) {
+    public DomainCookieAttribute(final String domain) {
         this.domain = domain;
     }
 
