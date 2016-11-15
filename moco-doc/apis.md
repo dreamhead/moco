@@ -1333,6 +1333,41 @@ server.response(cookie("loggedIn", "true", path("/")), status(302));
 }
 ```
 
+##### Domain
+
+@Since will be at next version
+
+Domain cookie attribute defines the scope of the cookie. You can add your own `domain` cookie attribute to your response.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
+```
+
+* JSON
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+            "domain" : "github.com"
+        }
+      }
+    }
+}
+```
+
 ### Attachment
 **@Since 0.10.0**
 
