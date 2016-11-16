@@ -1368,6 +1368,41 @@ server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
 }
 ```
 
+##### Secure
+
+@Since will be at next version
+
+A secure cookie can only be transmitted over an encrypted connection. You can add your own `secure` cookie attribute to your response.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", secure()), status(302));
+```
+
+* JSON
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+            "secure" : "true"
+        }
+      }
+    }
+}
+```
+
 ### Attachment
 **@Since 0.10.0**
 
