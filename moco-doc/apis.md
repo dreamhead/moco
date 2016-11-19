@@ -1403,6 +1403,41 @@ server.response(cookie("loggedIn", "true", secure()), status(302));
 }
 ```
 
+##### HTTP Only
+
+@Since will be at next version
+
+An HttpOnly cookie cannot be accessed by client-side APIs. You can add your own `httpOnly` cookie attribute to your response.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", httpOnly()), status(302));
+```
+
+* JSON
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+            "httpOnly" : "true"
+        }
+      }
+    }
+}
+```
+
 ### Attachment
 **@Since 0.10.0**
 
