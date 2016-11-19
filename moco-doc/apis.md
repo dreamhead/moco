@@ -43,6 +43,11 @@ That means if we get the expected request and then return our response. Now, you
     * [Batch URLs](#batch-urls)
   * [Redirect](#redirect)
   * [Cookie](#cookie-1)
+    * [Cookie Attributes](#cookie-attributes)
+      * [Path](#path)
+      * [Domain](#domain)
+      * [Secure](#secure)
+      * [HTTP Only](#http-only)
   * [Attachment](#attachment)
   * [Latency](#latency)
   * [Sequence](#sequence)
@@ -1312,8 +1317,6 @@ server.response(cookie("loggedIn", "true", path("/")), status(302));
 
 * JSON
 
-* JSON
-
 ```json
 {
   "request" :
@@ -1344,8 +1347,6 @@ Domain cookie attribute defines the scope of the cookie. You can add your own `d
 ```java
 server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
 ```
-
-* JSON
 
 * JSON
 
@@ -1382,8 +1383,6 @@ server.response(cookie("loggedIn", "true", secure()), status(302));
 
 * JSON
 
-* JSON
-
 ```json
 {
   "request" :
@@ -1414,8 +1413,6 @@ An HttpOnly cookie cannot be accessed by client-side APIs. You can add your own 
 ```java
 server.response(cookie("loggedIn", "true", httpOnly()), status(302));
 ```
-
-* JSON
 
 * JSON
 
