@@ -5,13 +5,13 @@ import io.netty.handler.codec.http.cookie.Cookie;
 public class DomainCookieAttribute extends ActualCookieAttribute {
     private final String domain;
 
-    public DomainCookieAttribute(final String domain) {
-        this.domain = domain;
+    public DomainCookieAttribute(final String actualDomain) {
+        this.domain = actualDomain;
     }
 
 
     @Override
-    public void visit(final Cookie cookie) {
+    public final void visit(final Cookie cookie) {
         cookie.setDomain(this.domain);
     }
 }

@@ -5,12 +5,12 @@ import io.netty.handler.codec.http.cookie.Cookie;
 public class PathCookieAttribute extends ActualCookieAttribute {
     private final String path;
 
-    public PathCookieAttribute(final String path) {
-        this.path = path;
+    public PathCookieAttribute(final String actualPath) {
+        this.path = actualPath;
     }
 
     @Override
-    public void visit(final Cookie cookie) {
+    public final void visit(final Cookie cookie) {
         cookie.setPath(path);
     }
 }

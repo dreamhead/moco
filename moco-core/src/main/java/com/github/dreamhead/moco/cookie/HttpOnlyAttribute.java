@@ -4,7 +4,7 @@ import io.netty.handler.codec.http.cookie.Cookie;
 
 public class HttpOnlyAttribute extends ActualCookieAttribute {
     @Override
-    public void visit(final Cookie cookie) {
+    public final void visit(final Cookie cookie) {
         cookie.setHttpOnly(true);
     }
 }
