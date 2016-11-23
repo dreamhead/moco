@@ -9,7 +9,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @JsonDeserialize(using = CookieContainerDeserializer.class)
-public class CookieContainer implements Container{
+public class CookieContainer implements Container {
     private String value;
     private String path;
     private String domain;
@@ -39,19 +39,19 @@ public class CookieContainer implements Container{
         return container;
     }
 
-    public String getValue() {
+    public final String getValue() {
         return value;
     }
 
-    public boolean isForTemplate() {
+    public final boolean isForTemplate() {
         return this.template != null;
     }
 
-    public String getTemplate() {
+    public final String getTemplate() {
         return template;
     }
 
-    public CookieAttribute[] getOptions() {
+    public final CookieAttribute[] getOptions() {
         List<CookieAttribute> options = newArrayList();
         if (this.path != null) {
             options.add(CookieAttribute.path(this.path));
