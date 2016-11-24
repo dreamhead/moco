@@ -1301,7 +1301,7 @@ server.response(cookie("loggedIn", "true"), status(302));
 
 #### Cookie Attributes
 
-Cookie attributes are an important part in cookie usage.
+Cookie attributes are sent in http response, which are used by browsers to determine when to delete a cookie, block a cookie or whether to send a cookie to the server.
 
 ##### Path
 
