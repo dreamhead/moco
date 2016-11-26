@@ -10,7 +10,7 @@ public final class Cookies {
     public String encodeCookie(final String key, final String value, final CookieAttribute... options) {
         Cookie cookie = new DefaultCookie(key, value);
         for (CookieAttribute option : options) {
-            ((ActualCookieAttribute)option).visit(cookie);
+            ((ActualCookieAttribute) option).visit(cookie);
         }
         return ServerCookieEncoder.STRICT.encode(cookie);
     }
