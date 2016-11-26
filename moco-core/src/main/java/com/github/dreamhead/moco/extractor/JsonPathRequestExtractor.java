@@ -24,7 +24,7 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
         Optional<byte[]> requestBody = extractor.extract(request);
-		try {
+        try {
             if (!requestBody.isPresent()) {
                 return absent();
             }

@@ -50,5 +50,6 @@ public final class HttpDumpers {
         return defaultValue;
     }
 
-    private HttpDumpers() {}
+    private HttpDumpers() {
+    }
 }

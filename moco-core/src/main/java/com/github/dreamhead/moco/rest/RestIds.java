@@ -13,7 +13,7 @@ public class RestIds {
         return checkValidUrlItem(name, "Resource name");
     }
 
-    private static String checkValidUrlItem(String id, String item) {
+    private static String checkValidUrlItem(final String id, final String item) {
         checkNotNullOrEmpty(id, item + " should not be null or empty");
 
         if (id.contains(URLs.SEPARATOR)) {
