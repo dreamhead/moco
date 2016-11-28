@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.util.URLs;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
-public class RestIds {
+public final class RestIds {
     public static String checkId(final String id) {
         return checkValidUrlItem(id, "Rest ID");
     }

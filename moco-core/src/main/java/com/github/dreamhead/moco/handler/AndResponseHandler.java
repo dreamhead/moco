@@ -8,7 +8,7 @@ import com.google.common.base.Function;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.FluentIterable.from;
 
-public class AndResponseHandler extends AbstractResponseHandler {
+public final class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
 
     private AndResponseHandler(final Iterable<ResponseHandler> handlers) {

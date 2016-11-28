@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public class SequenceHandler extends AbstractResponseHandler {
+public final class SequenceHandler extends AbstractResponseHandler {
     private final ImmutableList<ResponseHandler> handlers;
     private int index;
 
