@@ -24,7 +24,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
             return container.toProxyContainer();
         }
 
-        return (ProxyContainer)ctxt.handleUnexpectedToken(ProxyContainer.class, jp);
+        return (ProxyContainer) ctxt.handleUnexpectedToken(ProxyContainer.class, jp);
     }
 
     private static class InternalProxyContainer {

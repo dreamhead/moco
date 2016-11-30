@@ -13,7 +13,7 @@ import static com.google.common.collect.Iterators.get;
 
 public class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
     @Override
-    public CookieContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public CookieContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return CookieContainer.newContainer(jp.getText());

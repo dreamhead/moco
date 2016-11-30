@@ -35,7 +35,7 @@ public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
             return asFileContainer(helper.textContainer(jp, ctxt));
         }
 
-        return (FileContainer)ctxt.handleUnexpectedToken(FileContainer.class, jp);
+        return (FileContainer) ctxt.handleUnexpectedToken(FileContainer.class, jp);
     }
 
     private FileContainer toFileContainer(final JsonParser jp) throws IOException {

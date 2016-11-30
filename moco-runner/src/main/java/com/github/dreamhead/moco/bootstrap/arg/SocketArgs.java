@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.bootstrap.arg;
 
 import static com.github.dreamhead.moco.bootstrap.ServerType.SOCKET;
 
-public class SocketArgs extends StartArgs {
+public final class SocketArgs extends StartArgs {
     private SocketArgs(final Integer port, final Integer shutdownPort, final String configurationFile) {
         super(SOCKET, port, shutdownPort, configurationFile, null, null, null);
     }
