@@ -23,6 +23,6 @@ public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
             return helper.textContainer(jp, ctxt);
         }
 
-        return (TextContainer)ctxt.handleUnexpectedToken(TextContainer.class, jp);
+        return (TextContainer) ctxt.handleUnexpectedToken(TextContainer.class, jp);
     }
 }

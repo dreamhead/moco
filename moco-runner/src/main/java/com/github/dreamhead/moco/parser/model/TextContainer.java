@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFacto
 import static com.github.dreamhead.moco.parser.model.Dynamics.invokeTarget;
 
 @JsonDeserialize(using = TextContainerDeserializer.class)
-public class TextContainer implements Container{
+public class TextContainer implements Container {
     private static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;

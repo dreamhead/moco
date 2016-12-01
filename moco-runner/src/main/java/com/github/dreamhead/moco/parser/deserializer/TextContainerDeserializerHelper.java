@@ -44,7 +44,7 @@ public class TextContainerDeserializerHelper {
             }
         }
 
-        return (TextContainer)ctxt.handleUnexpectedToken(TextContainer.class, jp);
+        return (TextContainer) ctxt.handleUnexpectedToken(TextContainer.class, jp);
     }
 
     private TextContainer template(final JsonParser jp, final TextContainer.Builder builder) throws IOException {
