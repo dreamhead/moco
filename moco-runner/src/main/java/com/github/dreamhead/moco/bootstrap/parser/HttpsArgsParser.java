@@ -37,7 +37,6 @@ public class HttpsArgsParser extends StartArgsParser {
         return httpsArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
     }
 
-
     private HttpsArg httpsArg(final CommandLine cmd) {
         String https = cmd.getOptionValue("https");
         String keystore = cmd.getOptionValue("keystore");

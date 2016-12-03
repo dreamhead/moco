@@ -3,7 +3,10 @@ package com.github.dreamhead.moco;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.Moco.*;
+
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 
