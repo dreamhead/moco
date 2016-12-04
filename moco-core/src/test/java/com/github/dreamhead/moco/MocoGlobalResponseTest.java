@@ -11,13 +11,19 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.Moco.proxy;
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.latency;
+import static com.github.dreamhead.moco.Moco.response;
+import static com.github.dreamhead.moco.Moco.seq;
+import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.version;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoMount.to;
+import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -166,5 +172,4 @@ public class MocoGlobalResponseTest {
             }
         });
     }
-
 }
