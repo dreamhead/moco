@@ -17,15 +17,40 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.HttpProtocolVersion.*;
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
+import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_1;
+import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.failover;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.from;
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.log;
+import static com.github.dreamhead.moco.Moco.match;
+import static com.github.dreamhead.moco.Moco.method;
+import static com.github.dreamhead.moco.Moco.playback;
+import static com.github.dreamhead.moco.Moco.proxy;
+import static com.github.dreamhead.moco.Moco.query;
+import static com.github.dreamhead.moco.Moco.status;
+import static com.github.dreamhead.moco.Moco.template;
+import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.version;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MocoProxyTest extends AbstractMocoHttpTest {
@@ -216,7 +241,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     private Matcher<String> countString(final String substring, final int targetCount) {
         return new SubstringMatcher(substring) {
             @Override
-            protected boolean evalSubstringOf(String string) {
+            protected boolean evalSubstringOf(final String string) {
                 int count = 0;
                 int current = 0;
 
