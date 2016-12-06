@@ -4,17 +4,23 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.httpsServer;
+import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.httpsRoot;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteHttpsUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class MocoHttpsTest {
-    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+    private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
     private MocoTestHelper helper;
 
     @Before
