@@ -1,19 +1,15 @@
 package com.github.dreamhead.moco.extractor;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
+import com.github.dreamhead.moco.HttpRequest;
+import io.netty.handler.codec.http.HttpVersion;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import com.github.dreamhead.moco.HttpProtocolVersion;
-import com.github.dreamhead.moco.HttpRequest;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpVersion;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class VersionExtractorTest {
 	private VersionExtractor extractor;

@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.mount;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.junit.Assert.assertThat;
 
 public class MountToTest {
