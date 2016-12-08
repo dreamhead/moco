@@ -5,7 +5,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.xml;
+import static com.github.dreamhead.moco.Moco.xpath;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
