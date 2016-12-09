@@ -10,10 +10,25 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
-import static com.github.dreamhead.moco.Moco.*;
-import static com.github.dreamhead.moco.MocoRequestHit.*;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.eq;
+import static com.github.dreamhead.moco.Moco.form;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.MocoRequestHit.atLeast;
+import static com.github.dreamhead.moco.MocoRequestHit.atMost;
+import static com.github.dreamhead.moco.MocoRequestHit.between;
+import static com.github.dreamhead.moco.MocoRequestHit.never;
+import static com.github.dreamhead.moco.MocoRequestHit.once;
+import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
+import static com.github.dreamhead.moco.MocoRequestHit.times;
+import static com.github.dreamhead.moco.MocoRequestHit.unexpected;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteHttpsUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.any;
@@ -21,7 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class MocoRequestHitTest {
-    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+    private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
 
     private MocoTestHelper helper;
     private RequestHit hit;
