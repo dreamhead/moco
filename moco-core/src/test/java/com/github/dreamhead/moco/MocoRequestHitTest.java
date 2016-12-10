@@ -14,6 +14,8 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.form;
 import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.httpsServer;
+import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoRequestHit.atLeast;

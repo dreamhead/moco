@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.MocoMount.*;
+import static com.github.dreamhead.moco.MocoMount.exclude;
+import static com.github.dreamhead.moco.MocoMount.include;
+import static com.github.dreamhead.moco.MocoMount.to;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
