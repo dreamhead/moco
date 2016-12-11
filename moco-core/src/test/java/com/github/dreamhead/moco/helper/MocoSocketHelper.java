@@ -1,6 +1,11 @@
 package com.github.dreamhead.moco.helper;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -12,7 +17,7 @@ public class MocoSocketHelper implements Closeable {
     private PrintStream os;
     private BufferedReader reader;
 
-    public MocoSocketHelper(String target, int port) {
+    public MocoSocketHelper(final String target, final int port) {
         socket = new Socket();
         address = new InetSocketAddress(target, port);
     }
@@ -29,7 +34,7 @@ public class MocoSocketHelper implements Closeable {
         }
     }
 
-    public String send(String request) {
+    public String send(final String request) {
         os.print(request);
         os.flush();
 
@@ -40,7 +45,7 @@ public class MocoSocketHelper implements Closeable {
         }
     }
 
-    public String send(String request, int readCount) {
+    public String send(final String request, final int readCount) {
         os.print(request);
         os.flush();
 
