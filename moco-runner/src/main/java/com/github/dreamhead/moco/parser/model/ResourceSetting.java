@@ -13,7 +13,7 @@ import static com.google.common.collect.Iterables.toArray;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResourceSetting {
-    protected String name;
+    private String name;
     protected List<RestGetSetting> get;
     protected List<RestPostSetting> post;
     protected List<RestPutSetting> put;

@@ -22,7 +22,7 @@ public class RestSubResourceSetting extends ResourceSetting {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("name", name)
+                .add("name", this.getName())
                 .add("get", get)
                 .add("post", post)
                 .add("put", put)
