@@ -11,9 +11,18 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
-import static com.github.dreamhead.moco.Moco.*;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.fileRoot;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.httpsServer;
+import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.*;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteHttpsUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
