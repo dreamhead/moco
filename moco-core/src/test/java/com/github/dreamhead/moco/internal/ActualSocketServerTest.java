@@ -12,7 +12,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ActualSocketServerTest {
     private MocoSocketHelper helper;
@@ -83,7 +83,7 @@ public class ActualSocketServerTest {
         assertThat(newServer.getPort().isPresent(), is(false));
     }
 
-    private String line(String text) {
+    private String line(final String text) {
         return text + "\r\n";
     }
 }
