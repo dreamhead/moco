@@ -5,16 +5,18 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class AnyCertificateAcceptingTrustManagerFactory {
+public final class AnyCertificateAcceptingTrustManagerFactory {
 
     private static final TrustManager DUMMY_TRUST_MANAGER = new X509TrustManager() {
         @Override
-        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+        public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s)
+                throws CertificateException {
             // always trust
         }
 
         @Override
-        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+        public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s)
+                throws CertificateException {
             // always trust
         }
 
@@ -26,5 +28,8 @@ public class AnyCertificateAcceptingTrustManagerFactory {
 
     public static TrustManager[] getTrustManagers() {
         return new TrustManager[]{DUMMY_TRUST_MANAGER};
+    }
+
+    private AnyCertificateAcceptingTrustManagerFactory() {
     }
 }
