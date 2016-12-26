@@ -19,8 +19,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
-    private final String SHUTDOWN_MOCO_KEY = "_SHUTDOWN_MOCO_KEY";
-    private final int SHUTDOWN_PORT = 9527;
+    private static final String SHUTDOWN_MOCO_KEY = "_SHUTDOWN_MOCO_KEY";
+    private static final int SHUTDOWN_PORT = 9527;
 
     @Before
     public void setup() {

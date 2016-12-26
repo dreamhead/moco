@@ -17,5 +17,4 @@ public class XPathRequestExtractorTest {
         Optional<String[]> result = unitUnderTest.extract(request);
         assertThat(result.isPresent(), is(false));
     }
-
 }

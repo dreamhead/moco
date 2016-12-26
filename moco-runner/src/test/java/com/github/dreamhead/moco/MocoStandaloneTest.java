@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.net.HttpHeaders;
-import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
-import io.netty.handler.codec.http.cookie.Cookie;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
