@@ -24,7 +24,7 @@ public class AbstractMocoStandaloneTest {
         }
     }
 
-    protected void runWithConfiguration(String... resourceNames) {
+    protected void runWithConfiguration(final String... resourceNames) {
         try {
             runner = newRunner(resourceNames);
             runner.run();
@@ -33,7 +33,7 @@ public class AbstractMocoStandaloneTest {
         }
     }
 
-    private JsonRunner newRunner(String[] resourceNames) throws IOException {
+    private JsonRunner newRunner(final String[] resourceNames) throws IOException {
         ImmutableList.Builder<InputStream> builder = ImmutableList.builder();
         for (String resourceName : resourceNames) {
             builder.add(Resources.getResource(resourceName).openStream());
