@@ -31,7 +31,8 @@ import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.collect.Maps.transformEntries;
 
 public final class ApiUtils {
-    public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor[] monitors) {
+    public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2,
+                                           final MocoMonitor[] monitors) {
         return new CompositeMonitor(asIterable(monitor, monitor2, monitors));
     }
 
@@ -45,7 +46,8 @@ public final class ApiUtils {
         };
     }
 
-    public static ImmutableMap<String, Variable> toVariables(final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    public static ImmutableMap<String, Variable> toVariables(
+            final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
     }
 

@@ -109,11 +109,11 @@ public class SettingRunnerTest {
         helper.get(remoteUrl("/foo"));
     }
 
-    private StartArgs createStartArgs(int port, String env) {
+    private StartArgs createStartArgs(final int port, final String env) {
         return httpArgs().withPort(port).withEnv(env).build();
     }
 
-    private StartArgs createStartArgs(int port) {
+    private StartArgs createStartArgs(final int port) {
         return httpArgs().withPort(port).build();
     }
 

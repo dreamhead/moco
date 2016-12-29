@@ -25,7 +25,11 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
     @Before
     public void setup() {
         RunnerFactory factory = new RunnerFactory(SHUTDOWN_MOCO_KEY);
-        runner = factory.createRunner(httpArgs().withPort(port()).withShutdownPort(SHUTDOWN_PORT).withConfigurationFile("src/test/resources/foo.json").build());
+        runner = factory.createRunner(httpArgs()
+                .withPort(port())
+                .withShutdownPort(SHUTDOWN_PORT)
+                .withConfigurationFile("src/test/resources/foo.json")
+                .build());
     }
 
     @Test(expected = HttpHostConnectException.class)
