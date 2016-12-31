@@ -79,18 +79,22 @@ public final class Moco {
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
-                checkNotNull(monitor, "Monitor should not be null"), configs);
+                checkNotNull(monitor, "Monitor should not be null"),
+                checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2,
+                                        final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(of(port),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                        checkNotNull(monitor2, "Monitor should not be null"),
+                        checkNotNull(monitors, "Monitors should not be null")));
     }
 
     public static HttpServer httpServer(final MocoConfig... configs) {
-        return ActualHttpServer.createQuietServer(Optional.<Integer>absent(), configs);
+        return ActualHttpServer.createQuietServer(Optional.<Integer>absent(),
+                checkNotNull(configs, "Configuration should not be null"));
     }
 
     public static HttpServer httpServer(final MocoMonitor monitor, final MocoConfig... configs) {
@@ -144,7 +148,7 @@ public final class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualSocketServer.createServerWithMonitor(of(port),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
 
@@ -494,7 +498,7 @@ public final class Moco {
     }
 
     public static <ExtractorType1, ExtractorType2> ContentResource template(final String template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
-                                                                     final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+                                                                            final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return template(text(checkNotNullOrEmpty(template, "Template should not be null")),
                 checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                 checkNotNull(extractor1, "Template variable extractor should not be null"),
@@ -510,7 +514,7 @@ public final class Moco {
     }
 
     public static <ExtractorType1, ExtractorType2> ContentResource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
-                                                                     final String name2, final RequestExtractor<ExtractorType2> extractor2) {
+                                                                            final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
                         new ExtractorVariable<ExtractorType1>(checkNotNull(extractor1, "Template variable extractor should not be null")),
@@ -519,12 +523,14 @@ public final class Moco {
         );
     }
 
-    public static ContentResource template(final String template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    public static ContentResource template(final String template,
+                                           final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return template(text(checkNotNull(template, "Template should not be null")),
                 checkNotNull(variables, "Template variable should not be null"));
     }
 
-    public static ContentResource template(final ContentResource template, final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+    public static ContentResource template(final ContentResource template,
+                                           final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ApiUtils.toVariables(checkNotNull(variables, "Template variable should not be null")));
     }
@@ -534,11 +540,13 @@ public final class Moco {
     }
 
     public static Failover failover(final String file) {
-        return new Failover(ApiUtils.failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
+        return new Failover(ApiUtils.failoverExecutor(
+                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
     }
 
     public static Failover playback(final String file) {
-        return new Failover(ApiUtils.failoverExecutor(checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
+        return new Failover(ApiUtils.failoverExecutor(
+                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
     }
 
     public static MocoEventTrigger complete(final MocoEventAction action) {
@@ -546,11 +554,13 @@ public final class Moco {
     }
 
     public static MocoEventAction async(final MocoEventAction action) {
-        return async(checkNotNull(action, "Action should not be null"), latency(LatencyProcedure.DEFAULT_LATENCY, TimeUnit.MILLISECONDS));
+        return async(checkNotNull(action, "Action should not be null"),
+                latency(LatencyProcedure.DEFAULT_LATENCY, TimeUnit.MILLISECONDS));
     }
 
     public static MocoEventAction async(final MocoEventAction action, final LatencyProcedure procedure) {
-        return new MocoAsyncAction(checkNotNull(action, "Action should not be null"), checkNotNull(procedure, "Procedure should not be null"));
+        return new MocoAsyncAction(checkNotNull(action, "Action should not be null"),
+                checkNotNull(procedure, "Procedure should not be null"));
     }
 
     public static MocoEventAction get(final String url) {
