@@ -21,24 +21,28 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     @Test
     public void should_reload_configuration() throws IOException, InterruptedException {
         final File config = tempFolder.newFile("config.json");
-        changeFileContent(config, "[{\"response\" :{" +
-                "\"text\" : \"foo\"" +
-                "}}]");
+        changeFileContent(config, "[{\"response\" :{"
+                + "\"text\" : \"foo\""
+                + "}}]");
 
         final File setting = tempFolder.newFile("settings.json");
         String path = FilenameUtils.separatorsToUnix(config.getAbsolutePath());
-        changeFileContent(setting, "[{" +
-                "\"include\" : \"" + path + "\"" +
-                "}]");
+        changeFileContent(setting, "[{"
+                + "\"include\" : \"" + path + "\""
+                + "}]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
-        runner = factory.createRunner(httpArgs().withPort(port()).withShutdownPort(9090).withSettings(setting.getAbsolutePath()).build());
+        runner = factory.createRunner(httpArgs()
+                .withPort(port())
+                .withShutdownPort(9090)
+                .withSettings(setting.getAbsolutePath())
+                .build());
         runner.run();
         assertThat(helper.get(root()), is("foo"));
 
-        changeFileContent(config, "[{\"response\" :{" +
-                "\"text\" : \"foobar\"" +
-                "}}]");
+        changeFileContent(config, "[{\"response\" :{"
+                + "\"text\" : \"foobar\""
+                + "}}]");
 
         waitChangeHappens();
 

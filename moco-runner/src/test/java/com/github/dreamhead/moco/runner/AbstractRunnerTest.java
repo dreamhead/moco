@@ -33,7 +33,7 @@ public abstract class AbstractRunnerTest {
         }
     }
 
-    protected void changeFileContent(File response, String content) {
+    protected void changeFileContent(final File response, final String content) {
         PrintStream stream = null;
         try {
             stream = new PrintStream(new FileOutputStream(response));
