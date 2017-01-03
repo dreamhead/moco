@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.Server;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closeables;
 
 import java.io.InputStream;
 
@@ -20,6 +21,10 @@ public abstract class BaseParser<T extends Server> implements Parser<T> {
 
     public T parseServer(final InputStream is, final Optional<Integer> port,
                          final MocoConfig... configs) {
-        return createServer(reader.read(is, SessionSetting.class), port, configs);
+        try {
+            return createServer(reader.read(is, SessionSetting.class), port, configs);
+        } finally {
+            Closeables.closeQuietly(is);
+        }
     }
 }
