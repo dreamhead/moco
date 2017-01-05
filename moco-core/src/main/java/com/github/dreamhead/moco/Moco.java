@@ -536,7 +536,7 @@ public final class Moco {
     }
 
     public static RequestExtractor<Object> var(final Object text) {
-        return new PlainExtractor(checkNotNull(text, "Template variable should not be null or empty"));
+        return new PlainExtractor<Object>(checkNotNull(text, "Template variable should not be null or empty"));
     }
 
     public static Failover failover(final String file) {
