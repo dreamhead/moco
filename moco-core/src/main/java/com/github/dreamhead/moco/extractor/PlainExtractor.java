@@ -7,14 +7,14 @@ import com.google.common.base.Optional;
 import static com.google.common.base.Optional.of;
 
 public class PlainExtractor<T> implements RequestExtractor<T> {
-    private final T text;
+    private final T object;
 
-    public PlainExtractor(final T text) {
-        this.text = text;
+    public PlainExtractor(final T object) {
+        this.object = object;
     }
 
     @Override
     public Optional<T> extract(final Request request) {
-        return of(this.text);
+        return of(this.object);
     }
 }
