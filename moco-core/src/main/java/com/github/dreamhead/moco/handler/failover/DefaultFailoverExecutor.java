@@ -12,12 +12,14 @@ import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static com.google.common.base.Predicates.not;
@@ -68,14 +70,20 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     private ImmutableList<Session> restoreSessions(final File file) {
+        InputStream inputStream = null;
         try {
-            List<Session> sessions = Jsons.toObject(new FileInputStream(file), new TypeReference<List<Session>>() {});
+            inputStream = new FileInputStream(file);
+            List<Session> sessions = Jsons.toObject(inputStream, new TypeReference<List<Session>>() {});
             return copyOf(sessions);
         } catch (MocoException me) {
             logger.error("exception found", me);
             return of();
         } catch (IOException e) {
             throw new MocoException(e);
+        } finally {
+            if (inputStream != null) {
+                Closeables.closeQuietly(inputStream);
+            }
         }
     }
 
