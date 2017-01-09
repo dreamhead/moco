@@ -36,7 +36,7 @@ public abstract class StartTask implements BootstrapTask {
         }));
     }
 
-    protected Runner createRunner(final String[] args) {
+    private Runner createRunner(final String[] args) {
         StartArgs startArgs = startArgsParser.parse(args);
         return factory.createRunner(startArgs);
     }
