@@ -14,7 +14,7 @@ public abstract class FileRunner implements Runner {
 
     protected abstract Runner createRunner();
 
-    protected FileRunner() {
+    private FileRunner() {
         this.runner = createRunner();
     }
 
