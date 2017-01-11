@@ -23,7 +23,7 @@ public class SettingRunner implements Runner {
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;
     private final StartArgs startArgs;
-    private JsonRunner jsonRunner;
+    private Runner runner;
     private final FluentIterable<File> files;
 
     public SettingRunner(final InputStream stream, final StartArgs args) {
@@ -38,10 +38,10 @@ public class SettingRunner implements Runner {
     }
 
     public void run() {
-        jsonRunner = newJsonRunnerWithSetting(from(globalSettings)
+        runner = newJsonRunnerWithSetting(from(globalSettings)
                 .filter(byEnv(this.env))
                 .transform(toRunnerSetting()), startArgs);
-        jsonRunner.run();
+        runner.run();
     }
 
     private Predicate<? super GlobalSetting> byEnv(final Optional<String> env) {
@@ -74,7 +74,7 @@ public class SettingRunner implements Runner {
     }
 
     public void stop() {
-        jsonRunner.stop();
+        runner.stop();
     }
 
     private Function<? super GlobalSetting, File> toFile() {
