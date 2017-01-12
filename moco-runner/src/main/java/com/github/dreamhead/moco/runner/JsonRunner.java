@@ -34,10 +34,10 @@ public final class JsonRunner implements Runner {
     private final Server server;
 
     private JsonRunner(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
-        this.server = createServer(settings, startArgs);
+        this.server = newServer(settings, startArgs);
     }
 
-    private Server createServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
+    private Server newServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         if (startArgs.isSocket()) {
             return createSocketServer(settings, startArgs);
         }

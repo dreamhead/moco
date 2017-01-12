@@ -13,7 +13,7 @@ public class StandaloneRunner {
     private Runner runner;
 
     public void run(final Server server) {
-        runner = createRunner(server);
+        runner = newRunner(server);
         runner.start();
         logger.info("Server is started at {}", server.port());
     }
@@ -22,7 +22,7 @@ public class StandaloneRunner {
         super();
     }
 
-    private Runner createRunner(final Server server) {
+    private Runner newRunner(final Server server) {
         if (server instanceof HttpServer) {
             return Runner.runner((HttpServer) server);
         }

@@ -12,15 +12,15 @@ import static com.google.common.collect.ImmutableList.of;
 public abstract class FileRunner implements Runner {
     private Runner runner;
 
-    protected abstract Runner createRunner();
+    protected abstract Runner newRunner();
 
     private FileRunner() {
-        this.runner = createRunner();
+        this.runner = newRunner();
     }
 
     public void restart() {
         this.runner.stop();
-        this.runner = createRunner();
+        this.runner = newRunner();
         this.runner.run();
     }
 
@@ -41,7 +41,7 @@ public abstract class FileRunner implements Runner {
     public static FileRunner createConfigurationFileRunner(final File file, final StartArgs startArgs) {
         return new FileRunner() {
             @Override
-            protected Runner createRunner() {
+            protected Runner newRunner() {
                 return newJsonRunnerWithStreams(of(toInputStream(file)), startArgs);
             }
         };
@@ -50,7 +50,7 @@ public abstract class FileRunner implements Runner {
     public static FileRunner createSettingFileRunner(final File settingsFile, final StartArgs startArgs) {
         return new FileRunner() {
             @Override
-            protected Runner createRunner() {
+            protected Runner newRunner() {
                 return new SettingRunner(toInputStream(settingsFile), startArgs);
             }
         };
