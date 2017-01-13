@@ -5,6 +5,8 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.RestIdMatcher;
 
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.rest.RestIds.checkId;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 
@@ -14,11 +16,11 @@ public final class RestIdMatchers {
     }
 
     public static RestIdMatcher eq(final String id) {
-        return new BaseRestIdMatcher(id);
+        return new BaseRestIdMatcher(checkNotNullOrEmpty(id, "ID should not be null or empty"));
     }
 
     public static RestIdMatcher match(final String uri) {
-        return new BaseRestIdMatcher(uri);
+        return new BaseRestIdMatcher(checkNotNullOrEmpty(uri, "Match target should not be null or empty"));
     }
 
     private static class BaseRestIdMatcher implements RestIdMatcher {
