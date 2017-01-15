@@ -18,10 +18,6 @@ public class StandaloneRunner {
         logger.info("Server is started at {}", server.port());
     }
 
-    public StandaloneRunner() {
-        super();
-    }
-
     private Runner newRunner(final Server server) {
         if (server instanceof HttpServer) {
             return Runner.runner((HttpServer) server);
