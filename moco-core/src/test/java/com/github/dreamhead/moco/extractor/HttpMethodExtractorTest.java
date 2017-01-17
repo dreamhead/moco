@@ -11,18 +11,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class HttpMethodExtractorTest {
-	private HttpMethodExtractor extractor;
-	private HttpRequest request;
+    private HttpMethodExtractor extractor;
+    private HttpRequest request;
 
-	@Before
-	public void setUp() {
-		extractor = new HttpMethodExtractor();
+    @Before
+    public void setUp() {
+        extractor = new HttpMethodExtractor();
         request = mock(HttpRequest.class);
-	}
+    }
 
-	@Test
-	public void should_extract_http_method() {
+    @Test
+    public void should_extract_http_method() {
         when(request.getMethod()).thenReturn(HttpMethod.GET);
-		assertThat(extractor.extract(request).get(), is(HttpMethod.GET.name()));
-	}
+        assertThat(extractor.extract(request).get(), is(HttpMethod.GET.name()));
+    }
 }

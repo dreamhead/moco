@@ -78,18 +78,18 @@ public class HttpDumpersTest {
         assertThat(asContent(messageWithHeaders(EMPTY_MAP)), isEmptyString());
     }
 
-    private void assertMessageContent(String mediaType, String expectedContent) {
+    private void assertMessageContent(final String mediaType, final String expectedContent) {
         assertThat(asContent(messageWithHeaders(defaultHeadersFor(mediaType))), is(expectedContent));
     }
 
-    private HttpMessage messageWithHeaders(Map<String, String> headers) {
+    private HttpMessage messageWithHeaders(final Map<String, String> headers) {
         return DefaultHttpResponse.builder()
                 .withHeaders(headers)
                 .withContent(MessageContent.content(MESSAGE_BODY))
                 .build();
     }
 
-    private Map<String, String> defaultHeadersFor(String mediaType) {
+    private Map<String, String> defaultHeadersFor(final String mediaType) {
         return ImmutableMap.<String, String>builder()
                 .put(HttpHeaders.CONTENT_LENGTH, String.valueOf(MESSAGE_BODY.length()))
                 .put(HttpHeaders.CONTENT_TYPE, mediaType)
