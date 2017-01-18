@@ -22,7 +22,7 @@ public class InternalApisTest {
         assertThat(matcher.match(requestByUri("targetshello")), is(false));
     }
 
-    private DefaultHttpRequest requestByUri(String uri) {
+    private DefaultHttpRequest requestByUri(final String uri) {
         return DefaultHttpRequest.builder().withUri(uri).build();
     }
 }

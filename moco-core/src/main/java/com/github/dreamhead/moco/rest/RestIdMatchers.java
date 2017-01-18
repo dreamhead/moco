@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.RestIdMatcher;
 
 import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.rest.RestIds.checkId;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
