@@ -55,7 +55,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Override
-    protected RestServer createServer(int port) {
+    protected RestServer createServer(final int port) {
         return restServer(port, log());
     }
 

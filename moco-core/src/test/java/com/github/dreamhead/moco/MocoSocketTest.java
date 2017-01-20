@@ -152,7 +152,7 @@ public class MocoSocketTest {
         hit.verify(by("foo"), once());
     }
 
-    private String times(String base, int times) {
+    private String times(final String base, final int times) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < times; i++) {
             sb.append(base);
@@ -160,7 +160,7 @@ public class MocoSocketTest {
         return sb.toString();
     }
 
-    private String line(String text) {
+    private String line(final String text) {
         return text + "\r\n";
     }
 }
