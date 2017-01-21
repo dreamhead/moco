@@ -827,7 +827,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         return asPlain(response);
     }
 
-    private Plain asPlain(HttpResponse response) throws IOException {
+    private Plain asPlain(final HttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
         return Jsons.toObject(entity.getContent(), Plain.class);
     }
@@ -837,13 +837,13 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         return asPlains(response);
     }
 
-    private List<Plain> asPlains(HttpResponse response) throws IOException {
+    private List<Plain> asPlains(final HttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
         return Jsons.toObject(entity.getContent(), new TypeReference<List<Plain>>() {
         });
     }
 
-    private HttpEntity checkJsonResponse(HttpResponse response) {
+    private HttpEntity checkJsonResponse(final HttpResponse response) {
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         HttpEntity entity = response.getEntity();
         MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
