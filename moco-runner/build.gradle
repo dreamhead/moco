@@ -15,7 +15,7 @@ buildscript {
 }
 
 project.ext {
-    logbackVersion = '1.1.8'
+    logbackVersion = '1.1.9'
     commonsCliVersion = '1.3.1'
 }
 
