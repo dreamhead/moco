@@ -18,7 +18,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
 public class TextContainerDeserializerHelper {
-    private final ImmutableMap<String, String> names = ImmutableMap.<String, String>builder()
+    private static final ImmutableMap<String, String> NAMES = ImmutableMap.<String, String>builder()
         .put("json_path", "jsonPaths")
         .put("xpath", "xpaths")
         .put("header", "headers")
@@ -51,32 +51,7 @@ public class TextContainerDeserializerHelper {
         Iterator<Template> iterator = jp.readValuesAs(Template.class);
         Template template = Iterators.get(iterator, 0);
         jp.nextToken();
-        return builder.withText(template.with).withProps(toTemplateVars(template)).build();
-    }
-
-    private ImmutableMap<String, TextContainer> toTemplateVars(final Template template) {
-        return copyOf(transformEntries(template.vars, toLocalContainer()));
-    }
-
-    private Maps.EntryTransformer<String, TextContainer, TextContainer> toLocalContainer() {
-        return new Maps.EntryTransformer<String, TextContainer, TextContainer>() {
-            @Override
-            public TextContainer transformEntry(final String key, final TextContainer container) {
-                if (container.isRawText()) {
-                    return container;
-                }
-
-                return toLocal(container);
-            }
-        };
-    }
-
-    private TextContainer toLocal(final TextContainer container) {
-        String name = names.get(container.getOperation());
-        if (name == null) {
-            return container;
-        }
-        return builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
+        return builder.withText(template.with).withProps(template.toTemplateVars()).build();
     }
 
     protected TextContainer text(final JsonParser jp) throws IOException {
@@ -86,5 +61,30 @@ public class TextContainerDeserializerHelper {
     private static class Template {
         public String with;
         public Map<String, TextContainer> vars;
+
+        private ImmutableMap<String, TextContainer> toTemplateVars() {
+            return copyOf(transformEntries(vars, toLocalContainer()));
+        }
+
+        private Maps.EntryTransformer<String, TextContainer, TextContainer> toLocalContainer() {
+            return new Maps.EntryTransformer<String, TextContainer, TextContainer>() {
+                @Override
+                public TextContainer transformEntry(final String key, final TextContainer container) {
+                    if (container.isRawText()) {
+                        return container;
+                    }
+
+                    return toLocal(container);
+                }
+            };
+        }
+
+        private TextContainer toLocal(final TextContainer container) {
+            String name = NAMES.get(container.getOperation());
+            if (name == null) {
+                return container;
+            }
+            return builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
+        }
     }
 }

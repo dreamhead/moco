@@ -84,7 +84,8 @@ public class Dynamics {
         return invokeTarget(name, value, clazz, value.getClass());
     }
 
-    public static <T> T invokeTarget(final String name, final Object value, final Class<T> clazz, final Class<?> argClass) {
+    public static <T> T invokeTarget(final String name, final Object value,
+                                     final Class<T> clazz, final Class<?> argClass) {
         try {
             Method method = Moco.class.getMethod(name, argClass);
             Object result = method.invoke(null, value);
@@ -95,7 +96,7 @@ public class Dynamics {
     }
 
     public static <T> T invokeTarget(final String name, final Object arg1, final Object arg2,
-                                 final Class<T> clazz, final Class<?> arg1Class, final Class<?> arg2Class) {
+                                     final Class<T> clazz, final Class<?> arg1Class, final Class<?> arg2Class) {
         try {
             Method method = Moco.class.getMethod(name, arg1Class, arg2Class);
             Object result = method.invoke(null, arg1, arg2);
