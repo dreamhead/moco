@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.deserializer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -58,9 +59,10 @@ public class TextContainerDeserializerHelper {
         return builder().withText(jp.getText().trim()).build();
     }
 
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class Template {
-        public String with;
-        public Map<String, TextContainer> vars;
+        private String with;
+        private Map<String, TextContainer> vars;
 
         private ImmutableMap<String, TextContainer> toTemplateVars() {
             return copyOf(transformEntries(vars, toLocalContainer()));
