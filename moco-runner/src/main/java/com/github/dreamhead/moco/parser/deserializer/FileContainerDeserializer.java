@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.deserializer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -41,24 +42,28 @@ public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     private FileContainer toFileContainer(final JsonParser jp) throws IOException {
         Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
         FileVar file = get(iterator, 0);
-        TextContainer filename = file.name;
-        if (!isAllowedFilename(filename)) {
-            throw new IllegalArgumentException("only string and template are allowed as filename");
-        }
-
-        return aFileContainer().withName(filename).withCharset(file.charset).build();
-    }
-
-    private boolean isAllowedFilename(final TextContainer filename) {
-        return filename.isRawText() || filename.isForTemplate();
+        return file.toFileContainer();
     }
 
     private boolean isForFileContainer(final String target) {
         return "name".equalsIgnoreCase(target) || "charset".equalsIgnoreCase(target);
     }
 
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class FileVar {
-        public TextContainer name;
-        public String charset;
+        private TextContainer name;
+        private String charset;
+
+        private boolean isAllowedFilename(final TextContainer filename) {
+            return filename.isRawText() || filename.isForTemplate();
+        }
+
+        public FileContainer toFileContainer() {
+            if (!isAllowedFilename(name)) {
+                throw new IllegalArgumentException("only string and template are allowed as filename");
+            }
+
+            return aFileContainer().withName(name).withCharset(charset).build();
+        }
     }
 }
