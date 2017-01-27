@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.deserializer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -27,13 +28,14 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
         return (ProxyContainer) ctxt.handleUnexpectedToken(ProxyContainer.class, jp);
     }
 
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class InternalProxyContainer {
-        public String url;
-        public String from;
-        public String to;
+        private String url;
+        private String from;
+        private String to;
 
-        public String failover;
-        public String playback;
+        private String failover;
+        private String playback;
 
         public ProxyContainer toProxyContainer() {
             return builder()
