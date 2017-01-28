@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.deserializer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -22,15 +23,20 @@ public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContai
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
             InternalLatencyContainer container = get(jp.readValuesAs(InternalLatencyContainer.class), 0);
-            return LatencyContainer.latencyWithUnit(container.duration,
-                    TimeUnit.valueOf(container.unit.toUpperCase() + 'S'));
+            return container.toLatencyContainer();
         }
 
         return (LatencyContainer) ctxt.handleUnexpectedToken(LatencyContainer.class, jp);
     }
 
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class InternalLatencyContainer {
-        public long duration;
-        public String unit;
+        private long duration;
+        private String unit;
+
+        private LatencyContainer toLatencyContainer() {
+            return LatencyContainer.latencyWithUnit(duration,
+                    TimeUnit.valueOf(unit.toUpperCase() + 'S'));
+        }
     }
 }
