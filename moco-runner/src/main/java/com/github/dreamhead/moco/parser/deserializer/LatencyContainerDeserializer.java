@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static com.google.common.collect.Iterators.get;
-
 public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContainer> {
     @Override
     public LatencyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
@@ -22,7 +20,7 @@ public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContai
 
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
-            InternalLatencyContainer container = get(jp.readValuesAs(InternalLatencyContainer.class), 0);
+            InternalLatencyContainer container = jp.readValueAs(InternalLatencyContainer.class);
             return container.toLatencyContainer();
         }
 

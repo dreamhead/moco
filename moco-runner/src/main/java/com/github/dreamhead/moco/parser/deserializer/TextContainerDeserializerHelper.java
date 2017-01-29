@@ -6,11 +6,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
@@ -49,8 +47,7 @@ public class TextContainerDeserializerHelper {
     }
 
     private TextContainer template(final JsonParser jp, final TextContainer.Builder builder) throws IOException {
-        Iterator<Template> iterator = jp.readValuesAs(Template.class);
-        Template template = Iterators.get(iterator, 0);
+        Template template = jp.readValueAs(Template.class);
         jp.nextToken();
         return builder.withText(template.with).withProps(template.toTemplateVars()).build();
     }

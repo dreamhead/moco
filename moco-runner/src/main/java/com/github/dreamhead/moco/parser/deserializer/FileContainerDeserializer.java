@@ -9,11 +9,9 @@ import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContainer;
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
-import static com.google.common.collect.Iterators.get;
 
 public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
@@ -40,8 +38,7 @@ public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     }
 
     private FileContainer toFileContainer(final JsonParser jp) throws IOException {
-        Iterator<FileVar> iterator = jp.readValuesAs(FileVar.class);
-        FileVar file = get(iterator, 0);
+        FileVar file = jp.readValueAs(FileVar.class);
         return file.toFileContainer();
     }
 

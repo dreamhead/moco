@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
 import java.io.IOException;
 
-import static com.google.common.collect.Iterators.get;
-
 public class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
     @Override
     public CookieContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
@@ -22,11 +20,15 @@ public class CookieContainerDeserializer extends JsonDeserializer<CookieContaine
 
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
-            InternalCookieContainer container = get(jp.readValuesAs(InternalCookieContainer.class), 0);
-            return container.toContainer();
+            return getCookieContainer(jp);
         }
 
         return (CookieContainer) ctxt.handleUnexpectedToken(CookieContainer.class, jp);
+    }
+
+    private CookieContainer getCookieContainer(final JsonParser jp) throws IOException {
+        InternalCookieContainer container = jp.readValueAs(InternalCookieContainer.class);
+        return container.toContainer();
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

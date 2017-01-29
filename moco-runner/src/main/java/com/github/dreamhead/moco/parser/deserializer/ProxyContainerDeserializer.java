@@ -10,7 +10,6 @@ import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.parser.model.ProxyContainer.builder;
-import static com.google.common.collect.Iterators.get;
 
 public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override
@@ -21,7 +20,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
-            InternalProxyContainer container = get(jp.readValuesAs(InternalProxyContainer.class), 0);
+            InternalProxyContainer container = jp.readValueAs(InternalProxyContainer.class);
             return container.toProxyContainer();
         }
 
