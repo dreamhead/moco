@@ -94,6 +94,10 @@ public class TextContainer implements Container {
         return TEMPLATE_NAME.equalsIgnoreCase(operation);
     }
 
+    public static String getTemplateName() {
+        return TEMPLATE_NAME;
+    }
+
     public boolean isForTemplate() {
         return isForTemplate(this.operation);
     }

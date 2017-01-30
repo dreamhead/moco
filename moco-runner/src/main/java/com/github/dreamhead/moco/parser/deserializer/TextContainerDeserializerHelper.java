@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
+import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateName;
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
@@ -28,28 +29,23 @@ public class TextContainerDeserializerHelper {
     public TextContainer textContainer(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.FIELD_NAME) {
-            TextContainer.Builder builder = builder();
             String operation = jp.getText().trim();
-            builder.withOperation(operation);
+
             JsonToken token = jp.nextToken();
             if (isForTemplate(operation) && token == JsonToken.START_OBJECT) {
-                return template(jp, builder);
+                Template template = jp.readValueAs(Template.class);
+                jp.nextToken();
+                return template.template();
             }
 
             if (token == JsonToken.VALUE_STRING) {
                 String text = jp.getText().trim();
                 jp.nextToken();
-                return builder.withText(text).build();
+                return builder().withOperation(operation).withText(text).build();
             }
         }
 
         return (TextContainer) ctxt.handleUnexpectedToken(TextContainer.class, jp);
-    }
-
-    private TextContainer template(final JsonParser jp, final TextContainer.Builder builder) throws IOException {
-        Template template = jp.readValueAs(Template.class);
-        jp.nextToken();
-        return builder.withText(template.with).withProps(template.toTemplateVars()).build();
     }
 
     protected TextContainer text(final JsonParser jp) throws IOException {
@@ -84,6 +80,10 @@ public class TextContainerDeserializerHelper {
                 return container;
             }
             return builder().withOperation(name).withText(container.getText()).withProps(container.getProps()).build();
+        }
+
+        public TextContainer template() {
+            return builder().withOperation(getTemplateName()).withText(with).withProps(toTemplateVars()).build();
         }
     }
 }
