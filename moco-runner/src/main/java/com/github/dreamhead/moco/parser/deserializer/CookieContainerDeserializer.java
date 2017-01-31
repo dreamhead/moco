@@ -20,15 +20,11 @@ public class CookieContainerDeserializer extends JsonDeserializer<CookieContaine
 
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
-            return getCookieContainer(jp);
+            InternalCookieContainer container = jp.readValueAs(InternalCookieContainer.class);
+            return container.toContainer();
         }
 
         return (CookieContainer) ctxt.handleUnexpectedToken(CookieContainer.class, jp);
-    }
-
-    private CookieContainer getCookieContainer(final JsonParser jp) throws IOException {
-        InternalCookieContainer container = jp.readValueAs(InternalCookieContainer.class);
-        return container.toContainer();
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
