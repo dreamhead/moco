@@ -11,7 +11,7 @@ public class HttpProtocolVersionDeserializer extends JsonDeserializer<HttpProtoc
     @Override
     public HttpProtocolVersion deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         try {
-            return HttpProtocolVersion.versionOf(jp.getText());
+            return HttpProtocolVersion.versionOf(jp.getText().trim());
         } catch (IllegalArgumentException e) {
             return (HttpProtocolVersion) ctx.handleUnexpectedToken(HttpProtocolVersion.class, jp);
         }

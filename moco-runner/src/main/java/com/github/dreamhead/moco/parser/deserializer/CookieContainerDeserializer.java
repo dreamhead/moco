@@ -15,7 +15,7 @@ public class CookieContainerDeserializer extends JsonDeserializer<CookieContaine
     public CookieContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return CookieContainer.newContainer(jp.getText());
+            return CookieContainer.newContainer(jp.getText().trim());
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
