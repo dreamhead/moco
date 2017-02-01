@@ -79,7 +79,7 @@ public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
         helper.get(root());
     }
 
-    private void shutdownMoco(int shutdownPort, String shutdownMocoKey) throws IOException {
+    private void shutdownMoco(final int shutdownPort, final String shutdownMocoKey) throws IOException {
         Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), shutdownPort);
         socket.setSoLinger(false, 0);
 

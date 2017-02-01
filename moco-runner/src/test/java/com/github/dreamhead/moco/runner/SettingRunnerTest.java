@@ -117,7 +117,7 @@ public class SettingRunnerTest {
         return httpArgs().withPort(port).build();
     }
 
-    private InputStream getResourceAsStream(String filename) {
+    private InputStream getResourceAsStream(final String filename) {
         return SettingRunnerTest.class.getClassLoader().getResourceAsStream(filename);
     }
 }
