@@ -1,7 +1,7 @@
 # Global Settings
 We could put all configurations in one single configuration files. But if we want stub many services in a single Moco instance, the configurations file would be huge.
 
-In this case, we can use settings file to separate our configurations for different into different configugration files.
+In this case, we can use settings file to separate our configurations for different into different configuration files.
 
 It's example time. We have two services to stub:
 
