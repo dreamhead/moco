@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContainer;
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
+import static com.github.dreamhead.moco.util.StringUtil.strip;
 
 public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
@@ -26,7 +27,7 @@ public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
         if (currentToken == JsonToken.START_OBJECT) {
             jp.nextToken();
 
-            String target = jp.getText().trim();
+            String target = strip(jp.getText());
             if (isForFileContainer(target)) {
                 return toFileContainer(jp);
             }

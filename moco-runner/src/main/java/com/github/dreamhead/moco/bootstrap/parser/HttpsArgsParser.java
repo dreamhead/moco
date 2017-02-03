@@ -34,7 +34,14 @@ public class HttpsArgsParser extends StartArgsParser {
             throw new ParseArgException("only one arg not allowed");
         }
 
-        return httpsArgs().withPort(getPort(port)).withShutdownPort(getPort(shutdownPort)).withConfigurationFile(config).withSettings(globalSettings).withEnv(env).withHttpsArg(httpsArg(cmd)).build();
+        return httpsArgs()
+                .withPort(getPort(port))
+                .withShutdownPort(getPort(shutdownPort))
+                .withConfigurationFile(config)
+                .withSettings(globalSettings)
+                .withEnv(env)
+                .withHttpsArg(httpsArg(cmd))
+                .build();
     }
 
     private HttpsArg httpsArg(final CommandLine cmd) {

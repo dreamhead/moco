@@ -196,7 +196,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
                                                   final CookieContainer cookieContainer) {
         try {
             Method method = Moco.class.getMethod(target, String.class, Resource.class, CookieAttribute[].class);
-            return (ResponseHandler) method.invoke(null, key, getResource(cookieContainer), cookieContainer.getOptions());
+            return (ResponseHandler) method.invoke(null, key,
+                    getResource(cookieContainer), cookieContainer.getOptions());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

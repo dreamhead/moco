@@ -10,13 +10,14 @@ import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.parser.model.ProxyContainer.builder;
+import static com.github.dreamhead.moco.util.StringUtil.strip;
 
 public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override
     public ProxyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return builder().withUrl(jp.getText().trim()).build();
+            return builder().withUrl(strip(jp.getText())).build();
         }
 
         if (currentToken == JsonToken.START_OBJECT) {

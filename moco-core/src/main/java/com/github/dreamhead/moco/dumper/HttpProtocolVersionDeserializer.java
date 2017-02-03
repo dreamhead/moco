@@ -7,11 +7,13 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.util.StringUtil.strip;
+
 public class HttpProtocolVersionDeserializer extends JsonDeserializer<HttpProtocolVersion> {
     @Override
     public HttpProtocolVersion deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         try {
-            return HttpProtocolVersion.versionOf(jp.getText().trim());
+            return HttpProtocolVersion.versionOf(strip(jp.getText()));
         } catch (IllegalArgumentException e) {
             return (HttpProtocolVersion) ctx.handleUnexpectedToken(HttpProtocolVersion.class, jp);
         }

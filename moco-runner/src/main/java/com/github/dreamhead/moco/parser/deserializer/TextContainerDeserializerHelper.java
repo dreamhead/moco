@@ -14,6 +14,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
 import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateName;
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
+import static com.github.dreamhead.moco.util.StringUtil.strip;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
@@ -29,7 +30,7 @@ public class TextContainerDeserializerHelper {
     public TextContainer textContainer(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.FIELD_NAME) {
-            String operation = jp.getText().trim();
+            String operation = strip(jp.getText());
 
             JsonToken token = jp.nextToken();
             if (isForTemplate(operation) && token == JsonToken.START_OBJECT) {
@@ -39,7 +40,7 @@ public class TextContainerDeserializerHelper {
             }
 
             if (token == JsonToken.VALUE_STRING) {
-                String text = jp.getText().trim();
+                String text = strip(jp.getText());
                 jp.nextToken();
                 return builder().withOperation(operation).withText(text).build();
             }
@@ -49,7 +50,7 @@ public class TextContainerDeserializerHelper {
     }
 
     protected TextContainer text(final JsonParser jp) throws IOException {
-        return builder().withText(jp.getText().trim()).build();
+        return builder().withText(strip(jp.getText())).build();
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

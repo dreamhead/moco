@@ -10,12 +10,14 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.util.StringUtil.strip;
+
 public class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
     @Override
     public CookieContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return CookieContainer.newContainer(jp.getText().trim());
+            return CookieContainer.newContainer(strip(jp.getText()));
         }
 
         if (currentToken == JsonToken.START_OBJECT) {

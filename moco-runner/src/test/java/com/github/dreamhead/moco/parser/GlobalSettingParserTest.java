@@ -63,7 +63,7 @@ public class GlobalSettingParserTest {
         assertThat(globalSettings.get(1).getEnv(), is("bar"));
     }
 
-    private InputStream getResourceAsStream(String filename) {
+    private InputStream getResourceAsStream(final String filename) {
         return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
     }
 }
