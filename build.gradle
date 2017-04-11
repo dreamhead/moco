@@ -82,7 +82,7 @@ subprojects {
         mockitoVersion = '2.7.22'
         httpComponentVersion = '4.5.3'
         jsonpathVersion = '2.2.0'
-        freemarkerVersion = '2.3.23'
+        freemarkerVersion = '2.3.26-incubating'
     }
 
     project.jar {
