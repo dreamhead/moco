@@ -28,14 +28,12 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
-    private final DocumentBuilder documentBuilder;
     private final RequestExtractor<byte[]> extractor;
     private final Resource resource;
 
     public XmlRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource resource) {
         this.extractor = extractor;
         this.resource = resource;
-        this.documentBuilder = documentBuilder();
     }
 
     @Override
@@ -65,7 +63,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
 
     private Document getResourceDocument(final Request request, final Resource resource) throws SAXException {
         InputStream stream = resource.readFor(of(request)).toInputStream();
-        return extractDocument(new InputSource(stream), documentBuilder);
+        return extractDocument(new InputSource(stream));
     }
 
     private Optional<Document> extractDocument(final Request request,
@@ -75,7 +73,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
             return absent();
         }
 
-        return of(extractDocument(inputSourceOptional.get(), documentBuilder));
+        return of(extractDocument(inputSourceOptional.get()));
     }
 
     private void trimChild(final Node node, final Node child) {
@@ -113,8 +111,9 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    private Document extractDocument(final InputSource inputSource, final DocumentBuilder builder) throws SAXException {
+    private Document extractDocument(final InputSource inputSource) throws SAXException {
         try {
+            DocumentBuilder builder = documentBuilder();
             Document document = builder.parse(inputSource);
             document.normalizeDocument();
             trimNode(document);
