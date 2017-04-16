@@ -95,8 +95,9 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_specified_put_request() throws IOException {
         runWithConfiguration("put_method.json");
-        String response = Request.Put(remoteUrl("/put")).execute().returnContent().toString();
-        assertThat(response, is("response_for_put_method"));
+
+        Request request = Request.Put(remoteUrl("/put"));
+        assertThat(helper.executeAsString(request), is("response_for_put_method"));
     }
 
     @Test
@@ -213,8 +214,8 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_match_form_value() throws IOException {
         runWithConfiguration("form.json");
 
-        String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
-        assertThat(content, is("foobar"));
+        Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+        assertThat(helper.executeAsString(request), is("foobar"));
     }
 
     @Test

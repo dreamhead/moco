@@ -87,20 +87,21 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
 
-                String putResponse = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT).execute().returnContent().asString();
-                assertThat(putResponse, is("put_proxy"));
+                Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
+                assertThat(helper.executeAsString(putRequest), is("put_proxy"));
 
-                String deleteResponse = Request.Delete(remoteUrl("/proxy")).execute().returnContent().asString();
-                assertThat(deleteResponse, is("delete_proxy"));
+                Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
+                assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
 
-                StatusLine headStatusLine = Request.Head(remoteUrl("/proxy")).execute().returnResponse().getStatusLine();
+                Request headRequest = Request.Head(remoteUrl("/proxy"));
+                StatusLine headStatusLine = helper.execute(headRequest).getStatusLine();
                 assertThat(headStatusLine.getStatusCode(), is(200));
 
-                String optionsResponse = Request.Options(remoteUrl("/proxy")).execute().returnContent().asString();
-                assertThat(optionsResponse, is("options_proxy"));
+                Request optionsRequest = Request.Options(remoteUrl("/proxy"));
+                assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
 
-                String traceResponse = Request.Trace(remoteUrl("/proxy")).execute().returnContent().asString();
-                assertThat(traceResponse, is("trace_proxy"));
+                Request traceRequest = Request.Trace(remoteUrl("/proxy"));
+                assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
             }
         });
     }

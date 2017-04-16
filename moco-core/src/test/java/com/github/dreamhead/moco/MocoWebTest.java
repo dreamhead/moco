@@ -37,8 +37,8 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String content = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
-                assertThat(content, is("foobar"));
+                org.apache.http.client.fluent.Request request = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+                assertThat(helper.executeAsString(request), is("foobar"));
             }
         });
     }

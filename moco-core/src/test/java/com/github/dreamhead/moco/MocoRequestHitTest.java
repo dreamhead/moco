@@ -275,7 +275,8 @@ public class MocoRequestHitTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                String content = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
+                Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+                String content = helper.executeAsString(request);
                 assertThat(content, is("foobar"));
             }
         });

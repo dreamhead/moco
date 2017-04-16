@@ -15,6 +15,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -160,6 +161,14 @@ public class MocoTestHelper {
     public String patchForResponse(final String url, final String content) throws IOException {
         Request request = Request.Patch(url).bodyByteArray(content.getBytes(), ContentType.DEFAULT_TEXT);
         return executor.execute(request).returnContent().asString();
+    }
+
+    public HttpResponse execute(final Request request) throws IOException {
+        return executor.execute(request).returnResponse();
+    }
+
+    public String executeAsString(final Request request) throws IOException {
+        return EntityUtils.toString(executor.execute(request).returnResponse().getEntity());
     }
 
     private static final String PROTOCOL = "TLS";

@@ -308,8 +308,8 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String response = Request.Put(remoteUrl("/foo")).execute().returnContent().toString();
-                assertThat(response, is("bar"));
+                Request request = Request.Put(remoteUrl("/foo"));
+                assertThat(helper.executeAsString(request), is("bar"));
             }
         });
     }

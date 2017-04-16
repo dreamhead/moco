@@ -157,8 +157,8 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String content = Request.Post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead")).execute().returnContent().asString();
-                assertThat(content, is("dreamhead"));
+                Request request = Request.Post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+                assertThat(helper.executeAsString(request), is("dreamhead"));
             }
         });
     }

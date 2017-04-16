@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -45,8 +45,8 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String response = Request.Put(root()).bodyByteArray("foo".getBytes()).execute().returnContent().asString();
-                assertThat(response, is("bar"));
+                Request request = Request.Put(root()).bodyByteArray("foo".getBytes());
+                assertThat(helper.executeAsString(request), is("bar"));
             }
         });
     }
