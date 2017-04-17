@@ -58,7 +58,8 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String response = Request.Delete(remoteUrl("/foo")).execute().returnContent().asString();
+                Request request = Request.Delete(remoteUrl("/foo"));
+                String response = helper.executeAsString(request);
                 assertThat(response, is("bar"));
             }
         });

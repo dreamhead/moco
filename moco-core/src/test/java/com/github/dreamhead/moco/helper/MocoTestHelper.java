@@ -40,22 +40,19 @@ public class MocoTestHelper {
     }
 
     public String get(final String url) throws IOException {
-        return get(Request.Get(url));
+        return executeAsString(Request.Get(url));
     }
 
     public byte[] getAsBytes(final String url) throws IOException {
-        return getAsBytes(Request.Get(url));
+        return EntityUtils.toByteArray(execute(Request.Get(url)).getEntity());
     }
 
     public HttpResponse getResponse(final String url) throws IOException {
-        Request request = Request.Get(url);
-        return runRequest(request);
+        return execute(Request.Get(url));
     }
 
     public String getWithHeader(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
-        Request request = getRequest(url, headers);
-
-        return get(request);
+        return executeAsString(getRequest(url, headers));
     }
 
     private Request getRequest(final String url, final ImmutableMultimap<String, String> headers) {
@@ -68,23 +65,11 @@ public class MocoTestHelper {
 
     public HttpResponse getResponseWithHeader(final String url, final ImmutableMultimap<String, String> headers)
             throws IOException {
-        return runRequest(getRequest(url, headers));
-    }
-
-    private HttpResponse runRequest(final Request request) throws IOException {
-        return executor.execute(request).returnResponse();
+        return execute(getRequest(url, headers));
     }
 
     public String getWithVersion(final String url, final HttpVersion version) throws IOException {
-        return get(Request.Get(url).version(version));
-    }
-
-    private String get(final Request request) throws IOException {
-        return executor.execute(request).returnContent().asString();
-    }
-
-    public byte[] getAsBytes(final Request request) throws IOException {
-        return executor.execute(request).returnContent().asBytes();
+        return executeAsString(Request.Get(url).version(version));
     }
 
     public String postContent(final String url, final String postContent) throws IOException {
@@ -92,10 +77,9 @@ public class MocoTestHelper {
     }
 
     public String postBytes(final String url, final byte[] bytes) throws IOException {
-        Request request = Request.Post(url)
+        return executeAsString(Request.Post(url)
                 .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
-                .bodyByteArray(bytes);
-        return executor.execute(request).returnContent().asString();
+                .bodyByteArray(bytes));
     }
 
     public HttpResponse postForResponse(final String url, final String content) throws IOException {
@@ -104,17 +88,15 @@ public class MocoTestHelper {
 
     public HttpResponse postForResponse(final String url, final String content, final String contentType)
             throws IOException {
-        Request request = Request.Post(url)
+        return execute(Request.Post(url)
                 .addHeader(CONTENT_TYPE, contentType)
-                .bodyByteArray(content.getBytes());
-        return executor.execute(request).returnResponse();
+                .bodyByteArray(content.getBytes()));
     }
 
     public HttpResponse putForResponse(final String url, final String content) throws IOException {
-        Request request = Request.Put(url)
+        return execute(Request.Put(url)
                 .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
-                .bodyByteArray(content.getBytes());
-        return executor.execute(request).returnResponse();
+                .bodyByteArray(content.getBytes()));
     }
 
     public HttpResponse putForResponseWithHeaders(final String url, final String content,
@@ -124,12 +106,11 @@ public class MocoTestHelper {
         for (Map.Entry<String, String> entry : headers.entries()) {
             request.addHeader(entry.getKey(), entry.getValue());
         }
-        return executor.execute(request).returnResponse();
+        return execute(request);
     }
 
     public HttpResponse deleteForResponse(final String url) throws IOException {
-        Request request = Request.Delete(url);
-        return executor.execute(request).returnResponse();
+        return execute(Request.Delete(url));
     }
 
     public HttpResponse deleteForResponseWithHeaders(final String url, final ImmutableMultimap<String, String> headers)
@@ -138,12 +119,11 @@ public class MocoTestHelper {
         for (Map.Entry<String, String> entry : headers.entries()) {
             request.addHeader(entry.getKey(), entry.getValue());
         }
-        return executor.execute(request).returnResponse();
+        return execute(request);
     }
 
     public HttpResponse headForResponse(final String url) throws IOException {
-        Request request = Request.Head(url);
-        return executor.execute(request).returnResponse();
+        return execute(Request.Head(url));
     }
 
     public String postStream(final String url, final InputStream stream) throws IOException {
@@ -155,12 +135,12 @@ public class MocoTestHelper {
     }
 
     public int getForStatus(final String url) throws IOException {
-        return runRequest(Request.Get(url)).getStatusLine().getStatusCode();
+        return execute(Request.Get(url)).getStatusLine().getStatusCode();
     }
 
     public String patchForResponse(final String url, final String content) throws IOException {
-        Request request = Request.Patch(url).bodyByteArray(content.getBytes(), ContentType.DEFAULT_TEXT);
-        return executor.execute(request).returnContent().asString();
+        return executeAsString(Request.Patch(url)
+                .bodyByteArray(content.getBytes(), ContentType.DEFAULT_TEXT));
     }
 
     public HttpResponse execute(final Request request) throws IOException {
@@ -168,7 +148,7 @@ public class MocoTestHelper {
     }
 
     public String executeAsString(final Request request) throws IOException {
-        return EntityUtils.toString(executor.execute(request).returnResponse().getEntity());
+        return executor.execute(request).returnContent().asString();
     }
 
     private static final String PROTOCOL = "TLS";

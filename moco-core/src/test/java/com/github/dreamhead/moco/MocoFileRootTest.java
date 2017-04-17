@@ -15,10 +15,10 @@ import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.MocoMount.to;
+import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -52,7 +52,9 @@ public class MocoFileRootTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("foo");
+                Request request = Request.Get(root());
+                Header header = helper.execute(request).getFirstHeader("foo");
+
                 assertThat(header.getValue(), is("foo.response"));
             }
         });
@@ -65,7 +67,8 @@ public class MocoFileRootTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader("foo");
+                org.apache.http.HttpResponse response = helper.getResponse(root());
+                Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("foo.response"));
             }
         });

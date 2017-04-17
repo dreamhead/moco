@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.http.Header;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Request;
 import org.junit.After;
 import org.junit.Test;
 
@@ -87,7 +86,7 @@ public class SettingRunnerTest {
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
-        Header header = Request.Get(remoteUrl("/foo")).execute().returnResponse().getFirstHeader("foo");
+        Header header = helper.getResponse(remoteUrl("/foo")).getFirstHeader("foo");
         assertThat(header.getValue(), is("bar"));
     }
 

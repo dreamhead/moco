@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -101,7 +100,7 @@ public class MocoMountTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                org.apache.http.HttpResponse httpResponse = Request.Get(remoteUrl("/dir/dir.response")).execute().returnResponse();
+                org.apache.http.HttpResponse httpResponse = helper.getResponse(remoteUrl("/dir/dir.response"));
                 String value = httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
                 assertThat(value, is("text/plain"));
                 String content = CharStreams.toString(new InputStreamReader(httpResponse.getEntity().getContent()));

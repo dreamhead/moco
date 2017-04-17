@@ -47,7 +47,7 @@ public class MocoMountStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_mount_dir_to_uri_with_response() throws IOException {
         runWithConfiguration("mount.json");
 
-        org.apache.http.HttpResponse httpResponse = org.apache.http.client.fluent.Request.Get(remoteUrl("/mount-response/mount.response")).execute().returnResponse();
+        org.apache.http.HttpResponse httpResponse = helper.getResponse(remoteUrl("/mount-response/mount.response"));
         String value = httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(value, is("text/plain"));
         String content = CharStreams.toString(new InputStreamReader(httpResponse.getEntity().getContent()));
