@@ -144,7 +144,8 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String fooHeader = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo").execute().returnResponse().getFirstHeader("foo").getValue();
+                Request request = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo");
+                String fooHeader = helper.execute(request).getFirstHeader("foo").getValue();
                 assertThat(fooHeader, is("foo_header"));
             }
         });
@@ -175,13 +176,16 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                HttpResponse response10 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_0).execute().returnResponse();
+                HttpResponse response10 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                        .version(HttpVersion.HTTP_1_0));
                 assertThat(response10.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
 
-                HttpResponse response11 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_1_1).execute().returnResponse();
+                HttpResponse response11 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                        .version(HttpVersion.HTTP_1_1));
                 assertThat(response11.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
 
-                HttpResponse response09 = Request.Get(remoteUrl("/proxy")).version(HttpVersion.HTTP_0_9).execute().returnResponse();
+                HttpResponse response09 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                        .version(HttpVersion.HTTP_0_9));
                 assertThat(response09.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
             }
         });
@@ -427,7 +431,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
+                HttpResponse response = helper.execute(Request.Get(remoteUrl("/proxy")));
                 assertThat(response.getFirstHeader("Date"), nullValue());
                 assertThat(response.getFirstHeader("Server"), nullValue());
             }

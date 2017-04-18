@@ -321,7 +321,8 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String response = Request.Delete(remoteUrl("/foo")).execute().returnContent().toString();
+                Request request = Request.Delete(remoteUrl("/foo"));
+                String response = helper.executeAsString(request);
                 assertThat(response, is("bar"));
             }
         });
@@ -578,7 +579,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                ProtocolVersion version = Request.Get(root()).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version = helper.getResponse(root()).getProtocolVersion();
                 assertThat(version.getMajor(), is(1));
                 assertThat(version.getMinor(), is(0));
             }
@@ -592,7 +593,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                ProtocolVersion version = Request.Get(root()).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version = helper.getResponse(root()).getProtocolVersion();
                 assertThat(version.getMajor(), is(1));
                 assertThat(version.getMinor(), is(0));
             }
@@ -618,7 +619,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String value = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
+                String value = helper.getResponse(root()).getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
                 assertThat(value, is("application/json"));
             }
         });
@@ -631,9 +632,9 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                String json = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
+                String json = helper.getResponse(root()).getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
                 assertThat(json, is("application/json"));
-                String bar = Request.Get(root()).execute().returnResponse().getFirstHeader("foo").getValue();
+                String bar = helper.getResponse(root()).getFirstHeader("foo").getValue();
                 assertThat(bar, is("bar"));
             }
         });
@@ -685,11 +686,15 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                ProtocolVersion version10 = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version10 = helper.execute(Request.Get(root())
+                        .version(HttpVersion.HTTP_1_0))
+                        .getProtocolVersion();
                 assertThat(version10.getMajor(), is(1));
                 assertThat(version10.getMinor(), is(0));
 
-                ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version11 = helper.execute(Request.Get(root())
+                        .version(HttpVersion.HTTP_1_1))
+                        .getProtocolVersion();
                 assertThat(version11.getMajor(), is(1));
                 assertThat(version11.getMinor(), is(1));
             }
@@ -701,11 +706,15 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                ProtocolVersion version10 = Request.Get(root()).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version10 = helper.execute(Request.Get(root())
+                        .version(HttpVersion.HTTP_1_0))
+                        .getProtocolVersion();
                 assertThat(version10.getMajor(), is(1));
                 assertThat(version10.getMinor(), is(0));
 
-                ProtocolVersion version11 = Request.Get(root()).version(HttpVersion.HTTP_1_1).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version11 = helper.execute(Request.Get(root())
+                        .version(HttpVersion.HTTP_1_1))
+                        .getProtocolVersion();
                 assertThat(version11.getMajor(), is(1));
                 assertThat(version11.getMinor(), is(1));
             }
@@ -719,7 +728,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
+                Header header = helper.getResponse(root()).getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/plain; charset=utf-8"));
             }
         });
@@ -732,7 +741,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
+                Header header = helper.getResponse(root()).getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/html"));
             }
         });
@@ -745,7 +754,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(root()).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE);
+                Header header = helper.getResponse(root()).getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/html"));
             }
         });
@@ -758,7 +767,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header[] headers = Request.Get(root()).execute().returnResponse().getHeaders(HttpHeaders.CONTENT_TYPE);
+                Header[] headers = helper.getResponse(root()).getHeaders(HttpHeaders.CONTENT_TYPE);
                 assertThat(headers.length, is(1));
             }
         });

@@ -103,7 +103,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_specified_delete_request() throws IOException {
         runWithConfiguration("delete_method.json");
-        String response = Request.Delete(remoteUrl("/delete")).execute().returnContent().toString();
+        String response = helper.executeAsString(Request.Delete(remoteUrl("/delete")));
         assertThat(response, is("response_for_delete_method"));
     }
 
@@ -116,7 +116,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_specified_version_for_request() throws IOException {
         runWithConfiguration("foo.json");
-        ProtocolVersion version = Request.Get(remoteUrl("/version10")).execute().returnResponse().getProtocolVersion();
+        ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/version10"))).getProtocolVersion();
         assertThat(version.getProtocol(), is("HTTP"));
         assertThat(version.getMajor(), is(1));
         assertThat(version.getMinor(), is(0));
@@ -161,7 +161,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_expected_response_header() throws IOException {
         runWithConfiguration("foo.json");
-        HttpResponse response = Request.Get(remoteUrl("/response_header")).execute().returnResponse();
+        HttpResponse response = helper.getResponse(remoteUrl("/response_header"));
         assertThat(response.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue(), is("application/json"));
         assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
@@ -169,7 +169,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_run_as_proxy() throws IOException {
         runWithConfiguration("foo.json");
-        HttpResponse response = Request.Get(remoteUrl("/proxy")).execute().returnResponse();
+        HttpResponse response = helper.getResponse(remoteUrl("/proxy"));
         String value = response.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(value, startsWith("text/html"));
     }
@@ -177,7 +177,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_expected_composite_response() throws IOException {
         runWithConfiguration("foo.json");
-        HttpResponse response = Request.Get(remoteUrl("/composite-response")).execute().returnResponse();
+        HttpResponse response = helper.getResponse(remoteUrl("/composite-response"));
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
@@ -221,7 +221,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_have_favicon() throws IOException {
         runWithConfiguration("foo.json");
-        String header = Request.Get(remoteUrl("/favicon.ico")).execute().returnResponse().getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
+        String header = helper.getResponse(remoteUrl("/favicon.ico")).getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(header, is("image/png"));
     }
 }

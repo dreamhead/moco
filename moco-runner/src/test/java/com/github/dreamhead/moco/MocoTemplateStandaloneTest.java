@@ -36,14 +36,17 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_version_from_template() throws IOException {
         runWithConfiguration("template.json");
-        ProtocolVersion version = Request.Get(remoteUrl("/version_template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
+        ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/version_template"))
+                .version(HttpVersion.HTTP_1_0))
+                .getProtocolVersion();
         assertThat(version.toString(), is("HTTP/1.0"));
     }
 
     @Test
     public void should_return_header_from_template() throws IOException {
         runWithConfiguration("template.json");
-        Header header = Request.Get(remoteUrl("/header_template")).addHeader("foo", "bar").execute().returnResponse().getFirstHeader("foo");
+        Header header = helper.execute(Request.Get(remoteUrl("/header_template")).addHeader("foo", "bar"))
+                .getFirstHeader("foo");
         assertThat(header.getValue(), is("bar"));
     }
 

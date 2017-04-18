@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertThat;
 
 public class MocoGlobalResponseTest {
     private HttpServer server;
+    private MocoTestHelper helper = new MocoTestHelper();
 
     @Test
     public void should_return_all_response_for_version_with_header() throws Exception {
@@ -38,7 +40,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader(HttpHeaders.CONTENT_TYPE);
                 assertThat(header.getValue(), is("text/plain"));
             }
@@ -53,7 +55,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
                 ByteArrayOutputStream outstream = new ByteArrayOutputStream();
@@ -71,7 +73,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }
@@ -86,7 +88,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }
@@ -101,7 +103,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }
@@ -132,7 +134,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                HttpResponse response = Request.Get(remoteUrl("/dir/dir.response")).execute().returnResponse();
+                HttpResponse response = helper.getResponse(remoteUrl("/dir/dir.response"));
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }
@@ -147,7 +149,7 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }
@@ -162,11 +164,11 @@ public class MocoGlobalResponseTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                HttpResponse response = Request.Get(root()).execute().returnResponse();
+                HttpResponse response = helper.getResponse(root());
                 Header header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
 
-                response = Request.Get(root()).execute().returnResponse();
+                response = helper.getResponse(root());
                 header = response.getFirstHeader("foo");
                 assertThat(header.getValue(), is("bar"));
             }

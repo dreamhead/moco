@@ -118,7 +118,9 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                ProtocolVersion version = Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getProtocolVersion();
+                ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/template"))
+                        .version(HttpVersion.HTTP_1_0))
+                        .getProtocolVersion();
                 assertThat(version.toString(), is("HTTP/1.0"));
             }
         });
@@ -131,7 +133,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                Header header = Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0).execute().returnResponse().getFirstHeader("foo");
+                Header header = helper.execute(Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0)).getFirstHeader("foo");
                 assertThat(header.getValue(), is("GET"));
             }
         });
