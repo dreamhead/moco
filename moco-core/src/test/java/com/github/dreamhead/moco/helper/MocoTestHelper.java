@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.config.Registry;
@@ -13,6 +15,7 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
@@ -36,7 +39,12 @@ public class MocoTestHelper {
                 .register("https", new SSLConnectionSocketFactory(createClientContext()))
                 .build();
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
-        executor = Executor.newInstance(HttpClients.custom().setConnectionManager(cm).build());
+        CloseableHttpClient client = HttpClients.custom()
+                .setConnectionManager(cm)
+                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+                .build();
+
+        executor = Executor.newInstance(client);
     }
 
     public String get(final String url) throws IOException {

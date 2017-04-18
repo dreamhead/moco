@@ -138,14 +138,14 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     @Test
     public void should_set_and_recognize_cookie_with_domain() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
-        server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
+        server.response(cookie("loggedIn", "true", domain("localhost")), status(302));
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
                 org.apache.http.HttpResponse response = helper.getResponse(root());
                 String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
                 Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.domain(), is("github.com"));
+                assertThat(decodeCookie.domain(), is("localhost"));
             }
         });
     }
