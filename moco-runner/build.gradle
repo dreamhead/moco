@@ -6,7 +6,7 @@ buildscript {
     }
 
     ext {
-        proguardVersion = '5.2.1'
+        proguardVersion = '5.3.3'
     }
 
     it.dependencies {
