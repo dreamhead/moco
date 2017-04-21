@@ -15,6 +15,7 @@ public class HttpArgsParser extends StartArgsParser {
         String globalSettings = cmd.getOptionValue("g");
         String shutdownPort = cmd.getOptionValue("s");
         String env = cmd.getOptionValue("e");
+        boolean watchService = cmd.hasOption("watch-service");
 
         if (config == null && globalSettings == null) {
             throw new ParseArgException("config or global setting is required");
@@ -38,6 +39,7 @@ public class HttpArgsParser extends StartArgsParser {
                 .withConfigurationFile(config)
                 .withSettings(globalSettings)
                 .withEnv(env)
+                .withWatchService(watchService)
                 .build();
     }
 

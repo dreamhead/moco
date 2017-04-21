@@ -12,6 +12,7 @@ public class SocketArgsParser extends StartArgsParser {
         String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String shutdownPort = cmd.getOptionValue("s");
+        boolean watchService = cmd.hasOption("watch-service");
 
         if (config == null) {
             throw new ParseArgException("config is required");
@@ -25,6 +26,7 @@ public class SocketArgsParser extends StartArgsParser {
                 .withPort(getPort(port))
                 .withShutdownPort(getPort(shutdownPort))
                 .withConfigurationFile(config)
+                .withWatchService(watchService)
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
+import com.github.dreamhead.moco.bootstrap.parser.HttpsArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.google.common.base.Optional;
@@ -70,5 +71,29 @@ public class StartArgsTest {
     public void should_parse_socket() {
         StartArgs args = new SocketArgsParser().parse(new String[]{"start", "-c", "foo.json"});
         assertThat(args.isSocket(), is(true));
+    }
+
+    @Test
+    public void should_parse_with_default_watch_service() {
+        StartArgs args = startArgsParser.parse(new String[]{"start", "-c", "foo.json"});
+        assertThat(args.isWatchService(), is(false));
+    }
+
+    @Test
+    public void should_parse_watch_service() throws Exception {
+        StartArgs args = startArgsParser.parse(new String[]{"start", "--watch-service", "-c", "foo.json"});
+        assertThat(args.isWatchService(), is(true));
+    }
+
+    @Test
+    public void should_parse_socket_watch_service() throws Exception {
+        StartArgs args = new SocketArgsParser().parse(new String[]{"socket", "--watch-service", "-c", "foo.json"});
+        assertThat(args.isWatchService(), is(true));
+    }
+
+    @Test
+    public void should_parse_https_watch_service() throws Exception {
+        StartArgs args = new HttpsArgsParser().parse(new String[]{"https", "--watch-service", "-c", "foo.json", "--https", "/path/to/cert.jks", "--cert", "mocohttps", "--keystore", "mocohttps"});
+        assertThat(args.isWatchService(), is(true));
     }
 }

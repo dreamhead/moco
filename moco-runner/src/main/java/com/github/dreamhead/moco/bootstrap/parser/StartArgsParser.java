@@ -11,7 +11,8 @@ public abstract class StartArgsParser {
         return new Options()
                 .addOption(configOption())
                 .addOption(portOption())
-                .addOption(shutdownPortOption());
+                .addOption(shutdownPortOption())
+                .addOption(watchServiceOption());
     }
 
     protected abstract StartArgs parseArgs(final CommandLine cmd);
@@ -77,6 +78,10 @@ public abstract class StartArgsParser {
         option.setType(String.class);
         option.setRequired(false);
         return option;
+    }
+
+    Option watchServiceOption() {
+        return new Option(null, "watch-service", false, "Enable watch service");
     }
 
     public static Integer getPort(final String port) {

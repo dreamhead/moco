@@ -3,8 +3,9 @@ package com.github.dreamhead.moco.bootstrap.arg;
 import static com.github.dreamhead.moco.bootstrap.ServerType.SOCKET;
 
 public final class SocketArgs extends StartArgs {
-    private SocketArgs(final Integer port, final Integer shutdownPort, final String configurationFile) {
-        super(SOCKET, port, shutdownPort, configurationFile, null, null, null);
+    private SocketArgs(final Integer port, final Integer shutdownPort, final String configurationFile,
+                       final boolean watchService) {
+        super(SOCKET, port, shutdownPort, configurationFile, null, null, null, watchService);
     }
 
     public static Builder socketArgs() {
@@ -15,6 +16,7 @@ public final class SocketArgs extends StartArgs {
         private Integer port;
         private Integer shutdownPort;
         private String configurationFile;
+        private boolean watchService;
 
         public Builder withPort(final Integer port) {
             this.port = port;
@@ -31,8 +33,13 @@ public final class SocketArgs extends StartArgs {
             return this;
         }
 
+        public Builder withWatchService(final boolean watchService) {
+            this.watchService = watchService;
+            return this;
+        }
+
         public SocketArgs build() {
-            return new SocketArgs(port, shutdownPort, configurationFile);
+            return new SocketArgs(port, shutdownPort, configurationFile, watchService);
         }
     }
 }
