@@ -148,7 +148,7 @@ public class MocoTestHelper {
 
     public String patchForResponse(final String url, final String content) throws IOException {
         return executeAsString(Request.Patch(url)
-                .bodyByteArray(content.getBytes(), ContentType.DEFAULT_TEXT));
+                .bodyString(content, ContentType.DEFAULT_TEXT));
     }
 
     public HttpResponse execute(final Request request) throws IOException {
