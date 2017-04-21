@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
-import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 
 public class HttpArgsParser extends StartArgsParser {
@@ -44,12 +43,8 @@ public class HttpArgsParser extends StartArgsParser {
 
     @Override
     protected Options options() {
-        Options options = new Options();
-        options.addOption(configOption());
-        options.addOption(portOption());
-        options.addOption(shutdownPortOption());
-        options.addOption(settingsOption());
-        options.addOption(envOption());
-        return options;
+        return super.options()
+                .addOption(settingsOption())
+                .addOption(envOption());
     }
 }

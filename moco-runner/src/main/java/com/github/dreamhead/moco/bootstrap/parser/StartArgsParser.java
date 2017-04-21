@@ -2,15 +2,18 @@ package com.github.dreamhead.moco.bootstrap.parser;
 
 import com.github.dreamhead.moco.bootstrap.ParseArgException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
+
+import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 
 public abstract class StartArgsParser {
-    protected abstract Options options();
+    protected Options options() {
+        return new Options()
+                .addOption(configOption())
+                .addOption(portOption())
+                .addOption(shutdownPortOption());
+    }
+
     protected abstract StartArgs parseArgs(final CommandLine cmd);
 
     public StartArgs parse(final String[] args) {

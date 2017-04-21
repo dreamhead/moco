@@ -3,9 +3,7 @@ package com.github.dreamhead.moco.bootstrap.parser;
 import com.github.dreamhead.moco.bootstrap.ParseArgException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
 
-import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 import static com.github.dreamhead.moco.bootstrap.arg.SocketArgs.socketArgs;
 
 public class SocketArgsParser extends StartArgsParser {
@@ -28,14 +26,5 @@ public class SocketArgsParser extends StartArgsParser {
                 .withShutdownPort(getPort(shutdownPort))
                 .withConfigurationFile(config)
                 .build();
-    }
-
-    @Override
-    protected Options options() {
-        Options options = new Options();
-        options.addOption(configOption());
-        options.addOption(portOption());
-        options.addOption(shutdownPortOption());
-        return options;
     }
 }
