@@ -2,9 +2,9 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +35,20 @@ public class MonitorFactory {
         return new FilesMocoRunnerWatcher(files, createListener(fileRunner));
     }
 
-    private FileAlterationListenerAdaptor createListener(final FileRunner fileRunner) {
-        return new FileAlterationListenerAdaptor() {
+
+    private Function<File, Void> createListener(final FileRunner fileRunner) {
+        return new Function<File, Void>() {
             @Override
-            public void onFileChange(final File file) {
+            public Void apply(File file) {
                 logger.info("{} change detected.", file.getName());
                 try {
                     fileRunner.restart();
                 } catch (Exception e) {
                     logger.error("Fail to load configuration in {}.", file.getName());
                     logger.error(e.getMessage());
+                    logger.debug(e.getMessage(), e);
                 }
+                return null;
             }
         };
     }
