@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.List;
 
 public class MonitorFactory {
     private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
@@ -28,13 +29,23 @@ public class MonitorFactory {
         return new FileMocoRunnerWatcher(configuration, createListener(fileRunner));
     }
 
+    public MocoRunnerWatcher createConfigurationWatcherBasedOnWatchService(final File configuration, final FileRunner fileRunner) {
+        return new WatchServiceMocoRunnerWatcher(ImmutableList.of(configuration), createListener(fileRunner));
+    }
+
     public MocoRunnerWatcher createSettingWatcher(final File settingsFile,
                                                   final Iterable<File> configurationFiles,
                                                   final FileRunner fileRunner) {
-        ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
+        List<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
         return new FilesMocoRunnerWatcher(files, createListener(fileRunner));
     }
 
+    public MocoRunnerWatcher createSettingWatcherBasedOnWatchService(final File settingsFile,
+                                                                     final Iterable<File> configurationFiles,
+                                                                     final FileRunner fileRunner) {
+        List<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
+        return new WatchServiceMocoRunnerWatcher(files, createListener(fileRunner));
+    }
 
     private Function<File, Void> createListener(final FileRunner fileRunner) {
         return new Function<File, Void>() {
