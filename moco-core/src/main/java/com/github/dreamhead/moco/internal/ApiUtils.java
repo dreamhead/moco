@@ -36,7 +36,7 @@ public final class ApiUtils {
         return new CompositeMonitor(asIterable(monitor, monitor2, monitors));
     }
 
-    public static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
+    private static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
         return new Maps.EntryTransformer<String, RequestExtractor<?>, Variable>() {
             @Override
             @SuppressWarnings("unchecked")
