@@ -435,6 +435,19 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_exist_query() throws Exception {
+        server.request(exist(query("foo"))).response("query");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/path?foo")), is("query"));
+                assertThat(helper.get(remoteUrl("/other?foo")), is("query"));
+            }
+        });
+    }
+
+    @Test
     public void should_starts_with() throws Exception {
         server.request(startsWith(uri("/foo"))).response("bar");
 

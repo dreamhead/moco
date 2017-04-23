@@ -15,6 +15,7 @@ public class ParamRequestExtractor extends HttpRequestExtractor<String[]> {
 
     @Override
     protected Optional<String[]> doExtract(final HttpRequest request) {
-        return fromNullable(request.getQueries().get(this.param));
+        String[] reference = request.getQueries().get(this.param);
+        return fromNullable(reference);
     }
 }
