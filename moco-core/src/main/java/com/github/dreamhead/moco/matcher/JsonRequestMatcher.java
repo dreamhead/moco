@@ -34,8 +34,8 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
 
     private boolean doMatch(final Request request, final byte[] content) {
         try {
-            JsonNode requestNode = mapper.readTree(content);
-            JsonNode resourceNode = mapper.readTree(expected.readFor(of(request)).getContent());
+            JsonNode requestNode = mapper.readTree(new String(content));
+            JsonNode resourceNode = mapper.readTree(expected.readFor(of(request)).toString());
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;
