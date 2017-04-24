@@ -190,7 +190,7 @@ public final class Moco {
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {
-        return eq(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
+        return eq(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNull(expected, "Expected content should not be null")));
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final Resource expected) {
@@ -249,7 +249,7 @@ public final class Moco {
     }
 
     public static ContentResource text(final String text) {
-        return textResource(checkNotNullOrEmpty(text, "Text should not be null"));
+        return textResource(checkNotNull(text, "Text should not be null"));
     }
 
     public static ResponseHandler with(final String text) {

@@ -574,6 +574,18 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_expected_response_for_empty_query() throws Exception {
+        server.request(and(by(uri("/foo")), eq(query("param"), ""))).response("bar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo?param")), is("bar"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_version() throws Exception {
         server.request(by(version(VERSION_1_0))).response("foo");
 
