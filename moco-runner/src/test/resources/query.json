@@ -11,5 +11,18 @@
        {
          "text" : "response_for_query_request"
        }
+   },
+   {
+     "request" :
+     {
+       "uri" : "/empty-query",
+       "queries" : {
+         "param" : ""
+       }
+     },
+     "response" :
+     {
+       "text" : "response_for_empty_query_request"
+     }
    }
 ]
