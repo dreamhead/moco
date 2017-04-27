@@ -24,5 +24,19 @@
      {
        "text" : "response_for_empty_query_request"
      }
+   },
+   {
+     "request" :
+     {
+       "uri" : "/multi-query",
+       "queries" : {
+         "param1" : "foo",
+         "param2" : "bar"
+       }
+     },
+     "response" :
+     {
+       "text" : "response_for_multi_query_request"
+     }
    }
 ]

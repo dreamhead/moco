@@ -159,6 +159,12 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_return_expected_response_based_on_specified_multi_query_request() throws IOException {
+        runWithConfiguration("query.json");
+        assertThat(helper.get(remoteUrl("/multi-query?param1=foo&param2=bar")), is("response_for_multi_query_request"));
+    }
+
+    @Test
     public void should_expected_response_status_code() throws IOException {
         runWithConfiguration("foo.json");
         assertThat(helper.getForStatus(remoteUrl("/status")), is(200));
