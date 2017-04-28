@@ -18,7 +18,7 @@ public abstract class FileRunner implements Runner {
         this.runner = newRunner();
     }
 
-    public void restart() {
+    public synchronized void restart() {
         this.runner.stop();
         this.runner = newRunner();
         this.runner.run();
