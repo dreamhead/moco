@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -47,5 +48,68 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
         waitChangeHappens();
 
         assertThat(helper.get(root()), is("foobar"));
+    }
+
+    @Test
+    public void should_reload_configuration_with_mulitiple_modification() throws IOException, InterruptedException {
+        final File config1 = tempFolder.newFile("config1.json");
+        changeFileContent(config1, "[{" +
+                "        \"request\": {" +
+                "            \"uri\": \"/foo\"" +
+                "        }," +
+                "        \"response\": {" +
+                "            \"text\": \"foo\"" +
+                "        }" +
+                "}]");
+
+        final File config2 = tempFolder.newFile("config2.json");
+        changeFileContent(config2, "[{" +
+                "        \"request\": {" +
+                "            \"uri\": \"/bar\"" +
+                "        }," +
+                "        \"response\": {" +
+                "            \"text\": \"bar\"" +
+                "        }" +
+                "}]");
+
+
+        final File setting = tempFolder.newFile("settings.json");
+        changeFileContent(setting, "["
+                + "{\"include\" : \"" + FilenameUtils.separatorsToUnix(config1.getAbsolutePath()) + "\"},"
+                + "{\"include\" : \"" + FilenameUtils.separatorsToUnix(config2.getAbsolutePath()) + "\"}"
+                + "]");
+
+        RunnerFactory factory = new RunnerFactory("SHUTDOWN");
+        runner = factory.createRunner(httpArgs()
+                .withPort(port())
+                .withShutdownPort(9090)
+                .withSettings(setting.getAbsolutePath())
+                .build());
+        runner.run();
+
+        assertThat(helper.get(remoteUrl("/foo")), is("foo"));
+        assertThat(helper.get(remoteUrl("/bar")), is("bar"));
+
+        changeFileContent(config1, "[{" +
+                "        \"request\": {" +
+                "            \"uri\": \"/foo\"" +
+                "        }," +
+                "        \"response\": {" +
+                "            \"text\": \"foo1\"" +
+                "        }" +
+                "}]");
+        changeFileContent(config2, "[{" +
+                "        \"request\": {" +
+                "            \"uri\": \"/bar\"" +
+                "        }," +
+                "        \"response\": {" +
+                "            \"text\": \"bar1\"" +
+                "        }" +
+                "}]");
+
+        waitChangeHappens();
+
+        assertThat(helper.get(remoteUrl("/foo")), is("foo1"));
+        assertThat(helper.get(remoteUrl("/bar")), is("bar1"));
     }
 }
