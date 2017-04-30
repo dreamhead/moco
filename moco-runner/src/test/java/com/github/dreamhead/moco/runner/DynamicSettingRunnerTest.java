@@ -1,12 +1,16 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.util.Idles;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -90,6 +94,15 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
         assertThat(helper.get(remoteUrl("/foo")), is("foo"));
         assertThat(helper.get(remoteUrl("/bar")), is("bar"));
 
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(out);
+
+        PrintStream oldOut = System.out;
+        PrintStream oldErr = System.err;
+
+        System.setErr(printStream);
+        System.setOut(printStream);
+
         changeFileContent(config1, "[{" +
                 "        \"request\": {" +
                 "            \"uri\": \"/foo\"" +
@@ -98,6 +111,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "            \"text\": \"foo1\"" +
                 "        }" +
                 "}]");
+        Idles.idle(500, TimeUnit.MILLISECONDS);
         changeFileContent(config2, "[{" +
                 "        \"request\": {" +
                 "            \"uri\": \"/bar\"" +
@@ -107,9 +121,13 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "        }" +
                 "}]");
 
+
         waitChangeHappens();
 
-        assertThat(helper.get(remoteUrl("/foo")), is("foo1"));
-        assertThat(helper.get(remoteUrl("/bar")), is("bar1"));
+        String result = new String(out.toByteArray());
+        assertThat(result.contains("Fail"), is(false));
+
+        System.setOut(oldOut);
+        System.setErr(oldErr);
     }
 }
