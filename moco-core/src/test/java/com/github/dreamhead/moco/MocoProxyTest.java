@@ -9,7 +9,6 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -71,7 +70,6 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    @Ignore
     public void should_proxy_with_request_method() throws Exception {
         server.get(by(uri("/target"))).response("get_proxy");
         server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
@@ -91,7 +89,11 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
                 Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
                 assertThat(helper.executeAsString(putRequest), is("put_proxy"));
-
+            }
+        });
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
                 Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
 
@@ -101,7 +103,11 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
                 Request optionsRequest = Request.Options(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
-
+            }
+        });
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
                 Request traceRequest = Request.Trace(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
             }
