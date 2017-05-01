@@ -55,7 +55,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     }
 
     @Test
-    public void should_reload_configuration_with_mulitiple_modification() throws IOException, InterruptedException {
+    public void should_reload_configuration_with_multiple_modification() throws IOException, InterruptedException {
         final File config1 = tempFolder.newFile("config1.json");
         changeFileContent(config1, "[{" +
                 "        \"request\": {" +
@@ -111,7 +111,6 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "            \"text\": \"foo1\"" +
                 "        }" +
                 "}]");
-        Idles.idle(500, TimeUnit.MILLISECONDS);
         changeFileContent(config2, "[{" +
                 "        \"request\": {" +
                 "            \"uri\": \"/bar\"" +
@@ -124,10 +123,10 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
 
         waitChangeHappens();
 
-        String result = new String(out.toByteArray());
-        assertThat(result.contains("Fail"), is(false));
-
         System.setOut(oldOut);
         System.setErr(oldErr);
+
+        String result = new String(out.toByteArray());
+        assertThat(result.contains("Fail"), is(false));
     }
 }
