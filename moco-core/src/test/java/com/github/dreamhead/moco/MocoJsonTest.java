@@ -1,19 +1,26 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.util.Jsons;
+import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.jsonPath;
+import static com.github.dreamhead.moco.Moco.log;
+import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.toJson;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
@@ -160,6 +167,20 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 PlainA responseA = Jsons.toObject(content, PlainA.class);
                 assertThat(responseA.code, is(1));
                 assertThat(responseA.message, is("消息"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_gbk_request() throws Exception {
+        server = httpServer(port(), log());
+        server.request(json(pathResource("gbk.json", Charset.forName("GBK")))).response("response");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String result = helper.postBytes(root(), "{\"message\": \"请求\"}".getBytes());
+                assertThat(result, is("response"));
             }
         });
     }
