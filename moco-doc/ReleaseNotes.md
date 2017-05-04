@@ -14,6 +14,10 @@
 ## Implementation Details
 * Fix: get Moco standalone version from manifest
 * Fix: merge server with port
+* Fix: set charset from http request
+* Fix: parse json with charset
+* Fix: fail to load configuration with multiple modification
+* Fix: allowed empty query
 
 # Release 0.11.0 (20-May-2016)
  
