@@ -8,19 +8,19 @@ import com.google.common.base.Strings;
 import java.util.Map;
 
 public class HttpRequestFailoverMatcher {
-    private final HttpRequest failover;
+    private final HttpRequest source;
 
-    public HttpRequestFailoverMatcher(final HttpRequest failover) {
-        this.failover = failover;
+    public HttpRequestFailoverMatcher(final HttpRequest source) {
+        this.source = source;
     }
 
     public boolean match(final HttpRequest target) {
-        return doMatch(failover.getUri(), target.getUri())
-                && doMatch(failover.getVersion(), target.getVersion())
-                && doMatch(failover.getContent(), target.getContent())
-                && doMatch(failover.getHeaders(), target.getHeaders())
-                && doMatch(failover.getMethod(), target.getMethod())
-                && doMatch(failover.getQueries(), target.getQueries());
+        return doMatch(source.getUri(), target.getUri())
+                && doMatch(source.getVersion(), target.getVersion())
+                && doMatch(source.getContent(), target.getContent())
+                && doMatch(source.getHeaders(), target.getHeaders())
+                && doMatch(source.getMethod(), target.getMethod())
+                && doMatch(source.getQueries(), target.getQueries());
     }
 
     protected boolean doMatch(final Map<String, ?> thisField, final Map<String, ?> thatField) {
