@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.config.MocoRequestConfig;
 import com.github.dreamhead.moco.config.MocoResponseConfig;
-import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.extractor.CookieRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormRequestExtractor;
 import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
@@ -329,7 +328,7 @@ public final class Moco {
 
     public static RequestMatcher xml(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return new XmlRequestMatcher((ContentRequestExtractor) extractor(resource.id()), resource);
+        return new XmlRequestMatcher(resource);
     }
 
     public static RequestMatcher json(final String jsonText) {
@@ -342,7 +341,7 @@ public final class Moco {
 
     public static RequestMatcher json(final Resource resource) {
         checkNotNull(resource, "Json should not be null");
-        return new JsonRequestMatcher((ContentRequestExtractor) extractor(resource.id()), resource);
+        return new JsonRequestMatcher(resource);
     }
 
     public static ResponseHandler toJson(final Object pojo) {

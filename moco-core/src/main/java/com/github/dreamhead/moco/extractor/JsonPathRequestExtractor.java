@@ -2,7 +2,9 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Optional;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 
@@ -23,13 +25,16 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
 
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
-        Optional<byte[]> requestBody = extractor.extract(request);
+        Optional<MessageContent> requestBody = extractor.extract(request);
         try {
             if (!requestBody.isPresent()) {
                 return absent();
             }
 
-            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(requestBody.get()));
+            MessageContent content = requestBody.get();
+            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(content.getContent()),
+                    content.getCharset().toString(),
+                    Configuration.defaultConfiguration());
             if (jsonPathContent == null) {
                 return absent();
             }

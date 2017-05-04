@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 
@@ -16,25 +17,25 @@ import java.io.IOException;
 import static com.google.common.base.Optional.of;
 
 public class JsonRequestMatcher extends AbstractRequestMatcher {
-    private final RequestExtractor<byte[]> extractor;
-    private final Resource expected;
+    private final ContentRequestExtractor extractor;
     private final ObjectMapper mapper;
+    private final Resource expected;
 
-    public JsonRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource expected) {
-        this.extractor = extractor;
+    public JsonRequestMatcher(final Resource expected) {
+        this.extractor = new ContentRequestExtractor();
         this.expected = expected;
         this.mapper = new ObjectMapper();
     }
 
     @Override
     public boolean match(final Request request) {
-        Optional<byte[]> content = extractor.extract(request);
+        Optional<MessageContent> content = extractor.extract(request);
         return content.isPresent() && doMatch(request, content.get());
     }
 
-    private boolean doMatch(final Request request, final byte[] content) {
+    private boolean doMatch(final Request request, final MessageContent content) {
         try {
-            JsonNode requestNode = mapper.readTree(new String(content));
+            JsonNode requestNode = mapper.readTree(content.toString());
             JsonNode resourceNode = mapper.readTree(expected.readFor(of(request)).toString());
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
@@ -52,6 +53,6 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
             return this;
         }
 
-        return new JsonRequestMatcher(this.extractor, appliedResource);
+        return new JsonRequestMatcher(appliedResource);
     }
 }

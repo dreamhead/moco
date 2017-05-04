@@ -30,6 +30,10 @@ public class MessageContent {
         return charset.or(Charset.defaultCharset());
     }
 
+    public boolean hasCharset() {
+        return charset.isPresent();
+    }
+
     public boolean hasContent() {
         return content.length > 0;
     }

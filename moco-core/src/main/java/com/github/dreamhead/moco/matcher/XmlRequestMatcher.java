@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
@@ -28,11 +28,11 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
-    private final RequestExtractor<byte[]> extractor;
+    private final ContentRequestExtractor extractor;
     private final Resource resource;
 
-    public XmlRequestMatcher(final RequestExtractor<byte[]> extractor, final Resource resource) {
-        this.extractor = extractor;
+    public XmlRequestMatcher(final Resource resource) {
+        this.extractor = new ContentRequestExtractor();
         this.resource = resource;
     }
 
@@ -55,7 +55,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
     @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
-            return new XmlRequestMatcher(this.extractor, resource.apply(config));
+            return new XmlRequestMatcher(resource.apply(config));
         }
 
         return this;
@@ -66,8 +66,7 @@ public class XmlRequestMatcher extends AbstractRequestMatcher {
         return extractDocument(new InputSource(stream));
     }
 
-    private Optional<Document> extractDocument(final Request request,
-                                     final RequestExtractor<byte[]> extractor) throws SAXException {
+    private Optional<Document> extractDocument(final Request request, final ContentRequestExtractor extractor) throws SAXException {
         Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
         if (!inputSourceOptional.isPresent()) {
             return absent();

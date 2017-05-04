@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -46,6 +47,10 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
         if (target instanceof byte[]) {
             return predicate.apply((byte[]) target);
+        }
+
+        if (target instanceof MessageContent) {
+            return predicate.apply(((MessageContent)target).getContent());
         }
 
         return false;

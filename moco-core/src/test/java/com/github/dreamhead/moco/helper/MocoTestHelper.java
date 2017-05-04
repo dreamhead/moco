@@ -23,6 +23,7 @@ import org.apache.http.util.EntityUtils;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.google.common.io.ByteStreams.toByteArray;
@@ -85,9 +86,12 @@ public class MocoTestHelper {
     }
 
     public String postBytes(final String url, final byte[] bytes) throws IOException {
+        return postBytes(url, bytes, Charset.defaultCharset());
+    }
+
+    public String postBytes(final String url, final byte[] bytes, final Charset charset) throws IOException {
         return executeAsString(Request.Post(url)
-                .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
-                .bodyByteArray(bytes));
+                .bodyByteArray(bytes, ContentType.create("text/plain", charset)));
     }
 
     public HttpResponse postForResponse(final String url, final String content) throws IOException {

@@ -8,7 +8,6 @@ import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.eq;
@@ -172,7 +171,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_match_gbk_request() throws Exception {
+    public void should_match_request_with_gbk_resource() throws Exception {
         server = httpServer(port(), log());
         server.request(json(pathResource("gbk.json", Charset.forName("GBK")))).response("response");
 
@@ -180,6 +179,22 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 String result = helper.postBytes(root(), "{\"message\": \"请求\"}".getBytes());
+                assertThat(result, is("response"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_gbk_request() throws Exception {
+        server = httpServer(port(), log());
+        final Charset gbk = Charset.forName("GBK");
+        server.request(json(pathResource("gbk.json", gbk))).response("response");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                byte[] bytes = ByteStreams.toByteArray(this.getClass().getClassLoader().getResourceAsStream("gbk.json"));
+                String result = helper.postBytes(root(), bytes, gbk);
                 assertThat(result, is("response"));
             }
         });

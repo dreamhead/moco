@@ -72,7 +72,8 @@ public class HttpRequestFailoverMatcher {
     }
 
     protected boolean doMatch(final MessageContent thisField, final MessageContent thatField) {
-        return thisField == null || thisField.equals(thatField);
+        return thisField == null || thisField.equals(thatField)
+                || (thatField != null && thisField.toString().equals(thatField.toString()));
     }
 
     protected boolean doMatch(final HttpMethod thisField, final HttpMethod thatField) {

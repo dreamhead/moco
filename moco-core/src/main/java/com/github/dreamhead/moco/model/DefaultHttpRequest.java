@@ -128,7 +128,10 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return content().build();
         }
 
-        return content().withContent(new ByteBufInputStream(request.content())).build();
+        return content()
+                .withCharset(HttpUtil.getCharset(request))
+                .withContent(new ByteBufInputStream(request.content()))
+                .build();
     }
 
     public static HttpRequest newRequest(final FullHttpRequest request) {

@@ -238,7 +238,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             public void run() throws IOException {
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()), countString("0XCAFEBABE", 1));
+                assertThat(Files.toString(tempFile, Charset.defaultCharset()), countString("/proxy", 1));
             }
         });
     }
