@@ -23,6 +23,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -34,6 +35,7 @@ import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -210,11 +212,32 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return doForward(request, remoteUrl);
     }
 
+    private static CloseableHttpClient client;
+
+    public synchronized static CloseableHttpClient getHttpClient() {
+        if (client == null) {
+            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+            client = HttpClients.custom()
+                    .setConnectionManager(connManager)
+                    .setConnectionManagerShared(true)
+                    .build();
+        }
+
+        return client;
+    }
+
     private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
+        CloseableHttpClient httpclient = getHttpClient();
         try {
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setSocketTimeout(0)
+                    .setStaleConnectionCheckEnabled(true)
+                    .build();
             FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
-            return setupResponse(request, httpclient.execute(prepareRemoteRequest(httpRequest, remoteUrl)));
+            HttpRequestBase remoteRequest = prepareRemoteRequest(httpRequest, remoteUrl);
+            remoteRequest.setConfig(requestConfig);
+            CloseableHttpResponse response = httpclient.execute(remoteRequest);
+            return setupResponse(request, response);
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             return failover.failover(request);
