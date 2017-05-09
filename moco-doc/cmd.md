@@ -111,3 +111,15 @@ Then you can use the shutdown port to shutdown the running Moco instance.
 ```shell
 java -jar moco-runner-<version>-standalone.jar shutdown -s 9527
 ```
+
+## Watch Service
+
+Moco use monitor from commons-io to monitor file changes by default. You can change to WatchService API by adding `--watch-service` argument.
+
+The `--watch-service` argument works with `http`, `https` and `socket` server types:
+
+```shell
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json --watch-service
+```
+
+The WatchService API provide better performance and less compatibility. A known issue is that it won't work on Docker Toolbox above Win 7.

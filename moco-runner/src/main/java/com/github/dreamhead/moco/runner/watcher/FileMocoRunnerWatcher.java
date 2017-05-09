@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.runner.watcher;
 
+import com.google.common.base.Function;
 import org.apache.commons.io.monitor.FileAlterationListener;
+import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.slf4j.Logger;
@@ -18,8 +20,13 @@ public class FileMocoRunnerWatcher implements MocoRunnerWatcher {
     private final FileAlterationMonitor monitor;
     private boolean running = false;
 
-    public FileMocoRunnerWatcher(final File file, final FileAlterationListener listener) {
-        this.monitor = monitorFile(file, listener);
+    public FileMocoRunnerWatcher(final File file, final Function<File, Void> listener) {
+        this.monitor = monitorFile(file, new FileAlterationListenerAdaptor() {
+            @Override
+            public void onFileChange(final File file) {
+                listener.apply(file);
+            }
+        });
     }
 
     public synchronized void startMonitor() {

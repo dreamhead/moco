@@ -40,15 +40,24 @@ public class RunnerFactory {
         final File settingsFile = new File(startArgs.getSettings().get());
         final FileRunner fileRunner = createSettingFileRunner(settingsFile, startArgs);
         final SettingRunner runner = (SettingRunner) fileRunner.getRunner();
-        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createSettingWatcher(settingsFile,
-                runner.getFiles(), fileRunner);
-        return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
+        final MocoRunnerWatcher mocoRunnerWatcher;
+        if (startArgs.isWatchService()) {
+            mocoRunnerWatcher = monitorFactory.createSettingWatcherBasedOnWatchService(settingsFile, runner.getFiles(), fileRunner);
+        } else {
+            mocoRunnerWatcher = monitorFactory.createSettingWatcher(settingsFile, runner.getFiles(), fileRunner);
+        }
+        return new MonitorRunner(fileRunner, mocoRunnerWatcher);
     }
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
         final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs);
-        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createConfigurationWatcher(configuration, fileRunner);
-        return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
+        final MocoRunnerWatcher mocoRunnerWatcher;
+        if (startArgs.isWatchService()) {
+            mocoRunnerWatcher = monitorFactory.createConfigurationWatcherBasedOnWatchService(configuration, fileRunner);
+        } else {
+            mocoRunnerWatcher = monitorFactory.createConfigurationWatcher(configuration, fileRunner);
+        }
+        return new MonitorRunner(fileRunner, mocoRunnerWatcher);
     }
 }

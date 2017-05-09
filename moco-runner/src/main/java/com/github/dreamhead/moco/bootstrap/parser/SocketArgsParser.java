@@ -3,9 +3,7 @@ package com.github.dreamhead.moco.bootstrap.parser;
 import com.github.dreamhead.moco.bootstrap.ParseArgException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
 
-import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 import static com.github.dreamhead.moco.bootstrap.arg.SocketArgs.socketArgs;
 
 public class SocketArgsParser extends StartArgsParser {
@@ -14,6 +12,7 @@ public class SocketArgsParser extends StartArgsParser {
         String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String shutdownPort = cmd.getOptionValue("s");
+        boolean watchService = cmd.hasOption("watch-service");
 
         if (config == null) {
             throw new ParseArgException("config is required");
@@ -27,15 +26,7 @@ public class SocketArgsParser extends StartArgsParser {
                 .withPort(getPort(port))
                 .withShutdownPort(getPort(shutdownPort))
                 .withConfigurationFile(config)
+                .withWatchService(watchService)
                 .build();
-    }
-
-    @Override
-    protected Options options() {
-        Options options = new Options();
-        options.addOption(configOption());
-        options.addOption(portOption());
-        options.addOption(shutdownPortOption());
-        return options;
     }
 }

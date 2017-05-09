@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.bootstrap.parser;
 
 import com.github.dreamhead.moco.bootstrap.HttpsArg;
 import com.github.dreamhead.moco.bootstrap.ParseArgException;
-import com.github.dreamhead.moco.bootstrap.ShutdownPortOption;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -17,6 +16,7 @@ public class HttpsArgsParser extends StartArgsParser {
         String globalSettings = cmd.getOptionValue("g");
         String shutdownPort = cmd.getOptionValue("s");
         String env = cmd.getOptionValue("e");
+        boolean watchService = cmd.hasOption("watch-service");
 
         if (config == null && globalSettings == null) {
             throw new ParseArgException("config or global setting is required");
@@ -41,6 +41,7 @@ public class HttpsArgsParser extends StartArgsParser {
                 .withSettings(globalSettings)
                 .withEnv(env)
                 .withHttpsArg(httpsArg(cmd))
+                .withWatchService(watchService)
                 .build();
     }
 
@@ -61,15 +62,11 @@ public class HttpsArgsParser extends StartArgsParser {
 
     @Override
     protected Options options() {
-        Options options = new Options();
-        options.addOption(configOption());
-        options.addOption(portOption());
-        options.addOption(ShutdownPortOption.shutdownPortOption());
-        options.addOption(settingsOption());
-        options.addOption(envOption());
-        options.addOption(httpsCertificate());
-        options.addOption(keyStore());
-        options.addOption(cert());
-        return options;
+        return super.options()
+                .addOption(settingsOption())
+                .addOption(envOption())
+                .addOption(httpsCertificate())
+                .addOption(keyStore())
+                .addOption(cert());
     }
 }
