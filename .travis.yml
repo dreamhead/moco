@@ -7,3 +7,8 @@ jdk:
 
 script:
   "./gradlew check -i"
+
+addons:
+  hosts:
+    - mocobuild
+  hostname: mocobuild
