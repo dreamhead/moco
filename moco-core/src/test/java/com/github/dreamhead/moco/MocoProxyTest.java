@@ -89,7 +89,11 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
                 Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
                 assertThat(helper.executeAsString(putRequest), is("put_proxy"));
-
+            }
+        });
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
                 Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
 
@@ -99,7 +103,11 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
                 Request optionsRequest = Request.Options(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
-
+            }
+        });
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
                 Request traceRequest = Request.Trace(remoteUrl("/proxy"));
                 assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
             }
