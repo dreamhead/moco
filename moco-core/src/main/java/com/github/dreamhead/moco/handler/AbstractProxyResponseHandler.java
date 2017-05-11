@@ -58,6 +58,17 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(HOST, CONTENT_LENGTH);
     private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(DATE, SERVER);
 
+    private static CloseableHttpClient client;
+
+    static {
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+        client = HttpClients.custom()
+                .setConnectionManager(connManager)
+                .setConnectionManagerShared(true)
+                .build();
+
+    }
+
     protected abstract Optional<String> doRemoteUrl(final HttpRequest request);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
@@ -212,22 +223,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return doForward(request, remoteUrl);
     }
 
-    private static CloseableHttpClient client;
-
-    public synchronized static CloseableHttpClient getHttpClient() {
-        if (client == null) {
-            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-            client = HttpClients.custom()
-                    .setConnectionManager(connManager)
-                    .setConnectionManagerShared(true)
-                    .build();
-        }
-
-        return client;
-    }
-
     private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
-        CloseableHttpClient httpclient = getHttpClient();
         try {
             RequestConfig requestConfig = RequestConfig.custom()
                     .setSocketTimeout(0)
@@ -236,14 +232,14 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
             HttpRequestBase remoteRequest = prepareRemoteRequest(httpRequest, remoteUrl);
             remoteRequest.setConfig(requestConfig);
-            CloseableHttpResponse response = httpclient.execute(remoteRequest);
+            CloseableHttpResponse response = client.execute(remoteRequest);
             return setupResponse(request, response);
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             return failover.failover(request);
         } finally {
             try {
-                httpclient.close();
+                client.close();
             } catch (IOException ignored) {
             }
         }
