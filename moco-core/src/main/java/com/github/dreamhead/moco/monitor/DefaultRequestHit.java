@@ -17,12 +17,12 @@ public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     private List<Request> requests = newArrayList();
 
     @Override
-    public synchronized void onMessageArrived(final Request request) {
+    public void onMessageArrived(final Request request) {
         this.requests.add(request);
     }
 
     @Override
-    public synchronized void onUnexpectedMessage(final Request request) {
+    public void onUnexpectedMessage(final Request request) {
         this.unexpectedRequests.add(request);
     }
 

@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
+import com.github.dreamhead.moco.monitor.ThreadSafeMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.google.common.base.Optional;
 
@@ -46,7 +47,8 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     public static ActualHttpServer createHttpServerWithMonitor(final Optional<Integer> port,
                                                                final MocoMonitor monitor,
                                                                final MocoConfig... configs) {
-        return new ActualHttpServer(port, Optional.<HttpsCertificate>absent(), monitor, configs);
+        return new ActualHttpServer(port, Optional.<HttpsCertificate>absent(),
+                new ThreadSafeMonitor(monitor), configs);
     }
 
     public static ActualHttpServer createLogServer(final Optional<Integer> port, final MocoConfig... configs) {
