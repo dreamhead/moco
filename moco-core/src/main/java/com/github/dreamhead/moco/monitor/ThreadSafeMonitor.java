@@ -4,32 +4,63 @@ import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class ThreadSafeMonitor implements MocoMonitor {
     private MocoMonitor monitor;
+    private Lock lock = new ReentrantLock();
 
-    public ThreadSafeMonitor(MocoMonitor monitor) {
+    public ThreadSafeMonitor(final MocoMonitor monitor) {
         this.monitor = monitor;
     }
 
     @Override
-    public synchronized void onMessageArrived(Request request) {
-        this.monitor.onMessageArrived(request);
-
+    public void onMessageArrived(final Request request) {
+        withLock(lock, new Runnable() {
+            @Override
+            public void run() {
+                monitor.onMessageArrived(request);
+            }
+        });
     }
 
     @Override
-    public synchronized void onException(Throwable t) {
-        this.monitor.onException(t);
+    public void onException(final Throwable t) {
+        withLock(lock, new Runnable() {
+            @Override
+            public void run() {
+                monitor.onException(t);
+            }
+        });
     }
 
     @Override
-    public void onMessageLeave(Response response) {
-        this.monitor.onMessageLeave(response);
-
+    public void onMessageLeave(final Response response) {
+        withLock(lock, new Runnable() {
+            @Override
+            public void run() {
+                monitor.onMessageLeave(response);
+            }
+        });
     }
 
     @Override
-    public void onUnexpectedMessage(Request request) {
-        this.monitor.onUnexpectedMessage(request);
+    public void onUnexpectedMessage(final Request request) {
+        withLock(lock, new Runnable() {
+            @Override
+            public void run() {
+                monitor.onUnexpectedMessage(request);
+            }
+        });
+    }
+
+    private void withLock(final Lock lock, final Runnable runnable) {
+        lock.lock();
+        try {
+            runnable.run();
+        } finally {
+            lock.unlock();
+        }
     }
 }
