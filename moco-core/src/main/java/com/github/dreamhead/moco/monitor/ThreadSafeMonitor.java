@@ -7,6 +7,8 @@ import com.github.dreamhead.moco.Response;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.github.dreamhead.moco.util.Locks.withLock;
+
 public class ThreadSafeMonitor implements MocoMonitor {
     private MocoMonitor monitor;
     private Lock lock = new ReentrantLock();
@@ -53,14 +55,5 @@ public class ThreadSafeMonitor implements MocoMonitor {
                 monitor.onUnexpectedMessage(request);
             }
         });
-    }
-
-    private void withLock(final Lock lock, final Runnable runnable) {
-        lock.lock();
-        try {
-            runnable.run();
-        } finally {
-            lock.unlock();
-        }
     }
 }

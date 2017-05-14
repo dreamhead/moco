@@ -26,8 +26,8 @@ public class MocoMultithreadingTest {
     @Before
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
-
     }
+    
     @Test
     public void should_work_well_for_request_hit() throws Exception {
         RequestHit hit = requestHit();
