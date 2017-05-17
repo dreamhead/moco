@@ -225,15 +225,8 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
         try {
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(0)
-                    .setStaleConnectionCheckEnabled(true)
-                    .build();
-            FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
-            HttpRequestBase remoteRequest = prepareRemoteRequest(httpRequest, remoteUrl);
-            remoteRequest.setConfig(requestConfig);
-            CloseableHttpResponse response = client.execute(remoteRequest);
-            return setupResponse(request, response);
+            HttpRequestBase remoteRequest = configureRemoteRequest(request, remoteUrl);
+            return setupResponse(request, client.execute(remoteRequest));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             return failover.failover(request);
@@ -243,6 +236,22 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             } catch (IOException ignored) {
             }
         }
+    }
+
+    private HttpRequestBase configureRemoteRequest(final HttpRequest request, final URL remoteUrl) {
+        HttpRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(0)
+                .setStaleConnectionCheckEnabled(true)
+                .build();
+        remoteRequest.setConfig(requestConfig);
+        return remoteRequest;
+    }
+
+    private HttpRequestBase prepareRemoteRequest(final HttpRequest request, final URL remoteUrl) {
+        FullHttpRequest httpRequest = ((DefaultHttpRequest)request).toFullHttpRequest();
+        return prepareRemoteRequest(httpRequest, remoteUrl);
     }
 
     private Optional<URL> remoteUrl(final HttpRequest request) {
