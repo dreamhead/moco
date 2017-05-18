@@ -23,7 +23,6 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -66,7 +65,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
                 .setConnectionManager(connManager)
                 .setConnectionManagerShared(true)
                 .build();
-
     }
 
     protected abstract Optional<String> doRemoteUrl(final HttpRequest request);
@@ -155,7 +153,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse setupResponse(final HttpRequest request,
-                                         final org.apache.http.HttpResponse remoteResponse) throws IOException {
+                                       final org.apache.http.HttpResponse remoteResponse) throws IOException {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
             return failover.failover(request);
@@ -250,7 +248,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpRequestBase prepareRemoteRequest(final HttpRequest request, final URL remoteUrl) {
-        FullHttpRequest httpRequest = ((DefaultHttpRequest)request).toFullHttpRequest();
+        FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
         return prepareRemoteRequest(httpRequest, remoteUrl);
     }
 
