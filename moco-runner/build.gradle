@@ -68,7 +68,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 
 task proguardCheck(type: Test, dependsOn: proguard) {
     testLogging { exceptionFormat "full" }
-    classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile)
+    classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
 uploadArchives.dependsOn proguard, proguardCheck
@@ -94,4 +94,8 @@ def javaLibPath(lib, osxLib) {
         }
     }
     javaBase + target
+}
+
+def findJar(prefix) {
+    configurations.runtime.filter { it.name.startsWith(prefix) }
 }
