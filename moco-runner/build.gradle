@@ -68,7 +68,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 
 task proguardCheck(type: Test, dependsOn: proguard) {
     testLogging { exceptionFormat "full" }
-    classpath = classpath - files(sourceSets.main.output.classesDir) - files(configurations.runtime) + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
+    classpath = classpath - files(sourceSets.main.output.classesDir) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
 uploadArchives.dependsOn proguard, proguardCheck
@@ -85,7 +85,7 @@ def jsseLib() {
     javaLibPath("/lib/jsse.jar", "/../Classes/jsse.jar")
 }
 
-def javaLibPath(lib, osxLib) {
+def javaLibPath(String lib, String osxLib) {
     def javaBase = System.properties["java.home"];
     def target = lib
     if (OperatingSystem.current().isMacOsX()) {
@@ -96,6 +96,6 @@ def javaLibPath(lib, osxLib) {
     javaBase + target
 }
 
-def findJar(prefix) {
+def findJar(String prefix) {
     configurations.runtime.filter { it.name.startsWith(prefix) }
 }
