@@ -45,6 +45,7 @@ REST APIs is also available in JSON APIs.  The same resource could be created in
 
 ```json
 [
+{
 "resource": {
   "name": "targets",
   "get": [
@@ -58,6 +59,7 @@ REST APIs is also available in JSON APIs.  The same resource could be created in
       }
     }
   ]
+}
 }
 ]
 ```
