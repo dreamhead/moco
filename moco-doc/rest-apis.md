@@ -44,7 +44,7 @@ In this case, you create a resource named `targets`. If you access this resource
 REST APIs is also available in JSON APIs.  The same resource could be created in JSON APIs as follows:
 
 ```json
-[
+{
 "resource": {
   "name": "targets",
   "get": [
@@ -59,7 +59,7 @@ REST APIs is also available in JSON APIs.  The same resource could be created in
     }
   ]
 }
-]
+}
 ```
 
 ## Composite REST Settings
