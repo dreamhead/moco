@@ -18,6 +18,7 @@
 * Fix: parse json with charset
 * Fix: fail to load configuration with multiple modification
 * Fix: allowed empty query
+* Fix: make request hit and moco monitor thread safe
 
 # Release 0.11.0 (20-May-2016)
  
