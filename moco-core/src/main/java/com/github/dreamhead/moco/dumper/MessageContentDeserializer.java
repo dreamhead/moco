@@ -9,7 +9,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class MessageContentDeserializer extends JsonDeserializer<MessageContent> {
     @Override

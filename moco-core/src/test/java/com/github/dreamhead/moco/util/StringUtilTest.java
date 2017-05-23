@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.util;
 
 import org.junit.Test;
 
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

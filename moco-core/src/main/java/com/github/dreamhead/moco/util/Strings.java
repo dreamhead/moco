@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.util;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public final class StringUtil {
+public final class Strings {
     public static String strip(final String text) {
         if (isNullOrEmpty(text)) {
             return "";
@@ -11,6 +11,6 @@ public final class StringUtil {
         return text.trim();
     }
 
-    private StringUtil() {
+    private Strings() {
     }
 }

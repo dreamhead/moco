@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
     @Override

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContainer;
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();

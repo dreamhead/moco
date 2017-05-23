@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.parser.model.ProxyContainer.builder;
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override

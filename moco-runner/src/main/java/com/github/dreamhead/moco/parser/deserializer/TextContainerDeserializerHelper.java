@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
 import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateName;
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
-import static com.github.dreamhead.moco.util.StringUtil.strip;
+import static com.github.dreamhead.moco.util.Strings.strip;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
