@@ -79,7 +79,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createRemoteRequest(request, url);
-        RequestConfig config = RequestConfig.custom().setRedirectsEnabled(false).build();
+        RequestConfig config = RequestConfig.custom()
+                .setRedirectsEnabled(false)
+                .setSocketTimeout(0)
+                .setStaleConnectionCheckEnabled(true)
+                .build();
         remoteRequest.setConfig(config);
         remoteRequest.setProtocolVersion(createVersion(request));
 
@@ -223,7 +227,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
         try {
-            HttpRequestBase remoteRequest = configureRemoteRequest(request, remoteUrl);
+            HttpRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
             return setupResponse(request, client.execute(remoteRequest));
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
@@ -234,17 +238,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             } catch (IOException ignored) {
             }
         }
-    }
-
-    private HttpRequestBase configureRemoteRequest(final HttpRequest request, final URL remoteUrl) {
-        HttpRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
-
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(0)
-                .setStaleConnectionCheckEnabled(true)
-                .build();
-        remoteRequest.setConfig(requestConfig);
-        return remoteRequest;
     }
 
     private HttpRequestBase prepareRemoteRequest(final HttpRequest request, final URL remoteUrl) {
