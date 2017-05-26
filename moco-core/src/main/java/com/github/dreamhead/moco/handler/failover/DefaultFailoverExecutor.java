@@ -39,23 +39,23 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     @Override
-    public void onCompleteResponse(final HttpRequest request, final HttpResponse httpResponse) {
+    public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
         try {
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-            Session targetSession = Session.newSession(request, httpResponse);
-            writer.writeValue(this.file, prepareTargetSessions(targetSession));
+            Session targetSession = Session.newSession(request, response);
+            writer.writeValue(this.file, prepareTargetSessions(this.file, targetSession));
         } catch (IOException e) {
             throw new MocoException(e);
         }
     }
 
-    private ImmutableList<Session> prepareTargetSessions(final Session targetSession) {
+    private ImmutableList<Session> prepareTargetSessions(final File file, final Session targetSession) {
         if (file.length() == 0) {
             return of(targetSession);
         }
 
         return ImmutableList.<Session>builder()
-                .addAll(toUniqueSessions(targetSession, restoreSessions(this.file)))
+                .addAll(toUniqueSessions(targetSession, restoreSessions(file)))
                 .add(targetSession)
                 .build();
     }

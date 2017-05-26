@@ -19,8 +19,8 @@ public class Failover {
         return executor.failover(request);
     }
 
-    public void onCompleteResponse(final HttpRequest request, final HttpResponse httpResponse) {
-        executor.onCompleteResponse(request, httpResponse);
+    public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
+        executor.onCompleteResponse(request, response);
     }
 
     public boolean isPlayback() {
