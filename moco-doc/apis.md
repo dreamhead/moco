@@ -1984,6 +1984,37 @@ server.response(file(template("${req.headers['foo'].txt")));
 ]
 ```
 
+### Proxy
+**@Since will be at the next release**
+
+You can use template in proxy API, so that you can dynamically decide which URL you will forward the request to.
+
+* Java
+
+```java
+server.request(by(uri("/proxy"))).response(proxy(template("http://localhost:12306/${req.queries['foo']}")))
+```
+
+* JSON
+
+```json
+{
+        "request" :
+        {
+            "uri" : "/template-url"
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : {
+                    "template": "http://localhost:12306/${req.queries['foo']}"
+                }
+            }
+        }
+    }
+```
+
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 

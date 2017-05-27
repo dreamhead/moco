@@ -81,4 +81,11 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_not_proxy_from_server_with_url() throws IOException {
         runWithConfiguration("proxy_error_url_from_server.json");
     }
+
+    @Test
+    public void should_response_with_proxy_template_url() throws IOException {
+        runWithConfiguration("proxy.json");
+        String content = helper.get(remoteUrl("/template-url?foo=target"));
+        assertThat(content, is("proxy_target"));
+    }
 }

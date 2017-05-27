@@ -46,5 +46,20 @@
                 "playback" : "src/test/resources/standalone_failover.json"
             }
         }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/template-url"
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : {
+                    "template": "http://localhost:12306/${req.queries['foo']}"
+                }
+            }
+        }
     }
 ]

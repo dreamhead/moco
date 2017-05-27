@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
+import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer>
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class InternalProxyContainer {
-        private String url;
+        private TextContainer url;
         private String from;
         private String to;
 

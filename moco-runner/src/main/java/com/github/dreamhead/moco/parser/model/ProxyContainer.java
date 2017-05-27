@@ -11,10 +11,11 @@ import com.google.common.base.MoreObjects;
 import static com.github.dreamhead.moco.Moco.failover;
 import static com.github.dreamhead.moco.Moco.playback;
 import static com.github.dreamhead.moco.Moco.from;
+import static com.github.dreamhead.moco.Moco.text;
 
 @JsonDeserialize(using = ProxyContainerDeserializer.class)
 public class ProxyContainer {
-    private String url;
+    private TextContainer url;
     private String from;
     private String to;
 
@@ -68,11 +69,11 @@ public class ProxyContainer {
             return Moco.proxy(getProxyConfig(), failover);
         }
 
-        return Moco.proxy(url, failover);
+        return Moco.proxy(url.asResource(), failover);
     }
 
     public static class Builder {
-        private String url;
+        private TextContainer url;
         private String failover;
         private String playback;
 
@@ -80,7 +81,12 @@ public class ProxyContainer {
         private String to;
 
         public Builder withUrl(final String url) {
-            this.url = url;
+            this.url = TextContainer.builder().withText(url).build();
+            return this;
+        }
+
+        public Builder withUrl(final TextContainer container) {
+            this.url = container;
             return this;
         }
 
