@@ -1435,6 +1435,42 @@ server.response(cookie("loggedIn", "true", httpOnly()), status(302));
 }
 ```
 
+##### Max Age
+
+@Since will be at next version
+
+The Max-Age attribute can be used to set the cookie's expiration as an interval of seconds in the future, relative to the time the browser received the cookie. You can add your own `maxAge` cookie attribute to your response.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(302))
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+             "maxAge": {
+                 "duration": 1,
+                 "unit": "hour"
+             }
+        }
+      }
+    }
+}
+```
+
 ### Attachment
 **@Since 0.10.0**
 
