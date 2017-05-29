@@ -9,7 +9,7 @@ public class ProxyConfig {
     private final String localBase;
     private final String remoteBase;
 
-    public ProxyConfig(final String localBase, final String remoteBase) {
+    private ProxyConfig(final String localBase, final String remoteBase) {
         this.localBase = localBase;
         this.remoteBase = remoteBase;
     }
