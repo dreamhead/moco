@@ -2035,20 +2035,55 @@ server.request(by(uri("/proxy"))).response(proxy(template("http://localhost:1230
 
 ```json
 {
-        "request" :
-        {
-            "uri" : "/template-url"
-        },
-        "response" :
-        {
-            "proxy" :
-            {
-                "url" : {
-                    "template": "http://localhost:12306/${req.queries['foo']}"
-                }
+    "request" : {
+        "uri" : "/proxy"
+    },
+    "response" : {
+        "proxy" : {
+            "url" : {
+                "template": "http://localhost:12306/${req.queries['foo']}"
             }
         }
     }
+}
+```
+
+### Template for Event Action
+
+Template also can ben applied to event action. Check out [Event](#event) for more details about event.
+
+* Java
+
+```java
+server.request(by(uri("/event"))).response("event").on(complete(post("http://localhost:12306/target"), template("${target}", of("target", var("target"))))));
+```
+
+* JSON
+
+```json
+{
+  "request": {
+    "uri": "/event"
+  },
+  "response": {
+    "text": "event"
+  },
+  "on": {
+    "complete": {
+      "post": {
+        "url": "http://localhost:12306/target",
+        "content": {
+          "template": {
+            "with": "${target}",
+            "vars": {
+              "target" : "target"
+            }
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
 ## Event
