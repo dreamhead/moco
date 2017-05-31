@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.action.MocoAsyncAction;
+import com.github.dreamhead.moco.action.MocoGetRequestAction;
+import com.github.dreamhead.moco.action.MocoPostRequestAction;
 import com.github.dreamhead.moco.action.MocoRequestAction;
 import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
@@ -567,11 +569,11 @@ public final class Moco {
     }
 
     public static MocoEventAction get(final Resource url) {
-        return new MocoRequestAction(checkNotNull(url, "URL should not be null"), HttpMethod.GET, Optional.<ContentResource>absent());
+        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"));
     }
 
     public static MocoEventAction post(final Resource url, final ContentResource content) {
-        return new MocoRequestAction(checkNotNull(url, "URL should not be null"), HttpMethod.POST, of(checkNotNull(content, "Content should not be null")));
+        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"));
     }
 
     public static MocoEventAction post(final String url, final ContentResource content) {
