@@ -10,13 +10,19 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
+import static com.google.common.base.Optional.of;
+
 public abstract class MocoRequestAction implements MocoEventAction {
-    protected final Resource url;
+    private final Resource url;
 
-    protected abstract HttpRequestBase createRequest(final Resource url, final Request request);
+    protected abstract HttpRequestBase createRequest(final String url, final Request request);
 
-    public MocoRequestAction(final Resource url) {
+    protected MocoRequestAction(final Resource url) {
         this.url = url;
+    }
+
+    public Resource getUrl() {
+        return url;
     }
 
     @Override
@@ -35,6 +41,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
     }
 
     private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
-        client.execute(createRequest(url, request));
+        String targetUrl = url.readFor(of(request)).toString();
+        client.execute(createRequest(targetUrl, request));
     }
 }

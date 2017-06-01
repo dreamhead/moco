@@ -7,16 +7,13 @@ import com.github.dreamhead.moco.resource.Resource;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import static com.google.common.base.Optional.of;
-
 public class MocoGetRequestAction extends MocoRequestAction {
-    public MocoGetRequestAction(Resource url) {
+    public MocoGetRequestAction(final Resource url) {
         super(url);
     }
 
-    protected HttpRequestBase createRequest(final Resource url, final Request request) {
-        String targetUrl = url.readFor(of(request)).toString();
-        return new HttpGet(targetUrl);
+    protected HttpRequestBase createRequest(final String url, final Request request) {
+        return new HttpGet(url);
     }
 
     @Override

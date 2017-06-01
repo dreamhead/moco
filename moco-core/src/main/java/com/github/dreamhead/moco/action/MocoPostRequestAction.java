@@ -20,9 +20,8 @@ public class MocoPostRequestAction extends MocoRequestAction {
         this.content = content;
     }
 
-    protected HttpRequestBase createRequest(final Resource url, final Request request) {
-        String targetUrl = url.readFor(of(request)).toString();
-        HttpPost targetRequest = new HttpPost(targetUrl);
+    protected HttpRequestBase createRequest(final String url, final Request request) {
+        HttpPost targetRequest = new HttpPost(url);
         targetRequest.setEntity(asEntity(content, request));
         return targetRequest;
     }
@@ -35,7 +34,7 @@ public class MocoPostRequestAction extends MocoRequestAction {
     public MocoEventAction apply(final MocoConfig config) {
         Resource appliedContent = this.content.apply(config);
         if (appliedContent != this.content) {
-            return new MocoPostRequestAction(this.url, (ContentResource) appliedContent);
+            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent);
         }
 
         return this;
