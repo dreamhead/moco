@@ -18,11 +18,11 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
     private final RequestExtractor<T> extractor;
     private final Resource expected;
-    private final Predicate<byte[]> predicate;
+    private final Predicate<String> predicate;
 
     protected AbstractOperatorMatcher(final RequestExtractor<T> extractor,
                                       final Resource expected,
-                                      final Predicate<byte[]> predicate) {
+                                      final Predicate<String> predicate) {
         this.extractor = extractor;
         this.predicate = predicate;
         this.expected = expected;
@@ -37,32 +37,20 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
         T target = extractContent.get();
         if (target instanceof String) {
-            return predicate.apply(((String) target).getBytes());
+            return predicate.apply((String)target);
         }
 
         if (target instanceof String[]) {
             String[] contents = (String[]) target;
-            return from(newArrayList(contents)).filter(notNull()).anyMatch(toStringPredicate(predicate));
-        }
-
-        if (target instanceof byte[]) {
-            return predicate.apply((byte[]) target);
+            return from(newArrayList(contents)).filter(notNull()).anyMatch(predicate);
         }
 
         if (target instanceof MessageContent) {
-            return predicate.apply(((MessageContent)target).getContent());
+            MessageContent actualTarget = (MessageContent) target;
+            return predicate.apply(actualTarget.toString());
         }
 
         return false;
-    }
-
-    private Predicate<String> toStringPredicate(final Predicate<byte[]> predicate) {
-        return new Predicate<String>() {
-            @Override
-            public boolean apply(final String input) {
-                return predicate.apply(input.getBytes());
-            }
-        };
     }
 
     @Override

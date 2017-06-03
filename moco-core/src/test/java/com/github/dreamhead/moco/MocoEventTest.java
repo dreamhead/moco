@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMultimap;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.Moco.and;
@@ -336,6 +337,23 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server = httpServer(port(), fileRoot("src/test/resources"));
         server.request(by(uri("/target")), by(file("foo.request"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), file("foo.request"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(any(SessionContext.class));
+    }
+
+    @Test
+    public void should_send_post_request_to_target_on_complete_with_gbk() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        final Charset gbk = Charset.forName("GBK");
+        server.request(and(by(uri("/target")), by(pathResource("gbk.json", gbk)))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), pathResource("gbk.json", gbk))));
 
         running(server, new Runnable() {
             @Override

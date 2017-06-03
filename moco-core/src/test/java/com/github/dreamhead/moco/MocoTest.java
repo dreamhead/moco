@@ -180,12 +180,13 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_request_with_charset_from_file() throws Exception {
-        server.request(by(file("src/test/resources/gbk.response", Charset.forName("GBK")))).response("bar");
+        final Charset gbk = Charset.forName("GBK");
+        server.request(by(file("src/test/resources/gbk.response", gbk))).response("bar");
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postBytes(root(), toByteArray(new File("src/test/resources/gbk.response"))),
+                assertThat(helper.postBytes(root(), toByteArray(new File("src/test/resources/gbk.response")), gbk),
                         is("bar"));
             }
         });

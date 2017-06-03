@@ -7,14 +7,12 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
-import java.util.Arrays;
-
 public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     public EqRequestMatcher(final RequestExtractor<T> extractor, final Resource expected) {
-        super(extractor, expected, new Predicate<byte[]>() {
+        super(extractor, expected, new Predicate<String>() {
             @Override
-            public boolean apply(final byte[] input) {
-                return Arrays.equals(input, expected.readFor(Optional.<Request>absent()).getContent());
+            public boolean apply(final String input) {
+                return input.equals(expected.readFor(Optional.<Request>absent()).toString());
             }
         });
     }
