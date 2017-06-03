@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -29,9 +30,11 @@ import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.from;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.match;
 import static com.github.dreamhead.moco.Moco.method;
+import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.playback;
 import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.query;
@@ -475,6 +478,23 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+            }
+        });
+    }
+
+    @Test
+    public void should_forward_gbk_request() throws Exception {
+        server = httpServer(port(), log());
+        final Charset gbk = Charset.forName("GBK");
+        server.request(and(by(uri("/proxy")), json(pathResource("gbk.json", gbk)))).response("response");
+        server.response(proxy(remoteUrl("/proxy")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                byte[] bytes = ByteStreams.toByteArray(this.getClass().getClassLoader().getResourceAsStream("gbk.json"));
+                String result = helper.postBytes(root(), bytes, gbk);
+                assertThat(result, is("response"));
             }
         });
     }
