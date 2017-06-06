@@ -7,6 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.CookieAttribute.domain;
@@ -20,11 +21,15 @@ import static com.github.dreamhead.moco.Moco.cookie;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.form;
+import static com.github.dreamhead.moco.Moco.httpServer;
+import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static com.google.common.collect.ImmutableSet.of;
 import static org.apache.http.client.fluent.Request.Post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -38,6 +43,20 @@ public class MocoWebTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 org.apache.http.client.fluent.Request request = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+                assertThat(helper.executeAsString(request), is("foobar"));
+            }
+        });
+    }
+
+    @Test
+    public void should_match_form_value_with_charset() throws Exception {
+        server = httpServer(port(), log());
+        server.post(eq(form("name"), "表单")).response("foobar");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                org.apache.http.client.fluent.Request request = Post(root()).bodyForm(of(new BasicNameValuePair("name", "表单")), Charset.forName("GBK"));
                 assertThat(helper.executeAsString(request), is("foobar"));
             }
         });

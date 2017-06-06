@@ -79,13 +79,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createRemoteRequest(request, url);
-        RequestConfig config = RequestConfig.custom()
-                .setRedirectsEnabled(false)
-                .setSocketTimeout(0)
-                .setStaleConnectionCheckEnabled(true)
-                .build();
-        remoteRequest.setConfig(config);
-        remoteRequest.setProtocolVersion(createVersion(request));
+        remoteRequest.setConfig(createRequestConfig());
 
         long contentLength = HttpUtil.getContentLength(request, -1);
         if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
@@ -96,8 +90,18 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return remoteRequest;
     }
 
+    private RequestConfig createRequestConfig() {
+        return RequestConfig.custom()
+                .setRedirectsEnabled(false)
+                .setSocketTimeout(0)
+                .setStaleConnectionCheckEnabled(true)
+                .build();
+    }
+
     private HttpRequestBase createRemoteRequest(final FullHttpRequest request, final URL url) {
         HttpRequestBase remoteRequest = createBaseRequest(url, request.method());
+
+        remoteRequest.setProtocolVersion(createVersion(request));
         for (Map.Entry<String, String> entry : request.headers()) {
             if (isRequestHeader(entry)) {
                 remoteRequest.addHeader(entry.getKey(), entry.getValue());

@@ -21,7 +21,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
         this.url = url;
     }
 
-    public Resource getUrl() {
+    protected Resource getUrl() {
         return url;
     }
 

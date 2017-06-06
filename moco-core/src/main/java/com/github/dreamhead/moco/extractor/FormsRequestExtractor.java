@@ -6,11 +6,15 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.multipart.Attribute;
+import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +28,10 @@ public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<Str
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
-            decoder = new HttpPostRequestDecoder(((DefaultHttpRequest) request).toFullHttpRequest());
+            DefaultHttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
+            FullHttpRequest targetRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
+            Charset charset = HttpUtil.getCharset(targetRequest);
+            decoder = new HttpPostRequestDecoder(factory, targetRequest, charset);
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.ErrorDataDecoderException idde) {
             return absent();

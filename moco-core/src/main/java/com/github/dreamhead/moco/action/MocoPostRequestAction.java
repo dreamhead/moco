@@ -32,9 +32,13 @@ public class MocoPostRequestAction extends MocoRequestAction {
     }
 
     private HttpEntity asEntity(final ContentResource resource, final Request request) {
-        MediaType type = content.getContentType((HttpRequest) request);
-        ContentType contentType = ContentType.create(type.type() + "/" + type.subtype(), type.charset().or(Charset.defaultCharset()));
-        return new InputStreamEntity(resource.readFor(of(request)).toInputStream(), contentType);
+        return new InputStreamEntity(resource.readFor(of(request)).toInputStream(), getContentType((HttpRequest) request));
+    }
+
+    private ContentType getContentType(HttpRequest request) {
+        MediaType type = content.getContentType(request);
+        return ContentType.create(type.type() + "/" + type.subtype(),
+                type.charset().or(Charset.defaultCharset()));
     }
 
     @Override
@@ -45,6 +49,5 @@ public class MocoPostRequestAction extends MocoRequestAction {
         }
 
         return this;
-
     }
 }
