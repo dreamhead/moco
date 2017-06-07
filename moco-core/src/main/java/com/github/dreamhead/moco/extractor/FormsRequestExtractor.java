@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 
@@ -28,7 +29,7 @@ public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<Str
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
-            DefaultHttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
+            HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
             FullHttpRequest targetRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
             Charset charset = HttpUtil.getCharset(targetRequest);
             decoder = new HttpPostRequestDecoder(factory, targetRequest, charset);
