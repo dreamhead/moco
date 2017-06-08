@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
 import com.github.dreamhead.moco.model.MessageContent;
 
 public abstract class AbstractHttpContentResponseHandler extends AbstractContentResponseHandler {
-    protected abstract MessageContent responseContent(HttpRequest httpRequest);
+    protected abstract MessageContent responseContent(final HttpRequest httpRequest);
 
     @Override
     protected final MessageContent responseContent(final Request request) {
