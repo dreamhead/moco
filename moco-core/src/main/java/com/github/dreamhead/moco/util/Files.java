@@ -15,10 +15,10 @@ public final class Files {
     }
 
     private static String actualJoin(final String path1, final String path2) {
-        return joinedFile(path1, path2).getPath();
+        return joinFiles(path1, path2).getPath();
     }
 
-    private static File joinedFile(final String path1, final String path2) {
+    private static File joinFiles(final String path1, final String path2) {
         checkNotNull(path2);
 
         if (path1 == null) {
