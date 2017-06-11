@@ -3,15 +3,15 @@ package com.github.dreamhead.moco.bootstrap;
 import com.google.common.base.Optional;
 import org.apache.commons.cli.Option;
 
-public class ShutdownPortOption {
-    private final Optional<Integer> shutdownPort;
+public abstract class ShutdownPortOption {
+    private final Integer shutdownPort;
 
-    public ShutdownPortOption(final Integer shutdownPort) {
-        this.shutdownPort = Optional.fromNullable(shutdownPort);
+    protected ShutdownPortOption(final Integer shutdownPort) {
+        this.shutdownPort = shutdownPort;
     }
 
     public Optional<Integer> getShutdownPort() {
-        return shutdownPort;
+        return Optional.fromNullable(shutdownPort);
     }
 
     public static Option shutdownPortOption() {
