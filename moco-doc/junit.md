@@ -53,7 +53,7 @@ public class MocoJunitJsonHttpRunnerTest {
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 JSON configuration can be retrieved from the classpath.
 
@@ -70,7 +70,7 @@ public class MocoJunitJsonHttpRunnerTest {
 
 ### POJO HTTPS Server
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 **httpsRunner** can reference a HttpsServer object.
 
@@ -93,7 +93,7 @@ public class MocoJunitPojoHttpRunnerTest {
 
 ### JSON HTTPS Server
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 **jsonHttpsRunner** can reference a JSON file as a HTTP server.
 
@@ -107,7 +107,7 @@ public class MocoJunitJsonHttpRunnerTest {
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 JSON configuration can be retrieved from the classpath.
 
@@ -160,7 +160,7 @@ public class MocoJunitJsonSocketRunnerTest {
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 JSON configuration can be retrieved from the classpath.
 
@@ -201,7 +201,7 @@ public class MocoJunitPojoRestRunnerTest {
 
 ### JSON Rest Server
 
-**@Since 0.11.0**
+**@Since 0.11.1**
 
 **jsonRestRunner** can reference a JSON file as a HTTP server.
 
@@ -214,7 +214,7 @@ public class MocoJunitJsonRestRunnerTest {
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.11.1**
 
 JSON configuration can be retrieved from the classpath.
 

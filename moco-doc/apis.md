@@ -1308,7 +1308,7 @@ Cookie attributes are sent in http response, which are used by browsers to deter
 
 ##### Path
 
-@Since will be at next version
+**@Since 0.11.1**
 
 Path cookie attribute defines the scope of the cookie. You can add your own `path` cookie attribute to your response.
 
@@ -1341,7 +1341,7 @@ server.response(cookie("loggedIn", "true", path("/")), status(302));
 
 ##### Domain
 
-@Since will be at next version
+**@Since 0.11.1**
 
 Domain cookie attribute defines the scope of the cookie. You can add your own `domain` cookie attribute to your response.
 
@@ -1374,7 +1374,7 @@ server.response(cookie("loggedIn", "true", domain("github.com")), status(302));
 
 ##### Secure
 
-@Since will be at next version
+**@Since 0.11.1**
 
 A secure cookie can only be transmitted over an encrypted connection. You can add your own `secure` cookie attribute to your response.
 
@@ -1407,7 +1407,7 @@ server.response(cookie("loggedIn", "true", secure()), status(302));
 
 ##### HTTP Only
 
-@Since will be at next version
+**@Since 0.11.1**
 
 An http only cookie cannot be accessed by client-side APIs. You can add your own `httpOnly` cookie attribute to your response.
 
@@ -1440,7 +1440,7 @@ server.response(cookie("loggedIn", "true", httpOnly()), status(302));
 
 ##### Max Age
 
-@Since will be at next version
+**@Since 0.11.1**
 
 The Max-Age attribute can be used to set the cookie's expiration as an interval of seconds in the future, relative to the time the browser received the cookie. You can add your own `maxAge` cookie attribute to your response.
 
@@ -2024,7 +2024,7 @@ server.response(file(template("${req.headers['foo'].txt")));
 ```
 
 ### Proxy
-**@Since will be at the next release**
+**@Since 0.11.1**
 
 You can use template in proxy API, so that you can dynamically decide which URL you will forward the request to.
 

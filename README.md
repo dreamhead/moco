@@ -9,7 +9,7 @@
 Moco is an easy setup stub framework.
 
 ## Latest Release
-* __0.11.0__
+* __0.11.1__
 
 More details in [Release Notes](moco-doc/ReleaseNotes.md)
 
@@ -23,7 +23,7 @@ Integration, especially based on HTTP protocol, e.g. web service, REST etc, is w
 In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all know, it's so boring to develop a WAR and deploy it to any application server, even if we use an embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
 ## Quick Start
-* Download [Standalone Moco Runner](https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.11.0/moco-runner-0.11.0-standalone.jar)
+* Download [Standalone Moco Runner](http://central.maven.org/maven2/com/github/dreamhead/moco-runner/0.11.1/moco-runner-0.11.1-standalone.jar)
 * Write your own configuration file to describe your Moco server configuration as follow:
 ```json
 [
@@ -79,7 +79,7 @@ git clone git@github.com:dreamhead/moco.git
 Check out what you can help [here](moco-doc/plan.md) if you do not have any existing idea.
 
 ## Copyright and license
-Copyright 2012-2015 ZHENG Ye
+Copyright 2012-2017 ZHENG Ye
 
 Licensed under MIT License (the "License"); You may obtain a copy of the License in the LICENSE file, or at:
 
