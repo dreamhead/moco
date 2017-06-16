@@ -40,8 +40,8 @@ task uberjar(type: Jar, dependsOn: jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude('META-INF/maven/**')
 
-    from files(project(':moco-core').sourceSets.main.output.classesDir)
-    from files(sourceSets.main.output.classesDir)
+    from files(project(':moco-core').sourceSets.main.output.classesDirs)
+    from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
     from configurations.runtime.asFileTree.files.collect { zipTree(it) }
 
@@ -68,7 +68,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 
 task proguardCheck(type: Test, dependsOn: proguard) {
     testLogging { exceptionFormat "full" }
-    classpath = classpath - files(sourceSets.main.output.classesDir) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
+    classpath = classpath - files(sourceSets.main.output.classesDirs) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
 uploadArchives.dependsOn proguard, proguardCheck
