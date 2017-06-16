@@ -24,7 +24,7 @@ public class StartArgsTest {
     public void should_parse_start_arguments() {
         StartArgs args = startArgsParser.parse(new String[]{"start", "-p", "12306", "-c", "foo.json"});
         assertThat(args.getPort().get(), is(12306));
-        assertThat(args.getConfigurationFile().get(), is("foo.json"));
+        assertThat(args.getConfigurationFiles().get(), is(new String[]{"foo.json"}));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class StartArgsTest {
     public void should_parse_without_port() {
         StartArgs args = startArgsParser.parse(new String[]{"start", "-c", "foo.json"});
         assertThat(args.getPort(), is(Optional.<Integer>absent()));
-        assertThat(args.getConfigurationFile().get(), is("foo.json"));
+        assertThat(args.getConfigurationFiles().get(), is(new String[]{"foo.json"}));
     }
 
     @Test

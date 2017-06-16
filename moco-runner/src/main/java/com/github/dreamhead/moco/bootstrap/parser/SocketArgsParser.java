@@ -12,10 +12,10 @@ public class SocketArgsParser extends StartArgsParser {
     @Override
     protected StartArgs parseArgs(final CommandLine cmd) {
         String port = cmd.getOptionValue("p");
-        String config = cmd.getOptionValue("c");
+        String[] configs = cmd.getOptionValues("c");
         String shutdownPort = cmd.getOptionValue("s");
 
-        if (config == null) {
+        if (configs == null) {
             throw new ParseArgException("config is required");
         }
 
@@ -26,7 +26,7 @@ public class SocketArgsParser extends StartArgsParser {
         return socketArgs()
                 .withPort(getPort(port))
                 .withShutdownPort(getPort(shutdownPort))
-                .withConfigurationFile(config)
+                .withConfigurationFile(configs)
                 .build();
     }
 

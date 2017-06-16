@@ -12,18 +12,18 @@ import static com.google.common.base.Optional.fromNullable;
 public abstract class StartArgs extends ShutdownPortOption {
     private final ServerType type;
     private final Optional<Integer> port;
-    private final Optional<String> configurationFile;
+    private final Optional<String[]> configurationFiles;
     private final Optional<String> settings;
     private final Optional<String> env;
     private final Optional<HttpsArg> httpsArg;
 
     protected StartArgs(final ServerType type, final Integer port, final Integer shutdownPort,
-                        final String configurationFile, final String globalSettings,
+                        final String[] configurationFiles, final String globalSettings,
                         final String env, final HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
         this.port = fromNullable(port);
-        this.configurationFile = fromNullable(configurationFile);
+        this.configurationFiles = fromNullable(configurationFiles);
         this.settings = fromNullable(globalSettings);
         this.env = fromNullable(env);
         this.httpsArg = fromNullable(httpsArg);
@@ -33,12 +33,12 @@ public abstract class StartArgs extends ShutdownPortOption {
         return port;
     }
 
-    public Optional<String> getConfigurationFile() {
-        return configurationFile;
+    public Optional<String[]> getConfigurationFiles() {
+        return configurationFiles;
     }
 
     public boolean hasConfigurationFile() {
-        return this.configurationFile.isPresent();
+        return this.configurationFiles.isPresent();
     }
 
     public Optional<String> getSettings() {
