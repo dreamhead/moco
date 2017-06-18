@@ -8,12 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Arrays;
 
 import static com.google.common.collect.FluentIterable.from;
 
 public class CommonsIoWatcherFactory implements WatcherFactory {
-    private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);
+    private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);`
 
     @Override
     public MocoRunnerWatcher createWatcher(final FileRunner fileRunner, final File... files) {
@@ -25,10 +24,10 @@ public class CommonsIoWatcherFactory implements WatcherFactory {
             return new FileMocoRunnerWatcher(files[0], createListener(fileRunner));
         }
 
-        return createFilesWatcher(Arrays.asList(files), createListener(fileRunner));
+        return createFilesWatcher(files, createListener(fileRunner));
     }
 
-    private MocoRunnerWatcher createFilesWatcher(final Iterable<File> files, final FileAlterationListener listener) {
+    private MocoRunnerWatcher createFilesWatcher(final File[] files, final FileAlterationListener listener) {
         return new FilesMocoRunnerWatcher(from(files).transform(new Function<File, FileMocoRunnerWatcher>() {
             @Override
             public FileMocoRunnerWatcher apply(final File file) {
