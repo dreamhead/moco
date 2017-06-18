@@ -4,14 +4,11 @@ import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class MonitorFactory {
-    private static Logger logger = LoggerFactory.getLogger(MonitorFactory.class);
+    private WatcherFactory factory = new CommonsIoWatcherFactory();
 
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,
                                                            final Optional<Integer> shutdownPort,
@@ -24,29 +21,14 @@ public class MonitorFactory {
         });
     }
 
-    public FileMocoRunnerWatcher createConfigurationWatcher(final File configuration, final FileRunner fileRunner) {
-        return new FileMocoRunnerWatcher(configuration, createListener(fileRunner));
+    public MocoRunnerWatcher createConfigurationWatcher(final File file, final FileRunner fileRunner) {
+        return factory.createWatcher(fileRunner, file);
     }
 
     public MocoRunnerWatcher createSettingWatcher(final File settingsFile,
                                                   final Iterable<File> configurationFiles,
                                                   final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
-        return new FilesMocoRunnerWatcher(files, createListener(fileRunner));
-    }
-
-    private FileAlterationListenerAdaptor createListener(final FileRunner fileRunner) {
-        return new FileAlterationListenerAdaptor() {
-            @Override
-            public void onFileChange(final File file) {
-                logger.info("{} change detected.", file.getName());
-                try {
-                    fileRunner.restart();
-                } catch (Exception e) {
-                    logger.error("Fail to load configuration in {}.", file.getName());
-                    logger.error(e.getMessage());
-                }
-            }
-        };
+        return factory.createWatcher(fileRunner, files.toArray(new File[0]));
     }
 }
