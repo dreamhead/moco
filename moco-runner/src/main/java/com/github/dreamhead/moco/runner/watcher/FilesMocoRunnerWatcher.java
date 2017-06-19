@@ -1,31 +1,23 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import com.google.common.base.Function;
-import org.apache.commons.io.monitor.FileAlterationListener;
-
-import java.io.File;
-
-import static com.google.common.collect.FluentIterable.from;
-
 public class FilesMocoRunnerWatcher implements MocoRunnerWatcher {
-    private final Iterable<FileMocoRunnerWatcher> monitors;
+    private final Iterable<ThreadSafeRunnerWatcher> monitors;
 
-    public FilesMocoRunnerWatcher(final Iterable<FileMocoRunnerWatcher> monitors) {
+    public FilesMocoRunnerWatcher(final Iterable<ThreadSafeRunnerWatcher> monitors) {
         this.monitors = monitors;
     }
 
     @Override
-    public void startMonitor() {
-        for (FileMocoRunnerWatcher monitor : monitors) {
-            monitor.startMonitor();
+    public void start() {
+        for (ThreadSafeRunnerWatcher monitor : monitors) {
+            monitor.start();
         }
     }
 
     @Override
-    public void stopMonitor() {
-        for (FileMocoRunnerWatcher monitor : monitors) {
-            monitor.stopMonitor();
+    public void stop() {
+        for (ThreadSafeRunnerWatcher monitor : monitors) {
+            monitor.stop();
         }
     }
-
 }

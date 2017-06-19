@@ -29,6 +29,6 @@ public class MonitorFactory {
                                                   final Iterable<File> configurationFiles,
                                                   final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
-        return factory.createWatcher(fileRunner, files.toArray(new File[0]));
+        return factory.createWatcher(fileRunner, files.toArray(new File[files.size()]));
     }
 }

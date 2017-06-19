@@ -34,7 +34,7 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
         this.shutdownListener = shutdownListener;
     }
 
-    public void startMonitor() {
+    public void start() {
         int actualPort = server.start(this.shutdownPort.or(0), new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) throws Exception {
@@ -49,7 +49,7 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
         logger.info("Shutdown port is {}", actualPort);
     }
 
-    public void stopMonitor() {
+    public void stop() {
         server.stop();
     }
 
@@ -73,7 +73,7 @@ public class ShutdownMocoRunnerWatcher implements MocoRunnerWatcher {
             service.execute(new Runnable() {
                 @Override
                 public void run() {
-                    stopMonitor();
+                    stop();
                 }
             });
         }

@@ -14,12 +14,12 @@ public class MonitorRunner implements Runner {
     @Override
     public void run() {
         this.runner.run();
-        this.mocoRunnerWatcher.startMonitor();
+        this.mocoRunnerWatcher.start();
     }
 
     @Override
     public void stop() {
-        this.mocoRunnerWatcher.stopMonitor();
+        this.mocoRunnerWatcher.stop();
         this.runner.stop();
     }
 }
