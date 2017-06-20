@@ -26,17 +26,22 @@ public class CommonsIoWatcherFactory implements WatcherFactory {
 
         FileAlterationListener listener = createListener(fileRunner);
         if (files.length == 1) {
-            return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(files[0], listener)));
+            File file = files[0];
+            return createWatcher(file, listener);
         }
 
         return createFilesWatcher(files, listener);
     }
 
+    private MocoRunnerWatcher createWatcher(final File file, final FileAlterationListener listener) {
+        return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, listener)));
+    }
+
     private MocoRunnerWatcher createFilesWatcher(final File[] files, final FileAlterationListener listener) {
-        return new FilesMocoRunnerWatcher(from(files).transform(new Function<File, ThreadSafeRunnerWatcher>() {
+        return new CompositeRunnerWatcher(from(files).transform(new Function<File, MocoRunnerWatcher>() {
             @Override
-            public ThreadSafeRunnerWatcher apply(final File file) {
-                return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, listener)));
+            public MocoRunnerWatcher apply(final File file) {
+                return createWatcher(file, listener);
             }
         }));
     }
