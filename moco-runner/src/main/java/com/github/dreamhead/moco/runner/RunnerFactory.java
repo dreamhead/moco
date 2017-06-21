@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.runner.watcher.MocoRunnerWatcher;
+import com.github.dreamhead.moco.runner.watcher.RunnerWatcher;
 import com.github.dreamhead.moco.runner.watcher.MonitorFactory;
 import com.google.common.base.Optional;
 
@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFil
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
 
 public class RunnerFactory {
-    private final MonitorFactory monitorFactory = new MonitorFactory();
+    private final MonitorFactory factory = new MonitorFactory();
     private final String shutdownKey;
 
     public RunnerFactory(final String shutdownKey) {
@@ -25,7 +25,7 @@ public class RunnerFactory {
 
     public ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort,
                                                final String shutdownKey) {
-        return new ShutdownRunner(runner, monitorFactory.createShutdownWatcher(runner, shutdownPort, shutdownKey));
+        return new ShutdownRunner(runner, factory.createShutdownWatcher(runner, shutdownPort, shutdownKey));
     }
 
     private Runner createDynamicRunner(final StartArgs startArgs) {
@@ -40,15 +40,15 @@ public class RunnerFactory {
         final File settingsFile = new File(startArgs.getSettings().get());
         final FileRunner fileRunner = createSettingFileRunner(settingsFile, startArgs);
         final SettingRunner runner = (SettingRunner) fileRunner.getRunner();
-        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createSettingWatcher(settingsFile,
+        RunnerWatcher watcher = factory.createSettingWatcher(settingsFile,
                 runner.getFiles(), fileRunner);
-        return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
+        return new MonitorRunner(fileRunner, watcher);
     }
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
         final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs);
-        MocoRunnerWatcher fileMocoRunnerWatcher = monitorFactory.createConfigurationWatcher(configuration, fileRunner);
-        return new MonitorRunner(fileRunner, fileMocoRunnerWatcher);
+        RunnerWatcher watcher = factory.createConfigurationWatcher(configuration, fileRunner);
+        return new MonitorRunner(fileRunner, watcher);
     }
 }

@@ -1,22 +1,22 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-public class CompositeRunnerWatcher implements MocoRunnerWatcher {
-    private final Iterable<MocoRunnerWatcher> watchers;
+public class CompositeRunnerWatcher implements RunnerWatcher {
+    private final Iterable<RunnerWatcher> watchers;
 
-    public CompositeRunnerWatcher(final Iterable<MocoRunnerWatcher> watchers) {
+    public CompositeRunnerWatcher(final Iterable<RunnerWatcher> watchers) {
         this.watchers = watchers;
     }
 
     @Override
     public void start() {
-        for (MocoRunnerWatcher watcher : watchers) {
+        for (RunnerWatcher watcher : watchers) {
             watcher.start();
         }
     }
 
     @Override
     public void stop() {
-        for (MocoRunnerWatcher monitor : watchers) {
+        for (RunnerWatcher monitor : watchers) {
             monitor.stop();
         }
     }

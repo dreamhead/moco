@@ -4,7 +4,7 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CommonsIoWatcher implements MocoRunnerWatcher {
+public class CommonsIoWatcher implements RunnerWatcher {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcher.class);
 
     private final FileAlterationMonitor monitor;

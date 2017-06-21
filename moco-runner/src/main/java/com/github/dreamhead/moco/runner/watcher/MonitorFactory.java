@@ -21,13 +21,13 @@ public class MonitorFactory {
         });
     }
 
-    public MocoRunnerWatcher createConfigurationWatcher(final File file, final FileRunner fileRunner) {
+    public RunnerWatcher createConfigurationWatcher(final File file, final FileRunner fileRunner) {
         return factory.createWatcher(fileRunner, file);
     }
 
-    public MocoRunnerWatcher createSettingWatcher(final File settingsFile,
-                                                  final Iterable<File> configurationFiles,
-                                                  final FileRunner fileRunner) {
+    public RunnerWatcher createSettingWatcher(final File settingsFile,
+                                              final Iterable<File> configurationFiles,
+                                              final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
         return factory.createWatcher(fileRunner, files.toArray(new File[files.size()]));
     }

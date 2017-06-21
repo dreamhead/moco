@@ -2,13 +2,13 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import java.util.concurrent.TimeUnit;
 
-public class ThreadSafeRunnerWatcher implements MocoRunnerWatcher {
+public class ThreadSafeRunnerWatcher implements RunnerWatcher {
     public static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
 
-    private final MocoRunnerWatcher watcher;
+    private final RunnerWatcher watcher;
     private boolean running = false;
 
-    public ThreadSafeRunnerWatcher(final MocoRunnerWatcher watcher) {
+    public ThreadSafeRunnerWatcher(final RunnerWatcher watcher) {
         this.watcher = watcher;
     }
 

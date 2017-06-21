@@ -5,5 +5,5 @@ import com.github.dreamhead.moco.runner.FileRunner;
 import java.io.File;
 
 public interface WatcherFactory {
-    MocoRunnerWatcher createWatcher(final FileRunner fileRunner, final File... files);
+    RunnerWatcher createWatcher(final FileRunner fileRunner, final File... files);
 }
