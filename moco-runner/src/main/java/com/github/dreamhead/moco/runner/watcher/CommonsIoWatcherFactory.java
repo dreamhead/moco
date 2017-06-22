@@ -15,11 +15,11 @@ import java.io.FileFilter;
 import static com.github.dreamhead.moco.runner.watcher.ThreadSafeRunnerWatcher.INTERVAL;
 import static com.google.common.collect.FluentIterable.from;
 
-public class CommonsIoWatcherFactory implements WatcherFactory {
+public class CommonsIoWatcherFactory implements FileWatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);
 
     @Override
-    public RunnerWatcher createWatcher(final FileRunner fileRunner, final File... files) {
+    public Watcher createWatcher(final FileRunner fileRunner, final File... files) {
         if (files.length == 0) {
             throw new IllegalArgumentException("No file is specified");
         }
@@ -33,14 +33,14 @@ public class CommonsIoWatcherFactory implements WatcherFactory {
         return createFilesWatcher(files, listener);
     }
 
-    private RunnerWatcher createWatcher(final File file, final FileAlterationListener listener) {
+    private Watcher createWatcher(final File file, final FileAlterationListener listener) {
         return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, listener)));
     }
 
-    private RunnerWatcher createFilesWatcher(final File[] files, final FileAlterationListener listener) {
-        return new CompositeRunnerWatcher(from(files).transform(new Function<File, RunnerWatcher>() {
+    private Watcher createFilesWatcher(final File[] files, final FileAlterationListener listener) {
+        return new CompositeWatcher(from(files).transform(new Function<File, Watcher>() {
             @Override
-            public RunnerWatcher apply(final File file) {
+            public Watcher apply(final File file) {
                 return createWatcher(file, listener);
             }
         }));

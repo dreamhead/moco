@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco.runner;
 
-import com.github.dreamhead.moco.runner.watcher.RunnerWatcher;
+import com.github.dreamhead.moco.runner.watcher.Watcher;
 
-public class MonitorRunner implements Runner {
+public class WatcherRunner implements Runner {
     private final Runner runner;
-    private final RunnerWatcher watcher;
+    private final Watcher watcher;
 
-    public MonitorRunner(final Runner runner, final RunnerWatcher watcher) {
+    public WatcherRunner(final Runner runner, final Watcher watcher) {
         this.runner = runner;
         this.watcher = watcher;
     }

@@ -4,7 +4,7 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CommonsIoWatcher implements RunnerWatcher {
+public class CommonsIoWatcher implements Watcher {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcher.class);
 
     private final FileAlterationMonitor monitor;

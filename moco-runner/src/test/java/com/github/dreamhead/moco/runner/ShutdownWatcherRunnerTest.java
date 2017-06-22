@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class ShutdownMonitorRunnerTest extends AbstractRunnerTest {
+public class ShutdownWatcherRunnerTest extends AbstractRunnerTest {
     private static final String SHUTDOWN_MOCO_KEY = "_SHUTDOWN_MOCO_KEY";
     private static final int SHUTDOWN_PORT = 9527;
 

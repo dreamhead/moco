@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-public interface RunnerWatcher {
+public interface Watcher {
     void start();
     void stop();
 }

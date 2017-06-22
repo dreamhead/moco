@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.runner.watcher.RunnerWatcher;
+import com.github.dreamhead.moco.runner.watcher.Watcher;
 import com.github.dreamhead.moco.runner.watcher.MonitorFactory;
 import com.google.common.base.Optional;
 
@@ -40,15 +40,15 @@ public class RunnerFactory {
         final File settingsFile = new File(startArgs.getSettings().get());
         final FileRunner fileRunner = createSettingFileRunner(settingsFile, startArgs);
         final SettingRunner runner = (SettingRunner) fileRunner.getRunner();
-        RunnerWatcher watcher = factory.createSettingWatcher(settingsFile,
+        Watcher watcher = factory.createSettingWatcher(settingsFile,
                 runner.getFiles(), fileRunner);
-        return new MonitorRunner(fileRunner, watcher);
+        return new WatcherRunner(fileRunner, watcher);
     }
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
         final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs);
-        RunnerWatcher watcher = factory.createConfigurationWatcher(configuration, fileRunner);
-        return new MonitorRunner(fileRunner, watcher);
+        Watcher watcher = factory.createConfigurationWatcher(configuration, fileRunner);
+        return new WatcherRunner(fileRunner, watcher);
     }
 }
