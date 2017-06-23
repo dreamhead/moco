@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.runner.FileRunner;
-import com.google.common.base.Function;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -13,37 +12,12 @@ import java.io.File;
 import java.io.FileFilter;
 
 import static com.github.dreamhead.moco.runner.watcher.ThreadSafeRunnerWatcher.INTERVAL;
-import static com.google.common.collect.FluentIterable.from;
 
-public class CommonsIoWatcherFactory implements FileWatcherFactory {
+public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);
 
-    @Override
-    public Watcher createWatcher(final FileRunner fileRunner, final File... files) {
-        if (files.length == 0) {
-            throw new IllegalArgumentException("No file is specified");
-        }
-
-        FileAlterationListener listener = createListener(fileRunner);
-        if (files.length == 1) {
-            File file = files[0];
-            return createWatcher(file, listener);
-        }
-
-        return createFilesWatcher(files, listener);
-    }
-
-    private Watcher createWatcher(final File file, final FileAlterationListener listener) {
-        return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, listener)));
-    }
-
-    private Watcher createFilesWatcher(final File[] files, final FileAlterationListener listener) {
-        return new CompositeWatcher(from(files).transform(new Function<File, Watcher>() {
-            @Override
-            public Watcher apply(final File file) {
-                return createWatcher(file, listener);
-            }
-        }));
+    protected Watcher doCreate(final FileRunner fileRunner, final File file) {
+        return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, createListener(fileRunner))));
     }
 
     private FileAlterationListener createListener(final FileRunner fileRunner) {
