@@ -6,8 +6,8 @@ allprojects {
 
 idea {
     project {
-        jdkName = JavaVersion.VERSION_1_6
-        languageLevel = JavaVersion.VERSION_1_6
+        jdkName = JavaVersion.VERSION_1_7
+        languageLevel = JavaVersion.VERSION_1_7
 
         vcs = "Git"
     }
@@ -24,8 +24,8 @@ subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
     version = '0.11.1-SNAPSHOT'
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
 
     repositories {
         jcenter()
