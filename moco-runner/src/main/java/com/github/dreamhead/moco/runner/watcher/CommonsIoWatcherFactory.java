@@ -17,7 +17,7 @@ public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);
 
     protected Watcher doCreate(final FileRunner fileRunner, final File file) {
-        return new ThreadSafeRunnerWatcher(new CommonsIoWatcher(monitorFile(file, createListener(fileRunner))));
+        return new CommonsIoWatcher(monitorFile(file, createListener(fileRunner)));
     }
 
     private FileAlterationListener createListener(final FileRunner fileRunner) {

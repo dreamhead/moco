@@ -16,17 +16,21 @@ public abstract class AbstractWatcherFactory implements FileWatcherFactory {
         }
 
         if (files.length == 1) {
-            return doCreate(fileRunner, files[0]);
+            return create(fileRunner, files[0]);
         }
 
         return doCreate(fileRunner, files);
+    }
+
+    private Watcher create(final FileRunner fileRunner, final File file) {
+        return new ThreadSafeRunnerWatcher(doCreate(fileRunner, file));
     }
 
     private Watcher doCreate(final FileRunner fileRunner, File[] files) {
         return new CompositeWatcher(from(files).transform(new Function<File, Watcher>() {
             @Override
             public Watcher apply(final File file) {
-                return doCreate(fileRunner, file);
+                return create(fileRunner, file);
             }
         }));
     }
