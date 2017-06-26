@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.action.MocoAsyncAction;
 import com.github.dreamhead.moco.action.MocoGetRequestAction;
 import com.github.dreamhead.moco.action.MocoPostRequestAction;
-import com.github.dreamhead.moco.action.MocoRequestAction;
 import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.config.MocoRequestConfig;
