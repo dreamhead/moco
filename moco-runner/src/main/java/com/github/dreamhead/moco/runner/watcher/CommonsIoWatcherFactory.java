@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 
-import static com.github.dreamhead.moco.runner.watcher.ThreadSafeRunnerWatcher.INTERVAL;
+import static com.github.dreamhead.moco.runner.watcher.Watchers.INTERVAL;
 
 public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);

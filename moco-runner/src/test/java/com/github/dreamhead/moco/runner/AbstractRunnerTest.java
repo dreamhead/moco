@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.runner.watcher.ThreadSafeRunnerWatcher;
+import com.github.dreamhead.moco.runner.watcher.Watchers;
 import org.junit.After;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public abstract class AbstractRunnerTest {
 
     protected void waitChangeHappens() {
         try {
-            idle(ThreadSafeRunnerWatcher.INTERVAL * 3, TimeUnit.MILLISECONDS);
+            idle(Watchers.INTERVAL * 3, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             fail(format("failed to wait change happens: %s", e.getMessage()));
         }

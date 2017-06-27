@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 
 import java.io.File;
 
+import static com.github.dreamhead.moco.runner.watcher.Watchers.threadSafe;
 import static com.google.common.collect.FluentIterable.from;
 
 public abstract class AbstractWatcherFactory implements FileWatcherFactory {
@@ -23,7 +24,7 @@ public abstract class AbstractWatcherFactory implements FileWatcherFactory {
     }
 
     private Watcher create(final FileRunner fileRunner, final File file) {
-        return new ThreadSafeRunnerWatcher(doCreate(fileRunner, file));
+        return threadSafe(doCreate(fileRunner, file));
     }
 
     private Watcher doCreate(final FileRunner fileRunner, File[] files) {
