@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 
-public class MonitorFactory {
+public class WatcherFactory {
     private FileWatcherFactory factory = new CommonsIoWatcherFactory();
 
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,

@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.runner.watcher.Watcher;
-import com.github.dreamhead.moco.runner.watcher.MonitorFactory;
+import com.github.dreamhead.moco.runner.watcher.WatcherFactory;
 import com.google.common.base.Optional;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFil
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
 
 public class RunnerFactory {
-    private final MonitorFactory factory = new MonitorFactory();
+    private final WatcherFactory factory = new WatcherFactory();
     private final String shutdownKey;
 
     public RunnerFactory(final String shutdownKey) {
