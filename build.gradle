@@ -81,7 +81,7 @@ subprojects {
         hamcrestVersion = '1.3'
         mockitoVersion = '2.8.47'
         httpComponentVersion = '4.5.3'
-        jsonpathVersion = '2.2.0'
+        jsonpathVersion = '2.3.0'
         freemarkerVersion = '2.3.26-incubating'
     }
 
