@@ -23,7 +23,7 @@ public class RunnerFactory {
         return createShutdownRunner(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
     }
 
-    public ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort,
+    private ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort,
                                                final String shutdownKey) {
         return new ShutdownRunner(runner, factory.createShutdownWatcher(runner, shutdownPort, shutdownKey));
     }
