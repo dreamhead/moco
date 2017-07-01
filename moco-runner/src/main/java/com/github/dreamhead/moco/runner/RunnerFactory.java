@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
+import com.github.dreamhead.moco.runner.watcher.ShutdownMocoRunnerWatcher;
 import com.github.dreamhead.moco.runner.watcher.Watcher;
 import com.github.dreamhead.moco.runner.watcher.WatcherFactory;
-import com.google.common.base.Optional;
 
 import java.io.File;
 
@@ -20,12 +20,8 @@ public class RunnerFactory {
 
     public ShutdownRunner createRunner(final StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
-        return createShutdownRunner(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
-    }
-
-    private ShutdownRunner createShutdownRunner(final Runner runner, final Optional<Integer> shutdownPort,
-                                               final String shutdownKey) {
-        return new ShutdownRunner(runner, factory.createShutdownWatcher(runner, shutdownPort, shutdownKey));
+        ShutdownMocoRunnerWatcher watcher = factory.createShutdownWatcher(dynamicRunner, startArgs.getShutdownPort(), shutdownKey);
+        return new ShutdownRunner(dynamicRunner, watcher);
     }
 
     private Runner createDynamicRunner(final StartArgs startArgs) {
