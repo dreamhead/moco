@@ -1,12 +1,10 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import com.github.dreamhead.moco.runner.FileRunner;
+import com.google.common.base.Function;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -14,23 +12,15 @@ import java.io.FileFilter;
 import static com.github.dreamhead.moco.runner.watcher.Watchers.INTERVAL;
 
 public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
-    private static Logger logger = LoggerFactory.getLogger(CommonsIoWatcherFactory.class);
-
-    protected Watcher doCreate(final FileRunner fileRunner, final File file) {
-        return new CommonsIoWatcher(monitorFile(file, createListener(fileRunner)));
+    protected Watcher doCreate(final File file, final Function<File, Void> listener) {
+        return new CommonsIoWatcher(monitorFile(file, createListener(listener)));
     }
 
-    private FileAlterationListener createListener(final FileRunner fileRunner) {
+    private FileAlterationListener createListener(final Function<File, Void> listener) {
         return new FileAlterationListenerAdaptor() {
             @Override
             public void onFileChange(final File file) {
-                logger.info("{} change detected.", file.getName());
-                try {
-                    fileRunner.restart();
-                } catch (Exception e) {
-                    logger.error("Fail to load configuration in {}.", file.getName());
-                    logger.error(e.getMessage());
-                }
+                listener.apply(file);
             }
         };
     }
