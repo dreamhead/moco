@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import com.github.dreamhead.moco.runner.FileRunner;
+import com.google.common.base.Function;
 
 import java.io.File;
 
 public interface FileWatcherFactory {
-    Watcher createWatcher(final FileRunner fileRunner, final File... files);
+    Watcher createWatcher(final Function<File, Void> listener, final File... files);
 }
