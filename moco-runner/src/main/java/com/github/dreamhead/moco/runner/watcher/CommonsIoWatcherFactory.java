@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import static com.github.dreamhead.moco.runner.watcher.Watchers.INTERVAL;
+import static com.github.dreamhead.moco.util.Files.directoryOf;
 
 public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
     protected Watcher doCreate(final File file, final Function<File, Void> listener) {
@@ -26,20 +27,11 @@ public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
     }
 
     private FileAlterationMonitor monitorFile(final File file, final FileAlterationListener listener) {
-        File parentFile = file.getParentFile();
-        File directory = toDirectory(parentFile);
+        File directory = directoryOf(file);
         FileAlterationObserver observer = new FileAlterationObserver(directory, sameFile(file));
         observer.addListener(listener);
 
         return new FileAlterationMonitor(INTERVAL, observer);
-    }
-
-    private File toDirectory(final File parentFile) {
-        if (parentFile == null) {
-            return new File(".");
-        }
-
-        return parentFile;
     }
 
     private FileFilter sameFile(final File file) {

@@ -28,6 +28,15 @@ public final class Files {
         return new File(new File(path1), path2);
     }
 
+    public static File directoryOf(final File file) {
+        File parentFile = file.getParentFile();
+        if (parentFile == null) {
+            return new File(".");
+        }
+
+        return parentFile;
+    }
+
     private Files() {
     }
 }
