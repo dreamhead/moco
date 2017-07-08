@@ -40,5 +40,6 @@ public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
         waitChangeHappens();
 
         assertThat(helper.get(root()), is("foobar"));
+        runner.stop();
     }
 }

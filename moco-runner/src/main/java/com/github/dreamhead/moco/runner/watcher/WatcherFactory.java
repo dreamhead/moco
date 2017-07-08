@@ -13,7 +13,7 @@ import java.io.File;
 public class WatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(AbstractWatcherFactory.class);
 
-    private FileWatcherFactory factory = new CommonsIoWatcherFactory();
+    private FileWatcherFactory factory = new Java7WatcherFactory();
 
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,
                                                            final Optional<Integer> shutdownPort,
