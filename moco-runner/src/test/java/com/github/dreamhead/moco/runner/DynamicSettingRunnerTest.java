@@ -125,6 +125,8 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
         System.setOut(oldOut);
         System.setErr(oldErr);
 
+        assertThat(helper.get(remoteUrl("/foo")), is("foo1"));
+
         String result = new String(out.toByteArray());
         assertThat(result.contains("Fail"), is(false));
         runner.stop();
