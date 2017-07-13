@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
+import com.github.dreamhead.moco.MocoException;
 import com.google.common.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,8 @@ public class Java7Watcher implements Watcher {
             }
 
             service.register(file, listener);
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            throw new MocoException(e);
         }
     }
 
