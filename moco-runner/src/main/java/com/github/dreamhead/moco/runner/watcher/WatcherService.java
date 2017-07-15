@@ -59,7 +59,6 @@ public class WatcherService {
             for (WatchEvent<?> event : key.pollEvents()) {
                 if (event.kind().equals(ENTRY_MODIFY)) {
                     final Path context = (Path) event.context();
-                    System.out.println("Modify:" + context);
                     for (Path path : paths) {
                         if (path.endsWith(context)) {
                             for (Function<File, Void> listener : this.listeners.get(path)) {
