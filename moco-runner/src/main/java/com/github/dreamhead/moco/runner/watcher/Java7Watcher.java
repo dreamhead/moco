@@ -11,7 +11,8 @@ public class Java7Watcher implements Watcher {
     private final Function<File, Void> listener;
     private final File file;
 
-    public Java7Watcher(final Function<File, Void> listener, final File file) {
+    public Java7Watcher(WatcherService service, final Function<File, Void> listener, final File file) {
+        this.service = service;
         this.listener = listener;
         this.file = file;
     }
@@ -19,10 +20,6 @@ public class Java7Watcher implements Watcher {
     @Override
     public synchronized void start() {
         try {
-            if (!service.isRunning()) {
-                service.start();
-            }
-
             service.register(file, listener);
         } catch (IOException e) {
             throw new MocoException(e);
