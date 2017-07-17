@@ -53,6 +53,7 @@
 -dontwarn io.netty.**
 -dontwarn com.jayway.jsonpath.spi.impl.JacksonProvider
 -dontwarn com.jayway.jsonpath.spi.json.JsonOrgJsonProvider
+-dontwarn com.jayway.jsonpath.spi.json.JettisonProvider**
 -dontwarn com.jayway.jsonpath.spi.json.TapestryJsonProvider
 -dontwarn com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider
 -dontwarn ch.qos.logback.core.**
