@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Java7Watcher implements Watcher {
-    private static WatcherService service = new WatcherService();
+    private final WatcherService service;
     private final Function<File, Void> listener;
     private final File file;
 
