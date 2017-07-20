@@ -31,10 +31,6 @@ public class WatcherService {
     private final Multimap<WatchKey, Path> keys = HashMultimap.create();
     private final Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
 
-    public boolean isRunning() {
-        return this.running;
-    }
-
     public void start() throws IOException {
         if (running) {
             throw new IllegalStateException();
