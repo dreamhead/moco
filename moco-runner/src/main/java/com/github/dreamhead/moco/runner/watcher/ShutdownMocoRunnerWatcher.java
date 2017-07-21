@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.internal.MocoServer;
 import com.google.common.base.Optional;
 import io.netty.channel.ChannelHandlerContext;
@@ -82,7 +83,7 @@ public class ShutdownMocoRunnerWatcher implements Watcher {
             try {
                 return shutdownKey.equals(wrap(message).readFirstLine());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new MocoException(e);
             }
         }
     }
