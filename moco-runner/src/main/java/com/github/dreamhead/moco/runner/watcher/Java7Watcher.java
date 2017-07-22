@@ -11,7 +11,7 @@ public class Java7Watcher implements Watcher {
     private final Function<File, Void> listener;
     private final File file;
 
-    public Java7Watcher(WatcherService service, final Function<File, Void> listener, final File file) {
+    public Java7Watcher(final WatcherService service, final Function<File, Void> listener, final File file) {
         this.service = service;
         this.listener = listener;
         this.file = file;
