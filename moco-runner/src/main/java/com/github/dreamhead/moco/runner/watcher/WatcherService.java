@@ -31,7 +31,7 @@ public class WatcherService {
     private final Multimap<WatchKey, Path> keys = HashMultimap.create();
     private final Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
 
-    public void start() throws IOException {
+    public synchronized void start() throws IOException {
         if (running) {
             throw new IllegalStateException();
         }
@@ -72,7 +72,7 @@ public class WatcherService {
         }
     }
 
-    public void stop() {
+    public synchronized void stop() {
         if (this.running) {
             this.running = false;
         }
