@@ -8,11 +8,13 @@ import org.apache.commons.io.monitor.FileAlterationObserver;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.concurrent.TimeUnit;
 
-import static com.github.dreamhead.moco.runner.watcher.Watchers.INTERVAL;
 import static com.github.dreamhead.moco.util.Files.directoryOf;
 
 public class CommonsIoWatcherFactory extends AbstractWatcherFactory {
+    private static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
+
     protected Watcher doCreate(final File file, final Function<File, Void> listener) {
         return new CommonsIoWatcher(monitorFile(file, createListener(listener)));
     }

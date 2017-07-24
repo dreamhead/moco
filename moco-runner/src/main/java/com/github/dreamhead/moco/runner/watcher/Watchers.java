@@ -1,10 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import java.util.concurrent.TimeUnit;
-
 public class Watchers {
-    public static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
-
     public static Watcher threadSafe(final Watcher watcher) {
         return new ThreadSafeRunnerWatcher(watcher);
     }

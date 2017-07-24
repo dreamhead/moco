@@ -15,6 +15,8 @@ import static java.lang.String.format;
 import static org.junit.Assert.fail;
 
 public abstract class AbstractRunnerTest {
+    private static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
+
     protected final MocoTestHelper helper = new MocoTestHelper();
     protected Runner runner;
 
@@ -27,7 +29,7 @@ public abstract class AbstractRunnerTest {
 
     protected void waitChangeHappens() {
         try {
-            idle(Watchers.INTERVAL * 3, TimeUnit.MILLISECONDS);
+            idle(INTERVAL * 3, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             fail(format("failed to wait change happens: %s", e.getMessage()));
         }
