@@ -176,7 +176,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if (container instanceof CookieContainer) {
-            return createResponseHandler(targetMethodName, key, (CookieContainer) container);
+            return createCookieResponseHandler(targetMethodName, key, (CookieContainer) container);
         }
 
         throw new IllegalArgumentException();
@@ -192,8 +192,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
     }
 
-    private ResponseHandler createResponseHandler(final String target, final String key,
-                                                  final CookieContainer cookieContainer) {
+    private ResponseHandler createCookieResponseHandler(final String target, final String key,
+                                                        final CookieContainer cookieContainer) {
         try {
             Method method = Moco.class.getMethod(target, String.class, Resource.class, CookieAttribute[].class);
             return (ResponseHandler) method.invoke(null, key,
