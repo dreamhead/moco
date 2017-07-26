@@ -101,7 +101,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if ("attachment".equalsIgnoreCase(name)) {
-            AttachmentSetting attachment = (AttachmentSetting) value;
+            AttachmentSetting attachment = AttachmentSetting.class.cast(value);
             return attachment(attachment.getFilename(), resourceFrom(attachment));
         }
 
