@@ -28,8 +28,8 @@ public class WatcherService {
     private ExecutorService executor = Executors.newFixedThreadPool(5);
     private WatchService service;
     private boolean running;
-    private final Multimap<WatchKey, Path> keys = HashMultimap.create();
-    private final Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
+    private Multimap<WatchKey, Path> keys = HashMultimap.create();
+    private Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
 
     public synchronized void start() throws IOException {
         if (running) {
