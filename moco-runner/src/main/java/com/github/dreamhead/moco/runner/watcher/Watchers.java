@@ -2,14 +2,14 @@ package com.github.dreamhead.moco.runner.watcher;
 
 public class Watchers {
     public static Watcher threadSafe(final Watcher watcher) {
-        return new ThreadSafeRunnerWatcher(watcher);
+        return new ThreadSafeWatcher(watcher);
     }
 
-    private static class ThreadSafeRunnerWatcher implements Watcher {
+    private static class ThreadSafeWatcher implements Watcher {
         private final Watcher watcher;
         private boolean running = false;
 
-        ThreadSafeRunnerWatcher(final Watcher watcher) {
+        private ThreadSafeWatcher(final Watcher watcher) {
             this.watcher = watcher;
         }
 
