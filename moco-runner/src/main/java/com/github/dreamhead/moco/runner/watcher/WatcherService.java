@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
@@ -16,9 +17,13 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
@@ -30,22 +35,38 @@ public class WatcherService {
     private boolean running;
     private Multimap<WatchKey, Path> keys = HashMultimap.create();
     private Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
+    private Future<?> result;
 
     public synchronized void start() throws IOException {
         if (running) {
-            throw new IllegalStateException();
+            return;
         }
 
+        doStart();
+    }
+
+    private void doStart() throws IOException {
+        System.out.println("Start a service");
         this.service = FileSystems.getDefault().newWatchService();
         this.running = true;
-        executor.execute(new Runnable() {
+        result = executor.submit(new Runnable() {
             @Override
             public void run() {
                 while (running) {
                     loop();
                 }
+
+                doStop();
             }
         });
+    }
+
+    private void doStop() {
+        this.listeners.clear();
+        this.keys.clear();
+        directoryToFiles.clear();
+        directoryToKey.clear();
+
     }
 
     private void loop() {
@@ -67,6 +88,7 @@ public class WatcherService {
             }
             key.reset();
         } catch (ClosedWatchServiceException ignored) {
+            System.out.println(ignored);
         } catch (InterruptedException e) {
             logger.error("Error happens", e);
         }
@@ -74,15 +96,49 @@ public class WatcherService {
 
     public synchronized void stop() {
         if (this.running) {
-            this.running = false;
+            try {
+                this.running = false;
+                service.close();
+                this.result.get();
+            } catch (Exception e) {
+                throw new MocoException(e);
+            }
         }
     }
 
+    private Multimap<Path, Path> directoryToFiles = HashMultimap.create();
+    private Map<Path, WatchKey> directoryToKey = newHashMap();
+
     public void register(final File file, final Function<File, Void> listener) throws IOException {
+        System.out.println("Register " + file);
         Path directory = Files.directoryOf(file).toPath();
         WatchKey key = directory.register(service, new WatchEvent.Kind[]{ENTRY_MODIFY}, HIGH);
         Path path = file.toPath();
         keys.put(key, path);
         listeners.put(path, listener);
+        directoryToFiles.put(directory, path);
+        directoryToKey.put(directory, key);
+    }
+
+    public void stop(final File file) {
+        Path directory = Files.directoryOf(file).toPath();
+        Path path = file.toPath();
+        if (!directoryToFiles.containsEntry(directory, path)) {
+            return;
+        }
+
+        directoryToFiles.remove(directory, path);
+
+        if (!directoryToFiles.containsKey(directory)) {
+            WatchKey key = directoryToKey.remove(directory);
+            if (key != null) {
+                key.cancel();
+                System.out.println("Stopping " + directory);
+            }
+        }
+
+        if (directoryToFiles.isEmpty()) {
+            this.stop();
+        }
     }
 }

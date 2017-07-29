@@ -28,5 +28,6 @@ public class Java7Watcher implements Watcher {
 
     @Override
     public void stop() {
+        service.stop(file);
     }
 }
