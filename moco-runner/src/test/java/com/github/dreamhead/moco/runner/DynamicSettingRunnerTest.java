@@ -50,7 +50,6 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
         waitChangeHappens();
 
         assertThat(helper.get(root()), is("foobar"));
-        runner.stop();
     }
 
     @Test
@@ -129,6 +128,5 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
 
         String result = new String(out.toByteArray());
         assertThat(result.contains("Fail"), is(false));
-        runner.stop();
     }
 }
