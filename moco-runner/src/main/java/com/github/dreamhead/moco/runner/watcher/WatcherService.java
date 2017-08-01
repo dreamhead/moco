@@ -18,11 +18,12 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
+import static com.github.dreamhead.moco.util.Idles.idle;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
@@ -88,7 +89,6 @@ public class WatcherService {
             }
             key.reset();
         } catch (ClosedWatchServiceException ignored) {
-            System.out.println(ignored);
         } catch (InterruptedException e) {
             logger.error("Error happens", e);
         }
@@ -110,7 +110,6 @@ public class WatcherService {
     private Map<Path, WatchKey> directoryToKey = newHashMap();
 
     public void register(final File file, final Function<File, Void> listener) throws IOException {
-        System.out.println("Register " + file);
         Path directory = Files.directoryOf(file).toPath();
         WatchKey key = directory.register(service, new WatchEvent.Kind[]{ENTRY_MODIFY}, HIGH);
         Path path = file.toPath();
@@ -118,6 +117,7 @@ public class WatcherService {
         listeners.put(path, listener);
         directoryToFiles.put(directory, path);
         directoryToKey.put(directory, key);
+        idle(800, TimeUnit.MILLISECONDS);
     }
 
     public void stop(final File file) {
@@ -133,7 +133,6 @@ public class WatcherService {
             WatchKey key = directoryToKey.remove(directory);
             if (key != null) {
                 key.cancel();
-                System.out.println("Stopping " + directory);
             }
         }
 

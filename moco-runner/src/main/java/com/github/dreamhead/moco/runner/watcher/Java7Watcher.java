@@ -18,7 +18,7 @@ public class Java7Watcher implements Watcher {
     }
 
     @Override
-    public synchronized void start() {
+    public void start() {
         try {
             service.register(file, listener);
         } catch (IOException e) {
