@@ -67,7 +67,6 @@ public class WatcherService {
         this.keys.clear();
         directoryToFiles.clear();
         directoryToKey.clear();
-
     }
 
     private void loop() {
@@ -98,7 +97,7 @@ public class WatcherService {
         if (this.running) {
             try {
                 this.running = false;
-                service.close();
+                this.service.close();
                 this.result.get();
             } catch (Exception e) {
                 throw new MocoException(e);

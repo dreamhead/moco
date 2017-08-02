@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 public class WatcherFactory {
-    private static Logger logger = LoggerFactory.getLogger(AbstractWatcherFactory.class);
+    private static Logger logger = LoggerFactory.getLogger(WatcherFactory.class);
 
     private FileWatcherFactory factory = new Java7WatcherFactory();
 
