@@ -47,7 +47,6 @@ public class WatcherService {
     }
 
     private void doStart() throws IOException {
-        System.out.println("Start a service");
         this.service = FileSystems.getDefault().newWatchService();
         this.running = true;
         result = executor.submit(new Runnable() {
@@ -119,7 +118,7 @@ public class WatcherService {
         idle(800, TimeUnit.MILLISECONDS);
     }
 
-    public void stop(final File file) {
+    public void unregister(final File file) {
         Path directory = Files.directoryOf(file).toPath();
         Path path = file.toPath();
         if (!directoryToFiles.containsEntry(directory, path)) {
