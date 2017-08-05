@@ -36,6 +36,8 @@ public class WatcherService {
     private boolean running;
     private Multimap<WatchKey, Path> keys = HashMultimap.create();
     private Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
+    private Multimap<Path, Path> directoryToFiles = HashMultimap.create();
+    private Map<Path, WatchKey> directoryToKey = newHashMap();
     private Future<?> result;
 
     public synchronized void start() throws IOException {
@@ -64,8 +66,8 @@ public class WatcherService {
     private void doStop() {
         this.listeners.clear();
         this.keys.clear();
-        directoryToFiles.clear();
-        directoryToKey.clear();
+        this.directoryToFiles.clear();
+        this.directoryToKey.clear();
     }
 
     private void loop() {
@@ -103,9 +105,6 @@ public class WatcherService {
             }
         }
     }
-
-    private Multimap<Path, Path> directoryToFiles = HashMultimap.create();
-    private Map<Path, WatchKey> directoryToKey = newHashMap();
 
     public void register(final File file, final Function<File, Void> listener) throws IOException {
         Path directory = Files.directoryOf(file).toPath();
