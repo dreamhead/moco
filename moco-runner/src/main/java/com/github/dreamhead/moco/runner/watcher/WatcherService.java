@@ -106,15 +106,19 @@ public class WatcherService {
         }
     }
 
-    public void register(final File file, final Function<File, Void> listener) throws IOException {
-        Path directory = Files.directoryOf(file).toPath();
-        WatchKey key = directory.register(service, new WatchEvent.Kind[]{ENTRY_MODIFY}, HIGH);
-        Path path = file.toPath();
-        keys.put(key, path);
-        listeners.put(path, listener);
-        directoryToFiles.put(directory, path);
-        directoryToKey.put(directory, key);
-        idle(800, TimeUnit.MILLISECONDS);
+    public void register(final File file, final Function<File, Void> listener) {
+        try {
+            Path directory = Files.directoryOf(file).toPath();
+            WatchKey key = directory.register(service, new WatchEvent.Kind[]{ENTRY_MODIFY}, HIGH);
+            Path path = file.toPath();
+            keys.put(key, path);
+            listeners.put(path, listener);
+            directoryToFiles.put(directory, path);
+            directoryToKey.put(directory, key);
+            idle(800, TimeUnit.MILLISECONDS);
+        } catch (IOException e) {
+            throw new MocoException(e);
+        }
     }
 
     public void unregister(final File file) {

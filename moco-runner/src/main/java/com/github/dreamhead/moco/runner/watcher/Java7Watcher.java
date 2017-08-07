@@ -1,10 +1,8 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import com.github.dreamhead.moco.MocoException;
 import com.google.common.base.Function;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Java7Watcher implements Watcher {
     private final WatcherService service;
@@ -19,11 +17,7 @@ public class Java7Watcher implements Watcher {
 
     @Override
     public void start() {
-        try {
-            service.register(file, listener);
-        } catch (IOException e) {
-            throw new MocoException(e);
-        }
+        service.register(file, listener);
     }
 
     @Override
