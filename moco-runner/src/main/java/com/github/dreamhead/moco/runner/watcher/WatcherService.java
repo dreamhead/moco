@@ -30,6 +30,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 public class WatcherService {
     private static Logger logger = LoggerFactory.getLogger(WatcherService.class);
+    private static final long REGISTER_INTERVAL = 800;
 
     private ExecutorService executor = Executors.newFixedThreadPool(5);
     private WatchService service;
@@ -74,6 +75,7 @@ public class WatcherService {
         try {
             WatchKey key = service.take();
             Collection<Path> paths = keys.get(key);
+
             for (WatchEvent<?> event : key.pollEvents()) {
                 if (event.kind().equals(ENTRY_MODIFY)) {
                     final Path context = (Path) event.context();
@@ -114,7 +116,7 @@ public class WatcherService {
         listeners.put(path, listener);
         directoryToFiles.put(directory, path);
 
-        idle(800, TimeUnit.MILLISECONDS);
+        idle(REGISTER_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
     private WatchKey registerDirectory(final Path directory) {
