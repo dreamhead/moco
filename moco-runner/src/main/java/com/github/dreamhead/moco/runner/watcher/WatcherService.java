@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
@@ -76,17 +78,13 @@ public class WatcherService {
             WatchKey key = service.take();
             Collection<Path> paths = keys.get(key);
 
-            for (WatchEvent<?> event : key.pollEvents()) {
-                if (event.kind().equals(ENTRY_MODIFY)) {
-                    final Path context = (Path) event.context();
-                    for (Path path : paths) {
-                        if (path.endsWith(context)) {
-                            for (Function<File, Void> listener : this.listeners.get(path)) {
-                                listener.apply(path.toFile());
-                            }
-                            break;
-                        }
+            for (WatchEvent<?> event : from(key.pollEvents()).filter(isModifyEvent())) {
+                final Path context = (Path) event.context();
+                for (Path path : from(paths).filter(isForPath(context))) {
+                    for (Function<File, Void> listener : this.listeners.get(path)) {
+                        listener.apply(path.toFile());
                     }
+                    break;
                 }
             }
             key.reset();
@@ -94,6 +92,24 @@ public class WatcherService {
         } catch (InterruptedException e) {
             logger.error("Error happens", e);
         }
+    }
+
+    private Predicate<Path> isForPath(final Path context) {
+        return new Predicate<Path>() {
+            @Override
+            public boolean apply(final Path path) {
+                return path.endsWith(context);
+            }
+        };
+    }
+
+    private Predicate<WatchEvent<?>> isModifyEvent() {
+        return new Predicate<WatchEvent<?>>() {
+            @Override
+            public boolean apply(final WatchEvent<?> event) {
+                return event.kind().equals(ENTRY_MODIFY);
+            }
+        };
     }
 
     public synchronized void stop() {
