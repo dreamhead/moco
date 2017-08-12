@@ -32,7 +32,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 public class WatcherService {
     private static Logger logger = LoggerFactory.getLogger(WatcherService.class);
-    private static final long REGISTER_INTERVAL = 800;
+    private static final long REGISTER_INTERVAL = 1000;
 
     private ExecutorService executor = Executors.newFixedThreadPool(5);
     private WatchService service;
