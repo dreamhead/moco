@@ -31,7 +31,7 @@ public class GlobalSettingParserTest {
 
     @Test
     public void should_parse_settings_file_with_context() {
-        InputStream stream = getResourceAsStream("settings/context-settingss.json");
+        InputStream stream = getResourceAsStream("settings/context-settings.json");
         ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
         assertThat(globalSettings.get(0).getInclude(), is(join("src", "test", "resources", "settings", "foo.json")));

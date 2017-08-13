@@ -45,7 +45,7 @@ public class SettingRunnerTest {
 
     @Test
     public void should_run_with_setting_with_context() throws IOException {
-        stream = getResourceAsStream("settings/context-settingss.json");
+        stream = getResourceAsStream("settings/context-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
