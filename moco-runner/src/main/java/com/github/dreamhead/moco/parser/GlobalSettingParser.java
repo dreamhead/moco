@@ -8,6 +8,6 @@ import java.io.InputStream;
 
 public class GlobalSettingParser {
     public ImmutableList<GlobalSetting> parse(final InputStream is) {
-        return Jsons.toList(is, GlobalSetting.class);
+        return Jsons.toObjects(is, GlobalSetting.class);
     }
 }

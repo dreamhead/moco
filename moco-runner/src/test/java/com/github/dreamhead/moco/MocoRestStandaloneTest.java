@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -181,8 +180,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(response.getStatusLine().getStatusCode(), is(200));
         HttpEntity entity = response.getEntity();
-        List<Plain> plains = Jsons.toObject(entity.getContent(), new TypeReference<List<Plain>>() {
-        });
+        List<Plain> plains = Jsons.toObjects(entity.getContent(), Plain.class);
         assertThat(plains.size(), is(2));
     }
 
@@ -210,7 +208,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("rest/rest_error_without_patch_id.json");
     }
 
-    private Plain getResource(String uri) throws IOException {
+    private Plain getResource(final String uri) throws IOException {
         org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
     }

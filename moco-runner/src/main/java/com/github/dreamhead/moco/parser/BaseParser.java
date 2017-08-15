@@ -15,7 +15,7 @@ public abstract class BaseParser<T extends Server> implements Parser<T> {
 
     public T parseServer(final InputStream is, final Optional<Integer> port,
                          final MocoConfig... configs) {
-        ImmutableList<SessionSetting> settings = Jsons.toList(is, SessionSetting.class);
+        ImmutableList<SessionSetting> settings = Jsons.toObjects(is, SessionSetting.class);
         return createServer(settings, port, configs);
     }
 }

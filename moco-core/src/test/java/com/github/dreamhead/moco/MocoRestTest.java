@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -269,8 +268,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                List<Plain> plains = Jsons.toObject(helper.get(remoteUrl("/targets?foo=bar")), new TypeReference<List<Plain>>() {
-                });
+                List<Plain> plains = Jsons.toObjects(helper.get(remoteUrl("/targets?foo=bar")), Plain.class);
                 assertThat(plains.size(), is(2));
 
                 HttpResponse response = helper.getResponse(remoteUrl("/targets"));
@@ -839,8 +837,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
     private List<Plain> asPlains(final HttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
-        return Jsons.toObject(entity.getContent(), new TypeReference<List<Plain>>() {
-        });
+        return Jsons.toObjects(entity.getContent(), Plain.class);
     }
 
     private HttpEntity checkJsonResponse(final HttpResponse response) {

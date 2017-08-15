@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -50,14 +51,6 @@ public final class Jsons {
         }
     }
 
-    public static <T> T toObject(final String value, final TypeReference clazz) {
-        try {
-            return mapper.readValue(value, clazz);
-        } catch (IOException e) {
-            throw new MocoException(e);
-        }
-    }
-
     public static <T> T toObject(final InputStream value, final TypeReference clazz) {
         try {
             return mapper.readValue(value, clazz);
@@ -66,7 +59,11 @@ public final class Jsons {
         }
     }
 
-    public static <T> ImmutableList<T> toList(final InputStream stream, final Class<T> elementClass) {
+    public static <T> ImmutableList<T> toObjects(final String value, final Class<T> elementClass) {
+        return toObjects(new ByteArrayInputStream(value.getBytes()), elementClass);
+    }
+
+    public static <T> ImmutableList<T> toObjects(final InputStream stream, final Class<T> elementClass) {
         try {
             CollectionType type = factory.constructCollectionType(List.class, elementClass);
             List<T> sessionSettings = mapper.readValue(stream, type);
