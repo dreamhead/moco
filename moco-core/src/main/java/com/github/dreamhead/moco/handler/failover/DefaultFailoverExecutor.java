@@ -73,7 +73,7 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            List<Session> sessions = Jsons.toObject(inputStream, new TypeReference<List<Session>>() {});
+            List<Session> sessions = Jsons.toObjects(inputStream, Session.class);
             return copyOf(sessions);
         } catch (MocoException me) {
             logger.error("exception found", me);

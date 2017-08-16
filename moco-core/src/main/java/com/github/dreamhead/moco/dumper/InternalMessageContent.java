@@ -12,6 +12,9 @@ public class InternalMessageContent {
     private byte[] content;
     private Charset charset;
 
+    public InternalMessageContent() {
+    }
+
     public InternalMessageContent(byte[] content, Charset charset) {
         this.content = content;
         this.charset = charset;

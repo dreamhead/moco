@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
@@ -44,14 +43,6 @@ public final class Jsons {
     }
 
     public static <T> T toObject(final String value, final Class<T> clazz) {
-        try {
-            return mapper.readValue(value, clazz);
-        } catch (IOException e) {
-            throw new MocoException(e);
-        }
-    }
-
-    public static <T> T toObject(final InputStream value, final TypeReference clazz) {
         try {
             return mapper.readValue(value, clazz);
         } catch (IOException e) {
