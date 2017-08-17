@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.handler.failover;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.dreamhead.moco.HttpRequest;
@@ -12,7 +11,6 @@ import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +18,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
 
@@ -70,20 +66,14 @@ public class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     private ImmutableList<Session> restoreSessions(final File file) {
-        InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(file);
-            List<Session> sessions = Jsons.toObjects(inputStream, Session.class);
-            return copyOf(sessions);
+            InputStream inputStream = new FileInputStream(file);
+            return Jsons.toObjects(inputStream, Session.class);
         } catch (MocoException me) {
             logger.error("exception found", me);
             return of();
         } catch (IOException e) {
             throw new MocoException(e);
-        } finally {
-            if (inputStream != null) {
-                Closeables.closeQuietly(inputStream);
-            }
         }
     }
 

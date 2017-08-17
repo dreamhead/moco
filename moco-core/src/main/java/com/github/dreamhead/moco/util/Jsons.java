@@ -64,9 +64,9 @@ public final class Jsons {
             throw new RuntimeException(format("Unrecognized field [ %s ], please check!", e.getPropertyName()));
         } catch (JsonMappingException e) {
             logger.info("{} {}", e.getMessage(), e.getPathReference());
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         } finally {
             closeQuietly(stream);
         }
