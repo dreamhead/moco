@@ -13,6 +13,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class MocoJsonRunner {
+
+    private static HttpServerParser parser = new HttpServerParser();
+
     public static HttpServer jsonHttpServer(final int port, final Resource resource) {
         checkArgument(port > 0, "Port must be greater than zero");
         return parseHttpServer(checkNotNull(resource, "resource should not be null"), of(port));
@@ -54,7 +57,6 @@ public final class MocoJsonRunner {
     }
 
     private static HttpServer parseHttpServer(final Resource resource, final Optional<Integer> port) {
-        HttpServerParser parser = new HttpServerParser();
         return parser.parseServer(toStream(resource), port);
     }
 
