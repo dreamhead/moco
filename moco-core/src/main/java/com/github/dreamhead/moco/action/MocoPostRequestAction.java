@@ -4,12 +4,14 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 
@@ -32,7 +34,7 @@ public class MocoPostRequestAction extends MocoRequestAction {
     }
 
     private HttpEntity asEntity(final ContentResource resource, final Request request) {
-        return new InputStreamEntity(resource.readFor(of(request)).toInputStream(), getContentType((HttpRequest) request));
+        return new ByteArrayEntity(resource.readFor(of(request)).getContent(), getContentType((HttpRequest) request));
     }
 
     private ContentType getContentType(HttpRequest request) {

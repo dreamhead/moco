@@ -13,7 +13,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class MocoJsonRunner {
-
     private static HttpServerParser parser = new HttpServerParser();
 
     public static HttpServer jsonHttpServer(final int port, final Resource resource) {
