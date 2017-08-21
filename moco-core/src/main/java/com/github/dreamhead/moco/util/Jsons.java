@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
 
@@ -55,10 +55,23 @@ public final class Jsons {
     }
 
     public static <T> ImmutableList<T> toObjects(final InputStream stream, final Class<T> elementClass) {
+        return toObjects(of(stream), elementClass);
+    }
+
+    public static <T> ImmutableList<T> toObjects(final ImmutableList<InputStream> streams, final Class<T> elementClass) {
         try {
+            ImmutableList.Builder<T> builder = ImmutableList.builder();
             CollectionType type = factory.constructCollectionType(List.class, elementClass);
-            List<T> sessionSettings = mapper.readValue(stream, type);
-            return copyOf(sessionSettings);
+
+            for (InputStream stream : streams) {
+                try {
+                    builder.addAll(mapper.<List<T>>readValue(stream, type));
+                } finally {
+                    closeQuietly(stream);
+                }
+            }
+
+            return builder.build();
         } catch (UnrecognizedPropertyException e) {
             logger.info("Unrecognized field: {}", e.getMessage());
             throw new MocoException(format("Unrecognized field [ %s ], please check!", e.getPropertyName()));
@@ -67,8 +80,6 @@ public final class Jsons {
             throw new MocoException(e);
         } catch (IOException e) {
             throw new MocoException(e);
-        } finally {
-            closeQuietly(stream);
         }
     }
 
