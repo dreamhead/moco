@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
 
@@ -52,11 +53,11 @@ public final class MocoJsonRunner {
 
     private static SocketServer jsonSocketServer(final Resource resource, final Optional<Integer> port) {
         SocketServerParser parser = new SocketServerParser();
-        return parser.parseServer(toStream(checkNotNull(resource, "resource should not be null")), port);
+        return parser.parseServer(ImmutableList.of(toStream(checkNotNull(resource, "resource should not be null"))), port);
     }
 
     private static HttpServer parseHttpServer(final Resource resource, final Optional<Integer> port) {
-        return parser.parseServer(toStream(resource), port);
+        return parser.parseServer(ImmutableList.of(toStream(resource)), port);
     }
 
     private static InputStream toStream(final Resource resource) {

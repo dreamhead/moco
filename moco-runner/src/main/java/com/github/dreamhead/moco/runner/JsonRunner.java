@@ -24,6 +24,7 @@ import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.toArray;
 
 public final class JsonRunner implements Runner {
@@ -57,7 +58,7 @@ public final class JsonRunner implements Runner {
                                             final StartArgs startArgs) {
         SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort());
         for (RunnerSetting setting : settings) {
-            SocketServer parsedServer = socketParser.parseServer(setting.getStream(), startArgs.getPort(),
+            SocketServer parsedServer = socketParser.parseServer(of(setting.getStream()), startArgs.getPort(),
                     toConfigs(setting));
             socketServer = mergeServer(socketServer, parsedServer);
         }
@@ -82,7 +83,7 @@ public final class JsonRunner implements Runner {
         HttpServer targetServer = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = httpParser.parseServer(setting.getStream(),
+            HttpServer parsedServer = httpParser.parseServer(of(setting.getStream()),
                     startArgs.getPort(), toConfigs(setting));
             targetServer = mergeServer(targetServer, parsedServer);
         }
