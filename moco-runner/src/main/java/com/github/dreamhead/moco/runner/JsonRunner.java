@@ -58,7 +58,7 @@ public final class JsonRunner implements Runner {
                                             final StartArgs startArgs) {
         SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort());
         for (RunnerSetting setting : settings) {
-            SocketServer parsedServer = socketParser.parseServer(of(setting.getStream()), startArgs.getPort(),
+            SocketServer parsedServer = socketParser.parseServer(setting.getStreams(), startArgs.getPort(),
                     toConfigs(setting));
             socketServer = mergeServer(socketServer, parsedServer);
         }
@@ -83,7 +83,7 @@ public final class JsonRunner implements Runner {
         HttpServer targetServer = createHttpServer(startArgs);
 
         for (RunnerSetting setting : settings) {
-            HttpServer parsedServer = httpParser.parseServer(of(setting.getStream()),
+            HttpServer parsedServer = httpParser.parseServer(setting.getStreams(),
                     startArgs.getPort(), toConfigs(setting));
             targetServer = mergeServer(targetServer, parsedServer);
         }

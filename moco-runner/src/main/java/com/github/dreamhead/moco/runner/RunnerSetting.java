@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
 
@@ -28,8 +29,8 @@ public final class RunnerSetting {
         this.fileRoot = fromNullable(fileRoot);
     }
 
-    public InputStream getStream() {
-        return stream;
+    public ImmutableList<InputStream> getStreams() {
+        return ImmutableList.of(stream);
     }
 
     public Optional<MocoConfig> context() {
