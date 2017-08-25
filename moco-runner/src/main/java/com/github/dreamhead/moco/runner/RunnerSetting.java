@@ -14,15 +14,15 @@ import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public final class RunnerSetting {
-    private InputStream stream;
+    private final ImmutableList<InputStream> streams;
     private final Optional<RequestSetting> request;
     private final Optional<ResponseSetting> response;
     private final Optional<String> context;
     private final Optional<String> fileRoot;
 
-    private RunnerSetting(final InputStream stream, final String context, final String fileRoot,
+    private RunnerSetting(final ImmutableList<InputStream> streams, final String context, final String fileRoot,
                           final RequestSetting requestSetting, final ResponseSetting response) {
-        this.stream = stream;
+        this.streams = streams;
         this.request = fromNullable(requestSetting);
         this.response = fromNullable(response);
         this.context = fromNullable(context);
@@ -30,7 +30,7 @@ public final class RunnerSetting {
     }
 
     public ImmutableList<InputStream> getStreams() {
-        return ImmutableList.of(stream);
+        return streams;
     }
 
     public Optional<MocoConfig> context() {
@@ -102,7 +102,7 @@ public final class RunnerSetting {
         }
 
         public RunnerSetting build() {
-            return new RunnerSetting(stream, context, fileRoot, request, response);
+            return new RunnerSetting(ImmutableList.of(stream), context, fileRoot, request, response);
         }
 
     }
