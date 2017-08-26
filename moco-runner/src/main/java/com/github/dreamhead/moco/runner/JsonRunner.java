@@ -130,7 +130,7 @@ public final class JsonRunner implements Runner {
         return new Function<InputStream, RunnerSetting>() {
             @Override
             public RunnerSetting apply(final InputStream input) {
-                return aRunnerSetting().withStream(input).build();
+                return aRunnerSetting().addStream(input).build();
             }
         };
     }

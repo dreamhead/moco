@@ -60,7 +60,7 @@ public class SettingRunner implements Runner {
             public RunnerSetting apply(final GlobalSetting setting) {
                 try {
                     return aRunnerSetting()
-                            .withStream(new FileInputStream(setting.getInclude()))
+                            .addStream(new FileInputStream(setting.getInclude()))
                             .withContext(setting.getContext())
                             .withFileRoot(setting.getFileRoot())
                             .withRequest(setting.getRequest())

@@ -70,14 +70,14 @@ public final class RunnerSetting {
     }
 
     public static class Builder {
-        private InputStream stream;
+        private ImmutableList.Builder<InputStream> streams = ImmutableList.builder();
         private RequestSetting request;
         private ResponseSetting response;
         private String context;
         private String fileRoot;
 
-        public Builder withStream(final InputStream stream) {
-            this.stream = stream;
+        public Builder addStream(final InputStream stream) {
+            this.streams.add(stream);
             return this;
         }
 
@@ -102,7 +102,7 @@ public final class RunnerSetting {
         }
 
         public RunnerSetting build() {
-            return new RunnerSetting(ImmutableList.of(stream), context, fileRoot, request, response);
+            return new RunnerSetting(streams.build(), context, fileRoot, request, response);
         }
 
     }
