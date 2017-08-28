@@ -1,10 +1,13 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.util.Files.join;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class GlobalSetting {
     private String include;
     private String context;
@@ -14,8 +17,8 @@ public class GlobalSetting {
     private RequestSetting request;
     private ResponseSetting response;
 
-    public String getInclude() {
-        return join(fileRoot, include);
+    public ImmutableList<String> includes() {
+        return ImmutableList.of(join(fileRoot, include));
     }
 
     public String getContext() {

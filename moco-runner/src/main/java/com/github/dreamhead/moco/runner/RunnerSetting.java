@@ -81,6 +81,11 @@ public final class RunnerSetting {
             return this;
         }
 
+        public Builder addStreams(final ImmutableList<InputStream> streams) {
+            this.streams.addAll(streams);
+            return this;
+        }
+
         public Builder withRequest(final RequestSetting request) {
             this.request = request;
             return this;

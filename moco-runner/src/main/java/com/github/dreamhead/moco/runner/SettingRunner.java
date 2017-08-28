@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.parser.GlobalSettingParser;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
@@ -29,7 +30,7 @@ public class SettingRunner implements Runner {
     public SettingRunner(final InputStream stream, final StartArgs args) {
         this.env = args.getEnv();
         this.globalSettings = parser.parse(stream);
-        this.files = from(globalSettings).transform(toFile());
+        this.files = from(globalSettings).transformAndConcat(toFiles());
         this.startArgs = args;
     }
 
@@ -58,16 +59,27 @@ public class SettingRunner implements Runner {
         return new Function<GlobalSetting, RunnerSetting>() {
             @Override
             public RunnerSetting apply(final GlobalSetting setting) {
+                ImmutableList<InputStream> streams = from(setting.includes()).transform(toStream()).toList();
+
+                return aRunnerSetting()
+                        .addStreams(streams)
+                        .withContext(setting.getContext())
+                        .withFileRoot(setting.getFileRoot())
+                        .withRequest(setting.getRequest())
+                        .withResponse(setting.getResponse())
+                        .build();
+            }
+        };
+    }
+
+    private Function<String, InputStream> toStream() {
+        return new Function<String, InputStream>() {
+            @Override
+            public InputStream apply(final String input) {
                 try {
-                    return aRunnerSetting()
-                            .addStream(new FileInputStream(setting.getInclude()))
-                            .withContext(setting.getContext())
-                            .withFileRoot(setting.getFileRoot())
-                            .withRequest(setting.getRequest())
-                            .withResponse(setting.getResponse())
-                            .build();
+                    return new FileInputStream(input);
                 } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
+                    throw new MocoException(e);
                 }
             }
         };
@@ -77,11 +89,21 @@ public class SettingRunner implements Runner {
         runner.stop();
     }
 
-    private Function<? super GlobalSetting, File> toFile() {
-        return new Function<GlobalSetting, File>() {
+    private Function<? super GlobalSetting, Iterable<? extends File>> toFiles() {
+        return new Function<GlobalSetting, Iterable<? extends File>>() {
             @Override
-            public File apply(final GlobalSetting input) {
-                return new File(input.getInclude());
+            public Iterable<? extends File> apply(final GlobalSetting input) {
+                return from(input.includes()).transform(toFile());
+
+            }
+        };
+    }
+
+    private Function<String, File> toFile() {
+        return new Function<String, File>() {
+            @Override
+            public File apply(final String input) {
+                return new File(input);
             }
         };
     }
