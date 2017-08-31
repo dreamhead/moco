@@ -15,9 +15,9 @@ public final class MocoMount {
         return new MountTo(checkNotNullOrEmpty(target, "Target should not be null"));
     }
 
-    public static MountPredicate include(final String wildcard) {
-        checkNotNullOrEmpty(wildcard, "Wildcard should not be null");
-        final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + wildcard);
+    public static MountPredicate include(final String glob) {
+        checkNotNullOrEmpty(glob, "Glob should not be null or empty");
+        final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + glob);
 
         return new MountPredicate() {
             @Override
