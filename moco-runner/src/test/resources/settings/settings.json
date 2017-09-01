@@ -1,8 +1,8 @@
 [
     {
-        "include" : "src/test/resources/settings/foo.json"
+        "include" : "src/test/resources/settings/details/foo.json"
     },
     {
-        "include" : "src/test/resources/settings/bar.json"
+        "include" : "src/test/resources/settings/details/bar.json"
     }
 ]

@@ -27,8 +27,8 @@ public final class MocoMount {
         };
     }
 
-    public static MountPredicate exclude(final String wildcard) {
-        return not(include(checkNotNullOrEmpty(wildcard, "Wildcard should not be null")));
+    public static MountPredicate exclude(final String glob) {
+        return not(include(checkNotNullOrEmpty(glob, "Glob should not be null")));
     }
 
     private static MountPredicate not(final MountPredicate predicate) {

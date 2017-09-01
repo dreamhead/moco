@@ -25,8 +25,8 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("settings/settings.json");
         ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "foo.json")));
-        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "bar.json")));
+        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "details", "foo.json")));
+        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "details", "bar.json")));
     }
 
     @Test
@@ -34,9 +34,9 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("settings/context-settings.json");
         ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "foo.json")));
+        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "details", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
-        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "bar.json")));
+        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "details", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
     }
 
@@ -55,10 +55,10 @@ public class GlobalSettingParserTest {
         InputStream stream = getResourceAsStream("settings/env-settings.json");
         ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
 
-        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "foo.json")));
+        assertThat(globalSettings.get(0).includes().get(0), is(join("src", "test", "resources", "settings", "details", "foo.json")));
         assertThat(globalSettings.get(0).getContext(), is("/foo"));
         assertThat(globalSettings.get(0).getEnv(), is("foo"));
-        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "bar.json")));
+        assertThat(globalSettings.get(1).includes().get(0), is(join("src", "test", "resources", "settings", "details", "bar.json")));
         assertThat(globalSettings.get(1).getContext(), is("/bar"));
         assertThat(globalSettings.get(1).getEnv(), is("bar"));
     }
