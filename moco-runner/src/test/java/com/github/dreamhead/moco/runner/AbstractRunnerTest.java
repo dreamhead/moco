@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.runner.watcher.Watchers;
 import org.junit.After;
 
 import java.io.File;
@@ -36,16 +35,10 @@ public abstract class AbstractRunnerTest {
     }
 
     protected void changeFileContent(final File response, final String content) {
-        PrintStream stream = null;
-        try {
-            stream = new PrintStream(new FileOutputStream(response));
+        try (PrintStream stream = new PrintStream(new FileOutputStream(response))){
             stream.print(content);
         } catch (IOException e) {
             fail("failed to change file content");
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
         }
     }
 }
