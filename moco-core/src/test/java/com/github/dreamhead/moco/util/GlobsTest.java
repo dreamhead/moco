@@ -14,4 +14,10 @@ public class GlobsTest {
         assertThat(files.contains("src/test/resources/details/bar.json"), is(true));
     }
 
+    @Test
+    public void should_glob_direct_files() {
+        ImmutableList<String> files = Globs.glob("src/test/resources/details/foo.json");
+        assertThat(files.contains("src/test/resources/details/foo.json"), is(true));
+    }
+
 }
