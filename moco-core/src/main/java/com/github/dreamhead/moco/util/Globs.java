@@ -18,12 +18,23 @@ import static com.google.common.collect.ImmutableList.of;
 public class Globs {
     public static ImmutableList<String> glob(final String glob) {
         Path path = Paths.get(glob);
+
         int globIndex = getGlobIndex(path);
         if (globIndex < 0) {
             return of(glob);
         }
 
-        return doGlob(path, path.subpath(0, globIndex));
+        return doGlob(path, searchPath(path, globIndex));
+    }
+
+    private static Path searchPath(final Path path, final int globIndex) {
+        Path root = path.getRoot();
+        Path subpath = path.subpath(0, globIndex);
+        if (root == null) {
+            return subpath;
+        }
+
+        return Paths.get(root.toString(), subpath.toString());
     }
 
     private static ImmutableList<String> doGlob(final Path path, final Path searchPath) {
