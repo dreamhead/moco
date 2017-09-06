@@ -63,6 +63,16 @@ public class GlobalSettingParserTest {
         assertThat(globalSettings.get(1).getEnv(), is("bar"));
     }
 
+    @Test
+    public void should_parse_glob_settings_file() {
+        InputStream stream = getResourceAsStream("settings/glob-settings.json");
+        ImmutableList<GlobalSetting> globalSettings = parser.parse(stream);
+
+        ImmutableList<String> includes = globalSettings.get(0).includes();
+        assertThat(includes.contains(join("src", "test", "resources", "settings", "details", "foo.json")), is(true));
+        assertThat(includes.contains(join("src", "test", "resources", "settings", "details", "bar.json")), is(true));
+    }
+
     private InputStream getResourceAsStream(final String filename) {
         return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
     }

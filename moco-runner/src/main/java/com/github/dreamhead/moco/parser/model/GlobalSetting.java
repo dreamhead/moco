@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.dreamhead.moco.util.Globs;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
@@ -18,7 +19,7 @@ public class GlobalSetting {
     private ResponseSetting response;
 
     public ImmutableList<String> includes() {
-        return ImmutableList.of(join(fileRoot, include));
+        return Globs.glob(join(fileRoot, include));
     }
 
     public String getContext() {

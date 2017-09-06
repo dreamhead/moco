@@ -40,7 +40,6 @@ public class GlobsTest {
     public void should_glob_absolute_files_with_glob() throws IOException {
         File file = folder.newFile("glob.json");
         String glob = Files.join(folder.getRoot().getAbsolutePath(), "*.json");
-        System.out.println(glob);
         ImmutableList<String> files = Globs.glob(glob);
         assertThat(files.contains(file.getAbsolutePath()), is(true));
     }
