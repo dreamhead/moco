@@ -62,6 +62,7 @@ Feel free to open your browser to try.
   * [Environment](#environment)
   * [Request](#request)
   * [Response](#response)
+  * [Glob Inclusion](#glob-inclusion)
 
 ## Configuration
 
@@ -192,3 +193,17 @@ In some cases, you may want to setup a global response for all response, for exa
 ```
 
 When you issue any request to server, it will return response with "foo", "bar" header.
+
+### Glob Inclusion
+
+**@Since will be at the next release**
+
+You may need include many files, glob can help you to do this.
+
+```json
+[
+    {
+        "include" : "*.json"
+    }
+]
+```

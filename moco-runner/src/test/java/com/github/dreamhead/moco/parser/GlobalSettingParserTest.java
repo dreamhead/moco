@@ -1,10 +1,13 @@
 package com.github.dreamhead.moco.parser;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Resources;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import static com.github.dreamhead.moco.util.Files.join;
@@ -74,6 +77,10 @@ public class GlobalSettingParserTest {
     }
 
     private InputStream getResourceAsStream(final String filename) {
-        return GlobalSettingParserTest.class.getClassLoader().getResourceAsStream(filename);
+        try {
+            return Resources.getResource(filename).openStream();
+        } catch (IOException e) {
+            throw new MocoException(e);
+        }
     }
 }
