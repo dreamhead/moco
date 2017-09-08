@@ -58,7 +58,7 @@ public class Globs {
         }
     }
 
-    private static int getGlobIndex(Path path) {
+    private static int getGlobIndex(final Path path) {
         int nameCount = path.getNameCount();
         for (int i = 0; i < nameCount; i++) {
             String current = path.getName(i).toString();
