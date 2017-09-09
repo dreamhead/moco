@@ -1614,7 +1614,7 @@ server.mount(dir, to("/uri"));
 }
 ```
 
-Wildcard is acceptable to filter specified files, e.g we can include by
+Glob is acceptable to filter specified files, e.g we can include by
 
 * Java API
 
