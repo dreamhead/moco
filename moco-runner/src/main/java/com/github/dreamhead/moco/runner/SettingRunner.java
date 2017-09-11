@@ -59,10 +59,9 @@ public class SettingRunner implements Runner {
         return new Function<GlobalSetting, RunnerSetting>() {
             @Override
             public RunnerSetting apply(final GlobalSetting setting) {
-                ImmutableList<InputStream> streams = from(setting.includes()).transform(toStream()).toList();
 
                 return aRunnerSetting()
-                        .addStreams(streams)
+                        .addStreams(from(setting.includes()).transform(toStream()).toList())
                         .withContext(setting.getContext())
                         .withFileRoot(setting.getFileRoot())
                         .withRequest(setting.getRequest())

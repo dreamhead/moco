@@ -24,7 +24,6 @@ import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.toArray;
 
 public final class JsonRunner implements Runner {
