@@ -15,7 +15,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import static com.google.common.collect.ImmutableList.of;
 
-public class Globs {
+public final class Globs {
     public static ImmutableList<String> glob(final String glob) {
         Path path = Paths.get(glob);
 
