@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class RedirectDelegate {
+public final class RedirectDelegate {
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final String url) {
         return this.redirectTo(setting, text(checkNotNullOrEmpty(url, "URL should not be null")));
     }
