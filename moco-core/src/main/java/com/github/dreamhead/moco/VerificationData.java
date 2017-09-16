@@ -5,7 +5,7 @@ import com.google.common.base.Predicate;
 import static com.google.common.collect.FluentIterable.from;
 import static java.lang.String.format;
 
-public class VerificationData {
+public final class VerificationData {
     private final Iterable<Request> requests;
     private final RequestMatcher matcher;
     private final String mismatchFormat;
