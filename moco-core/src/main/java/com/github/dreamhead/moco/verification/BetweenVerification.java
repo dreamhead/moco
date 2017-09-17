@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.verification;
 
 import static java.lang.String.format;
 
-public class BetweenVerification extends AbstractTimesVerification {
+public final class BetweenVerification extends AbstractTimesVerification {
     private final int min;
     private final int max;
 
