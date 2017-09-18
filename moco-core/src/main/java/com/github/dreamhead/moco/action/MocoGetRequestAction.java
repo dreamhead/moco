@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
-public class MocoGetRequestAction extends MocoRequestAction {
+public final class MocoGetRequestAction extends MocoRequestAction {
     public MocoGetRequestAction(final Resource url) {
         super(url);
     }

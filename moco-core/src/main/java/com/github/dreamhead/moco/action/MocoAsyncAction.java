@@ -8,7 +8,7 @@ import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MocoAsyncAction implements MocoEventAction {
+public final class MocoAsyncAction implements MocoEventAction {
     private final MocoEventAction action;
     private final LatencyProcedure procedure;
     private final ExecutorService service = Executors.newCachedThreadPool();

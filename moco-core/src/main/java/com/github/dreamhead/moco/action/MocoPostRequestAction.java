@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
 
 import static com.google.common.base.Optional.of;
 
-public class MocoPostRequestAction extends MocoRequestAction {
+public final class MocoPostRequestAction extends MocoRequestAction {
     private final ContentResource content;
 
     public MocoPostRequestAction(final Resource url, final ContentResource content) {
