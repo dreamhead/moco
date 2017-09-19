@@ -4,7 +4,7 @@ import io.netty.handler.codec.http.cookie.Cookie;
 
 import java.util.concurrent.TimeUnit;
 
-public class MaxAgeCookieAttribute extends ActualCookieAttribute {
+public final class MaxAgeCookieAttribute extends ActualCookieAttribute {
     private final long maxAge;
     private final TimeUnit unit;
 
