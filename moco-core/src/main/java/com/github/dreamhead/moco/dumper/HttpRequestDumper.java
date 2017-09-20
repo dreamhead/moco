@@ -7,7 +7,7 @@ import io.netty.util.internal.StringUtil;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
 
-public class HttpRequestDumper implements Dumper<Request> {
+public final class HttpRequestDumper implements Dumper<Request> {
     private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
     @Override

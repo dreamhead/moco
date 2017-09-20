@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.util.Strings.strip;
 
-public class HttpProtocolVersionDeserializer extends JsonDeserializer<HttpProtocolVersion> {
+public final class HttpProtocolVersionDeserializer extends JsonDeserializer<HttpProtocolVersion> {
     @Override
     public HttpProtocolVersion deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         try {

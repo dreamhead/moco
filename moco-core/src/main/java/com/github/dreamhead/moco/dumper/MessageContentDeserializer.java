@@ -11,7 +11,7 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Strings.strip;
 
-public class MessageContentDeserializer extends JsonDeserializer<MessageContent> {
+public final class MessageContentDeserializer extends JsonDeserializer<MessageContent> {
     @Override
     public MessageContent deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();

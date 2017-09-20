@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 
 import java.io.IOException;
 
-public class HttpProtocolVersionSerializer extends JsonSerializer<HttpProtocolVersion> {
+public final class HttpProtocolVersionSerializer extends JsonSerializer<HttpProtocolVersion> {
     @Override
     public void serialize(final HttpProtocolVersion value, final JsonGenerator generator,
                           final SerializerProvider provider) throws IOException {
