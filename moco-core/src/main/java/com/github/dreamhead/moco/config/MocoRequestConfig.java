@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 
 import static com.github.dreamhead.moco.Moco.and;
 
-public class MocoRequestConfig implements MocoConfig<RequestMatcher> {
+public final class MocoRequestConfig implements MocoConfig<RequestMatcher> {
     private final RequestMatcher requestMatcher;
 
     public MocoRequestConfig(final RequestMatcher requestMatcher) {

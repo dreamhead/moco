@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 
-public class MocoResponseConfig implements MocoConfig<ResponseHandler> {
+public final class MocoResponseConfig implements MocoConfig<ResponseHandler> {
     private final ResponseHandler handler;
 
     public MocoResponseConfig(final ResponseHandler handler) {

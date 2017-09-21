@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 
 import static com.github.dreamhead.moco.util.Files.join;
 
-public class MocoFileRootConfig implements MocoConfig<String> {
+public final class MocoFileRootConfig implements MocoConfig<String> {
     private final String fileRoot;
 
     public MocoFileRootConfig(final String fileRoot) {
