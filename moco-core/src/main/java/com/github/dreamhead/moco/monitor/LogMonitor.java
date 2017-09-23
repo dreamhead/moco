@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.monitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
-public class LogMonitor extends AbstractMonitor {
+public final class LogMonitor extends AbstractMonitor {
     private final LogWriter writer;
     private final LogFormatter formatter;
 

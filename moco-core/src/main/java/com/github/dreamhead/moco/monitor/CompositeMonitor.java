@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
-public class CompositeMonitor implements MocoMonitor {
+public final class CompositeMonitor implements MocoMonitor {
     private final Iterable<MocoMonitor> monitors;
 
     public CompositeMonitor(final Iterable<MocoMonitor> monitors) {

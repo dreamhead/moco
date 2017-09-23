@@ -20,7 +20,7 @@ import java.io.StringWriter;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public class DefaultLogFormatter implements LogFormatter {
+public final class DefaultLogFormatter implements LogFormatter {
     private static final ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = ImmutableMap.of(
             HttpRequest.class, new HttpRequestDumper(),
             SocketRequest.class, new SocketRequestDumper()

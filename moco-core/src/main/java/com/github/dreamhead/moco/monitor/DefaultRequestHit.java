@@ -12,7 +12,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class DefaultRequestHit extends AbstractMonitor implements RequestHit {
+public final class DefaultRequestHit extends AbstractMonitor implements RequestHit {
     private List<Request> unexpectedRequests = newArrayList();
     private List<Request> requests = newArrayList();
 

@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.dumper.Dumper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Slf4jMonitor extends AbstractMonitor {
+public final class Slf4jMonitor extends AbstractMonitor {
     private static Logger logger = LoggerFactory.getLogger(Slf4jMonitor.class);
     private final Dumper<Request> requestDumper;
     private final Dumper<Response> responseDumper;

@@ -7,7 +7,7 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.nio.charset.Charset;
 
-public class FileLogWriter implements LogWriter {
+public final class FileLogWriter implements LogWriter {
     private final File file;
     private Optional<Charset> charset;
 
