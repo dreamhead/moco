@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.absent;
 
-public class MountPathExtractor extends HttpRequestExtractor<String> {
+public final class MountPathExtractor extends HttpRequestExtractor<String> {
     private final MountTo target;
     private final RequestExtractor<String> extractor = new UriRequestExtractor();
 

@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.google.common.base.Optional.of;
 
-public class MountHandler extends AbstractHttpContentResponseHandler {
+public final class MountHandler extends AbstractHttpContentResponseHandler {
     private final MountPathExtractor extractor;
 
     private final File dir;

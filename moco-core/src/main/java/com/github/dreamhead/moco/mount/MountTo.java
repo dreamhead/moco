@@ -8,7 +8,7 @@ import static com.github.dreamhead.moco.util.URLs.toBase;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 
-public class MountTo implements ConfigApplier<MountTo> {
+public final class MountTo implements ConfigApplier<MountTo> {
     private final String target;
 
     public MountTo(final String target) {

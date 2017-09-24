@@ -11,7 +11,7 @@ import java.io.File;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class MountMatcher extends AbstractRequestMatcher {
+public final class MountMatcher extends AbstractRequestMatcher {
     private final MountPathExtractor extractor;
 
     private final File dir;
