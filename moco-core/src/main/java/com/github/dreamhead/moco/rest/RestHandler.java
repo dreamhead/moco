@@ -9,7 +9,7 @@ import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.base.Optional;
 
-public class RestHandler extends AbstractHttpResponseHandler {
+public final class RestHandler extends AbstractHttpResponseHandler {
     private final RestRequestDispatcher dispatcher;
     private final String name;
     private final Iterable<RestSetting> settings;

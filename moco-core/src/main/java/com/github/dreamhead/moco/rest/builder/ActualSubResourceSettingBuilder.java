@@ -8,7 +8,7 @@ import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ActualSubResourceSettingBuilder implements SubResourceSettingBuilder, NamedSubResourceSettingBuilder {
+public final class ActualSubResourceSettingBuilder implements SubResourceSettingBuilder, NamedSubResourceSettingBuilder {
     private final RestIdMatcher id;
     private String name;
 

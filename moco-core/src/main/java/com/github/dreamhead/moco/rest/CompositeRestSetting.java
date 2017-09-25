@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Optional;
 
-public class CompositeRestSetting<T extends SimpleRestSetting> implements RestSetting {
+public final class CompositeRestSetting<T extends SimpleRestSetting> implements RestSetting {
     private final Iterable<T> settings;
 
     public CompositeRestSetting(final Iterable<T> settings) {

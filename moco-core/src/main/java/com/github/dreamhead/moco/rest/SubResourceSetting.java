@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.util.URLs.join;
 
-public class SubResourceSetting implements RestSetting {
+public final class SubResourceSetting implements RestSetting {
     private final RestIdMatcher id;
     private final String name;
     private final Iterable<RestSetting> settings;

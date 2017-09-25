@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 
-public class RestAllSetting extends SimpleRestSetting {
+public final class RestAllSetting extends SimpleRestSetting {
     public RestAllSetting(final HttpMethod method,
                           final Optional<RequestMatcher> matcher,
                           final ResponseHandler handler) {

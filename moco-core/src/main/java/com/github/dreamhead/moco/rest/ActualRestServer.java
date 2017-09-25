@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ActualRestServer extends ActualHttpServer implements RestServer {
+public final class ActualRestServer extends ActualHttpServer implements RestServer {
     public ActualRestServer(final Optional<Integer> port,
                             final Optional<HttpsCertificate> certificate,
                             final MocoMonitor monitor,
