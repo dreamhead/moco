@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
 
-public class GlobalSettingParser {
+public final class GlobalSettingParser {
     public ImmutableList<GlobalSetting> parse(final InputStream is) {
         return Jsons.toObjects(is, GlobalSetting.class);
     }

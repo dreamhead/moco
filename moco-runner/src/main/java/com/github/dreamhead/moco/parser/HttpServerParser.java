@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HttpServerParser extends BaseParser<HttpServer> {
+public final class HttpServerParser extends BaseParser<HttpServer> {
     private static Logger logger = LoggerFactory.getLogger(HttpServerParser.class);
 
     @Override
