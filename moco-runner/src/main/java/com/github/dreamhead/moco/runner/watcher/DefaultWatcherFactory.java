@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public class DefaultWatcherFactory implements FileWatcherFactory {
+public final class DefaultWatcherFactory implements FileWatcherFactory {
     private WatcherService service = new WatcherService();
 
     @Override

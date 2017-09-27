@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 
 import java.io.File;
 
-public class DefaultWatcher implements Watcher {
+public final class DefaultWatcher implements Watcher {
     private final WatcherService service;
     private final Function<File, Void> listener;
     private final File file;

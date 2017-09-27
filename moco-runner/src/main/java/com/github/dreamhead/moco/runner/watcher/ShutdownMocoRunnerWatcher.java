@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import static com.google.common.io.CharSource.wrap;
 import static io.netty.channel.ChannelHandler.Sharable;
 
-public class ShutdownMocoRunnerWatcher implements Watcher {
+public final class ShutdownMocoRunnerWatcher implements Watcher {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
     private final MocoServer server = new MocoServer();
     private final Optional<Integer> shutdownPort;

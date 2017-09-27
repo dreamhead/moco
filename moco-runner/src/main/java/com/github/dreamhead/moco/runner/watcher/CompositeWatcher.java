@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-public class CompositeWatcher implements Watcher {
+public final class CompositeWatcher implements Watcher {
     private final Iterable<Watcher> watchers;
 
     public CompositeWatcher(final Iterable<Watcher> watchers) {

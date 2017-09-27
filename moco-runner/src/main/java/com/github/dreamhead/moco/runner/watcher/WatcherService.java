@@ -30,7 +30,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
-public class WatcherService {
+public final class WatcherService {
     private static Logger logger = LoggerFactory.getLogger(WatcherService.class);
     private static final long REGISTER_INTERVAL = 1000;
 

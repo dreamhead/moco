@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class WatcherFactory {
+public final class WatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(WatcherFactory.class);
 
     private FileWatcherFactory factory = new DefaultWatcherFactory();
