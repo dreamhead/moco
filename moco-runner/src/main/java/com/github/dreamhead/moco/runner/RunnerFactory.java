@@ -10,7 +10,7 @@ import java.io.File;
 import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFileRunner;
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
 
-public class RunnerFactory {
+public final class RunnerFactory {
     private final WatcherFactory factory = new WatcherFactory();
     private final String shutdownKey;
 

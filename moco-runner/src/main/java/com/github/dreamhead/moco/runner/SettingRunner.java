@@ -19,7 +19,7 @@ import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetti
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
 import static com.google.common.collect.FluentIterable.from;
 
-public class SettingRunner implements Runner {
+public final class SettingRunner implements Runner {
     private final GlobalSettingParser parser = new GlobalSettingParser();
     private final ImmutableList<GlobalSetting> globalSettings;
     private final Optional<String> env;

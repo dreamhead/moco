@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.SocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StandaloneRunner {
+public final class StandaloneRunner {
     private static Logger logger = LoggerFactory.getLogger(StandaloneRunner.class);
 
     private Runner runner;
