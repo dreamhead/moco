@@ -9,7 +9,7 @@ import org.apache.commons.cli.Options;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpsArgs.httpsArgs;
 
-public class HttpsArgsParser extends StartArgsParser {
+public final class HttpsArgsParser extends StartArgsParser {
     @Override
     protected StartArgs parseArgs(final CommandLine cmd) {
         String port = cmd.getOptionValue("p");

@@ -8,7 +8,7 @@ import org.apache.commons.cli.Options;
 import static com.github.dreamhead.moco.bootstrap.ShutdownPortOption.shutdownPortOption;
 import static com.github.dreamhead.moco.bootstrap.arg.SocketArgs.socketArgs;
 
-public class SocketArgsParser extends StartArgsParser {
+public final class SocketArgsParser extends StartArgsParser {
     @Override
     protected StartArgs parseArgs(final CommandLine cmd) {
         String port = cmd.getOptionValue("p");
