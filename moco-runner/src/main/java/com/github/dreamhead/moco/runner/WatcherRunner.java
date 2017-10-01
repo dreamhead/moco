@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.runner.watcher.Watcher;
 
-public final class WatcherRunner implements Runner {
+public class WatcherRunner implements Runner {
     private final Runner runner;
     private final Watcher watcher;
 
