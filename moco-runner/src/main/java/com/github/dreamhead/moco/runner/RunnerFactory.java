@@ -9,6 +9,7 @@ import java.io.File;
 
 import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFileRunner;
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
+import static com.google.common.collect.ImmutableList.of;
 
 public final class RunnerFactory {
     private final WatcherFactory factory = new WatcherFactory();
@@ -43,7 +44,7 @@ public final class RunnerFactory {
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
-        final FileRunner fileRunner = createConfigurationFileRunner(configuration, startArgs);
+        final FileRunner fileRunner = createConfigurationFileRunner(of(configuration), startArgs);
         Watcher watcher = factory.createConfigurationWatcher(configuration, fileRunner);
         return new WatcherRunner(fileRunner, watcher);
     }

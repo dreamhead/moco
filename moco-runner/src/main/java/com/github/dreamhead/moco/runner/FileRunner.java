@@ -1,13 +1,15 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
-import static com.google.common.collect.ImmutableList.of;
 
 public abstract class FileRunner implements Runner {
     private Runner runner;
@@ -38,11 +40,11 @@ public abstract class FileRunner implements Runner {
         this.runner.stop();
     }
 
-    public static FileRunner createConfigurationFileRunner(final File file, final StartArgs startArgs) {
+    public static FileRunner createConfigurationFileRunner(final Iterable<File> files, final StartArgs startArgs) {
         return new FileRunner() {
             @Override
             protected Runner newRunner() {
-                return newJsonRunnerWithStreams(of(toInputStream(file)), startArgs);
+                return newJsonRunnerWithStreams(toInputStreams(files), startArgs);
             }
         };
     }
@@ -62,5 +64,14 @@ public abstract class FileRunner implements Runner {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Iterable<InputStream> toInputStreams(final Iterable<File> files) {
+        return FluentIterable.from(files).transform(new Function<File, InputStream>() {
+            @Override
+            public InputStream apply(final File input) {
+                return toInputStream(input);
+            }
+        });
     }
 }
