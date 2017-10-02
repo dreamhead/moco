@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.util;
 
+import com.github.dreamhead.moco.MocoException;
 import com.google.common.collect.ImmutableList;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,5 +43,10 @@ public class GlobsTest {
         String glob = Files.join(folder.getRoot().getAbsolutePath(), "*.json");
         ImmutableList<String> files = Globs.glob(glob);
         assertThat(files.contains(file.getAbsolutePath()), is(true));
+    }
+
+    @Test(expected = MocoException.class)
+    public void should_throw_exception_for_unknown_root() {
+        Globs.glob("unknown/src/test/resources/details/*.json");
     }
 }
