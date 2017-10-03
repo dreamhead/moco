@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
@@ -62,7 +63,7 @@ public abstract class FileRunner implements Runner {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new MocoException(e);
         }
     }
 

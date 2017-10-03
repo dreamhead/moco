@@ -45,7 +45,7 @@ public final class RunnerFactory {
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         final File configuration = new File(startArgs.getConfigurationFile().get());
         final FileRunner fileRunner = createConfigurationFileRunner(of(configuration), startArgs);
-        Watcher watcher = factory.createConfigurationWatcher(configuration, fileRunner);
+        Watcher watcher = factory.createConfigurationWatcher(of(configuration), fileRunner);
         return new WatcherRunner(fileRunner, watcher);
     }
 }

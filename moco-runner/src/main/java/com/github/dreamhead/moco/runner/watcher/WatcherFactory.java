@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.runner.Runner;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +27,8 @@ public final class WatcherFactory {
         });
     }
 
-    public Watcher createConfigurationWatcher(final File file, final FileRunner fileRunner) {
-        return factory.createWatcher(listener(fileRunner), file);
+    public Watcher createConfigurationWatcher(final Iterable<File> files, final FileRunner fileRunner) {
+        return factory.createWatcher(listener(fileRunner), Iterators.toArray(files.iterator(), File.class));
     }
 
     public Watcher createSettingWatcher(final File settingsFile,
