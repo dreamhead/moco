@@ -4,13 +4,13 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.runner.watcher.ShutdownMocoRunnerWatcher;
 import com.github.dreamhead.moco.runner.watcher.Watcher;
 import com.github.dreamhead.moco.runner.watcher.WatcherFactory;
-import com.github.dreamhead.moco.util.Globs;
-import com.google.common.base.Function;
 
 import java.io.File;
 
 import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFileRunner;
 import static com.github.dreamhead.moco.runner.FileRunner.createSettingFileRunner;
+import static com.github.dreamhead.moco.util.Files.filenameToFile;
+import static com.github.dreamhead.moco.util.Globs.glob;
 import static com.google.common.collect.FluentIterable.from;
 
 public final class RunnerFactory {
@@ -46,18 +46,9 @@ public final class RunnerFactory {
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         String pathname = startArgs.getConfigurationFile().get();
-        Iterable<File> files = from(Globs.glob(pathname)).transform(toFile());
+        Iterable<File> files = from(glob(pathname)).transform(filenameToFile());
         final FileRunner fileRunner = createConfigurationFileRunner(files, startArgs);
         Watcher watcher = factory.createConfigurationWatcher(files, fileRunner);
         return new WatcherRunner(fileRunner, watcher);
-    }
-
-    private Function<String, File> toFile() {
-        return new Function<String, File>() {
-            @Override
-            public File apply(final String input) {
-                return new File(input);
-            }
-        };
     }
 }

@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco.util;
 
+import com.google.common.base.Function;
+
 import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -36,6 +38,15 @@ public final class Files {
         }
 
         return parentFile;
+    }
+
+    public static Function<String, File> filenameToFile() {
+        return new Function<String, File>() {
+            @Override
+            public File apply(final String input) {
+                return new File(input);
+            }
+        };
     }
 
     private Files() {
