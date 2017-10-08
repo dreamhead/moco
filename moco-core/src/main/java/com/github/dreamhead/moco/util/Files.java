@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 
 import java.io.File;
 
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Files {
@@ -21,7 +22,7 @@ public final class Files {
     }
 
     private static File joinFiles(final String path1, final String path2) {
-        checkNotNull(path2);
+        checkNotNullOrEmpty(path2, "Empty path is not allowed");
 
         if (path1 == null) {
             return new File(path2);
