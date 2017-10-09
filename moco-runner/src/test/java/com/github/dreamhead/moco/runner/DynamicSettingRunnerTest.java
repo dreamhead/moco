@@ -22,6 +22,23 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
+    public void should_load_configuration() throws IOException, InterruptedException {
+        final File config = tempFolder.newFile("config.json");
+        changeFileContent(config, "[{\"response\" :{"
+                + "\"text\" : \"foo\""
+                + "}}]");
+
+        RunnerFactory factory = new RunnerFactory("SHUTDOWN");
+        runner = factory.createRunner(httpArgs()
+                .withPort(port())
+                .withShutdownPort(9090)
+                .withConfigurationFile(config.getAbsolutePath())
+                .build());
+        runner.run();
+        assertThat(helper.get(root()), is("foo"));
+    }
+
+    @Test
     public void should_reload_configuration() throws IOException, InterruptedException {
         final File config = tempFolder.newFile("config.json");
         changeFileContent(config, "[{\"response\" :{"
