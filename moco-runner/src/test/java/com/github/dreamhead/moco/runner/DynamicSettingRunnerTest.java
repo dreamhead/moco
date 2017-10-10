@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
+import com.github.dreamhead.moco.util.Files;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +34,25 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 .withPort(port())
                 .withShutdownPort(9090)
                 .withConfigurationFile(config.getAbsolutePath())
+                .build());
+        runner.run();
+        assertThat(helper.get(root()), is("foo"));
+    }
+
+    @Test
+    public void should_load_glob_configuration() throws IOException, InterruptedException {
+        final File config = tempFolder.newFile("config.json");
+        changeFileContent(config, "[{\"response\" :{"
+                + "\"text\" : \"foo\""
+                + "}}]");
+
+        RunnerFactory factory = new RunnerFactory("SHUTDOWN");
+        String absolutePath = config.getParent();
+        String result = Files.join(absolutePath, "*.json");
+        runner = factory.createRunner(httpArgs()
+                .withPort(port())
+                .withShutdownPort(9090)
+                .withConfigurationFile(result)
                 .build());
         runner.run();
         assertThat(helper.get(root()), is("foo"));
