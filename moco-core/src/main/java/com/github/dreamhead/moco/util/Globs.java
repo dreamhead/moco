@@ -29,7 +29,7 @@ public final class Globs {
 
     private static Path searchPath(final Path path, final int globIndex) {
         Path root = path.getRoot();
-        Path subpath = path.subpath(0, globIndex);
+        Path subpath = getSubpath(path, globIndex);
         if (root == null) {
             return subpath;
         }
@@ -37,8 +37,16 @@ public final class Globs {
         return Paths.get(root.toString(), subpath.toString());
     }
 
+    private static Path getSubpath(Path path, int globIndex) {
+        if (globIndex == 0) {
+            return Paths.get(".").toAbsolutePath();
+        }
+        return path.subpath(0, globIndex);
+    }
+
     private static ImmutableList<String> doGlob(final Path path, final Path searchPath) {
-        final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + path);
+        Path globPath = getGlobPath(path, searchPath);
+        final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPath);
 
         try {
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
@@ -56,6 +64,13 @@ public final class Globs {
         } catch (IOException e) {
             throw new MocoException(e);
         }
+    }
+
+    private static Path getGlobPath(final Path path, final Path searchPath) {
+        if (path.getNameCount() == 1) {
+            return searchPath.resolve(path);
+        }
+        return path;
     }
 
     private static int getGlobIndex(final Path path) {

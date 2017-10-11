@@ -49,4 +49,10 @@ public class GlobsTest {
     public void should_throw_exception_for_unknown_root() {
         Globs.glob("unknown/src/test/resources/details/*.json");
     }
+
+    @Test
+    public void should_glob_files() {
+        ImmutableList<String> glob = Globs.glob("*.json");
+        assertThat(glob.isEmpty(), is(true));
+    }
 }
