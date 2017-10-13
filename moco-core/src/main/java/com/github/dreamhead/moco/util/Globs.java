@@ -88,7 +88,7 @@ public final class Globs {
 
     private static final String globMetaChars = "\\*?[{";
 
-    private static boolean isGlobMeta(char c) {
+    private static boolean isGlobMeta(final char c) {
         return globMetaChars.indexOf(c) != -1;
     }
 
