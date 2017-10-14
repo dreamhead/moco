@@ -57,7 +57,37 @@ A socket server can be started by the following command:
 java -jar moco-runner-<version>-standalone.jar socket -p 12306 -c foo.json
 ```
 
+## Configuration Files
+
+### One Configuration File
+
+You can specify your configuration with `-c`.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
+```
+
+### Many Configuration Files
+**@Since will be at next release**
+
+If you have many configuration files, you can use glob matcher as `-c` argument.
+But you need to make sure the configuration that don't conflict.
+
+```shell
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c "*.json"
+```
+
 ## Port
+
+### Specific Port
+
+You can specify server port with `-p`
+
+```shell
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
+```
+
+### Without Port
 
 If you don't need any specified port, you run run Moco without port.
 
