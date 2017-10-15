@@ -77,6 +77,8 @@ But you need to make sure the configuration that don't conflict.
 java -jar moco-runner-<version>-standalone.jar http -p 12306 -c "*.json"
 ```
 
+Note: the quotation mark is required otherwise *.json will be parsed by your shell.
+
 ## Port
 
 ### Specific Port
