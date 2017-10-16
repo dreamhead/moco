@@ -17,13 +17,19 @@ First of all, a JSON configuration file needs to be provided to start Moco.
 ```
 (foo.json)
 
-**Table of Contents**
+Table of Contents
+=================
 
 * [Server Type](#server-type)
   * [HTTP Server](#http-server)
   * [HTTPS Server](#https-server)
   * [Socket Server](#socket-server)
+* [Configuration Files](#configuration-files)
+  * [One Configuration File](#one-configuration-file)
+  * [Many Configuration Files](#many-configuration-files)
 * [Port](#port)
+  * [Specific Port](#specific-port)
+  * [Without Port](#without-port)
 * [Version](#version)
 * [Global Settings](#global-settings)
   * [Environment](#environment)
