@@ -1,3 +1,13 @@
+# Release
+
+* Upgrade minimal Java version to Java 7
+
+## Global Settings
+* Glob syntax is supported for include files in global setting
+
+## CLI
+* Glob syntax is supported for CLI '-c' argument
+
 # Release 0.11.1 (12-Jun-2017)
 
 ## APIs
