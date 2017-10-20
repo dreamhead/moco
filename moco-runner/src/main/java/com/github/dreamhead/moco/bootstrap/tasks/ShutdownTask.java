@@ -17,7 +17,7 @@ import java.net.ConnectException;
 
 import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
 
-public class ShutdownTask implements BootstrapTask {
+public final class ShutdownTask implements BootstrapTask {
     private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
 
     private final MocoClient client = new MocoClient();
