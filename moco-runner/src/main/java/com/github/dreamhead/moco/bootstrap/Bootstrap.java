@@ -1,10 +1,8 @@
 package com.github.dreamhead.moco.bootstrap;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
-import com.github.dreamhead.moco.bootstrap.tasks.HttpTask;
-import com.github.dreamhead.moco.bootstrap.tasks.HttpsTask;
 import com.github.dreamhead.moco.bootstrap.tasks.ShutdownTask;
-import com.github.dreamhead.moco.bootstrap.tasks.SocketTask;
+import com.github.dreamhead.moco.bootstrap.tasks.StartTask;
 import com.github.dreamhead.moco.bootstrap.tasks.VersionTask;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
@@ -15,11 +13,11 @@ public class Bootstrap implements BootstrapTask {
     private static final String DEFAULT_SHUTDOWN_KEY = "_SHUTDOWN_MOCO_KEY";
 
     private final ImmutableMap<String, BootstrapTask> tasks = ImmutableMap.<String, BootstrapTask>builder()
-            .put("start", new HttpTask(DEFAULT_SHUTDOWN_KEY))
+            .put("start", StartTask.http(DEFAULT_SHUTDOWN_KEY))
             .put("shutdown", new ShutdownTask(DEFAULT_SHUTDOWN_KEY))
-            .put("http", new HttpTask(DEFAULT_SHUTDOWN_KEY))
-            .put("https", new HttpsTask(DEFAULT_SHUTDOWN_KEY))
-            .put("socket", new SocketTask(DEFAULT_SHUTDOWN_KEY))
+            .put("http", StartTask.http(DEFAULT_SHUTDOWN_KEY))
+            .put("https", StartTask.https(DEFAULT_SHUTDOWN_KEY))
+            .put("socket", StartTask.socket(DEFAULT_SHUTDOWN_KEY))
             .put("version", new VersionTask())
             .build();
 
