@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.util.Files;
-import org.apache.commons.io.FilenameUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -66,7 +65,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 + "}}]");
 
         final File setting = tempFolder.newFile("settings.json");
-        String path = FilenameUtils.separatorsToUnix(config.getAbsolutePath());
+        String path = config.getAbsolutePath();
         changeFileContent(setting, "[{"
                 + "\"include\" : \"" + path + "\""
                 + "}]");
@@ -114,8 +113,8 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
 
         final File setting = tempFolder.newFile("settings.json");
         changeFileContent(setting, "["
-                + "{\"include\" : \"" + FilenameUtils.separatorsToUnix(config1.getAbsolutePath()) + "\"},"
-                + "{\"include\" : \"" + FilenameUtils.separatorsToUnix(config2.getAbsolutePath()) + "\"}"
+                + "{\"include\" : \"" + config1.getAbsolutePath() + "\"},"
+                + "{\"include\" : \"" + config2.getAbsolutePath() + "\"}"
                 + "]");
 
         RunnerFactory factory = new RunnerFactory("SHUTDOWN");
