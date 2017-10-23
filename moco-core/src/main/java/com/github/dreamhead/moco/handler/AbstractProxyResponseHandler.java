@@ -31,15 +31,27 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
@@ -60,11 +72,28 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static CloseableHttpClient client;
 
     static {
-        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-        client = HttpClients.custom()
-                .setConnectionManager(connManager)
-                .setConnectionManagerShared(true)
-                .build();
+        // Try to ignore SSL certification
+        // https://memorynotfound.com/ignore-certificate-errors-apache-httpclient/
+        try {
+            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+            SSLContext sslContext = SSLContextBuilder.create()
+                    .loadTrustMaterial(new TrustSelfSignedStrategy())
+                    .build();
+
+            HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+
+            SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+
+
+            client = HttpClients.custom()
+                    .setConnectionManager(connManager)
+                    .setConnectionManagerShared(true)
+                    .setSSLSocketFactory(connectionFactory)
+                    .build();
+        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
+            throw new MocoException(e);
+        }
+
     }
 
     protected abstract Optional<String> doRemoteUrl(final HttpRequest request);
