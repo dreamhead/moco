@@ -1,3 +1,4 @@
+dist: precise
 language: java
 jdk:
   - oraclejdk8
