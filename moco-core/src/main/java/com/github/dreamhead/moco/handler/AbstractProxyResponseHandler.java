@@ -78,9 +78,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
                     .build();
 
             HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-
             SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
-
 
             client = HttpClients.custom()
                     .setConnectionManager(connManager)

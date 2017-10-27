@@ -8,16 +8,4 @@ public abstract class BaseResourceSetting {
     @JsonProperty("path_resource")
     protected FileContainer pathResource;
     protected Object json;
-
-    public TextContainer getText() {
-        return text;
-    }
-
-    public FileContainer getFile() {
-        return file;
-    }
-
-    public FileContainer getPathResource() {
-        return pathResource;
-    }
 }
