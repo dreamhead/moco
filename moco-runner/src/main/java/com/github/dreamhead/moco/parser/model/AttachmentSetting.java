@@ -19,6 +19,7 @@ public class AttachmentSetting extends BaseResourceSetting {
                 .add("text", text)
                 .add("file", file)
                 .add("path resource", pathResource)
+                .add("json", json)
                 .toString();
     }
 }
