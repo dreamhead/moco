@@ -54,7 +54,8 @@ java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
 
 Feel free to open your browser to try.
 
-**Table of Contents**
+Table of Contents
+=================
 
 * [Configuration](#configuration)
   * [Context](#context)

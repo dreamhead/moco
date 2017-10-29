@@ -5,7 +5,8 @@ That means if we get the expected request and then return our response. Now, you
 
 **WARNING** the json configuration below is just a snippet for one pair of request and response, instead of the whole configuration file.
 
-**Table of Contents**
+Table of Contents
+=================
 
 * [Composite Java API Design](#composite-java-api-design)
 * [Description as comment](#description-as-comment)

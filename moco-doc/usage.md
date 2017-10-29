@@ -4,7 +4,8 @@ You have several ways to use Moco. One is API, which you can use in your unit te
 
 On the other hand, Moco has several different ways to integrate with some tools: Maven plugin, Gradle plugin and shell support.
 
-**Table of Contents**
+Table of Contents
+=================
 
 * [API](#api)
   * [dependency](#dependency)
