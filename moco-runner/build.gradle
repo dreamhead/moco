@@ -71,8 +71,8 @@ task proguardCheck(type: Test, dependsOn: proguard) {
     classpath = classpath - files(sourceSets.main.output.classesDirs) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
-signArchives.dependsOn proguard, proguardCheck
-uploadArchives.dependsOn proguard, proguardCheck
+signArchives.dependsOn proguardCheck
+uploadArchives.dependsOn proguardCheck
 
 artifacts {
     archives proguard.outputs.files.singleFile
