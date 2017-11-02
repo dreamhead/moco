@@ -72,7 +72,6 @@ task proguardCheck(type: Test, dependsOn: proguard) {
 }
 
 signArchives.dependsOn proguardCheck
-uploadArchives.dependsOn proguardCheck
 
 artifacts {
     archives proguard.outputs.files.singleFile
