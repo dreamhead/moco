@@ -9,7 +9,7 @@ buildscript {
         proguardVersion = '5.3.3'
     }
 
-    it.dependencies {
+    dependencies {
         classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
     }
 }
