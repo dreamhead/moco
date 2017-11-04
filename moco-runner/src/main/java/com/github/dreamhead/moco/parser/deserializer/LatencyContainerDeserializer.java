@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class LatencyContainerDeserializer extends JsonDeserializer<LatencyContainer> {
+public final class LatencyContainerDeserializer extends JsonDeserializer<LatencyContainer> {
     @Override
     public LatencyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();

@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContaine
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
 import static com.github.dreamhead.moco.util.Strings.strip;
 
-public class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
+public final class FileContainerDeserializer extends JsonDeserializer<FileContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 
     @Override

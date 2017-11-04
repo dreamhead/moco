@@ -8,7 +8,7 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 
-public class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
+public final class TextContainerDeserializer extends JsonDeserializer<TextContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 
     @Override

@@ -13,7 +13,7 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.parser.model.ProxyContainer.builder;
 import static com.github.dreamhead.moco.util.Strings.strip;
 
-public class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
+public final class ProxyContainerDeserializer extends JsonDeserializer<ProxyContainer> {
     @Override
     public ProxyContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();

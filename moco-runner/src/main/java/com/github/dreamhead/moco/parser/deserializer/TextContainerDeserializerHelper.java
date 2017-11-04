@@ -18,7 +18,7 @@ import static com.github.dreamhead.moco.util.Strings.strip;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.transformEntries;
 
-public class TextContainerDeserializerHelper {
+public final class TextContainerDeserializerHelper {
     private static final ImmutableMap<String, String> NAMES = ImmutableMap.<String, String>builder()
         .put("json_path", "jsonPaths")
         .put("xpath", "xpaths")

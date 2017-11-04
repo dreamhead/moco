@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.util.Strings.strip;
 
-public class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
+public final class CookieContainerDeserializer extends JsonDeserializer<CookieContainer> {
     @Override
     public CookieContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
