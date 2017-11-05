@@ -13,13 +13,12 @@ public class HttpResponseDumper implements Dumper<Response> {
     @Override
     public String dump(final Response response) {
         HttpResponse httpResponse = (HttpResponse) response;
-        StringBuilder buf = new StringBuilder();
-        buf.append(responseProtocolLine(httpResponse))
+        return new StringBuilder()
+                .append(responseProtocolLine(httpResponse))
                 .append(StringUtil.NEWLINE)
                 .append(headerJoiner.join(httpResponse.getHeaders()))
-                .append(asContent(httpResponse));
-
-        return buf.toString();
+                .append(asContent(httpResponse))
+                .toString();
     }
 
     private String responseProtocolLine(final HttpResponse httpResponse) {
