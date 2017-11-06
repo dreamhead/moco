@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 
 public abstract class AbstractRequestMatcher implements RequestMatcher {
-    public abstract RequestMatcher doApply(final MocoConfig config);
+    public abstract RequestMatcher doApply(MocoConfig config);
 
     @Override
     @SuppressWarnings("unchecked")

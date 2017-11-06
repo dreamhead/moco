@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.internal.SessionContext;
 
 public abstract class AbstractHttpResponseHandler extends AbstractResponseHandler {
-    protected abstract void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse);
+    protected abstract void doWriteToResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse);
 
     @Override
     public final void writeToResponse(final SessionContext context) {

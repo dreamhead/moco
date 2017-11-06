@@ -13,8 +13,8 @@ import com.google.common.net.MediaType;
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
-    protected abstract MessageContent responseContent(final Request request);
-    protected abstract MediaType getContentType(final HttpRequest request);
+    protected abstract MessageContent responseContent(Request request);
+    protected abstract MediaType getContentType(HttpRequest request);
 
     @Override
     public final void writeToResponse(final SessionContext context) {

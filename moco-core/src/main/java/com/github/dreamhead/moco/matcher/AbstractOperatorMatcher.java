@@ -14,7 +14,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher {
-    protected abstract RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource);
+    protected abstract RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource);
 
     private final RequestExtractor<T> extractor;
     private final Resource expected;
@@ -37,7 +37,7 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
         T target = extractContent.get();
         if (target instanceof String) {
-            return predicate.apply((String)target);
+            return predicate.apply((String) target);
         }
 
         if (target instanceof String[]) {

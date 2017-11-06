@@ -91,7 +91,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     }
 
-    protected abstract Optional<String> doRemoteUrl(final HttpRequest request);
+    protected abstract Optional<String> doRemoteUrl(HttpRequest request);
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
