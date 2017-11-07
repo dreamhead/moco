@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.VerificationException;
 import com.github.dreamhead.moco.VerificationMode;
 
 public abstract class AbstractTimesVerification implements VerificationMode {
-    protected abstract boolean meet(final int size);
+    protected abstract boolean meet(int size);
     protected abstract String expectedTip();
 
     @Override

@@ -52,5 +52,5 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
         return doMatch(request, matchers);
     }
 
-    protected abstract boolean doMatch(final Request request, final Iterable<RequestMatcher> matchers);
+    protected abstract boolean doMatch(Request request, Iterable<RequestMatcher> matchers);
 }
