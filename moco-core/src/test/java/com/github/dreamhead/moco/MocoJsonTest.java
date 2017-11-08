@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
@@ -10,6 +11,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.complete;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.httpServer;
@@ -17,13 +21,18 @@ import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.jsonPath;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.pathResource;
+import static com.github.dreamhead.moco.Moco.post;
 import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
@@ -198,6 +207,26 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 assertThat(result, is("response"));
             }
         });
+    }
+
+    @Test
+    public void should_send_post_request_to_target_on_complete_with_json() throws Exception {
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(and(by(uri("/target")), json(pojo))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), pojo)));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(any(SessionContext.class));
     }
 
     private static class PlainA {

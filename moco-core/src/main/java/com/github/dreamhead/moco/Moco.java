@@ -587,6 +587,16 @@ public final class Moco {
         return post(checkNotNull(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
     }
 
+    public static MocoEventAction post(final String url, final Object object) {
+        return post(checkNotNullOrEmpty(url, "URL should not be null"),
+                Jsons.toJson(checkNotNull(object, "Content should not be null")));
+    }
+
+    public static MocoEventAction post(final Resource url, final Object object) {
+        return post(checkNotNull(url, "URL should not be null"),
+                Jsons.toJson(checkNotNull(object, "Content should not be null")));
+    }
+
     public static ResponseHandler attachment(final String filename, final Resource resource) {
         return AndResponseHandler.and(
                 header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty"))),
