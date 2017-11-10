@@ -56,6 +56,7 @@ import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.methodResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
@@ -349,6 +350,10 @@ public final class Moco {
         return new JsonResponseHandler(checkNotNull(pojo, "Json object should not be null"));
     }
 
+    public static ContentResource toJsonResource(final Object pojo) {
+        return jsonResource(checkNotNull(pojo, "Json object should not be null"));
+    }
+
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
         return new JsonPathRequestExtractor(checkNotNullOrEmpty(jsonPath, "JsonPath should not be null"));
     }
@@ -585,11 +590,6 @@ public final class Moco {
 
     public static MocoEventAction post(final Resource url, final String content) {
         return post(checkNotNull(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
-    }
-
-    public static MocoEventAction post(final String url, final Object object) {
-        return post(checkNotNullOrEmpty(url, "URL should not be null"),
-                Jsons.toJson(checkNotNull(object, "Content should not be null")));
     }
 
     public static MocoEventAction post(final Resource url, final Object object) {

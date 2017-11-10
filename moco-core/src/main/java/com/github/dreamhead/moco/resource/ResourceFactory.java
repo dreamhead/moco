@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
+import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.Cookies;
@@ -51,6 +52,11 @@ public final class ResourceFactory {
     public static ContentResource classpathFileResource(final Resource filename, final Optional<Charset> charset) {
         return contentResource(id("pathresource"), DO_NOTHING_APPLIER,
                 new ClasspathFileResourceReader(filename, charset));
+    }
+
+    public static ContentResource jsonResource(final Object pojo) {
+        return contentResource(id("json"), DO_NOTHING_APPLIER,
+                new JsonResourceReader(pojo));
     }
 
     public static Resource methodResource(final String method) {
