@@ -15,7 +15,9 @@ public final class ResponseHandlers {
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
             .put("template", ContentHandler.class)
-            .put("version", VersionResponseHandler.class).build();
+            .put("version", VersionResponseHandler.class)
+            .put("json", JsonResponseHandler.class)
+            .build();
 
     public static ResponseHandler responseHandler(final Resource resource) {
         if (HANDLERS.containsKey(resource.id())) {

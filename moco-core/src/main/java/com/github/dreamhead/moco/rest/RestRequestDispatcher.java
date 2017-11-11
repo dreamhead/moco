@@ -18,6 +18,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
@@ -165,7 +166,7 @@ public final class RestRequestDispatcher {
                 ImmutableList<Object> objects = settings
                         .transform(toJsonHandler())
                         .transform(toPojo()).toList();
-                return of(Moco.toJson(objects));
+                return of(with(Moco.toJson(objects)));
             }
         }
 

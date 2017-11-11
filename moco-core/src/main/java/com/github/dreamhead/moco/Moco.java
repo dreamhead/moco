@@ -346,11 +346,7 @@ public final class Moco {
         return new JsonRequestMatcher(resource);
     }
 
-    public static ResponseHandler toJson(final Object pojo) {
-        return new JsonResponseHandler(checkNotNull(pojo, "Json object should not be null"));
-    }
-
-    public static ContentResource toJsonResource(final Object pojo) {
+    public static ContentResource toJson(final Object pojo) {
         return jsonResource(checkNotNull(pojo, "Json object should not be null"));
     }
 

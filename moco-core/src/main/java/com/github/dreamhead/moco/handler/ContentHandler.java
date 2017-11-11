@@ -18,6 +18,10 @@ public class ContentHandler extends AbstractContentResponseHandler {
         this.resource = resource;
     }
 
+    public ContentResource getResource() {
+        return resource;
+    }
+
     @Override
     protected MessageContent responseContent(final Request request) {
         return this.resource.readFor(of(request));

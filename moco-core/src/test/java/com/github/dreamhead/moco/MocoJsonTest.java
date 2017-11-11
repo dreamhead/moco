@@ -23,7 +23,6 @@ import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.post;
 import static com.github.dreamhead.moco.Moco.toJson;
-import static com.github.dreamhead.moco.Moco.toJsonResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -218,7 +217,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), json(pojo))).response(handler);
-        server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), toJsonResource(pojo))));
+        server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), toJson(pojo))));
 
         running(server, new Runnable() {
             @Override

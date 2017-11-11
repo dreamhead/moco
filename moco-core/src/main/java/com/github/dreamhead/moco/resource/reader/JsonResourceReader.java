@@ -6,6 +6,8 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Optional;
 import com.google.common.net.MediaType;
 
+import java.nio.charset.Charset;
+
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public class JsonResourceReader implements ContentResourceReader {
@@ -17,11 +19,15 @@ public class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MediaType getContentType(HttpRequest request) {
-        return MediaType.create("application", "json");
+        return MediaType.create("application", "json").withCharset(Charset.defaultCharset());
     }
 
     @Override
     public MessageContent readFor(Optional<? extends Request> request) {
         return MessageContent.content().withContent(toJson(pojo)).build();
+    }
+
+    public Object getPojo() {
+        return pojo;
     }
 }
