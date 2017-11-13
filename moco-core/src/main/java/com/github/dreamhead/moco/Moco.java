@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.config.MocoContextConfig;
 import com.github.dreamhead.moco.config.MocoFileRootConfig;
 import com.github.dreamhead.moco.config.MocoRequestConfig;
 import com.github.dreamhead.moco.config.MocoResponseConfig;
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.extractor.CookieRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormRequestExtractor;
 import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
@@ -16,7 +17,6 @@ import com.github.dreamhead.moco.extractor.PlainExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
-import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
@@ -63,6 +63,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -187,7 +188,15 @@ public final class Moco {
 
     public static RequestMatcher by(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return eq(extractor(resource.id()), resource);
+        return by(extractor(resource.id()), resource);
+    }
+
+    private static <T> RequestMatcher by(final RequestExtractor<T> extractor, final Resource expected) {
+        if ("json".equalsIgnoreCase(expected.id())) {
+            return new JsonRequestMatcher(expected, ContentRequestExtractor.class.cast(extractor));
+        }
+
+        return eq(extractor, expected);
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {
@@ -195,7 +204,7 @@ public final class Moco {
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final Resource expected) {
-        return new EqRequestMatcher<T>(checkNotNull(extractor, "Extractor should not be null"), checkNotNull(expected, "Expected content should not be null"));
+        return new EqRequestMatcher<>(checkNotNull(extractor, "Extractor should not be null"), checkNotNull(expected, "Expected content should not be null"));
     }
 
     public static RequestMatcher match(final Resource resource) {
@@ -343,7 +352,7 @@ public final class Moco {
 
     public static RequestMatcher json(final Resource resource) {
         checkNotNull(resource, "Json should not be null");
-        return new JsonRequestMatcher(resource);
+        return new JsonRequestMatcher(resource, ContentRequestExtractor.class.cast(extractor("json")));
     }
 
     public static ContentResource toJson(final Object pojo) {

@@ -116,6 +116,20 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_match_POJO_json_resource() throws Exception {
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        server.request(by(toJson(pojo))).response("foo");
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo"));
+            }
+        });
+    }
+
+    @Test
     public void should_match_POJO_json() throws Exception {
         PlainA pojo = new PlainA();
         pojo.code = 1;

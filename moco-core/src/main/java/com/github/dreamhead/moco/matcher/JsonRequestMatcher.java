@@ -21,8 +21,8 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ObjectMapper mapper;
     private final Resource expected;
 
-    public JsonRequestMatcher(final Resource expected) {
-        this.extractor = new ContentRequestExtractor();
+    public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor) {
+        this.extractor = extractor;
         this.expected = expected;
         this.mapper = new ObjectMapper();
     }
@@ -53,6 +53,6 @@ public class JsonRequestMatcher extends AbstractRequestMatcher {
             return this;
         }
 
-        return new JsonRequestMatcher(appliedResource);
+        return new JsonRequestMatcher(appliedResource, this.extractor);
     }
 }
