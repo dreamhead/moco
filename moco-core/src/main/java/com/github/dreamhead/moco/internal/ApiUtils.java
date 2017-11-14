@@ -5,10 +5,13 @@ import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.FailoverExecutor;
 import com.github.dreamhead.moco.matcher.ContainMatcher;
 import com.github.dreamhead.moco.matcher.EndsWithMatcher;
+import com.github.dreamhead.moco.matcher.EqRequestMatcher;
+import com.github.dreamhead.moco.matcher.JsonRequestMatcher;
 import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.monitor.CompositeMonitor;
@@ -82,19 +85,27 @@ public final class ApiUtils {
     }
 
     public static <T> RequestMatcher match(final RequestExtractor<T> extractor, final Resource expected) {
-        return new MatchMatcher<T>(extractor, expected);
+        return new MatchMatcher<>(extractor, expected);
     }
 
     public static <T> RequestMatcher startsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new StartsWithMatcher<T>(extractor, resource);
+        return new StartsWithMatcher<>(extractor, resource);
     }
 
     public static <T> RequestMatcher endsWith(final RequestExtractor<T> extractor, final Resource resource) {
-        return new EndsWithMatcher<T>(extractor, resource);
+        return new EndsWithMatcher<>(extractor, resource);
     }
 
     public static <T> RequestMatcher contain(final RequestExtractor<T> extractor, final Resource resource) {
-        return new ContainMatcher<T>(extractor, resource);
+        return new ContainMatcher<>(extractor, resource);
+    }
+
+    public static <T> RequestMatcher by(final RequestExtractor<T> extractor, final Resource expected) {
+        if ("json".equalsIgnoreCase(expected.id())) {
+            return new JsonRequestMatcher(expected, ContentRequestExtractor.class.cast(extractor));
+        }
+
+        return new EqRequestMatcher<>(extractor, expected);
     }
 
     private ApiUtils() {

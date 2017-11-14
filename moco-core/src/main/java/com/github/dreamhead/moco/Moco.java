@@ -63,7 +63,6 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.URLs.resourceRoot;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -188,15 +187,7 @@ public final class Moco {
 
     public static RequestMatcher by(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return by(extractor(resource.id()), resource);
-    }
-
-    private static <T> RequestMatcher by(final RequestExtractor<T> extractor, final Resource expected) {
-        if ("json".equalsIgnoreCase(expected.id())) {
-            return new JsonRequestMatcher(expected, ContentRequestExtractor.class.cast(extractor));
-        }
-
-        return eq(extractor, expected);
+        return ApiUtils.by(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {
