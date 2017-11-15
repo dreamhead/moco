@@ -18,12 +18,12 @@ public class JsonResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MediaType getContentType(HttpRequest request) {
+    public MediaType getContentType(final HttpRequest request) {
         return MediaType.create("application", "json").withCharset(Charset.defaultCharset());
     }
 
     @Override
-    public MessageContent readFor(Optional<? extends Request> request) {
+    public MessageContent readFor(final Optional<? extends Request> request) {
         return MessageContent.content().withContent(toJson(pojo)).build();
     }
 
