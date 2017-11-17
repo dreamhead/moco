@@ -338,7 +338,7 @@ public final class Moco {
     }
 
     public static RequestMatcher json(final Object pojo) {
-        return json(Jsons.toJson(checkNotNull(pojo, "Json object should not be null")));
+        return by(toJson(pojo));
     }
 
     public static RequestMatcher json(final Resource resource) {
