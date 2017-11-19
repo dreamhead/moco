@@ -134,7 +134,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         PlainA pojo = new PlainA();
         pojo.code = 1;
         pojo.message = "message";
-        server.request(json(pojo)).response("foo");
+        server.request(by(toJson(pojo))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -230,7 +230,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.message = "message";
 
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(and(by(uri("/target")), json(pojo))).response(handler);
+        server.request(and(by(uri("/target")), by(toJson(pojo)))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), toJson(pojo))));
 
         running(server, new Runnable() {

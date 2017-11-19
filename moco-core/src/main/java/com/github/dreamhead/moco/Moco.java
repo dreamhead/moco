@@ -337,10 +337,6 @@ public final class Moco {
         return json(text(checkNotNullOrEmpty(jsonText, "Json should not be null")));
     }
 
-    public static RequestMatcher json(final Object pojo) {
-        return by(toJson(pojo));
-    }
-
     public static RequestMatcher json(final Resource resource) {
         checkNotNull(resource, "Json should not be null");
         return new JsonRequestMatcher(resource, ContentRequestExtractor.class.cast(extractor("json")));
