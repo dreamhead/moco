@@ -166,7 +166,7 @@ public final class RestRequestDispatcher {
                 ImmutableList<Object> objects = settings
                         .transform(toJsonHandler())
                         .transform(toPojo()).toList();
-                return of(with(Moco.toJson(objects)));
+                return of(with(Moco.json(objects)));
             }
         }
 

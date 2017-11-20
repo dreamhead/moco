@@ -22,7 +22,7 @@ import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.var;
 import static com.github.dreamhead.moco.Moco.version;
 import static com.github.dreamhead.moco.Moco.with;
@@ -75,7 +75,7 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
     private ResponseHandler createResponseHandler(final String name, final Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return with(toJson(value));
+            return with(json(value));
         }
 
         if (isResource(name) && TextContainer.class.isInstance(value)) {

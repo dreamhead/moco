@@ -19,7 +19,7 @@ import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.not;
-import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.json;
 import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
@@ -52,7 +52,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
 
     private RequestMatcher createRequestMatcherFromValue(final String name, final Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return by(toJson(value));
+            return by(Moco.json(value));
         }
 
         if (Map.class.isInstance(value)) {

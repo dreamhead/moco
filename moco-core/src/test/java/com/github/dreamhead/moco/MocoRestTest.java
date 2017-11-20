@@ -27,7 +27,7 @@ import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.Moco.toJson;
+import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
@@ -69,8 +69,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         running(server, new Runnable() {
@@ -98,7 +98,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get().response(toJson(ImmutableList.of(resource1, resource2)))
+                get().response(json(ImmutableList.of(resource1, resource2)))
         );
 
         running(server, new Runnable() {
@@ -122,8 +122,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         running(server, new Runnable() {
@@ -161,8 +161,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         running(server, new Runnable() {
@@ -195,8 +195,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "0XBABE";
 
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         File file = folder.newFile();
@@ -225,8 +225,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(toJson(resource1)),
-                get("2").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(toJson(resource2))
+                get("1").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(json(resource1)),
+                get("2").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(json(resource2))
         );
 
         running(server, new Runnable() {
@@ -262,7 +262,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get().request(eq(query("foo"), "bar")).response(toJson(ImmutableList.of(resource1, resource2)))
+                get().request(eq(query("foo"), "bar")).response(json(ImmutableList.of(resource1, resource2)))
         );
 
         running(server, new Runnable() {
@@ -284,7 +284,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource.message = "hello";
 
         server.resource("targets",
-                get(anyId()).response(toJson(resource))
+                get(anyId()).response(json(resource))
         );
 
         running(server, new Runnable() {
@@ -698,8 +698,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         server.resource("targets",
                 id("1").name("sub").settings(
-                        get("1").response(toJson(resource1)),
-                        get("2").response(toJson(resource2))
+                        get("1").response(json(resource1)),
+                        get("2").response(json(resource2))
                 )
         );
 
@@ -729,8 +729,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         server.resource("targets",
                 id(anyId()).name("sub").settings(
-                        get("1").response(toJson(resource1)),
-                        get("2").response(toJson(resource2))
+                        get("1").response(json(resource1)),
+                        get("2").response(json(resource2))
                 )
         );
 
@@ -764,8 +764,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         server.response("hello");
@@ -799,8 +799,8 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         final RequestHit hit = requestHit();
         final RestServer server = restServer(port(), hit, log());
         server.resource("targets",
-                get("1").response(toJson(resource1)),
-                get("2").response(toJson(resource2))
+                get("1").response(json(resource1)),
+                get("2").response(json(resource2))
         );
 
         running(server, new Runnable() {

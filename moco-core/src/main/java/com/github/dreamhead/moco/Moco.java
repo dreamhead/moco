@@ -342,7 +342,7 @@ public final class Moco {
         return new JsonRequestMatcher(resource, ContentRequestExtractor.class.cast(extractor("json")));
     }
 
-    public static ContentResource toJson(final Object pojo) {
+    public static ContentResource json(final Object pojo) {
         return jsonResource(checkNotNull(pojo, "Json object should not be null"));
     }
 
