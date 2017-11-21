@@ -34,7 +34,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
         return reader.readFor(request);
     }
 
-    protected <T extends ResourceReader> T reader(final Class<T> clazz) {
+    public <T extends ResourceReader> T reader(final Class<T> clazz) {
         return clazz.cast(reader);
     }
 }

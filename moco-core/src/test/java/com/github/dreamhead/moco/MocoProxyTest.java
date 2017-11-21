@@ -486,7 +486,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     public void should_forward_gbk_request() throws Exception {
         server = httpServer(port(), log());
         final Charset gbk = Charset.forName("GBK");
-        server.request(and(by(uri("/proxy")), json(pathResource("gbk.json", gbk)))).response("response");
+        server.request(and(by(uri("/proxy")), by(json(pathResource("gbk.json", gbk))))).response("response");
         server.response(proxy(remoteUrl("/proxy")));
 
         running(server, new Runnable() {

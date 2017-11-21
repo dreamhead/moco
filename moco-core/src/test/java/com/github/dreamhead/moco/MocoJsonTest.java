@@ -83,7 +83,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_exact_json() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(json(jsonContent)).response("foo");
+        server.request(by(json(jsonContent))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -95,7 +95,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_exact_json_with_resource() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(json(jsonContent)).response("foo");
+        server.request(by(json(jsonContent))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -106,7 +106,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_same_structure_json() throws Exception {
-        server.request(json("{\"foo\":\"bar\"}")).response("foo");
+        server.request(by(json("{\"foo\":\"bar\"}"))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -196,7 +196,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_request_with_gbk_resource() throws Exception {
         server = httpServer(port(), log());
-        server.request(json(pathResource("gbk.json", Charset.forName("GBK")))).response("response");
+        server.request(by(json(pathResource("gbk.json", Charset.forName("GBK"))))).response("response");
 
         running(server, new Runnable() {
             @Override
@@ -211,7 +211,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     public void should_match_gbk_request() throws Exception {
         server = httpServer(port(), log());
         final Charset gbk = Charset.forName("GBK");
-        server.request(json(pathResource("gbk.json", gbk))).response("response");
+        server.request(by(json(pathResource("gbk.json", gbk)))).response("response");
 
         running(server, new Runnable() {
             @Override

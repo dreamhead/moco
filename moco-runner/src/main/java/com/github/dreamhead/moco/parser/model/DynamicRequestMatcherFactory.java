@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.Extractors;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -17,9 +18,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
-import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.not;
-import static com.github.dreamhead.moco.Moco.json;
 import static com.google.common.collect.FluentIterable.from;
 
 public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
@@ -97,8 +96,16 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
 
     private RequestMatcher createRequestMatcherWithResource(final String operation, final Resource resource) {
         try {
+            System.out.println(resource.id());
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
-            return RequestMatcher.class.cast(operationMethod.invoke(null, resource));
+            Object result = operationMethod.invoke(null, resource);
+            if (RequestMatcher.class.isInstance(result)) {
+                return RequestMatcher.class.cast(result);
+            } else if (ContentResource.class.isInstance(result)) {
+                return by(ContentResource.class.cast(result));
+            }
+
+            throw new IllegalArgumentException("unknown operation [" + operation + "]");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

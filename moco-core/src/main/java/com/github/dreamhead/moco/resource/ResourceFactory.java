@@ -54,6 +54,10 @@ public final class ResourceFactory {
                 new ClasspathFileResourceReader(filename, charset));
     }
 
+    public static ContentResource jsonResource(final Resource resource) {
+        return contentResource(id("json"), DO_NOTHING_APPLIER, resource.reader(ContentResourceReader.class));
+    }
+
     public static ContentResource jsonResource(final Object pojo) {
         return contentResource(id("json"), DO_NOTHING_APPLIER,
                 new JsonResourceReader(pojo));

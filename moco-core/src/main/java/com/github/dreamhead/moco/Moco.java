@@ -333,13 +333,12 @@ public final class Moco {
         return new XmlRequestMatcher(resource);
     }
 
-    public static RequestMatcher json(final String jsonText) {
+    public static ContentResource json(final String jsonText) {
         return json(text(checkNotNullOrEmpty(jsonText, "Json should not be null")));
     }
 
-    public static RequestMatcher json(final Resource resource) {
-        checkNotNull(resource, "Json should not be null");
-        return new JsonRequestMatcher(resource, ContentRequestExtractor.class.cast(extractor("json")));
+    public static ContentResource json(final Resource resource) {
+        return jsonResource(checkNotNull(resource, "Json should not be null"));
     }
 
     public static ContentResource json(final Object pojo) {

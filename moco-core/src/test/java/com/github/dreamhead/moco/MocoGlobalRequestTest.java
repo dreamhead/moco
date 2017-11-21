@@ -112,7 +112,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     public void should_match_with_json() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(json(jsonContent)).response("foo");
+        server.request(by(json(jsonContent))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
@@ -125,7 +125,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     public void should_throw_exception_without_match_json() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(json(jsonContent)).response("foo");
+        server.request(by(json(jsonContent))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
