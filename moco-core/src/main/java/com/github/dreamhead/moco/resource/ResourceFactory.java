@@ -25,6 +25,7 @@ import static com.github.dreamhead.moco.resource.IdFactory.id;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.DO_NOTHING_APPLIER;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.cookieConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fileConfigApplier;
+import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.jsonConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
 
@@ -55,7 +56,7 @@ public final class ResourceFactory {
     }
 
     public static ContentResource jsonResource(final Resource resource) {
-        return contentResource(id("json"), DO_NOTHING_APPLIER, resource.reader(ContentResourceReader.class));
+        return contentResource(id("json"), jsonConfigApplier(resource), resource.reader(ContentResourceReader.class));
     }
 
     public static ContentResource jsonResource(final Object pojo) {

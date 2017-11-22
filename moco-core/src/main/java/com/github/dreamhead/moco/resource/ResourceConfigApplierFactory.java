@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 
@@ -56,6 +57,15 @@ public final class ResourceConfigApplierFactory {
             @Override
             protected Resource newResource(final MocoConfig config) {
                 return uriResource((String) config.apply(uri));
+            }
+        };
+    }
+
+    public static ResourceConfigApplier jsonConfigApplier(final Resource resource) {
+        return new EmbeddedResourceConfigApplier(resource) {
+            @Override
+            protected Resource newResource(final MocoConfig config) {
+                return jsonResource(resource.apply(config));
             }
         };
     }
