@@ -538,21 +538,29 @@ Json is rising with RESTful style architecture. Just like XML, in the most case,
 server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 ```
 
+
+**@Since will be at next release**
+`json` will return a resource from next release
+
+```java
+server.request(by(json(text("{\"foo\":\"bar\"}")))).response("foo");
+```
+
 Note that this functionality is implemented in Jackson, please make sure your POJO is written in Jackson acceptable format.
 
 * JSON
 
 ```json
 {
-  "request": 
+  "request":
     {
       "uri": "/json",
-      "text": 
+      "text":
         {
           "json": "{\"foo\":\"bar\"}"
         }
     },
-  "response": 
+  "response":
     {
       "text": "foo"
     }
@@ -571,6 +579,13 @@ You can give a POJO to Java API, it will be converted JSON text.
 
 ```java
 server.request(json(pojo)).response("foo");
+```
+
+**@Since will be at next release**
+`json` will return a resource from next release
+
+```java
+server.request(by(json(pojo))).response("foo");
 ```
 
 **@Since 0.9.2**
@@ -608,15 +623,15 @@ server.request(json(file("your_file.json"))).response("foo");
 
 ```json
 {
-  "request": 
+  "request":
     {
       "uri": "/json",
-      "file": 
+      "file":
         {
           "json": "your_file.json"
         }
     },
-  "response": 
+  "response":
     {
       "text": "foo"
     }
@@ -638,15 +653,15 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
 
 ```json
 {
-  "request": 
+  "request":
     {
       "uri": "/jsonpath",
-      "json_paths": 
+      "json_paths":
         {
           "$.book[*].price": "1"
 	    }
     },
-  "response": 
+  "response":
     {
       "text": "response_for_json_path_request"
     }
@@ -672,14 +687,14 @@ server.request(match(uri("/\\w*/foo"))).response("bar");
 
 ```json
 {
-  "request": 
+  "request":
     {
-      "uri": 
+      "uri":
         {
           "match": "/\\w*/foo"
         }
     },
-  "response": 
+  "response":
     {
       "text": "bar"
     }
@@ -968,11 +983,11 @@ server.response(version(HttpProtocolVersion.VERSION_1_0));
 
 ```json
 {
-  "request": 
+  "request":
     {
       "uri": "/version10"
     },
-  "response": 
+  "response":
     {
       "version": "HTTP/1.0"
     }
@@ -1528,7 +1543,7 @@ server.response(latency(1, TimeUnit.SECONDS));
     },
   "response" :
     {
-      "latency": 
+      "latency":
         {
           "duration": 1,
           "unit": "second"
@@ -1569,6 +1584,13 @@ You can give a POJO to Java API, it will be converted JSON text. Hint, this api 
 
 ```java
 server.request(by(uri("/json"))).response(toJson(pojo));
+```
+
+**@Since will be at next realease**
+`toJson` will be removed from next release, use `json` instead.
+
+```java
+server.request(by(uri("/json"))).response(json(pojo));
 ```
 
 Note that this functionality is implemented in Jackson, please make sure your POJO is written in Jackson acceptable format. 
