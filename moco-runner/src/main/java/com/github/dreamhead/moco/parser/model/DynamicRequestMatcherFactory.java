@@ -96,7 +96,6 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
 
     private RequestMatcher createRequestMatcherWithResource(final String operation, final Resource resource) {
         try {
-            System.out.println(resource.id());
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             Object result = operationMethod.invoke(null, resource);
             if (RequestMatcher.class.isInstance(result)) {
