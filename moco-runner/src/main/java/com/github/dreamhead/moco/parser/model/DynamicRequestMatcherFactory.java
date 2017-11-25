@@ -98,16 +98,22 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         try {
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             Object result = operationMethod.invoke(null, resource);
-            if (RequestMatcher.class.isInstance(result)) {
-                return RequestMatcher.class.cast(result);
-            } else if (ContentResource.class.isInstance(result)) {
-                return by(ContentResource.class.cast(result));
-            }
-
-            throw new IllegalArgumentException("unknown operation [" + operation + "]");
+            return createRequestMatcher(result, operation);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private RequestMatcher createRequestMatcher(final Object result, final String operation) {
+        if (RequestMatcher.class.isInstance(result)) {
+            return RequestMatcher.class.cast(result);
+        }
+
+        if (ContentResource.class.isInstance(result)) {
+            return by(ContentResource.class.cast(result));
+        }
+
+        throw new IllegalArgumentException("unknown operation [" + operation + "]");
     }
 
     private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
