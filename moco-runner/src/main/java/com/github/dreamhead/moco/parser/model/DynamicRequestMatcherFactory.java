@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.reflect.Field;
@@ -98,22 +99,27 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
         try {
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             Object result = operationMethod.invoke(null, resource);
-            return createRequestMatcher(result, operation);
+            Optional<RequestMatcher> matcher = createRequestMatcher(result);
+            if (matcher.isPresent()) {
+                return matcher.get();
+            }
+            
+            throw new IllegalArgumentException("unknown operation [" + operation + "]");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private RequestMatcher createRequestMatcher(final Object result, final String operation) {
+    private Optional<RequestMatcher> createRequestMatcher(final Object result) {
         if (RequestMatcher.class.isInstance(result)) {
-            return RequestMatcher.class.cast(result);
+            return Optional.of(RequestMatcher.class.cast(result));
         }
 
         if (ContentResource.class.isInstance(result)) {
-            return by(ContentResource.class.cast(result));
+            return Optional.of(by(ContentResource.class.cast(result)));
         }
 
-        throw new IllegalArgumentException("unknown operation [" + operation + "]");
+        return Optional.absent();
     }
 
     private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
