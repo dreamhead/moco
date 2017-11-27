@@ -103,7 +103,7 @@ public class DynamicRequestMatcherFactory extends Dynamics implements RequestMat
             if (matcher.isPresent()) {
                 return matcher.get();
             }
-            
+
             throw new IllegalArgumentException("unknown operation [" + operation + "]");
         } catch (Exception e) {
             throw new RuntimeException(e);

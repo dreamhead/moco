@@ -89,4 +89,15 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XCAFEBABE"));
     }
+
+    @Test
+    public void should_fire_event_with_post_json() throws IOException {
+        runWithConfiguration("event.json");
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+        assertThat(helper.get(remoteUrl("/event-with-json-post")), is("post_json_foo"));
+        idle(IDLE, TimeUnit.MILLISECONDS);
+
+        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XMOCOJSON"));
+    }
 }

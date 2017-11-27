@@ -130,11 +130,42 @@
       }
     },
     {
+      "request": {
+        "uri": "/event-with-json-post"
+      },
+      "response": {
+        "text": "post_json_foo"
+      },
+      "on": {
+        "complete": {
+          "async": "true",
+          "latency": 500,
+          "post": {
+            "url": "http://localhost:12306/target-json",
+            "json": {
+              "foo": "bar"
+            }
+          }
+        }
+      }
+    },
+    {
         "request": {
             "uri" : "/target"
         },
         "response": {
             "text": "0XCAFEBABE"
         }
+    },
+    {
+      "request": {
+        "uri" : "/target-json",
+        "json" : {
+          "foo" : "bar"
+        }
+      },
+      "response": {
+        "text": "0XMOCOJSON"
+      }
     }
 ]
