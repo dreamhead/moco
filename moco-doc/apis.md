@@ -2121,6 +2121,8 @@ You may need to request another site when you receive a request, e.g. OAuth. Eve
 
 Complete event will be fired after your request has been handled completely.
 
+#### Get Request
+
 * Java
 
 ```java
@@ -2147,6 +2149,8 @@ server.request(by(uri("/event"))).response("event").on(complete(get("http://anot
 }
 ```
 
+#### Post Request
+
 You can post some content as well.
 
 * Java
@@ -2170,6 +2174,31 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://ano
             "post" : {
                 "url" : "http://another_site",
                 "content": "content"
+            }
+        }
+    }
+}
+```
+
+**@Since will be at next release**
+
+If your post content is JSON, you can use `json` in your configuration directly.
+
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "post" : {
+                "url" : "http://another_site",
+                "json": {
+                    "foo" : "bar"
+                }
             }
         }
     }
