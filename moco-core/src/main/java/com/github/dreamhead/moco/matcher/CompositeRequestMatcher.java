@@ -13,7 +13,7 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
 
     private final Iterable<RequestMatcher> matchers;
 
-    public CompositeRequestMatcher(final Iterable<RequestMatcher> matchers) {
+    protected CompositeRequestMatcher(final Iterable<RequestMatcher> matchers) {
         this.matchers = matchers;
     }
 
