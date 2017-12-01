@@ -5,6 +5,9 @@
 ## APIs
 * `json` API returns resource, so it can be used for both request and response.
 
+## JSON APIs
+* `json` in Post event
+
 ## Global Settings
 * Glob syntax is supported for include files in global setting
 
