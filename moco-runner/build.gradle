@@ -63,6 +63,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
     outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
     libraryjars javaRtLib()
     libraryjars jsseLib()
+    libraryjars jceLib()
     configuration file("$rootDir/proguard.pro")
 }
 
@@ -83,6 +84,10 @@ def javaRtLib() {
 
 def jsseLib() {
     javaLibPath("/lib/jsse.jar", "/../Classes/jsse.jar")
+}
+
+def jceLib() {
+    javaLibPath("/lib/jce.jar", "/../Classes/jce.jar")
 }
 
 def javaLibPath(String lib, String osxLib) {
