@@ -205,7 +205,7 @@ public final class Moco {
     }
 
     public static <T> RequestMatcher exist(final RequestExtractor<T> extractor) {
-        return new ExistMatcher<T>(checkNotNull(extractor, "Extractor should not be null"));
+        return new ExistMatcher<>(checkNotNull(extractor, "Extractor should not be null"));
     }
 
     public static RequestMatcher startsWith(final Resource resource) {

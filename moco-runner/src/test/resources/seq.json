@@ -1,0 +1,15 @@
+[
+  {
+    "description": "any response",
+    "response": {
+      "seq": [
+          {
+            "text" : "foo"
+          },
+          {
+            "text" : "bar"
+          }
+      ]
+    }
+  }
+]
