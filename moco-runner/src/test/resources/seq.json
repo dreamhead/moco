@@ -1,6 +1,8 @@
 [
   {
-    "description": "any response",
+    "request" : {
+      "uri" : "/seq"
+    },
     "response": {
       "seq": [
           {
@@ -9,6 +11,25 @@
           {
             "text" : "bar"
           }
+      ]
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/seq-json"
+    },
+    "response": {
+      "seq": [
+        {
+          "json" : {
+            "foo" : "bar"
+          }
+        },
+        {
+          "json" : {
+            "hello" : "world"
+          }
+        }
       ]
     }
   }
