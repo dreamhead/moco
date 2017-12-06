@@ -6,6 +6,7 @@
 * `json` API returns resource, so it can be used for both request and response.
 
 ## JSON APIs
+* `seq` is supported finally
 * `json` in Post event
 
 ## Global Settings

@@ -1566,13 +1566,59 @@ Sometimes, we want to simulate a real-world operation which change server side r
 We can do that by
 
 ```java
-server.request(by(uri("/foo"))).response(seq("foo", "bar", "blah"));
+server.request(by(uri("/seq"))).response(seq("foo", "bar", "blah"));
 ```
 
 The other response settings are able to be set as well.
 
 ```java
-server.request(by(uri("/foo"))).response(seq(status(302), status(302), status(200)));
+server.request(by(uri("/seq"))).response(seq(status(302), status(302), status(200)));
+```
+
+**@Since will be at next release**
+
+```json
+{
+    "request" : {
+      "uri" : "/seq"
+    },
+    "response": {
+      "seq": [
+          {
+            "text" : "foo"
+          },
+          {
+            "text" : "bar"
+          },
+          {
+            "text" : "blah"
+          }
+      ]
+    }
+}
+```
+
+The other response settings are able to be set for json as well.
+
+```json
+{
+    "request" : {
+      "uri" : "/seq"
+    },
+    "response": {
+      "seq": [
+          {
+            "status" : "302"
+          },
+          {
+            "status" : "302"
+          },
+          {
+            "status" : "200"
+          }
+      ]
+    }
+}
 ```
 
 ### JSON Response
