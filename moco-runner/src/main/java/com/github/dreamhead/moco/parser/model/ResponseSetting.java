@@ -20,7 +20,7 @@ public class ResponseSetting extends BaseResourceSetting {
 
     private TextContainer version;
     private AttachmentSetting attachment;
-    private List<ResponseSetting> seq;
+    private SeqContainer seq;
 
     public ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = new ResponseSetting();
