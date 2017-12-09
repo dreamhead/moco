@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.deserializer.SeqContainerDeserializer;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
 
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
 
 @JsonDeserialize(using = SeqContainerDeserializer.class)
 public class SeqContainer implements Container {
@@ -16,6 +16,15 @@ public class SeqContainer implements Container {
 
     public SeqContainer(final List<ResponseSetting> seqs) {
         this.seqs = seqs;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("sequence", seqs)
+                .toString();
+
     }
 
     public ResponseHandler[] toResponseHandlers() {

@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.google.common.base.MoreObjects;
 
-import java.util.List;
 import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -35,6 +34,7 @@ public class ResponseSetting extends BaseResourceSetting {
         responseSetting.version = version;
         responseSetting.json = json;
         responseSetting.attachment = attachment;
+        responseSetting.seq = seq;
 
         return responseSetting;
     }
@@ -54,6 +54,7 @@ public class ResponseSetting extends BaseResourceSetting {
                 .add("path resource", pathResource)
                 .add("json", json)
                 .add("attachment", attachment)
+                .add("seq", seq)
                 .toString();
     }
 
