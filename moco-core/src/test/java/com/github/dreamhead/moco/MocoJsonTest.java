@@ -22,7 +22,6 @@ import static com.github.dreamhead.moco.Moco.jsonPath;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.post;
-import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;

@@ -15,7 +15,7 @@ import java.util.List;
 public class SeqContainerDeserializer extends JsonDeserializer<SeqContainer> {
 
     @Override
-    public SeqContainer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public SeqContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
 
         if (currentToken == JsonToken.START_ARRAY) {
@@ -25,7 +25,7 @@ public class SeqContainerDeserializer extends JsonDeserializer<SeqContainer> {
         return (SeqContainer) ctxt.handleUnexpectedToken(TextContainer.class, jp);
     }
 
-    private List<ResponseSetting> getSeqSettings(JsonParser jp) throws IOException {
+    private List<ResponseSetting> getSeqSettings(final JsonParser jp) throws IOException {
         TypeReference<List<ResponseSetting>> reference = new TypeReference<List<ResponseSetting>>() {};
         return jp.readValueAs(reference);
     }

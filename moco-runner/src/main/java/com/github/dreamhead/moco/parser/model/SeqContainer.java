@@ -24,7 +24,6 @@ public class SeqContainer implements Container {
                 .omitNullValues()
                 .add("sequence", seqs)
                 .toString();
-
     }
 
     public ResponseHandler[] toResponseHandlers() {
