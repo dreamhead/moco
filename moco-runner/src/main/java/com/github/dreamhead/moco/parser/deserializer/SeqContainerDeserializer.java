@@ -13,16 +13,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class SeqContainerDeserializer extends JsonDeserializer<SeqContainer> {
-
     @Override
-    public SeqContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
+    public SeqContainer deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
 
         if (currentToken == JsonToken.START_ARRAY) {
             return new SeqContainer(getSeqSettings(jp));
         }
 
-        return (SeqContainer) ctxt.handleUnexpectedToken(TextContainer.class, jp);
+        return (SeqContainer) ctx.handleUnexpectedToken(TextContainer.class, jp);
     }
 
     private List<ResponseSetting> getSeqSettings(final JsonParser jp) throws IOException {

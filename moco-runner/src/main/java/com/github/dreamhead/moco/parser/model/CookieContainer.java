@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
 
@@ -74,5 +75,20 @@ public class CookieContainer implements Container {
         }
 
         return options.toArray(new CookieAttribute[options.size()]);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("value", value)
+                .add("path", path)
+                .add("domain", domain)
+                .add("max age", maxAge)
+                .add("secure", secure)
+                .add("HTTP only", httpOnly)
+                .add("template", template)
+                .toString();
+
     }
 }
