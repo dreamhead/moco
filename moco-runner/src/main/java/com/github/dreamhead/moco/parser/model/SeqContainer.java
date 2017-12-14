@@ -12,22 +12,22 @@ import static com.google.common.collect.FluentIterable.from;
 
 @JsonDeserialize(using = SeqContainerDeserializer.class)
 public class SeqContainer implements Container {
-    private List<ResponseSetting> seqs;
+    private List<ResponseSetting> sequence;
 
-    public SeqContainer(final List<ResponseSetting> seqs) {
-        this.seqs = seqs;
+    public SeqContainer(final List<ResponseSetting> sequence) {
+        this.sequence = sequence;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("sequence", seqs)
+                .add("sequence", sequence)
                 .toString();
     }
 
     public ResponseHandler[] toResponseHandlers() {
-        return from(seqs).transform(toResponseHandler()).toArray(ResponseHandler.class);
+        return from(sequence).transform(toResponseHandler()).toArray(ResponseHandler.class);
     }
 
     private Function<ResponseSetting, ResponseHandler> toResponseHandler() {
