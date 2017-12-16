@@ -59,7 +59,6 @@ public final class SettingRunner implements Runner {
         return new Function<GlobalSetting, RunnerSetting>() {
             @Override
             public RunnerSetting apply(final GlobalSetting setting) {
-
                 return aRunnerSetting()
                         .addStreams(from(setting.includes()).transform(toStream()).toList())
                         .withContext(setting.getContext())

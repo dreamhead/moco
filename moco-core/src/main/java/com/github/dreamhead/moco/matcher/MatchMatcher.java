@@ -22,6 +22,6 @@ public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
 
     @Override
     protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
-        return new MatchMatcher<T>(extractor, resource);
+        return new MatchMatcher<>(extractor, resource);
     }
 }

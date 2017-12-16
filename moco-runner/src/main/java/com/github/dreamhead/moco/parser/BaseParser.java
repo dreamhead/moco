@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(ImmutableList<SessionSetting> read,
-                                      Optional<Integer> port, final MocoConfig... configs);
+                                      Optional<Integer> port, MocoConfig... configs);
 
     public T parseServer(final ImmutableList<InputStream> streams, final Optional<Integer> port,
                          final MocoConfig... configs) {

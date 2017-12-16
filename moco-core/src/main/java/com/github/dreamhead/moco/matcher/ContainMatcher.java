@@ -19,6 +19,6 @@ public class ContainMatcher<T> extends AbstractOperatorMatcher<T> {
 
     @Override
     protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
-        return new ContainMatcher<T>(extractor, resource);
+        return new ContainMatcher<>(extractor, resource);
     }
 }
