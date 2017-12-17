@@ -29,7 +29,7 @@ public class RestSubResourceSetting extends ResourceSetting {
                 .add("delete", delete)
                 .add("head", head)
                 .add("patch", patch)
-                .add("sub resource", resource)
+                .add("sub resources", resources)
                 .add("id", id)
                 .toString();
     }

@@ -20,7 +20,7 @@ public class ResourceSetting {
     protected List<RestDeleteSetting> delete;
     protected List<RestHeadSetting> head;
     protected List<RestPatchSetting> patch;
-    protected List<RestSubResourceSetting> resource;
+    protected List<RestSubResourceSetting> resources;
 
     public String getName() {
         return name;
@@ -37,7 +37,7 @@ public class ResourceSetting {
                 .add("delete", delete)
                 .add("head", head)
                 .add("patch", patch)
-                .add("sub resource", resource)
+                .add("sub resources", resources)
                 .toString();
     }
 
@@ -45,7 +45,7 @@ public class ResourceSetting {
     public RestSetting[] getSettings() {
         return toArray(concat(asRestSetting(get), asRestSetting(post),
                         asRestSetting(put), asRestSetting(delete),
-                        asRestSetting(head), asRestSetting(patch), asSubRestSetting(resource)),
+                        asRestSetting(head), asRestSetting(patch), asSubRestSetting(resources)),
                 RestSetting.class);
     }
 }
