@@ -798,4 +798,22 @@ public class MocoTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_return_response_with_and_handler() throws Exception {
+        server.request(by(uri("/foo"))).response(seq(
+                and(with(text("foo")), status(302)),
+                and(with(text("bar")), status(302)),
+                and(with(text("run")), status(200)))
+        );
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
+            }
+        });
+    }
 }

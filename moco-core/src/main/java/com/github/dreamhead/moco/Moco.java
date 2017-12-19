@@ -239,6 +239,10 @@ public final class Moco {
         return new AndRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
     }
 
+    public static ResponseHandler and(final ResponseHandler... handlers) {
+        return AndResponseHandler.and(copyOf(checkNotNull(handlers, "Handlers should not be null")));
+    }
+
     public static RequestMatcher or(final RequestMatcher... matchers) {
         return new OrRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
     }
