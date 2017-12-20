@@ -358,19 +358,22 @@ public final class Moco {
         return new JsonPathRequestExtractor(checkNotNullOrEmpty(jsonPath, "JsonPath should not be null"));
     }
 
-    public static ResponseHandler seq(final String... contents) {
-        checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(textToResource()));
+    public static ResponseHandler seq(final String content, final String... contents) {
+        checkNotNull(content, "Sequence content should not be null");
+        checkArgument(contents.length > 0, "Sequence content should not be null");
+        return newSeq(FluentIterable.from(asIterable(content, contents)).transform(textToResource()));
     }
 
-    public static ResponseHandler seq(final Resource... contents) {
+    public static ResponseHandler seq(final Resource content, final Resource... contents) {
+        checkNotNull(content, "Sequence content should not be null");
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(copyOf(contents)).transform(resourceToResourceHandler()));
+        return newSeq(FluentIterable.from(asIterable(content, contents)).transform(resourceToResourceHandler()));
     }
 
-    public static ResponseHandler seq(final ResponseHandler... handlers) {
-        checkArgument(handlers.length > 0, "Sequence contents should not be null");
-        return newSeq(copyOf(handlers));
+    public static ResponseHandler seq(final ResponseHandler handler, final ResponseHandler... handlers) {
+        checkNotNull(handler, "Sequence handler should not be null");
+        checkArgument(handlers.length > 0, "Sequence handlers should not be null");
+        return newSeq(asIterable(handler, handlers));
     }
 
     public static ContentResource file(final String filename) {

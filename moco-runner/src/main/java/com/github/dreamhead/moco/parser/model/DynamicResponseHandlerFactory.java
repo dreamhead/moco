@@ -27,6 +27,8 @@ import static com.github.dreamhead.moco.Moco.var;
 import static com.github.dreamhead.moco.Moco.version;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
+import static com.github.dreamhead.moco.util.Iterables.head;
+import static com.github.dreamhead.moco.util.Iterables.tail;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
@@ -107,7 +109,8 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
 
         if ("seq".equalsIgnoreCase(name)) {
             SeqContainer sequence = SeqContainer.class.cast(value);
-            return Moco.seq(sequence.toResponseHandlers());
+            ResponseHandler[] responseHandlers = sequence.toResponseHandlers();
+            return Moco.seq(head(responseHandlers), tail(responseHandlers));
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
