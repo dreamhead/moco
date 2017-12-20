@@ -60,6 +60,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.templateResourc
 import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
+import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Optional.of;
@@ -235,16 +236,22 @@ public final class Moco {
                 text(checkNotNullOrEmpty(expected, "Expected resource should not be null")));
     }
 
-    public static RequestMatcher and(final RequestMatcher... matchers) {
-        return new AndRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
+    public static RequestMatcher and(final RequestMatcher matcher, final RequestMatcher... matchers) {
+        return new AndRequestMatcher(asIterable(
+                checkNotNull(matcher, "Matcher should not be null"),
+                checkNotNull(matchers, "Matcher should not be null")));
     }
 
-    public static ResponseHandler and(final ResponseHandler... handlers) {
-        return AndResponseHandler.and(copyOf(checkNotNull(handlers, "Handlers should not be null")));
+    public static ResponseHandler and(final ResponseHandler handler, final ResponseHandler... handlers) {
+        return AndResponseHandler.and(
+                checkNotNull(handler, "Handlers should not be null"),
+                checkNotNull(handlers, "Handlers should not be null"));
     }
 
-    public static RequestMatcher or(final RequestMatcher... matchers) {
-        return new OrRequestMatcher(copyOf(checkNotNull(matchers, "Matcher should not be null")));
+    public static RequestMatcher or(final RequestMatcher matcher, final RequestMatcher... matchers) {
+        return new OrRequestMatcher(asIterable(
+                checkNotNull(matcher, "Matcher should not be null"),
+                checkNotNull(matchers, "Matcher should not be null")));
     }
 
     public static RequestMatcher not(final RequestMatcher matcher) {

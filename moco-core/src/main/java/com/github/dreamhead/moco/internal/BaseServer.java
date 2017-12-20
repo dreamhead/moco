@@ -5,6 +5,8 @@ import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.Server;
 
 import static com.github.dreamhead.moco.Moco.or;
+import static com.github.dreamhead.moco.util.Iterables.head;
+import static com.github.dreamhead.moco.util.Iterables.tail;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class BaseServer<T extends ResponseSetting<T>>
@@ -16,6 +18,7 @@ public abstract class BaseServer<T extends ResponseSetting<T>>
     }
 
     public T request(final RequestMatcher... matchers) {
-        return request(or(checkNotNull(matchers, "Matcher should not be null")));
+        checkNotNull(matchers, "Matcher should not be null");
+        return request(or(head(matchers), tail(matchers)));
     }
 }
