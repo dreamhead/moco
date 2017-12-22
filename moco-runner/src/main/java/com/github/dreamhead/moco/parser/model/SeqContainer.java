@@ -6,15 +6,13 @@ import com.github.dreamhead.moco.parser.deserializer.SeqContainerDeserializer;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 
-import java.util.List;
-
 import static com.google.common.collect.FluentIterable.from;
 
 @JsonDeserialize(using = SeqContainerDeserializer.class)
 public class SeqContainer implements Container {
-    private List<ResponseSetting> sequence;
+    private Iterable<ResponseSetting> sequence;
 
-    public SeqContainer(final List<ResponseSetting> sequence) {
+    public SeqContainer(final Iterable<ResponseSetting> sequence) {
         this.sequence = sequence;
     }
 

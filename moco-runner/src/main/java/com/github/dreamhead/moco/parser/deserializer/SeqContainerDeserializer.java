@@ -24,7 +24,7 @@ public class SeqContainerDeserializer extends JsonDeserializer<SeqContainer> {
         return (SeqContainer) ctx.handleUnexpectedToken(TextContainer.class, jp);
     }
 
-    private List<ResponseSetting> getSeqSettings(final JsonParser jp) throws IOException {
+    private Iterable<ResponseSetting> getSeqSettings(final JsonParser jp) throws IOException {
         TypeReference<List<ResponseSetting>> reference = new TypeReference<List<ResponseSetting>>() {};
         return jp.readValueAs(reference);
     }
