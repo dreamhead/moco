@@ -4,6 +4,7 @@
 
 ## APIs
 * `json` API returns resource, so it can be used for both request and response.
+* `and` API for Response Handler
 
 ## JSON APIs
 * `seq` is supported finally
