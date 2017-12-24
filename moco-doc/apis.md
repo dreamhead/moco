@@ -539,7 +539,7 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 ```
 
 
-**@Since will be at next release**
+**@Since 0.12.0**
 `json` will return a resource from next release
 
 ```java
@@ -581,7 +581,7 @@ You can give a POJO to Java API, it will be converted JSON text.
 server.request(json(pojo)).response("foo");
 ```
 
-**@Since will be at next release**
+**@Since 0.12.0**
 `json` will return a resource from next release
 
 ```java
@@ -1575,7 +1575,7 @@ The other response settings are able to be set as well.
 server.request(by(uri("/seq"))).response(seq(status(302), status(302), status(200)));
 ```
 
-**@Since will be at next release**
+**@Since 0.12.0**
 
 ```json
 {
@@ -1632,8 +1632,8 @@ You can give a POJO to Java API, it will be converted JSON text. Hint, this api 
 server.request(by(uri("/json"))).response(toJson(pojo));
 ```
 
-**@Since will be at next realease**
-`toJson` will be removed from next release, use `json` instead.
+**@Since 0.12.0**
+`toJson` will be removed from 0.12.0, use `json` instead.
 
 ```java
 server.request(by(uri("/json"))).response(json(pojo));
@@ -2226,7 +2226,7 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://ano
 }
 ```
 
-**@Since will be at next release**
+**@Since 0.12.0**
 
 If your post content is JSON, you can use `json` in your configuration directly.
 

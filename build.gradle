@@ -23,7 +23,7 @@ idea {
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
-    version = '0.11.1-SNAPSHOT'
+    version = '0.12.0-SNAPSHOT'
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
 

@@ -92,7 +92,6 @@ public final class SettingRunner implements Runner {
             @Override
             public Iterable<? extends File> apply(final GlobalSetting input) {
                 return from(input.includes()).transform(toFile());
-
             }
         };
     }

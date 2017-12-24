@@ -197,7 +197,7 @@ When you issue any request to server, it will return response with "foo", "bar" 
 
 ### Glob Inclusion
 
-**@Since will be at the next release**
+**@Since 0.12.0**
 
 You may need include many files, glob can help you to do this.
 
