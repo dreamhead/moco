@@ -26,7 +26,7 @@ public class MocoContextTest {
     private MocoTestHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         helper = new MocoTestHelper();
         server = httpServer(port(), context("/context"));
     }

@@ -61,7 +61,7 @@ public final class RestRequestDispatcher {
     private <T extends SimpleRestSetting> CompositeRestSetting<T> filterSettings(final Iterable<RestSetting> settings,
                                                                                  final Class<T> type,
                                                                                  final HttpMethod method) {
-        return new CompositeRestSetting<T>(filter(settings, type, method));
+        return new CompositeRestSetting<>(filter(settings, type, method));
     }
 
     private <T> Function<? super T, T> toInstance(final Class<T> clazz) {

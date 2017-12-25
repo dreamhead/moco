@@ -517,7 +517,7 @@ public final class Moco {
     public static <T> ContentResource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
-                        new ExtractorVariable<T>(checkNotNull(extractor, "Template variable extractor should not be null")))
+                        new ExtractorVariable<>(checkNotNull(extractor, "Template variable extractor should not be null")))
         );
     }
 
@@ -525,9 +525,9 @@ public final class Moco {
                                                                             final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
-                        new ExtractorVariable<ExtractorType1>(checkNotNull(extractor1, "Template variable extractor should not be null")),
+                        new ExtractorVariable<>(checkNotNull(extractor1, "Template variable extractor should not be null")),
                         checkNotNullOrEmpty(name2, "Template variable name should not be null"),
-                        new ExtractorVariable<ExtractorType2>(checkNotNull(extractor2, "Template variable extractor should not be null")))
+                        new ExtractorVariable<>(checkNotNull(extractor2, "Template variable extractor should not be null")))
         );
     }
 
