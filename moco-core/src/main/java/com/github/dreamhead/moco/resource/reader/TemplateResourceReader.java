@@ -66,9 +66,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         } catch (ParseException e) {
             logger.error("Fail to parse template: {}", content.toString());
             throw new MocoException(e);
-        } catch (IOException e) {
-            throw new MocoException(e);
-        } catch (TemplateException e) {
+        } catch (IOException | TemplateException e) {
             throw new MocoException(e);
         }
     }

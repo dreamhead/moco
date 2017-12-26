@@ -39,9 +39,7 @@ public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
                 return absent();
             }
             return of(toStringArray(jsonPathContent));
-        } catch (PathNotFoundException e) {
-            return absent();
-        } catch (IOException e) {
+        } catch (PathNotFoundException | IOException e) {
             return absent();
         }
     }
