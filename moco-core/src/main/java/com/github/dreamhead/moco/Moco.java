@@ -66,7 +66,6 @@ import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
 
