@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class BaseServer<T extends ResponseSetting<T>>
         extends BaseResponseSettingConfiguration<T> implements Server<T> {
-    protected abstract T onRequestAttached(final RequestMatcher matcher);
+    protected abstract T onRequestAttached(RequestMatcher matcher);
 
     public T request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
