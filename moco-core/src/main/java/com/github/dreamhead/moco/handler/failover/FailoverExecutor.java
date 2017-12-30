@@ -5,8 +5,8 @@ import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MocoException;
 
 public interface FailoverExecutor {
-    void onCompleteResponse(final HttpRequest request, final HttpResponse response);
-    HttpResponse failover(final HttpRequest request);
+    void onCompleteResponse(HttpRequest request, HttpResponse response);
+    HttpResponse failover(HttpRequest request);
 
     FailoverExecutor EMPTY_FAILOVER = new FailoverExecutor() {
         @Override
