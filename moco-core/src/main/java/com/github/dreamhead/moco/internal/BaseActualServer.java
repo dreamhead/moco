@@ -20,7 +20,7 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T> {
-    protected abstract Setting<T> newSetting(final RequestMatcher matcher);
+    protected abstract Setting<T> newSetting(RequestMatcher matcher);
 
     private final MocoConfig[] configs;
     private final MocoMonitor monitor;
