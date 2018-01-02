@@ -79,7 +79,7 @@ git clone git@github.com:dreamhead/moco.git
 Check out what you can help [here](moco-doc/plan.md) if you do not have any existing idea.
 
 ## Copyright and license
-Copyright 2012-2017 ZHENG Ye
+Copyright 2012-2018 ZHENG Ye
 
 Licensed under MIT License (the "License"); You may obtain a copy of the License in the LICENSE file, or at:
 
