@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
-import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
@@ -13,7 +12,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
 
 import java.nio.charset.Charset;
 
