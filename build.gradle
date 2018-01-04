@@ -82,6 +82,7 @@ subprojects {
         httpComponentVersion = '4.5.4'
         jsonpathVersion = '2.4.0'
         freemarkerVersion = '2.3.27-incubating'
+        jsonAssertVersion = '1.5.0'
     }
 
     project.jar {
@@ -114,7 +115,8 @@ subprojects {
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
-                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion"
+                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion",
+                "org.skyscreamer:jsonassert:$jsonAssertVersion"
         )
     }
 

@@ -3,12 +3,16 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.and;
@@ -168,9 +172,9 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                 MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
                 assertThat(mediaType.type(), is("application"));
                 assertThat(mediaType.subtype(), is("json"));
-                PlainA responseA = Jsons.toObject(entity.getContent(), PlainA.class);
-                assertThat(responseA.code, is(1));
-                assertThat(responseA.message, is("message"));
+
+                JSONAssert.assertEquals("{code:1, message:\"message\"}",
+                        CharStreams.toString(new InputStreamReader(entity.getContent())), JSONCompareMode.LENIENT);
             }
         });
     }
