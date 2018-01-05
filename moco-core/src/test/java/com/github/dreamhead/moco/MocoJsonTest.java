@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
@@ -189,9 +188,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 String content = helper.get(remoteUrl(root()));
-                PlainA responseA = Jsons.toObject(content, PlainA.class);
-                assertThat(responseA.code, is(1));
-                assertThat(responseA.message, is("消息"));
+                JSONAssert.assertEquals("{code:1, message:\"消息\"}", content, JSONCompareMode.LENIENT);
             }
         });
     }
