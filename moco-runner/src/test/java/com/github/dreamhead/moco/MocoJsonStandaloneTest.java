@@ -1,10 +1,13 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
 
@@ -26,12 +29,11 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_return_expected_json_response_based_on_specified_json_request_shortcut() throws IOException {
+    public void should_return_expected_json_response_based_on_specified_json_request_shortcut() throws IOException, JSONException {
         runWithConfiguration("json.json");
         HttpResponse response = helper.getResponse(remoteUrl("/json_response_shortcut"));
         HttpEntity entity = response.getEntity();
-        byte[] bytes = ByteStreams.toByteArray(entity.getContent());
-        assertThat(new String(bytes), is("{\"foo\":\"bar\"}"));
+        JSONAssert.assertEquals("{\"foo\":\"bar\"}", EntityUtils.toString(entity), JSONCompareMode.LENIENT);
         MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
