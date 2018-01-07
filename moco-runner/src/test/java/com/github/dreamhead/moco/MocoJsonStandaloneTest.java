@@ -1,13 +1,8 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
+import com.github.dreamhead.moco.support.JsonSupport;
 import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
 
@@ -31,12 +26,7 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_json_response_based_on_specified_json_request_shortcut() throws IOException, JSONException {
         runWithConfiguration("json.json");
-        HttpResponse response = helper.getResponse(remoteUrl("/json_response_shortcut"));
-        HttpEntity entity = response.getEntity();
-        JSONAssert.assertEquals("{\"foo\":\"bar\"}", EntityUtils.toString(entity), JSONCompareMode.LENIENT);
-        MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
-        assertThat(mediaType.type(), is("application"));
-        assertThat(mediaType.subtype(), is("json"));
+        JsonSupport.assertEquals("{\"foo\":\"bar\"}", helper.getResponse(remoteUrl("/json_response_shortcut")));
     }
     
     @Test

@@ -1,11 +1,9 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.SessionContext;
+import com.github.dreamhead.moco.support.JsonSupport;
 import com.google.common.io.ByteStreams;
-import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -165,14 +163,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                HttpEntity entity = response.getEntity();
-                MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
-                assertThat(mediaType.type(), is("application"));
-                assertThat(mediaType.subtype(), is("json"));
-
-                JSONAssert.assertEquals("{code:1, message:\"message\"}",
-                        EntityUtils.toString(entity), JSONCompareMode.LENIENT);
+                JsonSupport.assertEquals("{code:1, message:\"message\"}", helper.getResponse(root()));
             }
         });
     }
