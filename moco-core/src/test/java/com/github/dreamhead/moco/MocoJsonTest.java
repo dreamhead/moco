@@ -5,8 +5,6 @@ import com.github.dreamhead.moco.support.JsonSupport;
 import com.google.common.io.ByteStreams;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -156,21 +154,21 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_for_POJO() throws Exception {
-        PlainA pojo = new PlainA();
+        final PlainA pojo = new PlainA();
         pojo.code = 1;
         pojo.message = "message";
         server.response(Moco.json(pojo));
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                JsonSupport.assertEquals("{code:1, message:\"message\"}", helper.getResponse(root()));
+                JsonSupport.assertEquals(pojo, helper.getResponse(root()));
             }
         });
     }
 
     @Test
     public void should_return_json_for_POJO_with_CJK() throws Exception {
-        PlainA pojo = new PlainA();
+        final PlainA pojo = new PlainA();
         pojo.code = 1;
         pojo.message = "消息";
         server.response(Moco.json(pojo));
@@ -178,7 +176,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 String content = helper.get(remoteUrl(root()));
-                JSONAssert.assertEquals("{code:1, message:\"消息\"}", content, JSONCompareMode.LENIENT);
+                JsonSupport.assertEquals(pojo, content);
             }
         });
     }

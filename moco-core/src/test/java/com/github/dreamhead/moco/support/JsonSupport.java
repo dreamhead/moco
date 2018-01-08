@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.support;
 
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,6 +25,18 @@ public class JsonSupport {
             JSONAssert.assertEquals(expected,
                     EntityUtils.toString(entity), JSONCompareMode.LENIENT);
         } catch (JSONException | IOException e) {
+            throw new AssertionError("fail to parse entity to json");
+        }
+    }
+
+    public static void assertEquals(final Object expected, final HttpResponse response) {
+        assertEquals(Jsons.toJson(expected), response);
+    }
+
+    public static void assertEquals(final Object expected, final String actual) {
+        try {
+            JSONAssert.assertEquals(Jsons.toJson(expected), actual, JSONCompareMode.LENIENT);
+        } catch (JSONException e) {
             throw new AssertionError("fail to parse entity to json");
         }
     }
