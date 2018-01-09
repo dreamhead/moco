@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.collect.ImmutableList.of;
 import static java.lang.String.format;
@@ -30,6 +31,14 @@ public final class Jsons {
     public static String toJson(final Object value) {
         try {
             return mapper.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            throw new MocoException(e);
+        }
+    }
+
+    public static String toJson(final Map map) {
+        try {
+            return mapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             throw new MocoException(e);
         }

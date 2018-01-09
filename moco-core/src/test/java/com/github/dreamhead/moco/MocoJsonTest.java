@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.support.JsonSupport;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,12 +81,12 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_exact_json() throws Exception {
-        final String jsonContent = "{\"foo\":\"bar\"}";
-        server.request(by(json(jsonContent))).response("foo");
+        final String jsonText = Jsons.toJson(of("foo", "bar"));
+        server.request(by(json(jsonText))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postContent(root(), jsonContent), is("foo"));
+                assertThat(helper.postContent(root(), jsonText), is("foo"));
             }
         });
     }
@@ -103,11 +105,12 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_same_structure_json() throws Exception {
-        server.request(by(json("{\"foo\":\"bar\"}"))).response("foo");
+        final String jsonText = Jsons.toJson(of("foo", "bar"));
+        server.request(by(json(jsonText))).response("foo");
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postContent(root(), "{\n\t\"foo\":\"bar\"\n}"), is("foo"));
+                assertThat(helper.postContent(root(), jsonText), is("foo"));
             }
         });
     }
