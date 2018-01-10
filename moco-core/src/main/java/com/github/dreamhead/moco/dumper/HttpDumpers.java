@@ -31,7 +31,8 @@ public final class HttpDumpers {
                     || mediaType.subtype().endsWith("javascript")
                     || mediaType.subtype().endsWith("json")
                     || mediaType.subtype().endsWith("xml")
-                    || mediaType.is(MediaType.FORM_DATA);
+                    || mediaType.is(MediaType.FORM_DATA)
+                    || mediaType.subtype().endsWith("form-data");
         } catch (Exception e) {
             return false;
         }
