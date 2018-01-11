@@ -49,7 +49,7 @@ Now, we can write a setting file to combine these two configurations:
 It's time start server with this setting:
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -g settings.json
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -g settings.json
 ```
 
 Feel free to open your browser to try.
