@@ -6,17 +6,17 @@ import com.github.dreamhead.moco.mount.MountPredicate;
 import com.github.dreamhead.moco.mount.MountTo;
 
 public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSetting> {
-    HttpResponseSetting get(final RequestMatcher matcher);
+    HttpResponseSetting get(RequestMatcher matcher);
 
-    HttpResponseSetting post(final RequestMatcher matcher);
+    HttpResponseSetting post(RequestMatcher matcher);
 
-    HttpResponseSetting put(final RequestMatcher matcher);
+    HttpResponseSetting put(RequestMatcher matcher);
 
-    HttpResponseSetting delete(final RequestMatcher matcher);
+    HttpResponseSetting delete(RequestMatcher matcher);
 
-    HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates);
+    HttpResponseSetting mount(String dir, MountTo target, MountPredicate... predicates);
 
-    HttpResponseSetting proxy(final ProxyConfig config);
+    HttpResponseSetting proxy(ProxyConfig config);
 
-    HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover);
+    HttpResponseSetting proxy(ProxyConfig proxyConfig, Failover failover);
 }
