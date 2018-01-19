@@ -118,5 +118,5 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return newServer;
     }
 
-    protected abstract U createMergeServer(final U thatServer);
+    protected abstract U createMergeServer(U thatServer);
 }
