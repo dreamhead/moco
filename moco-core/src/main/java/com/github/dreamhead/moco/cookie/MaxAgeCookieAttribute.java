@@ -14,7 +14,7 @@ public final class MaxAgeCookieAttribute extends ActualCookieAttribute {
     }
 
     @Override
-    public final void visit(final Cookie cookie) {
+    public void visit(final Cookie cookie) {
         cookie.setMaxAge(unit.toSeconds(maxAge));
     }
 }
