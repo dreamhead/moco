@@ -1,5 +1,5 @@
 package com.github.dreamhead.moco;
 
 public interface MocoEventAction extends ConfigApplier<MocoEventAction> {
-    void execute(final Request request);
+    void execute(Request request);
 }
