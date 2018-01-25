@@ -47,6 +47,7 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
+import static com.github.dreamhead.moco.handler.CycleHandler.newCycle;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
@@ -373,6 +374,24 @@ public final class Moco {
         checkNotNull(handler, "Sequence handler should not be null");
         checkArgument(handlers.length > 0, "Sequence handlers should not be null");
         return newSeq(asIterable(handler, handlers));
+    }
+
+    public static ResponseHandler cycle(final String content, final String... contents) {
+        checkNotNull(content, "Sequence content should not be null");
+        checkArgument(contents.length > 0, "Sequence content should not be null");
+        return newCycle(FluentIterable.from(asIterable(content, contents)).transform(textToResource()));
+    }
+
+    public static ResponseHandler cycle(final Resource content, final Resource... contents) {
+        checkNotNull(content, "Sequence content should not be null");
+        checkArgument(contents.length > 0, "Sequence contents should not be null");
+        return newCycle(FluentIterable.from(asIterable(content, contents)).transform(resourceToResourceHandler()));
+    }
+
+    public static ResponseHandler cycle(final ResponseHandler handler, final ResponseHandler... handlers) {
+        checkNotNull(handler, "Sequence handler should not be null");
+        checkArgument(handlers.length > 0, "Sequence handlers should not be null");
+        return newCycle(asIterable(handler, handlers));
     }
 
     public static ContentResource file(final String filename) {

@@ -18,6 +18,7 @@ import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.contain;
+import static com.github.dreamhead.moco.Moco.cycle;
 import static com.github.dreamhead.moco.Moco.endsWith;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
@@ -377,6 +378,51 @@ public class MocoTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_content_circularly_one_by_one() throws Exception {
+        server.request(by(uri("/foo"))).response(cycle("bar", "blah"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_content_one_by_one_with_text_api_circularly() throws Exception {
+        server.request(by(uri("/foo"))).response(cycle(text("bar"), text("blah")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                assertThat(helper.get(remoteUrl("/foo")), is("blah"));
+            }
+        });
+    }
+
+    @Test
+    public void should_return_response_circularly_one_by_one() throws Exception {
+        server.request(by(uri("/foo"))).response(cycle(status(302), status(200)));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
+                assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
                 assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
                 assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
             }
