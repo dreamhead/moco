@@ -1,0 +1,36 @@
+[
+  {
+    "request" : {
+      "uri" : "/cycle"
+    },
+    "response": {
+      "cycle": [
+        {
+          "text" : "foo"
+        },
+        {
+          "text" : "bar"
+        }
+      ]
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/cycle-json"
+    },
+    "response": {
+      "cycle": [
+        {
+          "json" : {
+            "foo" : "bar"
+          }
+        },
+        {
+          "json" : {
+            "hello" : "world"
+          }
+        }
+      ]
+    }
+  }
+]

@@ -20,6 +20,7 @@ public class ResponseSetting extends BaseResourceSetting {
     private TextContainer version;
     private AttachmentSetting attachment;
     private SeqContainer seq;
+    private SeqContainer cycle;
 
     public ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = new ResponseSetting();
@@ -35,6 +36,7 @@ public class ResponseSetting extends BaseResourceSetting {
         responseSetting.json = json;
         responseSetting.attachment = attachment;
         responseSetting.seq = seq;
+        responseSetting.cycle = cycle;
 
         return responseSetting;
     }
@@ -55,6 +57,7 @@ public class ResponseSetting extends BaseResourceSetting {
                 .add("json", json)
                 .add("attachment", attachment)
                 .add("seq", seq)
+                .add("cycle", cycle)
                 .toString();
     }
 
