@@ -1,3 +1,8 @@
+# Release
+
+## APIs
+* `cycle` API returns response as a cycle.
+
 # Release 0.12.0 (24-Dec-2017)
 
 * Upgrade minimal Java version to Java 7

@@ -1621,6 +1621,76 @@ The other response settings are able to be set for json as well.
 }
 ```
 
+### Cycle
+**@Since will be at next release**
+
+Cycle is similar to `seq`, but it will return response as cycle. An example is as following:
+
+```java
+server.request(by(uri("/cycle"))).response(cycle("foo", "bar", "blah"));
+```
+
+The response will returned as cycle:
+* foo
+* bar
+* blah
+* foo
+* bar
+* blah
+* ...
+
+The other response settings are able to be set as well.
+
+```java
+server.request(by(uri("/cycle"))).response(cycle(status(302), status(302), status(200)));
+```
+
+**@Since 0.12.0**
+
+```json
+{
+    "request" : {
+      "uri" : "/cycle"
+    },
+    "response": {
+      "cycle": [
+          {
+            "text" : "foo"
+          },
+          {
+            "text" : "bar"
+          },
+          {
+            "text" : "blah"
+          }
+      ]
+    }
+}
+```
+
+The other response settings are able to be set for json as well.
+
+```json
+{
+    "request" : {
+      "uri" : "/cycle"
+    },
+    "response": {
+      "cycle": [
+          {
+            "status" : "302"
+          },
+          {
+            "status" : "302"
+          },
+          {
+            "status" : "200"
+          }
+      ]
+    }
+}
+```
+
 ### JSON Response
 If the response is JSON, we don't need to write JSON text with escape character in code.
 
