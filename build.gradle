@@ -73,7 +73,7 @@ subprojects {
 
     project.ext {
         guavaVersion = '20.0'
-        nettyVersion = '4.1.19.Final'
+        nettyVersion = '4.1.20.Final'
         slf4jVersion = '1.7.25'
         jacksonVersion = '2.9.3'
         junitVersion = '4.12'
