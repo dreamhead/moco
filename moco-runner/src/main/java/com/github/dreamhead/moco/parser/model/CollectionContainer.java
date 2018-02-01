@@ -9,23 +9,23 @@ import com.google.common.base.MoreObjects;
 import static com.google.common.collect.FluentIterable.from;
 
 @JsonDeserialize(using = SeqContainerDeserializer.class)
-public class SeqContainer implements Container {
-    private Iterable<ResponseSetting> sequence;
+public class CollectionContainer implements Container {
+    private Iterable<ResponseSetting> collection;
 
-    public SeqContainer(final Iterable<ResponseSetting> sequence) {
-        this.sequence = sequence;
+    public CollectionContainer(final Iterable<ResponseSetting> collection) {
+        this.collection = collection;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("sequence", sequence)
+                .add("collection", collection)
                 .toString();
     }
 
     public ResponseHandler[] toResponseHandlers() {
-        return from(sequence).transform(toResponseHandler()).toArray(ResponseHandler.class);
+        return from(collection).transform(toResponseHandler()).toArray(ResponseHandler.class);
     }
 
     private Function<ResponseSetting, ResponseHandler> toResponseHandler() {

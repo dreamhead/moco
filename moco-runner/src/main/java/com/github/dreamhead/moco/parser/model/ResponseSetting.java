@@ -19,8 +19,8 @@ public class ResponseSetting extends BaseResourceSetting {
 
     private TextContainer version;
     private AttachmentSetting attachment;
-    private SeqContainer seq;
-    private SeqContainer cycle;
+    private CollectionContainer seq;
+    private CollectionContainer cycle;
 
     public ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = new ResponseSetting();

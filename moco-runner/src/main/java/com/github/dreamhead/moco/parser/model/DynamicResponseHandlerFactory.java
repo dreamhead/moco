@@ -108,13 +108,13 @@ public class DynamicResponseHandlerFactory extends Dynamics implements ResponseH
         }
 
         if ("seq".equalsIgnoreCase(name)) {
-            SeqContainer sequence = SeqContainer.class.cast(value);
+            CollectionContainer sequence = CollectionContainer.class.cast(value);
             ResponseHandler[] responseHandlers = sequence.toResponseHandlers();
             return Moco.seq(head(responseHandlers), tail(responseHandlers));
         }
 
         if ("cycle".equalsIgnoreCase(name)) {
-            SeqContainer sequence = SeqContainer.class.cast(value);
+            CollectionContainer sequence = CollectionContainer.class.cast(value);
             ResponseHandler[] responseHandlers = sequence.toResponseHandlers();
             return Moco.cycle(head(responseHandlers), tail(responseHandlers));
         }
