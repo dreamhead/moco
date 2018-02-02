@@ -12,7 +12,7 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 import java.io.IOException;
 import java.util.List;
 
-public class SeqContainerDeserializer extends JsonDeserializer<CollectionContainer> {
+public class CollectionContainerDeserializer extends JsonDeserializer<CollectionContainer> {
     @Override
     public CollectionContainer deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
