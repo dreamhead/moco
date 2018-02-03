@@ -12,12 +12,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
-public class CycleHandler extends AbstractResponseHandler {
-    private final ImmutableList<ResponseHandler> handlers;
+public class CycleHandler extends CollectionHandler {
     private int index;
 
     private CycleHandler(final Iterable<ResponseHandler> handlers) {
-        this.handlers = copyOf(handlers);
+        super(handlers);
     }
 
     public static ResponseHandler newCycle(final Iterable<ResponseHandler> handlers) {
@@ -26,11 +25,7 @@ public class CycleHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
-        handlers.get(current()).writeToResponse(context);
-    }
-
-    private int current() {
+    protected int current() {
         int current = this.index;
         if (++index >= handlers.size()) {
             index = 0;
