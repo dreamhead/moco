@@ -8,6 +8,7 @@ import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class CollectionHandler extends AbstractResponseHandler {
     protected final ImmutableList<ResponseHandler> handlers;
+    private int index;
 
     protected CollectionHandler(final Iterable<ResponseHandler> handlers) {
         this.handlers = copyOf(handlers);
@@ -15,8 +16,10 @@ public abstract class CollectionHandler extends AbstractResponseHandler {
 
     @Override
     public void writeToResponse(final SessionContext context) {
-        handlers.get(current()).writeToResponse(context);
+        int current = index;
+        this.index = next(index, this.handlers.size());
+        handlers.get(current).writeToResponse(context);
     }
 
-    protected abstract int current();
+    protected abstract int next(final int index, final int size);
 }
