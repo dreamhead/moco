@@ -11,7 +11,7 @@ public class CycleHandler extends CollectionHandler {
     }
 
     public static ResponseHandler newCycle(final Iterable<ResponseHandler> handlers) {
-        checkArgument(Iterables.size(handlers) > 0, "Sequence contents should not be null");
+        checkArgument(!Iterables.isEmpty(handlers), "Cycle contents should not be null");
         return new CycleHandler(handlers);
     }
 

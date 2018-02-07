@@ -11,7 +11,7 @@ public final class SequenceHandler extends CollectionHandler {
     }
 
     public static ResponseHandler newSeq(final Iterable<ResponseHandler> handlers) {
-        checkArgument(Iterables.size(handlers) > 0, "Sequence contents should not be null");
+        checkArgument(!Iterables.isEmpty(handlers), "Sequence contents should not be null");
         return new SequenceHandler(handlers);
     }
 
