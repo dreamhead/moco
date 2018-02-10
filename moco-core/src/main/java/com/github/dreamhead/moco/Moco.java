@@ -378,19 +378,19 @@ public final class Moco {
 
     public static ResponseHandler cycle(final String content, final String... contents) {
         checkNotNull(content, "Cycle content should not be null");
-        checkArgument(contents.length > 0, "Sequence content should not be null");
+        checkArgument(contents.length > 0, "Cycle content should not be null");
         return newCycle(FluentIterable.from(asIterable(content, contents)).transform(textToResource()));
     }
 
     public static ResponseHandler cycle(final Resource content, final Resource... contents) {
         checkNotNull(content, "Cycle content should not be null");
-        checkArgument(contents.length > 0, "Sequence contents should not be null");
+        checkArgument(contents.length > 0, "Cycle contents should not be null");
         return newCycle(FluentIterable.from(asIterable(content, contents)).transform(resourceToResourceHandler()));
     }
 
     public static ResponseHandler cycle(final ResponseHandler handler, final ResponseHandler... handlers) {
         checkNotNull(handler, "Cycle handler should not be null");
-        checkArgument(handlers.length > 0, "Sequence handlers should not be null");
+        checkArgument(handlers.length > 0, "Cycle handlers should not be null");
         return newCycle(asIterable(handler, handlers));
     }
 
