@@ -29,6 +29,7 @@ subprojects {
 
     repositories {
         jcenter()
+        mavenCentral()
     }
 
     project.uploadArchives {
@@ -78,7 +79,7 @@ subprojects {
         jacksonVersion = '2.9.4'
         junitVersion = '4.12'
         hamcrestVersion = '1.3'
-        mockitoVersion = '2.13.0'
+        mockitoVersion = '2.15.0'
         httpComponentVersion = '4.5.5'
         jsonpathVersion = '2.4.0'
         freemarkerVersion = '2.3.27-incubating'
