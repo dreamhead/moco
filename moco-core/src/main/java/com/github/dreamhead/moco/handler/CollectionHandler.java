@@ -11,7 +11,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class CollectionHandler extends AbstractResponseHandler {
-    protected final ImmutableList<ResponseHandler> handlers;
+    private final ImmutableList<ResponseHandler> handlers;
     private int index;
 
     protected CollectionHandler(final Iterable<ResponseHandler> handlers) {
