@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
-public class JsonResourceReader implements ContentResourceReader {
+public final class JsonResourceReader implements ContentResourceReader {
     private Object pojo;
 
     public JsonResourceReader(final Object pojo) {
