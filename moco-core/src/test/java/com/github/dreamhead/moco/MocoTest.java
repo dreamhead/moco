@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
@@ -139,7 +141,8 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                InputStream stream = this.getClass().getClassLoader().getResourceAsStream("foo.request");
+                URL resource = Resources.getResource("foo.request");
+                InputStream stream = resource.openStream();
                 assertThat(helper.postStream(root(), stream), is("foo"));
             }
         });
