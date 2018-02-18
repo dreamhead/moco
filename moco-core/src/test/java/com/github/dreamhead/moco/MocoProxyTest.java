@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
@@ -16,6 +17,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
@@ -492,7 +494,8 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                byte[] bytes = ByteStreams.toByteArray(this.getClass().getClassLoader().getResourceAsStream("gbk.json"));
+                URL resource = Resources.getResource("gbk.json");
+                byte[] bytes = ByteStreams.toByteArray(resource.openStream());
                 String result = helper.postBytes(root(), bytes, gbk);
                 assertThat(result, is("response"));
             }
