@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
+import com.google.common.io.Resources;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,9 +19,8 @@ public class ClasspathFileResourceReader extends AbstractFileResourceReader {
     }
 
     protected byte[] doReadFor(final Optional<? extends Request> request) {
-        ClassLoader classLoader = this.getClass().getClassLoader();
         String actualFilename = this.filename(request);
-        URL resource = classLoader.getResource(actualFilename);
+        URL resource = Resources.getResource(actualFilename);
         if (resource == null) {
             throw new IllegalArgumentException(format("%s does not exist", actualFilename));
         }
