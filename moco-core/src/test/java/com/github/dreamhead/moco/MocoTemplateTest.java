@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Resources;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.*;
@@ -386,7 +388,8 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                InputStream stream = this.getClass().getClassLoader().getResourceAsStream("gbk.response");
+                URL resource = Resources.getResource("gbk.response");
+                InputStream stream = resource.openStream();
                 assertThat(helper.getAsBytes(remoteUrl("/template")), is(ByteStreams.toByteArray(stream)));
             }
         });
