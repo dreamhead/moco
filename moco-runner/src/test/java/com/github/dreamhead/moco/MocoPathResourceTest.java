@@ -1,9 +1,11 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.io.Resources;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -21,7 +23,8 @@ public class MocoPathResourceTest extends AbstractMocoStandaloneTest {
     public void should_return_response_based_on_path_resource() throws IOException {
         runWithConfiguration("path_resource.json");
 
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("path.request");
+        URL resource = Resources.getResource("path.request");
+        InputStream stream = resource.openStream();
         assertThat(helper.postStream(root(), stream), is("path resource"));
     }
 }
