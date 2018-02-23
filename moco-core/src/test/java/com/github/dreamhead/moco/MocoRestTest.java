@@ -326,9 +326,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     @Test
     public void should_post_with_header() throws Exception {
         RestServer server = restServer(12306);
-        final Plain resource1 = new Plain();
-        resource1.code = 1;
-        resource1.message = "hello";
+        final Plain resource = new Plain();
+        resource.code = 1;
+        resource.message = "hello";
 
         server.resource("targets",
                 post().request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json"))
@@ -339,12 +339,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             @Override
             public void run() throws Exception {
                 HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
-                        Jsons.toJson(resource1), "application/json");
+                        Jsons.toJson(resource), "application/json");
                 assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
                 assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
 
                 HttpResponse badRequest = helper.postForResponse(remoteUrl("/targets"),
-                        Jsons.toJson(resource1));
+                        Jsons.toJson(resource));
                 assertThat(badRequest.getStatusLine().getStatusCode(), is(400));
             }
         });
