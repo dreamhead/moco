@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.verification;
 
 public abstract class UnaryTimesVerification extends AbstractTimesVerification {
-    protected abstract boolean doMeet(final int size, final int count);
+    protected abstract boolean doMeet(int size, int count);
 
     private final int count;
 
