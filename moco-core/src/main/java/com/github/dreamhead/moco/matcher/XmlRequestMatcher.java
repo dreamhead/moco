@@ -26,7 +26,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class XmlRequestMatcher extends AbstractRequestMatcher {
+public final class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor;
     private final Resource resource;
