@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.MutableSocketResponse;
 
-public class DefaultSocketResponse implements MutableSocketResponse {
+public final class DefaultSocketResponse implements MutableSocketResponse {
     private MessageContent content;
 
     @Override

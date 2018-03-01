@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.SocketRequest;
 
-public class DefaultSocketRequest implements SocketRequest {
+public final class DefaultSocketRequest implements SocketRequest {
     private final MessageContent content;
 
     public DefaultSocketRequest(final MessageContent content) {
