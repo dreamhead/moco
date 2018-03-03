@@ -21,7 +21,7 @@ import static io.netty.channel.ChannelHandler.Sharable;
 import static java.lang.String.format;
 
 @Sharable
-public class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final ImmutableList<Setting<SocketResponseSetting>> settings;
     private final Setting<SocketResponseSetting> anySetting;
     private final MocoMonitor monitor;
