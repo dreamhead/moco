@@ -28,7 +28,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
     }
 
     @Override
-    public T response(final ResponseHandler handler, final ResponseHandler... handlers) {
+    public final T response(final ResponseHandler handler, final ResponseHandler... handlers) {
         ResponseHandler responseHandler = and(checkNotNull(handler, "Handler should not be null"),
                 checkNotNull(handlers, "Handlers should not be null"));
         this.handler = targetHandler(responseHandler);
@@ -44,7 +44,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
     }
 
     @Override
-    public T on(final MocoEventTrigger trigger) {
+    public final T on(final MocoEventTrigger trigger) {
         this.eventTriggers.add(checkNotNull(trigger, "Trigger should not be null"));
         return self();
     }
