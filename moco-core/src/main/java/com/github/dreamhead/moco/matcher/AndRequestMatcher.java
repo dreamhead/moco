@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
-public class AndRequestMatcher extends CompositeRequestMatcher {
+public final class AndRequestMatcher extends CompositeRequestMatcher {
     public AndRequestMatcher(final Iterable<RequestMatcher> matchers) {
         super(matchers);
     }
