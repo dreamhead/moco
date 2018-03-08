@@ -15,7 +15,7 @@ import java.util.List;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
+public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
     private final ContentRequestExtractor extractor = new ContentRequestExtractor();
     private final JsonPath jsonPath;
 
