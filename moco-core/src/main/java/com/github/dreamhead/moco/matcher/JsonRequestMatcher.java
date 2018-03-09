@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static com.google.common.base.Optional.of;
 
-public class JsonRequestMatcher extends AbstractRequestMatcher {
+public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ContentRequestExtractor extractor;
     private final ObjectMapper mapper;
     private final Resource expected;
