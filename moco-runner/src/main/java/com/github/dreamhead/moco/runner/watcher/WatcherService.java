@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
+import com.github.dreamhead.moco.util.MocoExecutors;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
@@ -34,7 +35,7 @@ public final class WatcherService {
     private static Logger logger = LoggerFactory.getLogger(WatcherService.class);
     private static final long REGISTER_INTERVAL = 1000;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    private ExecutorService executor = MocoExecutors.executor();
     private WatchService service;
     private boolean running;
     private Multimap<WatchKey, Path> keys = HashMultimap.create();

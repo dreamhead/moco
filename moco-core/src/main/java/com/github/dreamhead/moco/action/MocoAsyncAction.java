@@ -4,14 +4,14 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
+import com.github.dreamhead.moco.util.MocoExecutors;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public final class MocoAsyncAction implements MocoEventAction {
     private final MocoEventAction action;
     private final LatencyProcedure procedure;
-    private final ExecutorService service = Executors.newCachedThreadPool();
+    private final ExecutorService service = MocoExecutors.executor();
 
     public MocoAsyncAction(final MocoEventAction action, final LatencyProcedure procedure) {
         this.action = action;
