@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.MocoException;
+import com.github.dreamhead.moco.util.MocoExecutors;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -19,7 +20,7 @@ public class MocoServer {
     private ChannelFuture future;
 
     public MocoServer() {
-        group = new NioEventLoopGroup();
+        group = new NioEventLoopGroup(0, MocoExecutors.executor());
     }
 
     public int start(final int port, final ChannelInitializer<? extends Channel> pipelineFactory) {
