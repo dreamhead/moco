@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.handler.failover;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 
-public class Failover {
+public final class Failover {
     public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER,
             FailoverStrategy.FAILOVER);
 
