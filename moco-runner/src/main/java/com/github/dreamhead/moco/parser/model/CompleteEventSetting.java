@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.google.common.base.MoreObjects;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class CompleteEventSetting {
+public final class CompleteEventSetting {
     private boolean async;
     private LatencyContainer latency;
     private PostSetting post;
