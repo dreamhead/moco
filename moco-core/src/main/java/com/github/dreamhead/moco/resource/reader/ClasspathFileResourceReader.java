@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import static com.google.common.io.ByteStreams.toByteArray;
 import static java.lang.String.format;
 
-public class ClasspathFileResourceReader extends AbstractFileResourceReader {
+public final class ClasspathFileResourceReader extends AbstractFileResourceReader {
     public ClasspathFileResourceReader(final Resource filename, final Optional<Charset> charset) {
         super(filename, charset);
     }
