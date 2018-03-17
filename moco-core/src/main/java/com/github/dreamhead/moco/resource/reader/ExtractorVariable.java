@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.google.common.base.Optional;
 
-public class ExtractorVariable<T> implements Variable {
+public final class ExtractorVariable<T> implements Variable {
     private final RequestExtractor<T> extractor;
 
     public ExtractorVariable(final RequestExtractor<T> extractor) {
