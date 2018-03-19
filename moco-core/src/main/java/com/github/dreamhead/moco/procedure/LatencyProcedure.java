@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.util.Idles;
 import java.util.concurrent.TimeUnit;
 
 public class LatencyProcedure implements MocoProcedure {
-    public static final int DEFAULT_LATENCY = 1000;
-
     private final long duration;
     private final TimeUnit unit;
 
