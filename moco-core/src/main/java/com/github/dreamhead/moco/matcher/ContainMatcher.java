@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
-public class ContainMatcher<T> extends AbstractOperatorMatcher<T> {
+public final class ContainMatcher<T> extends AbstractOperatorMatcher<T> {
     public ContainMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
