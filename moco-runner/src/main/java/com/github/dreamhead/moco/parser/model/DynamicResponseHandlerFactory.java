@@ -34,7 +34,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
 
-public class DynamicResponseHandlerFactory extends Dynamics implements ResponseHandlerFactory {
+public final class DynamicResponseHandlerFactory extends Dynamics implements ResponseHandlerFactory {
     private static final ImmutableSet<String> RESOURCES = of("text", "file", "pathResource", "version");
     private static final ImmutableMap<String, String> COMPOSITES = ImmutableMap.<String, String>builder()
             .put("headers", "header")
