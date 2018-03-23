@@ -14,7 +14,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.of;
 
-public final class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
+public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private final Optional<HttpsCertificate> certificate;
 
     protected ActualHttpServer(final Optional<Integer> port,
@@ -24,15 +24,15 @@ public final class ActualHttpServer extends HttpConfiguration<ActualHttpServer> 
         this.certificate = certificate;
     }
 
-    public boolean isSecure() {
+    public final boolean isSecure() {
         return certificate.isPresent();
     }
 
-    public Optional<HttpsCertificate> getCertificate() {
+    public final Optional<HttpsCertificate> getCertificate() {
         return certificate;
     }
 
-    protected ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
+    protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
         return newBaseServer(this.getPort().or(thatServer.getPort()), this.certificate.or(thatServer.certificate));
     }
 
@@ -81,7 +81,7 @@ public final class ActualHttpServer extends HttpConfiguration<ActualHttpServer> 
     }
 
     @Override
-    protected HttpSetting newSetting(final RequestMatcher matcher) {
+    protected final HttpSetting newSetting(final RequestMatcher matcher) {
         return new HttpSetting(matcher);
     }
 }

@@ -38,7 +38,7 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public RequestMatcher doApply(final MocoConfig config) {
+    public final RequestMatcher doApply(final MocoConfig config) {
         Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
         if (appliedMatchers == this.matchers) {
             return this;
@@ -48,7 +48,7 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         return doMatch(request, matchers);
     }
 
