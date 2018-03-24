@@ -22,6 +22,8 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.QueryStringEncoder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,7 +142,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
-                .withHeaders(collectHeaders(request.headers()))
+                .forHeaders(toHeaders(request.headers()))
+//                .withHeaders(collectHeaders(request.headers()))
                 .withMethod(HttpMethod.valueOf(request.method().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
@@ -190,6 +193,32 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return headerBuilder.build();
     }
 
+    private static ImmutableMap<String, String[]> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
+        Map<String, List<String>> headers = new HashMap<>();
+        for (Map.Entry<String, String> entry : httpHeaders) {
+            String key = entry.getKey();
+            List<String> values = getValues(headers, key);
+            values.add(entry.getValue());
+            headers.put(key, values);
+        }
+
+        Map<String, String[]> results = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            List<String> value = entry.getValue();
+            results.put(entry.getKey(), value.toArray(new String[value.size()]));
+        }
+
+        return copyOf(results);
+    }
+
+    private static List<String> getValues(final Map<String, List<String>> headers, final String key) {
+        if (headers.containsKey(key)) {
+            return headers.get(key);
+        }
+
+        return new ArrayList<>();
+    }
+
     public static final class Builder {
         private HttpProtocolVersion version;
         private MessageContent content;
@@ -216,6 +245,18 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         public Builder withHeaders(final Map<String, String> headers) {
             if (headers != null) {
                 this.headers = copyOf(headers);
+            }
+
+            return this;
+        }
+
+        public Builder forHeaders(final Map<String, String[]> headers) {
+            if (headers != null) {
+                ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+                for (Map.Entry<String, String[]> entry : headers.entrySet()) {
+                    builder.put(entry.getKey(), entry.getValue()[0]);
+                }
+                this.headers = builder.build();
             }
 
             return this;

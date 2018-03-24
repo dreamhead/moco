@@ -9,8 +9,9 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     private final MessageContent content;
     private final ImmutableMap<String, String> headers;
 
-    protected DefaultHttpMessage(final HttpProtocolVersion version, final MessageContent content,
-                              final ImmutableMap<String, String> headers) {
+    protected DefaultHttpMessage(final HttpProtocolVersion version,
+                                 final MessageContent content,
+                                 final ImmutableMap<String, String> headers) {
         this.version = version;
         this.content = content;
         this.headers = headers;
