@@ -222,7 +222,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     public static final class Builder {
         private HttpProtocolVersion version;
         private MessageContent content;
-        private ImmutableMap<String, String> headers;
+        private ImmutableMap<String, String[]> headers;
         private HttpMethod method;
         private String uri;
         private ImmutableMap<String, String[]> queries;
@@ -244,7 +244,11 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         public Builder withHeaders(final Map<String, String> headers) {
             if (headers != null) {
-                this.headers = copyOf(headers);
+                ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    builder.put(entry.getKey(), new String[]{entry.getValue()});
+                }
+                this.headers = builder.build();
             }
 
             return this;
@@ -252,11 +256,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         public Builder forHeaders(final Map<String, String[]> headers) {
             if (headers != null) {
-                ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-                for (Map.Entry<String, String[]> entry : headers.entrySet()) {
-                    builder.put(entry.getKey(), entry.getValue()[0]);
-                }
-                this.headers = builder.build();
+                this.headers = copyOf(headers);
             }
 
             return this;
@@ -281,7 +281,12 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         public DefaultHttpRequest build() {
-            return new DefaultHttpRequest(version, content, method, this.uri, headers, this.queries);
+            ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+            for (Map.Entry<String, String[]> entry : headers.entrySet()) {
+                builder.put(entry.getKey(), entry.getValue()[0]);
+            }
+
+            return new DefaultHttpRequest(version, content, method, this.uri, builder.build(), this.queries);
         }
     }
 }
