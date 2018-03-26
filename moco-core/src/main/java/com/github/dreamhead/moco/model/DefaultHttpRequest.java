@@ -42,7 +42,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final HttpMethod method, final String uri,
-                               final ImmutableMap<String, String> headers,
+                               final ImmutableMap<String, String[]> headers,
                                final ImmutableMap<String, String[]> queries) {
         super(version, content, headers);
         this.method = method;
@@ -281,12 +281,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         public DefaultHttpRequest build() {
-            ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            for (Map.Entry<String, String[]> entry : headers.entrySet()) {
-                builder.put(entry.getKey(), entry.getValue()[0]);
-            }
-
-            return new DefaultHttpRequest(version, content, method, this.uri, builder.build(), this.queries);
+            return new DefaultHttpRequest(version, content, method, this.uri, this.headers, this.queries);
         }
     }
 }
