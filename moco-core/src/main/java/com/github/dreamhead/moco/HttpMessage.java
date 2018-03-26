@@ -6,4 +6,6 @@ public interface HttpMessage extends Message {
     HttpProtocolVersion getVersion();
 
     ImmutableMap<String, String> getHeaders();
+
+    String getHeader(String name);
 }

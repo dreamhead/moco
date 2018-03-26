@@ -16,7 +16,7 @@ public final class HttpDumpers {
     }
 
     private static String contentForDump(final HttpMessage message) {
-        String type = message.getHeaders().get(HttpHeaders.CONTENT_TYPE);
+        String type = message.getHeader(HttpHeaders.CONTENT_TYPE);
         if (isText(type)) {
             return message.getContent().toString();
         }
@@ -39,7 +39,7 @@ public final class HttpDumpers {
     }
 
     private static long getContentLength(final HttpMessage response, final long defaultValue) {
-        String lengthText = response.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
+        String lengthText = response.getHeader(HttpHeaders.CONTENT_LENGTH);
         if (lengthText != null) {
             try {
                 return Long.parseLong(lengthText);

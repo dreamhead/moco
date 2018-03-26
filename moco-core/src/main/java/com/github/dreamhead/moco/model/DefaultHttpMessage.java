@@ -30,6 +30,16 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
+    public String getHeader(String name) {
+        if (this.headers.containsKey(name)) {
+            return null;
+        }
+
+        String[] values = this.headers.get(name);
+        return values[0];
+    }
+
+    @Override
     public MessageContent getContent() {
         return this.content;
     }
