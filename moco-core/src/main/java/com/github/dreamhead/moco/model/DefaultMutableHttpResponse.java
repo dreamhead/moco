@@ -12,9 +12,11 @@ import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.Map;
 
+import static com.github.dreamhead.moco.util.Maps.asSimple;
+
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
-    private Map<String, String> headers = Maps.newHashMap();
+    private Map<String, String[]> headers = Maps.newHashMap();
     private int status;
     private MessageContent content;
 
@@ -42,12 +44,29 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     @Override
     public void addHeader(final String name, final Object value) {
-        this.headers.put(name, value.toString());
+        this.headers.put(name, newValues(name, value));
+    }
+
+    private String[] newValues(final String name, final Object value) {
+        if (this.headers.containsKey(name)) {
+            String[] values = this.headers.get(name);
+            String[] newValues = new String[values.length + 1];
+            System.arraycopy(values, 0, newValues, 0, values.length);
+            newValues[values.length] = value.toString();
+            return newValues;
+        }
+
+        return new String[]{value.toString()};
     }
 
     @Override
     public String getHeader(final String name) {
-        return this.headers.get(name);
+        if (this.headers.containsKey(name)) {
+            return null;
+        }
+
+        String[] values = this.headers.get(name);
+        return values[0];
     }
 
     @Override
@@ -62,7 +81,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     @Override
     public ImmutableMap<String, String> getHeaders() {
-        return ImmutableMap.copyOf(this.headers);
+        return asSimple(ImmutableMap.copyOf(this.headers));
     }
 
     @Override
