@@ -6,6 +6,7 @@ import com.google.common.base.Joiner;
 import io.netty.util.internal.StringUtil;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
+import static com.github.dreamhead.moco.util.Maps.asSimple;
 
 public final class HttpRequestDumper implements Dumper<Request> {
     private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
@@ -16,7 +17,7 @@ public final class HttpRequestDumper implements Dumper<Request> {
         StringBuilder buf = new StringBuilder();
         buf.append(requestProtocolLine(httpRequest))
                 .append(StringUtil.NEWLINE)
-                .append(headerJoiner.join(httpRequest.getHeaders()))
+                .append(headerJoiner.join(asSimple(httpRequest.getHeaders())))
                 .append(asContent(httpRequest));
         return buf.toString();
     }

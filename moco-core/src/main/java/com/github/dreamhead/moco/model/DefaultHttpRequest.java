@@ -177,8 +177,12 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.valueOf(getVersion().text()),
                 io.netty.handler.codec.http.HttpMethod.valueOf(method.name()), encoder.toString(), buffer);
-        for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
-            request.headers().add(entry.getKey(), entry.getValue());
+
+        for (Map.Entry<String, String[]> entry : getHeaders().entrySet()) {
+            String key = entry.getKey();
+            for (String value : entry.getValue()) {
+                request.headers().add(key, value);
+            }
         }
 
         return request;

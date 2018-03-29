@@ -4,8 +4,6 @@ import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.google.common.collect.ImmutableMap;
 
-import static com.github.dreamhead.moco.util.Maps.asSimple;
-
 public abstract class DefaultHttpMessage implements HttpMessage {
     private final HttpProtocolVersion version;
     private final MessageContent content;
@@ -25,8 +23,8 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public ImmutableMap<String, String> getHeaders() {
-        return asSimple(this.headers);
+    public ImmutableMap<String, String[]> getHeaders() {
+        return this.headers;
     }
 
     @Override

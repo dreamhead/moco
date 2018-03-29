@@ -12,8 +12,6 @@ import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.Map;
 
-import static com.github.dreamhead.moco.util.Maps.asSimple;
-
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
     private Map<String, String[]> headers = Maps.newHashMap();
@@ -80,8 +78,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public ImmutableMap<String, String> getHeaders() {
-        return asSimple(ImmutableMap.copyOf(this.headers));
+    public ImmutableMap<String, String[]> getHeaders() {
+        return ImmutableMap.copyOf(this.headers);
     }
 
     @Override
@@ -104,8 +102,12 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     public FullHttpResponse toFullResponse() {
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.valueOf(this.version.text()),
                 HttpResponseStatus.valueOf(this.status));
-        for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
-            response.headers().add(entry.getKey(), entry.getValue());
+
+        for (Map.Entry<String, String[]> entry : getHeaders().entrySet()) {
+            String key = entry.getKey();
+            for (String value : entry.getValue()) {
+                response.headers().add(key, value);
+            }
         }
 
         if (this.content != null) {
