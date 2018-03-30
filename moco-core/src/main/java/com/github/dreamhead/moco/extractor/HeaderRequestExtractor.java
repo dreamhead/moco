@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import java.util.Map;
 
@@ -24,6 +25,7 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
         String[] extractedValues = from(request.getHeaders().entrySet())
                 .filter(isForHeaderName(name))
                 .transform(toValue())
+                .transformAndConcat(arrayAsIterable())
                 .toArray(String.class);
 
         if (extractedValues.length > 0) {
@@ -33,12 +35,20 @@ public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
         return absent();
     }
 
-    // TO FLAT
-    private Function<Map.Entry<String, String[]>, String> toValue() {
-        return new Function<Map.Entry<String, String[]>, String>() {
+    private Function<String[], Iterable<String>> arrayAsIterable() {
+        return new Function<String[], Iterable<String>>() {
             @Override
-            public String apply(final Map.Entry<String, String[]> input) {
-                return input.getValue()[0];
+            public Iterable<String> apply(final String[] input) {
+                return ImmutableList.copyOf(input);
+            }
+        };
+    }
+
+    private Function<Map.Entry<String, String[]>, String[]> toValue() {
+        return new Function<Map.Entry<String, String[]>, String[]>() {
+            @Override
+            public String[] apply(final Map.Entry<String, String[]> input) {
+                return input.getValue();
             }
         };
     }
