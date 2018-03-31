@@ -716,6 +716,21 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_multiple_expected_header_with_same_name() throws Exception {
+        server.response(header("foo", "bar"), header("foo", "moco"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                Header[] headers = helper.getResponse(root()).getHeaders("foo");
+                assertThat(headers.length, is(2));
+                assertThat(headers[0].getValue(), is("bar"));
+                assertThat(headers[1].getValue(), is("moco"));
+            }
+        });
+    }
+
+    @Test
     public void should_wait_for_awhile() throws Exception {
         final long latency = 1000;
         final long delta = 200;

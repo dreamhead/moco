@@ -68,11 +68,6 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public void removeHeader(final String name) {
-        this.headers.remove(name);
-    }
-
-    @Override
     public HttpProtocolVersion getVersion() {
         return this.version;
     }

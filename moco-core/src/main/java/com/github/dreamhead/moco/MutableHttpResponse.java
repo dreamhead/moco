@@ -6,6 +6,4 @@ public interface MutableHttpResponse extends HttpResponse, MutableResponse {
     void setStatus(final int status);
 
     void addHeader(final String name, final Object value);
-
-    void removeHeader(final String name);
 }
