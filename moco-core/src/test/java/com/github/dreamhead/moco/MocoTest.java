@@ -587,6 +587,19 @@ public class MocoTest extends AbstractMocoHttpTest {
         });
     }
 
+    @Test
+    public void should_eq_multiple_header_with_same_name() throws Exception {
+        server.request(and(eq(header("foo"), "bar")), eq(header("foo"), "bar2"))
+                .response("blah");
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.getWithHeader(root(), of("foo", "bar", "foo", "bar2")), is("blah"));
+            }
+        });
+    }
+
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_specified_header() throws Exception {
         server.request(eq(header("foo"), "bar")).response("blah");

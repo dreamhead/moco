@@ -28,8 +28,8 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public String getHeader(String name) {
-        if (this.headers.containsKey(name)) {
+    public String getHeader(final String name) {
+        if (!this.headers.containsKey(name)) {
             return null;
         }
 

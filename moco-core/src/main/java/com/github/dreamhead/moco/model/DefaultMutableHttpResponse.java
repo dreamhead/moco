@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -40,8 +41,30 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         this.content = content;
     }
 
+    private static String[] SINGLE_VALUE_HEADERS = new String[] {
+            HttpHeaders.CONTENT_TYPE
+    };
+
     @Override
     public void addHeader(final String name, final Object value) {
+        if (this.headers.containsKey(name) && isSingleValueHeader(name)) {
+            this.headers.remove(name);
+        }
+
+        doAddHeader(name, value);
+    }
+
+    private boolean isSingleValueHeader(final String name) {
+        for (String header : SINGLE_VALUE_HEADERS) {
+            if (header.equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void doAddHeader(final String name, final Object value) {
         this.headers.put(name, newValues(name, value));
     }
 
