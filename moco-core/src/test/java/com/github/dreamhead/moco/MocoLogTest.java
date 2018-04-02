@@ -34,7 +34,7 @@ public class MocoLogTest {
     private MocoTestHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.helper = new MocoTestHelper();
     }
 

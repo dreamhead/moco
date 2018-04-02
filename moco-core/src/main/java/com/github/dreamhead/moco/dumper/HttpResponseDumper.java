@@ -2,22 +2,19 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.Response;
-import com.google.common.base.Joiner;
 import io.netty.util.internal.StringUtil;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
-import static com.github.dreamhead.moco.util.Maps.asSimple;
+import static com.github.dreamhead.moco.dumper.HttpDumpers.asHeaders;
 
 public class HttpResponseDumper implements Dumper<Response> {
-    private final Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
-
     @Override
     public String dump(final Response response) {
         HttpResponse httpResponse = (HttpResponse) response;
         return new StringBuilder()
                 .append(responseProtocolLine(httpResponse))
                 .append(StringUtil.NEWLINE)
-                .append(headerJoiner.join(asSimple(httpResponse.getHeaders())))
+                .append(asHeaders(httpResponse))
                 .append(asContent(httpResponse))
                 .toString();
     }

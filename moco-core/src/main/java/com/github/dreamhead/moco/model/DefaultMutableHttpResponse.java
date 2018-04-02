@@ -82,7 +82,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     @Override
     public String getHeader(final String name) {
-        if (this.headers.containsKey(name)) {
+        if (!this.headers.containsKey(name)) {
             return null;
         }
 

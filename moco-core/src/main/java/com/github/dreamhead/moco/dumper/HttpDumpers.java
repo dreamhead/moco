@@ -1,9 +1,12 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
+import com.google.common.base.Joiner;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import io.netty.util.internal.StringUtil;
+
+import static com.github.dreamhead.moco.util.Maps.asSimple;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
@@ -49,6 +52,12 @@ public final class HttpDumpers {
         }
 
         return defaultValue;
+    }
+
+    private final static Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
+
+    public static String asHeaders(final HttpMessage message) {
+        return headerJoiner.join(asSimple(message.getHeaders()));
     }
 
     private HttpDumpers() {
