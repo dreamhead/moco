@@ -2,11 +2,14 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import io.netty.util.internal.StringUtil;
 
-import static com.github.dreamhead.moco.util.Maps.asSimple;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
@@ -57,7 +60,15 @@ public final class HttpDumpers {
     private final static Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
     public static String asHeaders(final HttpMessage message) {
-        return headerJoiner.join(asSimple(message.getHeaders()));
+        List<Map.Entry<String, String>> entries = new ArrayList<>();
+        for (Map.Entry<String, String[]> entry : message.getHeaders().entrySet()) {
+            String key = entry.getKey();
+            for (String value : entry.getValue()) {
+                entries.add(Maps.immutableEntry(key, value));
+            }
+        }
+
+        return headerJoiner.join(entries);
     }
 
     private HttpDumpers() {
