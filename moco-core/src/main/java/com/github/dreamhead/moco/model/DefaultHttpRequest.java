@@ -142,8 +142,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
-                .forHeaders(toHeaders(request.headers()))
-//                .withHeaders(collectHeaders(request.headers()))
+                .withHeaders(toHeaders(request.headers()))
+//                .forHeaders(collectHeaders(request.headers()))
                 .withMethod(HttpMethod.valueOf(request.method().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
@@ -246,7 +246,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
-        public Builder withHeaders(final Map<String, String> headers) {
+        public Builder forHeaders(final Map<String, String> headers) {
             if (headers != null) {
                 ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -258,7 +258,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
-        public Builder forHeaders(final Map<String, String[]> headers) {
+        public Builder withHeaders(final Map<String, String[]> headers) {
             if (headers != null) {
                 this.headers = copyOf(headers);
             }

@@ -39,7 +39,7 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
         return builder()
                 .withVersion(toHttpProtocolVersion(response.protocolVersion()))
                 .withStatus(response.status().code())
-                .withHeaders(headerBuilder.build())
+                .forHeaders(headerBuilder.build())
                 .withContent(content()
                         .withContent(new ByteBufInputStream(response.content()))
                         .build())
@@ -70,7 +70,15 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
             return this;
         }
 
-        public Builder withHeaders(final Map<String, String> headers) {
+        public Builder withHeaders(final Map<String, String[]> headers) {
+            if (headers != null) {
+                this.headers = copyOf(headers);
+            }
+
+            return this;
+        }
+
+        public Builder forHeaders(final Map<String, String> headers) {
             if (headers != null) {
                 this.headers = asArray(copyOf(headers));
             }

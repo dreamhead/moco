@@ -421,7 +421,9 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy"));
+                System.out.println("First request");
                 assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy"));
+                System.out.println("Second request");
             }
         });
 
