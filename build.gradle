@@ -76,7 +76,7 @@ subprojects {
         guavaVersion = '20.0'
         nettyVersion = '4.1.22.Final'
         slf4jVersion = '1.7.25'
-        jacksonVersion = '2.9.4'
+        jacksonVersion = '2.9.5'
         junitVersion = '4.12'
         hamcrestVersion = '1.3'
         mockitoVersion = '2.16.0'
