@@ -12,6 +12,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.github.dreamhead.moco.util.Maps.listValueToArray;
+import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
@@ -258,12 +261,30 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
-        public Builder withHeaders(final Map<String, String[]> headers) {
-            if (headers != null) {
-                this.headers = copyOf(headers);
+        public Builder withHeaders(final Map<String, ?> headers) {
+            if (headers != null && !headers.isEmpty()) {
+                this.headers = asHeaders(headers);
             }
 
             return this;
+        }
+
+        private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
+            Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
+            if (value instanceof String) {
+                return simpleValueToArray((Map<String, String>)headers);
+            }
+
+            if (value instanceof String[]) {
+                return copyOf((Map<String, String[]>)headers);
+            }
+
+            if (value instanceof List) {
+                return listValueToArray((Map<String, List<String>>) headers);
+            }
+
+            throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");
+
         }
 
         public Builder withMethod(final HttpMethod method) {

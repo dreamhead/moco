@@ -4,14 +4,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.github.dreamhead.moco.util.Maps.asArray;
+import static com.github.dreamhead.moco.util.Maps.listValueToArray;
+import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpResponse.Builder.class)
@@ -70,17 +73,34 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
             return this;
         }
 
-        public Builder withHeaders(final Map<String, String[]> headers) {
-            if (headers != null) {
-                this.headers = copyOf(headers);
+        public Builder withHeaders(final Map<String, ?> headers) {
+            if (headers != null && !headers.isEmpty()) {
+                this.headers = asHeaders(headers);
             }
 
             return this;
         }
 
+        private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
+            Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
+            if (value instanceof String) {
+                return simpleValueToArray((Map<String, String>)headers);
+            }
+
+            if (value instanceof String[]) {
+                return copyOf((Map<String, String[]>)headers);
+            }
+
+            if (value instanceof List) {
+                return listValueToArray((Map<String, List<String>>) headers);
+            }
+
+            throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");
+        }
+
         public Builder forHeaders(final Map<String, String> headers) {
             if (headers != null) {
-                this.headers = asArray(copyOf(headers));
+                this.headers = simpleValueToArray(copyOf(headers));
             }
 
             return this;
