@@ -81,14 +81,15 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
             return this;
         }
 
+        @SuppressWarnings("unchecked")
         private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
             Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
             if (value instanceof String) {
-                return simpleValueToArray((Map<String, String>)headers);
+                return simpleValueToArray((Map<String, String>) headers);
             }
 
             if (value instanceof String[]) {
-                return copyOf((Map<String, String[]>)headers);
+                return copyOf((Map<String, String[]>) headers);
             }
 
             if (value instanceof List) {

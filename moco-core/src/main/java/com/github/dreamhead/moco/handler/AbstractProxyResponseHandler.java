@@ -114,6 +114,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return remoteRequest;
     }
 
+    @SuppressWarnings("deprecation")
     private RequestConfig createRequestConfig() {
         return RequestConfig.custom()
                 .setRedirectsEnabled(false)

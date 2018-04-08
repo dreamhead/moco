@@ -269,6 +269,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
+        @SuppressWarnings("unchecked")
         private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
             Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
             if (value instanceof String) {
