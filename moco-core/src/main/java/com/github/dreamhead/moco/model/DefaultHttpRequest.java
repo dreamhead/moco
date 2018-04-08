@@ -146,7 +146,6 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
                 .withHeaders(toHeaders(request.headers()))
-//                .forHeaders(collectHeaders(request.headers()))
                 .withMethod(HttpMethod.valueOf(request.method().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
@@ -191,15 +190,6 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return request;
     }
 
-    private static ImmutableMap<String, String> collectHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
-        ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
-        for (Map.Entry<String, String> entry : httpHeaders) {
-            headerBuilder.put(entry);
-        }
-
-        return headerBuilder.build();
-    }
-
     private static ImmutableMap<String, String[]> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
         Map<String, List<String>> headers = new HashMap<>();
         for (Map.Entry<String, String> entry : httpHeaders) {
@@ -226,67 +216,10 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return new ArrayList<>();
     }
 
-    public static final class Builder {
-        private HttpProtocolVersion version;
-        private MessageContent content;
-        private ImmutableMap<String, String[]> headers;
+    public static final class Builder extends DefaultHttpMessage.Builder<Builder> {
         private HttpMethod method;
         private String uri;
         private ImmutableMap<String, String[]> queries;
-
-        public Builder withVersion(final HttpProtocolVersion version) {
-            this.version = version;
-            return this;
-        }
-
-        public Builder withTextContent(final String content) {
-            this.content = content(content);
-            return this;
-        }
-
-        public Builder withContent(final MessageContent content) {
-            this.content = content;
-            return this;
-        }
-
-        public Builder forHeaders(final Map<String, String> headers) {
-            if (headers != null) {
-                ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
-                for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    builder.put(entry.getKey(), new String[]{entry.getValue()});
-                }
-                this.headers = builder.build();
-            }
-
-            return this;
-        }
-
-        public Builder withHeaders(final Map<String, ?> headers) {
-            if (headers != null && !headers.isEmpty()) {
-                this.headers = asHeaders(headers);
-            }
-
-            return this;
-        }
-
-        @SuppressWarnings("unchecked")
-        private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
-            Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
-            if (value instanceof String) {
-                return simpleValueToArray((Map<String, String>)headers);
-            }
-
-            if (value instanceof String[]) {
-                return copyOf((Map<String, String[]>)headers);
-            }
-
-            if (value instanceof List) {
-                return listValueToArray((Map<String, List<String>>) headers);
-            }
-
-            throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");
-
-        }
 
         public Builder withMethod(final HttpMethod method) {
             this.method = method;
