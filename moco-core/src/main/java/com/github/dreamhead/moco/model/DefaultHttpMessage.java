@@ -6,11 +6,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.github.dreamhead.moco.util.Maps.listValueToArray;
+import static com.github.dreamhead.moco.util.Maps.iterableValueToArray;
 import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
@@ -109,8 +108,8 @@ public abstract class DefaultHttpMessage implements HttpMessage {
                 return copyOf((Map<String, String[]>)headers);
             }
 
-            if (value instanceof List) {
-                return listValueToArray((Map<String, List<String>>) headers);
+            if (value instanceof Iterable) {
+                return iterableValueToArray((Map<String, Iterable<String>>) headers);
             }
 
             throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");

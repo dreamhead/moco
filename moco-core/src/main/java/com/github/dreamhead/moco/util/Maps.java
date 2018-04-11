@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 
-import java.util.List;
 import java.util.Map;
 
 public class Maps {
@@ -24,11 +24,11 @@ public class Maps {
         return builder.build();
     }
 
-    public static ImmutableMap<String, String[]> listValueToArray(final Map<String, List<String>> map) {
+    public static ImmutableMap<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
         ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
-        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-            List<String> value = entry.getValue();
-            builder.put(entry.getKey(), value.toArray(new String[value.size()]));
+        for (Map.Entry<String, Iterable<String>> entry : map.entrySet()) {
+            Iterable<String> value = entry.getValue();
+            builder.put(entry.getKey(), Iterables.toArray(value, String.class));
         }
 
         return builder.build();

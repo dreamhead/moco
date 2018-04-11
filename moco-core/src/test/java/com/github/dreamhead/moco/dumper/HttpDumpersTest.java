@@ -68,13 +68,13 @@ public class HttpDumpersTest {
     }
 
     @Test
-    public void should_parse_complete_form_urlencoded_media_type() throws Exception {
+    public void should_parse_complete_form_urlencoded_media_type() {
         assertMessageContent("application/x-www-form-urlencoded;charset=UTF-8", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void should_not_parse_content_when_content_length_not_set() throws Exception {
+    public void should_not_parse_content_when_content_length_not_set() {
         assertThat(asContent(messageWithHeaders(EMPTY_MAP)), isEmptyString());
     }
 
@@ -85,7 +85,7 @@ public class HttpDumpersTest {
     private HttpMessage messageWithHeaders(final Map<String, String> headers) {
         return DefaultHttpResponse.builder()
                 .forHeaders(headers)
-                .withContent(MessageContent.content(MESSAGE_BODY))
+                .withTextContent(MESSAGE_BODY)
                 .build();
     }
 

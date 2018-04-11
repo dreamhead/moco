@@ -15,7 +15,8 @@ public class JsonPathRequestExtractorTest {
     public void should_extract_empty_content_as_absent() {
         JsonPathRequestExtractor unitUnderTest = new JsonPathRequestExtractor("$..account");
         HttpRequest request = DefaultHttpRequest.builder()
-                .withContent(MessageContent.content("")).build();
+                .withTextContent("")
+                .build();
         Optional<Object> result = unitUnderTest.extract(request);
         assertThat(result.isPresent(), is(false));
     }

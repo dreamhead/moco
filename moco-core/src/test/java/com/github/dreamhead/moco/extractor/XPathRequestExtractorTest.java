@@ -13,7 +13,7 @@ public class XPathRequestExtractorTest {
     @Test
     public void should_extract_empty_content_as_absent() {
         XPathRequestExtractor unitUnderTest = new XPathRequestExtractor("/request/parameters/id/text()");
-        HttpRequest request = DefaultHttpRequest.builder().withContent(MessageContent.content("")).build();
+        HttpRequest request = DefaultHttpRequest.builder().withTextContent("").build();
         Optional<String[]> result = unitUnderTest.extract(request);
         assertThat(result.isPresent(), is(false));
     }

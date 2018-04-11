@@ -12,7 +12,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -29,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.github.dreamhead.moco.util.Maps.listValueToArray;
-import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)

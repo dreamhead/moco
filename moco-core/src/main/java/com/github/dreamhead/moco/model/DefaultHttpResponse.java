@@ -28,7 +28,7 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
         return status;
     }
 
-    public static DefaultHttpResponse newResponse(final FullHttpResponse response) {
+    public static HttpResponse newResponse(final FullHttpResponse response) {
         ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : response.headers()) {
             headerBuilder.put(entry);
