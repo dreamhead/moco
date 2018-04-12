@@ -187,8 +187,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return request;
     }
 
-    private static ImmutableMap<String, String[]> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
-        Map<String, List<String>> headers = new HashMap<>();
+    private static Map<String, Iterable<String>> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
+        Map<String, Iterable<String>> headers = new HashMap<>();
         for (Map.Entry<String, String> entry : httpHeaders) {
             String key = entry.getKey();
             List<String> values = getValues(headers, key);
@@ -196,18 +196,12 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             headers.put(key, values);
         }
 
-        Map<String, String[]> results = new HashMap<>();
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            List<String> value = entry.getValue();
-            results.put(entry.getKey(), value.toArray(new String[value.size()]));
-        }
-
-        return copyOf(results);
+        return headers;
     }
 
-    private static List<String> getValues(final Map<String, List<String>> headers, final String key) {
+    private static List<String> getValues(final Map<String, Iterable<String>> headers, final String key) {
         if (headers.containsKey(key)) {
-            return headers.get(key);
+            return (List<String>)headers.get(key);
         }
 
         return new ArrayList<>();
