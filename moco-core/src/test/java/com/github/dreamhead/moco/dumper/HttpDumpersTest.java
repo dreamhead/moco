@@ -84,7 +84,7 @@ public class HttpDumpersTest {
 
     private HttpMessage messageWithHeaders(final Map<String, String> headers) {
         return DefaultHttpResponse.builder()
-                .forHeaders(headers)
+                .withHeaders(headers)
                 .withTextContent(MESSAGE_BODY)
                 .build();
     }

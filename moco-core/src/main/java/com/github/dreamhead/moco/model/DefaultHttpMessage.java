@@ -15,6 +15,7 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Maps.iterableValueToArray;
 import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
+import static java.util.Collections.EMPTY_MAP;
 
 public abstract class DefaultHttpMessage implements HttpMessage {
     private final HttpProtocolVersion version;
@@ -117,7 +118,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         }
 
         public T withHeaders(final Map<String, ?> headers) {
-            if (headers != null && !headers.isEmpty()) {
+            if (headers != null) {
                 this.headers = asHeaders(headers);
             }
 
@@ -126,6 +127,10 @@ public abstract class DefaultHttpMessage implements HttpMessage {
 
         @SuppressWarnings("unchecked")
         private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
+            if (headers.isEmpty()) {
+                return ImmutableMap.of();
+            }
+
             Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
             if (value instanceof String) {
                 return simpleValueToArray((Map<String, String>)headers);
