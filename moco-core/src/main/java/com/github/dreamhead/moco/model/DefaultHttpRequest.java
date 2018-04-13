@@ -22,8 +22,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.QueryStringEncoder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -142,7 +140,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
-                .withHeaders(toHeaders(request.headers()))
+                .withHeaders(toHeaders(request))
                 .withMethod(HttpMethod.valueOf(request.method().toString().toUpperCase()))
                 .withUri(decoder.path())
                 .withQueries(queries)
@@ -185,26 +183,6 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         return request;
-    }
-
-    private static Map<String, Iterable<String>> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
-        Map<String, Iterable<String>> headers = new HashMap<>();
-        for (Map.Entry<String, String> entry : httpHeaders) {
-            String key = entry.getKey();
-            List<String> values = getValues(headers, key);
-            values.add(entry.getValue());
-            headers.put(key, values);
-        }
-
-        return headers;
-    }
-
-    private static List<String> getValues(final Map<String, Iterable<String>> headers, final String key) {
-        if (headers.containsKey(key)) {
-            return (List<String>)headers.get(key);
-        }
-
-        return new ArrayList<>();
     }
 
     public static final class Builder extends DefaultHttpMessage.Builder<Builder> {

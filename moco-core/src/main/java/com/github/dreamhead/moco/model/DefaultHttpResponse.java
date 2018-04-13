@@ -8,8 +8,6 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpVersion;
 
-import java.util.Map;
-
 import static com.github.dreamhead.moco.model.MessageContent.content;
 
 @JsonDeserialize(builder = DefaultHttpResponse.Builder.class)
@@ -29,15 +27,10 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
     }
 
     public static HttpResponse newResponse(final FullHttpResponse response) {
-        ImmutableMap.Builder<String, String> headerBuilder = ImmutableMap.builder();
-        for (Map.Entry<String, String> entry : response.headers()) {
-            headerBuilder.put(entry);
-        }
-
         return builder()
                 .withVersion(toHttpProtocolVersion(response.protocolVersion()))
                 .withStatus(response.status().code())
-                .forHeaders(headerBuilder.build())
+                .withHeaders(toHeaders(response))
                 .withContent(content()
                         .withContent(new ByteBufInputStream(response.content()))
                         .build())

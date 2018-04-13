@@ -6,6 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -49,6 +52,30 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     @Override
     public MessageContent getContent() {
         return this.content;
+    }
+
+    protected static Map<String, Iterable<String>> toHeaders(final io.netty.handler.codec.http.HttpMessage message) {
+        return toHeaders(message.headers());
+    }
+
+    private static Map<String, Iterable<String>> toHeaders(final Iterable<Map.Entry<String, String>> httpHeaders) {
+        Map<String, Iterable<String>> headers = new HashMap<>();
+        for (Map.Entry<String, String> entry : httpHeaders) {
+            String key = entry.getKey();
+            List<String> values = getValues(headers, key);
+            values.add(entry.getValue());
+            headers.put(key, values);
+        }
+
+        return headers;
+    }
+
+    private static List<String> getValues(final Map<String, Iterable<String>> headers, final String key) {
+        if (headers.containsKey(key)) {
+            return (List<String>) headers.get(key);
+        }
+
+        return new ArrayList<>();
     }
 
     protected static abstract class Builder<T extends Builder> {
