@@ -19,7 +19,7 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         assertThat(new HttpRequestFailoverMatcher(request).match(request), is(true));
@@ -32,7 +32,7 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest another = DefaultHttpRequest.builder()
@@ -40,7 +40,7 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("different")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         assertThat(new HttpRequestFailoverMatcher(request).match(another), is(false));
@@ -54,7 +54,7 @@ public class HttpRequestMatcherTest {
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withUri("/foo")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest another = DefaultHttpRequest.builder()
@@ -63,7 +63,7 @@ public class HttpRequestMatcherTest {
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
                 .withUri("/bar")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         assertThat(new HttpRequestFailoverMatcher(request).match(another), is(false));
@@ -76,14 +76,14 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         assertThat(new HttpRequestFailoverMatcher(failover).match(request), is(true));
@@ -96,7 +96,7 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
+                .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
@@ -104,7 +104,7 @@ public class HttpRequestMatcherTest {
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
                 .withTextContent("proxy")
-                .forHeaders(of("Host", "localhost:12306"))
+                .withHeaders(of("Host", "localhost:12306"))
                 .build();
 
         assertThat(new HttpRequestFailoverMatcher(failover).match(request), is(true));

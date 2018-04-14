@@ -109,14 +109,6 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             return clazz.cast(this);
         }
 
-        public T forHeaders(final Map<String, String> headers) {
-            if (headers != null) {
-                this.headers = simpleValueToArray(headers);
-            }
-
-            return clazz.cast(this);
-        }
-
         public T withHeaders(final Map<String, ?> headers) {
             if (headers != null) {
                 this.headers = asHeaders(headers);
