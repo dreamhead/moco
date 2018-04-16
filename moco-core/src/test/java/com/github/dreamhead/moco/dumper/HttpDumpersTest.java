@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
-import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 import io.netty.util.internal.StringUtil;
@@ -85,7 +84,7 @@ public class HttpDumpersTest {
     private HttpMessage messageWithHeaders(final Map<String, String> headers) {
         return DefaultHttpResponse.builder()
                 .withHeaders(headers)
-                .withTextContent(MESSAGE_BODY)
+                .withContent(MESSAGE_BODY)
                 .build();
     }
 

@@ -99,7 +99,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             return clazz.cast(this);
         }
 
-        public T withTextContent(final String content) {
+        public T withContent(final String content) {
             this.content = content(content);
             return clazz.cast(this);
         }
