@@ -6,7 +6,7 @@ import com.google.common.collect.Iterables;
 import java.util.Map;
 
 public class Maps {
-    public static ImmutableMap<String, String> arrayValueToSimple(final Map<String, String[]> map) {
+    public static Map<String, String> arrayValueToSimple(final Map<String, String[]> map) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             builder.put(entry.getKey(), entry.getValue()[0]);
@@ -15,7 +15,7 @@ public class Maps {
         return builder.build();
     }
 
-    public static ImmutableMap<String, String[]> simpleValueToArray(final Map<String, String> map) {
+    public static Map<String, String[]> simpleValueToArray(final Map<String, String> map) {
         ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             builder.put(entry.getKey(), new String[]{entry.getValue()});
@@ -24,7 +24,7 @@ public class Maps {
         return builder.build();
     }
 
-    public static ImmutableMap<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
+    public static Map<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
         ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
         for (Map.Entry<String, Iterable<String>> entry : map.entrySet()) {
             Iterable<String> value = entry.getValue();

@@ -209,7 +209,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         }
 
         public DefaultHttpRequest build() {
-            return new DefaultHttpRequest(version, content, method, this.uri, this.headers, this.queries);
+            return new DefaultHttpRequest(this.getVersion(), this.getContent(), method, this.uri, this.getHeaders(), this.queries);
         }
     }
 }

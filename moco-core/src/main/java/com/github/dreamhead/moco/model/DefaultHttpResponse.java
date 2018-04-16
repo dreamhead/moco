@@ -54,7 +54,7 @@ public class DefaultHttpResponse extends DefaultHttpMessage implements HttpRespo
         }
 
         public DefaultHttpResponse build() {
-            return new DefaultHttpResponse(version, status, headers, content);
+            return new DefaultHttpResponse(this.getVersion(), status, this.getHeaders(), this.getContent());
         }
     }
 }

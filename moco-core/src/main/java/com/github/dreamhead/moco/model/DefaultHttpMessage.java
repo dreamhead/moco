@@ -15,7 +15,6 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Maps.iterableValueToArray;
 import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
 import static com.google.common.collect.ImmutableMap.copyOf;
-import static java.util.Collections.EMPTY_MAP;
 
 public abstract class DefaultHttpMessage implements HttpMessage {
     private final HttpProtocolVersion version;
@@ -81,9 +80,9 @@ public abstract class DefaultHttpMessage implements HttpMessage {
 
     protected static abstract class Builder<T extends Builder> {
         private final Class<T> clazz;
-        protected HttpProtocolVersion version;
-        protected MessageContent content;
-        protected ImmutableMap<String, String[]> headers;
+        private HttpProtocolVersion version;
+        private MessageContent content;
+        private Map<String, String[]> headers;
 
         public Builder() {
             this.clazz = getRealClass();
@@ -118,7 +117,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         }
 
         @SuppressWarnings("unchecked")
-        private ImmutableMap<String, String[]> asHeaders(final Map<String, ?> headers) {
+        private Map<String, String[]> asHeaders(final Map<String, ?> headers) {
             if (headers.isEmpty()) {
                 return ImmutableMap.of();
             }
@@ -129,7 +128,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             }
 
             if (value instanceof String[]) {
-                return copyOf((Map<String, String[]>)headers);
+                return (Map<String, String[]>)headers;
             }
 
             if (value instanceof Iterable) {
@@ -137,6 +136,18 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             }
 
             throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");
+        }
+
+        protected HttpProtocolVersion getVersion() {
+            return version;
+        }
+
+        protected MessageContent getContent() {
+            return content;
+        }
+
+        protected ImmutableMap<String, String[]> getHeaders() {
+            return copyOf(headers);
         }
     }
 }
