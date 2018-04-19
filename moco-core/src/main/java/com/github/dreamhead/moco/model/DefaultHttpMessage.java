@@ -147,6 +147,10 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         }
 
         protected ImmutableMap<String, String[]> getHeaders() {
+            if (headers == null) {
+                return ImmutableMap.of();
+            }
+
             return copyOf(headers);
         }
     }
