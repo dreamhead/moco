@@ -81,17 +81,18 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             public ImmutableMap<String, String> get() {
                 Optional<ImmutableMap<String, String>> forms =
                         new FormsRequestExtractor().extract(DefaultHttpRequest.this);
-                return toResult(forms);
+                return forms.or(emptyMapSupplier());
             }
         });
     }
 
-    private ImmutableMap<String, String> toResult(final Optional<ImmutableMap<String, String>> result) {
-        if (result.isPresent()) {
-            return result.get();
-        }
-
-        return ImmutableMap.of();
+    private Supplier<ImmutableMap<String, String>> emptyMapSupplier() {
+        return new Supplier<ImmutableMap<String, String>>() {
+            @Override
+            public ImmutableMap<String, String> get() {
+                return ImmutableMap.of();
+            }
+        };
     }
 
     private Supplier<ImmutableMap<String, String>> cookieSupplier() {
@@ -100,7 +101,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             public ImmutableMap<String, String> get() {
                 Optional<ImmutableMap<String, String>> cookies =
                         new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
-                return toResult(cookies);
+                return cookies.or(emptyMapSupplier());
             }
         });
     }
