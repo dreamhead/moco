@@ -30,7 +30,7 @@ public final class MountHandler extends AbstractHttpContentResponseHandler {
 
     @Override
     protected MessageContent responseContent(final HttpRequest httpRequest) {
-        FileResourceReader reader = new FileResourceReader(asResource(httpRequest), Optional.<Charset>absent());
+        FileResourceReader reader = new FileResourceReader(asResource(httpRequest));
         return reader.readFor(of(httpRequest));
     }
 

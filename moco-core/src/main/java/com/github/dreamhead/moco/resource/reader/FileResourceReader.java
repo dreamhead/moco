@@ -16,8 +16,8 @@ import static java.lang.String.format;
 public class FileResourceReader extends AbstractFileResourceReader {
     private final Optional<MocoConfig> config;
 
-    public FileResourceReader(final Resource file, final Optional<Charset> charset) {
-        this(file, charset, Optional.<MocoConfig>absent());
+    public FileResourceReader(final Resource file) {
+        this(file, Optional.<Charset>absent(), Optional.<MocoConfig>absent());
     }
 
     public FileResourceReader(final Resource file, final Optional<Charset> charset, final Optional<MocoConfig> config) {
