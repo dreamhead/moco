@@ -13,11 +13,11 @@ public abstract class BaseServer<T extends ResponseSetting<T>>
         extends BaseResponseSettingConfiguration<T> implements Server<T> {
     protected abstract T onRequestAttached(RequestMatcher matcher);
 
-    public T request(final RequestMatcher matcher) {
+    public final T request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
     }
 
-    public T request(final RequestMatcher... matchers) {
+    public final T request(final RequestMatcher... matchers) {
         checkNotNull(matchers, "Matcher should not be null");
         return request(or(head(matchers), tail(matchers)));
     }
