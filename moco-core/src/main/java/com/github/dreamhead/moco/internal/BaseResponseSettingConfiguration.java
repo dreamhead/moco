@@ -20,7 +20,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
 
     @SuppressWarnings("unchecked")
     protected BaseResponseSettingConfiguration() {
-        this.clazz = (Class<T>) new TypeToken<T>(getClass()) {}.getRawType();
+        this.clazz = (Class<T>) TypeToken.of(getClass()).getRawType();
     }
 
     private T self() {

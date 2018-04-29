@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
+import com.google.common.reflect.TypeToken;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +90,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
 
         @SuppressWarnings("unchecked")
         private Class<T> getRealClass() {
-            return (Class<T>) (((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+            return (Class<T>) TypeToken.of(getClass()).getRawType();
         }
 
         public T withVersion(final HttpProtocolVersion version) {
@@ -124,11 +124,11 @@ public abstract class DefaultHttpMessage implements HttpMessage {
 
             Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
             if (value instanceof String) {
-                return simpleValueToArray((Map<String, String>)headers);
+                return simpleValueToArray((Map<String, String>) headers);
             }
 
             if (value instanceof String[]) {
-                return (Map<String, String[]>)headers;
+                return (Map<String, String[]>) headers;
             }
 
             if (value instanceof Iterable) {
