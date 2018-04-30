@@ -84,28 +84,28 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         private MessageContent content;
         private Map<String, String[]> headers;
 
+        @SuppressWarnings("unchecked")
         public Builder() {
-            this.clazz = getRealClass();
+            this.clazz = (Class<T>) TypeToken.of(getClass()).getRawType();
         }
 
-        @SuppressWarnings("unchecked")
-        private Class<T> getRealClass() {
-            return (Class<T>) TypeToken.of(getClass()).getRawType();
+        private T self() {
+            return clazz.cast(this);
         }
 
         public T withVersion(final HttpProtocolVersion version) {
             this.version = version;
-            return clazz.cast(this);
+            return self();
         }
 
         public T withContent(final String content) {
             this.content = content(content);
-            return clazz.cast(this);
+            return self();
         }
 
         public T withContent(final MessageContent content) {
             this.content = content;
-            return clazz.cast(this);
+            return self();
         }
 
         public T withHeaders(final Map<String, ?> headers) {
@@ -113,7 +113,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
                 this.headers = asHeaders(headers);
             }
 
-            return clazz.cast(this);
+            return self();
         }
 
         @SuppressWarnings("unchecked")
