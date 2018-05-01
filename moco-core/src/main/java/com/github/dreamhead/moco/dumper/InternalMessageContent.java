@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.model.MessageContent;
 
 import java.nio.charset.Charset;
@@ -12,10 +13,8 @@ public class InternalMessageContent {
     private byte[] content;
     private Charset charset;
 
-    public InternalMessageContent() {
-    }
-
-    public InternalMessageContent(byte[] content, Charset charset) {
+    public InternalMessageContent(@JsonProperty("content") final byte[] content,
+                                  @JsonProperty("charset") Charset charset) {
         this.content = content;
         this.charset = charset;
     }
