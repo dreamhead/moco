@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class InternalApisTest {
         assertThat(matcher.match(requestByUri("targetshello")), is(false));
     }
 
-    private DefaultHttpRequest requestByUri(final String uri) {
+    private HttpRequest requestByUri(final String uri) {
         return DefaultHttpRequest.builder().withUri(uri).build();
     }
 }
