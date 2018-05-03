@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
@@ -608,6 +609,22 @@ public class MocoTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 helper.get(remoteUrl("/foo"));
+            }
+        });
+    }
+
+    @Test
+    public void should_set_multiple_header_with_same_name() throws Exception {
+        server.response(header("foo", "bar"), header("foo", "another"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                HttpResponse response = helper.getResponse(root());
+                Header[] headers = response.getHeaders("foo");
+                assertThat(headers.length, is(2));
+                assertThat(headers[0].getValue(), is("bar"));
+                assertThat(headers[1].getValue(), is("another"));
             }
         });
     }
