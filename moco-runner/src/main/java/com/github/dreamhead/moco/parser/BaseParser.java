@@ -13,7 +13,7 @@ public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(ImmutableList<SessionSetting> read,
                                       Optional<Integer> port, MocoConfig... configs);
 
-    public T parseServer(final ImmutableList<InputStream> streams, final Optional<Integer> port,
+    public final T parseServer(final ImmutableList<InputStream> streams, final Optional<Integer> port,
                          final MocoConfig... configs) {
         ImmutableList<SessionSetting> settings = Jsons.toObjects(streams, SessionSetting.class);
         return createServer(settings, port, configs);
