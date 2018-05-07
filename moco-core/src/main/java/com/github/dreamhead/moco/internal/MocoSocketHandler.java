@@ -48,7 +48,7 @@ public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf
     }
 
     @Override
-    public void channelReadComplete(final ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(final ChannelHandlerContext ctx) {
         ctx.flush();
     }
 
