@@ -18,22 +18,22 @@ public class ContentHandler extends AbstractContentResponseHandler {
         this.resource = resource;
     }
 
-    public ContentResource getResource() {
+    public final ContentResource getResource() {
         return resource;
     }
 
     @Override
-    protected MessageContent responseContent(final Request request) {
+    protected final MessageContent responseContent(final Request request) {
         return this.resource.readFor(of(request));
     }
 
     @Override
-    protected MediaType getContentType(final HttpRequest request) {
+    protected final MediaType getContentType(final HttpRequest request) {
         return resource.getContentType(request);
     }
 
     @Override
-    public ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler apply(final MocoConfig config) {
         ResponseHandler handler = super.apply(config);
         if (handler != this) {
             return handler;
