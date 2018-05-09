@@ -18,7 +18,7 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
     private final RequestExtractor<String[]> extractor = new HeaderRequestExtractor(COOKIE);
 
     @Override
-    protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
+    protected final Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         Optional<String[]> cookieString = extractor.extract(request);
         if (!cookieString.isPresent()) {
             return absent();
