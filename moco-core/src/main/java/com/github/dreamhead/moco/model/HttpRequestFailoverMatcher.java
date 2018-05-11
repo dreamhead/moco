@@ -7,7 +7,7 @@ import com.google.common.base.Strings;
 
 import java.util.Map;
 
-public class HttpRequestFailoverMatcher {
+public final class HttpRequestFailoverMatcher {
     private final HttpRequest source;
 
     public HttpRequestFailoverMatcher(final HttpRequest source) {
