@@ -20,7 +20,7 @@ public class ProxyResponseHandler extends AbstractProxyResponseHandler implement
     }
 
     @Override
-    protected Optional<String> doRemoteUrl(final HttpRequest request) {
+    protected final Optional<String> doRemoteUrl(final HttpRequest request) {
         try {
             URL targetUrl = url.apply(request);
             if (targetUrl != null) {
