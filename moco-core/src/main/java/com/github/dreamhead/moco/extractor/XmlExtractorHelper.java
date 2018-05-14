@@ -11,7 +11,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class XmlExtractorHelper {
-    public Optional<InputSource> extractAsInputSource(final Request request, final ContentRequestExtractor extractor) {
+    public final Optional<InputSource> extractAsInputSource(final Request request, final ContentRequestExtractor extractor) {
         Optional<MessageContent> content = extractor.extract(request);
         if (content.isPresent()) {
             return of(new InputSource(new ByteArrayInputStream(content.get().getContent())));
