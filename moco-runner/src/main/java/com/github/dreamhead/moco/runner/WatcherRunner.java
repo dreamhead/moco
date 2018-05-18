@@ -12,13 +12,13 @@ public class WatcherRunner implements Runner {
     }
 
     @Override
-    public void run() {
+    public final void run() {
         this.runner.run();
         this.watcher.start();
     }
 
     @Override
-    public void stop() {
+    public final void stop() {
         this.watcher.stop();
         this.runner.stop();
     }
