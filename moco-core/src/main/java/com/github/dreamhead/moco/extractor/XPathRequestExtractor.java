@@ -34,7 +34,7 @@ public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
     }
 
     @Override
-    protected Optional<String[]> doExtract(final HttpRequest request) {
+    protected final Optional<String[]> doExtract(final HttpRequest request) {
         try {
             Optional<InputSource> source = helper.extractAsInputSource(request, extractor);
             if (!source.isPresent()) {
