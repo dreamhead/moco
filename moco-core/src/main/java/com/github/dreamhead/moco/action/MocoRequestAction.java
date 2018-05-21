@@ -15,18 +15,18 @@ import static com.google.common.base.Optional.of;
 public abstract class MocoRequestAction implements MocoEventAction {
     private final Resource url;
 
-    protected abstract HttpRequestBase createRequest(final String url, final Request request);
+    protected abstract HttpRequestBase createRequest(String url, Request request);
 
     protected MocoRequestAction(final Resource url) {
         this.url = url;
     }
 
-    protected Resource getUrl() {
+    protected final Resource getUrl() {
         return url;
     }
 
     @Override
-    public void execute(final Request request) {
+    public final void execute(final Request request) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             doExecute(client, request);
         } catch (IOException e) {
