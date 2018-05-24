@@ -9,9 +9,8 @@ import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
 import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.failover;
-import static com.github.dreamhead.moco.Moco.playback;
 import static com.github.dreamhead.moco.Moco.from;
-import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.playback;
 
 @JsonDeserialize(using = ProxyContainerDeserializer.class)
 public class ProxyContainer {
