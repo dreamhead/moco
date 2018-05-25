@@ -22,7 +22,7 @@ public final class VerificationData {
         return format(mismatchFormat, expected, actualSize);
     }
 
-    public final int matchedSize() {
+    public int matchedSize() {
         return from(requests).filter(matched()).size();
     }
 
