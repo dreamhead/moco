@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class RestSettingBuilders extends AbstractResponseBase<RestSetting>
         implements RestSettingBuilder, ResponseBase<RestSetting> {
-    protected abstract RestSetting createSetting(final Optional<RequestMatcher> matcher, final ResponseHandler handler);
+    protected abstract RestSetting createSetting(Optional<RequestMatcher> matcher, ResponseHandler handler);
 
     private RequestMatcher matcher;
 
