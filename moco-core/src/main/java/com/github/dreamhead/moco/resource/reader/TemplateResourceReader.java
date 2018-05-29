@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.net.MediaType;
@@ -17,6 +18,7 @@ import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +27,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
@@ -42,6 +46,16 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
+    private static final List<String> RESERVED_NAME = ImmutableList.of("req");
+
+    public static String checkValidVariableName(final String name) {
+        if (!RESERVED_NAME.contains(
+                checkNotNullOrEmpty(name, "Template variable name should not be null"))) {
+            return name;
+        }
+
+        throw new IllegalArgumentException("Template variable name should not be null");
+    }
 
     public TemplateResourceReader(final ContentResource template,
                                   final ImmutableMap<String, ? extends Variable> variables) {

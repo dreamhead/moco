@@ -61,6 +61,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.templateResourc
 import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
+import static com.github.dreamhead.moco.resource.reader.TemplateResourceReader.checkValidVariableName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
@@ -534,7 +535,7 @@ public final class Moco {
 
     public static <T> ContentResource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
         return templateResource(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNullOrEmpty(name, "Template variable name should not be null"),
+                ImmutableMap.of(checkValidVariableName(name),
                         new ExtractorVariable<>(checkNotNull(extractor, "Template variable extractor should not be null")))
         );
     }
@@ -542,9 +543,9 @@ public final class Moco {
     public static <ExtractorType1, ExtractorType2> ContentResource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
                                                                             final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(checkNotNull(template, "Template should not be null"),
-                ImmutableMap.of(checkNotNullOrEmpty(name1, "Template variable name should not be null"),
+                ImmutableMap.of(checkValidVariableName(name1),
                         new ExtractorVariable<>(checkNotNull(extractor1, "Template variable extractor should not be null")),
-                        checkNotNullOrEmpty(name2, "Template variable name should not be null"),
+                        checkValidVariableName(name2),
                         new ExtractorVariable<>(checkNotNull(extractor2, "Template variable extractor should not be null")))
         );
     }
