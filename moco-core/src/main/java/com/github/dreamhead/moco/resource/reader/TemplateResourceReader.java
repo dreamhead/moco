@@ -17,6 +17,8 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateMethodModelEx;
+import freemarker.template.TemplateModelException;
 import freemarker.template.Version;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -36,6 +40,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.getVersion();
     private static final String TEMPLATE_NAME = "template";
+    private static final List<String> RESERVED_NAME = ImmutableList.of("req", "now");
 
     private static Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
 
@@ -46,7 +51,7 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
-    private static final List<String> RESERVED_NAME = ImmutableList.of("req");
+
 
     public static String checkValidVariableName(final String name) {
         if (!RESERVED_NAME.contains(
@@ -108,6 +113,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     private ImmutableMap<String, Object> variables(final Request request) {
         return ImmutableMap.<String, Object>builder()
                 .putAll(toVariableString(request))
+                .put("now", new NowMethod())
                 .put("req", toTemplateRequest(request))
                 .build();
     }
@@ -128,5 +134,15 @@ public class TemplateResourceReader implements ContentResourceReader {
     @Override
     public MediaType getContentType(final HttpRequest request) {
         return template.getContentType(request);
+    }
+
+    private static class NowMethod implements TemplateMethodModelEx {
+
+        @Override
+        public Object exec(final List arguments) {
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat(arguments.get(0).toString());
+            return format.format(date);
+        }
     }
 }

@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
@@ -406,6 +409,20 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 assertThat(helper.get(remoteUrl("/redirectTemplate")), is("foo"));
                 assertThat(helper.get(remoteUrl("/anything")), is("foo"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_now() throws Exception {
+        server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                Date date = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                assertThat(helper.get(remoteUrl("/template")), is(format.format(date)));
             }
         });
     }
