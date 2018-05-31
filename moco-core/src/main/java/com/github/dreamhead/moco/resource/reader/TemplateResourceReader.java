@@ -59,7 +59,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return name;
         }
 
-        throw new IllegalArgumentException("Template variable name should not be null");
+        throw new IllegalArgumentException("Template variable name should not be same with reserved name");
     }
 
     public TemplateResourceReader(final ContentResource template,
@@ -137,7 +137,6 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private static class NowMethod implements TemplateMethodModelEx {
-
         @Override
         public Object exec(final List arguments) {
             Date date = new Date();
