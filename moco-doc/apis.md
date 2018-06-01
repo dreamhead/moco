@@ -57,13 +57,14 @@ Table of Contents
   * [JSON Response](#json-response)
 * [Mount](#mount)
 * [Template(Beta)](#templatebeta)
-  * [Version](#version-2)
-  * [Method](#method)
-  * [Content](#content-2)
-  * [Header](#header-2)
-  * [Query](#query)
-  * [Form](#form-1)
-  * [Cookie](#cookie-2)
+  * [Request](#request-2)
+    * [Version](#version-2)
+    * [Method](#method)
+    * [Content](#content-2)
+    * [Header](#header-2)
+    * [Query](#query)
+    * [Form](#form-1)
+    * [Cookie](#cookie-2)
   * [Custom Variable](#custom-variable)
   * [Redirect](#redirect-1)
   * [File Name Template](#file-name-template)
@@ -1856,7 +1857,11 @@ Sometimes, we need to customize our response based on something, e.g. response s
 
 The goal can be reached by template:
 
-### Version
+### Request
+
+You can get request information with `req` in template.
+
+#### Version
 **@Since 0.8**
 
 With `req.version`, request version can be retrieved in template.
@@ -1884,7 +1889,7 @@ server.request(by(uri("/template"))).response(template("${req.version}"));
 }
 ```
 
-### Method
+#### Method
 **@Since 0.8**
 
 Request method is identified by `req.method`.
@@ -1910,7 +1915,7 @@ server.request(by(uri("/template"))).response(template("${req.method}"));
 }
 ```
 
-### Content
+#### Content
 **@Since 0.8**
 
 All request content can be used in template with `req.content`
@@ -1936,7 +1941,7 @@ server.request(by(uri("/template"))).response(template("${req.content}"));
 }
 ```
 
-### Header
+#### Header
 **@Since 0.8**
 
 Header is another important element in template and we can use `req.headers` for headers.
@@ -1962,7 +1967,7 @@ server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
 }
 ```
 
-### Query
+#### Query
 **@Since 0.8**
 
 `req.queries` helps us to extract request query.
@@ -1988,7 +1993,7 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 }
 ```
 
-### Form
+#### Form
 **@Since 0.9.1**
 
 `req.forms` can extract form value from request.
@@ -2014,7 +2019,7 @@ server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
 }
 ```
 
-### Cookie
+#### Cookie
 **@Since 0.9.1**
 
 Cookie from request can extracted by `req.cookies`.
@@ -2104,6 +2109,34 @@ server.request(by(uri("/template"))).response(template("${foo}", "foo", jsonPath
 ```
 
 Other extractors, e.g. xpath also work here.
+
+### Template Function
+
+#### now
+
+**@Since will be at next release**
+
+Current time can retrieved by 'now' function and a date format string should be passed as argument.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${now('yyyy-MM-dd')}")
+        }
+    }
+}
 
 ### Redirect
 **@Since 0.10.2**
