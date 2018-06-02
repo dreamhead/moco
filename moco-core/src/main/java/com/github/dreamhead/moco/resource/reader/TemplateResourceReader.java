@@ -32,6 +32,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
@@ -40,7 +41,7 @@ import static com.google.common.collect.ImmutableMap.copyOf;
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.getVersion();
     private static final String TEMPLATE_NAME = "template";
-    private static final List<String> RESERVED_NAME = ImmutableList.of("req", "now");
+    private static final List<String> RESERVED_NAME = ImmutableList.of("req", "now", "random");
 
     private static Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
 
@@ -114,6 +115,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         return ImmutableMap.<String, Object>builder()
                 .putAll(toVariableString(request))
                 .put("now", new NowMethod())
+                .put("random", new RandomMethod())
                 .put("req", toTemplateRequest(request))
                 .build();
     }
@@ -142,6 +144,15 @@ public class TemplateResourceReader implements ContentResourceReader {
             Date date = new Date();
             SimpleDateFormat format = new SimpleDateFormat(arguments.get(0).toString());
             return format.format(date);
+        }
+    }
+
+    private static class RandomMethod implements TemplateMethodModelEx {
+        private Random random = new Random();
+
+        @Override
+        public Object exec(List arguments) {
+            return random.nextDouble();
         }
     }
 }
