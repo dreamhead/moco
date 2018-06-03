@@ -15,6 +15,7 @@ import freemarker.cache.TemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
+import freemarker.template.SimpleNumber;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateMethodModelEx;
@@ -148,11 +149,30 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private static class RandomMethod implements TemplateMethodModelEx {
-        private Random random = new Random();
+
 
         @Override
         public Object exec(List arguments) {
+            Optional<Long> seed = getSeed(arguments);
+            Random random = getRandom(seed);
             return random.nextDouble();
+        }
+
+        private Random getRandom(final Optional<Long> seed) {
+            if (seed.isPresent()) {
+                return new Random(seed.get());
+            }
+            return new Random();
+        }
+
+        private Optional<Long> getSeed(List arguments) {
+            if (arguments.size() > 0) {
+
+                SimpleNumber seed = (SimpleNumber)arguments.get(0);
+                return Optional.of(seed.getAsNumber().longValue());
+            }
+
+            return Optional.absent();
         }
     }
 }

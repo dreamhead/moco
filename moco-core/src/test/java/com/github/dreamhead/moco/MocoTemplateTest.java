@@ -27,6 +27,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -438,6 +439,24 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 String response = helper.get(remoteUrl("/random"));
                 try {
                     Double.parseDouble(response);
+                } catch (NumberFormatException e) {
+                    fail();
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_random_with_seed() throws Exception {
+        server.request(by(uri("/random"))).response(template("${random(100)}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String response = helper.get(remoteUrl("/random"));
+                try {
+                    double result = Double.parseDouble(response);
+                    assertThat(result, lessThan(1d));
                 } catch (NumberFormatException e) {
                     fail();
                 }
