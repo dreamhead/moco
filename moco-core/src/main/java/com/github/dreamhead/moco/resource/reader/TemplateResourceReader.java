@@ -16,6 +16,7 @@ import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleNumber;
+import freemarker.template.SimpleScalar;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateMethodModelEx;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -149,13 +152,28 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private static class RandomMethod implements TemplateMethodModelEx {
-
-
         @Override
         public Object exec(List arguments) {
             Optional<Long> seed = getSeed(arguments);
             Random random = getRandom(seed);
+            Optional<? extends NumberFormat> format = getFormat(arguments);
+            if (format.isPresent()) {
+                return format.get().format(random.nextDouble());
+            }
             return random.nextDouble();
+        }
+
+        private Optional<? extends NumberFormat> getFormat(final List arguments) {
+            if (arguments.size() > 0) {
+
+                Object last = arguments.get(arguments.size() - 1);
+                if (last instanceof SimpleScalar) {
+                    SimpleScalar lastArgument = (SimpleScalar) last;
+                    return Optional.of(new DecimalFormat(lastArgument.toString()));
+                }
+            }
+
+            return Optional.absent();
         }
 
         private Random getRandom(final Optional<Long> seed) {
@@ -166,8 +184,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         private Optional<Long> getSeed(List arguments) {
-            if (arguments.size() > 0) {
-
+            if (arguments.size() > 0 && arguments.get(0) instanceof SimpleNumber) {
                 SimpleNumber seed = (SimpleNumber)arguments.get(0);
                 return Optional.of(seed.getAsNumber().longValue());
             }

@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
@@ -455,6 +456,27 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 String response = helper.get(remoteUrl("/random"));
                 try {
+                    double result = Double.parseDouble(response);
+                    assertThat(result, lessThan(1d));
+                } catch (NumberFormatException e) {
+                    fail();
+                }
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_random_with_data_format() throws Exception {
+        server.request(by(uri("/random"))).response(template("${random('###.######')}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String response = helper.get(remoteUrl("/random"));
+                try {
+                    String target = Splitter.on('.').splitToList(response).get(1);
+                    assertThat(target.length(), is(6));
+
                     double result = Double.parseDouble(response);
                     assertThat(result, lessThan(1d));
                 } catch (NumberFormatException e) {
