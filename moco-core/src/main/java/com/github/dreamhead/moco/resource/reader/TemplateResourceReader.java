@@ -20,9 +20,7 @@ import freemarker.template.SimpleScalar;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateMethodModelEx;
-import freemarker.template.TemplateModelException;
 import freemarker.template.Version;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
