@@ -40,6 +40,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -451,7 +452,9 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 String response = helper.get(remoteUrl("/random"));
                 try {
-                    Double.parseDouble(response);
+                    double result = Double.parseDouble(response);
+                    assertThat(result, greaterThan(0d));
+                    assertThat(result, lessThan(1d));
                 } catch (NumberFormatException e) {
                     fail();
                 }
