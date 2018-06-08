@@ -463,7 +463,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_generate_response_with_random_with_seed() throws Exception {
+    public void should_generate_response_with_random_with_range() throws Exception {
         server.request(by(uri("/random"))).response(template("${random(100)}"));
 
         running(server, new Runnable() {
@@ -472,7 +472,8 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 String response = helper.get(remoteUrl("/random"));
                 try {
                     double result = Double.parseDouble(response);
-                    assertThat(result, lessThan(1d));
+                    assertThat(result, lessThan(100d));
+                    assertThat(result, greaterThan(0d));
                 } catch (NumberFormatException e) {
                     fail();
                 }
