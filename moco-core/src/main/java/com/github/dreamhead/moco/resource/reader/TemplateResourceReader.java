@@ -151,7 +151,7 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private static class RandomMethod implements TemplateMethodModelEx {
         @Override
-        public Object exec(List arguments) {
+        public Object exec(final List arguments) {
             Optional<Long> range = getRange(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
             double result = new Random().nextDouble() * range.or(1L);
@@ -159,10 +159,11 @@ public class TemplateResourceReader implements ContentResourceReader {
             if (format.isPresent()) {
                 return format.get().format(result);
             }
+
             return result;
         }
 
-        private Optional<? extends NumberFormat> getFormat(final List arguments) {
+        private Optional<? extends NumberFormat> getFormat(final List<?> arguments) {
             if (arguments.size() > 0) {
                 Object last = arguments.get(arguments.size() - 1);
                 if (last instanceof SimpleScalar) {
@@ -174,7 +175,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return Optional.absent();
         }
 
-        private Optional<Long> getRange(List arguments) {
+        private Optional<Long> getRange(final List<?> arguments) {
             if (arguments.size() > 0 && arguments.get(0) instanceof SimpleNumber) {
                 SimpleNumber seed = (SimpleNumber)arguments.get(0);
                 return Optional.of(seed.getAsNumber().longValue());
