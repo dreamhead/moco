@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpResponseException;
@@ -439,6 +440,19 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 Date date = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 assertThat(helper.get(remoteUrl("/template")), is(format.format(date)));
+            }
+        });
+    }
+
+    @Test
+    public void should_throw_exception_for_now_without_format() throws Exception {
+        server.request(by(uri("/template"))).response(template("${now()}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse response = helper.getResponse(remoteUrl("/template"));
+                assertThat(response.getStatusLine().getStatusCode(), is(400));
             }
         });
     }

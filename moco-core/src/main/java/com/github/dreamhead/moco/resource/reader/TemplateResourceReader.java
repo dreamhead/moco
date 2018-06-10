@@ -143,6 +143,10 @@ public class TemplateResourceReader implements ContentResourceReader {
     private static class NowMethod implements TemplateMethodModelEx {
         @Override
         public Object exec(final List arguments) {
+            if (arguments.size() < 1) {
+                throw new IllegalArgumentException("Date format is required");
+            }
+
             Date date = new Date();
             SimpleDateFormat format = new SimpleDateFormat(arguments.get(0).toString());
             return format.format(date);
