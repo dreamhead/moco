@@ -182,7 +182,11 @@ public class TemplateResourceReader implements ContentResourceReader {
         private Optional<Long> getRange(final List<?> arguments) {
             if (arguments.size() > 0 && arguments.get(0) instanceof SimpleNumber) {
                 SimpleNumber seed = (SimpleNumber)arguments.get(0);
-                return Optional.of(seed.getAsNumber().longValue());
+                long reference = seed.getAsNumber().longValue();
+                if (reference <= 0) {
+                    throw new IllegalArgumentException("Random range should be greater than 0");
+                }
+                return Optional.of(reference);
             }
 
             return Optional.absent();

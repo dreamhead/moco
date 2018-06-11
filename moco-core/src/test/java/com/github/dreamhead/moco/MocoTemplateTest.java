@@ -515,4 +515,17 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_throw_exception_for_random_with_range_less_than_0() throws Exception {
+        server.request(by(uri("/template"))).response(template("${random(-10)}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                HttpResponse response = helper.getResponse(remoteUrl("/template"));
+                assertThat(response.getStatusLine().getStatusCode(), is(400));
+            }
+        });
+    }
 }
