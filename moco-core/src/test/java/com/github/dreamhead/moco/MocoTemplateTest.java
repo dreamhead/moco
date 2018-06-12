@@ -517,6 +517,27 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_generate_response_with_random_with_range_and_data_format() throws Exception {
+        server.request(by(uri("/random"))).response(template("${random(100, '###.######')}"));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                String response = helper.get(remoteUrl("/random"));
+                try {
+                    double result = Double.parseDouble(response);
+                    assertThat(result, lessThan(100d));
+                    assertThat(result, greaterThan(0d));
+                    String target = Splitter.on('.').splitToList(response).get(1);
+                    assertThat(target.length(), is(6));
+                } catch (NumberFormatException e) {
+                    fail();
+                }
+            }
+        });
+    }
+
+    @Test
     public void should_throw_exception_for_random_with_range_less_than_0() throws Exception {
         server.request(by(uri("/template"))).response(template("${random(-10)}"));
 
