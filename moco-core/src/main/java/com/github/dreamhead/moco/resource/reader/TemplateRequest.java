@@ -87,6 +87,6 @@ public class TemplateRequest {
     }
 
     public Object getJson() {
-        return Jsons.toObject(this.request.getContent().toString());
+        return Jsons.toObject(this.request.getContent().toString(), Object.class);
     }
 }

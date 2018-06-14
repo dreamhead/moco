@@ -46,9 +46,9 @@ public final class Jsons {
         }
     }
 
-    public static Object toObject(final String value) {
+    public static <T> T toObject(final String value, final Class<T> clazz) {
         try {
-            return mapper.readValue(value, Object.class);
+            return mapper.readValue(value, clazz);
         } catch (IOException e) {
             throw new MocoException(e);
         }
