@@ -195,7 +195,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             if (reference <= 0) {
                 throw new IllegalArgumentException("Random range should be greater than 0");
             }
-            
+
             return Optional.of(reference);
         }
     }

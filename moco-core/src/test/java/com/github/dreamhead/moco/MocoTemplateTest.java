@@ -549,4 +549,15 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_return_json() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.json.code} ${req.json.message}"));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/template"), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("1 message"));
+            }
+        });
+    }
 }

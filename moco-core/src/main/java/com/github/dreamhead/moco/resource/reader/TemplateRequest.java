@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
@@ -83,5 +84,9 @@ public class TemplateRequest {
         }
 
         throw new IllegalArgumentException("Request is not HTTP request");
+    }
+
+    public Object getJson() {
+        return Jsons.toObject(this.request.getContent().toString());
     }
 }
