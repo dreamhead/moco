@@ -560,4 +560,16 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test
+    public void should_throw_exception_for_unknown_json() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.json.code} ${req.json.message}"));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws IOException {
+                HttpResponse response = helper.getResponse(remoteUrl("/template"));
+                assertThat(response.getStatusLine().getStatusCode(), is(400));
+            }
+        });
+    }
 }
