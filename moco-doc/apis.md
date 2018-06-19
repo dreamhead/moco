@@ -1949,7 +1949,7 @@ Header is another important element in template and we can use `req.headers` for
 * Java
 
 ```java
-server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
+server.request(by(uri("/template"))).response(template("${req.headers['foo']}"));
 ```
 
 * JSON
@@ -1975,7 +1975,7 @@ server.request(by(uri("/template"))).response(template("${req.headers['foo']"));
 * Java
 
 ```java
-server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
+server.request(by(uri("/template"))).response(template("${req.queries['foo']}"));
 ```
 
 * JSON
@@ -2001,7 +2001,7 @@ server.request(by(uri("/template"))).response(template("${req.queries['foo']"));
 * Java
 
 ```java
-server.request(by(uri("/template"))).response(template("${req.forms['foo']"));
+server.request(by(uri("/template"))).response(template("${req.forms['foo']}"));
 ```
 
 * JSON
@@ -2027,7 +2027,7 @@ Cookie from request can extracted by `req.cookies`.
 * Java
 
 ```java
-server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
+server.request(by(uri("/template"))).response(template("${req.cookies['foo']}"));
 ```
 
 * JSON
@@ -2044,6 +2044,32 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']"));
     }
 }
 ```
+
+#### JSON
+
+If your request is a JSON request, you can use `req.json` to visit your json object.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${req.json.foo}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.json.foo}"
+        }
+    }
+}
+```
+
 
 ### Custom Variable
 **@Since 0.9.1**
@@ -2137,6 +2163,7 @@ server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
         }
     }
 }
+```
 
 ### Redirect
 **@Since 0.10.2**
