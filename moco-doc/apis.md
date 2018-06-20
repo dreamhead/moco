@@ -2046,6 +2046,7 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']}"))
 ```
 
 #### JSON
+**@Since will be at next release**
 
 If your request is a JSON request, you can use `req.json` to visit your json object.
 
