@@ -572,4 +572,9 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             }
         });
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_reserved_name_as_variable_nem() {
+        server.request(by(uri("/template"))).response(template("${random}", "random", "bar"));
+    }
 }
