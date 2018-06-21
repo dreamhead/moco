@@ -2160,7 +2160,103 @@ server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
     },
     "response": {
         "text": {
-            "template": "${now('yyyy-MM-dd')}")
+            "template": "${now('yyyy-MM-dd')}"
+        }
+    }
+}
+```
+
+#### random
+
+**@Since will be at next release**
+
+`random` will generate a random number. If you didn't pass any argument, the generated random will be between 0 and 1.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${random()}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${random()}"
+        }
+    }
+}
+```
+
+The first argument is random number range which means the generated number will be between 0 and range.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${random(100)}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${random(100)}"
+        }
+    }
+}
+```
+
+The last argument is number format.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${random(100, '###.###')}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${random(100, '###.###')}"
+        }
+    }
+}
+```
+
+You can also use number format directly without range.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${random('###.###')}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${random('###.###')}"
         }
     }
 }
