@@ -93,4 +93,11 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("response_with_template_name.json");
         assertThat(helper.get(root()), is("foo.response"));
     }
+
+    @Test
+    public void should_return_json_field_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        String content = helper.postContent(remoteUrl("/json_template"), "{\"foo\":\"bar\"}");
+        assertThat(content, is("bar"));
+    }
 }

@@ -96,5 +96,15 @@
                 "template": "${req.queries['foo']}"
             }
         }
+    },
+    {
+        "request": {
+            "uri": "/json_template"
+        },
+        "response": {
+            "text": {
+                "template": "${req.json.foo}"
+            }
+        }
     }
 ]
