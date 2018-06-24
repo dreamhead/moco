@@ -2160,7 +2160,7 @@ server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
     },
     "response": {
         "text": {
-            "template": "${now('yyyy-MM-dd')}"
+            "template": "${now(\"yyyy-MM-dd\")}"
         }
     }
 }

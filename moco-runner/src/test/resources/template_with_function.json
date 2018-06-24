@@ -1,0 +1,12 @@
+[
+  {
+  "request": {
+    "uri": "/now_template"
+  },
+  "response": {
+    "text": {
+      "template": "${now(\"yyyy-MM-dd\")}"
+    }
+  }
+}
+]
