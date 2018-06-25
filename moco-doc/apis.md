@@ -2233,7 +2233,7 @@ server.request(by(uri("/template"))).response(template("${random(100, '###.###')
     },
     "response": {
         "text": {
-            "template": "${random(100, '###.###')}"
+            "template": "${random(100, \"###.###\")}"
         }
     }
 }
@@ -2256,7 +2256,7 @@ server.request(by(uri("/template"))).response(template("${random('###.###')}"));
     },
     "response": {
         "text": {
-            "template": "${random('###.###')}"
+            "template": "${random(\"###.###\")}"
         }
     }
 }

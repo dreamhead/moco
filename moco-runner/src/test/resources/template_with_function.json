@@ -1,11 +1,21 @@
 [
-  {
+{
   "request": {
     "uri": "/now_template"
   },
   "response": {
     "text": {
       "template": "${now(\"yyyy-MM-dd\")}"
+    }
+  }
+},
+{
+  "request": {
+    "uri": "/random_template_with_range_and_format"
+  },
+  "response": {
+    "text": {
+      "template": "${random(100, \"###.######\")}"
     }
   }
 }

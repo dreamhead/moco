@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.base.Splitter;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -14,6 +15,8 @@ import java.util.Date;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
 public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
@@ -109,5 +112,16 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(helper.get(remoteUrl("/now_template")), is(format.format(date)));
+    }
+
+    @Test
+    public void should_return_random_with_range_and_format_from_template() throws IOException {
+        runWithConfiguration("template_with_function.json");
+        String response = helper.get(remoteUrl("/random_template_with_range_and_format"));
+        double result = Double.parseDouble(response);
+        assertThat(result, lessThan(100d));
+        assertThat(result, greaterThan(0d));
+        String target = Splitter.on('.').splitToList(response).get(1);
+        assertThat(target.length(), is(6));
     }
 }
