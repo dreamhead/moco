@@ -18,5 +18,15 @@
       "template": "${random(100, \"###.######\")}"
     }
   }
+},
+{
+  "request": {
+    "uri": "/random_template_with_range"
+  },
+  "response": {
+    "text": {
+      "template": "${random(100)}"
+    }
+  }
 }
 ]
