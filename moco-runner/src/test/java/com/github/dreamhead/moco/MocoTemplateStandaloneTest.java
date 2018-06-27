@@ -133,4 +133,12 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(result, lessThan(100d));
         assertThat(result, greaterThan(0d));
     }
+
+    @Test
+    public void should_return_random_with_format_from_template() throws IOException {
+        runWithConfiguration("template_with_function.json");
+        String response = helper.get(remoteUrl("/random_template_with_format"));
+        String target = Splitter.on('.').splitToList(response).get(1);
+        assertThat(target.length(), is(6));
+    }
 }

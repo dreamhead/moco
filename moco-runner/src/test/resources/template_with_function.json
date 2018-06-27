@@ -28,5 +28,15 @@
       "template": "${random(100)}"
     }
   }
+},
+{
+  "request": {
+    "uri": "/random_template_with_format"
+  },
+  "response": {
+    "text": {
+      "template": "${random(\"###.######\")}"
+    }
+  }
 }
 ]
