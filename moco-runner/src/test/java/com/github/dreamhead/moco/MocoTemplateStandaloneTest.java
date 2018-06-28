@@ -141,4 +141,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String target = Splitter.on('.').splitToList(response).get(1);
         assertThat(target.length(), is(6));
     }
+
+    @Test
+    public void should_return_random_without_arg_from_template() throws IOException {
+        runWithConfiguration("template_with_function.json");
+        String response = helper.get(remoteUrl("/random_template_without_arg"));
+        double result = Double.parseDouble(response);
+        assertThat(result, lessThan(1d));
+        assertThat(result, greaterThan(0d));
+    }
 }

@@ -38,5 +38,15 @@
       "template": "${random(\"###.######\")}"
     }
   }
+},
+{
+  "request": {
+    "uri": "/random_template_without_arg"
+  },
+  "response": {
+    "text": {
+      "template": "${random()}"
+    }
+  }
 }
 ]
