@@ -11,7 +11,7 @@ import org.apache.commons.cli.ParseException;
 
 public abstract class StartArgsParser {
     protected abstract Options options();
-    protected abstract StartArgs parseArgs(final CommandLine cmd);
+    protected abstract StartArgs parseArgs(CommandLine cmd);
 
     public StartArgs parse(final String[] args) {
         try {
