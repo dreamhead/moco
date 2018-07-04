@@ -17,7 +17,7 @@ public abstract class SimpleRestSetting implements RestSetting {
     private final Optional<RequestMatcher> matcher;
     private final ResponseHandler handler;
 
-    protected abstract RequestMatcher getBaseRequestMatcher(final RestIdMatcher resourceName);
+    protected abstract RequestMatcher getBaseRequestMatcher(RestIdMatcher resourceName);
 
     public SimpleRestSetting(final HttpMethod method,
                              final Optional<RequestMatcher> matcher, final ResponseHandler handler) {
