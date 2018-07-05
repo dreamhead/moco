@@ -44,7 +44,7 @@ public abstract class CollectionHandler extends AbstractResponseHandler {
         };
     }
 
-    protected abstract int next(final int index, final int size);
+    protected abstract int next(int index, int size);
 
-    protected abstract ResponseHandler newCollectionHandler(final Iterable<ResponseHandler> handlers);
+    protected abstract ResponseHandler newCollectionHandler(Iterable<ResponseHandler> handlers);
 }
