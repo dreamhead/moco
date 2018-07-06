@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.base.Optional;
 
 public abstract class HttpRequestExtractor<T> implements RequestExtractor<T> {
-    protected abstract Optional<T> doExtract(final HttpRequest request);
+    protected abstract Optional<T> doExtract(HttpRequest request);
 
     public Optional<T> extract(final Request request) {
         if (HttpRequest.class.isInstance(request)) {
