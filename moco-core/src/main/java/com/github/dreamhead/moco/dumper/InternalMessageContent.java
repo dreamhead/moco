@@ -14,7 +14,7 @@ public class InternalMessageContent {
     private Charset charset;
 
     public InternalMessageContent(@JsonProperty("content") final byte[] content,
-                                  @JsonProperty("charset") Charset charset) {
+                                  @JsonProperty("charset") final Charset charset) {
         this.content = content;
         this.charset = charset;
     }
