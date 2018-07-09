@@ -71,7 +71,7 @@ public final class ResourceConfigApplierFactory {
     }
 
     private abstract static class BaseResourceConfigApplier implements ResourceConfigApplier {
-        protected abstract Resource newResource(final MocoConfig config);
+        protected abstract Resource newResource(MocoConfig config);
 
         protected abstract String id();
 
