@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
 public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
@@ -122,7 +124,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(result, lessThan(100d));
         assertThat(result, greaterThan(0d));
         String target = Splitter.on('.').splitToList(response).get(1);
-        assertThat(target.length(), is(6));
+        assertThat(target.length(), lessThanOrEqualTo(6));
     }
 
     @Test
@@ -139,7 +141,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template_with_function.json");
         String response = helper.get(remoteUrl("/random_template_with_format"));
         String target = Splitter.on('.').splitToList(response).get(1);
-        assertThat(target.length(), is(6));
+        assertThat(target.length(), lessThanOrEqualTo(6));
     }
 
     @Test
