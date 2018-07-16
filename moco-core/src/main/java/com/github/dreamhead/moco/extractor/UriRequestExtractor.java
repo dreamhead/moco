@@ -8,7 +8,7 @@ import static com.google.common.base.Optional.of;
 
 public class UriRequestExtractor extends HttpRequestExtractor<String> {
     @Override
-    protected Optional<String> doExtract(final HttpRequest request) {
+    protected final Optional<String> doExtract(final HttpRequest request) {
         return of(request.getUri());
     }
 }
