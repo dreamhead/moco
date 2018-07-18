@@ -43,6 +43,7 @@ import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -529,7 +530,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                     assertThat(result, lessThan(100d));
                     assertThat(result, greaterThan(0d));
                     String target = Splitter.on('.').splitToList(response).get(1);
-                    assertThat(target.length(), is(6));
+                    assertThat(target.length(), lessThanOrEqualTo(6));
                 } catch (NumberFormatException e) {
                     fail();
                 }
