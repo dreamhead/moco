@@ -113,7 +113,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
         // apache httpclient will automatically set content-length header if body length greater than 0
         // so we should remove it from headers to prevent "org.apache.http.ProtocolException: Content-Length header already present" error.
-        remoteRequest.removeHeaders("content-type");
+        remoteRequest.removeHeaders("content-length");
 
         return remoteRequest;
     }
