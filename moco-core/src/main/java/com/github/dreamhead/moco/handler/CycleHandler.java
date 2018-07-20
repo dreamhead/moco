@@ -5,7 +5,7 @@ import com.google.common.collect.Iterables;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class CycleHandler extends CollectionHandler {
+public final class CycleHandler extends CollectionHandler {
     private CycleHandler(final Iterable<ResponseHandler> handlers) {
         super(handlers);
     }
