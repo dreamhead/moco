@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.resource.Resource;
 
 import static com.google.common.base.Optional.of;
 
-public class VersionResponseHandler extends AbstractHttpResponseHandler {
+public final class VersionResponseHandler extends AbstractHttpResponseHandler {
     private final Resource resource;
 
     public VersionResponseHandler(final Resource resource) {
