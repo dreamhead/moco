@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableMap;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class CookieRequestExtractor extends HttpRequestExtractor<String> {
+public final class CookieRequestExtractor extends HttpRequestExtractor<String> {
     private final CookiesRequestExtractor extractor = new CookiesRequestExtractor();
 
     private final String key;
