@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 public abstract class AbstractResponseHandler implements ResponseHandler {
     @Override
     @SuppressWarnings("unchecked")
-    public final ResponseHandler apply(final MocoConfig config) {
+    public ResponseHandler apply(final MocoConfig config) {
         if (config.isFor(MocoConfig.RESPONSE_ID)) {
             return (ResponseHandler) config.apply(this);
         }
