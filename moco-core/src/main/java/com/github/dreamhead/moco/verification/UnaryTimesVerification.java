@@ -10,12 +10,12 @@ public abstract class UnaryTimesVerification extends AbstractTimesVerification {
     }
 
     @Override
-    protected String expectedTip() {
+    protected final String expectedTip() {
         return Integer.toString(count);
     }
 
     @Override
-    protected boolean meet(final int size) {
+    protected final boolean meet(final int size) {
         return doMeet(size, count);
     }
 }
