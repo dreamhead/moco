@@ -18,7 +18,7 @@ public class StartsWithMatcher<T> extends AbstractOperatorMatcher<T> {
     }
 
     @Override
-    protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
+    protected final RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
         return new StartsWithMatcher<>(extractor, resource);
     }
 }
