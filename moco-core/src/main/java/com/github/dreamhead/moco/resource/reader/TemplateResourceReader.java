@@ -72,7 +72,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MessageContent readFor(final Optional<? extends Request> request) {
+    public final MessageContent readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
             throw new IllegalStateException("Request is required to render template");
         }
@@ -136,7 +136,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MediaType getContentType(final HttpRequest request) {
+    public final MediaType getContentType(final HttpRequest request) {
         return template.getContentType(request);
     }
 
