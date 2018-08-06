@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class MessageContentSerializer extends JsonSerializer<MessageContent> {
     @Override
-    public void serialize(final MessageContent value, final JsonGenerator generator,
+    public final void serialize(final MessageContent value, final JsonGenerator generator,
                           final SerializerProvider serializers) throws IOException {
         if (value.hasCharset()) {
             generator.writeObject(new InternalMessageContent(value.getContent(), value.getCharset()));
