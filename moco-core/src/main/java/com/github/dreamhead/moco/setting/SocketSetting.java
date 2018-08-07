@@ -13,12 +13,12 @@ public class SocketSetting extends BaseSetting<SocketResponseSetting>
     }
 
     @Override
-    protected BaseSetting<SocketResponseSetting> createSetting(final RequestMatcher matcher) {
+    protected final BaseSetting<SocketResponseSetting> createSetting(final RequestMatcher matcher) {
         return new SocketSetting(matcher);
     }
 
     @Override
-    protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
+    protected final RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
         return configItem(matcher, config);
     }
 }
