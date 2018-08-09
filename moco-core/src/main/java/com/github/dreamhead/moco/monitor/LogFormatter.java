@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
 public interface LogFormatter {
-    String format(final Request request);
-    String format(final Response response);
-    String format(final Throwable e);
+    String format(Request request);
+    String format(Response response);
+    String format(Throwable e);
 }
