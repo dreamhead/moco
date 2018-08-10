@@ -10,7 +10,7 @@ public abstract class ShutdownPortOption {
         this.shutdownPort = shutdownPort;
     }
 
-    public Optional<Integer> getShutdownPort() {
+    public final Optional<Integer> getShutdownPort() {
         return Optional.fromNullable(shutdownPort);
     }
 
