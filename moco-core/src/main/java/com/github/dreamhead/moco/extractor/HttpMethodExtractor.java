@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.of;
 
-public class HttpMethodExtractor extends HttpRequestExtractor<String> {
+public final class HttpMethodExtractor extends HttpRequestExtractor<String> {
     @Override
     protected Optional<String> doExtract(final HttpRequest request) {
         return of(request.getMethod().name());
