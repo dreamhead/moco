@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 
 @JsonDeserialize(builder = DefaultHttpResponse.Builder.class)
-public class DefaultHttpResponse extends DefaultHttpMessage implements HttpResponse {
+public final class DefaultHttpResponse extends DefaultHttpMessage implements HttpResponse {
     private final int status;
 
     public DefaultHttpResponse(final HttpProtocolVersion version, final int status,
