@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.runner.watcher.ShutdownMocoRunnerWatcher;
 
-public class ShutdownRunner extends WatcherRunner {
+public final class ShutdownRunner extends WatcherRunner {
     private final ShutdownMocoRunnerWatcher monitor;
 
     public ShutdownRunner(final Runner runner,
