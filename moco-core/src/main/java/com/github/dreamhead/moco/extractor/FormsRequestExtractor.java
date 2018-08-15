@@ -24,7 +24,7 @@ import static com.google.common.base.Optional.of;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
 
-public class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
+public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
     @Override
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
