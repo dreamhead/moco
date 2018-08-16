@@ -702,7 +702,7 @@ server.response(file(template("${req.headers['foo'].txt")));
     "response": {
       "file": {
         "name": {
-          "template": "${req.content}.txt")"
+          "template": "${req.content}.txt"
         }
       }
     }
