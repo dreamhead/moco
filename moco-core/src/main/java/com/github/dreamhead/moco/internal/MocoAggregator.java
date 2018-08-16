@@ -6,7 +6,7 @@ import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class MocoAggregator extends ChannelInboundHandlerAdapter {
+public final class MocoAggregator extends ChannelInboundHandlerAdapter {
     private CompositeByteBuf bufs =  ByteBufAllocator.DEFAULT.compositeBuffer();
 
     @Override
