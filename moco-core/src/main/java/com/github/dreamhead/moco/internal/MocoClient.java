@@ -12,7 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MocoClient {
-    public void run(final String host, final int port, final ChannelHandler pipelineFactory) {
+    public final void run(final String host, final int port, final ChannelHandler pipelineFactory) {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
