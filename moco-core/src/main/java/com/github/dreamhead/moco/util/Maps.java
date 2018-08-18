@@ -5,7 +5,7 @@ import com.google.common.collect.Iterables;
 
 import java.util.Map;
 
-public class Maps {
+public final class Maps {
     public static Map<String, String> arrayValueToSimple(final Map<String, String[]> map) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
