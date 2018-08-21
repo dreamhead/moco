@@ -9,7 +9,7 @@ import com.google.common.base.MoreObjects;
 import java.util.concurrent.TimeUnit;
 
 @JsonDeserialize(using = LatencyContainerDeserializer.class)
-public class LatencyContainer {
+public final class LatencyContainer {
     private long latency;
     private TimeUnit unit = TimeUnit.MILLISECONDS;
 
