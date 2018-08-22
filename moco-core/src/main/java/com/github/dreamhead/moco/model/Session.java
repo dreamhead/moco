@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 
-public class Session {
+public final class Session {
     @JsonDeserialize(as = DefaultHttpRequest.class)
     private HttpRequest request;
     @JsonDeserialize(as = DefaultHttpResponse.class)
