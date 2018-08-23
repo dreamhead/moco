@@ -5,7 +5,7 @@ import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.toBase;
 import static com.google.common.base.Strings.nullToEmpty;
 
-public class ProxyConfig {
+public final class ProxyConfig {
     private final String localBase;
     private final String remoteBase;
 
@@ -35,7 +35,7 @@ public class ProxyConfig {
         return new Builder(localBase);
     }
 
-    public static class Builder {
+    public static final class Builder {
         private final String localBase;
 
         public Builder(final String localBase) {
