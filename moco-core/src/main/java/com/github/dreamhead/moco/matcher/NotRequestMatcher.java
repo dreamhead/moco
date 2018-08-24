@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
-public class NotRequestMatcher extends AbstractRequestMatcher {
+public final class NotRequestMatcher extends AbstractRequestMatcher {
     private final RequestMatcher matcher;
 
     public NotRequestMatcher(final RequestMatcher matcher) {
