@@ -11,7 +11,6 @@ import com.google.common.base.Optional;
 import com.google.common.net.MediaType;
 
 import java.io.File;
-import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.Moco.text;
 import static com.google.common.base.Optional.of;
