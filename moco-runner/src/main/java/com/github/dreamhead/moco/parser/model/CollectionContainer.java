@@ -7,7 +7,7 @@ import com.google.common.base.MoreObjects;
 
 import static com.google.common.collect.FluentIterable.from;
 
-public class CollectionContainer implements Container {
+public final class CollectionContainer implements Container {
     private Iterable<ResponseSetting> collection;
 
     @JsonCreator
