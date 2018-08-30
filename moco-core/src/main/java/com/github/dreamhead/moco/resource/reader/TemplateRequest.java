@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static com.github.dreamhead.moco.util.Maps.arrayValueToSimple;
 
-public class TemplateRequest {
+public final class TemplateRequest {
     private Request request;
 
     public TemplateRequest(final Request request) {
