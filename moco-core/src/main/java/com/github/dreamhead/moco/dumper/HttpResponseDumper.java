@@ -7,7 +7,7 @@ import io.netty.util.internal.StringUtil;
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asHeaders;
 
-public class HttpResponseDumper implements Dumper<Response> {
+public final class HttpResponseDumper implements Dumper<Response> {
     @Override
     public String dump(final Response response) {
         HttpResponse httpResponse = (HttpResponse) response;
