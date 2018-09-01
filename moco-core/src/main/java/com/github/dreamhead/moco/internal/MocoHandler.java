@@ -23,7 +23,7 @@ import static io.netty.handler.codec.http.HttpUtil.setContentLength;
 import static io.netty.handler.codec.http.HttpUtil.setKeepAlive;
 
 @Sharable
-public class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public final class MocoHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final int DEFAULT_STATUS = HttpResponseStatus.OK.code();
     private final ImmutableList<Setting<HttpResponseSetting>> settings;
     private final Setting<HttpResponseSetting> anySetting;
