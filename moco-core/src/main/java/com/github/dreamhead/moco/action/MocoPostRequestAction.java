@@ -35,7 +35,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
         return new ByteArrayEntity(resource.readFor(of(request)).getContent(), getContentType((HttpRequest) request));
     }
 
-    private ContentType getContentType(HttpRequest request) {
+    private ContentType getContentType(final HttpRequest request) {
         MediaType type = content.getContentType(request);
         return ContentType.create(type.type() + "/" + type.subtype(),
                 type.charset().or(Charset.defaultCharset()));
