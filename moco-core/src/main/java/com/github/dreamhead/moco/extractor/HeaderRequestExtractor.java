@@ -13,7 +13,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 import static com.google.common.collect.FluentIterable.from;
 
-public class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
+public final class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     private final String name;
 
     public HeaderRequestExtractor(final String name) {
