@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Optional.of;
 
-public class PlainExtractor<T> implements RequestExtractor<T> {
+public final class PlainExtractor<T> implements RequestExtractor<T> {
     private final T object;
 
     public PlainExtractor(final T object) {
