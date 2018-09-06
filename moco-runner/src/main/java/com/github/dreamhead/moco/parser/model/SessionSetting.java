@@ -23,7 +23,7 @@ import static com.github.dreamhead.moco.util.Iterables.tail;
 
 @JsonIgnoreProperties({"description"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class SessionSetting {
+public final class SessionSetting {
     private RequestSetting request;
     private ResponseSetting response;
     private TextContainer redirectTo;
