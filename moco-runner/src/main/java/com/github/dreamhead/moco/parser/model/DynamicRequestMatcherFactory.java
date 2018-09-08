@@ -22,7 +22,7 @@ import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.not;
 import static com.google.common.collect.FluentIterable.from;
 
-public class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
+public final class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
 
     @Override
     public RequestMatcher createRequestMatcher(final RequestSetting request) {
