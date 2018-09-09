@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
-public class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
+public final class EqRequestMatcher<T> extends AbstractOperatorMatcher<T> {
     public EqRequestMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
