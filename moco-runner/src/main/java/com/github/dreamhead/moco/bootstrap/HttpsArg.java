@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.Moco;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 
-public class HttpsArg {
+public final class HttpsArg {
     private final String filename;
     private final String keystore;
     private final String cert;
