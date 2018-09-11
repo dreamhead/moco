@@ -7,7 +7,7 @@ import com.google.common.base.MoreObjects;
 import static com.github.dreamhead.moco.Moco.get;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class GetSetting {
+public final class GetSetting {
     private TextContainer url;
 
     public MocoEventAction createAction() {
