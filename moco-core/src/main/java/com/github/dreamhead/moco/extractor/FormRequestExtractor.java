@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableMap;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class FormRequestExtractor extends HttpRequestExtractor<String> {
+public final class FormRequestExtractor extends HttpRequestExtractor<String> {
     private final FormsRequestExtractor extractor = new FormsRequestExtractor();
     private final String key;
 
