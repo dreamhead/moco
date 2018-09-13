@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import static com.google.common.io.Files.toByteArray;
 import static java.lang.String.format;
 
-public class FileResourceReader extends AbstractFileResourceReader {
+public final class FileResourceReader extends AbstractFileResourceReader {
     private final Optional<MocoConfig> config;
 
     public FileResourceReader(final Resource file) {
