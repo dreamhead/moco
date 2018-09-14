@@ -9,7 +9,7 @@ import com.google.common.base.Predicate;
 
 import java.util.regex.Pattern;
 
-public class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
+public final class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
     public MatchMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, new Predicate<String>() {
             @Override
