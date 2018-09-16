@@ -17,7 +17,7 @@ public final class MocoGetRequestAction extends MocoRequestAction {
     }
 
     @Override
-    public MocoEventAction apply(MocoConfig config) {
+    public MocoEventAction apply(final MocoConfig config) {
         return this;
     }
 }
