@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.google.common.base.Optional;
 
-public class ExistMatcher<T> extends AbstractRequestMatcher {
+public final class ExistMatcher<T> extends AbstractRequestMatcher {
     private final RequestExtractor<T> extractor;
 
     public ExistMatcher(final RequestExtractor<T> extractor) {
