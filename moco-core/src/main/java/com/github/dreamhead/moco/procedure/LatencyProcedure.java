@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.util.Idles;
 
 import java.util.concurrent.TimeUnit;
 
-public class LatencyProcedure implements MocoProcedure {
+public final class LatencyProcedure implements MocoProcedure {
     private final long duration;
     private final TimeUnit unit;
 
