@@ -9,7 +9,7 @@ import com.google.common.net.MediaType;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class ContentResource extends Resource implements Content {
+public final class ContentResource extends Resource implements Content {
     public ContentResource(final Identifiable identifiable, final ResourceConfigApplier configApplier,
                            final ContentResourceReader reader) {
         super(identifiable, configApplier, reader);
