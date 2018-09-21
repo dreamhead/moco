@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 
-public class SessionContext {
+public final class SessionContext {
     private final Request request;
     private final Response response;
 
