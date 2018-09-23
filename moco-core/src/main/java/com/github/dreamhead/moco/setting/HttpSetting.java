@@ -11,7 +11,7 @@ import com.github.dreamhead.moco.util.RedirectDelegate;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.ImmutableList.of;
 
-public class HttpSetting extends BaseSetting<HttpResponseSetting>
+public final class HttpSetting extends BaseSetting<HttpResponseSetting>
         implements Setting<HttpResponseSetting>, HttpResponseSetting {
     private final RedirectDelegate delegate = new RedirectDelegate();
 
