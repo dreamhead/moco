@@ -4,14 +4,14 @@ import com.google.common.eventbus.Subscribe;
 
 public interface MocoMonitor {
     @Subscribe
-    void onMessageArrived(final Request request);
+    void onMessageArrived(Request request);
 
     @Subscribe
-    void onException(final Throwable t);
+    void onException(Throwable t);
 
     @Subscribe
-    void onMessageLeave(final Response response);
+    void onMessageLeave(Response response);
 
     @Subscribe
-    void onUnexpectedMessage(final Request request);
+    void onUnexpectedMessage(Request request);
 }
