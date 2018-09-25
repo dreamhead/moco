@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import static com.google.common.collect.ImmutableList.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class EventSetting {
+public final class EventSetting {
     private CompleteEventSetting complete;
 
     public ImmutableList<MocoEventTrigger> triggers() {
