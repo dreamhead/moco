@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 import static com.github.dreamhead.moco.internal.InternalApis.context;
 
 public interface RequestMatcher extends ConfigApplier<RequestMatcher> {
-    boolean match(final Request request);
+    boolean match(Request request);
 
     RequestMatcher ANY_REQUEST_MATCHER = new AbstractRequestMatcher() {
         @Override
