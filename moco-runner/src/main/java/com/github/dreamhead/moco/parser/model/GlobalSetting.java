@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import static com.github.dreamhead.moco.util.Files.join;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class GlobalSetting {
+public final class GlobalSetting {
     private String include;
     private String context;
     @JsonProperty("file_root")
