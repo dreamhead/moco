@@ -15,7 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class MocoServer {
+public final class MocoServer {
     private EventLoopGroup group;
     private ChannelFuture future;
 
