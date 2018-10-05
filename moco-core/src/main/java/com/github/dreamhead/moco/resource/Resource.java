@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Optional;
 
-public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
+public final class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
