@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Optional;
 
-public final class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
+public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
@@ -20,21 +20,21 @@ public final class Resource implements Identifiable, ConfigApplier<Resource>, Re
     }
 
     @Override
-    public Resource apply(final MocoConfig config) {
+    public final Resource apply(final MocoConfig config) {
         return configApplier.apply(config, this);
     }
 
     @Override
-    public String id() {
+    public final String id() {
         return identifiable.id();
     }
 
     @Override
-    public MessageContent readFor(final Optional<? extends Request> request) {
+    public final MessageContent readFor(final Optional<? extends Request> request) {
         return reader.readFor(request);
     }
 
-    public <T extends ResourceReader> T reader(final Class<T> clazz) {
+    public final <T extends ResourceReader> T reader(final Class<T> clazz) {
         return clazz.cast(reader);
     }
 }
