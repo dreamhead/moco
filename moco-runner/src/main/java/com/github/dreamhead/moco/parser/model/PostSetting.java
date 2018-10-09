@@ -12,7 +12,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class PostSetting {
+public final class PostSetting {
     private TextContainer url;
     private TextContainer content;
     private Object json;
