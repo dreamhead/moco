@@ -15,7 +15,7 @@ public class MocoPortTest {
     private MocoTestHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         helper = new MocoTestHelper();
     }
 
