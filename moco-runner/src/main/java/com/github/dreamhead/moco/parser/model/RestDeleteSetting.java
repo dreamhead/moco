@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSettingBuilder;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RestDeleteSetting extends RestSingleSetting {
+public final class RestDeleteSetting extends RestSingleSetting {
     @Override
     protected RestSettingBuilder doStartRestSetting() {
         return MocoRest.delete(id());
