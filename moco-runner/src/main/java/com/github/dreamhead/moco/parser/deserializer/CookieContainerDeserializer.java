@@ -30,7 +30,7 @@ public final class CookieContainerDeserializer extends JsonDeserializer<CookieCo
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class InternalCookieContainer {
+    public static final class InternalCookieContainer {
         private String value;
         private String path;
         private String domain;
