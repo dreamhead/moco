@@ -17,7 +17,7 @@ import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.concat;
 
-public class Dynamics {
+public final class Dynamics {
     private static final Map<String, String> EXTRACTORS = ImmutableMap.<String, String>builder()
             .put("headers", "header")
             .put("queries", "query")
