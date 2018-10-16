@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
-public class MocoSocketServer extends BaseServerRunner<SocketResponseSetting, ActualSocketServer> {
+public final class MocoSocketServer extends BaseServerRunner<SocketResponseSetting, ActualSocketServer> {
     private final ActualSocketServer serverSetting;
 
     public MocoSocketServer(final ActualSocketServer serverSetting) {
