@@ -41,7 +41,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         this.content = content;
     }
 
-    private static String[] SINGLE_VALUE_HEADERS = new String[] {
+    private static final String[] SINGLE_VALUE_HEADERS = new String[] {
             HttpHeaders.CONTENT_TYPE
     };
 
