@@ -12,20 +12,20 @@ public abstract class RestSingleSetting extends RestBaseSetting {
 
     protected abstract RestSettingBuilder doStartRestSetting();
 
-    protected boolean hasId() {
+    protected final boolean hasId() {
         return !Strings.isNullOrEmpty(id);
     }
 
-    protected RestIdMatcher id() {
+    protected final RestIdMatcher id() {
         return asIdMatcher(this.id);
     }
 
-    protected boolean isIdRequired() {
+    protected final boolean isIdRequired() {
         return false;
     }
 
     @Override
-    protected RestSettingBuilder startRestSetting() {
+    protected final RestSettingBuilder startRestSetting() {
         if (isIdRequired() && !hasId()) {
             throw new IllegalArgumentException("Required id is missing");
         }
@@ -34,7 +34,7 @@ public abstract class RestSingleSetting extends RestBaseSetting {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("id", id)
