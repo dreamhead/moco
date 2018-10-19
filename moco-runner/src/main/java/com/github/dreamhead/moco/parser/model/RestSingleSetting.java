@@ -20,7 +20,7 @@ public abstract class RestSingleSetting extends RestBaseSetting {
         return asIdMatcher(this.id);
     }
 
-    protected final boolean isIdRequired() {
+    protected boolean isIdRequired() {
         return false;
     }
 
