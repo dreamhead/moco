@@ -30,7 +30,8 @@ public final class MocoRest {
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
-    public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
+    public static RestServer restServer(final int port, final MocoMonitor monitor,
+                                        final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
                 mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
