@@ -131,7 +131,7 @@ public final class FileContainer extends TextContainer {
         return new FileContainerBuilder();
     }
 
-    public static class FileContainerBuilder {
+    public static final class FileContainerBuilder {
         private TextContainer name;
         private String charset;
 
