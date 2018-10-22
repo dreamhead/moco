@@ -8,7 +8,7 @@ import com.github.dreamhead.moco.resource.Resource;
 
 import static com.google.common.base.Optional.of;
 
-public class HeaderResponseHandler extends AbstractHttpResponseHandler {
+public final class HeaderResponseHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final Resource resource;
 
