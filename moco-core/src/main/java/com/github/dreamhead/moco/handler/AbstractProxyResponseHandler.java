@@ -27,6 +27,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -180,6 +181,10 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
         if (method == HttpMethod.TRACE) {
             return new HttpTrace(url.toString());
+        }
+
+        if (method == HttpMethod.PATCH) {
+            return new HttpPatch(url.toString());
         }
 
         throw new MocoException("unknown HTTP method");
