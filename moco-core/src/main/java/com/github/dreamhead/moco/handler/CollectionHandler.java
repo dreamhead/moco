@@ -19,14 +19,14 @@ public abstract class CollectionHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         int current = index;
         this.index = next(index, this.handlers.size());
         handlers.get(current).writeToResponse(context);
     }
 
     @Override
-    public ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler apply(final MocoConfig config) {
         if (config.isFor(MocoConfig.RESPONSE_ID)) {
             return super.apply(config);
         }
