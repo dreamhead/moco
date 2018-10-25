@@ -22,13 +22,13 @@ public abstract class RestSettingBuilders extends AbstractResponseBase<RestSetti
     private RequestMatcher matcher;
 
     @Override
-    public ResponseBase<RestSetting> request(final RequestMatcher matcher) {
+    public final ResponseBase<RestSetting> request(final RequestMatcher matcher) {
         this.matcher = checkNotNull(matcher, "Request matcher should not be null");
         return this;
     }
 
     @Override
-    public RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers) {
+    public final RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers) {
         return createSetting(Optional.fromNullable(matcher),
                 and(checkNotNull(handler, "Response handler should not be null"),
                         checkNotNull(handlers, "Response handlers should not be null")));
