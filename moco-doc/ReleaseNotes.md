@@ -8,6 +8,7 @@
 
 ## Implementation Details
 * Support multiple HTTP headers with same name
+* Support proxy PATCH method
 
 # Release 0.12.0 (24-Dec-2017)
 
