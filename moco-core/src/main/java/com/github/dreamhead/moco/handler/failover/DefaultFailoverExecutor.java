@@ -24,7 +24,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.tryFind;
 
-public class DefaultFailoverExecutor implements FailoverExecutor {
+public final class DefaultFailoverExecutor implements FailoverExecutor {
     private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
 
     private final ObjectMapper mapper = new ObjectMapper();
