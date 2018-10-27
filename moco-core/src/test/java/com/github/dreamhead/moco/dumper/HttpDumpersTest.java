@@ -74,7 +74,7 @@ public class HttpDumpersTest {
     @Test
     @SuppressWarnings("unchecked")
     public void should_not_parse_content_when_content_length_not_set() {
-        assertThat(asContent(messageWithHeaders(EMPTY_MAP)), isEmptyString());
+        assertThat(asContent(messageWithHeaders(ImmutableMap.of(HttpHeaders.CONTENT_TYPE, "text/plain"))), is(EXPECTED_MESSAGE_BODY));
     }
 
     private void assertMessageContent(final String mediaType, final String expectedContent) {

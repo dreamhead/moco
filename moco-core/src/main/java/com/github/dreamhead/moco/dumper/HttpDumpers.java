@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -15,8 +16,7 @@ import static com.google.common.collect.FluentIterable.from;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
-        long length = getContentLength(message, -1);
-        if (length > 0) {
+        if (hasContent(message)) {
             return StringUtil.NEWLINE + StringUtil.NEWLINE + contentForDump(message);
         }
 
@@ -46,17 +46,15 @@ public final class HttpDumpers {
         }
     }
 
-    private static long getContentLength(final HttpMessage response, final long defaultValue) {
-        String lengthText = response.getHeader(HttpHeaders.CONTENT_LENGTH);
+    private static boolean hasContent(final HttpMessage message) {
+        String lengthText = message.getHeader(HttpHeaders.CONTENT_LENGTH);
         if (lengthText != null) {
-            try {
-                return Long.parseLong(lengthText);
-            } catch (NumberFormatException e) {
-                return defaultValue;
-            }
+            return true;
         }
 
-        return defaultValue;
+        MessageContent content = message.getContent();
+        return content != null && content.hasContent();
+
     }
 
     private final static Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
