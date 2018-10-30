@@ -26,11 +26,11 @@ public abstract class SimpleRestSetting implements RestSetting {
         this.handler = handler;
     }
 
-    public ResponseHandler getHandler() {
+    public final ResponseHandler getHandler() {
         return handler;
     }
 
-    public RequestMatcher getRequestMatcher(final RestIdMatcher resourceName) {
+    public final RequestMatcher getRequestMatcher(final RestIdMatcher resourceName) {
         RequestMatcher rootMatcher = getBaseRequestMatcher(resourceName);
         if (this.matcher.isPresent()) {
             return and(rootMatcher, this.matcher.get());
@@ -39,17 +39,17 @@ public abstract class SimpleRestSetting implements RestSetting {
         return rootMatcher;
     }
 
-    public boolean isFor(final HttpMethod method) {
+    public final boolean isFor(final HttpMethod method) {
         return this.method == method;
     }
 
     @Override
-    public boolean isSimple() {
+    public final boolean isSimple() {
         return true;
     }
 
     @Override
-    public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
+    public final Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
         if (getRequestMatcher(resourceName).match(httpRequest)) {
             return of(handler);
         }
