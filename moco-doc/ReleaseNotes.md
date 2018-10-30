@@ -9,6 +9,7 @@
 ## Implementation Details
 * Support multiple HTTP headers with same name
 * Support proxy PATCH method
+* Dump HTTP message even if Content Length header is missing
 
 # Release 0.12.0 (24-Dec-2017)
 
