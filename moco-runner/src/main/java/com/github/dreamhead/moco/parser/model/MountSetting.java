@@ -16,7 +16,7 @@ import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Iterables.transform;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class MountSetting extends ResponseSetting {
+public final class MountSetting extends ResponseSetting {
     private String dir;
     private String uri;
     private List<String> includes = of();
