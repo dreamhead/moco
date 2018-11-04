@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.Moco.from;
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
-public class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
+public final class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     private final ProxyConfig proxyConfig;
 
     public ProxyBatchResponseHandler(final ProxyConfig proxyConfig, final Failover failover) {
