@@ -26,12 +26,12 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         return this.matcher.match(request) && this.handler != null;
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         this.handler.writeToResponse(context);
         this.fireCompleteEvent(context.getRequest());
     }
@@ -45,7 +45,7 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
     }
 
     @Override
-    public Setting<T> apply(final MocoConfig config) {
+    public final Setting<T> apply(final MocoConfig config) {
         BaseSetting<T> setting = createSetting(configMatcher(this.matcher, config));
         setting.handler = configItem(this.handler, config);
         setting.eventTriggers = configItems(eventTriggers, config);
