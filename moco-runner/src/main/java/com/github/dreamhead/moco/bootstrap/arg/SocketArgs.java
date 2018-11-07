@@ -16,22 +16,22 @@ public final class SocketArgs extends StartArgs {
         private Integer shutdownPort;
         private String configurationFile;
 
-        public Builder withPort(final Integer port) {
+        public final Builder withPort(final Integer port) {
             this.port = port;
             return this;
         }
 
-        public Builder withShutdownPort(final Integer shutdownPort) {
+        public final Builder withShutdownPort(final Integer shutdownPort) {
             this.shutdownPort = shutdownPort;
             return this;
         }
 
-        public Builder withConfigurationFile(final String configurationFile) {
+        public final Builder withConfigurationFile(final String configurationFile) {
             this.configurationFile = configurationFile;
             return this;
         }
 
-        public SocketArgs build() {
+        public final SocketArgs build() {
             return new SocketArgs(port, shutdownPort, configurationFile);
         }
     }
