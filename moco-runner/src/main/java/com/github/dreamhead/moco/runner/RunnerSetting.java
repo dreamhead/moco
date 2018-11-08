@@ -76,37 +76,37 @@ public final class RunnerSetting {
         private String context;
         private String fileRoot;
 
-        public Builder addStream(final InputStream stream) {
+        public final Builder addStream(final InputStream stream) {
             this.streams.add(stream);
             return this;
         }
 
-        public Builder addStreams(final ImmutableList<InputStream> streams) {
+        public final Builder addStreams(final ImmutableList<InputStream> streams) {
             this.streams.addAll(streams);
             return this;
         }
 
-        public Builder withRequest(final RequestSetting request) {
+        public final Builder withRequest(final RequestSetting request) {
             this.request = request;
             return this;
         }
 
-        public Builder withResponse(final ResponseSetting response) {
+        public final Builder withResponse(final ResponseSetting response) {
             this.response = response;
             return this;
         }
 
-        public Builder withContext(final String context) {
+        public final Builder withContext(final String context) {
             this.context = context;
             return this;
         }
 
-        public Builder withFileRoot(final String fileRoot) {
+        public final Builder withFileRoot(final String fileRoot) {
             this.fileRoot = fileRoot;
             return this;
         }
 
-        public RunnerSetting build() {
+        public final RunnerSetting build() {
             return new RunnerSetting(streams.build(), context, fileRoot, request, response);
         }
 
