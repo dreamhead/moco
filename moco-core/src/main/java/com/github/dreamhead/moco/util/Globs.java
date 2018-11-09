@@ -86,10 +86,10 @@ public final class Globs {
         return -1;
     }
 
-    private static final String globMetaChars = "\\*?[{";
+    private static final String GLOB_META_CHARS = "\\*?[{";
 
     private static boolean isGlobMeta(final char c) {
-        return globMetaChars.indexOf(c) != -1;
+        return GLOB_META_CHARS.indexOf(c) != -1;
     }
 
     private Globs() {
