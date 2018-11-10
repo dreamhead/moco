@@ -66,7 +66,8 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
         return extractDocument(new InputSource(stream));
     }
 
-    private Optional<Document> extractDocument(final Request request, final ContentRequestExtractor extractor) throws SAXException {
+    private Optional<Document> extractDocument(final Request request,
+                                               final ContentRequestExtractor extractor) throws SAXException {
         Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
         if (!inputSourceOptional.isPresent()) {
             return absent();

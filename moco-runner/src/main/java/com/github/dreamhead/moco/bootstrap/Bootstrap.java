@@ -22,7 +22,7 @@ public class Bootstrap implements BootstrapTask {
             .build();
 
     @Override
-    public void run(final String[] args) {
+    public final void run(final String[] args) {
         try {
             if (args.length < 1) {
                 throw new ParseArgException("task name needs to be specified");
