@@ -20,32 +20,32 @@ public final class HttpArgs extends StartArgs {
         private String settings;
         private String env;
 
-        public Builder withPort(final Integer port) {
+        public final Builder withPort(final Integer port) {
             this.port = port;
             return this;
         }
 
-        public Builder withShutdownPort(final Integer shutdownPort) {
+        public final Builder withShutdownPort(final Integer shutdownPort) {
             this.shutdownPort = shutdownPort;
             return this;
         }
 
-        public Builder withConfigurationFile(final String configurationFile) {
+        public final Builder withConfigurationFile(final String configurationFile) {
             this.configurationFile = configurationFile;
             return this;
         }
 
-        public Builder withSettings(final String settings) {
+        public final Builder withSettings(final String settings) {
             this.settings = settings;
             return this;
         }
 
-        public Builder withEnv(final String env) {
+        public final Builder withEnv(final String env) {
             this.env = env;
             return this;
         }
 
-        public HttpArgs build() {
+        public final HttpArgs build() {
             return new HttpArgs(port, shutdownPort, configurationFile, settings, env);
         }
     }
