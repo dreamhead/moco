@@ -36,27 +36,27 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
     }
 
     @Override
-    public HttpResponseSetting get(final RequestMatcher matcher) {
+    public final HttpResponseSetting get(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
     }
 
     @Override
-    public HttpResponseSetting post(final RequestMatcher matcher) {
+    public final HttpResponseSetting post(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.POST, checkNotNull(matcher, "Matcher should not be null"));
     }
 
     @Override
-    public HttpResponseSetting put(final RequestMatcher matcher) {
+    public final HttpResponseSetting put(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.PUT, checkNotNull(matcher, "Matcher should not be null"));
     }
 
     @Override
-    public HttpResponseSetting delete(final RequestMatcher matcher) {
+    public final HttpResponseSetting delete(final RequestMatcher matcher) {
         return requestByHttpMethod(HttpMethod.DELETE, checkNotNull(matcher, "Matcher should not be null"));
     }
 
     @Override
-    public HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
+    public final HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
         checkNotNull(target, "Target should not be null");
         return this.request(new MountMatcher(mountedDir, target, copyOf(predicates)))
@@ -68,12 +68,12 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
     }
 
     @Override
-    public HttpResponseSetting proxy(final ProxyConfig config) {
+    public final HttpResponseSetting proxy(final ProxyConfig config) {
         return proxy(checkNotNull(config, "Proxy config should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
     @Override
-    public HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
+    public final HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
         ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
         this.request(InternalApis.context(config.localBase()))
                 .response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
@@ -81,17 +81,17 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
     }
 
     @Override
-    public HttpResponseSetting redirectTo(final String url) {
+    public final HttpResponseSetting redirectTo(final String url) {
         return delegate.redirectTo(this, url);
     }
 
     @Override
-    public HttpResponseSetting redirectTo(final Resource url) {
+    public final HttpResponseSetting redirectTo(final Resource url) {
         return delegate.redirectTo(this, url);
     }
 
     @Override
-    protected HttpResponseSetting onRequestAttached(final RequestMatcher matcher) {
+    protected final HttpResponseSetting onRequestAttached(final RequestMatcher matcher) {
         HttpSetting baseSetting = new HttpSetting(matcher);
         addSetting(baseSetting);
         return baseSetting;
