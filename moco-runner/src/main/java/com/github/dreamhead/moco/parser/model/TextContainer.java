@@ -125,22 +125,22 @@ public class TextContainer implements Container {
         private String operation;
         private Map<String, TextContainer> props;
 
-        public Builder withText(final String text) {
+        public final Builder withText(final String text) {
             this.text = text;
             return this;
         }
 
-        public Builder withOperation(final String operation) {
+        public final Builder withOperation(final String operation) {
             this.operation = operation;
             return this;
         }
 
-        public Builder withProps(final Map<String, TextContainer> props) {
+        public final Builder withProps(final Map<String, TextContainer> props) {
             this.props = props;
             return this;
         }
 
-        public TextContainer build() {
+        public final TextContainer build() {
             return new TextContainer(text, operation, asProps(props));
         }
 
