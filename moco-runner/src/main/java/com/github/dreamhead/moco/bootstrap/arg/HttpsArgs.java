@@ -21,37 +21,37 @@ public final class HttpsArgs extends StartArgs {
         private String env;
         private HttpsArg httpsArg;
 
-        public Builder withPort(final Integer port) {
+        public final Builder withPort(final Integer port) {
             this.port = port;
             return this;
         }
 
-        public Builder withShutdownPort(final Integer shutdownPort) {
+        public final Builder withShutdownPort(final Integer shutdownPort) {
             this.shutdownPort = shutdownPort;
             return this;
         }
 
-        public Builder withConfigurationFile(final String configurationFile) {
+        public final Builder withConfigurationFile(final String configurationFile) {
             this.configurationFile = configurationFile;
             return this;
         }
 
-        public Builder withSettings(final String settings) {
+        public final Builder withSettings(final String settings) {
             this.settings = settings;
             return this;
         }
 
-        public Builder withEnv(final String env) {
+        public final Builder withEnv(final String env) {
             this.env = env;
             return this;
         }
 
-        public Builder withHttpsArg(final HttpsArg httpsArg) {
+        public final Builder withHttpsArg(final HttpsArg httpsArg) {
             this.httpsArg = httpsArg;
             return this;
         }
 
-        public HttpsArgs build() {
+        public final HttpsArgs build() {
             return new HttpsArgs(port, shutdownPort, configurationFile, settings, env, httpsArg);
         }
     }
