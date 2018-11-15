@@ -93,22 +93,22 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             return clazz.cast(this);
         }
 
-        public T withVersion(final HttpProtocolVersion version) {
+        public final T withVersion(final HttpProtocolVersion version) {
             this.version = version;
             return self();
         }
 
-        public T withContent(final String content) {
+        public final T withContent(final String content) {
             this.content = content(content);
             return self();
         }
 
-        public T withContent(final MessageContent content) {
+        public final T withContent(final MessageContent content) {
             this.content = content;
             return self();
         }
 
-        public T withHeaders(final Map<String, ?> headers) {
+        public final T withHeaders(final Map<String, ?> headers) {
             if (headers != null) {
                 this.headers = asHeaders(headers);
             }
@@ -138,15 +138,15 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             throw new IllegalArgumentException("Unknown header value type [" + value.getClass() + "]");
         }
 
-        protected HttpProtocolVersion getVersion() {
+        protected final HttpProtocolVersion getVersion() {
             return version;
         }
 
-        protected MessageContent getContent() {
+        protected final MessageContent getContent() {
             return content;
         }
 
-        protected ImmutableMap<String, String[]> getHeaders() {
+        protected final ImmutableMap<String, String[]> getHeaders() {
             if (headers == null) {
                 return ImmutableMap.of();
             }
