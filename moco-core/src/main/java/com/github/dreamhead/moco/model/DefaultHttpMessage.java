@@ -30,17 +30,17 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public HttpProtocolVersion getVersion() {
+    public final HttpProtocolVersion getVersion() {
         return this.version;
     }
 
     @Override
-    public ImmutableMap<String, String[]> getHeaders() {
+    public final ImmutableMap<String, String[]> getHeaders() {
         return this.headers;
     }
 
     @Override
-    public String getHeader(final String name) {
+    public final String getHeader(final String name) {
         if (!this.headers.containsKey(name)) {
             return null;
         }
@@ -50,7 +50,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public MessageContent getContent() {
+    public final MessageContent getContent() {
         return this.content;
     }
 
