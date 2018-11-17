@@ -78,12 +78,12 @@ public class MessageContent {
         private byte[] content;
         private Charset charset;
 
-        public Builder withContent(final String content) {
+        public final Builder withContent(final String content) {
             this.content = content.getBytes();
             return this;
         }
 
-        public Builder withContent(final InputStream is) {
+        public final Builder withContent(final InputStream is) {
             try {
                 this.content = toByteArray(is);
                 return this;
@@ -92,17 +92,17 @@ public class MessageContent {
             }
         }
 
-        public Builder withContent(final byte[] content) {
+        public final Builder withContent(final byte[] content) {
             this.content = content;
             return this;
         }
 
-        public Builder withCharset(final Charset charset) {
+        public final Builder withCharset(final Charset charset) {
             this.charset = charset;
             return this;
         }
 
-        public MessageContent build() {
+        public final MessageContent build() {
             MessageContent messageContent = new MessageContent();
             messageContent.charset = Optional.fromNullable(charset);
             messageContent.content = targetContent(content);
