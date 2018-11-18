@@ -22,29 +22,29 @@ public class MessageContent {
     private byte[] content;
     private Optional<Charset> charset;
 
-    public byte[] getContent() {
+    public final byte[] getContent() {
         return content;
     }
 
-    public Charset getCharset() {
+    public final Charset getCharset() {
         return charset.or(Charset.defaultCharset());
     }
 
-    public boolean hasCharset() {
+    public final boolean hasCharset() {
         return charset.isPresent();
     }
 
-    public boolean hasContent() {
+    public final boolean hasContent() {
         return content.length > 0;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return new String(content, getCharset());
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -58,7 +58,7 @@ public class MessageContent {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(Arrays.hashCode(this.content), this.charset);
     }
 
@@ -70,7 +70,7 @@ public class MessageContent {
         return content().withContent(content).build();
     }
 
-    public InputStream toInputStream() {
+    public final InputStream toInputStream() {
         return new ByteArrayInputStream(this.content);
     }
 
