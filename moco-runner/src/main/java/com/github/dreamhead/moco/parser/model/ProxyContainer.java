@@ -21,12 +21,12 @@ public class ProxyContainer {
     private String failover;
     private String playback;
 
-    public boolean hasUrl() {
+    public final boolean hasUrl() {
         return url != null;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(ProxyContainer.class)
                 .omitNullValues()
                 .add("url", this.url)
@@ -41,7 +41,7 @@ public class ProxyContainer {
         return new Builder();
     }
 
-    public Failover getFailover() {
+    public final Failover getFailover() {
         if (failover != null) {
             return failover(failover);
         }
@@ -53,7 +53,7 @@ public class ProxyContainer {
         return Failover.DEFAULT_FAILOVER;
     }
 
-    public ProxyConfig getProxyConfig() {
+    public final ProxyConfig getProxyConfig() {
         return from(from).to(to);
     }
 
@@ -61,7 +61,7 @@ public class ProxyContainer {
         return from != null && to != null;
     }
 
-    public ResponseHandler asResponseHandler() {
+    public final ResponseHandler asResponseHandler() {
         Failover failover = getFailover();
 
         if (hasProxyConfig()) {
