@@ -22,7 +22,7 @@ public class ResponseSetting extends BaseResourceSetting {
     private CollectionContainer seq;
     private CollectionContainer cycle;
 
-    public ResponseSetting asResponseSetting() {
+    public final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = new ResponseSetting();
         responseSetting.text = text;
         responseSetting.file = file;
