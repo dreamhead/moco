@@ -20,12 +20,12 @@ public class MocoHttpServer extends BaseServerRunner {
     }
 
     @Override
-    protected BaseActualServer serverSetting() {
+    protected final BaseActualServer serverSetting() {
         return this.serverSetting;
     }
 
     @Override
-    protected ChannelInitializer<SocketChannel> channelInitializer() {
+    protected final ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) throws Exception {
