@@ -22,7 +22,7 @@ public class ResourceSetting {
     protected List<RestPatchSetting> patch;
     protected List<RestSubResourceSetting> resource;
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -42,7 +42,7 @@ public class ResourceSetting {
     }
 
     @SuppressWarnings("unchecked")
-    public RestSetting[] getSettings() {
+    public final RestSetting[] getSettings() {
         return toArray(concat(asRestSetting(get), asRestSetting(post),
                         asRestSetting(put), asRestSetting(delete),
                         asRestSetting(head), asRestSetting(patch), asSubRestSetting(resource)),
