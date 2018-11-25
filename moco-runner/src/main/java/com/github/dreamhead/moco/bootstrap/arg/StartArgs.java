@@ -29,31 +29,31 @@ public abstract class StartArgs extends ShutdownPortOption {
         this.httpsArg = fromNullable(httpsArg);
     }
 
-    public Optional<Integer> getPort() {
+    public final Optional<Integer> getPort() {
         return port;
     }
 
-    public Optional<String> getConfigurationFile() {
+    public final Optional<String> getConfigurationFile() {
         return configurationFile;
     }
 
-    public boolean hasConfigurationFile() {
+    public final boolean hasConfigurationFile() {
         return this.configurationFile.isPresent();
     }
 
-    public Optional<String> getSettings() {
+    public final Optional<String> getSettings() {
         return settings;
     }
 
-    public Optional<String> getEnv() {
+    public final Optional<String> getEnv() {
         return env;
     }
 
-    public boolean isHttps() {
+    public final boolean isHttps() {
         return httpsArg.isPresent();
     }
 
-    public Optional<HttpsCertificate> getHttpsCertificate() {
+    public final Optional<HttpsCertificate> getHttpsCertificate() {
         return httpsArg.transform(toCertificate());
     }
 
@@ -71,7 +71,7 @@ public abstract class StartArgs extends ShutdownPortOption {
         return "Moco Options:" + separator + "moco [server type] -p port -c [configuration file]" + separator + separator + "server type: http, https, socket";
     }
 
-    public boolean isSocket() {
+    public final boolean isSocket() {
         return this.type == ServerType.SOCKET;
     }
 }
