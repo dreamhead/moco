@@ -57,10 +57,10 @@ public final class HttpDumpers {
 
     }
 
-    private final static Joiner.MapJoiner headerJoiner = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
+    private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
     public static String asHeaders(final HttpMessage message) {
-        return headerJoiner.join(from(message.getHeaders().entrySet())
+        return HEAD_JOINER.join(from(message.getHeaders().entrySet())
                 .transformAndConcat(toMapEntries()));
     }
 
