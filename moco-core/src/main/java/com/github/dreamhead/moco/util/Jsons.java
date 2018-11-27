@@ -27,12 +27,12 @@ import static java.lang.String.format;
 public final class Jsons {
     private static Logger logger = LoggerFactory.getLogger(Jsons.class);
 
-    private final static TypeFactory factory = TypeFactory.defaultInstance();
-    private final static ObjectMapper mapper = new ObjectMapper();
+    private static final TypeFactory DEFAULT_FACTORY = TypeFactory.defaultInstance();
+    private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
 
     public static String toJson(final Object value) {
         try {
-            return mapper.writeValueAsString(value);
+            return DEFAULT_MAPPER.writeValueAsString(value);
         } catch (JsonProcessingException e) {
             throw new MocoException(e);
         }
@@ -40,7 +40,7 @@ public final class Jsons {
 
     public static String toJson(final Map map) {
         try {
-            return mapper.writeValueAsString(map);
+            return DEFAULT_MAPPER.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             throw new MocoException(e);
         }
@@ -48,7 +48,7 @@ public final class Jsons {
 
     public static <T> T toObject(final String value, final Class<T> clazz) {
         try {
-            return mapper.readValue(value, clazz);
+            return DEFAULT_MAPPER.readValue(value, clazz);
         } catch (IOException e) {
             throw new MocoException(e);
         }
@@ -56,7 +56,7 @@ public final class Jsons {
 
     public static <T> T toObject(final InputStream value, final Class<T> clazz) {
         try {
-            return mapper.readValue(value, clazz);
+            return DEFAULT_MAPPER.readValue(value, clazz);
         } catch (IOException e) {
             throw new MocoException(e);
         }
@@ -70,8 +70,9 @@ public final class Jsons {
         return toObjects(of(stream), elementClass);
     }
 
-    public static <T> ImmutableList<T> toObjects(final ImmutableList<InputStream> streams, final Class<T> elementClass) {
-        final CollectionType type = factory.constructCollectionType(List.class, elementClass);
+    public static <T> ImmutableList<T> toObjects(final ImmutableList<InputStream> streams,
+                                                 final Class<T> elementClass) {
+        final CollectionType type = DEFAULT_FACTORY.constructCollectionType(List.class, elementClass);
         return FluentIterable.from(streams).transformAndConcat(Jsons.<T>toObject(type)).toList();
     }
 
@@ -81,7 +82,7 @@ public final class Jsons {
             public Iterable<T> apply(final InputStream input) {
                 try (InputStream actual = input) {
                     String text = CharStreams.toString(new InputStreamReader(actual));
-                    return mapper.readValue(text, type);
+                    return DEFAULT_MAPPER.readValue(text, type);
                 } catch (UnrecognizedPropertyException e) {
                     logger.info("Unrecognized field: {}", e.getMessage());
                     throw new MocoException(format("Unrecognized field [ %s ], please check!", e.getPropertyName()));
