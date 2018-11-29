@@ -35,7 +35,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     @Override
-    public int port() {
+    public final int port() {
         if (port.isPresent()) {
             return port.get();
         }
@@ -43,15 +43,15 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         throw new IllegalStateException("unbound port should not be returned");
     }
 
-    public void setPort(final int port) {
+    public final void setPort(final int port) {
         this.port = of(port);
     }
 
-    public ImmutableList<Setting<T>> getSettings() {
+    public final ImmutableList<Setting<T>> getSettings() {
         return configItems(settings, configs);
     }
 
-    public Setting<T> getAnySetting() {
+    public final Setting<T> getAnySetting() {
         Setting<T> setting = newSetting(configuredAnyMatcher());
         if (this.handler != null) {
             setting.response(configuredAnyResponseHandler());
@@ -62,49 +62,49 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return setting;
     }
 
-    protected Optional<Integer> getPort() {
+    protected final Optional<Integer> getPort() {
         return port;
     }
 
-    public MocoMonitor getMonitor() {
+    public final MocoMonitor getMonitor() {
         return monitor;
     }
 
-    protected void addSetting(final Setting<T> setting) {
+    protected final void addSetting(final Setting<T> setting) {
         this.settings.add(setting);
     }
 
-    protected void addEvents(final List<MocoEventTrigger> eventTriggers) {
+    protected final void addEvents(final List<MocoEventTrigger> eventTriggers) {
         this.eventTriggers.addAll(eventTriggers);
     }
 
-    protected void anySetting(final RequestMatcher anyMatcher, final ResponseHandler handler) {
+    protected final void anySetting(final RequestMatcher anyMatcher, final ResponseHandler handler) {
         if (handler != null) {
             this.response(handler);
             this.anyMatcher = anyMatcher;
         }
     }
 
-    protected void addSettings(final ImmutableList<Setting<T>> thatSettings) {
+    protected final void addSettings(final ImmutableList<Setting<T>> thatSettings) {
         for (Setting<T> thatSetting : thatSettings) {
             addSetting(thatSetting);
         }
     }
 
-    private  <V extends ConfigApplier<V>> V configured(final V source) {
+    private <V extends ConfigApplier<V>> V configured(final V source) {
         return configItem(source, this.configs);
     }
 
-    protected RequestMatcher configuredAnyMatcher() {
+    protected final RequestMatcher configuredAnyMatcher() {
         return configured(this.anyMatcher);
     }
 
-    protected ResponseHandler configuredAnyResponseHandler() {
+    protected final ResponseHandler configuredAnyResponseHandler() {
         return configured(this.handler);
     }
 
     @SuppressWarnings("unchecked")
-    public U mergeServer(final U thatServer) {
+    public final U mergeServer(final U thatServer) {
         U newServer = createMergeServer(thatServer);
         newServer.addSettings(this.getSettings());
         newServer.addSettings(thatServer.getSettings());
