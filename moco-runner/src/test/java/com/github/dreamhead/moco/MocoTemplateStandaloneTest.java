@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import org.apache.http.Header;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
@@ -122,7 +123,8 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         double result = Double.parseDouble(response);
         assertThat(result, lessThan(100d));
         assertThat(result, greaterThan(0d));
-        String target = Splitter.on('.').splitToList(response).get(1);
+
+        String target = Iterables.get(Splitter.on('.').split(response), 1);
         assertThat(target.length(), lessThanOrEqualTo(6));
     }
 
@@ -139,7 +141,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_return_random_with_format_from_template() throws IOException {
         runWithConfiguration("template_with_function.json");
         String response = helper.get(remoteUrl("/random_template_with_format"));
-        String target = Splitter.on('.').splitToList(response).get(1);
+        String target = Iterables.get(Splitter.on('.').split(response), 1);
         assertThat(target.length(), lessThanOrEqualTo(6));
     }
 
