@@ -121,6 +121,16 @@ subprojects {
         )
     }
 
+    test {
+        testLogging {
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                }
+            }
+        }
+    }
+
     task sourcesJar(type: Jar) {
         from sourceSets.main.allSource
         classifier = 'sources'
@@ -149,5 +159,5 @@ subprojects {
 }
 
 wrapper {
-    gradleVersion = '5.0'
+    gradleVersion = '4.10.2'
 }
