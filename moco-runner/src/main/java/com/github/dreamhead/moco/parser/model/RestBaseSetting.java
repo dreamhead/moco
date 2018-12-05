@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -16,15 +15,6 @@ public abstract class RestBaseSetting {
     protected ResponseSetting response;
 
     protected abstract RestSettingBuilder startRestSetting();
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("request", request)
-                .add("response", response)
-                .toString();
-    }
 
     final RestSetting toRestSetting() {
         if (response == null) {
