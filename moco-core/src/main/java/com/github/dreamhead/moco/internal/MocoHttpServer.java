@@ -13,6 +13,10 @@ import io.netty.handler.ssl.SslHandler;
 import javax.net.ssl.SSLEngine;
 
 public class MocoHttpServer extends BaseServerRunner {
+    private static final int MAX_CONTENT_LENGTH = 1048576;
+    private static final int MAX_HEADER_SIZE = 8192;
+    private static final int MAX_INITIAL_LINE_LENGTH = 4096;
+    private static final int MAX_CHUNK_SIZE = 8192;
     private final ActualHttpServer serverSetting;
 
     public MocoHttpServer(final ActualHttpServer serverSetting) {
@@ -35,8 +39,9 @@ public class MocoHttpServer extends BaseServerRunner {
                     pipeline.addFirst("ssl", sslHandler().get());
                 }
 
-                pipeline.addLast("codec", new HttpServerCodec(4096, 8192, 8192, false));
-                pipeline.addLast("aggregator", new HttpObjectAggregator(1048576));
+                pipeline.addLast("codec", new HttpServerCodec(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE,
+                        MAX_CHUNK_SIZE, false));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
         };
