@@ -20,16 +20,7 @@ public class RestSubResourceSetting extends ResourceSetting {
 
     @Override
     public final String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("name", this.getName())
-                .add("get", get)
-                .add("post", post)
-                .add("put", put)
-                .add("delete", delete)
-                .add("head", head)
-                .add("patch", patch)
-                .add("sub resources", resource)
+        return toStringHelper()
                 .add("id", id)
                 .toString();
     }

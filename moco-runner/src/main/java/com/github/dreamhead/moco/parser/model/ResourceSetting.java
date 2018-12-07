@@ -14,13 +14,13 @@ import static com.google.common.collect.Iterables.toArray;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResourceSetting {
     private String name;
-    protected List<RestGetSetting> get;
-    protected List<RestPostSetting> post;
-    protected List<RestPutSetting> put;
-    protected List<RestDeleteSetting> delete;
-    protected List<RestHeadSetting> head;
-    protected List<RestPatchSetting> patch;
-    protected List<RestSubResourceSetting> resource;
+    private List<RestGetSetting> get;
+    private List<RestPostSetting> post;
+    private List<RestPutSetting> put;
+    private List<RestDeleteSetting> delete;
+    private List<RestHeadSetting> head;
+    private List<RestPatchSetting> patch;
+    private List<RestSubResourceSetting> resource;
 
     public final String getName() {
         return name;
@@ -28,6 +28,10 @@ public class ResourceSetting {
 
     @Override
     public String toString() {
+        return toStringHelper().toString();
+    }
+
+    protected MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("name", name)
@@ -37,8 +41,7 @@ public class ResourceSetting {
                 .add("delete", delete)
                 .add("head", head)
                 .add("patch", patch)
-                .add("sub resources", resource)
-                .toString();
+                .add("sub resources", resource);
     }
 
     @SuppressWarnings("unchecked")
