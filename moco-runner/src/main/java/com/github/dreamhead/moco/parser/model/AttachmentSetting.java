@@ -13,13 +13,9 @@ public final class AttachmentSetting extends BaseResourceSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return this.toStringHelper()
                 .omitNullValues()
                 .add("filename", filename)
-                .add("text", text)
-                .add("file", file)
-                .add("path resource", pathResource)
-                .add("json", json)
                 .toString();
     }
 }

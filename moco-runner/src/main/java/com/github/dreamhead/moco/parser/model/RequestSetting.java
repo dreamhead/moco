@@ -27,14 +27,10 @@ public final class RequestSetting extends BaseResourceSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return this.toStringHelper()
                 .omitNullValues()
                 .add("version", version)
                 .add("URI", uri)
-                .add("text", text)
-                .add("file", file)
-                .add("path resource", pathResource)
-                .add("json", json)
                 .add("method", method)
                 .add("headers", headers)
                 .add("xpaths", xpaths)

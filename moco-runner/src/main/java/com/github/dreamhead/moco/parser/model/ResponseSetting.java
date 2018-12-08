@@ -43,18 +43,13 @@ public class ResponseSetting extends BaseResourceSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("text", text)
-                .add("file", file)
+        return toStringHelper()
                 .add("version", version)
                 .add("status", status)
                 .add("headers", headers)
                 .add("cookies", cookies)
                 .add("proxy", proxy)
                 .add("latency", latency)
-                .add("path resource", pathResource)
-                .add("json", json)
                 .add("attachment", attachment)
                 .add("seq", seq)
                 .add("cycle", cycle)
