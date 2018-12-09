@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -48,5 +49,12 @@ public abstract class RestBaseSetting {
         }
 
         return from(setting).transform(toSetting());
+    }
+
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("request", request)
+                .add("response", response);
     }
 }
