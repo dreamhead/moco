@@ -12,8 +12,8 @@ import java.util.List;
 import static com.google.common.collect.FluentIterable.from;
 
 public abstract class RestBaseSetting {
-    protected RequestSetting request;
-    protected ResponseSetting response;
+    private RequestSetting request;
+    private ResponseSetting response;
 
     protected abstract RestSettingBuilder startRestSetting();
 
