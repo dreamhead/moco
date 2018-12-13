@@ -50,6 +50,7 @@ java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 * Detailed [REST API](moco-doc/rest-apis.md)
 * [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
 * [Command Line Usages](moco-doc/cmd.md)
+* [Extend Moco](moco-doc/extending.md) if current API does not meet your requirement.
 
 ## Build
 Make sure you have JDK and Gradle installed.
