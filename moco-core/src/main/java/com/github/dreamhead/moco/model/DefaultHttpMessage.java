@@ -78,7 +78,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         return new ArrayList<>();
     }
 
-    protected static abstract class Builder<T extends Builder> {
+    protected abstract static class Builder<T extends Builder> {
         private final Class<T> clazz;
         private HttpProtocolVersion version;
         private MessageContent content;
