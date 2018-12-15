@@ -22,17 +22,13 @@ public class ResponseSetting extends BaseResourceSetting {
     private CollectionContainer cycle;
 
     public final ResponseSetting asResponseSetting() {
-        ResponseSetting responseSetting = new ResponseSetting();
-        responseSetting.text = text;
-        responseSetting.file = file;
-        responseSetting.pathResource = pathResource;
+        ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());
         responseSetting.status = status;
         responseSetting.proxy = proxy;
         responseSetting.headers = headers;
         responseSetting.cookies = cookies;
         responseSetting.latency = latency;
         responseSetting.version = version;
-        responseSetting.json = json;
         responseSetting.attachment = attachment;
         responseSetting.seq = seq;
         responseSetting.cycle = cycle;
