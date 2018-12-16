@@ -51,7 +51,7 @@ public abstract class RestBaseSetting {
         return from(setting).transform(toSetting());
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected final MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("request", request)
