@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dreamhead.moco.setting.BaseSetting;
 import com.google.common.base.MoreObjects;
 
 public abstract class BaseResourceSetting {
@@ -11,7 +10,7 @@ public abstract class BaseResourceSetting {
     private FileContainer pathResource;
     private Object json;
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected final MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("text", text)
