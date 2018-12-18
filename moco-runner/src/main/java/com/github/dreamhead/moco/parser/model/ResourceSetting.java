@@ -31,7 +31,7 @@ public class ResourceSetting {
         return toStringHelper().toString();
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected final MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("name", name)
