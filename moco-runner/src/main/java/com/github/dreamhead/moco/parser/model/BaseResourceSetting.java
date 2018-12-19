@@ -10,7 +10,7 @@ public abstract class BaseResourceSetting {
     private FileContainer pathResource;
     private Object json;
 
-    protected final MoreObjects.ToStringHelper toStringHelper() {
+    protected MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("text", text)

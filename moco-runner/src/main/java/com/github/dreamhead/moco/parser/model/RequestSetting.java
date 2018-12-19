@@ -27,7 +27,6 @@ public final class RequestSetting extends BaseResourceSetting {
     @Override
     public String toString() {
         return this.toStringHelper()
-                .omitNullValues()
                 .add("version", version)
                 .add("URI", uri)
                 .add("method", method)

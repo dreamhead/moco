@@ -58,16 +58,13 @@ public final class MountSetting extends ResponseSetting {
         return this.asResponseSetting().getResponseHandler();
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return super.toStringHelper()
                 .add("dir", dir)
                 .add("uri", uri)
                 .add("includes", toStringList(includes))
                 .add("excludes", toStringList(excludes))
-                .add("response", super.toString())
-                .toString();
+                .add("response", super.toString());
     }
 
     private List<String> toStringList(final List<String> includes) {
