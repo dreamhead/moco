@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -18,10 +19,8 @@ public class RestSubResourceSetting extends ResourceSetting {
     private String id;
 
     @Override
-    public final String toString() {
-        return toStringHelper()
-                .add("id", id)
-                .toString();
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return super.toStringHelper().add("id", id);
     }
 
     private static Function<RestSubResourceSetting, RestSetting> toSubResourceSetting() {

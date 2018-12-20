@@ -27,11 +27,11 @@ public class ResourceSetting {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return toStringHelper().toString();
     }
 
-    protected final MoreObjects.ToStringHelper toStringHelper() {
+    protected MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("name", name)
