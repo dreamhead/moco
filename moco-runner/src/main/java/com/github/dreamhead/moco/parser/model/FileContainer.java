@@ -109,13 +109,10 @@ public final class FileContainer extends TextContainer {
         return this.content != null && this.content.isForTemplate();
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return super.toStringHelper()
                 .add("name", name)
-                .add("charset", charset)
-                .toString();
+                .add("charset", charset);
     }
 
     @Override

@@ -107,13 +107,16 @@ public class TextContainer implements Container {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
+        return toStringHelper().toString();
+    }
+
+    protected MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("text", text)
                 .add("operation", operation)
-                .add("properties", props)
-                .toString();
+                .add("properties", props);
     }
 
     public static Builder builder() {
