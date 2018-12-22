@@ -22,7 +22,7 @@ public class ResponseSetting extends BaseResourceSetting {
     private CollectionContainer seq;
     private CollectionContainer cycle;
 
-    public final ResponseSetting asResponseSetting() {
+    protected final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());
         responseSetting.status = status;
         responseSetting.proxy = proxy;
