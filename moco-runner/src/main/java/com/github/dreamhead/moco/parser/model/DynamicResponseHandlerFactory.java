@@ -139,6 +139,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         for (String resource : RESOURCES) {
             try {
                 Field field = getField(resourceSetting.getClass(), resource);
+                field.setAccessible(true);
                 return resourceFrom(resource, (TextContainer) field.get(resourceSetting));
             } catch (Exception ignored) {
             }
