@@ -52,7 +52,6 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
-import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -249,7 +248,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     private Matcher<String> countString(final String substring, final int targetCount) {
-        return new SubstringMatcher(substring) {
+        return new SubstringMatcher("counting", false, substring) {
             @Override
             protected boolean evalSubstringOf(final String string) {
                 int count = 0;
@@ -266,11 +265,6 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
                 }
 
                 return count == targetCount;
-            }
-
-            @Override
-            protected String relationship() {
-                return format("count %d string", targetCount);
             }
         };
     }
