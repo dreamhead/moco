@@ -94,7 +94,7 @@
             "uri": "/proxy"
         },
         "response": {
-            "proxy": "https://github.com/"
+            "proxy": "http://github.com/"
         }
     },
     {

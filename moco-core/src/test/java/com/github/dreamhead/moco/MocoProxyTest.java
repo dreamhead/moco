@@ -63,7 +63,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_fetch_remote_url() throws Exception {
-        server.response(proxy("https://github.com/"));
+        server.response(proxy("http://github.com/"));
 
         running(server, new Runnable() {
             @Override
