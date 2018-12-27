@@ -94,7 +94,7 @@
             "uri": "/proxy"
         },
         "response": {
-            "proxy": "http://github.com/"
+            "proxy": "http://localhost:12306/foo"
         }
     },
     {

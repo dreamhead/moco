@@ -183,7 +183,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("foo.json");
         HttpResponse response = helper.getResponse(remoteUrl("/proxy"));
         String value = response.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
-        assertThat(value, startsWith("text/html"));
+        assertThat(value, startsWith("text/plain"));
     }
 
     @Test
