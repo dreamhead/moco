@@ -61,17 +61,17 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    @Test
-    public void should_fetch_remote_url() throws Exception {
-        server.response(proxy("http://github.com/"));
-
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getForStatus(root()), is(200));
-            }
-        });
-    }
+//    @Test
+//    public void should_fetch_remote_url() throws Exception {
+//        server.response(proxy("http://github.com/"));
+//
+//        running(server, new Runnable() {
+//            @Override
+//            public void run() throws IOException {
+//                assertThat(helper.getForStatus(root()), is(200));
+//            }
+//        });
+//    }
 
     @Test
     public void should_proxy_with_request_method() throws Exception {
