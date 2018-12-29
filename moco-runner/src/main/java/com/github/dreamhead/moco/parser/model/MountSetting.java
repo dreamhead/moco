@@ -63,8 +63,7 @@ public final class MountSetting extends ResponseSetting {
                 .add("dir", dir)
                 .add("uri", uri)
                 .add("includes", toStringList(includes))
-                .add("excludes", toStringList(excludes))
-                .add("response", super.toString());
+                .add("excludes", toStringList(excludes));
     }
 
     private List<String> toStringList(final List<String> includes) {
