@@ -19,6 +19,11 @@ public abstract class BaseResourceSetting {
                 .add("json", json);
     }
 
+    @Override
+    public String toString() {
+        return toStringHelper().toString();
+    }
+
     protected final <T extends BaseResourceSetting> T asBaseResourceSetting(final T setting) {
         BaseResourceSetting base = setting;
         base.text = text;
