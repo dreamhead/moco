@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
+import com.google.common.base.MoreObjects;
 
 import java.util.Map;
 
@@ -24,9 +25,8 @@ public final class RequestSetting extends BaseResourceSetting {
     private Map<String, TextContainer> cookies;
     private Map<String, TextContainer> forms;
 
-    @Override
-    public String toString() {
-        return this.toStringHelper()
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return super.toStringHelper()
                 .add("version", version)
                 .add("URI", uri)
                 .add("method", method)
@@ -35,8 +35,7 @@ public final class RequestSetting extends BaseResourceSetting {
                 .add("json paths", jsonPaths)
                 .add("queries", queries)
                 .add("cookies", cookies)
-                .add("forms", forms)
-                .toString();
+                .add("forms", forms);
     }
 
     public RequestMatcher getRequestMatcher() {
