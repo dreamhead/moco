@@ -110,13 +110,13 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper("HTTP Request")
+        return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("uri", this.uri)
                 .add("version", this.getVersion())
+                .add("headers", this.getHeaders())
+                .add("uri", this.uri)
                 .add("method", this.method)
                 .add("queries", this.queries)
-                .add("headers", this.getHeaders())
                 .add("content", this.getContent())
                 .toString();
     }
