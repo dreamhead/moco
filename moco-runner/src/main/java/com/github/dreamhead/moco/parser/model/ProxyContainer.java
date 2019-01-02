@@ -27,7 +27,7 @@ public class ProxyContainer {
 
     @Override
     public final String toString() {
-        return MoreObjects.toStringHelper(ProxyContainer.class)
+        return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("url", this.url)
                 .add("from", this.from)
