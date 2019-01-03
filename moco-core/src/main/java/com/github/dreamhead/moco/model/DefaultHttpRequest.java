@@ -8,7 +8,6 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -110,14 +109,10 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("version", this.getVersion())
-                .add("headers", this.getHeaders())
+        return super.toStringHelper()
                 .add("uri", this.uri)
                 .add("method", this.method)
                 .add("queries", this.queries)
-                .add("content", this.getContent())
                 .toString();
     }
 

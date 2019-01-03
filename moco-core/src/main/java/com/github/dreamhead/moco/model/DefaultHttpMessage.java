@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.reflect.TypeToken;
@@ -53,6 +54,15 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     public final MessageContent getContent() {
         return this.content;
     }
+
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("version", this.getVersion())
+                .add("headers", this.getHeaders())
+                .add("content", this.getContent());
+    }
+
 
     protected static Map<String, Iterable<String>> toHeaders(final io.netty.handler.codec.http.HttpMessage message) {
         return toHeaders(message.headers());
