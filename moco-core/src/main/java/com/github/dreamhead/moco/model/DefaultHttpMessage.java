@@ -63,6 +63,10 @@ public abstract class DefaultHttpMessage implements HttpMessage {
                 .add("content", this.getContent());
     }
 
+    @Override
+    public final String toString() {
+        return toStringHelper().toString();
+    }
 
     protected static Map<String, Iterable<String>> toHeaders(final io.netty.handler.codec.http.HttpMessage message) {
         return toHeaders(message.headers());
