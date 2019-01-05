@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -24,6 +25,11 @@ public final class DefaultHttpResponse extends DefaultHttpMessage implements Htt
     @Override
     public int getStatus() {
         return status;
+    }
+
+    protected MoreObjects.ToStringHelper toStringHelper() {
+        return super.toStringHelper()
+                .add("status", this.status);
     }
 
     public static HttpResponse newResponse(final FullHttpResponse response) {
