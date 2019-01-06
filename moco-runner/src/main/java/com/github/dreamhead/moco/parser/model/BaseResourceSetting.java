@@ -20,7 +20,7 @@ public abstract class BaseResourceSetting {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return toStringHelper().toString();
     }
 
