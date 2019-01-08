@@ -99,7 +99,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         private Map<String, String[]> headers;
 
         @SuppressWarnings("unchecked")
-        public Builder() {
+        protected Builder() {
             this.clazz = (Class<T>) TypeToken.of(getClass()).getRawType();
         }
 
