@@ -192,8 +192,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpResponse setupResponse(final HttpRequest request,
                                        final org.apache.http.HttpResponse remoteResponse) throws IOException {
-        int statusCode = remoteResponse.getStatusLine().getStatusCode();
-        if (statusCode == HttpResponseStatus.BAD_REQUEST.code()) {
+        if (shouldFailover(remoteResponse)) {
             return failover.failover(request);
         }
 
@@ -201,6 +200,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
         failover.onCompleteResponse(request, httpResponse);
         return httpResponse;
+    }
+
+    private boolean shouldFailover(final org.apache.http.HttpResponse remoteResponse) {
+        int statusCode = remoteResponse.getStatusLine().getStatusCode();
+        return statusCode == HttpResponseStatus.BAD_REQUEST.code();
     }
 
     private HttpResponse setupNormalResponse(final org.apache.http.HttpResponse remoteResponse) throws IOException {
