@@ -96,10 +96,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
+    private final int proxyStatus;
     private final Failover failover;
 
     protected AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
+        this.proxyStatus = HttpResponseStatus.BAD_REQUEST.code();
     }
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
@@ -204,7 +206,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private boolean shouldFailover(final org.apache.http.HttpResponse remoteResponse) {
         int statusCode = remoteResponse.getStatusLine().getStatusCode();
-        return statusCode == HttpResponseStatus.BAD_REQUEST.code();
+        return statusCode == proxyStatus;
     }
 
     private HttpResponse setupNormalResponse(final org.apache.http.HttpResponse remoteResponse) throws IOException {
