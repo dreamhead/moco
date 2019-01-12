@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -103,6 +104,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     protected AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
         this.proxyStatuses = ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
+    }
+
+    protected AbstractProxyResponseHandler(final Failover failover, final int... proxyStatuses) {
+        this.failover = failover;
+        this.proxyStatuses = ImmutableSet.copyOf(Ints.asList(proxyStatuses));
     }
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
