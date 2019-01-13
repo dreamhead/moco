@@ -102,8 +102,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private final Failover failover;
 
     protected AbstractProxyResponseHandler(final Failover failover) {
-        this.failover = failover;
-        this.proxyStatuses = ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
+        this(failover, HttpResponseStatus.BAD_REQUEST.code());
     }
 
     protected AbstractProxyResponseHandler(final Failover failover, final int... proxyStatuses) {
