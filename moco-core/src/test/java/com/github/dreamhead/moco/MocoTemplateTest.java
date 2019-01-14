@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import org.apache.http.Header;
@@ -505,7 +506,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             public void run() throws Exception {
                 String response = helper.get(remoteUrl("/random"));
                 try {
-                    String target = Splitter.on('.').splitToList(response).get(1);
+                    String target = Iterables.get(Splitter.on('.').split(response), 1);
                     assertThat(target.length(), is(6));
 
                     double result = Double.parseDouble(response);
@@ -529,7 +530,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                     double result = Double.parseDouble(response);
                     assertThat(result, lessThan(100d));
                     assertThat(result, greaterThan(0d));
-                    String target = Splitter.on('.').splitToList(response).get(1);
+                    String target = Iterables.get(Splitter.on('.').split(response), 1);
                     assertThat(target.length(), lessThanOrEqualTo(6));
                 } catch (NumberFormatException e) {
                     fail();
