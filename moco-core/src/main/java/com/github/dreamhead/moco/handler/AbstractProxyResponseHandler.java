@@ -101,13 +101,17 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private final Set<Integer> proxyStatuses;
     private final Failover failover;
 
-    protected AbstractProxyResponseHandler(final Failover failover) {
-        this(failover, HttpResponseStatus.BAD_REQUEST.code());
-    }
-
     protected AbstractProxyResponseHandler(final Failover failover, final int... proxyStatuses) {
         this.failover = failover;
-        this.proxyStatuses = ImmutableSet.copyOf(Ints.asList(proxyStatuses));
+        this.proxyStatuses = asProxyStatuses(proxyStatuses);
+    }
+
+    private ImmutableSet<Integer> asProxyStatuses(int[] proxyStatuses) {
+        if (proxyStatuses.length == 0) {
+            return ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
+        }
+
+        return ImmutableSet.copyOf(Ints.asList(proxyStatuses));
     }
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
