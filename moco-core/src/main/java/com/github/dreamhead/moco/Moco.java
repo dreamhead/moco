@@ -460,14 +460,14 @@ public final class Moco {
         return proxy(checkNotNull(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
-    public static ResponseHandler proxy(final String url, final Failover failover) {
+    public static ResponseHandler proxy(final String url, final Failover failover, final int... statuses) {
         return proxy(text(checkNotNullOrEmpty(url, "URL should not be null")),
-                checkNotNull(failover, "Failover should not be null"));
+                checkNotNull(failover, "Failover should not be null"), statuses);
     }
 
-    public static ResponseHandler proxy(final ContentResource url, final Failover failover) {
+    public static ResponseHandler proxy(final ContentResource url, final Failover failover, final int... statuses) {
         return new ProxyResponseHandler(toUrlFunction(checkNotNull(url, "URL should not be null")),
-                checkNotNull(failover, "Failover should not be null"));
+                checkNotNull(failover, "Failover should not be null"), statuses);
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig) {
