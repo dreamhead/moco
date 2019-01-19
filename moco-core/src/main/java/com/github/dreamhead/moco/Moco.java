@@ -462,7 +462,8 @@ public final class Moco {
 
     public static ResponseHandler proxy(final String url, final Failover failover, final int... statuses) {
         return proxy(text(checkNotNullOrEmpty(url, "URL should not be null")),
-                checkNotNull(failover, "Failover should not be null"), statuses);
+                checkNotNull(failover, "Failover should not be null"),
+                checkNotNull(statuses, "Proxy status should not be null"));
     }
 
     public static ResponseHandler proxy(final ContentResource url, final Failover failover, final int... statuses) {
