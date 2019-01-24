@@ -477,7 +477,8 @@ public final class Moco {
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover, final int... statuses) {
-        return new ProxyBatchResponseHandler(checkNotNull(proxyConfig), checkNotNull(failover));
+        return new ProxyBatchResponseHandler(checkNotNull(proxyConfig), checkNotNull(failover),
+                checkNotNull(statuses, "Proxy status should not be null"));
     }
 
     public static ProxyConfig.Builder from(final String localBase) {
