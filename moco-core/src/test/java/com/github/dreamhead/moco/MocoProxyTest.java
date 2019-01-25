@@ -40,6 +40,7 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.playback;
 import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.query;
+import static com.github.dreamhead.moco.Moco.seq;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
@@ -284,12 +285,13 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_failover_for_specified_status() throws Exception {
-        server.request(by(uri("/target"))).response(status(500));
-        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover("src/test/resources/failover.response"), 500));
+        server.request(by(uri("/target"))).response(seq(status(500), status(400)));
+        server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover("src/test/resources/failover.response"), 500, 400));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
+                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
             }
         });
