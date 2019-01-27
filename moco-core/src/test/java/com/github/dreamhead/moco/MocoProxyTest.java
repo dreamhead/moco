@@ -366,13 +366,14 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_failover_for_batch_api_with_specified_status() throws Exception {
-        server.request(by(uri("/target"))).response(status(500));
-        server.request(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to(remoteUrl("/target")), failover("src/test/resources/failover.response"), 500));
+        server.request(by(uri("/target"))).response(seq(status(500), status(400)));
+        server.request(match(uri("/proxy/.*"))).response(proxy(from("/proxy").to(remoteUrl("/target")), failover("src/test/resources/failover.response"), 500, 400));
 
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
                 assertThat(helper.postContent(remoteUrl("/proxy/1"), "proxy"), is("proxy"));
+                assertThat(helper.postContent(remoteUrl("/proxy/2"), "proxy"), is("proxy"));
             }
         });
     }
