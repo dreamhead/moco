@@ -14,8 +14,8 @@ import static com.google.common.base.Optional.of;
 public class ProxyResponseHandler extends AbstractProxyResponseHandler implements ResponseHandler {
     private final Function<HttpRequest, URL> url;
 
-    public ProxyResponseHandler(final Function<HttpRequest, URL> url, final Failover failover, final int... proxyStatuses) {
-        super(failover, proxyStatuses);
+    public ProxyResponseHandler(final Function<HttpRequest, URL> url, final Failover failover) {
+        super(failover);
         this.url = url;
     }
 

@@ -8,7 +8,6 @@ import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.primitives.Ints;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -52,7 +51,6 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.Set;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
@@ -98,20 +96,10 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private static Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
 
-    private final Set<Integer> proxyStatuses;
     private final Failover failover;
 
-    protected AbstractProxyResponseHandler(final Failover failover, final int... proxyStatuses) {
+    protected AbstractProxyResponseHandler(final Failover failover) {
         this.failover = failover;
-        this.proxyStatuses = asProxyStatuses(proxyStatuses);
-    }
-
-    private ImmutableSet<Integer> asProxyStatuses(int[] proxyStatuses) {
-        if (proxyStatuses.length == 0) {
-            return ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
-        }
-
-        return ImmutableSet.copyOf(Ints.asList(proxyStatuses));
     }
 
     private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
@@ -204,7 +192,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpResponse setupResponse(final HttpRequest request,
                                        final org.apache.http.HttpResponse remoteResponse) throws IOException {
-        if (shouldFailover(remoteResponse)) {
+        if (failover.shouldFailover(remoteResponse)) {
             return failover.failover(request);
         }
 
@@ -212,11 +200,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
         failover.onCompleteResponse(request, httpResponse);
         return httpResponse;
-    }
-
-    private boolean shouldFailover(final org.apache.http.HttpResponse remoteResponse) {
-        int statusCode = remoteResponse.getStatusLine().getStatusCode();
-        return proxyStatuses.contains(statusCode);
     }
 
     private HttpResponse setupNormalResponse(final org.apache.http.HttpResponse remoteResponse) throws IOException {

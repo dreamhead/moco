@@ -15,9 +15,8 @@ public final class ProxyBatchResponseHandler extends AbstractProxyResponseHandle
     private final ProxyConfig proxyConfig;
 
     public ProxyBatchResponseHandler(final ProxyConfig proxyConfig,
-                                     final Failover failover,
-                                     final int... proxyStatuses) {
-        super(failover, proxyStatuses);
+                                     final Failover failover) {
+        super(failover);
         this.proxyConfig = proxyConfig;
     }
 

@@ -460,25 +460,22 @@ public final class Moco {
         return proxy(checkNotNull(url, "URL should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
-    public static ResponseHandler proxy(final String url, final Failover failover, final int... statuses) {
+    public static ResponseHandler proxy(final String url, final Failover failover) {
         return proxy(text(checkNotNullOrEmpty(url, "URL should not be null")),
-                checkNotNull(failover, "Failover should not be null"),
-                checkNotNull(statuses, "Proxy status should not be null"));
+                checkNotNull(failover, "Failover should not be null"));
     }
 
-    public static ResponseHandler proxy(final ContentResource url, final Failover failover, final int... statuses) {
+    public static ResponseHandler proxy(final ContentResource url, final Failover failover) {
         return new ProxyResponseHandler(toUrlFunction(checkNotNull(url, "URL should not be null")),
-                checkNotNull(failover, "Failover should not be null"),
-                checkNotNull(statuses, "Proxy status should not be null"));
+                checkNotNull(failover, "Failover should not be null"));
     }
 
     public static ResponseHandler proxy(final ProxyConfig proxyConfig) {
         return proxy(checkNotNull(proxyConfig), Failover.DEFAULT_FAILOVER);
     }
 
-    public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover, final int... statuses) {
-        return new ProxyBatchResponseHandler(checkNotNull(proxyConfig), checkNotNull(failover),
-                checkNotNull(statuses, "Proxy status should not be null"));
+    public static ResponseHandler proxy(final ProxyConfig proxyConfig, final Failover failover) {
+        return new ProxyBatchResponseHandler(checkNotNull(proxyConfig), checkNotNull(failover));
     }
 
     public static ProxyConfig.Builder from(final String localBase) {
@@ -569,14 +566,16 @@ public final class Moco {
         return new PlainExtractor<>(checkNotNull(text, "Template variable should not be null or empty"));
     }
 
-    public static Failover failover(final String file) {
+    public static Failover failover(final String file, final int... statuses) {
         return new Failover(ApiUtils.failoverExecutor(
-                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER);
+                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER,
+                checkNotNull(statuses, "Proxy status should not be null"));
     }
 
-    public static Failover playback(final String file) {
+    public static Failover playback(final String file, final int... statuses) {
         return new Failover(ApiUtils.failoverExecutor(
-                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK);
+                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK,
+                checkNotNull(statuses, "Proxy status should not be null"));
     }
 
     public static MocoEventTrigger complete(final MocoEventAction action) {
