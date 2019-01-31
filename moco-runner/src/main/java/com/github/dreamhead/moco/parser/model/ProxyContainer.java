@@ -18,8 +18,8 @@ public class ProxyContainer {
     private String from;
     private String to;
 
-    private String failover;
-    private String playback;
+    private FailoverContainer failover;
+    private FailoverContainer playback;
 
     public final boolean hasUrl() {
         return url != null;
@@ -43,11 +43,11 @@ public class ProxyContainer {
 
     public final Failover getFailover() {
         if (failover != null) {
-            return failover(failover);
+            return failover(failover.getFailover());
         }
 
         if (playback != null) {
-            return playback(playback);
+            return playback(playback.getFailover());
         }
 
         return Failover.DEFAULT_FAILOVER;
@@ -122,8 +122,8 @@ public class ProxyContainer {
             container.url = url;
             container.from = from;
             container.to = to;
-            container.failover = failover;
-            container.playback = playback;
+            container.failover = (failover != null) ? new FailoverContainer(failover) : null;
+            container.playback = (playback != null) ? new FailoverContainer(playback) : null;
             return container;
         }
     }
