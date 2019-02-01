@@ -568,13 +568,13 @@ public final class Moco {
 
     public static Failover failover(final String file, final int... statuses) {
         return new Failover(ApiUtils.failoverExecutor(
-                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.FAILOVER,
+                checkNotNullOrEmpty(file, "Failover filename should not be null")), FailoverStrategy.FAILOVER,
                 checkNotNull(statuses, "Proxy status should not be null"));
     }
 
     public static Failover playback(final String file, final int... statuses) {
         return new Failover(ApiUtils.failoverExecutor(
-                checkNotNullOrEmpty(file, "Filename should not be null")), FailoverStrategy.PLAYBACK,
+                checkNotNullOrEmpty(file, "Playback filename should not be null")), FailoverStrategy.PLAYBACK,
                 checkNotNull(statuses, "Proxy status should not be null"));
     }
 
