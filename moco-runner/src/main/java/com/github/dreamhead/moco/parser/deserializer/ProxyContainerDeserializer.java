@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.github.dreamhead.moco.parser.model.FailoverContainer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
@@ -35,8 +36,8 @@ public final class ProxyContainerDeserializer extends JsonDeserializer<ProxyCont
         private String from;
         private String to;
 
-        private String failover;
-        private String playback;
+        private FailoverContainer failover;
+        private FailoverContainer playback;
 
         public ProxyContainer toProxyContainer() {
             return builder()

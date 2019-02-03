@@ -73,8 +73,8 @@ public class ProxyContainer {
 
     public static class Builder {
         private TextContainer url;
-        private String failover;
-        private String playback;
+        private FailoverContainer failover;
+        private FailoverContainer playback;
 
         private String from;
         private String to;
@@ -99,12 +99,12 @@ public class ProxyContainer {
             return this;
         }
 
-        public final Builder withFailover(final String failover) {
+        public final Builder withFailover(final FailoverContainer failover) {
             this.failover = failover;
             return this;
         }
 
-        public final Builder withPlayback(final String playback) {
+        public final Builder withPlayback(final FailoverContainer playback) {
             this.playback = playback;
             return this;
         }
@@ -122,8 +122,8 @@ public class ProxyContainer {
             container.url = url;
             container.from = from;
             container.to = to;
-            container.failover = (failover != null) ? new FailoverContainer(failover) : null;
-            container.playback = (playback != null) ? new FailoverContainer(playback) : null;
+            container.failover = failover;
+            container.playback = playback;
             return container;
         }
     }
