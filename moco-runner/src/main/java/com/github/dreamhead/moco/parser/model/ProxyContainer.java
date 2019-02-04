@@ -8,9 +8,7 @@ import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
 import com.github.dreamhead.moco.parser.deserializer.ProxyContainerDeserializer;
 import com.google.common.base.MoreObjects;
 
-import static com.github.dreamhead.moco.Moco.failover;
 import static com.github.dreamhead.moco.Moco.from;
-import static com.github.dreamhead.moco.Moco.playback;
 
 @JsonDeserialize(using = ProxyContainerDeserializer.class)
 public class ProxyContainer {
@@ -43,11 +41,11 @@ public class ProxyContainer {
 
     public final Failover getFailover() {
         if (failover != null) {
-            return failover(failover.getFailover());
+            return failover.asFailover();
         }
 
         if (playback != null) {
-            return playback(playback.getFailover());
+            return playback.asPlayback();
         }
 
         return Failover.DEFAULT_FAILOVER;

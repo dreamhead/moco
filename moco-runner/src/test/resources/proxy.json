@@ -61,5 +61,39 @@
                 }
             }
         }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/failover-target"
+        },
+        "response" :
+        {
+            "seq" : [
+                {
+                    "status": 404
+                },
+                {
+                    "status": 500
+                }
+            ]
+        }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/failover-with-status"
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : "http://localhost:12306/failover-target",
+                "failover" : {
+                    "file": "src/test/resources/standalone_failover.json",
+                    "status": [404, 500]
+                }
+            }
+        }
     }
 ]

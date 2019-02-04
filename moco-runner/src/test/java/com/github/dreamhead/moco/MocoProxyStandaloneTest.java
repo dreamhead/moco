@@ -88,4 +88,14 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
         String content = helper.get(remoteUrl("/template-url?foo=target"));
         assertThat(content, is("proxy_target"));
     }
+
+    @Test
+    public void should_response_with_failover_status() throws IOException {
+        runWithConfiguration("proxy.json");
+        String content = helper.get(remoteUrl("/failover-with-status"));
+        assertThat(content, is("proxy"));
+
+        content = helper.get(remoteUrl("/failover-with-status"));
+        assertThat(content, is("proxy"));
+    }
 }
