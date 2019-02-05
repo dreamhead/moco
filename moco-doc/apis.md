@@ -1118,7 +1118,7 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 }
 ```
 
-#### Customize Proxy Status
+#### Customize Failover/Playback Status
 **@Since 0.12.0**
 
 You can customize what statuses means remote server is not available.
@@ -1127,6 +1127,26 @@ You can customize what statuses means remote server is not available.
 
 ```java
 server.request(by("foo")).response(proxy("http://www.github.com", failover("failover.json", 400, 500)));
+```
+
+```json
+{
+        "request" :
+        {
+            "text": "foo"
+        },
+        "response" :
+        {
+            "proxy" :
+            {
+                "url" : "http://www.github.com",
+                "failover" : {
+                    "file": "failover.json",
+                    "status": [404, 500]
+                }
+            }
+        }
+    }
 ```
 
 #### Batch URLs
