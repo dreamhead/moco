@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.deserializer.FailoverContainerDeserializer;
+import com.google.common.base.MoreObjects;
 
 import static com.github.dreamhead.moco.Moco.playback;
 
 @JsonDeserialize(using = FailoverContainerDeserializer.class)
 public class FailoverContainer {
-    private String failover;
+    private String file;
     private int[] status;
 
     private FailoverContainer() {
@@ -17,18 +18,27 @@ public class FailoverContainer {
 
     public Failover asFailover() {
         if (this.status == null) {
-            return Moco.failover(failover);
+            return Moco.failover(file);
         }
 
-        return Moco.failover(failover, this.status);
+        return Moco.failover(file, this.status);
     }
 
     public Failover asPlayback() {
         if (this.status == null) {
-            return playback(failover);
+            return playback(file);
         }
 
-        return playback(failover, this.status);
+        return playback(file, this.status);
+    }
+
+    @Override
+    public final String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("file", file)
+                .add("status", status)
+                .toString();
     }
 
     public static Builder builder() {
@@ -41,7 +51,7 @@ public class FailoverContainer {
 
         public FailoverContainer build() {
             FailoverContainer container = new FailoverContainer();
-            container.failover = file;
+            container.file = file;
             container.status = status;
             return container;
         }
