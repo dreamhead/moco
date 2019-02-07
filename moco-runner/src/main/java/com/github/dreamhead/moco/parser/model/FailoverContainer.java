@@ -9,7 +9,7 @@ import com.google.common.base.MoreObjects;
 import static com.github.dreamhead.moco.Moco.playback;
 
 @JsonDeserialize(using = FailoverContainerDeserializer.class)
-public class FailoverContainer {
+public final class FailoverContainer {
     private String file;
     private int[] status;
 
@@ -33,7 +33,7 @@ public class FailoverContainer {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("file", file)
@@ -45,7 +45,7 @@ public class FailoverContainer {
         return new Builder();
     }
 
-    public static class Builder {
+    public static final class Builder {
         private String file;
         private int[] status;
 
@@ -61,7 +61,7 @@ public class FailoverContainer {
             return this;
         }
 
-        public Builder withStatus(int[] status) {
+        public Builder withStatus(final int[] status) {
             this.status = status;
             return this;
         }
