@@ -5,6 +5,7 @@
 * `now` as template function is supported in template
 * `random` as template function is supported in template
 * `req.json` is supported in template
+* `failover` and `playback` status API is supported.
 
 ## Implementation Details
 * Support multiple HTTP headers with same name

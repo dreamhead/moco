@@ -1119,9 +1119,9 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 ```
 
 #### Customize Failover/Playback Status
-**@Since 0.12.0**
+**@Since will be at next release**
 
-You can customize what statuses means remote server is not available.
+You can customize what remote statuses means remote server is not available.
 
 * Java API
 
