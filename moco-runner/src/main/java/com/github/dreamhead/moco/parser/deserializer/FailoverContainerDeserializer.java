@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.parser.model.ProxyContainer;
 
 import java.io.IOException;
 
-public class FailoverContainerDeserializer extends JsonDeserializer<FailoverContainer> {
+public final class FailoverContainerDeserializer extends JsonDeserializer<FailoverContainer> {
     @Override
     public FailoverContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
