@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.FailoverContainer;
-import com.github.dreamhead.moco.parser.model.ProxyContainer;
 
 import java.io.IOException;
 
@@ -23,7 +22,7 @@ public final class FailoverContainerDeserializer extends JsonDeserializer<Failov
             return container.toFailoverContainer();
         }
 
-        return (FailoverContainer) ctxt.handleUnexpectedToken(ProxyContainer.class, jp);
+        return (FailoverContainer) ctxt.handleUnexpectedToken(FailoverContainer.class, jp);
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
