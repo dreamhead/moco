@@ -22,7 +22,7 @@ public final class Failover {
         this.statuses = asProxyStatuses(statuses);
     }
 
-    private ImmutableSet<Integer> asProxyStatuses(int[] proxyStatuses) {
+    private ImmutableSet<Integer> asProxyStatuses(final int[] proxyStatuses) {
         if (proxyStatuses.length == 0) {
             return ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
         }
