@@ -1129,24 +1129,26 @@ You can customize what remote statuses means remote server is not available.
 server.request(by("foo")).response(proxy("http://www.github.com", failover("failover.json", 400, 500)));
 ```
 
+* JSON
+
 ```json
 {
-        "request" :
+    "request" :
+    {
+        "text": "foo"
+    },
+    "response" :
+    {
+        "proxy" :
         {
-            "text": "foo"
-        },
-        "response" :
-        {
-            "proxy" :
-            {
-                "url" : "http://www.github.com",
-                "failover" : {
-                    "file": "failover.json",
-                    "status": [404, 500]
-                }
+            "url" : "http://www.github.com",
+            "failover" : {
+                "file": "failover.json",
+                "status": [404, 500]
             }
         }
     }
+}
 ```
 
 #### Batch URLs
