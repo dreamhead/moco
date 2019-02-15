@@ -18,7 +18,7 @@ public class TextContainer implements Container {
     private static final String TEMPLATE_NAME = "template";
     private String text;
     private String operation;
-    private Map<String, TextContainer> props = ImmutableMap.of();
+    private Map<String, TextContainer> props;
 
     private TextContainer(final String text, final String operation,
                             final Map<String, TextContainer> props) {
@@ -28,6 +28,7 @@ public class TextContainer implements Container {
     }
 
     protected TextContainer() {
+        this.props = ImmutableMap.of();
     }
 
     public ContentResource asResource() {
