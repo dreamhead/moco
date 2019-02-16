@@ -20,13 +20,6 @@ public class TextContainer implements Container {
     private String operation;
     private Map<String, TextContainer> props;
 
-    private TextContainer(final String text, final String operation,
-                            final Map<String, TextContainer> props) {
-        this.text = text;
-        this.operation = operation;
-        this.props = props;
-    }
-
     protected TextContainer() {
         this.props = ImmutableMap.of();
     }
@@ -145,7 +138,11 @@ public class TextContainer implements Container {
         }
 
         public final TextContainer build() {
-            return new TextContainer(text, operation, asProps(props));
+            TextContainer container = new TextContainer();
+            container.text = text;
+            container.operation = operation;
+            container.props = asProps(props);
+            return container;
         }
 
         private Map<String, TextContainer> asProps(final Map<String, TextContainer> props) {
