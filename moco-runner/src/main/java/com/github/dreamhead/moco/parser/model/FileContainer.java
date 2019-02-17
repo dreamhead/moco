@@ -25,12 +25,6 @@ public final class FileContainer extends TextContainer {
         this.content = container;
     }
 
-    private FileContainer(final TextContainer name, final Optional<Charset> charset) {
-        this.name = name;
-        this.charset = charset;
-        this.content = null;
-    }
-
     public TextContainer getName() {
         return name;
     }
@@ -143,7 +137,9 @@ public final class FileContainer extends TextContainer {
         }
 
         public FileContainer build() {
-            return new FileContainer(name, toCharset(charset));
+            FileContainer container = new FileContainer(name);
+            container.charset = toCharset(charset);
+            return container;
         }
 
         private Optional<Charset> toCharset(final String charset) {
