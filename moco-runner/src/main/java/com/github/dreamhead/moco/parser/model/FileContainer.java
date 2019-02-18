@@ -16,12 +16,11 @@ import static com.google.common.base.Optional.of;
 @JsonDeserialize(using = FileContainerDeserializer.class)
 public final class FileContainer extends TextContainer {
     private TextContainer name;
-    private Optional<Charset> charset;
+    private Charset charset;
     private TextContainer content;
 
     private FileContainer(final TextContainer container) {
         this.name = container;
-        this.charset = absent();
         this.content = container;
     }
 
@@ -30,7 +29,7 @@ public final class FileContainer extends TextContainer {
     }
 
     public Optional<Charset> getCharset() {
-        return charset;
+        return Optional.fromNullable(charset);
     }
 
     @Override
@@ -138,7 +137,7 @@ public final class FileContainer extends TextContainer {
 
         public FileContainer build() {
             FileContainer container = new FileContainer(name);
-            container.charset = toCharset(charset);
+            container.charset = toCharset(charset).orNull();
             return container;
         }
 
