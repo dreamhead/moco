@@ -20,18 +20,22 @@ import static com.google.common.io.ByteStreams.toByteArray;
 @JsonDeserialize(using = MessageContentDeserializer.class)
 public class MessageContent {
     private byte[] content;
-    private Optional<Charset> charset;
+    private Charset charset;
 
     public final byte[] getContent() {
         return content;
     }
 
     public final Charset getCharset() {
-        return charset.or(Charset.defaultCharset());
+        if (hasCharset()) {
+            return charset;
+        }
+
+        return Charset.defaultCharset();
     }
 
     public final boolean hasCharset() {
-        return charset.isPresent();
+        return charset != null;
     }
 
     public final boolean hasContent() {
@@ -104,7 +108,7 @@ public class MessageContent {
 
         public final MessageContent build() {
             MessageContent messageContent = new MessageContent();
-            messageContent.charset = Optional.fromNullable(charset);
+            messageContent.charset = charset;
             messageContent.content = targetContent(content);
             return messageContent;
         }
