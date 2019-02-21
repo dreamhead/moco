@@ -138,6 +138,9 @@ public final class FileContainer extends TextContainer {
         public FileContainer build() {
             FileContainer container = new FileContainer(name);
             container.charset = toCharset(charset).orNull();
+            if (charset == null) {
+                container.content = null;
+            }
             return container;
         }
 
