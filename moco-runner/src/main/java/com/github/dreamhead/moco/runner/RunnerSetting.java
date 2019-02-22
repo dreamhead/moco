@@ -10,23 +10,22 @@ import com.google.common.collect.ImmutableList;
 import java.io.InputStream;
 
 import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Optional.of;
 
 public final class RunnerSetting {
     private final ImmutableList<InputStream> streams;
-    private final Optional<RequestSetting> request;
-    private final Optional<ResponseSetting> response;
-    private final Optional<String> context;
-    private final Optional<String> fileRoot;
+    private final RequestSetting request;
+    private final ResponseSetting response;
+    private final String context;
+    private final String fileRoot;
 
     private RunnerSetting(final ImmutableList<InputStream> streams, final String context, final String fileRoot,
                           final RequestSetting requestSetting, final ResponseSetting response) {
         this.streams = streams;
-        this.request = fromNullable(requestSetting);
-        this.response = fromNullable(response);
-        this.context = fromNullable(context);
-        this.fileRoot = fromNullable(fileRoot);
+        this.request = requestSetting;
+        this.response = response;
+        this.context = context;
+        this.fileRoot = fileRoot;
     }
 
     public ImmutableList<InputStream> getStreams() {
@@ -34,32 +33,32 @@ public final class RunnerSetting {
     }
 
     public Optional<MocoConfig> context() {
-        if (context.isPresent()) {
-            return of(Moco.context(context.get()));
+        if (context != null) {
+            return of(Moco.context(context));
         }
 
         return absent();
     }
 
     public Optional<MocoConfig> fileRoot() {
-        if (fileRoot.isPresent()) {
-            return of(Moco.fileRoot(fileRoot.get()));
+        if (fileRoot != null) {
+            return of(Moco.fileRoot(fileRoot));
         }
 
         return absent();
     }
 
     public Optional<MocoConfig> request() {
-        if (request.isPresent()) {
-            return of(Moco.request(request.get().getRequestMatcher()));
+        if (request != null) {
+            return of(Moco.request(request.getRequestMatcher()));
         }
 
         return absent();
     }
 
     public Optional<MocoConfig> response() {
-        if (response.isPresent()) {
-            return of(Moco.response(response.get().getResponseHandler()));
+        if (response != null) {
+            return of(Moco.response(response.getResponseHandler()));
         }
 
         return absent();
@@ -109,6 +108,5 @@ public final class RunnerSetting {
         public final RunnerSetting build() {
             return new RunnerSetting(streams.build(), context, fileRoot, request, response);
         }
-
     }
 }
