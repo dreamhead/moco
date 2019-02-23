@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.MocoException;
-import com.google.common.base.Optional;
 import com.google.common.io.Files;
 
 import java.io.File;
@@ -9,17 +8,17 @@ import java.nio.charset.Charset;
 
 public final class FileLogWriter implements LogWriter {
     private final File file;
-    private Optional<Charset> charset;
+    private final Charset charset;
 
-    public FileLogWriter(final String filename, final Optional<Charset> charset) {
+    public FileLogWriter(final String filename, final Charset charset) {
         this.file = new File(filename);
-        this.charset = charset;
+        this.charset = (charset != null ? charset : Charset.defaultCharset());
     }
 
     @Override
     public void write(final String content) {
         try {
-            Files.append(content, file, charset.or(Charset.defaultCharset()));
+            Files.append(content, file, charset);
         } catch (Exception e) {
             throw new MocoException(e);
         }

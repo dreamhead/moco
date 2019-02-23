@@ -76,7 +76,7 @@ public final class ApiUtils {
         return new DefaultFailoverExecutor(new File(file));
     }
 
-    public static LogWriter fileLogWriter(final String filename, final Optional<Charset> charset) {
+    public static LogWriter fileLogWriter(final String filename, final Charset charset) {
         return new FileLogWriter(filename, charset);
     }
 

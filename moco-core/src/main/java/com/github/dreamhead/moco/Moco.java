@@ -174,11 +174,11 @@ public final class Moco {
     }
 
     public static MocoMonitor log(final String filename) {
-        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), Optional.<Charset>absent()));
+        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), null));
     }
 
     public static MocoMonitor log(final String filename, final Charset charset) {
-        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), of(checkNotNull(charset, "Charset should not be null"))));
+        return ApiUtils.log(ApiUtils.fileLogWriter(checkNotNullOrEmpty(filename, "Filename should not be null or empty"), checkNotNull(charset, "Charset should not be null")));
     }
 
     public static RequestMatcher by(final String content) {
