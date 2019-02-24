@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -498,6 +499,15 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_() {
+        double result = 1.01;
+        DecimalFormat format = new DecimalFormat("###.######");
+        String finalResult = format.format(result);
+        System.out.println(finalResult);
+
+    }
+
+    @Test
     public void should_generate_response_with_random_with_data_format() throws Exception {
         server.request(by(uri("/random"))).response(template("${random('###.######')}"));
 
@@ -507,7 +517,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 String response = helper.get(remoteUrl("/random"));
                 try {
                     String target = Iterables.get(Splitter.on('.').split(response), 1);
-                    assertThat(target.length(), is(6));
+                    assertThat(target.length(), lessThanOrEqualTo(6));
 
                     double result = Double.parseDouble(response);
                     assertThat(result, lessThan(1d));
