@@ -1,4 +1,4 @@
-# Release
+# Release 0.12.0
 
 ## APIs
 * `cycle` API returns response as a cycle.
