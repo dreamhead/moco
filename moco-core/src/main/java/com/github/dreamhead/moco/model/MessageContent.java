@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.dumper.MessageContentDeserializer;
 import com.github.dreamhead.moco.dumper.MessageContentSerializer;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
