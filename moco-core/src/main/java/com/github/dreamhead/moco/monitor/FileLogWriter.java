@@ -12,7 +12,15 @@ public final class FileLogWriter implements LogWriter {
 
     public FileLogWriter(final String filename, final Charset charset) {
         this.file = new File(filename);
-        this.charset = (charset != null ? charset : Charset.defaultCharset());
+        this.charset = asCharset(charset);
+    }
+
+    private Charset asCharset(Charset charset) {
+        if (charset != null) {
+            return charset;
+        }
+
+        return Charset.defaultCharset();
     }
 
     @Override
