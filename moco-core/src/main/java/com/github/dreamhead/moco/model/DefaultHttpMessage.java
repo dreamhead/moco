@@ -58,9 +58,9 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     protected MoreObjects.ToStringHelper toStringHelper() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("version", this.getVersion())
-                .add("headers", this.getHeaders())
-                .add("content", this.getContent());
+                .add("version", this.version)
+                .add("headers", this.headers)
+                .add("content", this.content);
     }
 
     @Override
