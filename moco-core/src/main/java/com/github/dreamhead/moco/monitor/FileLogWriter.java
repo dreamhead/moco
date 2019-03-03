@@ -15,7 +15,7 @@ public final class FileLogWriter implements LogWriter {
         this.charset = asCharset(charset);
     }
 
-    private Charset asCharset(Charset charset) {
+    private Charset asCharset(final Charset charset) {
         if (charset != null) {
             return charset;
         }
