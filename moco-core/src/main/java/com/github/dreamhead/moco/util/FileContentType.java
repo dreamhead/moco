@@ -33,13 +33,13 @@ public final class FileContentType {
             .build();
 
     private final String filename;
-    private final Optional<Charset> charset;
+    private final Charset charset;
 
     public FileContentType(final String filename) {
-        this(filename, Optional.<Charset>absent());
+        this(filename, null);
     }
 
-    public FileContentType(final String filename, final Optional<Charset> charset) {
+    public FileContentType(final String filename, final Charset charset) {
         this.filename = filename;
         this.charset = charset;
     }
@@ -57,8 +57,8 @@ public final class FileContentType {
     }
 
     private Optional<Charset> toCharset(final Optional<MediaType> type) {
-        if (charset.isPresent()) {
-            return charset;
+        if (charset != null) {
+            return Optional.of(charset);
         }
 
         if (!type.isPresent()) {

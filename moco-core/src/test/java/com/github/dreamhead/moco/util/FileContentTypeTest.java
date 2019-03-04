@@ -25,7 +25,7 @@ public class FileContentTypeTest {
 	@Test
 	public void should_have_charset_for_file() {
 		Charset gbk = Charset.forName("gbk");
-		FileContentType contentType = new FileContentType("result.response", of(gbk));
+		FileContentType contentType = new FileContentType("result.response", gbk);
 		assertThat(contentType.getContentType(), is(MediaType.create("text", "plain").withCharset(gbk)));
 	}
 

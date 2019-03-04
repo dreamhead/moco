@@ -42,7 +42,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     @Override
     public final MediaType getContentType(final HttpRequest request) {
         String targetFilename = this.filename(of(request));
-        return new FileContentType(targetFilename, charset).getContentType();
+        return new FileContentType(targetFilename, charset.orNull()).getContentType();
     }
 
     protected final String filename(final Optional<? extends Request> request) {
