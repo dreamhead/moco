@@ -26,7 +26,7 @@ public final class ResourceConfigApplierFactory {
             @Override
             @SuppressWarnings("unchecked")
             protected Resource newResource(final MocoConfig config) {
-                return fileResource(file, Optional.<Charset>absent(), Optional.of(config));
+                return fileResource(file, Optional.<Charset>absent(), config);
             }
         };
     }

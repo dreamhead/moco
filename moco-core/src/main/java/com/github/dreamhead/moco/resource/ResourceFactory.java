@@ -45,7 +45,7 @@ public final class ResourceFactory {
     }
 
     public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset,
-                                               final Optional<MocoConfig> config) {
+                                               final MocoConfig config) {
         return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename),
                 new FileResourceReader(filename, charset, config));
     }

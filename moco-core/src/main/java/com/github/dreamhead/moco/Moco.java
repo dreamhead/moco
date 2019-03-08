@@ -412,7 +412,7 @@ public final class Moco {
     }
 
     private static ContentResource file(final Resource filename, final Optional<Charset> charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, Optional.<MocoConfig>absent());
+        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
     }
 
     public static ContentResource pathResource(final String filename) {

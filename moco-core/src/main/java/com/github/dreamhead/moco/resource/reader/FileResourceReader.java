@@ -14,13 +14,13 @@ import static com.google.common.io.Files.toByteArray;
 import static java.lang.String.format;
 
 public final class FileResourceReader extends AbstractFileResourceReader {
-    private final Optional<MocoConfig> config;
+    private final MocoConfig config;
 
     public FileResourceReader(final Resource file) {
-        this(file, Optional.<Charset>absent(), Optional.<MocoConfig>absent());
+        this(file, Optional.<Charset>absent(), null);
     }
 
-    public FileResourceReader(final Resource file, final Optional<Charset> charset, final Optional<MocoConfig> config) {
+    public FileResourceReader(final Resource file, final Optional<Charset> charset, final MocoConfig config) {
         super(file, charset);
         this.config = config;
     }
@@ -44,8 +44,8 @@ public final class FileResourceReader extends AbstractFileResourceReader {
     private String targetFileName(final Optional<? extends Request> request) {
         String filename = this.filename(request);
 
-        if (config.isPresent()) {
-            return (String) config.get().apply(filename);
+        if (config != null) {
+            return (String) config.apply(filename);
         }
 
         return filename;
