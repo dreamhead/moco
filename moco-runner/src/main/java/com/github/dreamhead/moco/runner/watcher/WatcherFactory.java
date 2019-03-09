@@ -35,7 +35,7 @@ public final class WatcherFactory {
                                         final Iterable<File> configurationFiles,
                                         final FileRunner fileRunner) {
         ImmutableList<File> files = ImmutableList.<File>builder().add(settingsFile).addAll(configurationFiles).build();
-        return factory.createWatcher(listener(fileRunner), files.toArray(new File[files.size()]));
+        return factory.createWatcher(listener(fileRunner), files.toArray(new File[0]));
     }
 
     private Function<File, Void> listener(final FileRunner fileRunner) {
