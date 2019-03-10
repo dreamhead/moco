@@ -17,7 +17,7 @@ public final class WatcherFactory {
     private FileWatcherFactory factory = new DefaultWatcherFactory();
 
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,
-                                                           final Optional<Integer> shutdownPort,
+                                                           final Integer shutdownPort,
                                                            final String shutdownKey) {
         return new ShutdownMocoRunnerWatcher(shutdownPort, shutdownKey, new ShutdownListener() {
             @Override

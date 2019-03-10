@@ -22,12 +22,12 @@ import static io.netty.channel.ChannelHandler.Sharable;
 public final class ShutdownMocoRunnerWatcher implements Watcher {
     private static Logger logger = LoggerFactory.getLogger(ShutdownMocoRunnerWatcher.class);
     private final MocoServer server = new MocoServer();
-    private final Optional<Integer> shutdownPort;
+    private final int shutdownPort;
     private final String shutdownKey;
     private final ShutdownListener shutdownListener;
     private int port;
 
-    public ShutdownMocoRunnerWatcher(final Optional<Integer> shutdownPort,
+    public ShutdownMocoRunnerWatcher(final int shutdownPort,
                                      final String shutdownKey,
                                      final ShutdownListener shutdownListener) {
         this.shutdownPort = shutdownPort;
@@ -36,7 +36,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
     }
 
     public void start() {
-        int actualPort = server.start(this.shutdownPort.or(0), new ChannelInitializer<SocketChannel>() {
+        int actualPort = server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();

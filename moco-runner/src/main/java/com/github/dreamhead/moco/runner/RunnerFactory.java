@@ -25,7 +25,7 @@ public final class RunnerFactory {
     public ShutdownRunner createRunner(final StartArgs startArgs) {
         Runner dynamicRunner = createDynamicRunner(startArgs);
         ShutdownMocoRunnerWatcher watcher = factory.createShutdownWatcher(dynamicRunner,
-                startArgs.getShutdownPort(), shutdownKey);
+                startArgs.getShutdownPort().or(0), shutdownKey);
         return new ShutdownRunner(dynamicRunner, watcher);
     }
 
