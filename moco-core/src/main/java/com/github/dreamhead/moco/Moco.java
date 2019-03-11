@@ -52,9 +52,7 @@ import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
 import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
-import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
-import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.methodResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
@@ -400,19 +398,15 @@ public final class Moco {
     }
 
     public static ContentResource file(final Resource filename) {
-        return file(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
+        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
     public static ContentResource file(final String filename, final Charset charset) {
-        return file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
-        return file(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
-    }
-
-    private static ContentResource file(final Resource filename, final Optional<Charset> charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
+        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource pathResource(final String filename) {
@@ -420,19 +414,15 @@ public final class Moco {
     }
 
     public static ContentResource pathResource(final Resource filename) {
-        return pathResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
+        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
     }
 
     public static ContentResource pathResource(final String filename, final Charset charset) {
-        return pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
-        return pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
-    }
-
-    private static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
+        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
     }
 
     public static Resource version(final String version) {

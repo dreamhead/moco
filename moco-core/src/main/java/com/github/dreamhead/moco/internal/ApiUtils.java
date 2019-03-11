@@ -19,17 +19,22 @@ import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
 import com.github.dreamhead.moco.monitor.FileLogWriter;
 import com.github.dreamhead.moco.monitor.LogMonitor;
 import com.github.dreamhead.moco.monitor.LogWriter;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.io.File;
 import java.nio.charset.Charset;
 
+import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.transformEntries;
 
 public final class ApiUtils {
@@ -108,5 +113,13 @@ public final class ApiUtils {
     }
 
     private ApiUtils() {
+    }
+
+    public static ContentResource file(final Resource filename, final Optional<Charset> charset) {
+        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
+    }
+
+    public static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
+        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
     }
 }
