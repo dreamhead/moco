@@ -398,15 +398,15 @@ public final class Moco {
     }
 
     public static ContentResource file(final Resource filename) {
-        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
+        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), null);
     }
 
     public static ContentResource file(final String filename, final Charset charset) {
-        return ApiUtils.file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.file(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
-        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.file(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static ContentResource pathResource(final String filename) {
@@ -414,15 +414,15 @@ public final class Moco {
     }
 
     public static ContentResource pathResource(final Resource filename) {
-        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), Optional.<Charset>absent());
+        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), null);
     }
 
     public static ContentResource pathResource(final String filename, final Charset charset) {
-        return ApiUtils.pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.pathResource(text(checkNotNullOrEmpty(filename, "Filename should not be null")), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
-        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), of(checkNotNull(charset, "Charset should not be null")));
+        return ApiUtils.pathResource(checkNotNull(filename, "Filename should not be null"), checkNotNull(charset, "Charset should not be null"));
     }
 
     public static Resource version(final String version) {

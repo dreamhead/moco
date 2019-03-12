@@ -112,14 +112,14 @@ public final class ApiUtils {
         return new EqRequestMatcher<>(extractor, expected);
     }
 
+    public static ContentResource file(final Resource filename, final Charset charset) {
+        return fileResource(checkNotNull(filename, "Filename should not be null"), Optional.fromNullable(charset), null);
+    }
+
+    public static ContentResource pathResource(final Resource filename, final Charset charset) {
+        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), Optional.fromNullable(charset));
+    }
+
     private ApiUtils() {
-    }
-
-    public static ContentResource file(final Resource filename, final Optional<Charset> charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
-    }
-
-    public static ContentResource pathResource(final Resource filename, final Optional<Charset> charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
     }
 }
