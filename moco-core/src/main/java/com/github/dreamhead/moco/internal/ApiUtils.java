@@ -113,11 +113,11 @@ public final class ApiUtils {
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), Optional.fromNullable(charset), null);
+        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
     }
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), Optional.fromNullable(charset));
+        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
     }
 
     private ApiUtils() {

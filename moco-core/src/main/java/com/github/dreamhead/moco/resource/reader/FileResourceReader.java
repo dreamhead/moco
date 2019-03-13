@@ -17,10 +17,10 @@ public final class FileResourceReader extends AbstractFileResourceReader {
     private final MocoConfig config;
 
     public FileResourceReader(final Resource file) {
-        this(file, Optional.<Charset>absent(), null);
+        this(file, null, null);
     }
 
-    public FileResourceReader(final Resource file, final Optional<Charset> charset, final MocoConfig config) {
+    public FileResourceReader(final Resource file, final Charset charset, final MocoConfig config) {
         super(file, charset);
         this.config = config;
     }

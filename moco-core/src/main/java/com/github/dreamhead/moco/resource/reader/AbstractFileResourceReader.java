@@ -18,9 +18,9 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     protected abstract byte[] doReadFor(Optional<? extends Request> request);
 
     private final Resource filename;
-    private final Optional<Charset> charset;
+    private final Charset charset;
 
-    protected AbstractFileResourceReader(final Resource filename, final Optional<Charset> charset) {
+    protected AbstractFileResourceReader(final Resource filename, final Charset charset) {
         this.charset = charset;
         this.filename = filename;
     }
@@ -32,8 +32,8 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
 
     private MessageContent asMessageContent(final byte[] content) {
         MessageContent.Builder builder = content().withContent(content);
-        if (charset.isPresent()) {
-            builder.withCharset(charset.get());
+        if (charset != null) {
+            builder.withCharset(charset);
         }
 
         return builder.build();
@@ -42,7 +42,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     @Override
     public final MediaType getContentType(final HttpRequest request) {
         String targetFilename = this.filename(of(request));
-        return new FileContentType(targetFilename, charset.orNull()).getContentType();
+        return new FileContentType(targetFilename, charset).getContentType();
     }
 
     protected final String filename(final Optional<? extends Request> request) {

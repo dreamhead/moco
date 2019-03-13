@@ -14,7 +14,7 @@ import static com.google.common.io.ByteStreams.toByteArray;
 import static java.lang.String.format;
 
 public final class ClasspathFileResourceReader extends AbstractFileResourceReader {
-    public ClasspathFileResourceReader(final Resource filename, final Optional<Charset> charset) {
+    public ClasspathFileResourceReader(final Resource filename, final Charset charset) {
         super(filename, charset);
     }
 

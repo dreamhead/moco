@@ -13,13 +13,13 @@ import static org.junit.Assert.assertThat;
 public class ClasspathFileResourceReaderTest {
     @Test
     public void should_return_class_path_file_content() {
-        ClasspathFileResourceReader reader = new ClasspathFileResourceReader(text("foo.response"), Optional.<Charset>absent());
+        ClasspathFileResourceReader reader = new ClasspathFileResourceReader(text("foo.response"), null);
         assertThat(reader.readFor(Optional.<Request>absent()).toString(), is("foo.response"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_exception_when_file_does_not_exist() {
-        ClasspathFileResourceReader reader = new ClasspathFileResourceReader(text("unknown.response"), Optional.<Charset>absent());
+        ClasspathFileResourceReader reader = new ClasspathFileResourceReader(text("unknown.response"), null);
         reader.readFor(Optional.<Request>absent());
     }
 }

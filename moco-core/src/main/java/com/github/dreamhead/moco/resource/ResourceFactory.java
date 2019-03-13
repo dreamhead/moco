@@ -44,13 +44,13 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource fileResource(final Resource filename, final Optional<Charset> charset,
+    public static ContentResource fileResource(final Resource filename, final Charset charset,
                                                final MocoConfig config) {
         return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename),
                 new FileResourceReader(filename, charset, config));
     }
 
-    public static ContentResource classpathFileResource(final Resource filename, final Optional<Charset> charset) {
+    public static ContentResource classpathFileResource(final Resource filename, final Charset charset) {
         return contentResource(id("pathresource"), DO_NOTHING_APPLIER,
                 new ClasspathFileResourceReader(filename, charset));
     }
