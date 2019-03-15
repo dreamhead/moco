@@ -15,30 +15,38 @@ import com.google.common.base.Optional;
 import static com.google.common.base.Optional.of;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
-    private final Optional<HttpsCertificate> certificate;
+    private final HttpsCertificate certificate;
 
     protected ActualHttpServer(final Optional<Integer> port,
                                final Optional<HttpsCertificate> certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
-        this.certificate = certificate;
+        this.certificate = certificate.orNull();
     }
 
     public final boolean isSecure() {
-        return certificate.isPresent();
+        return certificate != null;
     }
 
     public final Optional<HttpsCertificate> getCertificate() {
-        return certificate;
+        return Optional.fromNullable(certificate);
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
-        return newBaseServer(this.getPort().or(thatServer.getPort()), this.certificate.or(thatServer.certificate));
+        return newBaseServer(this.getPort().or(thatServer.getPort()), mergedCertificate(this.certificate, thatServer.certificate));
     }
 
-    private ActualHttpServer newBaseServer(final Optional<Integer> port, final Optional<HttpsCertificate> certificate) {
-        if (certificate.isPresent()) {
-            return createHttpsLogServer(port, certificate.get());
+    private HttpsCertificate mergedCertificate(final HttpsCertificate one, final HttpsCertificate other) {
+        if (one != null) {
+            return one;
+        }
+
+        return other;
+    }
+
+    private ActualHttpServer newBaseServer(final Optional<Integer> port, final HttpsCertificate certificate) {
+        if (certificate != null) {
+            return createHttpsLogServer(port, certificate);
         }
 
         return createLogServer(port);
