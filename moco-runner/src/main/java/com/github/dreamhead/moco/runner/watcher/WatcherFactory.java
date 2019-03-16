@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
