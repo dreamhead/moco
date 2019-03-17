@@ -33,8 +33,13 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
-        return newBaseServer(this.getPort().or(thatServer.getPort()), mergedCertificate(this.certificate, thatServer.certificate));
+        return newBaseServer(mergePort(this, thatServer), mergedCertificate(this.certificate, thatServer.certificate));
     }
+
+    private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
+        return thisServer.getPort().or(thatServer.getPort());
+    }
+
 
     private HttpsCertificate mergedCertificate(final HttpsCertificate one, final HttpsCertificate other) {
         if (one != null) {
