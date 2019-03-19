@@ -134,7 +134,7 @@ public final class SessionSetting {
     public ActualHttpServer newHttpServer(final Optional<Integer> port,
                                           final MocoConfig[] configs) {
         if (isResource()) {
-            ActualRestServer server = new ActualRestServer(port, Optional.<HttpsCertificate>absent(), log(), configs);
+            ActualRestServer server = new ActualRestServer(port, null, log(), configs);
             RestSetting[] settings = resource.getSettings();
             server.resource(resource.getName(), head(settings), tail(settings));
             return server;

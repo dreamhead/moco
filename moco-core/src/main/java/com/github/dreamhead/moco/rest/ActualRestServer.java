@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class ActualRestServer extends ActualHttpServer implements RestServer {
     public ActualRestServer(final Optional<Integer> port,
-                            final Optional<HttpsCertificate> certificate,
+                            final HttpsCertificate certificate,
                             final MocoMonitor monitor,
                             final MocoConfig... configs) {
         super(port, certificate, monitor, configs);

@@ -18,10 +18,10 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private final HttpsCertificate certificate;
 
     protected ActualHttpServer(final Optional<Integer> port,
-                               final Optional<HttpsCertificate> certificate,
+                               final HttpsCertificate certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
-        this.certificate = certificate.orNull();
+        this.certificate = certificate;
     }
 
     public final boolean isSecure() {
@@ -60,8 +60,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     public static ActualHttpServer createHttpServerWithMonitor(final Optional<Integer> port,
                                                                final MocoMonitor monitor,
                                                                final MocoConfig... configs) {
-        return new ActualHttpServer(port, Optional.<HttpsCertificate>absent(),
-                new ThreadSafeMonitor(monitor), configs);
+        return new ActualHttpServer(port, null, new ThreadSafeMonitor(monitor), configs);
     }
 
     public static ActualHttpServer createLogServer(final Optional<Integer> port, final MocoConfig... configs) {
@@ -77,7 +76,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
                                                                 final HttpsCertificate certificate,
                                                                 final MocoMonitor monitor,
                                                                 final MocoConfig... configs) {
-        return new ActualHttpServer(port, of(certificate), monitor, configs);
+        return new ActualHttpServer(port, certificate, monitor, configs);
     }
 
     public static ActualHttpServer createHttpsLogServer(final Optional<Integer> port,

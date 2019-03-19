@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.github.dreamhead.moco.rest.RestIdMatchers;
 import com.github.dreamhead.moco.rest.builder.ActualSubResourceSettingBuilder;
 import com.github.dreamhead.moco.rest.builder.SubResourceSettingBuilder;
-import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.internal.ApiUtils.mergeMonitor;
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
@@ -20,20 +19,20 @@ public final class MocoRest {
     public static RestServer restServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
-        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(), new QuietMonitor(), configs);
+        return new ActualRestServer(of(port), null, new QuietMonitor(), configs);
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
-        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
+        return new ActualRestServer(of(port), null,
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor,
                                         final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return new ActualRestServer(of(port), Optional.<HttpsCertificate>absent(),
+        return new ActualRestServer(of(port), null,
                 mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
                         checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
