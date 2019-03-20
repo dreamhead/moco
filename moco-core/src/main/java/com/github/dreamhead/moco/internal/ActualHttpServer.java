@@ -10,8 +10,13 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.monitor.ThreadSafeMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import io.netty.handler.ssl.SslHandler;
 
+import javax.net.ssl.SSLEngine;
+
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
@@ -28,8 +33,18 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return certificate != null;
     }
 
-    public final Optional<HttpsCertificate> getCertificate() {
-        return Optional.fromNullable(certificate);
+    public Optional<SslHandler> sslHandler() {
+        if (this.certificate != null) {
+            return Optional.of(asSslHandler(certificate));
+        }
+
+        return absent();
+    }
+
+    private SslHandler asSslHandler(HttpsCertificate certificate) {
+        SSLEngine sslEngine = certificate.createSSLEngine();
+        sslEngine.setUseClientMode(false);
+        return new SslHandler(sslEngine);
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
