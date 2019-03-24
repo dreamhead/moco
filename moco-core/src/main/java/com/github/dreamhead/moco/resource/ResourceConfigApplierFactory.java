@@ -2,13 +2,10 @@ package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.resource.reader.Variable;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
-import java.nio.charset.Charset;
-
-import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
