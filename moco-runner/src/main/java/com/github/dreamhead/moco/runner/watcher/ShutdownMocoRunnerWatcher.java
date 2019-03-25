@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.internal.MocoServer;
-import com.google.common.base.Optional;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
