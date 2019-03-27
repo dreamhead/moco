@@ -31,7 +31,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return certificate != null;
     }
 
-    public Optional<SslHandler> sslHandler() {
+    public final Optional<SslHandler> sslHandler() {
         if (this.certificate != null) {
             return Optional.of(asSslHandler(certificate));
         }
