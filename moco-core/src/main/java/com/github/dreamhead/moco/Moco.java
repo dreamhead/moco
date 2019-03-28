@@ -38,7 +38,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
@@ -72,12 +71,12 @@ import static java.lang.String.format;
 public final class Moco {
     public static HttpServer httpServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createQuietServer(of(port), configs);
+        return ActualHttpServer.createQuietServer(port, configs);
     }
 
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpServerWithMonitor(of(port),
+        return ActualHttpServer.createHttpServerWithMonitor(port,
                 checkNotNull(monitor, "Monitor should not be null"),
                 checkNotNull(configs, "Configuration should not be null"));
     }
@@ -85,56 +84,56 @@ public final class Moco {
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2,
                                         final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpServerWithMonitor(of(port),
+        return ActualHttpServer.createHttpServerWithMonitor(port,
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
                         checkNotNull(monitor2, "Monitor should not be null"),
                         checkNotNull(monitors, "Monitors should not be null")));
     }
 
     public static HttpServer httpServer(final MocoConfig... configs) {
-        return ActualHttpServer.createQuietServer(Optional.<Integer>absent(),
+        return ActualHttpServer.createQuietServer(0,
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
     public static HttpServer httpServer(final MocoMonitor monitor, final MocoConfig... configs) {
-        return ActualHttpServer.createHttpServerWithMonitor(Optional.<Integer>absent(), checkNotNull(monitor, "Monitor should not be null"), configs);
+        return ActualHttpServer.createHttpServerWithMonitor(0, checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpsQuietServer(of(port), checkNotNull(certificate, "Certificate should not be null"), configs);
+        return ActualHttpServer.createHttpsQuietServer(port, checkNotNull(certificate, "Certificate should not be null"), configs);
     }
 
     public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpsServerWithMonitor(of(port),
+        return ActualHttpServer.createHttpsServerWithMonitor(port,
                 checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoConfig... configs) {
-        return ActualHttpServer.createHttpsQuietServer(Optional.<Integer>absent(), checkNotNull(certificate, "Certificate should not be null"), configs);
+        return ActualHttpServer.createHttpsQuietServer(0, checkNotNull(certificate, "Certificate should not be null"), configs);
     }
 
     public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
-        return ActualHttpServer.createHttpsServerWithMonitor(Optional.<Integer>absent(),
+        return ActualHttpServer.createHttpsServerWithMonitor(0,
                 checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static HttpServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createHttpsServerWithMonitor(of(port), checkNotNull(certificate, "Certificate should not be null"),
+        return ActualHttpServer.createHttpsServerWithMonitor(port, checkNotNull(certificate, "Certificate should not be null"),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
                         checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }
 
     public static SocketServer socketServer() {
-        return ActualSocketServer.createQuietServer(Optional.<Integer>absent());
+        return ActualSocketServer.createQuietServer(0);
     }
 
     public static SocketServer socketServer(final int port) {
-        return ActualSocketServer.createQuietServer(of(port));
+        return ActualSocketServer.createQuietServer(port);
     }
 
     public static SocketServer socketServer(final int port, final MocoMonitor monitor) {

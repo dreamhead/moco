@@ -70,36 +70,36 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return createLogServer(port);
     }
 
-    public static ActualHttpServer createHttpServerWithMonitor(final Optional<Integer> port,
+    public static ActualHttpServer createHttpServerWithMonitor(final int port,
                                                                final MocoMonitor monitor,
                                                                final MocoConfig... configs) {
-        return new ActualHttpServer(port, null, new ThreadSafeMonitor(monitor), configs);
+        return new ActualHttpServer(Optional.of(port), null, new ThreadSafeMonitor(monitor), configs);
     }
 
     public static ActualHttpServer createLogServer(final Optional<Integer> port, final MocoConfig... configs) {
-        return createHttpServerWithMonitor(port,
+        return createHttpServerWithMonitor(port.or(0),
                 new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
-    public static ActualHttpServer createQuietServer(final Optional<Integer> port, final MocoConfig... configs) {
+    public static ActualHttpServer createQuietServer(final int port, final MocoConfig... configs) {
         return createHttpServerWithMonitor(port, new QuietMonitor(), configs);
     }
 
-    public static ActualHttpServer createHttpsServerWithMonitor(final Optional<Integer> port,
+    public static ActualHttpServer createHttpsServerWithMonitor(final int port,
                                                                 final HttpsCertificate certificate,
                                                                 final MocoMonitor monitor,
                                                                 final MocoConfig... configs) {
-        return new ActualHttpServer(port, certificate, monitor, configs);
+        return new ActualHttpServer(Optional.of(port), certificate, monitor, configs);
     }
 
     public static ActualHttpServer createHttpsLogServer(final Optional<Integer> port,
                                                         final HttpsCertificate certificate,
                                                         final MocoConfig... configs) {
-        return createHttpsServerWithMonitor(port, certificate,
+        return createHttpsServerWithMonitor(port.or(0), certificate,
                 new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
-    public static ActualHttpServer createHttpsQuietServer(final Optional<Integer> port,
+    public static ActualHttpServer createHttpsQuietServer(final int port,
                                                           final HttpsCertificate certificate,
                                                           final MocoConfig... configs) {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
