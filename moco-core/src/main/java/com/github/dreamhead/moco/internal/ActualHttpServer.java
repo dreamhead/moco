@@ -20,10 +20,10 @@ import static com.google.common.base.Optional.absent;
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private final HttpsCertificate certificate;
 
-    protected ActualHttpServer(final Optional<Integer> port,
+    protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
-        super(port, monitor, configs);
+        super(Optional.of(port), monitor, configs);
         this.certificate = certificate;
     }
 
@@ -46,7 +46,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
-        return newBaseServer(mergePort(this, thatServer), mergedCertificate(this.certificate, thatServer.certificate));
+        return newBaseServer(mergePort(this, thatServer).or(0), mergedCertificate(this.certificate, thatServer.certificate));
     }
 
     private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
@@ -62,7 +62,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return other;
     }
 
-    private ActualHttpServer newBaseServer(final Optional<Integer> port, final HttpsCertificate certificate) {
+    private ActualHttpServer newBaseServer(final int port, final HttpsCertificate certificate) {
         if (certificate != null) {
             return createHttpsLogServer(port, certificate);
         }
@@ -73,11 +73,11 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     public static ActualHttpServer createHttpServerWithMonitor(final int port,
                                                                final MocoMonitor monitor,
                                                                final MocoConfig... configs) {
-        return new ActualHttpServer(Optional.of(port), null, new ThreadSafeMonitor(monitor), configs);
+        return new ActualHttpServer(port, null, new ThreadSafeMonitor(monitor), configs);
     }
 
-    public static ActualHttpServer createLogServer(final Optional<Integer> port, final MocoConfig... configs) {
-        return createHttpServerWithMonitor(port.or(0),
+    public static ActualHttpServer createLogServer(final int port, final MocoConfig... configs) {
+        return createHttpServerWithMonitor(port,
                 new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 
@@ -89,13 +89,13 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
                                                                 final HttpsCertificate certificate,
                                                                 final MocoMonitor monitor,
                                                                 final MocoConfig... configs) {
-        return new ActualHttpServer(Optional.of(port), certificate, monitor, configs);
+        return new ActualHttpServer(port, certificate, monitor, configs);
     }
 
-    public static ActualHttpServer createHttpsLogServer(final Optional<Integer> port,
+    public static ActualHttpServer createHttpsLogServer(final int port,
                                                         final HttpsCertificate certificate,
                                                         final MocoConfig... configs) {
-        return createHttpsServerWithMonitor(port.or(0), certificate,
+        return createHttpsServerWithMonitor(port, certificate,
                 new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()), configs);
     }
 

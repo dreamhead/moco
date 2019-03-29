@@ -92,7 +92,7 @@ public final class JsonRunner implements Runner {
 
     private HttpServer createHttpServer(final StartArgs startArgs) {
         if (startArgs.isHttps()) {
-            return ActualHttpServer.createHttpsLogServer(startArgs.getPort(), startArgs.getHttpsCertificate().get());
+            return ActualHttpServer.createHttpsLogServer(startArgs.getPort().or(0), startArgs.getHttpsCertificate().get());
         }
 
         return ActualHttpServer.createLogServer(startArgs.getPort());
