@@ -31,8 +31,8 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
         extends BaseActualServer<HttpResponseSetting, T> implements HttpsServer {
     private final RedirectDelegate delegate = new RedirectDelegate();
 
-    protected HttpConfiguration(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
-        super(port, monitor, configs);
+    protected HttpConfiguration(final int port, final MocoMonitor monitor, final MocoConfig[] configs) {
+        super(Optional.of(port), monitor, configs);
     }
 
     @Override

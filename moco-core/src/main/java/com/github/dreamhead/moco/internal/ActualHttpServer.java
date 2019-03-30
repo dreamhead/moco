@@ -23,7 +23,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
-        super(Optional.of(port), monitor, configs);
+        super(port, monitor, configs);
         this.certificate = certificate;
     }
 
