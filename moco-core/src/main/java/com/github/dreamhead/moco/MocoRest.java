@@ -11,7 +11,6 @@ import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.rest.RestIds.checkId;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.all;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.single;
-import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,20 +18,20 @@ public final class MocoRest {
     public static RestServer restServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
-        return new ActualRestServer(of(port), null, new QuietMonitor(), configs);
+        return new ActualRestServer(port, null, new QuietMonitor(), configs);
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
-        return new ActualRestServer(of(port), null,
+        return new ActualRestServer(port, null,
                 checkNotNull(monitor, "Monitor should not be null"), configs);
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor,
                                         final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return new ActualRestServer(of(port), null,
+        return new ActualRestServer(port, null,
                 mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
                         checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }

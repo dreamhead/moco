@@ -95,7 +95,7 @@ public final class JsonRunner implements Runner {
             return ActualHttpServer.createHttpsLogServer(startArgs.getPort().or(0), startArgs.getHttpsCertificate().get());
         }
 
-        return ActualHttpServer.createLogServer(startArgs.getPort());
+        return ActualHttpServer.createLogServer(startArgs.getPort().or(0));
     }
 
     private MocoConfig[] toConfigs(final RunnerSetting setting) {

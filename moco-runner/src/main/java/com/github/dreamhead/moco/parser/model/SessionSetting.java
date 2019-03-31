@@ -130,7 +130,7 @@ public final class SessionSetting {
         return resource != null;
     }
 
-    public ActualHttpServer newHttpServer(final Optional<Integer> port,
+    public ActualHttpServer newHttpServer(final int port,
                                           final MocoConfig[] configs) {
         if (isResource()) {
             ActualRestServer server = new ActualRestServer(port, null, log(), configs);
