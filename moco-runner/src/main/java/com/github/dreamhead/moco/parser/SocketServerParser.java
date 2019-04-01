@@ -15,7 +15,7 @@ public final class SocketServerParser extends BaseParser<SocketServer> {
     @Override
     protected SocketServer createServer(final ImmutableList<SessionSetting> sessionSettings,
                                         final Optional<Integer> port, final MocoConfig... configs) {
-        SocketServer server = ActualSocketServer.createLogServer(port);
+        SocketServer server = ActualSocketServer.createLogServer(port.or(0));
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 

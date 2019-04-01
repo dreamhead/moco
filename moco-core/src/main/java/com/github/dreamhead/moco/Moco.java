@@ -62,7 +62,6 @@ import static com.github.dreamhead.moco.resource.reader.TemplateResourceReader.c
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
-import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.HttpHeaders.SET_COOKIE;
@@ -138,13 +137,13 @@ public final class Moco {
 
     public static SocketServer socketServer(final int port, final MocoMonitor monitor) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualSocketServer.createServerWithMonitor(of(port),
+        return ActualSocketServer.createServerWithMonitor(port,
                 checkNotNull(monitor, "Monitor should not be null"));
     }
 
     public static SocketServer socketServer(final int port, final MocoMonitor monitor, final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualSocketServer.createServerWithMonitor(of(port),
+        return ActualSocketServer.createServerWithMonitor(port,
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
                         checkNotNull(monitor2, "Monitor should not be null"), monitors));
     }

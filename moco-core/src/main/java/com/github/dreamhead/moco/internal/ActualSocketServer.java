@@ -33,10 +33,10 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
 
     @Override
     protected ActualSocketServer createMergeServer(final ActualSocketServer thatServer) {
-        return newBaseServer(this.getPort().or(thatServer.getPort()));
+        return newBaseServer(this.getPort().or(thatServer.getPort()).or(0));
     }
 
-    private ActualSocketServer newBaseServer(final Optional<Integer> thisPort) {
+    private ActualSocketServer newBaseServer(final int thisPort) {
         return createLogServer(thisPort);
     }
 
@@ -44,11 +44,11 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
         return new ActualSocketServer(Optional.of(port), new QuietMonitor());
     }
 
-    public static ActualSocketServer createServerWithMonitor(final Optional<Integer> port, final MocoMonitor monitor) {
-        return new ActualSocketServer(port, monitor);
+    public static ActualSocketServer createServerWithMonitor(final int port, final MocoMonitor monitor) {
+        return new ActualSocketServer(Optional.of(port), monitor);
     }
 
-    public static ActualSocketServer createLogServer(final Optional<Integer> port) {
-        return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
+    public static ActualSocketServer createLogServer(final int port) {
+        return new ActualSocketServer(Optional.of(port), new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
 }
