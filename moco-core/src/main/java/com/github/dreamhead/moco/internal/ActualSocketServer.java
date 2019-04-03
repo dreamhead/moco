@@ -15,8 +15,8 @@ import com.google.common.base.Optional;
 
 public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting, ActualSocketServer>
         implements SocketServer {
-    private ActualSocketServer(final Optional<Integer> port, final MocoMonitor monitor) {
-        super(port, monitor, new MocoConfig[0]);
+    private ActualSocketServer(final int port, final MocoMonitor monitor) {
+        super(Optional.of(port), monitor, new MocoConfig[0]);
     }
 
     @Override
@@ -41,14 +41,14 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
     }
 
     public static ActualSocketServer createQuietServer(final int port) {
-        return new ActualSocketServer(Optional.of(port), new QuietMonitor());
+        return new ActualSocketServer(port, new QuietMonitor());
     }
 
     public static ActualSocketServer createServerWithMonitor(final int port, final MocoMonitor monitor) {
-        return new ActualSocketServer(Optional.of(port), monitor);
+        return new ActualSocketServer(port, monitor);
     }
 
     public static ActualSocketServer createLogServer(final int port) {
-        return new ActualSocketServer(Optional.of(port), new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
+        return new ActualSocketServer(port, new Slf4jMonitor(new SocketRequestDumper(), new SocketResponseDumper()));
     }
 }
