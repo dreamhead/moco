@@ -28,8 +28,8 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private Optional<Integer> port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
 
-    public BaseActualServer(final Optional<Integer> port, final MocoMonitor monitor, final MocoConfig[] configs) {
-        this.port = port;
+    public BaseActualServer(final int port, final MocoMonitor monitor, final MocoConfig[] configs) {
+        this.port = Optional.of(port);
         this.monitor = monitor;
         this.configs = configs;
     }

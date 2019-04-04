@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
 public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting, ActualSocketServer>
         implements SocketServer {
     private ActualSocketServer(final int port, final MocoMonitor monitor) {
-        super(Optional.of(port), monitor, new MocoConfig[0]);
+        super(port, monitor, new MocoConfig[0]);
     }
 
     @Override
