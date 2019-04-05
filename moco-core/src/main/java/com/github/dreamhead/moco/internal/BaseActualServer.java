@@ -36,7 +36,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
 
     @Override
     public final int port() {
-        if (port.isPresent()) {
+        if (port.isPresent() && port.get() != 0) {
             return port.get();
         }
 
@@ -63,6 +63,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     protected final Optional<Integer> getPort() {
+        if (!port.isPresent() || port.get() == 0) {
+            return Optional.absent();
+        }
+
         return port;
     }
 
