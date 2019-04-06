@@ -16,7 +16,6 @@ import java.util.List;
 import static com.github.dreamhead.moco.RequestMatcher.ANY_REQUEST_MATCHER;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
-import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T> {
@@ -25,26 +24,26 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final MocoConfig[] configs;
     private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
-    private Optional<Integer> port;
+    private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
 
     public BaseActualServer(final int port, final MocoMonitor monitor, final MocoConfig[] configs) {
-        this.port = Optional.of(port);
+        this.port = port;
         this.monitor = monitor;
         this.configs = configs;
     }
 
     @Override
     public final int port() {
-        if (port.isPresent() && port.get() != 0) {
-            return port.get();
+        if (port != 0) {
+            return port;
         }
 
         throw new IllegalStateException("unbound port should not be returned");
     }
 
     public final void setPort(final int port) {
-        this.port = of(port);
+        this.port = port;
     }
 
     public final ImmutableList<Setting<T>> getSettings() {
@@ -63,11 +62,11 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     protected final Optional<Integer> getPort() {
-        if (!port.isPresent() || port.get() == 0) {
+        if (port == 0) {
             return Optional.absent();
         }
 
-        return port;
+        return Optional.of(port);
     }
 
     public final MocoMonitor getMonitor() {
