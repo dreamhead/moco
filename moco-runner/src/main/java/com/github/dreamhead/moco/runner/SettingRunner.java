@@ -22,13 +22,13 @@ import static com.google.common.collect.FluentIterable.from;
 public final class SettingRunner implements Runner {
     private final GlobalSettingParser parser = new GlobalSettingParser();
     private final ImmutableList<GlobalSetting> globalSettings;
-    private final Optional<String> env;
+    private final String env;
     private final StartArgs startArgs;
     private Runner runner;
     private final FluentIterable<File> files;
 
     public SettingRunner(final InputStream stream, final StartArgs args) {
-        this.env = args.getEnv();
+        this.env = args.getEnv().orNull();
         this.globalSettings = parser.parse(stream);
         this.files = from(globalSettings).transformAndConcat(toFiles());
         this.startArgs = args;
@@ -45,11 +45,11 @@ public final class SettingRunner implements Runner {
         runner.run();
     }
 
-    private Predicate<? super GlobalSetting> byEnv(final Optional<String> env) {
+    private Predicate<? super GlobalSetting> byEnv(final String env) {
         return new Predicate<GlobalSetting>() {
             @Override
             public boolean apply(final GlobalSetting globalSetting) {
-                return !env.isPresent() || env.get().equalsIgnoreCase(globalSetting.getEnv());
+                return env == null || env.equalsIgnoreCase(globalSetting.getEnv());
 
             }
         };
