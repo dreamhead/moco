@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.RestServer;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
-import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;

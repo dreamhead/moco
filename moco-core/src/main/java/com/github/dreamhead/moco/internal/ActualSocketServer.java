@@ -11,7 +11,6 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
-import com.google.common.base.Optional;
 
 public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting, ActualSocketServer>
         implements SocketServer {
