@@ -16,7 +16,6 @@ import com.github.dreamhead.moco.mount.MountTo;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
-import com.google.common.base.Optional;
 
 import java.io.File;
 
