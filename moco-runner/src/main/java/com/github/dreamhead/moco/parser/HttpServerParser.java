@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.model.SessionSetting;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
