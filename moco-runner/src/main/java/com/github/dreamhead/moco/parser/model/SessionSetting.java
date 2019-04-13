@@ -13,7 +13,6 @@ import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.MocoMount.to;
