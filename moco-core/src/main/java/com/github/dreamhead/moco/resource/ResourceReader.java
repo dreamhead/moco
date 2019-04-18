@@ -6,4 +6,6 @@ import com.google.common.base.Optional;
 
 public interface ResourceReader {
     MessageContent readFor(Optional<? extends Request> request);
+
+    MessageContent readFor(Request request);
 }

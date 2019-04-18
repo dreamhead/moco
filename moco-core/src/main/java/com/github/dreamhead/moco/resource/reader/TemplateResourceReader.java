@@ -72,6 +72,11 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     @Override
+    public final MessageContent readFor(final Request request) {
+        return readFor(Optional.fromNullable(request));
+    }
+
+    @Override
     public final MessageContent readFor(final Optional<? extends Request> request) {
         if (!request.isPresent()) {
             throw new IllegalStateException("Request is required to render template");

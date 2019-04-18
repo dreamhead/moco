@@ -30,6 +30,11 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
         return asMessageContent(doReadFor(request));
     }
 
+    @Override
+    public final MessageContent readFor(final Request request) {
+        return readFor(Optional.fromNullable(request));
+    }
+
     private MessageContent asMessageContent(final byte[] content) {
         MessageContent.Builder builder = content().withContent(content);
         if (charset != null) {

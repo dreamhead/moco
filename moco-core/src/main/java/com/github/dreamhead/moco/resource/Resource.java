@@ -34,6 +34,11 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
         return reader.readFor(request);
     }
 
+    @Override
+    public final MessageContent readFor(final Request request) {
+        return readFor(Optional.fromNullable(request));
+    }
+
     public final <T extends ResourceReader> T reader(final Class<T> clazz) {
         return clazz.cast(reader);
     }

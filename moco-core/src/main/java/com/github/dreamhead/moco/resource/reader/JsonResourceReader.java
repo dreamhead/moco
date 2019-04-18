@@ -27,6 +27,11 @@ public final class JsonResourceReader implements ContentResourceReader {
         return MessageContent.content().withContent(toJson(pojo)).build();
     }
 
+    @Override
+    public final MessageContent readFor(final Request request) {
+        return readFor(Optional.fromNullable(request));
+    }
+
     public Object getPojo() {
         return pojo;
     }

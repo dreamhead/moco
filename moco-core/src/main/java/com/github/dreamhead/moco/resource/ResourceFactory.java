@@ -41,6 +41,11 @@ public final class ResourceFactory {
             public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(text);
             }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
+            }
         });
     }
 
@@ -70,6 +75,11 @@ public final class ResourceFactory {
             public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(method.toUpperCase());
             }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
+            }
         });
     }
 
@@ -80,6 +90,11 @@ public final class ResourceFactory {
                 String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
                 return content(text);
             }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
+            }
         });
     }
 
@@ -88,6 +103,11 @@ public final class ResourceFactory {
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(version.text());
+            }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
             }
         });
     }
@@ -98,6 +118,11 @@ public final class ResourceFactory {
             public MessageContent readFor(final Optional<? extends Request> request) {
                 MessageContent messageContent = resource.readFor(request);
                 return content(new Cookies().encodeCookie(key, messageContent.toString(), options));
+            }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
             }
         });
     }
@@ -113,6 +138,11 @@ public final class ResourceFactory {
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
                 return content(uri);
+            }
+
+            @Override
+            public final MessageContent readFor(final Request request) {
+                return readFor(Optional.fromNullable(request));
             }
         });
     }
