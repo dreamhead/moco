@@ -42,7 +42,7 @@ public final class FileResourceReader extends AbstractFileResourceReader {
 
     @SuppressWarnings("unchecked")
     private String targetFileName(final Optional<? extends Request> request) {
-        String filename = this.filename(request);
+        String filename = this.filename(request.orNull());
 
         if (config != null) {
             return (String) config.apply(filename);

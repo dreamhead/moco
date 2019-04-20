@@ -46,13 +46,8 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
 
     @Override
     public final MediaType getContentType(final HttpRequest request) {
-        String targetFilename = this.filename(of(request));
+        String targetFilename = this.filename(request);
         return new FileContentType(targetFilename, charset).getContentType();
-    }
-
-    protected final String filename(final Optional<? extends Request> request) {
-        MessageContent messageContent = this.filename.readFor(request);
-        return messageContent.toString();
     }
 
     protected final String filename(final Request request) {
