@@ -15,7 +15,7 @@ import static com.google.common.base.Optional.of;
 
 public abstract class AbstractFileResourceReader implements ContentResourceReader {
 
-    protected abstract byte[] doReadFor(Optional<? extends Request> request);
+    protected abstract byte[] doReadFor(Request request);
 
     private final Resource filename;
     private final Charset charset;
@@ -27,7 +27,7 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
 
     @Override
     public final MessageContent readFor(final Optional<? extends Request> request) {
-        return asMessageContent(doReadFor(request));
+        return asMessageContent(doReadFor(request.orNull()));
     }
 
     @Override

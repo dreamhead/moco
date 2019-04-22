@@ -18,8 +18,8 @@ public final class ClasspathFileResourceReader extends AbstractFileResourceReade
         super(filename, charset);
     }
 
-    protected byte[] doReadFor(final Optional<? extends Request> request) {
-        String actualFilename = this.filename(request.orNull());
+    protected byte[] doReadFor(final Request request) {
+        String actualFilename = this.filename(request);
         URL resource = Resources.getResource(actualFilename);
         if (resource == null) {
             throw new IllegalArgumentException(format("%s does not exist", actualFilename));

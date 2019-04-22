@@ -26,8 +26,8 @@ public final class FileResourceReader extends AbstractFileResourceReader {
     }
 
     @Override
-    protected byte[] doReadFor(final Optional<? extends Request> request) {
-        File file = new File(targetFileName(request.orNull()));
+    protected byte[] doReadFor(final Request request) {
+        File file = new File(targetFileName(request));
 
         if (!file.exists()) {
             throw new IllegalArgumentException(format("%s does not exist", file.getPath()));
