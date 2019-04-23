@@ -11,7 +11,6 @@ import com.google.common.net.MediaType;
 import java.nio.charset.Charset;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.google.common.base.Optional.of;
 
 public abstract class AbstractFileResourceReader implements ContentResourceReader {
 
