@@ -73,12 +73,7 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     @Override
     public final MessageContent readFor(final Request request) {
-        return readFor(Optional.fromNullable(request));
-    }
-
-    @Override
-    public final MessageContent readFor(final Optional<? extends Request> request) {
-        if (!request.isPresent()) {
+        if (request == null) {
             throw new IllegalStateException("Request is required to render template");
         }
 
@@ -88,7 +83,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Template targetTemplate = createTemplate(content);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            targetTemplate.process(variables(request.get()), writer);
+            targetTemplate.process(variables(request), writer);
             return content().withContent(stream.toByteArray()).build();
         } catch (ParseException e) {
             logger.error("Fail to parse template: {}", content.toString());
@@ -96,6 +91,11 @@ public class TemplateResourceReader implements ContentResourceReader {
         } catch (IOException | TemplateException e) {
             throw new MocoException(e);
         }
+    }
+
+    @Override
+    public final MessageContent readFor(final Optional<? extends Request> request) {
+        return readFor(request.orNull());
     }
 
     private Template createTemplate(final MessageContent messageContent) throws IOException {
