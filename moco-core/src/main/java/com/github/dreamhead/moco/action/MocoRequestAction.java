@@ -35,7 +35,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
     }
 
     private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
-        String targetUrl = url.readFor(of(request)).toString();
+        String targetUrl = url.readFor(request).toString();
         client.execute(createRequest(targetUrl, request));
     }
 }

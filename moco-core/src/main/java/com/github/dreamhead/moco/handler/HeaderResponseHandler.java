@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 
-import static com.google.common.base.Optional.of;
-
 public final class HeaderResponseHandler extends AbstractHttpResponseHandler {
     private final String name;
     private final Resource resource;
@@ -20,7 +18,7 @@ public final class HeaderResponseHandler extends AbstractHttpResponseHandler {
 
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        String value = resource.readFor(of(httpRequest)).toString();
+        String value = resource.readFor(httpRequest).toString();
         httpResponse.addHeader(name, value);
     }
 

@@ -14,8 +14,6 @@ import com.google.common.base.Optional;
 
 import java.io.IOException;
 
-import static com.google.common.base.Optional.of;
-
 public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ContentRequestExtractor extractor;
     private final ObjectMapper mapper;
@@ -36,7 +34,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private boolean doMatch(final Request request, final MessageContent content) {
         try {
             JsonNode requestNode = mapper.readTree(content.toString());
-            JsonNode resourceNode = mapper.readTree(expected.readFor(of(request)).toString());
+            JsonNode resourceNode = mapper.readTree(expected.readFor(request).toString());
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;

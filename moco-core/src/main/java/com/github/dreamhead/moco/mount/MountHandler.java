@@ -13,7 +13,6 @@ import com.google.common.net.MediaType;
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.text;
-import static com.google.common.base.Optional.of;
 
 public final class MountHandler extends AbstractHttpContentResponseHandler {
     private final MountPathExtractor extractor;
@@ -30,7 +29,7 @@ public final class MountHandler extends AbstractHttpContentResponseHandler {
     @Override
     protected MessageContent responseContent(final HttpRequest httpRequest) {
         FileResourceReader reader = new FileResourceReader(asResource(httpRequest));
-        return reader.readFor(of(httpRequest));
+        return reader.readFor(httpRequest);
     }
 
     private Resource asResource(final HttpRequest httpRequest) {

@@ -2,7 +2,6 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.base.Optional;
 import com.google.common.io.Closeables;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -60,7 +59,7 @@ public final class HttpsCertificate {
     }
 
     private InputStream getKeyStore() {
-        MessageContent messageContent = resource.readFor(Optional.<Request>absent());
+        MessageContent messageContent = resource.readFor((Request)null);
         return messageContent.toInputStream();
     }
 

@@ -24,7 +24,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
 
     @Override
     protected final MessageContent responseContent(final Request request) {
-        return this.resource.readFor(of(request));
+        return this.resource.readFor(request);
     }
 
     @Override

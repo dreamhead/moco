@@ -62,7 +62,7 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Document getResourceDocument(final Request request, final Resource resource) throws SAXException {
-        InputStream stream = resource.readFor(of(request)).toInputStream();
+        InputStream stream = resource.readFor(request).toInputStream();
         return extractDocument(new InputSource(stream));
     }
 

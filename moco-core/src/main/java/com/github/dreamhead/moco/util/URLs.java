@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.util;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 import java.io.UnsupportedEncodingException;
@@ -79,7 +78,7 @@ public final class URLs {
         return new Function<HttpRequest, URL>() {
             @Override
             public URL apply(final HttpRequest input) {
-                return toUrl(url.readFor(Optional.of(input)).toString());
+                return toUrl(url.readFor(input).toString());
             }
         };
     }

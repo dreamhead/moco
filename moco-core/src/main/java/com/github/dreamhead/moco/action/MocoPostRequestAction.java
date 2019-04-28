@@ -15,8 +15,6 @@ import org.apache.http.entity.ContentType;
 
 import java.nio.charset.Charset;
 
-import static com.google.common.base.Optional.of;
-
 public final class MocoPostRequestAction extends MocoRequestAction {
     private final ContentResource content;
 
@@ -32,7 +30,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
     }
 
     private HttpEntity asEntity(final ContentResource resource, final Request request) {
-        return new ByteArrayEntity(resource.readFor(of(request)).getContent(), getContentType((HttpRequest) request));
+        return new ByteArrayEntity(resource.readFor(request).getContent(), getContentType((HttpRequest) request));
     }
 
     private ContentType getContentType(final HttpRequest request) {
