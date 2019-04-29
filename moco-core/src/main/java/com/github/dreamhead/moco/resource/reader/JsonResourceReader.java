@@ -29,7 +29,7 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public final MessageContent readFor(final Request request) {
-        return readFor(Optional.fromNullable(request));
+        return MessageContent.content().withContent(toJson(pojo)).build();
     }
 
     public Object getPojo() {
