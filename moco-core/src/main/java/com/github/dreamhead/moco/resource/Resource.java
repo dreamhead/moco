@@ -36,7 +36,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
 
     @Override
     public final MessageContent readFor(final Request request) {
-        return readFor(Optional.fromNullable(request));
+        return reader.readFor(request);
     }
 
     public final <T extends ResourceReader> T reader(final Class<T> clazz) {
