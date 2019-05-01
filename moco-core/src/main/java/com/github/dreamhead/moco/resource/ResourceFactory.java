@@ -93,7 +93,8 @@ public final class ResourceFactory {
 
             @Override
             public final MessageContent readFor(final Request request) {
-                return readFor(Optional.fromNullable(request));
+                String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
+                return content(text);
             }
         });
     }
