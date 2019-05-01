@@ -78,7 +78,7 @@ public final class ResourceFactory {
 
             @Override
             public final MessageContent readFor(final Request request) {
-                return readFor(Optional.fromNullable(request));
+                return content(method.toUpperCase());
             }
         });
     }
