@@ -87,7 +87,7 @@ public final class ResourceFactory {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
             public MessageContent readFor(final Optional<? extends Request> request) {
-                String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
+                String text = HttpProtocolVersion.versionOf(version.readFor(request.orNull()).toString()).text();
                 return content(text);
             }
 
