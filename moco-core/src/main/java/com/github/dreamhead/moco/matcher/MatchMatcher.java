@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.matcher;
 
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
@@ -13,7 +12,7 @@ public final class MatchMatcher<T> extends AbstractOperatorMatcher<T> {
         super(extractor, expected, new Predicate<String>() {
             @Override
             public boolean apply(final String input) {
-                Pattern pattern = Pattern.compile(expected.readFor((Request)null).toString());
+                Pattern pattern = Pattern.compile(expected.readFor(null).toString());
                 return pattern.matcher(input).matches();
             }
         });

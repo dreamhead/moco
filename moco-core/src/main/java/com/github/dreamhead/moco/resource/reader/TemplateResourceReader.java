@@ -93,11 +93,6 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    @Override
-    public final MessageContent readFor(final Optional<? extends Request> request) {
-        return readFor(request.orNull());
-    }
-
     private Template createTemplate(final MessageContent messageContent) throws IOException {
         TemplateLoader templateLoader = createTemplateLoader(messageContent);
         Configuration cfg = createConfiguration(templateLoader, messageContent.getCharset());

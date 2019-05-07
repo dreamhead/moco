@@ -38,11 +38,6 @@ public final class ResourceFactory {
             }
 
             @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                return readFor(request.orNull());
-            }
-
-            @Override
             public final MessageContent readFor(final Request request) {
                 return content(text);
             }
@@ -72,11 +67,6 @@ public final class ResourceFactory {
     public static Resource methodResource(final String method) {
         return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                return content(method.toUpperCase());
-            }
-
-            @Override
             public final MessageContent readFor(final Request request) {
                 return content(method.toUpperCase());
             }
@@ -85,12 +75,6 @@ public final class ResourceFactory {
 
     public static Resource versionResource(final Resource version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                String text = HttpProtocolVersion.versionOf(version.readFor(request.orNull()).toString()).text();
-                return content(text);
-            }
-
             @Override
             public final MessageContent readFor(final Request request) {
                 String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
@@ -102,11 +86,6 @@ public final class ResourceFactory {
     public static Resource versionResource(final HttpProtocolVersion version) {
         return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
             @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                return content(version.text());
-            }
-
-            @Override
             public final MessageContent readFor(final Request request) {
                 return content(version.text());
             }
@@ -115,11 +94,6 @@ public final class ResourceFactory {
 
     public static Resource cookieResource(final String key, final Resource resource, final CookieAttribute... options) {
         return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                return readFor(request.orNull());
-            }
-
             @Override
             public final MessageContent readFor(final Request request) {
                 MessageContent messageContent = resource.readFor(request);
@@ -136,11 +110,6 @@ public final class ResourceFactory {
 
     public static Resource uriResource(final String uri) {
         return resource(id(MocoConfig.URI_ID), uriConfigApplier(MocoConfig.URI_ID, uri), new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Optional<? extends Request> request) {
-                return content(uri);
-            }
-
             @Override
             public final MessageContent readFor(final Request request) {
                 return content(uri);

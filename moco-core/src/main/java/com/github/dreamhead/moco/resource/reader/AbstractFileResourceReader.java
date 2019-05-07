@@ -25,11 +25,6 @@ public abstract class AbstractFileResourceReader implements ContentResourceReade
     }
 
     @Override
-    public final MessageContent readFor(final Optional<? extends Request> request) {
-        return asMessageContent(doReadFor(request.orNull()));
-    }
-
-    @Override
     public final MessageContent readFor(final Request request) {
         return asMessageContent(doReadFor(request));
     }
