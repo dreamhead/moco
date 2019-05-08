@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.FileContentType;
-import com.google.common.base.Optional;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
