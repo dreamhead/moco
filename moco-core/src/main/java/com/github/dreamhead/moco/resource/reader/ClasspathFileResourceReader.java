@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 import com.google.common.io.Resources;
 
 import java.io.IOException;
