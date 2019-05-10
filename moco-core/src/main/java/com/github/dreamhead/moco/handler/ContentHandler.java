@@ -9,8 +9,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
 
-import static com.google.common.base.Optional.of;
-
 public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;
 
