@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 
 import java.io.File;
 import java.io.IOException;
