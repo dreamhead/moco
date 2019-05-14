@@ -10,8 +10,6 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
-import static com.google.common.base.Optional.of;
-
 public abstract class MocoRequestAction implements MocoEventAction {
     private final Resource url;
 
