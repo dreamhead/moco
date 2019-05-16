@@ -14,7 +14,6 @@ import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
