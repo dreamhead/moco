@@ -4,19 +4,23 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
+import java.util.Map;
 
 public abstract class MocoRequestAction implements MocoEventAction {
     private final Resource url;
+    private final Map<String, Resource> headers;
 
     protected abstract HttpRequestBase createRequest(String url, Request request);
 
     protected MocoRequestAction(final Resource url) {
         this.url = url;
+        this.headers = ImmutableMap.of();
     }
 
     protected final Resource getUrl() {
@@ -34,6 +38,11 @@ public abstract class MocoRequestAction implements MocoEventAction {
 
     private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
         String targetUrl = url.readFor(request).toString();
-        client.execute(createRequest(targetUrl, request));
+        HttpRequestBase httpRequest = createRequest(targetUrl, request);
+        for (Map.Entry<String, Resource> entry : headers.entrySet()) {
+            httpRequest.setHeader(entry.getKey(), entry.getValue().readFor(null).toString());
+        }
+
+        client.execute(httpRequest);
     }
 }
