@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -19,7 +20,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
     private final ContentResource content;
 
     public MocoPostRequestAction(final Resource url, final ContentResource content) {
-        super(url);
+        super(url, ImmutableMap.<String, Resource>of());
         this.content = content;
     }
 

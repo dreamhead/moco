@@ -18,9 +18,9 @@ public abstract class MocoRequestAction implements MocoEventAction {
 
     protected abstract HttpRequestBase createRequest(String url, Request request);
 
-    protected MocoRequestAction(final Resource url) {
+    protected MocoRequestAction(final Resource url, final ImmutableMap<String, Resource> headers) {
         this.url = url;
-        this.headers = ImmutableMap.of();
+        this.headers = headers;
     }
 
     protected final Resource getUrl() {
