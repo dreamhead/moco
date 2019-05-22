@@ -587,11 +587,11 @@ public final class Moco {
     }
 
     public static MocoEventAction get(final Resource url) {
-        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"));
+        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), ImmutableMap.<String, Resource>of());
     }
 
     public static MocoEventAction post(final Resource url, final ContentResource content) {
-        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"));
+        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"), ImmutableMap.<String, Resource>of());
     }
 
     public static MocoEventAction post(final String url, final ContentResource content) {

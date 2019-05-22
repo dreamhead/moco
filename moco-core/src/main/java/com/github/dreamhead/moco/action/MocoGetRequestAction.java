@@ -9,8 +9,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
 public final class MocoGetRequestAction extends MocoRequestAction {
-    public MocoGetRequestAction(final Resource url) {
-        super(url, ImmutableMap.<String, Resource>of());
+    public MocoGetRequestAction(final Resource url, final ImmutableMap<String, Resource> headers) {
+        super(url, headers);
     }
 
     protected HttpRequestBase createRequest(final String url, final Request request) {

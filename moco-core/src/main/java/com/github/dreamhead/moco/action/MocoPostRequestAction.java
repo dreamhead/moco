@@ -19,8 +19,9 @@ import java.nio.charset.Charset;
 public final class MocoPostRequestAction extends MocoRequestAction {
     private final ContentResource content;
 
-    public MocoPostRequestAction(final Resource url, final ContentResource content) {
-        super(url, ImmutableMap.<String, Resource>of());
+    public MocoPostRequestAction(final Resource url, final ContentResource content,
+                                 final ImmutableMap<String, Resource> headers) {
+        super(url, headers);
         this.content = content;
     }
 
@@ -44,7 +45,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
     public MocoEventAction apply(final MocoConfig config) {
         Resource appliedContent = this.content.apply(config);
         if (appliedContent != this.content) {
-            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent);
+            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent, ImmutableMap.<String, Resource>of());
         }
 
         return this;
