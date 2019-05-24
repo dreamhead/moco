@@ -15,7 +15,6 @@ public final class HeaderResponseHandler extends AbstractHttpResponseHandler {
         this.resource = resource;
     }
 
-
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         String value = resource.readFor(httpRequest).toString();
