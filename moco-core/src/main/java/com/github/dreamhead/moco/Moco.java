@@ -301,6 +301,11 @@ public final class Moco {
                 checkNotNull(value, "Header value should not be null"));
     }
 
+    public static HttpHeader asHeader(final String name, final Resource value) {
+        return new HttpHeader(checkNotNullOrEmpty(name, "Header name should not be null"),
+                checkNotNull(value, "Header value should not be null"));
+    }
+
     public static RequestExtractor<String> cookie(final String key) {
         return new CookieRequestExtractor(checkNotNullOrEmpty(key, "Cookie key should not be null"));
     }
