@@ -10,13 +10,16 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.async;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.complete;
 import static com.github.dreamhead.moco.Moco.context;
+import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.fileRoot;
 import static com.github.dreamhead.moco.Moco.get;
+import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.latency;
 import static com.github.dreamhead.moco.Moco.pathResource;
@@ -88,6 +91,23 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(remoteUrl("/target"))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(any(SessionContext.class));
+    }
+
+    @Test
+    public void should_send_get_request_with_header_to_target_on_complete_with_resource() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(and(by(uri("/target")), eq(header("foo"), "bar"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")),
+                asHeader("foo", text("bar")))));
 
         running(server, new Runnable() {
             @Override
