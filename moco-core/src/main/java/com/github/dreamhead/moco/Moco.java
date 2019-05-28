@@ -61,7 +61,6 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.resource.reader.TemplateResourceReader.checkValidVariableName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -599,6 +598,10 @@ public final class Moco {
 
     public static MocoEventAction get(final Resource url) {
         return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), ImmutableMap.<String, Resource>of());
+    }
+
+    public static MocoEventAction get(final String url, final HttpHeader header) {
+        return get(text(checkNotNullOrEmpty(url, "URL should not be null")), header);
     }
 
     public static MocoEventAction get(final Resource url, final HttpHeader header) {
