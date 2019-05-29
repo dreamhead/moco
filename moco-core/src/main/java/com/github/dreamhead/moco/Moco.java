@@ -613,6 +613,11 @@ public final class Moco {
         return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"), ImmutableMap.<String, Resource>of());
     }
 
+    public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader header) {
+        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"),
+                ImmutableMap.<String, Resource>of(header.getName(), header.getValue()));
+    }
+
     public static MocoEventAction post(final String url, final ContentResource content) {
         return post(text(checkNotNullOrEmpty(url, "URL should not be null")), checkNotNull(content, "Content should not be null"));
     }

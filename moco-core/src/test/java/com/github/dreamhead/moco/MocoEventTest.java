@@ -282,6 +282,22 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_send_post_request_with_header_to_target_on_complete() throws Exception {
+        ResponseHandler handler = mock(ResponseHandler.class);
+        server.request(and(by(uri("/target")), by("content"), eq(header("foo"), "bar"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"), asHeader("foo", text("bar")))));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/event")), is("event"));
+            }
+        });
+
+        verify(handler).writeToResponse(any(SessionContext.class));
+    }
+
+    @Test
     public void should_send_post_request_to_target_on_complete_with_template_content() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), by("content"))).response(handler);
