@@ -52,6 +52,7 @@ import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
 import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
+import static com.github.dreamhead.moco.internal.ApiUtils.toHeaders;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.methodResource;
@@ -604,9 +605,8 @@ public final class Moco {
         return get(text(checkNotNullOrEmpty(url, "URL should not be null")), header);
     }
 
-    public static MocoEventAction get(final Resource url, final HttpHeader header) {
-        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"),
-                ImmutableMap.of(header.getName(), header.getValue()));
+    public static MocoEventAction get(final Resource url, final HttpHeader header, final HttpHeader... headers) {
+        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), toHeaders(asIterable(header, headers)));
     }
 
     public static MocoEventAction post(final Resource url, final ContentResource content) {
