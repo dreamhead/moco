@@ -601,8 +601,8 @@ public final class Moco {
         return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), ImmutableMap.<String, Resource>of());
     }
 
-    public static MocoEventAction get(final String url, final HttpHeader header) {
-        return get(text(checkNotNullOrEmpty(url, "URL should not be null")), header);
+    public static MocoEventAction get(final String url, final HttpHeader header, final HttpHeader... headers) {
+        return get(text(checkNotNullOrEmpty(url, "URL should not be null")), header, headers);
     }
 
     public static MocoEventAction get(final Resource url, final HttpHeader header, final HttpHeader... headers) {
@@ -613,9 +613,9 @@ public final class Moco {
         return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"), ImmutableMap.<String, Resource>of());
     }
 
-    public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader header) {
+    public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader header, final HttpHeader... headers) {
         return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"),
-                ImmutableMap.<String, Resource>of(header.getName(), header.getValue()));
+                toHeaders(asIterable(header, headers)));
     }
 
     public static MocoEventAction post(final String url, final ContentResource content) {
