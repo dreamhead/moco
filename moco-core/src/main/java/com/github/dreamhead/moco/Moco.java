@@ -302,6 +302,11 @@ public final class Moco {
                 checkNotNull(value, "Header value should not be null"));
     }
 
+    public static HttpHeader asHeader(final String name, final String value) {
+        return asHeader(checkNotNullOrEmpty(name, "Header name should not be null"),
+                text(checkNotNull(value, "Header value should not be null")));
+    }
+
     public static HttpHeader asHeader(final String name, final Resource value) {
         return new HttpHeader(checkNotNullOrEmpty(name, "Header name should not be null"),
                 checkNotNull(value, "Header value should not be null"));

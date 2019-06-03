@@ -120,11 +120,10 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_send_get_request_with_header_to_target_on_complete_with_resource() throws Exception {
+    public void should_send_get_request_to_target_on_complete_with_resource() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(and(by(uri("/target")), eq(header("foo"), "bar"))).response(handler);
-        server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")),
-                asHeader("foo", text("bar")))));
+        server.request(by(uri("/target"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")))));
 
         running(server, new Runnable() {
             @Override
@@ -137,10 +136,11 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_send_get_request_to_target_on_complete_with_resource() throws Exception {
+    public void should_send_get_request_with_header_to_target_on_complete_with_resource() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
-        server.request(by(uri("/target"))).response(handler);
-        server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")))));
+        server.request(and(by(uri("/target")), eq(header("foo"), "bar"))).response(handler);
+        server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")),
+                asHeader("foo", text("bar")))));
 
         running(server, new Runnable() {
             @Override
