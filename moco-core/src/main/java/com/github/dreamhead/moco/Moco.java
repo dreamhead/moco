@@ -673,7 +673,7 @@ public final class Moco {
 
     public static ResponseHandler attachment(final String filename, final Resource resource) {
         return AndResponseHandler.and(
-                header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty"))),
+                with(asHeader(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty")))),
                 with(checkNotNull(resource, "Resource should not be null")));
     }
 
