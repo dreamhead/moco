@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.fileRoot;
 import static com.github.dreamhead.moco.Moco.header;
@@ -47,7 +48,7 @@ public class MocoFileRootTest {
     @Test
     public void should_return_header_from_file_root() throws Exception {
         server = httpServer(port(), log(), fileRoot("src/test/resources"));
-        server.response(header("foo", file("foo.response")));
+        server.response(asHeader("foo", file("foo.response")));
 
         running(server, new Runnable() {
             @Override

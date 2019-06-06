@@ -323,10 +323,10 @@ public final class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource, final CookieAttribute... attributes) {
-        return header(SET_COOKIE, cookieResource(
+        return with(asHeader(SET_COOKIE, cookieResource(
                 checkNotNullOrEmpty(key, "Cookie key should not be null"),
                 checkNotNull(resource, "Cookie value should not be null"),
-                checkNotNull(attributes, "Cookie options should not be null")));
+                checkNotNull(attributes, "Cookie options should not be null"))));
     }
 
     public static RequestExtractor<String> form(final String key) {
