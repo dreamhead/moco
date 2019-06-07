@@ -17,8 +17,8 @@ import com.google.common.net.MediaType;
 
 import java.io.InputStream;
 
+import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
@@ -73,7 +73,7 @@ public final class JsonRunner implements Runner {
     private HttpServer createHttpServer(final Iterable<? extends RunnerSetting> settings, final StartArgs startArgs) {
         HttpServer targetServer = createBaseHttpServer(settings, startArgs);
         targetServer.request(by(uri("/favicon.ico"))).response(with(pathResource("favicon.png")),
-                header(HttpHeaders.CONTENT_TYPE, MediaType.PNG.toString()));
+                with(asHeader(HttpHeaders.CONTENT_TYPE, MediaType.PNG.toString())));
         return targetServer;
     }
 
