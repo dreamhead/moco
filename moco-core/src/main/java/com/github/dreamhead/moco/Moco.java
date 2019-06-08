@@ -163,6 +163,10 @@ public final class Moco {
         return new MocoResponseConfig(checkNotNull(handler, "Response handler should not be null"));
     }
 
+    public static MocoConfig response(final HttpHeader header) {
+        return response(with(checkNotNull(header, "Response handler should not be null")));
+    }
+
     public static MocoConfig fileRoot(final String fileRoot) {
         return new MocoFileRootConfig(checkNotNullOrEmpty(fileRoot, "File root should not be null"));
     }
