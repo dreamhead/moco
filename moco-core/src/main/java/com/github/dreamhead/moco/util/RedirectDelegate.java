@@ -5,9 +5,10 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,6 +19,6 @@ public final class RedirectDelegate {
 
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final Resource url) {
         return setting.response(status(HttpResponseStatus.FOUND.code()),
-                header(HttpHeaders.LOCATION, checkNotNull(url, "URL should not be null")));
+                with(asHeader(HttpHeaders.LOCATION, checkNotNull(url, "URL should not be null"))));
     }
 }
