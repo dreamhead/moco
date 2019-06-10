@@ -28,6 +28,6 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
 
     @Override
     public final T response(final HttpHeader header) {
-        return this.response(with(checkNotNull(header, "Procedure should not be null")));
+        return this.response(with(checkNotNull(header, "Http header should not be null")));
     }
 }
