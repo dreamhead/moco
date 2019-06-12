@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.resource.Resource;
 
-public class HttpHeader {
+public class HttpHeader implements ResponseElement {
     private String name;
     private Resource value;
 
