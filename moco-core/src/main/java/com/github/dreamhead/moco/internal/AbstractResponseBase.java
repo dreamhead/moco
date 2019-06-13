@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseBase;
+import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
@@ -20,6 +21,14 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
     }
 
     @Override
+    public final T response(final ResponseElement element, final ResponseElement... elements) {
+        return this.response(with(checkNotNull(element, "Response element should not be null")),
+                from(checkNotNull(elements, "Response elements should not be null"))
+                        .transform(elementAsResponseHandler())
+                        .toArray(ResponseHandler.class));
+    }
+
+    @Override
     public final T response(final Resource resource) {
         return this.response(with(checkNotNull(resource, "Resource should not be null")));
     }
@@ -33,14 +42,23 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
     public final T response(final HttpHeader header, final HttpHeader... headers) {
         return this.response(with(checkNotNull(header, "Http header should not be null")),
                 from(checkNotNull(headers, "Http headers should not be null"))
-                        .transform(asResponseHandler())
+                        .transform(headerAsResponseHandler())
                         .toArray(ResponseHandler.class));
     }
 
-    private Function<HttpHeader, ResponseHandler> asResponseHandler() {
+    private Function<HttpHeader, ResponseHandler> headerAsResponseHandler() {
         return new Function<HttpHeader, ResponseHandler>() {
             @Override
-            public ResponseHandler apply(HttpHeader input) {
+            public ResponseHandler apply(final HttpHeader input) {
+                return with(input);
+            }
+        };
+    }
+
+    private Function<ResponseElement, ResponseHandler> elementAsResponseHandler() {
+        return new Function<ResponseElement, ResponseHandler>() {
+            @Override
+            public ResponseHandler apply(final ResponseElement input) {
                 return with(input);
             }
         };

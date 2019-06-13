@@ -265,6 +265,18 @@ public final class Moco {
         return textResource(checkNotNull(text, "Text should not be null"));
     }
 
+    public static ResponseHandler with(final ResponseElement element) {
+        if (element instanceof ResponseHandler) {
+            return (ResponseHandler) element;
+        }
+
+        if (element instanceof HttpHeader) {
+            return with((HttpHeader)element);
+        }
+
+        throw new IllegalArgumentException("Unknown response element:" + element.getClass());
+    }
+
     public static ResponseHandler with(final String text) {
         return with(text(checkNotNullOrEmpty(text, "Text should not be null")));
     }
