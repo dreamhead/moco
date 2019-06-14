@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.MocoException;
+import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.collect.ImmutableMap;
@@ -25,6 +27,20 @@ public final class ResponseHandlers {
         }
 
         throw new IllegalArgumentException(format("unknown response handler for [%s]", resource.id()));
+    }
+
+
+    public static ResponseHandler responseHandler(final ResponseElement element) {
+        if (element instanceof ResponseHandler) {
+            return (ResponseHandler) element;
+        }
+
+        if (element instanceof HttpHeader) {
+            return new HttpHeaderResponseHandler((HttpHeader)element);
+        }
+
+
+        throw new IllegalArgumentException("Unknown response element:" + element.getClass());
     }
 
     private static ResponseHandler createResponseHandler(final Resource resource) {

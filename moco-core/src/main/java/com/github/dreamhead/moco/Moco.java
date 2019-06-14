@@ -16,7 +16,6 @@ import com.github.dreamhead.moco.extractor.PlainExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.HeaderResponseHandler;
-import com.github.dreamhead.moco.handler.HttpHeaderResponseHandler;
 import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
@@ -266,15 +265,7 @@ public final class Moco {
     }
 
     public static ResponseHandler with(final ResponseElement element) {
-        if (element instanceof ResponseHandler) {
-            return (ResponseHandler) element;
-        }
-
-        if (element instanceof HttpHeader) {
-            return with((HttpHeader)element);
-        }
-
-        throw new IllegalArgumentException("Unknown response element:" + element.getClass());
+        return responseHandler(checkNotNull(element, "Response element should not be null"));
     }
 
     public static ResponseHandler with(final String text) {
@@ -287,10 +278,6 @@ public final class Moco {
 
     public static ResponseHandler with(final MocoProcedure procedure) {
         return new ProcedureResponseHandler(checkNotNull(procedure, "Procedure should not be null"));
-    }
-
-    public static ResponseHandler with(final HttpHeader header) {
-        return new HttpHeaderResponseHandler(checkNotNull(header, "HTTP header should not be null"));
     }
 
     public static Resource uri(final String uri) {
