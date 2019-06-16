@@ -7,6 +7,5 @@ public interface ResponseBase<T> {
     T response(String content);
     T response(Resource resource);
     T response(MocoProcedure procedure);
-    T response(final HttpHeader header, final HttpHeader... headers);
     T response(final ResponseElement element, final ResponseElement... elements);
 }

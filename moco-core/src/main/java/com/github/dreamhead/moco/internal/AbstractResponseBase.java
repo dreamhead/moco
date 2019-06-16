@@ -38,23 +38,6 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
         return this.response(with(checkNotNull(procedure, "Procedure should not be null")));
     }
 
-    @Override
-    public final T response(final HttpHeader header, final HttpHeader... headers) {
-        return this.response(with(checkNotNull(header, "Http header should not be null")),
-                from(checkNotNull(headers, "Http headers should not be null"))
-                        .transform(headerAsResponseHandler())
-                        .toArray(ResponseHandler.class));
-    }
-
-    private Function<HttpHeader, ResponseHandler> headerAsResponseHandler() {
-        return new Function<HttpHeader, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final HttpHeader input) {
-                return with(input);
-            }
-        };
-    }
-
     private Function<ResponseElement, ResponseHandler> elementAsResponseHandler() {
         return new Function<ResponseElement, ResponseHandler>() {
             @Override
