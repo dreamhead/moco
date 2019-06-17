@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.MocoException;
+import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
@@ -39,6 +40,9 @@ public final class ResponseHandlers {
             return new HttpHeaderResponseHandler((HttpHeader)element);
         }
 
+        if (element instanceof MocoProcedure) {
+            return new ProcedureResponseHandler((MocoProcedure)element);
+        }
 
         throw new IllegalArgumentException("Unknown response element:" + element.getClass());
     }

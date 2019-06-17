@@ -1,5 +1,5 @@
 package com.github.dreamhead.moco;
 
-public interface MocoProcedure {
+public interface MocoProcedure extends ResponseElement {
     void execute();
 }

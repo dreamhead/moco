@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpHeader;
-import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
@@ -31,11 +29,6 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
     @Override
     public final T response(final Resource resource) {
         return this.response(with(checkNotNull(resource, "Resource should not be null")));
-    }
-
-    @Override
-    public final T response(final MocoProcedure procedure) {
-        return this.response(with(checkNotNull(procedure, "Procedure should not be null")));
     }
 
     private Function<ResponseElement, ResponseHandler> elementAsResponseHandler() {
