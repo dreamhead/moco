@@ -43,6 +43,7 @@
 -keep public class com.fasterxml.jackson.databind.**{*;}
 -keep public class com.fasterxml.jackson.annotation.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
+-keep public class io.netty.channel.DefaultChannelPipeline{*;}
 
 #jce.jar
 -dontwarn org.apache.http.impl.auth.**
