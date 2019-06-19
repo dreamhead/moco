@@ -6,5 +6,5 @@ public interface ResponseBase<T> {
     T response(ResponseHandler handler, ResponseHandler... handlers);
     T response(String content);
     T response(Resource resource);
-    T response(final ResponseElement element, final ResponseElement... elements);
+    T response(ResponseElement element, ResponseElement... elements);
 }

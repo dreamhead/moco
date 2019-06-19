@@ -36,6 +36,10 @@ public final class ResponseHandlers {
             return (ResponseHandler) element;
         }
 
+        if (element instanceof Resource) {
+            return responseHandler((Resource) element);
+        }
+
         if (element instanceof HttpHeader) {
             return new HttpHeaderResponseHandler((HttpHeader)element);
         }

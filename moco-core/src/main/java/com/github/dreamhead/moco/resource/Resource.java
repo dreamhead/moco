@@ -3,9 +3,10 @@ package com.github.dreamhead.moco.resource;
 import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.model.MessageContent;
 
-public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader {
+public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader, ResponseElement {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
