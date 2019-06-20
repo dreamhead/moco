@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.contain;
 import static com.github.dreamhead.moco.Moco.cycle;
@@ -720,7 +719,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_response_with_expected_header() throws Exception {
-        server.response(with(asHeader(HttpHeaders.CONTENT_TYPE, text("application/json"))));
+        server.response(with(header(HttpHeaders.CONTENT_TYPE, text("application/json"))));
 
         running(server, new Runnable() {
             @Override

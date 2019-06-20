@@ -10,7 +10,6 @@ import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.asHeader;
 import static com.github.dreamhead.moco.Moco.async;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.complete;
@@ -107,7 +106,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), eq(header("foo"), "bar"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(remoteUrl("/target"),
-                asHeader("foo", text("bar")))));
+                header("foo", text("bar")))));
 
         running(server, new Runnable() {
             @Override
@@ -140,7 +139,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), eq(header("foo"), "bar"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")),
-                asHeader("foo", text("bar")))));
+                header("foo", text("bar")))));
 
         running(server, new Runnable() {
             @Override
@@ -285,7 +284,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
     public void should_send_post_request_with_header_to_target_on_complete() throws Exception {
         ResponseHandler handler = mock(ResponseHandler.class);
         server.request(and(by(uri("/target")), by("content"), eq(header("foo"), "bar"))).response(handler);
-        server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"), asHeader("foo", text("bar")))));
+        server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"), header("foo", text("bar")))));
 
         running(server, new Runnable() {
             @Override

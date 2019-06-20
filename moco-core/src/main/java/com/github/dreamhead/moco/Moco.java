@@ -15,7 +15,6 @@ import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
 import com.github.dreamhead.moco.extractor.PlainExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.HeaderResponseHandler;
 import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
@@ -297,24 +296,13 @@ public final class Moco {
     }
 
     public static HttpHeader header(final String name, final String value) {
-        return asHeader(name, value);
-//        return header(checkNotNullOrEmpty(name, "Header name should not be null"), text(checkNotNullOrEmpty(value, "Header value should not be null")));
+        return new HttpHeader(checkNotNullOrEmpty(checkNotNullOrEmpty(name, "Header name should not be null"), "Header name should not be null"),
+                checkNotNull((Resource) text(checkNotNullOrEmpty(value, "Header value should not be null")), "Header value should not be null"));
     }
 
     public static HttpHeader header(final String name, final Resource value) {
-        return asHeader(name, value);
-//        return new HeaderResponseHandler(checkNotNullOrEmpty(name, "Header name should not be null"),
-//                checkNotNull(value, "Header value should not be null"));
-    }
-
-    public static HttpHeader asHeader(final String name, final String value) {
-        return asHeader(checkNotNullOrEmpty(name, "Header name should not be null"),
-                text(checkNotNull(value, "Header value should not be null")));
-    }
-
-    public static HttpHeader asHeader(final String name, final Resource value) {
-        return new HttpHeader(checkNotNullOrEmpty(name, "Header name should not be null"),
-                checkNotNull(value, "Header value should not be null"));
+        return new HttpHeader(checkNotNullOrEmpty(checkNotNullOrEmpty(name, "Header name should not be null"), "Header name should not be null"),
+                checkNotNull(checkNotNull(value, "Header value should not be null"), "Header value should not be null"));
     }
 
     public static RequestExtractor<String> cookie(final String key) {
@@ -328,10 +316,10 @@ public final class Moco {
     }
 
     public static ResponseHandler cookie(final String key, final Resource resource, final CookieAttribute... attributes) {
-        return with(asHeader(SET_COOKIE, cookieResource(
-                checkNotNullOrEmpty(key, "Cookie key should not be null"),
-                checkNotNull(resource, "Cookie value should not be null"),
-                checkNotNull(attributes, "Cookie options should not be null"))));
+        return with(header(SET_COOKIE, cookieResource(
+                        checkNotNullOrEmpty(key, "Cookie key should not be null"),
+                        checkNotNull(resource, "Cookie value should not be null"),
+                        checkNotNull(attributes, "Cookie options should not be null"))));
     }
 
     public static RequestExtractor<String> form(final String key) {
@@ -678,7 +666,7 @@ public final class Moco {
 
     public static ResponseHandler attachment(final String filename, final Resource resource) {
         return AndResponseHandler.and(
-                with(asHeader(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty")))),
+                with(header(HttpHeaders.CONTENT_DISPOSITION, format("attachment; filename=%s", checkNotNullOrEmpty(filename, "Filename should not be null or empty")))),
                 with(checkNotNull(resource, "Resource should not be null")));
     }
 
