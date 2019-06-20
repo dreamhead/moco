@@ -296,13 +296,15 @@ public final class Moco {
         return new HeaderRequestExtractor(checkNotNullOrEmpty(header, "Header name should not be null"));
     }
 
-    public static ResponseHandler header(final String name, final String value) {
-        return header(checkNotNullOrEmpty(name, "Header name should not be null"), text(checkNotNullOrEmpty(value, "Header value should not be null")));
+    public static HttpHeader header(final String name, final String value) {
+        return asHeader(name, value);
+//        return header(checkNotNullOrEmpty(name, "Header name should not be null"), text(checkNotNullOrEmpty(value, "Header value should not be null")));
     }
 
-    public static ResponseHandler header(final String name, final Resource value) {
-        return new HeaderResponseHandler(checkNotNullOrEmpty(name, "Header name should not be null"),
-                checkNotNull(value, "Header value should not be null"));
+    public static HttpHeader header(final String name, final Resource value) {
+        return asHeader(name, value);
+//        return new HeaderResponseHandler(checkNotNullOrEmpty(name, "Header name should not be null"),
+//                checkNotNull(value, "Header value should not be null"));
     }
 
     public static HttpHeader asHeader(final String name, final String value) {

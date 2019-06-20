@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
+import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.Resource;
@@ -202,7 +203,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
                                                   final TextContainer textContainer) {
         try {
             Method method = Moco.class.getMethod(target, String.class, Resource.class);
-            return (ResponseHandler) method.invoke(null, key, getResource(textContainer));
+            return with((ResponseElement)method.invoke(null, key, getResource(textContainer)));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
