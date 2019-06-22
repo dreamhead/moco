@@ -41,11 +41,11 @@ public final class ResponseHandlers {
         }
 
         if (element instanceof HttpHeader) {
-            return new HttpHeaderResponseHandler((HttpHeader)element);
+            return new HttpHeaderResponseHandler((HttpHeader) element);
         }
 
         if (element instanceof MocoProcedure) {
-            return new ProcedureResponseHandler((MocoProcedure)element);
+            return new ProcedureResponseHandler((MocoProcedure) element);
         }
 
         throw new IllegalArgumentException("Unknown response element:" + element.getClass());

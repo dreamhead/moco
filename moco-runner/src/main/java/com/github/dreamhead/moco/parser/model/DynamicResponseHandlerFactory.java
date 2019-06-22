@@ -203,7 +203,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
                                                   final TextContainer textContainer) {
         try {
             Method method = Moco.class.getMethod(target, String.class, Resource.class);
-            return with((ResponseElement)method.invoke(null, key, getResource(textContainer)));
+            return with((ResponseElement) method.invoke(null, key, getResource(textContainer)));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
