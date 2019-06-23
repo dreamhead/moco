@@ -57,6 +57,26 @@
     },
     {
         "request": {
+            "uri" : "/get_event_with_header"
+        },
+        "response": {
+            "text": "get_foo_with_header"
+        },
+        "on": {
+            "complete": {
+                "async" : "true",
+                "latency" : 1000,
+                "get" : {
+                  "url" : "http://localhost:12306/target-with-header",
+                  "headers": {
+                      "foo": "bar"
+                  }
+                }
+            }
+        }
+    },
+    {
+        "request": {
             "uri" : "/get_event_template"
         },
         "response": {
@@ -166,6 +186,17 @@
       },
       "response": {
         "text": "0XMOCOJSON"
+      }
+    },
+    {
+      "request": {
+        "uri" : "/target-with-header",
+        "headers" : {
+          "foo" : "bar"
+        }
+      },
+      "response": {
+        "text": "0XMOCOHEADER"
       }
     }
 ]
