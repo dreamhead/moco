@@ -112,4 +112,16 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
 
         assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XMOCOHEADER"));
     }
+
+    @Test
+    public void should_fire_event_with_post_for_header() throws IOException {
+        runWithConfiguration("event.json");
+
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+        assertThat(helper.get(remoteUrl("/post_event_with_header")), is("post_foo_with_header"));
+        idle(IDLE, TimeUnit.MILLISECONDS);
+
+        assertThat(Files.toString(file, Charset.defaultCharset()), containsString("0XMOCOHEADER"));
+    }
 }

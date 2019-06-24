@@ -77,6 +77,27 @@
     },
     {
         "request": {
+            "uri" : "/post_event_with_header"
+        },
+        "response": {
+            "text": "post_foo_with_header"
+        },
+        "on": {
+          "complete": {
+            "async" : "true",
+            "latency" : 1000,
+            "post" : {
+              "url" : "http://localhost:12306/target-with-header",
+              "headers": {
+                "foo": "bar"
+              },
+              "content": "content"
+            }
+          }
+        }
+    },
+    {
+        "request": {
             "uri" : "/get_event_template"
         },
         "response": {
