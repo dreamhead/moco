@@ -1,11 +1,9 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.github.dreamhead.moco.util.Iterables;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 
@@ -34,13 +32,7 @@ public final class PostSetting extends BaseActionSetting {
 
     private MocoEventAction doCreateAction(final ContentResource content) {
         ContentResource url = this.url.asResource();
-
-        if (headers == null) {
-            return post(url, content);
-        }
-
-        HttpHeader[] headers = asHeaders(this.headers.entrySet());
-        return post(url, content, Iterables.head(headers), Iterables.tail(headers));
+        return post(url, content, asHeaders(this.headers));
     }
 
     private Optional<ContentResource> postContent() {

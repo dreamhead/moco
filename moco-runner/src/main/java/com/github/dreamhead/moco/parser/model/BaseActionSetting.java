@@ -5,13 +5,16 @@ import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 
 import java.util.Map;
-import java.util.Set;
 
 import static com.github.dreamhead.moco.Moco.header;
 
 public abstract class BaseActionSetting {
-    protected HttpHeader[] asHeaders(Set<Map.Entry<String, TextContainer>> iterable) {
-        return FluentIterable.from(iterable)
+    protected HttpHeader[] asHeaders(final Map<String, TextContainer> headers) {
+        if (headers == null) {
+            return new HttpHeader[0];
+        }
+
+        return FluentIterable.from(headers.entrySet())
                 .transform(asHeader())
                 .toArray(HttpHeader.class);
     }

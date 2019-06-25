@@ -591,76 +591,41 @@ public final class Moco {
                 checkNotNull(procedure, "Procedure should not be null"));
     }
 
-    public static MocoEventAction get(final String url) {
-        return get(text(checkNotNullOrEmpty(url, "URL should not be null")));
-    }
-
-    public static MocoEventAction get(final String url, final HttpHeader header, final HttpHeader... headers) {
+    public static MocoEventAction get(final String url, final HttpHeader... headers) {
         return get(text(checkNotNullOrEmpty(url, "URL should not be null")),
-                checkNotNull(header, "Header should not be null"),
                 checkNotNull(headers, "Headers should not be null"));
     }
 
-    public static MocoEventAction get(final Resource url) {
-        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), ImmutableMap.<String, Resource>of());
+    public static MocoEventAction get(final Resource url, final HttpHeader... headers) {
+        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"),
+                toHeaders(checkNotNull(headers, "Headers should not be null")));
     }
 
-    public static MocoEventAction get(final Resource url, final HttpHeader header, final HttpHeader... headers) {
-        Iterable<HttpHeader> httpHeaders = asIterable(checkNotNull(header, "Header should not be null"),
-                checkNotNull(headers, "Headers should not be null"));
-        return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"), toHeaders(httpHeaders));
+    public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader... headers) {
+        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"),
+                checkNotNull(content, "Content should not be null"),
+                toHeaders(checkNotNull(headers, "Headers should not be null")));
     }
 
-    public static MocoEventAction post(final Resource url, final ContentResource content) {
-        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"), ImmutableMap.<String, Resource>of());
-    }
-
-    public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader header, final HttpHeader... headers) {
-        Iterable<HttpHeader> httpHeaders = asIterable(checkNotNull(header, "Header should not be null"),
-                checkNotNull(headers, "Header should not be null"));
-        return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"), checkNotNull(content, "Content should not be null"),
-                toHeaders(httpHeaders));
-    }
-
-    public static MocoEventAction post(final String url, final ContentResource content) {
-        return post(text(checkNotNullOrEmpty(url, "URL should not be null")), checkNotNull(content, "Content should not be null"));
-    }
-
-    public static MocoEventAction post(final String url, final ContentResource content, final HttpHeader header, final HttpHeader... headers) {
-        return post(text(checkNotNullOrEmpty(url, "URL should not be null")), checkNotNull(content, "Content should not be null"),
-                checkNotNull(header, "Header should not be null"),
+    public static MocoEventAction post(final String url, final ContentResource content, final HttpHeader... headers) {
+        return post(text(checkNotNullOrEmpty(url, "URL should not be null")),
+                checkNotNull(content, "Content should not be null"),
                 checkNotNull(headers, "Headers should not be null"));
     }
 
-    public static MocoEventAction post(final String url, final String content) {
-        return post(checkNotNullOrEmpty(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
-    }
-
-    public static MocoEventAction post(final String url, final String content, final HttpHeader header, final HttpHeader... headers) {
+    public static MocoEventAction post(final String url, final String content, final HttpHeader... headers) {
         return post(checkNotNullOrEmpty(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")),
-                checkNotNull(header, "Header should not be null"),
                 checkNotNull(headers, "Headers should not be null"));
     }
 
-    public static MocoEventAction post(final Resource url, final String content) {
-        return post(checkNotNull(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")));
-    }
-
-    public static MocoEventAction post(final Resource url, final String content, final HttpHeader header, final HttpHeader... headers) {
+    public static MocoEventAction post(final Resource url, final String content, final HttpHeader... headers) {
         return post(checkNotNull(url, "URL should not be null"), text(checkNotNullOrEmpty(content, "Content should not be null")),
-                checkNotNull(header, "Header should not be null"),
                 checkNotNull(headers, "Headers should not be null"));
     }
 
-    public static MocoEventAction post(final Resource url, final Object object) {
-        return post(checkNotNull(url, "URL should not be null"),
-                Jsons.toJson(checkNotNull(object, "Content should not be null")));
-    }
-
-    public static MocoEventAction post(final Resource url, final Object object, final HttpHeader header, final HttpHeader... headers) {
+    public static MocoEventAction post(final Resource url, final Object object, final HttpHeader... headers) {
         return post(checkNotNull(url, "URL should not be null"),
                 Jsons.toJson(checkNotNull(object, "Content should not be null")),
-                checkNotNull(header, "Header should not be null"),
                 checkNotNull(headers, "Headers should not be null"));
     }
 
