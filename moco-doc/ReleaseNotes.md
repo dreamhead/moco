@@ -6,6 +6,8 @@
 * `random` as template function is supported in template
 * `req.json` is supported in template
 * `failover` and `playback` status API is supported.
+* `header` returns HttpHeader instead of ResponseHandler.
+* `get` and `post` for event action supports HTTP header.
 
 ## Implementation Details
 * Support multiple HTTP headers with same name
