@@ -22,7 +22,7 @@ public abstract class BaseActionSetting {
     private Function<Map.Entry<String, TextContainer>, HttpHeader> asHeader() {
         return new Function<Map.Entry<String, TextContainer>, HttpHeader>() {
             @Override
-            public HttpHeader apply(Map.Entry<String, TextContainer> input) {
+            public HttpHeader apply(final Map.Entry<String, TextContainer> input) {
                 TextContainer value = input.getValue();
                 return header(input.getKey(), value.asResource());
             }
