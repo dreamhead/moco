@@ -21,7 +21,7 @@ public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
     }
 
     @Override
-    public ResponseHandler apply(MocoConfig config) {
+    public ResponseHandler apply(final MocoConfig config) {
         Resource value = this.header.getValue();
         Resource appliedResource = value.apply(config);
         if (appliedResource != value) {
