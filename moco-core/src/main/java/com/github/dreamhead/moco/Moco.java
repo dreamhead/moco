@@ -275,10 +275,6 @@ public final class Moco {
         return responseHandler(checkNotNull(resource, "Resource should not be null"));
     }
 
-    public static ResponseHandler with(final MocoProcedure procedure) {
-        return new ProcedureResponseHandler(checkNotNull(procedure, "Procedure should not be null"));
-    }
-
     public static Resource uri(final String uri) {
         return uriResource(checkNotNullOrEmpty(uri, "URI should not be null"));
     }
