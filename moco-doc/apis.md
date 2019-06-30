@@ -2436,6 +2436,8 @@ Complete event will be fired after your request has been handled completely.
 
 #### Get Request
 
+You can `get` from an URL.
+
 * Java
 
 ```java
@@ -2456,6 +2458,39 @@ server.request(by(uri("/event"))).response("event").on(complete(get("http://anot
         "complete": {
             "get" : {
                 "url" : "http://another_site"
+            }
+        }
+    }
+}
+```
+
+And also `get` with headers.
+
+#### Get Request
+
+* Java
+
+```java
+server.request(by(uri("/event"))).response("event").on(complete(get("http://another_site", header("foo", "bar"))));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "get" : {
+                "url" : "http://another_site",
+                "headers": {
+                    "foo": "bar"
+                }
             }
         }
     }
