@@ -2464,9 +2464,9 @@ server.request(by(uri("/event"))).response("event").on(complete(get("http://anot
 }
 ```
 
-And also `get` with headers.
+**@Since will be at next release**
 
-#### Get Request
+And also `get` with headers.
 
 * Java
 
@@ -2546,6 +2546,38 @@ If your post content is JSON, you can use `json` in your configuration directly.
                 "url" : "http://another_site",
                 "json": {
                     "foo" : "bar"
+                }
+            }
+        }
+    }
+}
+```
+
+And also `post` with headers.
+
+* Java
+
+```java
+server.request(by(uri("/event"))).response("event").on(complete(post("http://another_site", "content", header("foo", "bar"))));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri" : "/event"
+    },
+    "response": {
+        "text": "event"
+    },
+    "on": {
+        "complete": {
+            "post" : {
+                "url" : "http://another_site",
+                "content": "content",
+                "headers": {
+                    "foo": "bar"
                 }
             }
         }
