@@ -271,10 +271,6 @@ public final class Moco {
         return with(text(checkNotNullOrEmpty(text, "Text should not be null")));
     }
 
-    public static ResponseHandler with(final Resource resource) {
-        return responseHandler(checkNotNull(resource, "Resource should not be null"));
-    }
-
     public static Resource uri(final String uri) {
         return uriResource(checkNotNullOrEmpty(uri, "URI should not be null"));
     }
