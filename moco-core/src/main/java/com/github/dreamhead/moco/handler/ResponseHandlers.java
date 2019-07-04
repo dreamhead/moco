@@ -22,15 +22,6 @@ public final class ResponseHandlers {
             .put("json", JsonResponseHandler.class)
             .build();
 
-    public static ResponseHandler responseHandler(final Resource resource) {
-        if (HANDLERS.containsKey(resource.id())) {
-            return createResponseHandler(resource);
-        }
-
-        throw new IllegalArgumentException(format("unknown response handler for [%s]", resource.id()));
-    }
-
-
     public static ResponseHandler responseHandler(final ResponseElement element) {
         if (element instanceof ResponseHandler) {
             return (ResponseHandler) element;
@@ -49,6 +40,14 @@ public final class ResponseHandlers {
         }
 
         throw new IllegalArgumentException("Unknown response element:" + element.getClass());
+    }
+
+    private static ResponseHandler responseHandler(final Resource resource) {
+        if (HANDLERS.containsKey(resource.id())) {
+            return createResponseHandler(resource);
+        }
+
+        throw new IllegalArgumentException(format("unknown response handler for [%s]", resource.id()));
     }
 
     private static ResponseHandler createResponseHandler(final Resource resource) {
