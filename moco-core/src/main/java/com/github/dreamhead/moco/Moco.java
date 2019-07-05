@@ -15,7 +15,6 @@ import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
 import com.github.dreamhead.moco.extractor.PlainExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
-import com.github.dreamhead.moco.handler.ProcedureResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
