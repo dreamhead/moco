@@ -15,6 +15,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 public final class MocoPostRequestAction extends MocoRequestAction {
     private final ContentResource content;
@@ -45,7 +46,12 @@ public final class MocoPostRequestAction extends MocoRequestAction {
     public MocoEventAction apply(final MocoConfig config) {
         Resource appliedContent = this.content.apply(config);
         if (appliedContent != this.content) {
-            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent, ImmutableMap.<String, Resource>of());
+            ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
+            for (Map.Entry<String, Resource> entry : headers.entrySet()) {
+                builder.put(entry.getKey(), entry.getValue());
+            }
+
+            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent, builder.build());
         }
 
         return this;

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public abstract class MocoRequestAction implements MocoEventAction {
     private final Resource url;
-    private final Map<String, Resource> headers;
+    protected final Map<String, Resource> headers;
 
     protected abstract HttpRequestBase createRequest(String url, Request request);
 

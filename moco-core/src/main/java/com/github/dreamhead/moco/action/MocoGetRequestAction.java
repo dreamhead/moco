@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
+import java.util.Map;
+
 public final class MocoGetRequestAction extends MocoRequestAction {
     public MocoGetRequestAction(final Resource url, final ImmutableMap<String, Resource> headers) {
         super(url, headers);
@@ -19,6 +21,11 @@ public final class MocoGetRequestAction extends MocoRequestAction {
 
     @Override
     public MocoEventAction apply(final MocoConfig config) {
-        return this;
+        ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
+        for (Map.Entry<String, Resource> entry : headers.entrySet()) {
+            builder.put(entry.getKey(), entry.getValue());
+        }
+
+        return new MocoGetRequestAction(this.getUrl(), builder.build());
     }
 }
