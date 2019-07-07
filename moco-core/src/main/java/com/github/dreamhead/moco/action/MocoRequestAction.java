@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.action;
 
+import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public abstract class MocoRequestAction implements MocoEventAction {
     private final Resource url;
-    protected final Map<String, Resource> headers;
+    private final Map<String, Resource> headers;
 
     protected abstract HttpRequestBase createRequest(String url, Request request);
 
@@ -44,5 +45,14 @@ public abstract class MocoRequestAction implements MocoEventAction {
         }
 
         client.execute(httpRequest);
+    }
+
+    protected ImmutableMap<String, Resource> applyHeaders(MocoConfig config) {
+        ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
+        for (Map.Entry<String, Resource> entry : headers.entrySet()) {
+            builder.put(entry.getKey(), entry.getValue().apply(config));
+        }
+
+        return builder.build();
     }
 }

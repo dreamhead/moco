@@ -21,11 +21,6 @@ public final class MocoGetRequestAction extends MocoRequestAction {
 
     @Override
     public MocoEventAction apply(final MocoConfig config) {
-        ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
-        for (Map.Entry<String, Resource> entry : headers.entrySet()) {
-            builder.put(entry.getKey(), entry.getValue());
-        }
-
-        return new MocoGetRequestAction(this.getUrl(), builder.build());
+        return new MocoGetRequestAction(this.getUrl(), applyHeaders(config));
     }
 }
