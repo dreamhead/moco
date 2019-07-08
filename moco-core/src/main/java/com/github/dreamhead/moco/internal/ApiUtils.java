@@ -120,24 +120,6 @@ public final class ApiUtils {
         return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
     }
 
-    public static ImmutableMap<String, Resource> toHeaders(final Iterable<HttpHeader> headers) {
-        ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
-        for (HttpHeader header : headers) {
-            builder.put(header.getName(), header.getValue());
-        }
-
-        return builder.build();
-    }
-
-    public static ImmutableMap<String, Resource> toHeaders(final HttpHeader[] headers) {
-        ImmutableMap.Builder<String, Resource> builder = ImmutableMap.builder();
-        for (HttpHeader header : headers) {
-            builder.put(header.getName(), header.getValue());
-        }
-
-        return builder.build();
-    }
-
     private ApiUtils() {
     }
 }

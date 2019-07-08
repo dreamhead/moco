@@ -49,7 +49,6 @@ import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
 import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
-import static com.github.dreamhead.moco.internal.ApiUtils.toHeaders;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.methodResource;
@@ -589,13 +588,13 @@ public final class Moco {
 
     public static MocoEventAction get(final Resource url, final HttpHeader... headers) {
         return new MocoGetRequestAction(checkNotNull(url, "URL should not be null"),
-                toHeaders(checkNotNull(headers, "Headers should not be null")));
+                checkNotNull(headers, "Headers should not be null"));
     }
 
     public static MocoEventAction post(final Resource url, final ContentResource content, final HttpHeader... headers) {
         return new MocoPostRequestAction(checkNotNull(url, "URL should not be null"),
                 checkNotNull(content, "Content should not be null"),
-                toHeaders(checkNotNull(headers, "Headers should not be null")));
+                checkNotNull(headers, "Headers should not be null"));
     }
 
     public static MocoEventAction post(final String url, final ContentResource content, final HttpHeader... headers) {

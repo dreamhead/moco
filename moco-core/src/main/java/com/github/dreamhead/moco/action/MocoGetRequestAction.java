@@ -1,17 +1,15 @@
 package com.github.dreamhead.moco.action;
 
+import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import java.util.Map;
-
 public final class MocoGetRequestAction extends MocoRequestAction {
-    public MocoGetRequestAction(final Resource url, final ImmutableMap<String, Resource> headers) {
+    public MocoGetRequestAction(final Resource url, final HttpHeader[] headers) {
         super(url, headers);
     }
 
