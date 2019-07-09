@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestExtractor;
