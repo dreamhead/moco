@@ -30,20 +30,19 @@ public abstract class MocoRequestAction implements MocoEventAction {
     @Override
     public final void execute(final Request request) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
-            doExecute(client, request);
+            client.execute(prepareRequest(request));
         } catch (IOException e) {
             throw new MocoException(e);
         }
     }
 
-    private void doExecute(final CloseableHttpClient client, final Request request) throws IOException {
-        String targetUrl = url.readFor(request).toString();
-        HttpRequestBase httpRequest = createRequest(targetUrl, request);
+    private HttpRequestBase prepareRequest(final Request request) {
+        HttpRequestBase httpRequest = createRequest(url.readFor(request).toString(), request);
         for (HttpHeader header : headers) {
             httpRequest.setHeader(header.getName(), header.getValue().readFor(request).toString());
         }
 
-        client.execute(httpRequest);
+        return httpRequest;
     }
 
     protected HttpHeader[] applyHeaders(MocoConfig config) {
