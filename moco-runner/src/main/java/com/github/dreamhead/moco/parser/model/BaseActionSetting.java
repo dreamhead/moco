@@ -9,7 +9,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.Moco.header;
 
 public abstract class BaseActionSetting {
-    protected HttpHeader[] asHeaders(final Map<String, TextContainer> headers) {
+    protected final HttpHeader[] asHeaders(final Map<String, TextContainer> headers) {
         if (headers == null) {
             return new HttpHeader[0];
         }
