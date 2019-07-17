@@ -15,13 +15,13 @@ public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
     }
 
     @Override
-    protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    protected final void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         String value = header.getValue().readFor(httpRequest).toString();
         httpResponse.addHeader(header.getName(), value);
     }
 
     @Override
-    public ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler apply(final MocoConfig config) {
         Resource value = this.header.getValue();
         Resource appliedResource = value.apply(config);
         if (appliedResource != value) {
