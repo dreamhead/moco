@@ -44,10 +44,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
     @Override
     public MocoEventAction apply(final MocoConfig config) {
         Resource appliedContent = this.content.apply(config);
-        if (appliedContent != this.content) {
-            return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent, applyHeaders(config));
-        }
-
-        return this;
+        HttpHeader[] headers = applyHeaders(config);
+        return new MocoPostRequestAction(this.getUrl(), (ContentResource) appliedContent, headers);
     }
 }
