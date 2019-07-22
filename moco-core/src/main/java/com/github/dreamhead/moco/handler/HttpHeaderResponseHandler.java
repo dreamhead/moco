@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.github.dreamhead.moco.resource.Resource;
 
 public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
     private HttpHeader header;
@@ -22,12 +21,11 @@ public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
 
     @Override
     public final ResponseHandler apply(final MocoConfig config) {
-        Resource value = this.header.getValue();
-        Resource appliedResource = value.apply(config);
-        if (appliedResource != value) {
-            return new HttpHeaderResponseHandler(new HttpHeader(this.header.getName(), appliedResource));
+        HttpHeader appliedHeader = this.header.apply(config);
+        if (appliedHeader != this.header) {
+            return new HttpHeaderResponseHandler(appliedHeader);
         }
 
-        return super.apply(config);
+        return this;
     }
 }
