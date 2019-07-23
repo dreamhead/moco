@@ -48,8 +48,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
     protected final HttpHeader[] applyHeaders(final MocoConfig config) {
         HttpHeader[] appliedHeaders = new HttpHeader[this.headers.length];
         for (int i = 0; i < headers.length; i++) {
-            HttpHeader header = headers[i];
-            appliedHeaders[i] = header.apply(config);
+            appliedHeaders[i] = headers[i].apply(config);
         }
 
         return appliedHeaders;
