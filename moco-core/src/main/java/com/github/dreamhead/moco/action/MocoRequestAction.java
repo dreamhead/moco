@@ -62,4 +62,8 @@ public abstract class MocoRequestAction implements MocoEventAction {
 
         return this.headers;
     }
+
+    protected final boolean sameHeaders(final HttpHeader[] headers) {
+        return this.headers == headers;
+    }
 }
