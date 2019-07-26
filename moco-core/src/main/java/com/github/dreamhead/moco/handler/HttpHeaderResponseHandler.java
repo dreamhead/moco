@@ -26,6 +26,6 @@ public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
             return new HttpHeaderResponseHandler(appliedHeader);
         }
 
-        return this;
+        return super.apply(config);
     }
 }
