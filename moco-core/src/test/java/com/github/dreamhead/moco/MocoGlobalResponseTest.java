@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
