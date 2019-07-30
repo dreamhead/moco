@@ -4,15 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Optional;
-
-import java.io.IOException;
 
 public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ContentRequestExtractor extractor;
@@ -38,8 +35,6 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
             return requestNode.equals(resourceNode);
         } catch (JsonProcessingException jpe) {
             return false;
-        } catch (IOException e) {
-            throw new MocoException(e);
         }
     }
 
