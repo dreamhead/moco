@@ -39,7 +39,6 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
         Resource appliedResource = this.expected.apply(config);
         if (appliedResource == this.expected) {
