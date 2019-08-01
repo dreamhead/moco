@@ -54,7 +54,6 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final RequestMatcher doApply(final MocoConfig config) {
         Resource appliedResource = expected.apply(config);
         if (appliedResource == expected) {
