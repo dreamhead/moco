@@ -37,7 +37,6 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
 
 
     @Override
-    @SuppressWarnings("unchecked")
     public final RequestMatcher doApply(final MocoConfig config) {
         Iterable<RequestMatcher> appliedMatchers = applyToMatchers(config);
         if (appliedMatchers == this.matchers) {
