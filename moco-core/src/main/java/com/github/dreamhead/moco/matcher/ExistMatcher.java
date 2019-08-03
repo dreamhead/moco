@@ -20,7 +20,6 @@ public final class ExistMatcher<T> extends AbstractRequestMatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
         return this;
     }
