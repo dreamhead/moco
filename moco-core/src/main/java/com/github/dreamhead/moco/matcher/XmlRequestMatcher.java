@@ -52,7 +52,6 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
             return new XmlRequestMatcher(resource.apply(config));
