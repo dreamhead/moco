@@ -17,7 +17,6 @@ public final class NotRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public RequestMatcher doApply(final MocoConfig config) {
         RequestMatcher appliedMatcher = matcher.apply(config);
         if (appliedMatcher == this.matcher) {
