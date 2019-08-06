@@ -39,7 +39,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
     private HttpRequestBase prepareRequest(final Request request) {
         HttpRequestBase httpRequest = createRequest(url.readFor(request).toString(), request);
         for (HttpHeader header : headers) {
-            httpRequest.setHeader(header.getName(), header.getValue().readFor(request).toString());
+            httpRequest.addHeader(header.getName(), header.getValue().readFor(request).toString());
         }
 
         return httpRequest;
