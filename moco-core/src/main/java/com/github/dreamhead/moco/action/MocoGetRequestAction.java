@@ -6,14 +6,14 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
 
 public final class MocoGetRequestAction extends MocoRequestAction {
     public MocoGetRequestAction(final Resource url, final HttpHeader[] headers) {
         super(url, headers);
     }
 
-    protected HttpRequestBase createRequest(final String url, final Request request) {
+    protected HttpUriRequest createRequest(final String url, final Request request) {
         return new HttpGet(url);
     }
 
