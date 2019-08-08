@@ -19,11 +19,12 @@ public final class MocoGetRequestAction extends MocoRequestAction {
 
     @Override
     public MocoEventAction apply(final MocoConfig config) {
+        Resource appliedUrl = applyUrl(config);
         HttpHeader[] headers = applyHeaders(config);
-        if (sameHeaders(headers)) {
+        if (isSameUrl(appliedUrl) && isSameHeaders(headers)) {
             return this;
         }
 
-        return new MocoGetRequestAction(this.getUrl(), headers);
+        return new MocoGetRequestAction(appliedUrl, headers);
     }
 }

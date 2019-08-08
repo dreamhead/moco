@@ -45,6 +45,19 @@ public abstract class MocoRequestAction implements MocoEventAction {
         return httpRequest;
     }
 
+    protected final Resource applyUrl(final MocoConfig config) {
+        Resource appliedResource = this.url.apply(config);
+        if (appliedResource == this.url) {
+            return this.url;
+        }
+
+        return appliedResource;
+    }
+
+    protected final boolean isSameUrl(final Resource url) {
+        return this.url == url;
+    }
+
     protected final HttpHeader[] applyHeaders(final MocoConfig config) {
         HttpHeader[] appliedHeaders = new HttpHeader[this.headers.length];
         boolean applied = false;
@@ -63,7 +76,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
         return this.headers;
     }
 
-    protected final boolean sameHeaders(final HttpHeader[] headers) {
+    protected final boolean isSameHeaders(final HttpHeader[] headers) {
         return this.headers == headers;
     }
 }
