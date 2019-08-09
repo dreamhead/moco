@@ -23,10 +23,6 @@ public abstract class MocoRequestAction implements MocoEventAction {
         this.headers = headers;
     }
 
-    protected final Resource getUrl() {
-        return url;
-    }
-
     @Override
     public final void execute(final Request request) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
