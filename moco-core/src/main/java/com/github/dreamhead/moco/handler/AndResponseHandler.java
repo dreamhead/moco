@@ -23,11 +23,7 @@ public final class AndResponseHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public ResponseHandler apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.RESPONSE_ID)) {
-            return super.apply(config);
-        }
-
+    public ResponseHandler doApply(final MocoConfig config) {
         return and(from(handlers).transform(applyConfig(config)));
     }
 

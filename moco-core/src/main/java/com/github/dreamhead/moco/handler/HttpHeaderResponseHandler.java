@@ -20,12 +20,12 @@ public class HttpHeaderResponseHandler extends AbstractHttpResponseHandler {
     }
 
     @Override
-    public final ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler doApply(final MocoConfig config) {
         HttpHeader appliedHeader = this.header.apply(config);
         if (appliedHeader != this.header) {
             return new HttpHeaderResponseHandler(appliedHeader);
         }
 
-        return super.apply(config);
+        return this;
     }
 }

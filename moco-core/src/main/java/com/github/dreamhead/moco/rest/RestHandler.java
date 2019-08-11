@@ -33,12 +33,11 @@ public final class RestHandler extends AbstractHttpResponseHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler doApply(final MocoConfig config) {
         if (config.isFor(MocoConfig.URI_ID)) {
             return new RestHandler((String) config.apply(name), settings);
         }
 
-        return super.apply(config);
+        return this;
     }
-
 }

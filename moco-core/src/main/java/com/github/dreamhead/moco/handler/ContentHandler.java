@@ -31,12 +31,7 @@ public class ContentHandler extends AbstractContentResponseHandler {
     }
 
     @Override
-    public final ResponseHandler apply(final MocoConfig config) {
-        ResponseHandler handler = super.apply(config);
-        if (handler != this) {
-            return handler;
-        }
-
+    public final ResponseHandler doApply(final MocoConfig config) {
         Resource appliedResource = this.resource.apply(config);
         if (appliedResource != this.resource) {
             return new ContentHandler((ContentResource) appliedResource);

@@ -52,11 +52,7 @@ public final class MountHandler extends AbstractHttpContentResponseHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public ResponseHandler apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.RESPONSE_ID)) {
-            return super.apply(config);
-        }
-
+    public final ResponseHandler doApply(final MocoConfig config) {
         if (config.isFor(MocoConfig.URI_ID)) {
             return new MountHandler(this.dir, this.target.apply(config));
         }

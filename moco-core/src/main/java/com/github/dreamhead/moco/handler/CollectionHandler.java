@@ -26,11 +26,7 @@ public abstract class CollectionHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public final ResponseHandler apply(final MocoConfig config) {
-        if (config.isFor(MocoConfig.RESPONSE_ID)) {
-            return super.apply(config);
-        }
-
+    public final ResponseHandler doApply(final MocoConfig config) {
         FluentIterable<ResponseHandler> transformedResources = from(copyOf(handlers)).transform(applyConfig(config));
         return newCollectionHandler(transformedResources);
     }
