@@ -155,36 +155,37 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpRequestBase createBaseRequest(final URL url, final HttpMethod method) {
+        String uri = url.toString();
         if (method == HttpMethod.GET) {
-            return new HttpGet(url.toString());
+            return new HttpGet(uri);
         }
 
         if (method == HttpMethod.POST) {
-            return new HttpPost(url.toString());
+            return new HttpPost(uri);
         }
 
         if (method == HttpMethod.PUT) {
-            return new HttpPut(url.toString());
+            return new HttpPut(uri);
         }
 
         if (method == HttpMethod.DELETE) {
-            return new HttpDelete(url.toString());
+            return new HttpDelete(uri);
         }
 
         if (method == HttpMethod.HEAD) {
-            return new HttpHead(url.toString());
+            return new HttpHead(uri);
         }
 
         if (method == HttpMethod.OPTIONS) {
-            return new HttpOptions(url.toString());
+            return new HttpOptions(uri);
         }
 
         if (method == HttpMethod.TRACE) {
-            return new HttpTrace(url.toString());
+            return new HttpTrace(uri);
         }
 
         if (method == HttpMethod.PATCH) {
-            return new HttpPatch(url.toString());
+            return new HttpPatch(uri);
         }
 
         throw new MocoException("unknown HTTP method");
