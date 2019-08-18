@@ -89,7 +89,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             throw new MocoException(e);
         }
-
     }
 
     protected abstract Optional<String> doRemoteUrl(HttpRequest request);
