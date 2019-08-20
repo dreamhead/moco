@@ -50,7 +50,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
-        Optional<Integer> optionalPort = this.getPort();
+        Optional<Integer> optionalPort = thisServer.getPort();
         if (optionalPort.isPresent()) {
             if (optionalPort.get() != 0) {
                 return optionalPort;
