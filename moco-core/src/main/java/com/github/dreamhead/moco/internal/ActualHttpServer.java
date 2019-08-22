@@ -18,13 +18,21 @@ import javax.net.ssl.SSLEngine;
 import static com.google.common.base.Optional.absent;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
+    private static final int MAX_HEADER_SIZE = 8192;
+
     private final HttpsCertificate certificate;
+    private final ServerConfig serverConfig;
 
     protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
         this.certificate = certificate;
+        this.serverConfig = new ServerConfig(MAX_HEADER_SIZE);
+    }
+
+    public ServerConfig getServerConfig() {
+        return serverConfig;
     }
 
     public final boolean isSecure() {
