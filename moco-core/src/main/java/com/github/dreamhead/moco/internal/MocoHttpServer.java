@@ -7,7 +7,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
 public class MocoHttpServer extends BaseServerRunner {
-    private static final int MAX_CONTENT_LENGTH = 1048576;
     private static final int MAX_INITIAL_LINE_LENGTH = 4096;
     private static final int MAX_CHUNK_SIZE = 8192;
     private final ActualHttpServer serverSetting;
@@ -36,7 +35,7 @@ public class MocoHttpServer extends BaseServerRunner {
                 pipeline.addLast("codec", new HttpServerCodec(MAX_INITIAL_LINE_LENGTH,
                         serverConfig.getHeaderSize(),
                         MAX_CHUNK_SIZE, false));
-                pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(serverConfig.getContentLength()));
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
         };

@@ -19,6 +19,7 @@ import static com.google.common.base.Optional.absent;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private static final int MAX_HEADER_SIZE = 8192;
+    private static final int MAX_CONTENT_LENGTH = 1048576;
 
     private final HttpsCertificate certificate;
     private final ServerConfig serverConfig;
@@ -28,7 +29,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
                                final MocoMonitor monitor, final MocoConfig... configs) {
         super(port, monitor, configs);
         this.certificate = certificate;
-        this.serverConfig = new ServerConfig(MAX_HEADER_SIZE);
+        this.serverConfig = new ServerConfig(MAX_HEADER_SIZE, MAX_CONTENT_LENGTH);
     }
 
     public ServerConfig getServerConfig() {
