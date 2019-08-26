@@ -5,7 +5,7 @@ public class ServerConfig {
     private int contentLength;
 
     public ServerConfig(final int maxHeaderSize, int maxContentLength) {
-        this.headerSize = maxHqeaderSize;
+        this.headerSize = maxHeaderSize;
         this.contentLength = maxContentLength;
     }
 

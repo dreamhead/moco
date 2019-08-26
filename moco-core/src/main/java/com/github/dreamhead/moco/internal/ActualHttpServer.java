@@ -27,9 +27,17 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
                                final MocoMonitor monitor, final MocoConfig... configs) {
+        this(port, certificate, monitor, new ServerConfig(MAX_HEADER_SIZE, MAX_CONTENT_LENGTH), configs);
+    }
+
+    protected ActualHttpServer(final int port,
+                               final HttpsCertificate certificate,
+                               final MocoMonitor monitor,
+                               final ServerConfig serverConfig,
+                               final MocoConfig... configs) {
         super(port, monitor, configs);
         this.certificate = certificate;
-        this.serverConfig = new ServerConfig(MAX_HEADER_SIZE, MAX_CONTENT_LENGTH);
+        this.serverConfig = serverConfig;
     }
 
     public ServerConfig getServerConfig() {
