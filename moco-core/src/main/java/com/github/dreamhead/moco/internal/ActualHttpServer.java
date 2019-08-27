@@ -129,6 +129,14 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
     }
 
+    public static ActualHttpServer createHttpsServer(final int port,
+                                                     final HttpsCertificate certificate,
+                                                     final MocoMonitor monitor,
+                                                     final ServerConfig serverConfig,
+                                                     final MocoConfig... configs) {
+        return new ActualHttpServer(port, certificate, monitor, serverConfig, configs);
+    }
+
     @Override
     protected final HttpSetting newSetting(final RequestMatcher matcher) {
         return new HttpSetting(matcher);
