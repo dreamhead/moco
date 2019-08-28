@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.RestServer;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.InternalApis;
+import com.github.dreamhead.moco.internal.ServerConfig;
 
 import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
@@ -19,6 +20,14 @@ public final class ActualRestServer extends ActualHttpServer implements RestServ
                             final MocoMonitor monitor,
                             final MocoConfig... configs) {
         super(port, certificate, monitor, configs);
+    }
+
+    public ActualRestServer(final int port,
+                            final HttpsCertificate certificate,
+                            final MocoMonitor monitor,
+                            final ServerConfig serverConfig,
+                            final MocoConfig... configs) {
+        super(port, certificate, monitor, serverConfig, configs);
     }
 
     @Override
