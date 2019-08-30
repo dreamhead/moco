@@ -18,14 +18,16 @@ public final class MocoRest {
     public static RestServer restServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
-        return new ActualRestServer(port, null, new QuietMonitor(), configs);
+        return new ActualRestServer(port, null, new QuietMonitor(),
+                checkNotNull(configs, "Configuration should not be null"));
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNull(configs, "Config should not be null");
         return new ActualRestServer(port, null,
-                checkNotNull(monitor, "Monitor should not be null"), configs);
+                checkNotNull(monitor, "Monitor should not be null"),
+                checkNotNull(configs, "Configuration should not be null"));
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor,
@@ -33,7 +35,8 @@ public final class MocoRest {
         checkArgument(port > 0, "Port must be greater than zero");
         return new ActualRestServer(port, null,
                 mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                        checkNotNull(monitor2, "Monitor should not be null"),
+                        checkNotNull(monitors, "Monitor should not be null")));
     }
 
     public static RestIdMatcher anyId() {
