@@ -68,7 +68,7 @@ import static java.lang.String.format;
 public final class Moco {
     public static HttpServer httpServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        return ActualHttpServer.createQuietServer(port, configs);
+        return ActualHttpServer.createQuietServer(port, checkNotNull(configs, "Configuration should not be null"));
     }
 
     public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
@@ -127,7 +127,8 @@ public final class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(port, checkNotNull(certificate, "Certificate should not be null"),
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                        checkNotNull(monitor2, "Monitor should not be null"),
+                        checkNotNull(monitors, "Monitors should not be null")));
     }
 
     public static SocketServer socketServer() {
@@ -135,6 +136,7 @@ public final class Moco {
     }
 
     public static SocketServer socketServer(final int port) {
+        checkArgument(port > 0, "Port must be greater than zero");
         return ActualSocketServer.createQuietServer(port);
     }
 
@@ -148,7 +150,8 @@ public final class Moco {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualSocketServer.createServerWithMonitor(port,
                 ApiUtils.mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"), monitors));
+                        checkNotNull(monitor2, "Monitor should not be null"),
+                        checkNotNull(monitors, "Monitors should not be null")));
     }
 
 
