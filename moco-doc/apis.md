@@ -1126,7 +1126,7 @@ server.request(by("foo")).response(proxy("http://www.github.com", playback("play
 ```
 
 #### Customize Failover/Playback Status
-**@Since will be at next release**
+**@Since 1.0.0**
 
 You can customize what remote statuses means remote server is not available.
 
@@ -1663,7 +1663,7 @@ The other response settings are able to be set for json as well.
 ```
 
 ### Cycle
-**@Since will be at next release**
+**@Since 1.0.0**
 
 Cycle is similar to `seq`, but it will return response as cycle. An example is as following:
 
@@ -2086,7 +2086,7 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']}"))
 ```
 
 #### JSON
-**@Since will be at next release**
+**@Since 1.0.0**
 
 If your request is a JSON request, you can use `req.json` to visit your json object.
 
@@ -2181,7 +2181,7 @@ Other extractors, e.g. xpath also work here.
 
 #### now
 
-**@Since will be at next release**
+**@Since 1.0.0**
 
 Current time can retrieved by 'now' function and a date format string should be passed as argument.
 
@@ -2208,7 +2208,7 @@ server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
 
 #### random
 
-**@Since will be at next release**
+**@Since 1.0.0**
 
 `random` will generate a random number. If you didn't pass any argument, the generated random will be between 0 and 1.
 
@@ -2464,7 +2464,7 @@ server.request(by(uri("/event"))).response("event").on(complete(get("http://anot
 }
 ```
 
-**@Since will be at next release**
+**@Since 1.0.0**
 
 And also `get` with headers.
 
@@ -2552,7 +2552,7 @@ If your post content is JSON, you can use `json` in your configuration directly.
     }
 }
 ```
-**@Since will be at next release**
+**@Since 1.0.0**
 
 And also `post` with headers.
 

@@ -1,4 +1,4 @@
-# Release 0.12.1
+# Release 1.0.0 (1-Sep-2019)
 
 ## APIs
 * `cycle` API returns response as a cycle.
