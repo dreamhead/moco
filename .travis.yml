@@ -1,9 +1,12 @@
-dist: precise
+dist: bionic
 language: java
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
+  - openjdk8
+  - oraclejdk11
+  - openjdk11
+#  - oraclejdk7
+#  - openjdk7
 #  - openjdk6
 
 script:
