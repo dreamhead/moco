@@ -18,6 +18,7 @@ import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -94,7 +95,7 @@ public class MocoSocketTest {
             }
         });
 
-        String actual = Files.toString(file, Charset.defaultCharset());
+        String actual = asCharSource(file, Charset.defaultCharset()).read();
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }

@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -54,6 +53,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
+import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -207,7 +207,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             @Override
             public void run() throws IOException {
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()), containsString("proxy"));
+                assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), containsString("proxy"));
             }
         });
     }
@@ -225,7 +225,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             public void run() throws IOException {
                 assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-                String failoverContent = Files.toString(tempFile, Charset.defaultCharset());
+                String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
                 assertThat(failoverContent, containsString("get_proxy"));
                 assertThat(failoverContent, containsString("post_proxy"));
             }
@@ -244,7 +244,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             public void run() throws IOException {
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
                 assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
-                assertThat(Files.toString(tempFile, Charset.defaultCharset()), countString("/proxy", 1));
+                assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), countString("/proxy", 1));
             }
         });
     }
