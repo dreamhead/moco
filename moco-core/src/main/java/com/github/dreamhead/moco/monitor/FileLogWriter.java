@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.monitor;
 
 import com.github.dreamhead.moco.MocoException;
+import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public final class FileLogWriter implements LogWriter {
     @Override
     public void write(final String content) {
         try {
-            Files.append(content, file, charset);
+            Files.asCharSink(file, charset, FileWriteMode.APPEND).write(content);
         } catch (Exception e) {
             throw new MocoException(e);
         }
