@@ -16,7 +16,7 @@ public class MocoHttpServer extends BaseServerRunner {
     }
 
     @Override
-    protected final BaseActualServer serverSetting() {
+    protected final ServerSetting serverSetting() {
         return this.serverSetting;
     }
 

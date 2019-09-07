@@ -1,11 +1,10 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.SocketResponseSetting;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
-public final class MocoSocketServer extends BaseServerRunner<SocketResponseSetting, ActualSocketServer> {
+public final class MocoSocketServer extends BaseServerRunner {
     private final ActualSocketServer serverSetting;
 
     public MocoSocketServer(final ActualSocketServer serverSetting) {
@@ -13,7 +12,7 @@ public final class MocoSocketServer extends BaseServerRunner<SocketResponseSetti
     }
 
     @Override
-    protected ActualSocketServer serverSetting() {
+    protected ServerSetting serverSetting() {
         return this.serverSetting;
     }
 

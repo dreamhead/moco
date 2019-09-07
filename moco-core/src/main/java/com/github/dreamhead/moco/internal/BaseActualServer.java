@@ -8,17 +8,18 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.setting.Setting;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.RequestMatcher.ANY_REQUEST_MATCHER;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T> {
+public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T>
+        implements ServerSetting {
     protected abstract Setting<T> newSetting(RequestMatcher matcher);
 
     private final MocoConfig[] configs;
@@ -61,9 +62,9 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return setting;
     }
 
-    protected final Optional<Integer> getPort() {
+    public final Optional<Integer> getPort() {
         if (port == 0) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         return Optional.of(port);

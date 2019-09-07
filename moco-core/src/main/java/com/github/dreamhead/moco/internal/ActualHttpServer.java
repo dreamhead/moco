@@ -10,12 +10,11 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.monitor.ThreadSafeMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
-import com.google.common.base.Optional;
 import io.netty.handler.ssl.SslHandler;
 
 import javax.net.ssl.SSLEngine;
 
-import static com.google.common.base.Optional.absent;
+import java.util.Optional;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private static final int MAX_HEADER_SIZE = 8192;
@@ -53,7 +52,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
             return Optional.of(asSslHandler(certificate));
         }
 
-        return absent();
+        return Optional.empty();
     }
 
     private SslHandler asSslHandler(final HttpsCertificate certificate) {
@@ -63,7 +62,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
-        return newBaseServer(mergePort(this, thatServer).or(0), mergedCertificate(this.certificate, thatServer.certificate));
+        return newBaseServer(mergePort(this, thatServer).orElse(0), mergedCertificate(this.certificate, thatServer.certificate));
     }
 
     private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {

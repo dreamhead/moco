@@ -13,7 +13,7 @@ import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.setting.SocketSetting;
 
 public final class ActualSocketServer extends BaseActualServer<SocketResponseSetting, ActualSocketServer>
-        implements SocketServer {
+        implements SocketServer, ServerSetting {
     private ActualSocketServer(final int port, final MocoMonitor monitor) {
         super(port, monitor, new MocoConfig[0]);
     }
@@ -32,7 +32,7 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
 
     @Override
     protected ActualSocketServer createMergeServer(final ActualSocketServer thatServer) {
-        return newBaseServer(this.getPort().or(thatServer.getPort()).or(0));
+        return newBaseServer(this.getPort().orElseGet(() -> thatServer.getPort().orElse(0)));
     }
 
     private ActualSocketServer newBaseServer(final int thisPort) {
