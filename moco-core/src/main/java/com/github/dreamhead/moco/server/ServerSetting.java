@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal;
+package com.github.dreamhead.moco.server;
 
 import java.util.Optional;
 

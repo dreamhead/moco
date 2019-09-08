@@ -1,4 +1,4 @@
-package com.github.dreamhead.moco.internal;
+package com.github.dreamhead.moco.server;
 
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.MocoExecutors;

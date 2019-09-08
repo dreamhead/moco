@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.internal.MocoHttpServer;
 import com.github.dreamhead.moco.internal.MocoSocketServer;
+import com.github.dreamhead.moco.server.ServerRunner;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,11 +31,11 @@ public abstract class Runner {
     }
 
     public static Runner runner(final HttpServer server) {
-        return new MocoHttpServer((ActualHttpServer) checkNotNull(server, "Server should not be null"));
+        return new ServerRunner(new MocoHttpServer((ActualHttpServer) checkNotNull(server, "Server should not be null")));
     }
 
     public static Runner runner(final SocketServer server) {
-        return new MocoSocketServer((ActualSocketServer) checkNotNull(server, "Server should not be null"));
+        return new ServerRunner(new MocoSocketServer((ActualSocketServer) checkNotNull(server, "Server should not be null")));
     }
 
     public abstract void start();

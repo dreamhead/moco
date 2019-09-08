@@ -1,12 +1,14 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.server.ServerConfiguration;
+import com.github.dreamhead.moco.server.ServerSetting;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
-public class MocoHttpServer extends BaseServerRunner {
+public class MocoHttpServer implements ServerConfiguration {
     private static final int MAX_INITIAL_LINE_LENGTH = 4096;
     private static final int MAX_CHUNK_SIZE = 8192;
     private final ActualHttpServer serverSetting;
@@ -16,12 +18,12 @@ public class MocoHttpServer extends BaseServerRunner {
     }
 
     @Override
-    protected final ServerSetting serverSetting() {
+    public final ServerSetting serverSetting() {
         return this.serverSetting;
     }
 
     @Override
-    protected final ChannelInitializer<SocketChannel> channelInitializer() {
+    public final ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) throws Exception {
