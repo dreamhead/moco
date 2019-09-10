@@ -80,7 +80,7 @@ subprojects {
         junitVersion = '4.12'
         hamcrestVersion = '2.1'
         mockitoVersion = '3.0.0'
-        httpComponentVersion = '4.5.9'
+        httpComponentVersion = '4.5.10'
         jsonpathVersion = '2.4.0'
         freemarkerVersion = '2.3.29'
         jsonAssertVersion = '1.5.0'
