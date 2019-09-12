@@ -1,3 +1,7 @@
+# Release
+
+* Upgrade minimal Java version to Java 8
+
 # Release 1.0.0 (1-Sep-2019)
 
 ## APIs

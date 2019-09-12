@@ -10,11 +10,12 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
@@ -45,7 +46,6 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
-import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
@@ -106,7 +106,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk.response"))));
+                assertThat(helper.getAsBytes(root()), is(Files.readAllBytes(Paths.get("src/test/resources/gbk.response"))));
             }
         });
     }
@@ -130,7 +130,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getAsBytes(root()), is(toByteArray(new File("src/test/resources/gbk.response"))));
+                assertThat(helper.getAsBytes(root()), is(Files.readAllBytes(Paths.get("src/test/resources/gbk.response"))));
             }
         });
     }
@@ -191,7 +191,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws IOException {
-                assertThat(helper.postBytes(root(), toByteArray(new File("src/test/resources/gbk.response")), gbk),
+                assertThat(helper.postBytes(root(), Files.readAllBytes(Paths.get("src/test/resources/gbk.response")), gbk),
                         is("bar"));
             }
         });
