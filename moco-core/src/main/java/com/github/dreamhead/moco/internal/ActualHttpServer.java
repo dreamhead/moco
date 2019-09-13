@@ -39,7 +39,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         this.serverConfig = serverConfig;
     }
 
-    public ServerConfig getServerConfig() {
+    public final ServerConfig getServerConfig() {
         return serverConfig;
     }
 
