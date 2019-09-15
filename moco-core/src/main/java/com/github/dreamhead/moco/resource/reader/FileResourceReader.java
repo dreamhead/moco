@@ -5,11 +5,12 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import static com.google.common.io.Files.toByteArray;
 import static java.lang.String.format;
 
 public final class FileResourceReader extends AbstractFileResourceReader {
@@ -26,14 +27,15 @@ public final class FileResourceReader extends AbstractFileResourceReader {
 
     @Override
     protected byte[] doReadFor(final Request request) {
-        File file = new File(targetFileName(request));
+        String pathname = targetFileName(request);
+        Path path = Paths.get(pathname);
 
-        if (!file.exists()) {
-            throw new IllegalArgumentException(format("%s does not exist", file.getPath()));
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException(format("%s does not exist", path.toString()));
         }
 
         try {
-            return toByteArray(file);
+            return Files.readAllBytes(path);
         } catch (IOException e) {
             throw new MocoException(e);
         }
