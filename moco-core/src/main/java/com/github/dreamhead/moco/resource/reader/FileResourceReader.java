@@ -31,7 +31,7 @@ public final class FileResourceReader extends AbstractFileResourceReader {
         Path path = Paths.get(pathname);
 
         if (!Files.exists(path)) {
-            throw new IllegalArgumentException(format("%s does not exist", path.toString()));
+            throw new IllegalArgumentException(format("%s does not exist", path.getFileName().toString()));
         }
 
         try {

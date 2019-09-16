@@ -14,11 +14,12 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,7 +42,6 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
-import static com.google.common.io.Files.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
@@ -387,7 +387,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, new Runnable() {
             @Override
             public void run() throws Exception {
-                assertThat(helper.getAsBytes(remoteUrl("/template")), is(toByteArray(new File("src/test/resources/gbk.response"))));
+                assertThat(helper.getAsBytes(remoteUrl("/template")), is(Files.readAllBytes(Paths.get("src/test/resources/gbk.response"))));
             }
         });
     }
