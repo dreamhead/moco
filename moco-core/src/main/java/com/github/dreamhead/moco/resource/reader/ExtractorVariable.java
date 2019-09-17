@@ -2,7 +2,8 @@ package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class ExtractorVariable<T> implements Variable {
     private final RequestExtractor<T> extractor;

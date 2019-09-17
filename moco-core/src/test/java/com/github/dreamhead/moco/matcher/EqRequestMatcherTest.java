@@ -3,9 +3,10 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

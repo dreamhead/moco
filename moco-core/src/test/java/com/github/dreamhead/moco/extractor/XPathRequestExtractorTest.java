@@ -2,8 +2,9 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.google.common.base.Optional;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -14,7 +14,7 @@ public final class PlainExtractor<T> implements RequestExtractor<T> {
     }
 
     @Override
-    public Optional<T> extract(final Request request) {
-        return of(this.object);
+    public java.util.Optional<T> extract(final Request request) {
+        return java.util.Optional.of(this.object);
     }
 }

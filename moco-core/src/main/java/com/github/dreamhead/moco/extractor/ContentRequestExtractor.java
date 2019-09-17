@@ -3,10 +3,11 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.base.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class ContentRequestExtractor implements RequestExtractor<MessageContent> {
     @Override
@@ -16,6 +17,6 @@ public final class ContentRequestExtractor implements RequestExtractor<MessageCo
             return of(content);
         }
 
-        return absent();
+        return empty();
     }
 }

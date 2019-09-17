@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.base.Optional;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -11,9 +10,10 @@ import com.jayway.jsonpath.PathNotFoundException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object> {
     private final ContentRequestExtractor extractor = new ContentRequestExtractor();
@@ -28,7 +28,7 @@ public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object>
         Optional<MessageContent> requestBody = extractor.extract(request);
         try {
             if (!requestBody.isPresent()) {
-                return absent();
+                return empty();
             }
 
             MessageContent content = requestBody.get();
@@ -36,11 +36,11 @@ public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object>
                     content.getCharset().toString(),
                     Configuration.defaultConfiguration());
             if (jsonPathContent == null) {
-                return absent();
+                return empty();
             }
             return of(toStringArray(jsonPathContent));
         } catch (PathNotFoundException | IOException e) {
-            return absent();
+            return empty();
         }
     }
 

@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class ExistMatcher<T> extends AbstractRequestMatcher {
     private final RequestExtractor<T> extractor;

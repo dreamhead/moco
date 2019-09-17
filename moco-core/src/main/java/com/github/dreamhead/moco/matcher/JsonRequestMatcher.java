@@ -9,7 +9,8 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ContentRequestExtractor extractor;

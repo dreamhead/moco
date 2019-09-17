@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpUtil;
@@ -18,11 +17,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Optional.of;
 
 public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
     @Override
@@ -35,7 +34,7 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
             decoder = new HttpPostRequestDecoder(factory, targetRequest, charset);
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.ErrorDataDecoderException idde) {
-            return absent();
+            return Optional.empty();
         } catch (IOException e) {
             throw new MocoException(e);
         } finally {

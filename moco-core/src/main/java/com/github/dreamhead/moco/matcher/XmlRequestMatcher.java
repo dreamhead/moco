@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.extractor.XmlExtractorHelper;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,10 +20,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
@@ -69,7 +69,7 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
                                                final ContentRequestExtractor extractor) throws SAXException {
         Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
         if (!inputSourceOptional.isPresent()) {
-            return absent();
+            return empty();
         }
 
         return of(extractDocument(inputSourceOptional.get()));

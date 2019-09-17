@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
-import com.google.common.base.Optional;
 
 import java.io.File;
+import java.util.Optional;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;

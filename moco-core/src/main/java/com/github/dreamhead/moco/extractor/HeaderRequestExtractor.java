@@ -3,15 +3,15 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.util.HttpHeaders.isForHeaderName;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
 import static com.google.common.collect.FluentIterable.from;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class HeaderRequestExtractor extends HttpRequestExtractor<String[]> {
     private final String name;
@@ -32,7 +32,7 @@ public final class HeaderRequestExtractor extends HttpRequestExtractor<String[]>
             return of(extractedValues);
         }
 
-        return absent();
+        return empty();
     }
 
     private Function<String[], Iterable<String>> arrayAsIterable() {

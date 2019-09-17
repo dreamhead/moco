@@ -6,8 +6,9 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+
+import java.util.Optional;
 
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.FluentIterable.from;

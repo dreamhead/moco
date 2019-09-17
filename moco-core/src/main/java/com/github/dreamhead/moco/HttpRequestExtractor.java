@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 public abstract class HttpRequestExtractor<T> implements RequestExtractor<T> {
     protected abstract Optional<T> doExtract(HttpRequest request);
@@ -10,6 +12,6 @@ public abstract class HttpRequestExtractor<T> implements RequestExtractor<T> {
             return doExtract(HttpRequest.class.cast(request));
         }
 
-        return Optional.absent();
+        return empty();
     }
 }

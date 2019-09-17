@@ -2,10 +2,12 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
-import static com.google.common.base.Optional.fromNullable;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 public final class CookieRequestExtractor extends HttpRequestExtractor<String> {
     private final CookiesRequestExtractor extractor = new CookiesRequestExtractor();
@@ -20,9 +22,9 @@ public final class CookieRequestExtractor extends HttpRequestExtractor<String> {
     protected Optional<String> doExtract(final HttpRequest request) {
         Optional<ImmutableMap<String, String>> cookies = extractor.extract(request);
         if (cookies.isPresent()) {
-            return fromNullable(cookies.get().get(this.key));
+            return ofNullable(cookies.get().get(this.key));
         }
 
-        return Optional.absent();
+        return empty();
     }
 }
