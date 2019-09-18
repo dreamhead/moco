@@ -5,11 +5,12 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.from;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class ProxyBatchResponseHandler extends AbstractProxyResponseHandler {
     private final ProxyConfig proxyConfig;
@@ -24,7 +25,7 @@ public final class ProxyBatchResponseHandler extends AbstractProxyResponseHandle
     protected Optional<String> doRemoteUrl(final HttpRequest request) {
         String uri = request.getUri();
         if (!proxyConfig.canAccessedBy(uri)) {
-            return absent();
+            return empty();
         }
 
         return of(proxyConfig.remoteUrl(uri));

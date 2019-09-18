@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -51,15 +50,16 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
 import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
 import static com.google.common.net.HttpHeaders.DATE;
 import static com.google.common.net.HttpHeaders.HOST;
 import static com.google.common.net.HttpHeaders.SERVER;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.apache.http.util.EntityUtils.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
@@ -283,9 +283,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private Optional<URL> remoteUrl(final HttpRequest request) {
-        Optional<String> remoteUrl = this.doRemoteUrl(request);
+        java.util.Optional<String> remoteUrl = this.doRemoteUrl(request);
         if (!remoteUrl.isPresent()) {
-            return absent();
+            return empty();
         }
 
         QueryStringEncoder encoder = new QueryStringEncoder(remoteUrl.get());
@@ -298,7 +298,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         try {
             return of(toUrl(encoder.toString()));
         } catch (IllegalArgumentException e) {
-            return absent();
+            return empty();
         }
     }
 
