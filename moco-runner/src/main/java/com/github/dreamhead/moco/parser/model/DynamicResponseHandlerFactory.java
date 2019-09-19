@@ -8,7 +8,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -18,6 +17,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.json;
@@ -282,7 +282,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     private Resource asResource(final String name, final FileContainer fileContainer) {
-        Optional<Charset> charset = fileContainer.getCharset();
+        java.util.Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
         return asResource(name, text(text), charset);
     }

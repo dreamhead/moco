@@ -4,14 +4,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @JsonDeserialize(using = FileContainerDeserializer.class)
 public final class FileContainer extends TextContainer {
@@ -29,7 +29,7 @@ public final class FileContainer extends TextContainer {
     }
 
     public Optional<Charset> getCharset() {
-        return Optional.fromNullable(charset);
+        return Optional.ofNullable(charset);
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class FileContainer extends TextContainer {
 
         public FileContainer build() {
             FileContainer container = new FileContainer(name);
-            container.charset = toCharset(charset).orNull();
+            container.charset = toCharset(charset).orElse(null);
             if (charset == null) {
                 container.content = null;
             }
@@ -146,13 +146,13 @@ public final class FileContainer extends TextContainer {
 
         private Optional<Charset> toCharset(final String charset) {
             if (charset == null) {
-                return absent();
+                return empty();
             }
 
             try {
                 return of(Charset.forName(charset));
             } catch (UnsupportedCharsetException e) {
-                return absent();
+                return empty();
             }
         }
     }
