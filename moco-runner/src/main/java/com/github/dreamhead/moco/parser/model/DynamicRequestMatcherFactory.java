@@ -9,18 +9,20 @@ import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.not;
 import static com.google.common.collect.FluentIterable.from;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
 
@@ -112,14 +114,14 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
 
     private Optional<RequestMatcher> createRequestMatcher(final Object result) {
         if (RequestMatcher.class.isInstance(result)) {
-            return Optional.of(RequestMatcher.class.cast(result));
+            return of(RequestMatcher.class.cast(result));
         }
 
         if (ContentResource.class.isInstance(result)) {
-            return Optional.of(by(ContentResource.class.cast(result)));
+            return of(by(ContentResource.class.cast(result)));
         }
 
-        return Optional.absent();
+        return empty();
     }
 
     private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
