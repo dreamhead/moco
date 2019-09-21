@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -10,10 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.function.Predicate;
 
-import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
-import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.concat;
 
@@ -28,32 +26,19 @@ public class Dynamics {
             .build();
 
     protected final Predicate<Field> isClassField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(final Field field) {
-                return "class".equals(field.getName());
-            }
-        };
+        return field -> "class".equals(field.getName());
     }
 
     protected final Predicate<Field> isFinalField() {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(final Field field) {
-                return Modifier.isFinal(field.getModifiers());
-            }
-        };
+        return field -> Modifier.isFinal(field.getModifiers());
     }
 
     protected final <T> Predicate<Field> fieldExist(final T target) {
-        return new Predicate<Field>() {
-            @Override
-            public boolean apply(final Field field) {
-                try {
-                    return field.get(target) != null;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+        return field -> {
+            try {
+                return field.get(target) != null;
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
         };
     }
@@ -77,7 +62,7 @@ public class Dynamics {
     }
 
     protected final <T> Predicate<Field> isValidField(final T target) {
-        return and(not(or(isClassField(), isFinalField())), fieldExist(target));
+        return isClassField().or(isFinalField()).negate().and(fieldExist(target));
     }
 
     public static <T> T invokeTarget(final String name, final Object value, final Class<T> clazz) {

@@ -13,8 +13,10 @@ import com.google.common.collect.ImmutableList;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
@@ -23,6 +25,7 @@ import static com.github.dreamhead.moco.Moco.not;
 import static com.google.common.collect.FluentIterable.from;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 public final class DynamicRequestMatcherFactory extends Dynamics implements RequestMatcherFactory {
 
@@ -31,23 +34,20 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
         return wrapRequestMatcher(request, createRequestMatchers(request));
     }
 
-    private ImmutableList<RequestMatcher> createRequestMatchers(final RequestSetting request) {
-        return from(getFields(RequestSetting.class))
+    private List<RequestMatcher> createRequestMatchers(final RequestSetting request) {
+        return StreamSupport.stream(getFields(RequestSetting.class).spliterator(), false)
                 .filter(isValidField(request))
-                .transform(fieldToRequestMatcher(request))
-                .toList();
+                .map(fieldToRequestMatcher(request))
+                .collect(toList());
     }
 
     private Function<Field, RequestMatcher> fieldToRequestMatcher(final RequestSetting request) {
-        return new Function<Field, RequestMatcher>() {
-            @Override
-            public RequestMatcher apply(final Field field) {
-                try {
-                    Object value = field.get(request);
-                    return createRequestMatcherFromValue(field.getName(), value);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        return field -> {
+            try {
+                Object value = field.get(request);
+                return createRequestMatcherFromValue(field.getName(), value);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         };
     }
@@ -183,7 +183,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
     }
 
     private static RequestMatcher wrapRequestMatcher(final RequestSetting request,
-                                                     final ImmutableList<RequestMatcher> matchers) {
+                                                     final List<RequestMatcher> matchers) {
         switch (matchers.size()) {
             case 0:
                 throw new IllegalArgumentException("illegal request setting:" + request);

@@ -8,7 +8,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -16,8 +15,12 @@ import com.google.common.collect.Maps;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.json;
@@ -30,10 +33,10 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 public final class DynamicResponseHandlerFactory extends Dynamics implements ResponseHandlerFactory {
     private static final ImmutableSet<String> RESOURCES = of("text", "file", "pathResource", "version");
@@ -44,13 +47,14 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
 
     @Override
     public ResponseHandler createResponseHandler(final ResponseSetting responseSetting) {
-        FluentIterable<ResponseHandler> handlers = from(getFields(responseSetting.getClass()))
+        List<ResponseHandler> handlers = StreamSupport.stream(getFields(responseSetting.getClass()).spliterator(), false)
                 .filter(isValidField(responseSetting))
-                .transform(fieldToResponseHandler(responseSetting));
+                .map(fieldToResponseHandler(responseSetting))
+                .collect(toList());
         return getResponseHandler(handlers);
     }
 
-    private ResponseHandler getResponseHandler(final FluentIterable<ResponseHandler> handlers) {
+    private ResponseHandler getResponseHandler(final List<ResponseHandler> handlers) {
         if (handlers.size() == 1) {
             return handlers.get(0);
         }
@@ -150,7 +154,10 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     private ResponseHandler createCompositeHandler(final String name, final Map<String, Container> map) {
-        FluentIterable<ResponseHandler> handlers = from(map.entrySet()).transform(toTargetHandler(name));
+        List<ResponseHandler> handlers = map.entrySet()
+                .stream()
+                .map(toTargetHandler(name))
+                .collect(toList());
         return getResponseHandler(handlers);
     }
 
@@ -282,7 +289,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     private Resource asResource(final String name, final FileContainer fileContainer) {
-        java.util.Optional<Charset> charset = fileContainer.getCharset();
+        Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
         return asResource(name, text(text), charset);
     }
