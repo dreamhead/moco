@@ -7,10 +7,8 @@ import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -18,8 +16,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.attachment;
@@ -67,15 +65,12 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     private Function<Field, ResponseHandler> fieldToResponseHandler(final ResponseSetting response) {
-        return new Function<Field, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final Field field) {
-                try {
-                    Object value = field.get(response);
-                    return createResponseHandler(field.getName(), value);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+        return field -> {
+            try {
+                Object value = field.get(response);
+                return createResponseHandler(field.getName(), value);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
         };
     }
@@ -295,20 +290,15 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     public static ImmutableMap<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
-        return copyOf(Maps.transformEntries(props, toVariable()));
+        return copyOf(props.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> getRequestExtractor(e.getValue()))));
     }
 
-    private static Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>> toVariable() {
-        return new Maps.EntryTransformer<String, TextContainer, RequestExtractor<?>>() {
-            @Override
-            public RequestExtractor<?> transformEntry(final String key, final TextContainer value) {
-                if (value.isRawText()) {
-                    return var(value.getText());
-                }
+    private static RequestExtractor<?> getRequestExtractor(final TextContainer value) {
+        if (value.isRawText()) {
+            return var(value.getText());
+        }
 
-                return createRequestExtractor(getExtractorMethod(value.getOperation()), value.getText());
-            }
-        };
+        return createRequestExtractor(getExtractorMethod(value.getOperation()), value.getText());
     }
-
 }
