@@ -8,21 +8,19 @@ import com.github.dreamhead.moco.matcher.AndRequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.not;
-import static com.google.common.collect.FluentIterable.from;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
@@ -125,20 +123,16 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
     }
 
     private RequestMatcher createCompositeMatcher(final String name, final Map<String, Object> collection) {
-        ImmutableList<RequestMatcher> matchers = from(collection.entrySet())
-                .transform(toTargetMatcher(getExtractorMethod(name)))
-                .toList();
+        List<RequestMatcher> matchers = collection.entrySet().stream()
+                .map(toTargetMatcher(getExtractorMethod(name)))
+                .collect(toList());
         return wrapRequestMatcher(null, matchers);
     }
 
     private Function<Map.Entry<String, Object>, RequestMatcher> toTargetMatcher(final Method extractorMethod) {
-        return new Function<Map.Entry<String, Object>, RequestMatcher>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public RequestMatcher apply(final Map.Entry<String, Object> pair) {
-                RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
-                return createRequestMatcher(extractor, pair.getValue());
-            }
+        return pair -> {
+            RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
+            return createRequestMatcher(extractor, pair.getValue());
         };
     }
 

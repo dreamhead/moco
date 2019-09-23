@@ -11,7 +11,6 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Iterables.concat;
 
