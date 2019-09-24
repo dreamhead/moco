@@ -55,12 +55,12 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
             return by(Moco.json(value));
         }
 
-        if (Map.class.isInstance(value)) {
+        if (value instanceof Map) {
             return createCompositeMatcher(name, castToMap(value));
         }
 
-        if (TextContainer.class.isInstance(value)) {
-            return createSingleTextMatcher(name, TextContainer.class.cast(value));
+        if (value instanceof TextContainer) {
+            return createSingleTextMatcher(name, (TextContainer) value);
         }
 
         throw new IllegalArgumentException("unknown configuration :" + value);
@@ -68,7 +68,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> castToMap(final Object value) {
-        return Map.class.cast(value);
+        return (Map<String, Object>) value;
     }
 
     private RequestMatcher createSingleMatcher(final String name, final String value) {
@@ -111,12 +111,12 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
     }
 
     private Optional<RequestMatcher> createRequestMatcher(final Object result) {
-        if (RequestMatcher.class.isInstance(result)) {
-            return of(RequestMatcher.class.cast(result));
+        if (result instanceof RequestMatcher) {
+            return of((RequestMatcher) result);
         }
 
-        if (ContentResource.class.isInstance(result)) {
-            return of(by(ContentResource.class.cast(result)));
+        if (result instanceof ContentResource) {
+            return of(by((ContentResource) result));
         }
 
         return empty();
@@ -129,6 +129,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
         return wrapRequestMatcher(null, matchers);
     }
 
+    @SuppressWarnings("unchecked")
     private Function<Map.Entry<String, Object>, RequestMatcher> toTargetMatcher(final Method extractorMethod) {
         return pair -> {
             RequestExtractor extractor = createRequestExtractor(extractorMethod, pair.getKey());
@@ -137,8 +138,8 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
     }
 
     private <T> RequestMatcher createRequestMatcher(final RequestExtractor<T> extractor, final Object value) {
-        if (TextContainer.class.isInstance(value)) {
-            return getRequestMatcher(extractor, TextContainer.class.cast(value));
+        if (value instanceof TextContainer) {
+            return getRequestMatcher(extractor, (TextContainer) value);
         }
 
         throw new IllegalArgumentException("unknown value type: " + value);
@@ -157,7 +158,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
             Method operatorMethod = Moco.class.getMethod(container.getOperation(),
                     RequestExtractor.class, String.class);
             Object result = operatorMethod.invoke(null, extractor, container.getText());
-            return RequestMatcher.class.cast(result);
+            return (RequestMatcher) result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

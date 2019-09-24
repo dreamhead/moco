@@ -80,12 +80,12 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
             return with(json(value));
         }
 
-        if (isResource(name) && TextContainer.class.isInstance(value)) {
-            TextContainer container = TextContainer.class.cast(value);
+        if (isResource(name) && value instanceof TextContainer) {
+            TextContainer container = (TextContainer) value;
             return with(resourceFrom(name, container));
         }
 
-        if (Map.class.isInstance(value)) {
+        if (value instanceof Map) {
             return createCompositeHandler(name, castToMap(value));
         }
 
@@ -94,27 +94,27 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         }
 
         if ("latency".equalsIgnoreCase(name)) {
-            LatencyContainer container = LatencyContainer.class.cast(value);
+            LatencyContainer container = (LatencyContainer) value;
             return with(container.asProcedure());
         }
 
-        if (ProxyContainer.class.isInstance(value)) {
+        if (value instanceof ProxyContainer) {
             return ((ProxyContainer) value).asResponseHandler();
         }
 
         if ("attachment".equalsIgnoreCase(name)) {
-            AttachmentSetting attachment = AttachmentSetting.class.cast(value);
+            AttachmentSetting attachment = (AttachmentSetting) value;
             return attachment(attachment.getFilename(), resourceFrom(attachment));
         }
 
         if ("seq".equalsIgnoreCase(name)) {
-            CollectionContainer sequence = CollectionContainer.class.cast(value);
+            CollectionContainer sequence = (CollectionContainer) value;
             ResponseHandler[] responseHandlers = sequence.toResponseHandlers();
             return Moco.seq(head(responseHandlers), tail(responseHandlers));
         }
 
         if ("cycle".equalsIgnoreCase(name)) {
-            CollectionContainer sequence = CollectionContainer.class.cast(value);
+            CollectionContainer sequence = (CollectionContainer) value;
             ResponseHandler[] responseHandlers = sequence.toResponseHandlers();
             return Moco.cycle(head(responseHandlers), tail(responseHandlers));
         }
@@ -157,16 +157,13 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     private Function<Map.Entry<String, Container>, ResponseHandler> toTargetHandler(final String name) {
-        return new Function<Map.Entry<String, Container>, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final Map.Entry<String, Container> pair) {
-                String result = COMPOSITES.get(name);
-                if (result == null) {
-                    throw new IllegalArgumentException("unknown composite handler name [" + name + "]");
-                }
-
-                return createResponseHandler(pair, result);
+        return pair -> {
+            String result = COMPOSITES.get(name);
+            if (result == null) {
+                throw new IllegalArgumentException("unknown composite handler name [" + name + "]");
             }
+
+            return createResponseHandler(pair, result);
         };
     }
 
@@ -224,12 +221,12 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
 
     @SuppressWarnings("unchecked")
     private Map<String, Container> castToMap(final Object value) {
-        return Map.class.cast(value);
+        return (Map<String, Container>) value;
     }
 
     private Resource resourceFrom(final String name, final TextContainer container) {
         if (container.isFileContainer()) {
-            return fileResource(name, FileContainer.class.cast(container));
+            return fileResource(name, (FileContainer) container);
         }
 
         return textResource(name, container);
