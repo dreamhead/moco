@@ -1,15 +1,14 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.fromNullable;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.of;
 
 public final class FileContentType {
     public static final MediaType DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8;
@@ -46,9 +45,9 @@ public final class FileContentType {
 
     public MediaType getContentType() {
         Optional<MediaType> optionalType = toContentType(Files.getFileExtension(filename));
-        Optional<Charset> targetCharset = toCharset(optionalType.orNull());
+        Optional<Charset> targetCharset = toCharset(optionalType.orElse(null));
 
-        MediaType type = optionalType.or(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
+        MediaType type = optionalType.orElse(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
         if (targetCharset.isPresent() && !type.charset().equals(targetCharset)) {
             return type.withCharset(targetCharset.get());
         }
@@ -58,17 +57,17 @@ public final class FileContentType {
 
     private Optional<Charset> toCharset(final MediaType type) {
         if (charset != null) {
-            return Optional.of(charset);
+            return of(charset);
         }
 
         if (type == null) {
             return of(Charsets.UTF_8);
         }
 
-        return type.charset();
+        return type.charset().toJavaUtil();
     }
 
     private Optional<MediaType> toContentType(final String extension) {
-        return fromNullable(CONTENT_TYPES.get(extension.toLowerCase()));
+        return Optional.ofNullable(CONTENT_TYPES.get(extension.toLowerCase()));
     }
 }
