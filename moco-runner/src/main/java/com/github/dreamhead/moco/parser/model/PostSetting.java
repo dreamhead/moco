@@ -5,13 +5,13 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.post;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class PostSetting extends BaseActionSetting {
@@ -44,7 +44,7 @@ public final class PostSetting extends BaseActionSetting {
             return of(Moco.json(json));
         }
 
-        return absent();
+        return empty();
     }
 
     @Override
