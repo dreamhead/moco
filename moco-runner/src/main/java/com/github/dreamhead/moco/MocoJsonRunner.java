@@ -4,14 +4,15 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.of;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class MocoJsonRunner {
     private static HttpServerParser parser = new HttpServerParser();
@@ -22,7 +23,7 @@ public final class MocoJsonRunner {
     }
 
     public static HttpServer jsonHttpServer(final Resource resource) {
-        return parseHttpServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
+        return parseHttpServer(checkNotNull(resource, "resource should not be null"), empty());
     }
 
     public static HttpsServer jsonHttpsServer(final Resource resource,
@@ -30,7 +31,7 @@ public final class MocoJsonRunner {
         checkNotNull(certificate, "Certificate should not be null");
         ActualHttpServer httpsServer = (ActualHttpServer) Moco.httpsServer(certificate);
         return httpsServer.mergeServer((ActualHttpServer) parseHttpServer(
-                checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent()));
+                checkNotNull(resource, "resource should not be null"), empty()));
     }
 
     public static HttpsServer jsonHttpsServer(final int port, final Resource resource,
@@ -48,7 +49,7 @@ public final class MocoJsonRunner {
     }
 
     public static SocketServer jsonSocketServer(final Resource resource) {
-        return jsonSocketServer(checkNotNull(resource, "resource should not be null"), Optional.<Integer>absent());
+        return jsonSocketServer(checkNotNull(resource, "resource should not be null"), empty());
     }
 
     private static SocketServer jsonSocketServer(final Resource resource, final Optional<Integer> port) {
