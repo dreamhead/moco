@@ -11,14 +11,11 @@ import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.dumper.SocketRequestDumper;
 import com.github.dreamhead.moco.dumper.SocketResponseDumper;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import static com.google.common.collect.FluentIterable.from;
+import java.util.Optional;
 
 public final class DefaultLogFormatter implements LogFormatter {
     private static final ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = ImmutableMap.of(
@@ -53,20 +50,13 @@ public final class DefaultLogFormatter implements LogFormatter {
     }
 
     private <T> Dumper<T> findDumper(final T target, final ImmutableMap<Class<? extends T>, Dumper<T>> dumperClasses) {
-        Optional<Class<? extends T>> dumpClass = from(dumperClasses.keySet()).firstMatch(isInstance(target));
+        Optional<Class<? extends T>> dumpClass = dumperClasses.keySet().stream()
+                .filter(input -> input.isInstance(target))
+                .findFirst();
         if (dumpClass.isPresent()) {
             return dumperClasses.get(dumpClass.get());
         }
 
         throw new IllegalArgumentException("Unknown target type:" + target.getClass());
-    }
-
-    private <T> Predicate<Class<? extends T>> isInstance(final T target) {
-        return new Predicate<Class<? extends T>>() {
-            @Override
-            public boolean apply(final Class<? extends T> input) {
-                return input.isInstance(target);
-            }
-        };
     }
 }
