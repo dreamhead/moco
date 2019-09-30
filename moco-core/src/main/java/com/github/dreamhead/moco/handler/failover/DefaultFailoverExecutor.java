@@ -8,8 +8,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.model.Session;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.Iterables.tryFind;
 
 public final class DefaultFailoverExecutor implements FailoverExecutor {
     private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
@@ -57,9 +55,13 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     private Iterable<Session> toUniqueSessions(final Session targetSession, final ImmutableList<Session> sessions) {
-        Optional<Session> session = tryFind(sessions, isForRequest(targetSession.getRequest()));
+        Optional<Session> session = sessions.stream()
+                .filter(isForRequest(targetSession.getRequest()))
+                .findFirst();
         if (session.isPresent()) {
-            return from(sessions).filter(not(isForRequest(targetSession.getRequest())));
+            return sessions.stream()
+                    .filter(isForRequest(targetSession.getRequest()).negate())
+                    .collect(Collectors.toList());
         }
 
         return sessions;
@@ -80,7 +82,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     @Override
     public HttpResponse failover(final HttpRequest request) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
-        final Optional<Session> session = tryFind(sessions, isForRequest(request));
+        final Optional<Session> session = sessions.stream().filter(isForRequest(request)).findFirst();
         if (session.isPresent()) {
             return session.get().getResponse();
         }
@@ -90,12 +92,9 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     }
 
     private Predicate<Session> isForRequest(final HttpRequest dumpedRequest) {
-        return new Predicate<Session>() {
-            @Override
-            public boolean apply(final Session session) {
-                HttpRequest request = session.getRequest();
-                return new HttpRequestFailoverMatcher(request).match(dumpedRequest);
-            }
+        return session -> {
+            HttpRequest request = session.getRequest();
+            return new HttpRequestFailoverMatcher(request).match(dumpedRequest);
         };
     }
 }
