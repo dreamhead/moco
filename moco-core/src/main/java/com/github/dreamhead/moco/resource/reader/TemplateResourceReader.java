@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -34,6 +33,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -158,7 +158,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         public Object exec(final List arguments) {
             Optional<Long> range = getRange(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
-            double result = new Random().nextDouble() * range.or(1L);
+            double result = new Random().nextDouble() * range.orElse(1L);
 
             if (format.isPresent()) {
                 return format.get().format(result);
@@ -176,7 +176,7 @@ public class TemplateResourceReader implements ContentResourceReader {
                 }
             }
 
-            return Optional.absent();
+            return Optional.empty();
         }
 
         private Optional<Long> getRange(final List<?> arguments) {
@@ -187,7 +187,7 @@ public class TemplateResourceReader implements ContentResourceReader {
                 }
             }
 
-            return Optional.absent();
+            return Optional.empty();
         }
 
         private Optional<Long> getRange(final SimpleNumber range) {
