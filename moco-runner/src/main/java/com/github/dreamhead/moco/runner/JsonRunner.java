@@ -10,7 +10,6 @@ import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.parser.SocketServerParser;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -101,18 +100,12 @@ public final class JsonRunner implements Runner {
     private MocoConfig[] toConfigs(final RunnerSetting setting) {
         ImmutableList.Builder<MocoConfig> builder = ImmutableList.builder();
 
-        addConfig(builder, setting.context());
-        addConfig(builder, setting.fileRoot());
-        addConfig(builder, setting.request());
-        addConfig(builder, setting.response());
+        setting.context().ifPresent(builder::add);
+        setting.fileRoot().ifPresent(builder::add);
+        setting.request().ifPresent(builder::add);
+        setting.response().ifPresent(builder::add);
 
         return toArray(builder.build(), MocoConfig.class);
-    }
-
-    private void addConfig(final ImmutableList.Builder<MocoConfig> builder, final Optional<MocoConfig> config) {
-        if (config.isPresent()) {
-            builder.add(config.get());
-        }
     }
 
     private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {
@@ -126,12 +119,7 @@ public final class JsonRunner implements Runner {
     }
 
     private static Function<InputStream, RunnerSetting> toRunnerSetting() {
-        return new Function<InputStream, RunnerSetting>() {
-            @Override
-            public RunnerSetting apply(final InputStream input) {
-                return aRunnerSetting().addStream(input).build();
-            }
-        };
+        return input -> aRunnerSetting().addStream(input).build();
     }
 
     public static JsonRunner newJsonRunnerWithSetting(final Iterable<? extends RunnerSetting> settings,

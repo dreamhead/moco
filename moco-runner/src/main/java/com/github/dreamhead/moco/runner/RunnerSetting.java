@@ -4,13 +4,13 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
+import java.util.Optional;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class RunnerSetting {
     private final ImmutableList<InputStream> streams;
@@ -37,7 +37,7 @@ public final class RunnerSetting {
             return of(Moco.context(context));
         }
 
-        return absent();
+        return empty();
     }
 
     public Optional<MocoConfig> fileRoot() {
@@ -45,7 +45,7 @@ public final class RunnerSetting {
             return of(Moco.fileRoot(fileRoot));
         }
 
-        return absent();
+        return empty();
     }
 
     public Optional<MocoConfig> request() {
@@ -53,7 +53,7 @@ public final class RunnerSetting {
             return of(Moco.request(request.getRequestMatcher()));
         }
 
-        return absent();
+        return empty();
     }
 
     public Optional<MocoConfig> response() {
@@ -61,7 +61,7 @@ public final class RunnerSetting {
             return of(Moco.response(response.getResponseHandler()));
         }
 
-        return absent();
+        return empty();
     }
 
     public static Builder aRunnerSetting() {
