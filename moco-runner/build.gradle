@@ -61,9 +61,14 @@ task uberjar(type: Jar, dependsOn: jar) {
 task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
     injars uberjar.archivePath
     outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
-    libraryjars javaRtLib()
-    libraryjars jsseLib()
-    libraryjars jceLib()
+    if (JavaVersion.current().isJava9Compatible()) {
+        libraryjars javaModPath()
+    } else {
+        libraryjars javaRtLib()
+        libraryjars jsseLib()
+        libraryjars jceLib()
+    }
+
     configuration file("$rootDir/proguard.pro")
 }
 
@@ -99,6 +104,15 @@ def javaLibPath(String lib, String osxLib) {
         }
     }
     javaBase + target
+}
+
+def javaModPath() {
+    def javaBase = System.properties["java.home"];
+    if (JavaVersion.current().isJava9Compatible()) {
+        return javaBase + '/jmods'
+    }
+
+    throw new IllegalStateException("Illegal Java version for Java modules")
 }
 
 def findJar(String prefix) {
