@@ -1,7 +1,8 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.google.common.base.Optional;
 import org.apache.commons.cli.Option;
+
+import java.util.Optional;
 
 public abstract class ShutdownPortOption {
     private final Integer shutdownPort;
@@ -11,7 +12,7 @@ public abstract class ShutdownPortOption {
     }
 
     public final Optional<Integer> getShutdownPort() {
-        return Optional.fromNullable(shutdownPort);
+        return Optional.ofNullable(shutdownPort);
     }
 
     public static Option shutdownPortOption() {

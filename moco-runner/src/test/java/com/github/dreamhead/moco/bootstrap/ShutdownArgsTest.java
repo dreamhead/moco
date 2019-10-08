@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.bootstrap;
 
-import com.google.common.base.Optional;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.bootstrap.ShutdownArgs.parse;
@@ -17,7 +16,7 @@ public class ShutdownArgsTest {
     @Test(expected = ParseArgException.class)
     public void should_parse_shutdown_default_arguments() {
         ShutdownArgs args = parse(new String[]{"shutdown"});
-        assertThat(Optional.<Integer>absent(), is(args.getShutdownPort()));
+        assertThat(args.getShutdownPort().isPresent(), is(false));
     }
 
     @Test(expected = ParseArgException.class)
