@@ -27,7 +27,7 @@ public final class SettingRunner implements Runner {
     private final FluentIterable<File> files;
 
     public SettingRunner(final InputStream stream, final StartArgs args) {
-        this.env = args.getEnv().orNull();
+        this.env = args.getEnv().orElse(null);
         this.globalSettings = parser.parse(stream);
         this.files = from(globalSettings).transformAndConcat(toFiles());
         this.startArgs = args;

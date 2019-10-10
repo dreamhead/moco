@@ -4,10 +4,11 @@ import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.bootstrap.HttpsArg;
 import com.github.dreamhead.moco.bootstrap.ServerType;
 import com.github.dreamhead.moco.bootstrap.ShutdownPortOption;
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 
-import static com.google.common.base.Optional.fromNullable;
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
+
 
 public abstract class StartArgs extends ShutdownPortOption {
     private final ServerType type;
@@ -22,11 +23,11 @@ public abstract class StartArgs extends ShutdownPortOption {
                         final String env, final HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
-        this.port = fromNullable(port);
-        this.configurationFile = fromNullable(configurationFile);
-        this.settings = fromNullable(globalSettings);
-        this.env = fromNullable(env);
-        this.httpsArg = fromNullable(httpsArg);
+        this.port = ofNullable(port);
+        this.configurationFile = ofNullable(configurationFile);
+        this.settings = ofNullable(globalSettings);
+        this.env = ofNullable(env);
+        this.httpsArg = ofNullable(httpsArg);
     }
 
     public final Optional<Integer> getPort() {
@@ -54,16 +55,7 @@ public abstract class StartArgs extends ShutdownPortOption {
     }
 
     public final Optional<HttpsCertificate> getHttpsCertificate() {
-        return httpsArg.transform(toCertificate());
-    }
-
-    private Function<HttpsArg, HttpsCertificate> toCertificate() {
-        return new Function<HttpsArg, HttpsCertificate>() {
-            @Override
-            public HttpsCertificate apply(final HttpsArg input) {
-                return input.getCertificate();
-            }
-        };
+        return httpsArg.map(HttpsArg::getCertificate);
     }
 
     public static String help() {

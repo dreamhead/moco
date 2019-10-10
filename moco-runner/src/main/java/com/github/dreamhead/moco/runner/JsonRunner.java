@@ -54,9 +54,9 @@ public final class JsonRunner implements Runner {
 
     private SocketServer createSocketServer(final Iterable<? extends RunnerSetting> settings,
                                             final StartArgs startArgs) {
-        SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort().or(0));
+        SocketServer socketServer = ActualSocketServer.createLogServer(startArgs.getPort().orElse(0));
         for (RunnerSetting setting : settings) {
-            SocketServer parsedServer = socketParser.parseServer(setting.getStreams(), startArgs.getPort().toJavaUtil(),
+            SocketServer parsedServer = socketParser.parseServer(setting.getStreams(), startArgs.getPort(),
                     toConfigs(setting));
             socketServer = mergeServer(socketServer, parsedServer);
         }
@@ -82,7 +82,7 @@ public final class JsonRunner implements Runner {
 
         for (RunnerSetting setting : settings) {
             HttpServer parsedServer = httpParser.parseServer(setting.getStreams(),
-                    startArgs.getPort().toJavaUtil(), toConfigs(setting));
+                    startArgs.getPort(), toConfigs(setting));
             targetServer = mergeServer(targetServer, parsedServer);
         }
 
@@ -91,10 +91,10 @@ public final class JsonRunner implements Runner {
 
     private HttpServer createHttpServer(final StartArgs startArgs) {
         if (startArgs.isHttps()) {
-            return ActualHttpServer.createHttpsLogServer(startArgs.getPort().or(0), startArgs.getHttpsCertificate().get());
+            return ActualHttpServer.createHttpsLogServer(startArgs.getPort().orElse(0), startArgs.getHttpsCertificate().get());
         }
 
-        return ActualHttpServer.createLogServer(startArgs.getPort().or(0));
+        return ActualHttpServer.createLogServer(startArgs.getPort().orElse(0));
     }
 
     private MocoConfig[] toConfigs(final RunnerSetting setting) {

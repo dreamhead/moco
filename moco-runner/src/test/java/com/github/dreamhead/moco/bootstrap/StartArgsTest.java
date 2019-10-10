@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
-import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class StartArgsTest {
     @Test
     public void should_parse_without_port() {
         StartArgs args = startArgsParser.parse(new String[]{"start", "-c", "foo.json"});
-        assertThat(args.getPort(), is(Optional.<Integer>absent()));
+        assertThat(args.getPort().isPresent(), is(false));
         assertThat(args.getConfigurationFile().get(), is("foo.json"));
     }
 
