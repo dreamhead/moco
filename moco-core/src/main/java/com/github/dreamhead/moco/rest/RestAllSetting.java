@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;

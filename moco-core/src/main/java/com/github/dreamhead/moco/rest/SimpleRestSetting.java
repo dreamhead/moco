@@ -6,11 +6,11 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.and;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.of;
 
 public abstract class SimpleRestSetting implements RestSetting {
     private final HttpMethod method;
@@ -54,6 +54,6 @@ public abstract class SimpleRestSetting implements RestSetting {
             return of(handler);
         }
 
-        return absent();
+        return Optional.empty();
     }
 }

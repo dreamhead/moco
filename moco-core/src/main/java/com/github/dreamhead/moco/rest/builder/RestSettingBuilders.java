@@ -10,7 +10,8 @@ import com.github.dreamhead.moco.RestSettingBuilder;
 import com.github.dreamhead.moco.internal.AbstractResponseBase;
 import com.github.dreamhead.moco.rest.RestAllSetting;
 import com.github.dreamhead.moco.rest.RestSingleSetting;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,7 +30,7 @@ public abstract class RestSettingBuilders extends AbstractResponseBase<RestSetti
 
     @Override
     public final RestSetting response(final ResponseHandler handler, final ResponseHandler... handlers) {
-        return createSetting(Optional.fromNullable(matcher),
+        return createSetting(Optional.ofNullable(matcher),
                 and(checkNotNull(handler, "Response handler should not be null"),
                         checkNotNull(handlers, "Response handlers should not be null")));
     }

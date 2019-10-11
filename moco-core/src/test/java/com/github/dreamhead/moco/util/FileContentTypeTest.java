@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import static com.google.common.base.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

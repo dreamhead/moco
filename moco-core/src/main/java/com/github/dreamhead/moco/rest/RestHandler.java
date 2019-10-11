@@ -7,7 +7,8 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.AbstractHttpResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class RestHandler extends AbstractHttpResponseHandler {
     private final RestRequestDispatcher dispatcher;

@@ -9,11 +9,12 @@ import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.HttpResponseStatus;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
@@ -22,8 +23,8 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class RestRequestDispatcher {
     private static final ResponseHandler NOT_FOUND_HANDLER = status(HttpResponseStatus.NOT_FOUND.code());
@@ -137,7 +138,7 @@ public final class RestRequestDispatcher {
             return allHandler;
         }
 
-        return absent();
+        return Optional.empty();
     }
 
     private Optional<ResponseHandler> getHeadHandler(final HttpRequest httpRequest) {
@@ -213,7 +214,7 @@ public final class RestRequestDispatcher {
             }
         }
 
-        return absent();
+        return empty();
     }
 
     private Optional<ResponseHandler> doGetResponseHandler(final HttpRequest httpRequest) {
@@ -242,6 +243,6 @@ public final class RestRequestDispatcher {
             return getSingleResponseHandler(patchSettings, httpRequest);
         }
 
-        return absent();
+        return empty();
     }
 }

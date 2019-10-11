@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.util.URLs.join;
 
@@ -39,6 +40,6 @@ public final class SubResourceSetting implements RestSetting {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 }

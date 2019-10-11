@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class CompositeRestSetting<T extends SimpleRestSetting> implements RestSetting {
     private final Iterable<T> settings;
@@ -27,7 +28,7 @@ public final class CompositeRestSetting<T extends SimpleRestSetting> implements 
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public Iterable<T> getSettings() {
