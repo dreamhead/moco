@@ -3,11 +3,12 @@ package com.github.dreamhead.moco.resource;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
-import com.google.common.base.Optional;
 import com.google.common.net.MediaType;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class ContentResource extends Resource implements Content {
     public ContentResource(final Identifiable identifiable, final ResourceConfigApplier configApplier,
@@ -24,7 +25,7 @@ public final class ContentResource extends Resource implements Content {
         try {
             return of(reader(JsonResourceReader.class).getPojo());
         } catch (Exception e) {
-            return absent();
+            return empty();
         }
     }
 }
