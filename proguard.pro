@@ -33,7 +33,6 @@
 
 -keep public class org.apache.http.**{*;}
 -keep public class com.google.common.io.Files{*;}
--keep public class org.apache.commons.io.FilenameUtils{*;}
 -keep public class com.google.common.io.Resources{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class com.google.common.net.MediaType{*;}
