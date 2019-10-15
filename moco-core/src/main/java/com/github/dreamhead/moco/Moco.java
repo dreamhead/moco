@@ -36,18 +36,17 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
 import static com.github.dreamhead.moco.handler.CycleHandler.newCycle;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
-import static com.github.dreamhead.moco.internal.ApiUtils.resourceToResourceHandler;
 import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
@@ -365,13 +364,13 @@ public final class Moco {
     public static ResponseHandler seq(final String content, final String... contents) {
         checkNotNull(content, "Sequence content should not be null");
         checkArgument(contents.length > 0, "Sequence content should not be null");
-        return newSeq(FluentIterable.from(asIterable(content, contents)).transform(textToResource()));
+        return newSeq(asIterable(content, contents).stream().map(textToResource()).collect(Collectors.toList()));
     }
 
     public static ResponseHandler seq(final Resource content, final Resource... contents) {
         checkNotNull(content, "Sequence content should not be null");
         checkArgument(contents.length > 0, "Sequence contents should not be null");
-        return newSeq(FluentIterable.from(asIterable(content, contents)).transform(resourceToResourceHandler()));
+        return newSeq(asIterable(content, contents).stream().map(Moco::with).collect(Collectors.toList()));
     }
 
     public static ResponseHandler seq(final ResponseHandler handler, final ResponseHandler... handlers) {
@@ -383,13 +382,13 @@ public final class Moco {
     public static ResponseHandler cycle(final String content, final String... contents) {
         checkNotNull(content, "Cycle content should not be null");
         checkArgument(contents.length > 0, "Cycle content should not be null");
-        return newCycle(FluentIterable.from(asIterable(content, contents)).transform(textToResource()));
+        return newCycle(asIterable(content, contents).stream().map(textToResource()).collect(Collectors.toList()));
     }
 
     public static ResponseHandler cycle(final Resource content, final Resource... contents) {
         checkNotNull(content, "Cycle content should not be null");
         checkArgument(contents.length > 0, "Cycle contents should not be null");
-        return newCycle(FluentIterable.from(asIterable(content, contents)).transform(resourceToResourceHandler()));
+        return newCycle(asIterable(content, contents).stream().map(Moco::with).collect(Collectors.toList()));
     }
 
     public static ResponseHandler cycle(final ResponseHandler handler, final ResponseHandler... handlers) {

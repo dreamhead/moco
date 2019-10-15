@@ -23,12 +23,12 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
@@ -42,14 +42,9 @@ public final class ApiUtils {
         return new CompositeMonitor(asIterable(monitor, monitor2, monitors));
     }
 
+    @SuppressWarnings("unchecked")
     private static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
-        return new Maps.EntryTransformer<String, RequestExtractor<?>, Variable>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public Variable transformEntry(final String key, final RequestExtractor<?> value) {
-                return new ExtractorVariable(value);
-            }
-        };
+        return (key, value) -> new ExtractorVariable(value);
     }
 
     public static ImmutableMap<String, Variable> toVariables(
@@ -58,21 +53,7 @@ public final class ApiUtils {
     }
 
     public static Function<String, ResponseHandler> textToResource() {
-        return new Function<String, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final String content) {
-                return Moco.with(Moco.text(content));
-            }
-        };
-    }
-
-    public static Function<Resource, ResponseHandler> resourceToResourceHandler() {
-        return new Function<Resource, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final Resource content) {
-                return Moco.with(content);
-            }
-        };
+        return content -> Moco.with(Moco.text(content));
     }
 
     public static FailoverExecutor failoverExecutor(final String file) {

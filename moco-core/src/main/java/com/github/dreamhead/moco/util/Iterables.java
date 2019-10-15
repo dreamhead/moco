@@ -3,12 +3,13 @@ package com.github.dreamhead.moco.util;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class Iterables {
-    public static <T> Iterable<T> asIterable(final T handler, final T[] handlers) {
+    public static <T> List<T> asIterable(final T handler, final T[] handlers) {
         checkNotNull(handler);
         checkNotNull(handlers);
 
@@ -22,7 +23,7 @@ public final class Iterables {
                 .build();
     }
 
-    public static <T> Iterable<T> asIterable(final T handler, final T handler2, final T[] handlers) {
+    public static <T> List<T> asIterable(final T handler, final T handler2, final T[] handlers) {
         checkNotNull(handler);
         checkNotNull(handler2);
         checkNotNull(handlers);
