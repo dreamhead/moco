@@ -495,7 +495,7 @@ public final class Moco {
     }
 
     public static ContentResource template(final ContentResource resource) {
-        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.<String, RequestExtractor<?>>of());
+        return template(checkNotNull(resource, "Template should not be null"), ImmutableMap.of());
     }
 
     public static ContentResource template(final ContentResource template, final String name, final String value) {

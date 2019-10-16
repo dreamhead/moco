@@ -24,17 +24,17 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.transformEntries;
 
 public final class ApiUtils {
     public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2,
@@ -43,13 +43,12 @@ public final class ApiUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static Maps.EntryTransformer<String, RequestExtractor<?>, Variable> toVariable() {
-        return (key, value) -> new ExtractorVariable(value);
-    }
-
     public static ImmutableMap<String, Variable> toVariables(
             final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
-        return ImmutableMap.copyOf(transformEntries(variables, toVariable()));
+        return ImmutableMap.copyOf(variables.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, entry -> new ExtractorVariable(entry.getValue())
+                )));
     }
 
     public static Function<String, ResponseHandler> textToResource() {
