@@ -1,15 +1,15 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.github.dreamhead.moco.MocoMount;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.mount.MountPredicate;
-import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.github.dreamhead.moco.MocoMount.exclude;
-import static com.github.dreamhead.moco.MocoMount.include;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.toArray;
@@ -31,27 +31,10 @@ public final class MountSetting extends ResponseSetting {
     }
 
     public MountPredicate[] getMountPredicates() {
-        return toArray(concat(
-                transform(includes, toInclude()),
-                transform(excludes, toExclude())), MountPredicate.class);
-    }
-
-    private Function<String, MountPredicate> toInclude() {
-        return new Function<String, MountPredicate>() {
-            @Override
-            public MountPredicate apply(final String input) {
-                return include(input);
-            }
-        };
-    }
-
-    private Function<String, MountPredicate> toExclude() {
-        return new Function<String, MountPredicate>() {
-            @Override
-            public MountPredicate apply(final String input) {
-                return exclude(input);
-            }
-        };
+        return Stream.concat(
+                includes.stream().map(MocoMount::include),
+                excludes.stream().map(MocoMount::exclude))
+                .toArray(MountPredicate[]::new);
     }
 
     public ResponseHandler getResponseHandler() {
