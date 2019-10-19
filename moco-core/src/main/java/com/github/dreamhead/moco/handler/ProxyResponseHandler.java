@@ -3,10 +3,10 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.failover.Failover;
-import com.google.common.base.Function;
 
 import java.net.URL;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;

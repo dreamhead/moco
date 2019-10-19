@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.util;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 
 import java.io.UnsupportedEncodingException;
@@ -10,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 
@@ -75,12 +75,7 @@ public final class URLs {
     }
 
     public static Function<HttpRequest, URL> toUrlFunction(final Resource url) {
-        return new Function<HttpRequest, URL>() {
-            @Override
-            public URL apply(final HttpRequest input) {
-                return toUrl(url.readFor(input).toString());
-            }
-        };
+        return input -> toUrl(url.readFor(input).toString());
     }
 
     private URLs() {
