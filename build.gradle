@@ -78,7 +78,7 @@ subprojects {
         slf4jVersion = '1.7.28'
         jacksonVersion = '2.10.0'
         junitVersion = '4.12'
-        hamcrestVersion = '2.1'
+        hamcrestVersion = '2.2'
         mockitoVersion = '3.1.0'
         httpComponentVersion = '4.5.10'
         jsonpathVersion = '2.4.0'
