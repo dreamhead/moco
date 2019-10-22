@@ -22,9 +22,9 @@ public final class Configs {
 
     public static <T extends ConfigApplier<T>> ImmutableList<T> configItems(final List<T> items,
                                                                             final MocoConfig... configs) {
-        return ImmutableList.copyOf(items.stream()
+        return items.stream()
                 .map(item -> configItem(item, configs))
-                .collect(Collectors.toList()));
+                .collect(ImmutableList.toImmutableList());
     }
 
     private Configs() {
