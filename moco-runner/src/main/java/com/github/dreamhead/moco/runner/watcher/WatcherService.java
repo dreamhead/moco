@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
 import com.github.dreamhead.moco.util.MocoExecutors;
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -23,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
 import static com.google.common.collect.FluentIterable.from;

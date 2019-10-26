@@ -1,8 +1,7 @@
 package com.github.dreamhead.moco.runner.watcher;
 
-import com.google.common.base.Function;
-
 import java.io.File;
+import java.util.function.Function;
 
 public final class DefaultWatcher implements Watcher {
     private final WatcherService service;

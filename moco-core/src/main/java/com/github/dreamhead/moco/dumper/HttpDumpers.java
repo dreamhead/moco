@@ -53,7 +53,6 @@ public final class HttpDumpers {
 
         MessageContent content = message.getContent();
         return content != null && content.hasContent();
-
     }
 
     private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
