@@ -6,13 +6,11 @@ import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Predicate;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
-
-import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
+import java.util.function.Predicate;
 
 public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher {
     protected abstract RequestMatcher newMatcher(RequestExtractor<T> extractor, Resource resource);
@@ -38,17 +36,17 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
 
         T target = extractContent.get();
         if (target instanceof String) {
-            return predicate.apply((String) target);
+            return predicate.test((String) target);
         }
 
         if (target instanceof String[]) {
             String[] contents = (String[]) target;
-            return from(newArrayList(contents)).filter(notNull()).anyMatch(predicate);
+            return Arrays.stream(contents).filter(Objects::nonNull).anyMatch(predicate);
         }
 
         if (target instanceof MessageContent) {
             MessageContent actualTarget = (MessageContent) target;
-            return predicate.apply(actualTarget.toString());
+            return predicate.test(actualTarget.toString());
         }
 
         return false;
