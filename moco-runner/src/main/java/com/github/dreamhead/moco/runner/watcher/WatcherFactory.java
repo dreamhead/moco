@@ -2,13 +2,13 @@ package com.github.dreamhead.moco.runner.watcher;
 
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.function.Function;
 
 public final class WatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(WatcherFactory.class);
@@ -18,12 +18,7 @@ public final class WatcherFactory {
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,
                                                            final Integer shutdownPort,
                                                            final String shutdownKey) {
-        return new ShutdownMocoRunnerWatcher(shutdownPort, shutdownKey, new ShutdownListener() {
-            @Override
-            public void onShutdown() {
-                runner.stop();
-            }
-        });
+        return new ShutdownMocoRunnerWatcher(shutdownPort, shutdownKey, runner::stop);
     }
 
     public Watcher createConfigurationWatcher(final Iterable<File> files, final FileRunner fileRunner) {
@@ -38,19 +33,16 @@ public final class WatcherFactory {
     }
 
     private Function<File, Void> listener(final FileRunner fileRunner) {
-        return new Function<File, Void>() {
-            @Override
-            public Void apply(final File file) {
-                logger.info("{} change detected.", file.getName());
-                try {
-                    fileRunner.restart();
-                } catch (Exception e) {
-                    logger.error("Fail to load configuration in {}.", file.getName());
-                    logger.error(e.getMessage());
-                }
-
-                return null;
+        return file -> {
+            logger.info("{} change detected.", file.getName());
+            try {
+                fileRunner.restart();
+            } catch (Exception e) {
+                logger.error("Fail to load configuration in {}.", file.getName());
+                logger.error(e.getMessage());
             }
+
+            return null;
         };
     }
 }
