@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,5 +21,24 @@ public class JsonPathRequestExtractorTest {
                 .build();
         Optional<Object> result = unitUnderTest.extract(request);
         assertThat(result.isPresent(), is(false));
+    }
+
+    @Test
+    public void should_extract_array() {
+        JsonPathRequestExtractor unitUnderTest = new JsonPathRequestExtractor("$.detail_item_list[*].number");
+        HttpRequest request = DefaultHttpRequest.builder()
+                .withContent("{\n" +
+                        "    \"detail_item_list\":[\n" +
+                        "    {\n" +
+                        "        \"number\": 100\n" +
+                        "     }]\n" +
+                        "}" +
+                        "\"number\": 100" +
+                        "}]}")
+                .build();
+        Optional<Object> result = unitUnderTest.extract(request);
+        assertThat(result.isPresent(), is(true));
+        String[] texts = (String[]) result.get();
+        assertThat(texts[0], is("100"));
     }
 }

@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import net.minidev.json.JSONArray;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -44,11 +45,13 @@ public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object>
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Object toStringArray(final Object content) {
         if (content instanceof List) {
-            @SuppressWarnings("unchecked")
-            List<String> texts = (List<String>) content;
-            return texts.toArray(new String[texts.size()]);
+            List list = (List) content;
+            return list.stream()
+                    .map(Object::toString)
+                    .toArray(String[]::new);
         }
 
         return content.toString();
