@@ -1,8 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.base.Predicate;
+import java.util.stream.StreamSupport;
 
-import static com.google.common.collect.FluentIterable.from;
 import static java.lang.String.format;
 
 public final class VerificationData {
@@ -23,15 +22,8 @@ public final class VerificationData {
     }
 
     public int matchedSize() {
-        return from(requests).filter(matched()).size();
-    }
-
-    private Predicate<Request> matched() {
-        return new Predicate<Request>() {
-            @Override
-            public boolean apply(final Request request) {
-                return matcher.match(request);
-            }
-        };
+        return (int) StreamSupport.stream(requests.spliterator(), false)
+                .filter(matcher::match)
+                .count();
     }
 }
