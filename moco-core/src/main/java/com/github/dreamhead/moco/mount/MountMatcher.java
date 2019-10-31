@@ -7,8 +7,8 @@ import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
-import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public final class MountMatcher extends AbstractRequestMatcher {
@@ -50,6 +50,9 @@ public final class MountMatcher extends AbstractRequestMatcher {
     }
 
     private boolean isTarget(final String relativePath) {
-        return !isNullOrEmpty(relativePath) && and(predicates).apply(relativePath);
+        return !isNullOrEmpty(relativePath) &&
+                StreamSupport.stream(predicates.spliterator(), false)
+                        .allMatch(mountPredicate -> mountPredicate.test(relativePath));
     }
+
 }

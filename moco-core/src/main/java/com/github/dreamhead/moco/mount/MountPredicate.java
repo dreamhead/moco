@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.mount;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 public interface MountPredicate extends Predicate<String> {
 }

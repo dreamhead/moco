@@ -18,13 +18,7 @@ public final class MocoMount {
     public static MountPredicate include(final String glob) {
         checkNotNullOrEmpty(glob, "Glob should not be null or empty");
         final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + glob);
-
-        return new MountPredicate() {
-            @Override
-            public boolean apply(final String filename) {
-                return matcher.matches(Paths.get(filename));
-            }
-        };
+        return filename -> matcher.matches(Paths.get(filename));
     }
 
     public static MountPredicate exclude(final String glob) {
@@ -33,12 +27,7 @@ public final class MocoMount {
 
     private static MountPredicate not(final MountPredicate predicate) {
         checkNotNull(predicate);
-        return new MountPredicate() {
-            @Override
-            public boolean apply(final String filename) {
-                return !predicate.apply(filename);
-            }
-        };
+        return filename -> !predicate.test(filename);
     }
 
     private MocoMount() {
