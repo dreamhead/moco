@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.HttpHeader;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 
 import java.util.Map;
 
@@ -14,18 +12,8 @@ public abstract class BaseActionSetting {
             return new HttpHeader[0];
         }
 
-        return FluentIterable.from(headers.entrySet())
-                .transform(asHeader())
-                .toArray(HttpHeader.class);
-    }
-
-    private Function<Map.Entry<String, TextContainer>, HttpHeader> asHeader() {
-        return new Function<Map.Entry<String, TextContainer>, HttpHeader>() {
-            @Override
-            public HttpHeader apply(final Map.Entry<String, TextContainer> input) {
-                TextContainer value = input.getValue();
-                return header(input.getKey(), value.asResource());
-            }
-        };
+        return headers.entrySet().stream()
+                .map(input -> header(input.getKey(), input.getValue().asResource()))
+                .toArray(HttpHeader[]::new);
     }
 }
