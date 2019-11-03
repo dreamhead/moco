@@ -9,12 +9,13 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.parser.SocketServerParser;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 
 import java.io.InputStream;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.header;
@@ -22,7 +23,6 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.toArray;
 
 public final class JsonRunner implements Runner {
@@ -115,11 +115,10 @@ public final class JsonRunner implements Runner {
 
     public static JsonRunner newJsonRunnerWithStreams(final Iterable<? extends InputStream> streams,
                                                       final StartArgs startArgs) {
-        return newJsonRunnerWithSetting(from(streams).transform(toRunnerSetting()), startArgs);
-    }
 
-    private static Function<InputStream, RunnerSetting> toRunnerSetting() {
-        return input -> aRunnerSetting().addStream(input).build();
+        return newJsonRunnerWithSetting(StreamSupport.stream(streams.spliterator(), false)
+                .map(input -> aRunnerSetting().addStream(input).build())
+                .collect(Collectors.toList()), startArgs);
     }
 
     public static JsonRunner newJsonRunnerWithSetting(final Iterable<? extends RunnerSetting> settings,
