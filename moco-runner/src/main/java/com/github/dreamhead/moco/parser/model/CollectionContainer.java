@@ -2,10 +2,9 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 
-import static com.google.common.collect.FluentIterable.from;
+import java.util.stream.StreamSupport;
 
 public final class CollectionContainer implements Container {
     private Iterable<ResponseSetting> collection;
@@ -24,15 +23,8 @@ public final class CollectionContainer implements Container {
     }
 
     public ResponseHandler[] toResponseHandlers() {
-        return from(collection).transform(toResponseHandler()).toArray(ResponseHandler.class);
-    }
-
-    private Function<ResponseSetting, ResponseHandler> toResponseHandler() {
-        return new Function<ResponseSetting, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final ResponseSetting setting) {
-                return setting.getResponseHandler();
-            }
-        };
+        return StreamSupport.stream(collection.spliterator(), false)
+                .map(ResponseSetting::getResponseHandler)
+                .toArray(ResponseHandler[]::new);
     }
 }
