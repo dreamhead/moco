@@ -15,6 +15,8 @@ import com.google.common.collect.ImmutableList;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
@@ -23,6 +25,7 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
@@ -41,7 +44,7 @@ public final class RestRequestDispatcher {
     private final CompositeRestSetting<RestSingleSetting> headSettings;
     private final CompositeRestSetting<RestAllSetting> headAllSettings;
     private final CompositeRestSetting<RestSingleSetting> patchSettings;
-    private final FluentIterable<SubResourceSetting> subResourceSettings;
+    private final Iterable<SubResourceSetting> subResourceSettings;
 
     public RestRequestDispatcher(final String name, final Iterable<RestSetting> settings) {
         this.name = eq(name);
@@ -65,36 +68,20 @@ public final class RestRequestDispatcher {
         return new CompositeRestSetting<>(filter(settings, type, method));
     }
 
-    private <T> Function<? super T, T> toInstance(final Class<T> clazz) {
-        return new Function<T, T>() {
-            @Override
-            public T apply(final T input) {
-                return clazz.cast(input);
-            }
-        };
+    private <T extends SimpleRestSetting> Iterable<T> filter(final Iterable<RestSetting> settings,
+                                                             final Class<T> type,
+                                                             final HttpMethod method) {
+        return filter(settings, type).stream()
+                .filter(input -> input.isSimple() && input.isFor(method))
+                .collect(Collectors.toList());
     }
 
-    private <T extends SimpleRestSetting> FluentIterable<T> filter(final Iterable<RestSetting> settings,
-                                                     final Class<T> type,
-                                                     final HttpMethod method) {
-        return filter(settings, type)
-                .filter(isForMethod(method));
-    }
-
-    private <T extends RestSetting> FluentIterable<T> filter(final Iterable<RestSetting> settings,
-                                                             final Class<T> type) {
-        return FluentIterable.from(settings)
-                .filter(type)
-                .transform(toInstance(type));
-    }
-
-    private <T extends SimpleRestSetting> Predicate<T> isForMethod(final HttpMethod method) {
-        return new Predicate<T>() {
-            @Override
-            public boolean apply(final T input) {
-                return input.isSimple() && input.isFor(method);
-            }
-        };
+    private <T extends RestSetting> ImmutableList<T> filter(final Iterable<RestSetting> settings,
+                                                            final Class<T> type) {
+        return StreamSupport.stream(settings.spliterator(), false)
+                .filter(type::isInstance)
+                .map(type::cast)
+                .collect(toImmutableList());
     }
 
     private Predicate<SimpleRestSetting> isJsonHandlers() {
