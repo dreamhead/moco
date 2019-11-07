@@ -8,13 +8,14 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -84,33 +85,6 @@ public final class RestRequestDispatcher {
                 .collect(toImmutableList());
     }
 
-    private Predicate<SimpleRestSetting> isJsonHandlers() {
-        return new Predicate<SimpleRestSetting>() {
-            @Override
-            public boolean apply(final SimpleRestSetting setting) {
-                return setting.getHandler() instanceof JsonResponseHandler;
-            }
-        };
-    }
-
-    private Function<SimpleRestSetting, JsonResponseHandler> toJsonHandler() {
-        return new Function<SimpleRestSetting, JsonResponseHandler>() {
-            @Override
-            public JsonResponseHandler apply(final SimpleRestSetting setting) {
-                return JsonResponseHandler.class.cast(setting.getHandler());
-            }
-        };
-    }
-
-    private Function<JsonResponseHandler, Object> toPojo() {
-        return new Function<JsonResponseHandler, Object>() {
-            @Override
-            public Object apply(final JsonResponseHandler handler) {
-                return handler.getPojo();
-            }
-        };
-    }
-
     private Optional<ResponseHandler> getSingleOrAllHandler(final HttpRequest httpRequest,
                                                             final CompositeRestSetting<RestSingleSetting> single,
                                                             final CompositeRestSetting<RestAllSetting> all,
@@ -149,12 +123,14 @@ public final class RestRequestDispatcher {
         }
 
         if (allMatcher.match(httpRequest)) {
-            FluentIterable<RestSingleSetting> settings = FluentIterable.from(getSingleSettings.getSettings());
-            if (!settings.isEmpty() && settings.allMatch(isJsonHandlers())) {
-                ImmutableList<Object> objects = settings
-                        .transform(toJsonHandler())
-                        .transform(toPojo()).toList();
-                return of(with(Moco.json(objects)));
+            Iterable<RestSingleSetting> settings = getSingleSettings.getSettings();
+            if (!Iterables.isEmpty(settings)
+                    && Iterables.all(settings, setting -> setting.getHandler() instanceof JsonResponseHandler)) {
+                List<Object> result = StreamSupport.stream(settings.spliterator(), false)
+                        .map((Function<SimpleRestSetting, JsonResponseHandler>) setting -> JsonResponseHandler.class.cast(setting.getHandler()))
+                        .map(JsonResponseHandler::getPojo)
+                        .collect(Collectors.toList());
+                return of(with(Moco.json(result)));
             }
         }
 
