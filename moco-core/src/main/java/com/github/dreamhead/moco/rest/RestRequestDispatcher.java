@@ -15,7 +15,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -94,12 +93,8 @@ public final class RestRequestDispatcher {
             return singleHandler;
         }
 
-        Optional<ResponseHandler> allHandler = all.getMatched(name, httpRequest);
-        if (allHandler.isPresent()) {
-            return allHandler;
-        }
+        return all.getMatched(name, httpRequest);
 
-        return Optional.empty();
     }
 
     private Optional<ResponseHandler> getHeadHandler(final HttpRequest httpRequest) {
