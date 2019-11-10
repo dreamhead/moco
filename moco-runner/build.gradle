@@ -20,16 +20,16 @@ project.ext {
 }
 
 project.dependencies {
-    compile(
+    implementation(
             project(':moco-core'),
             "commons-cli:commons-cli:$commonsCliVersion"
     )
 
-    runtime("ch.qos.logback:logback-classic:$logbackVersion")
+    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
 
-    testCompile project(':moco-core').sourceSets.test.output
+    testImplementation project(':moco-core').sourceSets.test.output
 
-    testRuntime(
+    testRuntimeOnly(
             project(':moco-core').sourceSets.test.resources,
             project(':moco-runner').sourceSets.main.resources
     )
@@ -43,7 +43,7 @@ task uberjar(type: Jar, dependsOn: jar) {
     from files(project(':moco-core').sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
-    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
+    from configurations.runtimeClasspath.asFileTree.files.collect { zipTree(it) }
 
     manifest {
         attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main',
@@ -60,7 +60,7 @@ task uberjar(type: Jar, dependsOn: jar) {
 
 task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
     injars uberjar.archivePath
-    outjars uberjar.archivePath.toString().replace(uberjar.classifier, 'standalone')
+    outjars uberjar.archivePath.toString().replace(uberjar.archiveClassifier.get(), 'standalone')
     if (JavaVersion.current().isJava9Compatible()) {
         libraryjars javaModPath()
     } else {

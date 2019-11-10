@@ -1,10 +1,10 @@
 project.dependencies {
-    compile(
+    implementation(
             project(':moco-runner'),
             "junit:junit:$junitVersion"
     )
 
-    testCompile(
+    testImplementation(
             project(':moco-core').sourceSets.test.output,
             project(':moco-runner').sourceSets.test.output
     )
