@@ -1,5 +1,6 @@
 project.dependencies {
     implementation(
+            project(':moco-core'),
             project(':moco-runner'),
             "junit:junit:$junitVersion"
     )
