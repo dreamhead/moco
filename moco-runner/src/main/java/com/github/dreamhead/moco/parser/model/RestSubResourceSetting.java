@@ -3,16 +3,16 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.parser.model.RestIds.asIdMatcher;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
-import static com.google.common.collect.FluentIterable.from;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestSubResourceSetting extends ResourceSetting {
@@ -24,14 +24,12 @@ public class RestSubResourceSetting extends ResourceSetting {
     }
 
     private static Function<RestSubResourceSetting, RestSetting> toSubResourceSetting() {
-        return new Function<RestSubResourceSetting, RestSetting>() {
-            @Override
-            public RestSetting apply(final RestSubResourceSetting input) {
-                RestSetting[] settings = input.getSettings();
+        return input -> {
+            RestSetting[] settings = input.getSettings();
 
-                return MocoRest.id(asIdMatcher(input.id))
-                        .name(input.getName()).settings(head(settings), tail(settings));
-            }
+            return MocoRest.id(asIdMatcher(input.id))
+                    .name(input.getName())
+                    .settings(head(settings), tail(settings));
         };
     }
 
@@ -40,6 +38,8 @@ public class RestSubResourceSetting extends ResourceSetting {
             return ImmutableList.of();
         }
 
-        return from(setting).transform(toSubResourceSetting());
+        return setting.stream()
+                .map(toSubResourceSetting())
+                .collect(Collectors.toList());
     }
 }
