@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-  testCompile(
+  testImplementation(
     "com.github.dreamhead:moco-core:1.0.0",
   )
 }
