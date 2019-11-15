@@ -3,10 +3,11 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.base.Function;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.google.common.collect.FluentIterable.from;
 
 public final class AndResponseHandler extends AbstractResponseHandler {
     private final Iterable<ResponseHandler> handlers;
@@ -24,16 +25,9 @@ public final class AndResponseHandler extends AbstractResponseHandler {
 
     @Override
     public ResponseHandler doApply(final MocoConfig config) {
-        return and(from(handlers).transform(applyConfig(config)));
-    }
-
-    private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
-        return new Function<ResponseHandler, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final ResponseHandler handler) {
-                return handler.apply(config);
-            }
-        };
+        return and(StreamSupport.stream(handlers.spliterator(), false)
+                .map(handler -> handler.apply(config))
+                .collect(Collectors.toList()));
     }
 
     public static ResponseHandler and(final Iterable<ResponseHandler> handlers) {
