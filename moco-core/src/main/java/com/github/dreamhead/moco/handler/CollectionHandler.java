@@ -3,11 +3,10 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 
-import static com.google.common.collect.FluentIterable.from;
+import java.util.stream.Collectors;
+
 import static com.google.common.collect.ImmutableList.copyOf;
 
 public abstract class CollectionHandler extends AbstractResponseHandler {
@@ -27,17 +26,9 @@ public abstract class CollectionHandler extends AbstractResponseHandler {
 
     @Override
     public final ResponseHandler doApply(final MocoConfig config) {
-        FluentIterable<ResponseHandler> transformedResources = from(copyOf(handlers)).transform(applyConfig(config));
-        return newCollectionHandler(transformedResources);
-    }
-
-    private Function<ResponseHandler, ResponseHandler> applyConfig(final MocoConfig config) {
-        return new Function<ResponseHandler, ResponseHandler>() {
-            @Override
-            public ResponseHandler apply(final ResponseHandler input) {
-                return input.apply(config);
-            }
-        };
+        return newCollectionHandler(handlers.stream()
+                .map(input -> input.apply(config))
+                .collect(Collectors.toList()));
     }
 
     protected abstract int next(int index, int size);
