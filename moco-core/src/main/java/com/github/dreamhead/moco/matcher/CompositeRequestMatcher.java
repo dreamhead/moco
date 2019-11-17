@@ -3,10 +3,10 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 
-import static com.google.common.collect.FluentIterable.from;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     protected abstract RequestMatcher newMatcher(Iterable<RequestMatcher> matchers);
@@ -18,21 +18,14 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Iterable<RequestMatcher> applyToMatchers(final MocoConfig config) {
-        FluentIterable<RequestMatcher> appliedMatchers = from(matchers).transform(applyConfig(config));
-        if (matchers.equals(appliedMatchers)) {
+        Iterable<RequestMatcher> appliedMatchers = StreamSupport.stream(matchers.spliterator(), false)
+                .map(matcher -> matcher.apply(config))
+                .collect(Collectors.toList());
+        if (Iterables.elementsEqual(matchers, appliedMatchers)) {
             return this.matchers;
         }
 
         return appliedMatchers;
-    }
-
-    private Function<RequestMatcher, RequestMatcher> applyConfig(final MocoConfig config) {
-        return new Function<RequestMatcher, RequestMatcher>() {
-            @Override
-            public RequestMatcher apply(final RequestMatcher matcher) {
-                return matcher.apply(config);
-            }
-        };
     }
 
 
