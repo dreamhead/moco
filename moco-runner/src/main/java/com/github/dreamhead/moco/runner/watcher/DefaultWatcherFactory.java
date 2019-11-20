@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.MocoException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
-
-import static com.google.common.collect.FluentIterable.from;
+import java.util.stream.Collectors;
 
 public final class DefaultWatcherFactory implements FileWatcherFactory {
     private WatcherService service = new WatcherService();
@@ -23,6 +23,8 @@ public final class DefaultWatcherFactory implements FileWatcherFactory {
             throw new MocoException(e);
         }
 
-        return new CompositeWatcher(from(files).transform((file -> new DefaultWatcher(service, listener, file))));
+        return new CompositeWatcher(Arrays.stream(files)
+                .map((file -> new DefaultWatcher(service, listener, file)))
+                .collect(Collectors.toList()));
     }
 }
