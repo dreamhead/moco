@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
 import com.github.dreamhead.moco.util.MocoExecutors;
-import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
@@ -18,11 +17,13 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
 import static com.google.common.collect.FluentIterable.from;
@@ -54,15 +55,12 @@ public final class WatcherService {
     private void doStart() throws IOException {
         this.service = FileSystems.getDefault().newWatchService();
         this.running = true;
-        result = executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                while (running) {
-                    loop();
-                }
-
-                doStop();
+        result = executor.submit(() -> {
+            while (running) {
+                loop();
             }
+
+            doStop();
         });
     }
 
@@ -78,9 +76,15 @@ public final class WatcherService {
             WatchKey key = service.take();
             Collection<Path> paths = keys.get(key);
 
-            for (WatchEvent<?> event : from(key.pollEvents()).filter(isModifyEvent())) {
+            List<WatchEvent<?>> events = key.pollEvents().stream()
+                    .filter(e -> e.kind().equals(ENTRY_MODIFY))
+                    .collect(Collectors.toList());
+            for (WatchEvent<?> event : events) {
                 final Path context = (Path) event.context();
-                for (Path path : from(paths).filter(isForPath(context))) {
+                List<Path> contextPaths = paths.stream()
+                        .filter(p -> p.endsWith(context))
+                        .collect(Collectors.toList());
+                for (Path path : contextPaths) {
                     for (Function<File, Void> listener : this.listeners.get(path)) {
                         listener.apply(path.toFile());
                     }
@@ -92,24 +96,6 @@ public final class WatcherService {
         } catch (InterruptedException e) {
             logger.error("Error happens", e);
         }
-    }
-
-    private Predicate<Path> isForPath(final Path context) {
-        return new Predicate<Path>() {
-            @Override
-            public boolean apply(final Path path) {
-                return path.endsWith(context);
-            }
-        };
-    }
-
-    private Predicate<WatchEvent<?>> isModifyEvent() {
-        return new Predicate<WatchEvent<?>>() {
-            @Override
-            public boolean apply(final WatchEvent<?> event) {
-                return event.kind().equals(ENTRY_MODIFY);
-            }
-        };
     }
 
     public synchronized void stop() {
