@@ -8,9 +8,8 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
+import com.github.dreamhead.moco.util.Suppliers;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -25,6 +24,7 @@ import io.netty.handler.codec.http.QueryStringEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
@@ -78,33 +78,18 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     private Supplier<ImmutableMap<String, String>> formSupplier() {
-        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
-            @Override
-            public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> forms =
-                        new FormsRequestExtractor().extract(DefaultHttpRequest.this);
-                return forms.orElseGet(emptyMapSupplier());
-            }
+        return Suppliers.memoize(() -> {
+            Optional<ImmutableMap<String, String>> forms =
+                    new FormsRequestExtractor().extract(DefaultHttpRequest.this);
+            return forms.orElseGet(ImmutableMap::of);
         });
     }
 
-    private Supplier<ImmutableMap<String, String>> emptyMapSupplier() {
-        return new Supplier<ImmutableMap<String, String>>() {
-            @Override
-            public ImmutableMap<String, String> get() {
-                return ImmutableMap.of();
-            }
-        };
-    }
-
     private Supplier<ImmutableMap<String, String>> cookieSupplier() {
-        return Suppliers.memoize(new Supplier<ImmutableMap<String, String>>() {
-            @Override
-            public ImmutableMap<String, String> get() {
-                Optional<ImmutableMap<String, String>> cookies =
-                        new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
-                return cookies.orElseGet(emptyMapSupplier());
-            }
+        return Suppliers.memoize(() -> {
+            Optional<ImmutableMap<String, String>> cookies =
+                    new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
+            return cookies.orElseGet(ImmutableMap::of);
         });
     }
 
