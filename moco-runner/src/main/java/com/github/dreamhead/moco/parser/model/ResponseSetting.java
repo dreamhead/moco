@@ -21,6 +21,8 @@ public class ResponseSetting extends BaseResourceSetting {
     private AttachmentSetting attachment;
     private CollectionContainer seq;
     private CollectionContainer cycle;
+    private String record;
+    private String replay;
 
     protected final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());
@@ -33,6 +35,8 @@ public class ResponseSetting extends BaseResourceSetting {
         responseSetting.attachment = attachment;
         responseSetting.seq = seq;
         responseSetting.cycle = cycle;
+        responseSetting.record = record;
+        responseSetting.replay = replay;
 
         return responseSetting;
     }
@@ -47,7 +51,10 @@ public class ResponseSetting extends BaseResourceSetting {
                 .add("latency", latency)
                 .add("attachment", attachment)
                 .add("seq", seq)
-                .add("cycle", cycle);
+                .add("cycle", cycle)
+                .add("record", record)
+                .add("replay", replay);
+
     }
 
     public ResponseHandler getResponseHandler() {

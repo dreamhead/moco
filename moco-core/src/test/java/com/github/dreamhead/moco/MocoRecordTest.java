@@ -22,6 +22,22 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
         running(server, () -> {
             helper.postContent(remoteUrl("/record"), "foo");
             assertThat(helper.get(remoteUrl("/replay")), is("foo"));
+            helper.postContent(remoteUrl("/record"), "bar");
+            assertThat(helper.get(remoteUrl("/replay")), is("bar"));
+        });
+    }
+
+    @Test
+    public void should_record_and_replay_with_name() throws Exception {
+        RequestRecorder recorder = new RequestRecorder();
+        server.request(by(uri("/record"))).response(record("foo"));
+        server.request(by(uri("/replay"))).response(replay("foo"));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/record"), "foo");
+            assertThat(helper.get(remoteUrl("/replay")), is("foo"));
+            helper.postContent(remoteUrl("/record"), "bar");
+            assertThat(helper.get(remoteUrl("/replay")), is("bar"));
         });
     }
 }

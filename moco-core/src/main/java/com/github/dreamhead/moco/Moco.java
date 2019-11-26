@@ -639,9 +639,16 @@ public final class Moco {
         return new RecordHandler(recorder);
     }
 
-
     public static ResponseHandler replay(final RequestRecorder recorder) {
         return new ReplayHandler(recorder);
+    }
+
+    public static ResponseHandler record(final String name) {
+        return new RecordHandler(RequestRecorder.getRecorder(name));
+    }
+
+    public static ResponseHandler replay(final String name) {
+        return new ReplayHandler(RequestRecorder.getRecorder(name));
     }
 
     private Moco() {
