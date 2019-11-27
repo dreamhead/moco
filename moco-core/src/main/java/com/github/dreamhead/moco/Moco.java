@@ -32,9 +32,12 @@ import com.github.dreamhead.moco.matcher.OrRequestMatcher;
 import com.github.dreamhead.moco.matcher.XmlRequestMatcher;
 import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
-import com.github.dreamhead.moco.recorder.RecordHandler;
-import com.github.dreamhead.moco.recorder.ReplayHandler;
+import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
+import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
+import com.github.dreamhead.moco.recorder.RecorderRegistry;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
+import com.github.dreamhead.moco.recorder.StaticRecordHandler;
+import com.github.dreamhead.moco.recorder.StaticReplayHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
@@ -636,19 +639,27 @@ public final class Moco {
     }
 
     public static ResponseHandler record(final RequestRecorder recorder) {
-        return new RecordHandler(recorder);
+        return new StaticRecordHandler(recorder);
     }
 
     public static ResponseHandler replay(final RequestRecorder recorder) {
-        return new ReplayHandler(recorder);
+        return new StaticReplayHandler(recorder);
     }
 
     public static ResponseHandler record(final String name) {
-        return new RecordHandler(RequestRecorder.getRecorder(name));
+        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), text(name));
     }
 
     public static ResponseHandler replay(final String name) {
-        return new ReplayHandler(RequestRecorder.getRecorder(name));
+        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), text(name));
+    }
+
+    public static ResponseHandler record(final ContentResource name) {
+        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), name);
+    }
+
+    public static ResponseHandler replay(final ContentResource name) {
+        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), name);
     }
 
     private Moco() {
