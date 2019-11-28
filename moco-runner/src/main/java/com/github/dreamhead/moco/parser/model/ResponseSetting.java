@@ -21,8 +21,8 @@ public class ResponseSetting extends BaseResourceSetting {
     private AttachmentSetting attachment;
     private CollectionContainer seq;
     private CollectionContainer cycle;
-    private String record;
-    private String replay;
+    private TextContainer record;
+    private TextContainer replay;
 
     protected final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());

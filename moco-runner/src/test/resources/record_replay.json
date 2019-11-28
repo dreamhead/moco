@@ -14,5 +14,25 @@
     "response" : {
       "replay" : "name"
     }
+  },
+  {
+    "request" : {
+      "uri" : "/record-template"
+    },
+    "response" : {
+      "record" : {
+        "template": "${req.queries['type']}"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay-template"
+    },
+    "response" : {
+      "replay" : {
+        "template": "${req.queries['type']}"
+      }
+    }
   }
 ]

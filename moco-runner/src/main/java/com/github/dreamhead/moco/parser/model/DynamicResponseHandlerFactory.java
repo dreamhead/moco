@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
+import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -122,11 +123,11 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         }
 
         if ("record".equalsIgnoreCase(name)) {
-            return Moco.record(value.toString());
+            return Moco.record((ContentResource)getResource((TextContainer)value));
         }
 
         if ("replay".equalsIgnoreCase(name)) {
-            return Moco.replay(value.toString());
+            return Moco.replay((ContentResource)getResource((TextContainer)value));
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
