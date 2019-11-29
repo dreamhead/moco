@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.recorder.InMemoryRequestRecorder;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class MocoRecordTest extends AbstractMocoHttpTest {
     @Test
     public void should_record_and_replay() throws Exception {
-        RequestRecorder recorder = new RequestRecorder();
+        RequestRecorder recorder = new InMemoryRequestRecorder();
         server.request(by(uri("/record"))).response(record(recorder));
         server.request(by(uri("/replay"))).response(replay(recorder));
 

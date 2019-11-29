@@ -17,7 +17,7 @@ public class RecorderRegistry {
             return recorder;
         }
 
-        RequestRecorder newRecorder = new RequestRecorder();
+        RequestRecorder newRecorder = new InMemoryRequestRecorder();
         recorders.put(name, newRecorder);
         return newRecorder;
     }
