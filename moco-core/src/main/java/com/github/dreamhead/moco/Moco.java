@@ -647,11 +647,11 @@ public final class Moco {
     }
 
     public static ResponseHandler record(final String name) {
-        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), text(name));
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(name), text(name));
     }
 
     public static ResponseHandler replay(final String name) {
-        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), text(name));
+        return new DynamicReplayHandler(RecorderRegistry.registryOf(name), text(name));
     }
 
     public static ResponseHandler record(final ContentResource name) {
@@ -660,6 +660,14 @@ public final class Moco {
 
     public static ResponseHandler replay(final ContentResource name) {
         return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), name);
+    }
+
+    public static ResponseHandler record(final String groupName, final ContentResource name) {
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName), name);
+    }
+
+    public static ResponseHandler replay(final String groupName, final ContentResource name) {
+        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName), name);
     }
 
     private Moco() {

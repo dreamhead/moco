@@ -17,13 +17,13 @@ public class DynamicReplayHandler extends AbstractHttpContentResponseHandler imp
 
     @Override
     protected MessageContent responseContent(final HttpRequest request) {
-        RequestRecorder recorder = registry.of(this.name.readFor(request).toString());
+        RequestRecorder recorder = registry.recorderOf(this.name.readFor(request).toString());
         return recorder.getContent();
     }
 
     @Override
     protected MediaType getContentType(final HttpRequest request) {
-        RequestRecorder recorder = registry.of(this.name.readFor(request).toString());
+        RequestRecorder recorder = registry.recorderOf(this.name.readFor(request).toString());
         return recorder.getContentType();
     }
 }

@@ -24,7 +24,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     private RequestRecorder getRequestRecorder(final HttpRequest httpRequest) {
-        return registry.of(this.name.readFor(httpRequest).toString());
+        return registry.recorderOf(this.name.readFor(httpRequest).toString());
     }
 
     @Override
