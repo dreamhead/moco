@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.MocoRecorder;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
@@ -121,11 +122,11 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         }
 
         if ("record".equalsIgnoreCase(name)) {
-            return Moco.record((ContentResource)getResource((TextContainer)value));
+            return MocoRecorder.record((ContentResource)getResource((TextContainer)value));
         }
 
         if ("replay".equalsIgnoreCase(name)) {
-            return Moco.replay((ContentResource)getResource((TextContainer)value));
+            return MocoRecorder.replay((ContentResource)getResource((TextContainer)value));
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));

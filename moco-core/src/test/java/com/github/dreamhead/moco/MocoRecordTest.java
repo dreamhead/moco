@@ -5,8 +5,8 @@ import com.github.dreamhead.moco.recorder.RequestRecorder;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.record;
-import static com.github.dreamhead.moco.Moco.replay;
+import static com.github.dreamhead.moco.MocoRecorder.record;
+import static com.github.dreamhead.moco.MocoRecorder.replay;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
