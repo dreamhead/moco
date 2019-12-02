@@ -8,7 +8,9 @@ import com.github.dreamhead.moco.recorder.StaticRecordHandler;
 import com.github.dreamhead.moco.recorder.StaticReplayHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
 
-public class MocoRecorder {
+import static com.github.dreamhead.moco.recorder.RecorderFactory.IN_MEMORY;
+
+public class MocoRecorders {
     public static ResponseHandler record(final RequestRecorder recorder) {
         return new StaticRecordHandler(recorder);
     }
@@ -18,11 +20,11 @@ public class MocoRecorder {
     }
 
     public static ResponseHandler record(final String name) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(name), Moco.text(name));
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(name, IN_MEMORY), Moco.text(name));
     }
 
     public static ResponseHandler replay(final String name) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(name), Moco.text(name));
+        return new DynamicReplayHandler(RecorderRegistry.registryOf(name, IN_MEMORY), Moco.text(name));
     }
 
     public static ResponseHandler record(final ContentResource name) {
@@ -34,13 +36,13 @@ public class MocoRecorder {
     }
 
     public static ResponseHandler record(final String groupName, final ContentResource name) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName), name);
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), name);
     }
 
     public static ResponseHandler replay(final String groupName, final ContentResource name) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName), name);
+        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), name);
     }
 
-    private MocoRecorder() {
+    private MocoRecorders() {
     }
 }

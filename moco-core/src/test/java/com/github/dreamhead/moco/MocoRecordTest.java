@@ -5,8 +5,8 @@ import com.github.dreamhead.moco.recorder.RequestRecorder;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.MocoRecorder.record;
-import static com.github.dreamhead.moco.MocoRecorder.replay;
+import static com.github.dreamhead.moco.MocoRecorders.record;
+import static com.github.dreamhead.moco.MocoRecorders.replay;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
@@ -59,6 +59,23 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_record_and_replay_with_group_and_template() throws Exception {
+        server.request(by(uri("/foo-record"))).response(record("foo", template("${req.queries['type']}")));
+        server.request(by(uri("/bar-record"))).response(record("bar", template("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay("foo", template("${req.queries['type']}")));
+        server.request(by(uri("/bar-replay"))).response(replay("bar", template("${req.queries['type']}")));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");
+            helper.postContent(remoteUrl("/bar-record?type=blah"), "bar");
+            assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("foo"));
+            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("foo"));
+            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("bar"));
+        });
+    }
+
+    @Test
+    public void should_record_and_replay_with_tape() throws Exception {
         server.request(by(uri("/foo-record"))).response(record("foo", template("${req.queries['type']}")));
         server.request(by(uri("/bar-record"))).response(record("bar", template("${req.queries['type']}")));
         server.request(by(uri("/foo-replay"))).response(replay("foo", template("${req.queries['type']}")));
