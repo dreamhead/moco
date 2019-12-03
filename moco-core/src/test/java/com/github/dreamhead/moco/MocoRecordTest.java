@@ -4,12 +4,16 @@ import com.github.dreamhead.moco.recorder.InMemoryRequestRecorder;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import org.junit.Test;
 
+import java.io.File;
+
 import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.MocoRecorders.record;
-import static com.github.dreamhead.moco.MocoRecorders.replay;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.MocoRecorders.record;
+import static com.github.dreamhead.moco.MocoRecorders.replay;
+import static com.github.dreamhead.moco.MocoRecorders.tape;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -76,18 +80,21 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_record_and_replay_with_tape() throws Exception {
-        server.request(by(uri("/foo-record"))).response(record("foo", template("${req.queries['type']}")));
-        server.request(by(uri("/bar-record"))).response(record("bar", template("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo", template("${req.queries['type']}")));
-        server.request(by(uri("/bar-replay"))).response(replay("bar", template("${req.queries['type']}")));
+        File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), template("${req.queries['type']}")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");
-            helper.postContent(remoteUrl("/bar-record?type=blah"), "bar");
             assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("foo"));
-            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("bar"));
-            assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("foo"));
-            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("bar"));
+        });
+
+        HttpServer newServer = createServer(port());
+
+        newServer.request(by(uri("/tape-replay"))).response(replay("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+
+        running(newServer, () -> {
+            assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("foo"));
         });
     }
 }

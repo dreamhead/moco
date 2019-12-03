@@ -2,7 +2,9 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
 import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
+import com.github.dreamhead.moco.recorder.FileRecorderFactory;
 import com.github.dreamhead.moco.recorder.RecorderRegistry;
+import com.github.dreamhead.moco.recorder.RecorderTape;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import com.github.dreamhead.moco.recorder.StaticRecordHandler;
 import com.github.dreamhead.moco.recorder.StaticReplayHandler;
@@ -41,6 +43,19 @@ public class MocoRecorders {
 
     public static ResponseHandler replay(final String groupName, final ContentResource name) {
         return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), name);
+    }
+
+    public static ResponseHandler record(final String groupName, final RecorderTape tape, final ContentResource name) {
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, new FileRecorderFactory(tape)), name);
+    }
+
+    public static ResponseHandler replay(final String groupName, final RecorderTape tape, final ContentResource name) {
+        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, new FileRecorderFactory(tape)), name);
+    }
+
+    public static RecorderTape tape(final String path) {
+        return new RecorderTape(path);
+
     }
 
     private MocoRecorders() {

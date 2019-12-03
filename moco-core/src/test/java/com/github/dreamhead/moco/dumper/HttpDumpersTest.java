@@ -10,9 +10,7 @@ import org.junit.Test;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
-import static java.util.Collections.EMPTY_MAP;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.junit.Assert.assertThat;
 
 public class HttpDumpersTest {
@@ -80,7 +78,7 @@ public class HttpDumpersTest {
     public void should_not_parse_content_when_content_length_not_set() {
         assertThat(asContent(DefaultHttpResponse.builder()
                 .withHeaders(ImmutableMap.of(HttpHeaders.CONTENT_TYPE, "text/plain"))
-                .withContent("")
+                .withStringContent("")
                 .build()), is(""));
     }
 
@@ -91,7 +89,7 @@ public class HttpDumpersTest {
     private HttpMessage messageWithHeaders(final Map<String, String> headers) {
         return DefaultHttpResponse.builder()
                 .withHeaders(headers)
-                .withContent(MESSAGE_BODY)
+                .withStringContent(MESSAGE_BODY)
                 .build();
     }
 

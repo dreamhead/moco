@@ -18,7 +18,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
@@ -31,7 +31,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
@@ -39,7 +39,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("different")
+                .withStringContent("different")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
@@ -52,7 +52,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withUri("/foo")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -61,7 +61,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withUri("/bar")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
@@ -75,14 +75,14 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
         HttpRequest failover = DefaultHttpRequest.builder()
                 .withUri("/uri")
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
@@ -95,7 +95,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Cookie", "loggedIn=true", "Host", "localhost:12306"))
                 .build();
 
@@ -103,7 +103,7 @@ public class HttpRequestMatcherTest {
                 .withUri("/uri")
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withMethod(HttpMethod.POST)
-                .withContent("proxy")
+                .withStringContent("proxy")
                 .withHeaders(of("Host", "localhost:12306"))
                 .build();
 

@@ -112,7 +112,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             return self();
         }
 
-        public final T withContent(final String content) {
+        public final T withStringContent(final String content) {
             this.content = content(content);
             return self();
         }
