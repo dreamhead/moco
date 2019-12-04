@@ -97,4 +97,37 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("foo"));
         });
     }
+
+    @Test
+    public void should_record_and_replay_with_tape_for_multiple_record() throws Exception {
+        File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/foo-record?type=bar"), "bar");
+            helper.postContent(remoteUrl("/foo-record?type=blah"), "blah");
+        });
+
+        HttpServer newServer = createServer(port());
+
+        newServer.request(by(uri("/tape-replay"))).response(replay("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+
+        running(newServer, () -> {
+            assertThat(helper.get(remoteUrl("/tape-replay?type=bar")), is("bar"));
+            assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("blah"));
+        });
+    }
+
+    @Test
+    public void should_do_well_for_replay_without_record() throws Exception {
+        File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), template("${req.queries['type']}")));
+
+        running(server, () -> {
+            assertThat(helper.getForStatus(remoteUrl("/tape-replay?type=bar")), is(400));
+            assertThat(helper.getForStatus(remoteUrl("/tape-replay?type=blah")), is(400));
+        });
+    }
 }

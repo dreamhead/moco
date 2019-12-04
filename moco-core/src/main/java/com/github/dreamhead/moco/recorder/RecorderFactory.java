@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.recorder;
 
 public interface RecorderFactory {
-    RequestRecorder newRecorder();
+    RequestRecorder newRecorder(String name);
 
-    RecorderFactory IN_MEMORY = InMemoryRequestRecorder::new;
+    RecorderFactory IN_MEMORY = (String name) -> new InMemoryRequestRecorder();
 }

@@ -2,10 +2,10 @@ package com.github.dreamhead.moco.recorder;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoException;
-import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.util.Jsons;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,21 +19,33 @@ public class RecorderTape {
         this.path = Paths.get(path);
     }
 
-    public void write(final HttpRequest httpRequest) {
-        String content = Jsons.toJson(httpRequest);
+    public void write(String name, final HttpRequest httpRequest) {
+        TapeContent content = getTapeContent();
+        content.addRequest(name, httpRequest);
+
         try {
-            Files.write(path, content.getBytes());
+            String result = Jsons.toJson(content);
+            Files.write(path, result.getBytes());
         } catch (IOException e) {
             throw new MocoException(e);
         }
     }
 
-    public HttpRequest read() {
+    private TapeContent getTapeContent() {
         try {
             InputStream inputStream = new FileInputStream(path.toFile());
-            return Jsons.toObject(inputStream, DefaultHttpRequest.class);
+            if (inputStream.available() <= 0) {
+                return new TapeContent();
+            }
+            return Jsons.toObject(inputStream, TapeContent.class);
+        } catch (FileNotFoundException e) {
+            return new TapeContent();
         } catch (IOException e) {
             throw new MocoException(e);
         }
+    }
+
+    public HttpRequest read(String name) {
+        return getTapeContent().getRequest(name);
     }
 }

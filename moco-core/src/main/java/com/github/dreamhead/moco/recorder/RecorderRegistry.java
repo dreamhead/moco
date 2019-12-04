@@ -21,7 +21,7 @@ public class RecorderRegistry {
             return recorder;
         }
 
-        return recorders.computeIfAbsent(name, s -> factory.newRecorder());
+        return recorders.computeIfAbsent(name, s -> factory.newRecorder(name));
     }
 
     private static RecorderRegistry REGISTRY = new RecorderRegistry(IN_MEMORY);

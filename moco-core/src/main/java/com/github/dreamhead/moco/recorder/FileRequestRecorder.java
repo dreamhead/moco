@@ -6,26 +6,28 @@ import com.google.common.net.MediaType;
 import org.apache.http.HttpHeaders;
 
 public class FileRequestRecorder implements RequestRecorder {
+    private String name;
     private RecorderTape tape;
 
-    public FileRequestRecorder(final RecorderTape tape) {
+    public FileRequestRecorder(final String name, final RecorderTape tape) {
+        this.name = name;
         this.tape = tape;
     }
 
     @Override
     public void record(final HttpRequest httpRequest) {
-        tape.write(httpRequest);
+        tape.write(name, httpRequest);
     }
 
     @Override
     public MessageContent getContent() {
-        HttpRequest request = tape.read();
+        HttpRequest request = tape.read(name);
         return request.getContent();
     }
 
     @Override
     public MediaType getContentType() {
-        HttpRequest httpRequest = tape.read();
+        HttpRequest httpRequest = tape.read(name);
         if (httpRequest == null) {
             return MediaType.PLAIN_TEXT_UTF_8;
         }
