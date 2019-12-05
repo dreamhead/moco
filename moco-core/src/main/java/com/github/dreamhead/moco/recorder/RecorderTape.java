@@ -4,10 +4,9 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Jsons;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +18,7 @@ public class RecorderTape {
         this.path = Paths.get(path);
     }
 
-    public void write(String name, final HttpRequest httpRequest) {
+    public final void write(final String name, final HttpRequest httpRequest) {
         TapeContent content = getTapeContent();
         content.addRequest(name, httpRequest);
 
@@ -33,11 +32,12 @@ public class RecorderTape {
 
     private TapeContent getTapeContent() {
         try {
-            InputStream inputStream = new FileInputStream(path.toFile());
-            if (inputStream.available() <= 0) {
-                return new TapeContent();
+            BufferedReader reader = Files.newBufferedReader(path);
+            if (reader.ready()) {
+                return Jsons.toObject(reader, TapeContent.class);
             }
-            return Jsons.toObject(inputStream, TapeContent.class);
+
+            return new TapeContent();
         } catch (FileNotFoundException e) {
             return new TapeContent();
         } catch (IOException e) {
@@ -45,7 +45,7 @@ public class RecorderTape {
         }
     }
 
-    public HttpRequest read(String name) {
+    public final HttpRequest read(final String name) {
         return getTapeContent().getRequest(name);
     }
 }

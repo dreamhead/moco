@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -56,6 +57,14 @@ public final class Jsons {
     }
 
     public static <T> T toObject(final InputStream value, final Class<T> clazz) {
+        try {
+            return DEFAULT_MAPPER.readValue(value, clazz);
+        } catch (IOException e) {
+            throw new MocoException(e);
+        }
+    }
+
+    public static <T> T toObject(final Reader value, final Class<T> clazz) {
         try {
             return DEFAULT_MAPPER.readValue(value, clazz);
         } catch (IOException e) {
