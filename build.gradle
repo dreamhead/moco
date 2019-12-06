@@ -79,7 +79,7 @@ subprojects {
         jacksonVersion = '2.10.1'
         junitVersion = '4.12'
         hamcrestVersion = '2.2'
-        mockitoVersion = '3.1.0'
+        mockitoVersion = '3.2.0'
         httpComponentVersion = '4.5.10'
         jsonpathVersion = '2.4.0'
         freemarkerVersion = '2.3.29'
