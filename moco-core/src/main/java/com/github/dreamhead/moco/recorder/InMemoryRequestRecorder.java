@@ -14,6 +14,11 @@ public class InMemoryRequestRecorder implements RequestRecorder {
     }
 
     @Override
+    public HttpRequest getRequest() {
+        return httpRequest;
+    }
+
+    @Override
     public MessageContent getContent() {
         if (httpRequest != null) {
             return httpRequest.getContent();

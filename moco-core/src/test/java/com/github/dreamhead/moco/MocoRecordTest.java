@@ -130,4 +130,23 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             assertThat(helper.getForStatus(remoteUrl("/tape-replay?type=blah")), is(400));
         });
     }
+
+    @Test
+    public void should_record_and_replay_with_group_and_recorder_and_response() throws Exception {
+        server.request(by(uri("/foo-record"))).response(record("foo", template("${req.queries['type']}")));
+        server.request(by(uri("/bar-record"))).response(record("bar", template("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay("foo",
+                template("${req.queries['type']}"), template("${req.queries['type']}")));
+        server.request(by(uri("/bar-replay"))).response(replay("bar",
+                template("${req.queries['type']}"), template("${req.queries['type']}")));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");
+            helper.postContent(remoteUrl("/bar-record?type=blah"), "bar");
+            assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("blah"));
+            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("blah"));
+            assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("blah"));
+            assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("blah"));
+        });
+    }
 }

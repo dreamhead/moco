@@ -9,16 +9,25 @@ import com.google.common.net.MediaType;
 public class DynamicReplayHandler extends AbstractHttpContentResponseHandler implements ReplayHandler {
     private RecorderRegistry registry;
     private ContentResource name;
+    private ContentResource replayModifier;
 
-    public DynamicReplayHandler(final RecorderRegistry registry, final ContentResource name) {
+    public DynamicReplayHandler(final RecorderRegistry registry,
+                                final ContentResource name,
+                                final ContentResource replayModifier) {
         this.registry = registry;
         this.name = name;
+        this.replayModifier = replayModifier;
     }
 
     @Override
     protected MessageContent responseContent(final HttpRequest request) {
-        RequestRecorder recorder = registry.recorderOf(this.name.readFor(request).toString());
-        return recorder.getContent();
+        String name = this.name.readFor(request).toString();
+        RequestRecorder recorder = registry.recorderOf(name);
+        HttpRequest recordedRequest = recorder.getRequest();
+        if (recordedRequest == null) {
+            throw new IllegalArgumentException("No recorded request for [" + name + "]");
+        }
+        return replayModifier.readFor(recordedRequest);
     }
 
     @Override

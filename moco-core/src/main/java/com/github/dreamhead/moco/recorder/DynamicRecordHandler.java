@@ -8,12 +8,12 @@ import com.google.common.net.MediaType;
 
 public class DynamicRecordHandler extends AbstractHttpContentResponseHandler implements RecordHandler {
     private RecorderRegistry registry;
-    private ContentResource name;
+    private ContentResource recorderName;
 
     public DynamicRecordHandler(final RecorderRegistry recorderRegistry,
-                                final ContentResource name) {
+                                final ContentResource recorderName) {
         this.registry = recorderRegistry;
-        this.name = name;
+        this.recorderName = recorderName;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     private RequestRecorder getRequestRecorder(final HttpRequest httpRequest) {
-        return registry.recorderOf(this.name.readFor(httpRequest).toString());
+        return registry.recorderOf(this.recorderName.readFor(httpRequest).toString());
     }
 
     @Override

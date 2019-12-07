@@ -20,6 +20,11 @@ public class FileRequestRecorder implements RequestRecorder {
     }
 
     @Override
+    public HttpRequest getRequest() {
+        return tape.read(name);
+    }
+
+    @Override
     public MessageContent getContent() {
         HttpRequest request = tape.read(name);
         return request.getContent();
