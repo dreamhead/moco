@@ -18,7 +18,6 @@ public class InMemoryRequestRecorder implements RequestRecorder {
         return httpRequest;
     }
 
-    @Override
     public MessageContent getContent() {
         if (httpRequest != null) {
             return httpRequest.getContent();
@@ -27,7 +26,6 @@ public class InMemoryRequestRecorder implements RequestRecorder {
         return MessageContent.content().build();
     }
 
-    @Override
     public MediaType getContentType() {
         if (httpRequest == null) {
             return MediaType.PLAIN_TEXT_UTF_8;
