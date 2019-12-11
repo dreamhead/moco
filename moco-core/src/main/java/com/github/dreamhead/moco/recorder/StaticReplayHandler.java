@@ -16,7 +16,7 @@ public class StaticReplayHandler extends AbstractReplayHandler {
     }
 
     @Override
-    protected HttpRequest getRecordedRequest(HttpRequest request) {
+    protected HttpRequest getRecordedRequest(final HttpRequest request) {
         return recorder.getRequest();
     }
 }

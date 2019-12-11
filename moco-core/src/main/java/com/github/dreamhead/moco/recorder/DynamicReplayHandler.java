@@ -32,6 +32,4 @@ public class DynamicReplayHandler extends AbstractReplayHandler {
         RequestRecorder recorder = registry.recorderOf(name);
         return recorder.getRequest();
     }
-
-
 }
