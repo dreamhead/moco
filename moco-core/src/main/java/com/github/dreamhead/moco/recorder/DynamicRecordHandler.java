@@ -28,7 +28,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     @Override
-    protected MediaType getContentType(HttpRequest request) {
+    protected MediaType getContentType(final HttpRequest request) {
         return MediaType.PLAIN_TEXT_UTF_8;
     }
 }

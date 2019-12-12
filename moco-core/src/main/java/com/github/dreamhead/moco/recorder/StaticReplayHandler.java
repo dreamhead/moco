@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 public class StaticReplayHandler extends AbstractReplayHandler {
     private RequestRecorder recorder;
 
-    public StaticReplayHandler(RequestRecorder recorder) {
+    public StaticReplayHandler(final RequestRecorder recorder) {
         this.recorder = recorder;
     }
 
