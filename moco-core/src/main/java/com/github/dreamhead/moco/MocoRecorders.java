@@ -13,7 +13,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.recorder.RecorderFactory.IN_MEMORY;
 
-public class MocoRecorders {
+public final class MocoRecorders {
     public static ResponseHandler record(final RequestRecorder recorder) {
         return new StaticRecordHandler(recorder);
     }
