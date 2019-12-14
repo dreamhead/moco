@@ -11,12 +11,12 @@ public class StaticReplayHandler extends AbstractReplayHandler {
     }
 
     @Override
-    protected MessageContent responseContent(final HttpRequest httpRequest) {
+    protected final MessageContent responseContent(final HttpRequest httpRequest) {
         return recorder.getRequest().getContent();
     }
 
     @Override
-    protected HttpRequest getRecordedRequest(final HttpRequest request) {
+    protected final HttpRequest getRecordedRequest(final HttpRequest request) {
         return recorder.getRequest();
     }
 }

@@ -18,7 +18,7 @@ public class DynamicReplayHandler extends AbstractReplayHandler {
     }
 
     @Override
-    protected MessageContent responseContent(final HttpRequest request) {
+    protected final MessageContent responseContent(final HttpRequest request) {
         HttpRequest recordedRequest = getRecordedRequest(request);
         if (recordedRequest == null) {
             throw new IllegalArgumentException("No recorded request for [" + name + "]");
@@ -27,7 +27,7 @@ public class DynamicReplayHandler extends AbstractReplayHandler {
         return replayModifier.readFor(recordedRequest);
     }
 
-    protected HttpRequest getRecordedRequest(final HttpRequest request) {
+    protected final HttpRequest getRecordedRequest(final HttpRequest request) {
         String name = this.name.readFor(request).toString();
         RequestRecorder recorder = registry.recorderOf(name);
         return recorder.getRequest();
