@@ -13,7 +13,7 @@ public class RecorderRegistry {
         this.factory = factory;
     }
 
-    public RequestRecorder recorderOf(final String name) {
+    public final RequestRecorder recorderOf(final String name) {
         RequestRecorder recorder = recorders.get(name);
 
         if (recorder != null) {
