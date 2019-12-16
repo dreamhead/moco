@@ -8,7 +8,7 @@ public class TapeRecorderFactory implements RecorderFactory {
     }
 
     @Override
-    public RequestRecorder newRecorder(final String name) {
+    public final RequestRecorder newRecorder(final String name) {
         return new FileRequestRecorder(name, tape);
     }
 }
