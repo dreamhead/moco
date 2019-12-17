@@ -7,14 +7,14 @@ import com.github.dreamhead.moco.resource.ContentResource;
 public class DynamicReplayHandler extends AbstractReplayHandler {
     private RecorderRegistry registry;
     private ContentResource name;
-    private ContentResource replayModifier;
+    private ContentResource modifier;
 
     public DynamicReplayHandler(final RecorderRegistry registry,
-                                final ContentResource name,
-                                final ContentResource replayModifier) {
+                                final ContentResource identifier,
+                                final ContentResource modifier) {
         this.registry = registry;
-        this.name = name;
-        this.replayModifier = replayModifier;
+        this.name = identifier;
+        this.modifier = modifier;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DynamicReplayHandler extends AbstractReplayHandler {
             throw new IllegalArgumentException("No recorded request for [" + name + "]");
         }
 
-        return replayModifier.readFor(recordedRequest);
+        return modifier.readFor(recordedRequest);
     }
 
     protected final HttpRequest getRecordedRequest(final HttpRequest request) {
