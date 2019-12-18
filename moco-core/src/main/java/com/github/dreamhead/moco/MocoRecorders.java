@@ -32,21 +32,21 @@ public final class MocoRecorders {
                 template("${req.content}"));
     }
 
-    public static ResponseHandler record(final ContentResource name) {
-        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), name);
+    public static ResponseHandler record(final ContentResource identifier) {
+        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), identifier);
     }
 
-    public static ResponseHandler replay(final ContentResource name) {
-        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), name, template("${req.content}"));
+    public static ResponseHandler replay(final ContentResource identifier) {
+        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), identifier, template("${req.content}"));
     }
 
-    public static ResponseHandler record(final String groupName, final ContentResource name) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), name);
+    public static ResponseHandler record(final String groupName, final ContentResource identifier) {
+        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), identifier);
     }
 
-    public static ResponseHandler replay(final String groupName, final ContentResource name) {
+    public static ResponseHandler replay(final String groupName, final ContentResource identifier) {
         return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY),
-                name, template("${req.content}"));
+                identifier, template("${req.content}"));
     }
 
     public static ResponseHandler record(final String groupName,
@@ -58,16 +58,16 @@ public final class MocoRecorders {
 
     public static ResponseHandler replay(final String groupName,
                                          final RecorderTape tape,
-                                         final ContentResource recorderName) {
+                                         final ContentResource identifier) {
         return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, new TapeRecorderFactory(tape)),
-                recorderName, template("${req.content}"));
+                identifier, template("${req.content}"));
     }
 
     public static ResponseHandler replay(final String groupName,
-                                         final ContentResource recorderName,
-                                         final ContentResource replayModifier) {
+                                         final ContentResource identifier,
+                                         final ContentResource modifier) {
         return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY),
-                recorderName, replayModifier);
+                identifier, modifier);
     }
 
     public static RecorderTape tape(final String path) {
