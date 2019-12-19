@@ -136,9 +136,11 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
         server.request(by(uri("/foo-record"))).response(record("foo", template("${req.queries['type']}")));
         server.request(by(uri("/bar-record"))).response(record("bar", template("${req.queries['type']}")));
         server.request(by(uri("/foo-replay"))).response(replay("foo",
-                template("${req.queries['type']}"), template("${req.queries['type']}")));
+                template("${req.queries['type']}"),
+                template("${req.queries['type']}")));
         server.request(by(uri("/bar-replay"))).response(replay("bar",
-                template("${req.queries['type']}"), template("${req.queries['type']}")));
+                template("${req.queries['type']}"),
+                template("${req.queries['type']}")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");

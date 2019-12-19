@@ -51,9 +51,9 @@ public final class MocoRecorders {
 
     public static ResponseHandler record(final String groupName,
                                          final RecorderTape tape,
-                                         final ContentResource recorderName) {
+                                         final ContentResource identifier) {
         return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, new TapeRecorderFactory(tape)),
-                recorderName);
+                identifier);
     }
 
     public static ResponseHandler replay(final String groupName,
