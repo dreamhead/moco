@@ -2,33 +2,32 @@ package com.github.dreamhead.moco.recorder;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.resource.ContentResource;
 
 public class DynamicReplayHandler extends AbstractReplayHandler {
     private RecorderRegistry registry;
-    private ContentResource name;
-    private ContentResource modifier;
+    private RecorderIdentifier identifier;
+    private RecorderModifier modifier;
+    private RecorderConfigurations configurations;
 
-    public DynamicReplayHandler(final RecorderRegistry registry,
-                                final ContentResource identifier,
-                                final ContentResource modifier) {
-        this.registry = registry;
-        this.name = identifier;
-        this.modifier = modifier;
+    public DynamicReplayHandler(final RecorderConfigurations configurations) {
+        this.registry = configurations.getRecorderRegistry();
+        this.identifier = configurations.getIdentifier();
+        this.modifier = configurations.getModifier();
+        this.configurations = configurations;
     }
 
     @Override
     protected final MessageContent responseContent(final HttpRequest request) {
         HttpRequest recordedRequest = getRecordedRequest(request);
         if (recordedRequest == null) {
-            throw new IllegalArgumentException("No recorded request for [" + name + "]");
+            throw new IllegalArgumentException("No recorded request for [" + identifier + "]");
         }
 
-        return modifier.readFor(recordedRequest);
+        return modifier.getMessageContent(recordedRequest);
     }
 
     protected final HttpRequest getRecordedRequest(final HttpRequest request) {
-        String name = this.name.readFor(request).toString();
+        String name = this.identifier.getIdentifier(request);
         RequestRecorder recorder = registry.recorderOf(name);
         return recorder.getRequest();
     }

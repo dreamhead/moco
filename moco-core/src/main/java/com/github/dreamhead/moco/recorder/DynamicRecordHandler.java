@@ -3,17 +3,17 @@ package com.github.dreamhead.moco.recorder;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.mount.AbstractHttpContentResponseHandler;
-import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.net.MediaType;
 
 public class DynamicRecordHandler extends AbstractHttpContentResponseHandler implements RecordHandler {
     private RecorderRegistry registry;
-    private ContentResource identifier;
+    private RecorderIdentifier identifier;
+    private RecorderConfigurations configurations;
 
-    public DynamicRecordHandler(final RecorderRegistry recorderRegistry,
-                                final ContentResource identifier) {
-        this.registry = recorderRegistry;
-        this.identifier = identifier;
+    public DynamicRecordHandler(final RecorderConfigurations configurations) {
+        this.registry = configurations.getRecorderRegistry();
+        this.identifier = configurations.getIdentifier();
+        this.configurations = configurations;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     private RequestRecorder getRequestRecorder(final HttpRequest httpRequest) {
-        return registry.recorderOf(this.identifier.readFor(httpRequest).toString());
+        return registry.recorderOf(this.identifier.getIdentifier(httpRequest));
     }
 
     @Override

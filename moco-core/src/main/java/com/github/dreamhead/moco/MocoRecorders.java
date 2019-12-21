@@ -2,8 +2,10 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
 import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
-import com.github.dreamhead.moco.recorder.TapeRecorderFactory;
-import com.github.dreamhead.moco.recorder.RecorderRegistry;
+import com.github.dreamhead.moco.recorder.RecorderConfig;
+import com.github.dreamhead.moco.recorder.RecorderConfigurations;
+import com.github.dreamhead.moco.recorder.RecorderIdentifier;
+import com.github.dreamhead.moco.recorder.RecorderModifier;
 import com.github.dreamhead.moco.recorder.RecorderTape;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import com.github.dreamhead.moco.recorder.StaticRecordHandler;
@@ -11,7 +13,6 @@ import com.github.dreamhead.moco.recorder.StaticReplayHandler;
 import com.github.dreamhead.moco.resource.ContentResource;
 
 import static com.github.dreamhead.moco.Moco.template;
-import static com.github.dreamhead.moco.recorder.RecorderFactory.IN_MEMORY;
 
 public final class MocoRecorders {
     public static ResponseHandler record(final RequestRecorder recorder) {
@@ -23,51 +24,56 @@ public final class MocoRecorders {
     }
 
     public static ResponseHandler record(final String name) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(name, IN_MEMORY), Moco.text(name));
+        RecorderConfigurations configurations = RecorderConfigurations.create(name);
+        return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final String name) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(name, IN_MEMORY),
-                Moco.text(name),
-                template("${req.content}"));
+        RecorderConfigurations configurations = RecorderConfigurations.create(name);
+        return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler record(final ContentResource identifier) {
-        return new DynamicRecordHandler(RecorderRegistry.defaultRegistry(), identifier);
+        RecorderConfigurations configurations = RecorderConfigurations.create(null, new RecorderIdentifier(identifier));
+        return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final ContentResource identifier) {
-        return new DynamicReplayHandler(RecorderRegistry.defaultRegistry(), identifier, template("${req.content}"));
+        RecorderConfigurations configurations = RecorderConfigurations.create(null, new RecorderIdentifier(identifier));
+        return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler record(final String groupName, final ContentResource identifier) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY), identifier);
+        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier));
+        return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final String groupName, final ContentResource identifier) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY),
-                identifier, template("${req.content}"));
+        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier));
+
+        return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler record(final String groupName,
                                          final RecorderTape tape,
                                          final ContentResource identifier) {
-        return new DynamicRecordHandler(RecorderRegistry.registryOf(groupName, new TapeRecorderFactory(tape)),
-                identifier);
+        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, tape, new RecorderIdentifier(identifier));
+        return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final String groupName,
                                          final RecorderTape tape,
                                          final ContentResource identifier) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, new TapeRecorderFactory(tape)),
-                identifier, template("${req.content}"));
+        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, tape, new RecorderIdentifier(identifier));
+        return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler replay(final String groupName,
                                          final ContentResource identifier,
                                          final ContentResource modifier) {
-        return new DynamicReplayHandler(RecorderRegistry.registryOf(groupName, IN_MEMORY),
-                identifier, modifier);
+        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier),
+                new RecorderModifier(modifier));
+        return new DynamicReplayHandler(configurations);
     }
 
     public static RecorderTape tape(final String path) {

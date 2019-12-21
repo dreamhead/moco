@@ -48,4 +48,9 @@ public class RecorderTape implements RecorderConfig {
     public final HttpRequest read(final String name) {
         return getTapeContent().getRequest(name);
     }
+
+    @Override
+    public boolean isFor(final String name) {
+        return TAPE.equalsIgnoreCase(name);
+    }
 }
