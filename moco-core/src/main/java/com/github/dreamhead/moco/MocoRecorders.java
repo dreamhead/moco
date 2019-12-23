@@ -43,41 +43,36 @@ public final class MocoRecorders {
         return new DynamicReplayHandler(configurations);
     }
 
-    public static ResponseHandler record(final String groupName, final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier));
+    public static ResponseHandler record(final RecorderConfig... configs) {
+        RecorderConfigurations configurations = RecorderConfigurations.create(null, configs);
         return new DynamicRecordHandler(configurations);
     }
 
-    public static ResponseHandler replay(final String groupName, final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier));
-
-        return new DynamicReplayHandler(configurations);
+    public static ResponseHandler replay(final RecorderConfig... configs) {
+        return new DynamicReplayHandler(RecorderConfigurations.create(null, configs));
     }
 
-    public static ResponseHandler record(final String groupName,
-                                         final RecorderTape tape,
-                                         final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, tape, new RecorderIdentifier(identifier));
+    public static ResponseHandler record(final String name,
+                                         final RecorderConfig... configs) {
+        RecorderConfigurations configurations = RecorderConfigurations.create(name, configs);
         return new DynamicRecordHandler(configurations);
     }
 
-    public static ResponseHandler replay(final String groupName,
-                                         final RecorderTape tape,
-                                         final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, tape, new RecorderIdentifier(identifier));
-        return new DynamicReplayHandler(configurations);
-    }
-
-    public static ResponseHandler replay(final String groupName,
-                                         final ContentResource identifier,
-                                         final ContentResource modifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(groupName, new RecorderIdentifier(identifier),
-                new RecorderModifier(modifier));
-        return new DynamicReplayHandler(configurations);
+    public static ResponseHandler replay(final String name,
+                                         final RecorderConfig... configs) {
+        return new DynamicReplayHandler(RecorderConfigurations.create(name, configs));
     }
 
     public static RecorderTape tape(final String path) {
         return new RecorderTape(path);
+    }
+
+    public static RecorderIdentifier identifier(final String text) {
+        return new RecorderIdentifier(template(text));
+    }
+
+    public static RecorderModifier modifier(final String text) {
+        return new RecorderModifier(template(text));
     }
 
     private MocoRecorders() {

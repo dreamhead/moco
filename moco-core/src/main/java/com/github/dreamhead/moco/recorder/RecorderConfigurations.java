@@ -35,7 +35,7 @@ public class RecorderConfigurations {
         return RecorderRegistry.defaultRegistry();
     }
 
-    public RecorderFactory getRecordFactory() {
+    private RecorderFactory getRecordFactory() {
         if (tape != null) {
             return new TapeRecorderFactory(tape);
         }
@@ -62,5 +62,4 @@ public class RecorderConfigurations {
 
         return new RecorderModifier(template("${req.content}"));
     }
-
 }
