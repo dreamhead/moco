@@ -2,6 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
 import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
+import com.github.dreamhead.moco.recorder.RecorderGroup;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
 import com.github.dreamhead.moco.recorder.RecorderConfigurations;
 import com.github.dreamhead.moco.recorder.RecorderIdentifier;
@@ -23,44 +24,27 @@ public final class MocoRecorders {
         return new StaticReplayHandler(recorder);
     }
 
-    public static ResponseHandler record(final String name) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(name);
-        return new DynamicRecordHandler(configurations);
-    }
-
-    public static ResponseHandler replay(final String name) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(name);
-        return new DynamicReplayHandler(configurations);
-    }
-
     public static ResponseHandler record(final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(null, new RecorderIdentifier(identifier));
+        RecorderConfigurations configurations = RecorderConfigurations.create(new RecorderIdentifier(identifier));
         return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(null, new RecorderIdentifier(identifier));
+        RecorderConfigurations configurations = RecorderConfigurations.create(new RecorderIdentifier(identifier));
         return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler record(final RecorderConfig... configs) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(null, configs);
+        RecorderConfigurations configurations = RecorderConfigurations.create(configs);
         return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final RecorderConfig... configs) {
-        return new DynamicReplayHandler(RecorderConfigurations.create(null, configs));
+        return new DynamicReplayHandler(RecorderConfigurations.create(configs));
     }
 
-    public static ResponseHandler record(final String name,
-                                         final RecorderConfig... configs) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(name, configs);
-        return new DynamicRecordHandler(configurations);
-    }
-
-    public static ResponseHandler replay(final String name,
-                                         final RecorderConfig... configs) {
-        return new DynamicReplayHandler(RecorderConfigurations.create(name, configs));
+    public static RecorderGroup group(final String name) {
+        return new RecorderGroup(name);
     }
 
     public static RecorderTape tape(final String path) {

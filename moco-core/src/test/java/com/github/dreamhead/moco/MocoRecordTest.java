@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.MocoRecorders.group;
 import static com.github.dreamhead.moco.MocoRecorders.identifier;
 import static com.github.dreamhead.moco.MocoRecorders.modifier;
 import static com.github.dreamhead.moco.MocoRecorders.record;
@@ -37,8 +37,8 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_record_and_replay_with_name() throws Exception {
-        server.request(by(uri("/record"))).response(record("foo"));
-        server.request(by(uri("/replay"))).response(replay("foo"));
+        server.request(by(uri("/record"))).response(record(group("foo")));
+        server.request(by(uri("/replay"))).response(replay(group("foo")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/record"), "foo");
@@ -65,10 +65,10 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_record_and_replay_with_group_and_template() throws Exception {
-        server.request(by(uri("/foo-record"))).response(record("foo", identifier("${req.queries['type']}")));
-        server.request(by(uri("/bar-record"))).response(record("bar", identifier("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo", identifier("${req.queries['type']}")));
-        server.request(by(uri("/bar-replay"))).response(replay("bar", identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-record"))).response(record(group("foo"), identifier("${req.queries['type']}")));
+        server.request(by(uri("/bar-record"))).response(record(group("bar"), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay(group("foo"), identifier("${req.queries['type']}")));
+        server.request(by(uri("/bar-replay"))).response(replay(group("bar"), identifier("${req.queries['type']}")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");
@@ -83,8 +83,8 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
     @Test
     public void should_record_and_replay_with_tape() throws Exception {
         File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-record"))).response(record(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/foo-record?type=blah"), "foo");
@@ -93,7 +93,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
         HttpServer newServer = createServer(port());
 
-        newServer.request(by(uri("/tape-replay"))).response(replay("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
+        newServer.request(by(uri("/tape-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
         running(newServer, () -> {
             assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("foo"));
@@ -103,8 +103,8 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
     @Test
     public void should_record_and_replay_with_tape_for_multiple_record() throws Exception {
         File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-record"))).response(record(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
         running(server, () -> {
             helper.postContent(remoteUrl("/foo-record?type=bar"), "bar");
@@ -113,7 +113,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
         HttpServer newServer = createServer(port());
 
-        newServer.request(by(uri("/tape-replay"))).response(replay("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
+        newServer.request(by(uri("/tape-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
         running(newServer, () -> {
             assertThat(helper.get(remoteUrl("/tape-replay?type=bar")), is("bar"));
@@ -124,8 +124,8 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
     @Test
     public void should_do_well_for_replay_without_record() throws Exception {
         File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-        server.request(by(uri("/foo-record"))).response(record("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo", tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-record"))).response(record(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
         running(server, () -> {
             assertThat(helper.getForStatus(remoteUrl("/tape-replay?type=bar")), is(400));
@@ -135,12 +135,12 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_record_and_replay_with_group_and_recorder_and_response() throws Exception {
-        server.request(by(uri("/foo-record"))).response(record("foo", identifier("${req.queries['type']}")));
-        server.request(by(uri("/bar-record"))).response(record("bar", identifier("${req.queries['type']}")));
-        server.request(by(uri("/foo-replay"))).response(replay("foo",
+        server.request(by(uri("/foo-record"))).response(record(group("foo"), identifier("${req.queries['type']}")));
+        server.request(by(uri("/bar-record"))).response(record(group("foo"), identifier("${req.queries['type']}")));
+        server.request(by(uri("/foo-replay"))).response(replay(group("foo"),
                 identifier("${req.queries['type']}"),
                 modifier("${req.queries['type']}")));
-        server.request(by(uri("/bar-replay"))).response(replay("bar",
+        server.request(by(uri("/bar-replay"))).response(replay(group("foo"),
                 identifier("${req.queries['type']}"),
                 modifier("${req.queries['type']}")));
 

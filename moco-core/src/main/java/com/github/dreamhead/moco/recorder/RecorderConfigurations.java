@@ -4,16 +4,18 @@ import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
 
 public class RecorderConfigurations {
-    private String name;
+    private RecorderGroup group;
     private RecorderTape tape;
     private RecorderIdentifier identifier;
     private RecorderModifier modifier;
 
-    public static RecorderConfigurations create(final String name, final RecorderConfig... configs) {
+    public static RecorderConfigurations create(final RecorderConfig... configs) {
         RecorderConfigurations configurations = new RecorderConfigurations();
-        configurations.name = name;
+
         for (RecorderConfig config : configs) {
-            if (config.isFor(RecorderConfig.TAPE)) {
+            if (config.isFor(RecorderConfig.GROUP)) {
+                configurations.group = (RecorderGroup) config;
+            } else if (config.isFor(RecorderConfig.TAPE)) {
                 configurations.tape = (RecorderTape) config;
             } else if (config.isFor(RecorderConfig.IDENTIFIER)) {
                 configurations.identifier = (RecorderIdentifier) config;
@@ -28,8 +30,8 @@ public class RecorderConfigurations {
     }
 
     public RecorderRegistry getRecorderRegistry() {
-        if (name != null) {
-            return RecorderRegistry.registryOf(name, getRecordFactory());
+        if (group != null) {
+            return RecorderRegistry.registryOf(group.getName(), getRecordFactory());
         }
 
         return RecorderRegistry.defaultRegistry();
@@ -48,8 +50,9 @@ public class RecorderConfigurations {
             return identifier;
         }
 
-        if (name != null) {
-            return new RecorderIdentifier(text(name));
+
+        if (group != null) {
+            return new RecorderIdentifier(text(group.getName()));
         }
 
         throw new IllegalArgumentException("No identifier found");
