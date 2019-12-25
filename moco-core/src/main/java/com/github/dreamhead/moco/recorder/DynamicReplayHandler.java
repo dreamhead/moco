@@ -7,13 +7,11 @@ public class DynamicReplayHandler extends AbstractReplayHandler {
     private RecorderRegistry registry;
     private RecorderIdentifier identifier;
     private RecorderModifier modifier;
-    private RecorderConfigurations configurations;
 
     public DynamicReplayHandler(final RecorderConfigurations configurations) {
         this.registry = configurations.getRecorderRegistry();
         this.identifier = configurations.getIdentifier();
         this.modifier = configurations.getModifier();
-        this.configurations = configurations;
     }
 
     @Override
