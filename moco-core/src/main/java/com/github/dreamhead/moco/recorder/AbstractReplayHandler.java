@@ -6,10 +6,10 @@ import com.google.common.net.MediaType;
 import org.apache.http.HttpHeaders;
 
 public abstract class AbstractReplayHandler extends AbstractHttpContentResponseHandler implements ReplayHandler {
-    protected abstract HttpRequest getRecordedRequest(final HttpRequest request);
+    protected abstract HttpRequest getRecordedRequest(HttpRequest request);
 
     @Override
-    protected MediaType getContentType(final HttpRequest request) {
+    protected final MediaType getContentType(final HttpRequest request) {
         HttpRequest recordedRequest = getRecordedRequest(request);
         if (recordedRequest == null) {
             return MediaType.PLAIN_TEXT_UTF_8;
