@@ -72,20 +72,6 @@ subprojects {
         }
     }
 
-    project.ext {
-        guavaVersion = '28.1-jre'
-        nettyVersion = '4.1.44.Final'
-        slf4jVersion = '1.7.29'
-        jacksonVersion = '2.10.1'
-        junitVersion = '4.12'
-        hamcrestVersion = '2.2'
-        mockitoVersion = '3.2.4'
-        httpComponentVersion = '4.5.10'
-        jsonpathVersion = '2.4.0'
-        freemarkerVersion = '2.3.29'
-        jsonAssertVersion = '1.5.0'
-    }
-
     project.jar {
         manifest {
             attributes 'Package': "com.github.dreamhead",
