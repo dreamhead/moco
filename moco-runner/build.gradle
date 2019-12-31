@@ -5,10 +5,6 @@ buildscript {
         mavenCentral()
     }
 
-    ext {
-        proguardVersion = '6.2.2'
-    }
-
     dependencies {
         classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
     }
