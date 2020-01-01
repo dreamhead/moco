@@ -2,16 +2,15 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
 import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
-import com.github.dreamhead.moco.recorder.RecorderGroup;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
 import com.github.dreamhead.moco.recorder.RecorderConfigurations;
+import com.github.dreamhead.moco.recorder.RecorderGroup;
 import com.github.dreamhead.moco.recorder.RecorderIdentifier;
 import com.github.dreamhead.moco.recorder.RecorderModifier;
 import com.github.dreamhead.moco.recorder.RecorderTape;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import com.github.dreamhead.moco.recorder.StaticRecordHandler;
 import com.github.dreamhead.moco.recorder.StaticReplayHandler;
-import com.github.dreamhead.moco.resource.ContentResource;
 
 import static com.github.dreamhead.moco.Moco.template;
 
@@ -22,16 +21,6 @@ public final class MocoRecorders {
 
     public static ResponseHandler replay(final RequestRecorder recorder) {
         return new StaticReplayHandler(recorder);
-    }
-
-    public static ResponseHandler record(final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(new RecorderIdentifier(identifier));
-        return new DynamicRecordHandler(configurations);
-    }
-
-    public static ResponseHandler replay(final ContentResource identifier) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(new RecorderIdentifier(identifier));
-        return new DynamicReplayHandler(configurations);
     }
 
     public static ResponseHandler record(final RecorderConfig... configs) {
