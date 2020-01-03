@@ -14,6 +14,7 @@ import com.github.dreamhead.moco.recorder.StaticReplayHandler;
 
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class MocoRecorders {
     public static ResponseHandler record(final RequestRecorder recorder) {
@@ -25,12 +26,14 @@ public final class MocoRecorders {
     }
 
     public static ResponseHandler record(final RecorderConfig... configs) {
-        RecorderConfigurations configurations = RecorderConfigurations.create(configs);
+        RecorderConfigurations configurations = RecorderConfigurations.create(
+                checkNotNull(configs, "Configuration should not be null"));
         return new DynamicRecordHandler(configurations);
     }
 
     public static ResponseHandler replay(final RecorderConfig... configs) {
-        return new DynamicReplayHandler(RecorderConfigurations.create(configs));
+        return new DynamicReplayHandler(RecorderConfigurations.create(
+                checkNotNull(configs, "Configuration should not be null")));
     }
 
     public static RecorderGroup group(final String name) {
