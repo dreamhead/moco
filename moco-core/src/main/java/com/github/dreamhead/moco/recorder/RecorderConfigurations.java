@@ -9,7 +9,7 @@ public class RecorderConfigurations {
     private RecorderIdentifier identifier;
     private RecorderModifier modifier;
 
-    public static RecorderConfigurations create(final RecorderConfig... configs) {
+    public static RecorderConfigurations create(final Iterable<RecorderConfig> configs) {
         RecorderConfigurations configurations = new RecorderConfigurations();
 
         for (RecorderConfig config : configs) {
