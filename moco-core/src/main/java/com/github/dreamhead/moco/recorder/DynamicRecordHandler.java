@@ -15,7 +15,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     @Override
-    protected MessageContent responseContent(final HttpRequest httpRequest) {
+    protected final MessageContent responseContent(final HttpRequest httpRequest) {
         RequestRecorder recorder = getRequestRecorder(httpRequest);
         recorder.record(httpRequest);
         return MessageContent.content().build();
@@ -26,7 +26,7 @@ public class DynamicRecordHandler extends AbstractHttpContentResponseHandler imp
     }
 
     @Override
-    protected MediaType getContentType(final HttpRequest request) {
+    protected final MediaType getContentType(final HttpRequest request) {
         return MediaType.PLAIN_TEXT_UTF_8;
     }
 }
