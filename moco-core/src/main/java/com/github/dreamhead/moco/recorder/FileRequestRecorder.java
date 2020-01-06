@@ -12,12 +12,12 @@ public class FileRequestRecorder implements RequestRecorder {
     }
 
     @Override
-    public void record(final HttpRequest httpRequest) {
+    public final void record(final HttpRequest httpRequest) {
         tape.write(name, httpRequest);
     }
 
     @Override
-    public HttpRequest getRequest() {
+    public final HttpRequest getRequest() {
         return tape.read(name);
     }
 }
