@@ -9,16 +9,16 @@ public class InMemoryRequestRecorder implements RequestRecorder {
     private HttpRequest httpRequest;
 
     @Override
-    public void record(final HttpRequest httpRequest) {
+    public final void record(final HttpRequest httpRequest) {
         this.httpRequest = httpRequest;
     }
 
     @Override
-    public HttpRequest getRequest() {
+    public final HttpRequest getRequest() {
         return httpRequest;
     }
 
-    public MessageContent getContent() {
+    public final MessageContent getContent() {
         if (httpRequest != null) {
             return httpRequest.getContent();
         }
@@ -26,7 +26,7 @@ public class InMemoryRequestRecorder implements RequestRecorder {
         return MessageContent.content().build();
     }
 
-    public MediaType getContentType() {
+    public final MediaType getContentType() {
         if (httpRequest == null) {
             return MediaType.PLAIN_TEXT_UTF_8;
         }
