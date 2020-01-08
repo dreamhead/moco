@@ -29,7 +29,7 @@ public class RecorderConfigurations {
         return configurations;
     }
 
-    public RecorderRegistry getRecorderRegistry() {
+    public final RecorderRegistry getRecorderRegistry() {
         if (group != null) {
             return RecorderRegistry.registryOf(group.getName(), getRecordFactory());
         }
@@ -45,7 +45,7 @@ public class RecorderConfigurations {
         return RecorderFactory.IN_MEMORY;
     }
 
-    public RecorderIdentifier getIdentifier() {
+    public final RecorderIdentifier getIdentifier() {
         if (identifier != null) {
             return identifier;
         }
@@ -58,7 +58,7 @@ public class RecorderConfigurations {
         throw new IllegalArgumentException("No identifier found");
     }
 
-    public RecorderModifier getModifier() {
+    public final RecorderModifier getModifier() {
         if (modifier != null) {
             return modifier;
         }
