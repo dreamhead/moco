@@ -8,11 +8,11 @@ public class RecorderGroup implements RecorderConfig {
     }
 
     @Override
-    public boolean isFor(String name) {
+    public final boolean isFor(String name) {
         return GROUP.equalsIgnoreCase(name);
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 }
