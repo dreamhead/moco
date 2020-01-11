@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 
-public class RecorderModifier implements RecorderConfig{
+public class RecorderModifier implements RecorderConfig {
     private ContentResource resource;
 
     public RecorderModifier(final ContentResource resource) {
@@ -12,11 +12,11 @@ public class RecorderModifier implements RecorderConfig{
     }
 
     @Override
-    public boolean isFor(final String name) {
+    public final boolean isFor(final String name) {
         return MODIFIER.equalsIgnoreCase(name);
     }
 
-    public MessageContent getMessageContent(final HttpRequest request) {
+    public final MessageContent getMessageContent(final HttpRequest request) {
         return this.resource.readFor(request);
     }
 }
