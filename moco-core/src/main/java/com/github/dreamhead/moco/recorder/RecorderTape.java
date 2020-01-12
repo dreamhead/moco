@@ -50,7 +50,7 @@ public class RecorderTape implements RecorderConfig {
     }
 
     @Override
-    public boolean isFor(final String name) {
+    public final boolean isFor(final String name) {
         return TAPE.equalsIgnoreCase(name);
     }
 }
