@@ -13,13 +13,13 @@ public class StaticRecordHandler extends AbstractHttpContentResponseHandler impl
     }
 
     @Override
-    protected MessageContent responseContent(final HttpRequest httpRequest) {
+    protected final MessageContent responseContent(final HttpRequest httpRequest) {
         recorder.record(httpRequest);
         return MessageContent.content().build();
     }
 
     @Override
-    protected MediaType getContentType(final HttpRequest request) {
+    protected final MediaType getContentType(final HttpRequest request) {
         return MediaType.PLAIN_TEXT_UTF_8;
     }
 }
