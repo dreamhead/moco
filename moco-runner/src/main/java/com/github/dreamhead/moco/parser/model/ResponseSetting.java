@@ -9,7 +9,7 @@ import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseSetting extends BaseResourceSetting {
-    private final ResponseHandlerFactory factory = new DynamicResponseHandlerFactory();
+    private static final ResponseHandlerFactory factory = new DynamicResponseHandlerFactory();
 
     private String status;
     private ProxyContainer proxy;
