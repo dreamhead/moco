@@ -5,7 +5,8 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.mount.AbstractHttpContentResponseHandler;
 import com.google.common.net.MediaType;
 
-public class StaticRecordHandler extends AbstractHttpContentResponseHandler implements RecordHandler {
+public class StaticRecordHandler extends AbstractHttpContentResponseHandler
+        implements RecordHandler {
     private RequestRecorder recorder;
 
     public StaticRecordHandler(final RequestRecorder recorder) {

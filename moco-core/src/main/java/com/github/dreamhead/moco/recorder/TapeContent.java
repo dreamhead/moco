@@ -21,11 +21,11 @@ public class TapeContent {
         this.content = new HashMap<>();
     }
 
-    public void addRequest(final String name, final HttpRequest request) {
+    public final void addRequest(final String name, final HttpRequest request) {
         content.put(name, request);
     }
 
-    public HttpRequest getRequest(final String name) {
+    public final HttpRequest getRequest(final String name) {
         return content.get(name);
     }
 }
