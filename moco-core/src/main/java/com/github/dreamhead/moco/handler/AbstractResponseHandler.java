@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 
 public abstract class AbstractResponseHandler implements ResponseHandler {
-    public ResponseHandler doApply(final MocoConfig config) {
+    protected ResponseHandler doApply(final MocoConfig config) {
         return this;
     }
 
