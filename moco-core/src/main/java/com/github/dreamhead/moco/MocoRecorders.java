@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.recorder.RecorderTape;
 import com.github.dreamhead.moco.recorder.RequestRecorder;
 import com.github.dreamhead.moco.recorder.StaticRecordHandler;
 import com.github.dreamhead.moco.recorder.StaticReplayHandler;
+import com.github.dreamhead.moco.resource.ContentResource;
 
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
@@ -49,6 +50,10 @@ public final class MocoRecorders {
 
     public static RecorderIdentifier identifier(final String text) {
         return new RecorderIdentifier(template(checkNotNullOrEmpty(text, "Identifier should not be empty")));
+    }
+
+    public static RecorderIdentifier identifier(final ContentResource text) {
+        return new RecorderIdentifier(checkNotNull(text, "Identifier should not be empty"));
     }
 
     public static RecorderModifier modifier(final String text) {

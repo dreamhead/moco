@@ -21,7 +21,9 @@
     },
     "response" : {
       "record" : {
-        "template": "${req.queries['type']}"
+        "identifier": {
+          "template": "${req.queries['type']}"
+        }
       }
     }
   },
@@ -31,7 +33,9 @@
     },
     "response" : {
       "replay" : {
-        "template": "${req.queries['type']}"
+        "identifier": {
+          "template": "${req.queries['type']}"
+        }
       }
     }
   }
