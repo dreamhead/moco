@@ -25,9 +25,11 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
             p.nextToken();
             currentToken = p.getCurrentToken();
             if (currentToken == JsonToken.FIELD_NAME && "identifier".equalsIgnoreCase(strip(p.getText()))) {
-                p.nextToken();
-                p.nextToken();
-                return new ReplayContainer(helper.textContainer(p, ctxt));
+                p.nextToken(); // FIELD_NAME
+                p.nextToken(); // START_OBJECT
+                ReplayContainer container = new ReplayContainer(helper.textContainer(p, ctxt));
+                p.nextToken(); // END_OBJECT
+                return container;
             }
         }
 
