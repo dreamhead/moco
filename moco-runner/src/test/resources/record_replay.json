@@ -38,5 +38,26 @@
         }
       }
     }
+  },
+  {
+    "request" : {
+      "uri" : "/record-modifier"
+    },
+    "response" : {
+      "record" : {
+        "identifier": "modifier"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay-modifier"
+    },
+    "response" : {
+      "replay" : {
+        "identifier": "modifier",
+        "modifier": "${req.queries['type']}"
+      }
+    }
   }
 ]

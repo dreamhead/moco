@@ -19,11 +19,18 @@ public class MocoRecordReplayStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_return_expected_response_with_template() throws IOException {
+    public void should_return_expected_response_with_identifier() throws IOException {
         runWithConfiguration("record_replay.json");
         helper.postContent(remoteUrl("/record-template?type=foo"), "foo");
         helper.postContent(remoteUrl("/record-template?type=bar"), "bar");
         assertThat(helper.get(remoteUrl("/replay-template?type=foo")), is("foo"));
         assertThat(helper.get(remoteUrl("/replay-template?type=bar")), is("bar"));
+    }
+
+    @Test
+    public void should_return_expected_response_with_modifier() throws IOException {
+        runWithConfiguration("record_replay.json");
+        helper.postContent(remoteUrl("/record-modifier?type=blah"), "foo");
+        assertThat(helper.get(remoteUrl("/replay-modifier?type=blah")), is("blah"));
     }
 }
