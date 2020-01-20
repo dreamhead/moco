@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.MocoRecorders;
 import com.github.dreamhead.moco.parser.deserializer.ReplayContainerDeserializer;
+import com.github.dreamhead.moco.recorder.RecorderIdentifier;
 import com.github.dreamhead.moco.recorder.RecorderModifier;
 
 import static com.github.dreamhead.moco.Moco.template;
@@ -17,15 +18,15 @@ public class ReplayContainer {
         this.modifier = modifier;
     }
 
-    public TextContainer getIdentifier() {
-        return identifier;
-    }
-
     public RecorderModifier getModifier() {
         if (modifier != null) {
             return MocoRecorders.modifier(modifier);
         }
 
         return new RecorderModifier(template("${req.content}"));
+    }
+
+    public RecorderIdentifier getIdentifier() {
+        return MocoRecorders.identifier(identifier.asResource());
     }
 }

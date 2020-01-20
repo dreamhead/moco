@@ -122,13 +122,12 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
 
         if ("record".equalsIgnoreCase(name)) {
             ReplayContainer container = (ReplayContainer) value;
-            return MocoRecorders.record(MocoRecorders.identifier(container.getIdentifier().asResource()));
+            return MocoRecorders.record(container.getIdentifier());
         }
 
         if ("replay".equalsIgnoreCase(name)) {
             ReplayContainer container = (ReplayContainer) value;
-            return MocoRecorders.replay(MocoRecorders.identifier(container.getIdentifier().asResource()),
-                    container.getModifier());
+            return MocoRecorders.replay(container.getIdentifier(), container.getModifier());
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
