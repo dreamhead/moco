@@ -20,7 +20,7 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
             throws IOException {
         JsonToken currentToken = p.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return new ReplayContainer(helper.text(p), null);
+            return new ReplayContainer(null, helper.text(p), null);
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
@@ -42,11 +42,12 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class InternalReplayContainer {
+        private String group;
         private TextContainer identifier;
         private String modifier;
 
         private ReplayContainer toContainer() {
-            return new ReplayContainer(identifier, modifier);
+            return new ReplayContainer(group, identifier, modifier);
         }
     }
 }

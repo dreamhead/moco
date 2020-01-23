@@ -59,5 +59,27 @@
         "modifier": "${req.queries['type']}"
       }
     }
+  },
+  {
+    "request" : {
+      "uri" : "/record-group"
+    },
+    "response" : {
+      "record" : {
+        "group": "group",
+        "identifier": "modifier"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay-group"
+    },
+    "response" : {
+      "replay" : {
+        "group": "group",
+        "identifier": "modifier"
+      }
+    }
   }
 ]
