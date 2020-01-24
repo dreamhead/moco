@@ -24,7 +24,7 @@ public class ReplayContainer {
         this.modifier = modifier;
     }
 
-    public RecorderConfig[] getConfigs() {
+    public final RecorderConfig[] getConfigs() {
         List<RecorderConfig> configs = new ArrayList<>();
         if (group != null) {
             configs.add(MocoRecorders.group(this.group));
@@ -36,7 +36,7 @@ public class ReplayContainer {
         return configs.toArray(new RecorderConfig[0]);
     }
 
-    public RecorderModifier getModifier() {
+    private RecorderModifier getModifier() {
         if (modifier != null) {
             return MocoRecorders.modifier(modifier);
         }
@@ -44,7 +44,7 @@ public class ReplayContainer {
         return new RecorderModifier(template("${req.content}"));
     }
 
-    public RecorderIdentifier getIdentifier() {
+    private RecorderIdentifier getIdentifier() {
         return MocoRecorders.identifier(identifier.asResource());
     }
 }
