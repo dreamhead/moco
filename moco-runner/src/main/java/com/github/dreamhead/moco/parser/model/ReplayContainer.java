@@ -30,21 +30,14 @@ public class ReplayContainer {
             configs.add(MocoRecorders.group(this.group));
         }
 
-        configs.add(getIdentifier());
-        configs.add(getModifier());
-
-        return configs.toArray(new RecorderConfig[0]);
-    }
-
-    private RecorderModifier getModifier() {
-        if (modifier != null) {
-            return MocoRecorders.modifier(modifier);
+        if (identifier != null) {
+            configs.add(MocoRecorders.identifier(identifier.asResource()));
         }
 
-        return new RecorderModifier(template("${req.content}"));
-    }
+        if (modifier != null) {
+            configs.add(MocoRecorders.modifier(modifier));
+        }
 
-    private RecorderIdentifier getIdentifier() {
-        return MocoRecorders.identifier(identifier.asResource());
+        return configs.toArray(new RecorderConfig[0]);
     }
 }
