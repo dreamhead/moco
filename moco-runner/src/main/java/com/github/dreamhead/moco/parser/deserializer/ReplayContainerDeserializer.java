@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
 
-import static com.github.dreamhead.moco.util.Strings.strip;
-
 public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 
@@ -30,14 +28,6 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
         }
 
         return (ReplayContainer) ctxt.handleUnexpectedToken(ReplayContainer.class, p);
-    }
-
-    private boolean match(final JsonParser p, final String fieldName) {
-        try {
-            return fieldName.equalsIgnoreCase(strip(p.getText()));
-        } catch (IOException e) {
-            return false;
-        }
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

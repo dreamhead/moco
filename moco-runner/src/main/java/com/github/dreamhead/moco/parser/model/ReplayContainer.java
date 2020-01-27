@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.MocoRecorders;
 import com.github.dreamhead.moco.parser.deserializer.ReplayContainerDeserializer;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
-import com.github.dreamhead.moco.recorder.RecorderIdentifier;
-import com.github.dreamhead.moco.recorder.RecorderModifier;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.dreamhead.moco.Moco.template;
 
 @JsonDeserialize(using = ReplayContainerDeserializer.class)
 public class ReplayContainer {
