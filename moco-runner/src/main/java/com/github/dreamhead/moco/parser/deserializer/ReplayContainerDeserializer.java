@@ -14,7 +14,7 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 
     @Override
-    public ReplayContainer deserialize(final JsonParser p, final DeserializationContext ctxt)
+    public final ReplayContainer deserialize(final JsonParser p, final DeserializationContext ctxt)
             throws IOException {
         JsonToken currentToken = p.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
