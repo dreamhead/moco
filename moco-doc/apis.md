@@ -57,7 +57,7 @@ Table of Contents
   * [Sequence](#sequence)
   * [JSON Response](#json-response)
 * [Mount](#mount)
-* [Template(Beta)](#templatebeta)
+* [Template](#template)
   * [Request](#request-1)
     * [Version](#version-2)
     * [Method](#method)
@@ -1890,9 +1890,7 @@ You can also specify some response information like normal response, e.g.
 }
 ```
 
-## Template(Beta)
-**Note**: Template is an experimental feature which could be changed a lot in the future. Feel free to tell how it helps or you need more features in template.
-
+## Template
 Sometimes, we need to customize our response based on something, e.g. response should have same header with request.
 
 The goal can be reached by template:
@@ -2424,6 +2422,18 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://loc
     }
   }
 }
+```
+
+## Record and Replay
+**@Since next release"**
+
+More powerful dynamic feature are required even if you can implement some with template. For instance, you want to change one URL to return different response. Record and replay will help.
+
+In the following, `/record` will use to record request and `/replay` will return the recorded request content. In this case, `group` will be used to distinguish diffent record source.
+
+```java
+server.request(by(uri("/record"))).response(record(group("foo")));
+server.request(by(uri("/replay"))).response(replay(group("foo")));
 ```
 
 ## Event
