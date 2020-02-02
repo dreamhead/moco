@@ -2425,15 +2425,80 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://loc
 ```
 
 ## Record and Replay
-**@Since next release"**
+**@Since next release**
 
 More powerful dynamic feature are required even if you can implement some with template. For instance, you want to change one URL to return different response. Record and replay will help.
 
-In the following, `/record` will use to record request and `/replay` will return the recorded request content. In this case, `group` will be used to distinguish diffent record source.
+In the following, `/record` will use to record request and `/replay` will return the recorded request content. You can also configure your record and replay for more capability.
+
+In this case, `group` will be used to distinguish diffent record source.
 
 ```java
 server.request(by(uri("/record"))).response(record(group("foo")));
 server.request(by(uri("/replay"))).response(replay(group("foo")));
+```
+
+### Group
+
+`group` help you distinguish diffent record source, which means you can have same configuration in different group.
+
+* Java
+
+```java
+server.request(by(uri("/record"))).response(record(group("foo")));
+server.request(by(uri("/replay"))).response(replay(group("foo")));
+```
+
+* JSON
+
+The default parameter for `record` and `replay` is group.
+
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : "foo
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : "foo"
+    }
+  }
+]
+```
+
+You can also specify `group` name explicitly.
+
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo"
+      }
+    }
+  }
+]
 ```
 
 ## Event
