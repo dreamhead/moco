@@ -2431,7 +2431,7 @@ More powerful dynamic feature are required even if you can implement some with t
 
 In the following, `/record` will use to record request and `/replay` will return the recorded request content. You can also configure your record and replay for more capability.
 
-In this case, `group` will be used to distinguish diffent record source.
+In this case, `group` will be used to distinguish diffrent record source.
 
 ```java
 server.request(by(uri("/record"))).response(record(group("foo")));
@@ -2440,7 +2440,7 @@ server.request(by(uri("/replay"))).response(replay(group("foo")));
 
 ### Group
 
-`group` help you distinguish diffent record source, which means you can have same configuration in different group.
+`group` help you distinguish diffrent record source, which means you can have same configuration in different group. If no `group` is provided, default group will be applied.
 
 * Java
 
@@ -2500,6 +2500,54 @@ You can also specify `group` name explicitly.
   }
 ]
 ```
+
+### Identifier
+
+In the same group, you can use `identifier` to distinguish diffrent requst. You can extract identifier from request with template syntax.
+
+* Java
+
+```java
+server.request(by(uri("/record"))).response(record(identifier("${req.queries['type']}")));
+server.request(by(uri("/replay"))).response(replay(identifier("${req.queries['type']}")));
+```
+
+* JSON
+
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : {
+        "identifier": {
+          "template": "${req.queries['type']}"
+        }
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : {
+        "identifier": {
+          "template": "${req.queries['type']}"
+        }
+      }
+    }
+  }
+]
+```
+
+In the above case, if you record your request with 
+* URI `/record?type=foo` and content is `foo`
+* URI `/record?type=bar` and content is `bar`,
+
+When you access URI `/replay?type=foo`, `foo` will be returned and access URI `/replay?type=bar`, `bar` will be returned.
 
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
