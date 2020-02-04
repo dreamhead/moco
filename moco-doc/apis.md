@@ -2549,6 +2549,48 @@ In the above case, if you record your request with
 
 When you access URI `/replay?type=foo`, `foo` will be returned and access URI `/replay?type=bar`, `bar` will be returned.
 
+### Modifier
+
+The recorded content will be returned by default. But sometimes you hope return different content. 
+
+In the following case, with `modifier`, type in request parameter will be returned as replay content. As you expect, `modifier` only apply in replay. Template syntax will apply here.
+
+* Java
+
+```java
+server.request(by(uri("/record"))).response(record(group("foo")));
+server.request(by(uri("/replay"))).response(replay(group("foo"),    
+                                                   modifier("${req.queries['type']}")));
+```
+
+* JSON
+
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+        "modifier": "${req.queries['type']}"
+      }
+    }
+  }
+]
+```
+
 ## Event
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 
