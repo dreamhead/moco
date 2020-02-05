@@ -18,7 +18,7 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
             throws IOException {
         JsonToken currentToken = p.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
-            return new ReplayContainer(null, helper.text(p), null);
+            return new ReplayContainer(null, helper.text(p), null, null);
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
@@ -35,9 +35,10 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
         private String group;
         private TextContainer identifier;
         private String modifier;
+        private String tape;
 
         private ReplayContainer toContainer() {
-            return new ReplayContainer(group, identifier, modifier);
+            return new ReplayContainer(group, identifier, modifier, tape);
         }
     }
 }

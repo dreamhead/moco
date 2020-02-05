@@ -13,11 +13,16 @@ public class ReplayContainer {
     private String group;
     private TextContainer identifier;
     private String modifier;
+    private String tape;
 
-    public ReplayContainer(final String group, final TextContainer identifier, final String modifier) {
+    public ReplayContainer(final String group,
+                           final TextContainer identifier,
+                           final String modifier,
+                           final String tape) {
         this.group = group;
         this.identifier = identifier;
         this.modifier = modifier;
+        this.tape = tape;
     }
 
     public final RecorderConfig[] getConfigs() {
@@ -32,6 +37,10 @@ public class ReplayContainer {
 
         if (modifier != null) {
             configs.add(MocoRecorders.modifier(modifier));
+        }
+
+        if (tape != null) {
+            configs.add(MocoRecorders.tape(this.tape));
         }
 
         return configs.toArray(new RecorderConfig[0]);

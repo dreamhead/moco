@@ -81,5 +81,27 @@
         "identifier": "modifier"
       }
     }
+  },
+  {
+    "request" : {
+      "uri" : "/record-tape"
+    },
+    "response" : {
+      "record" : {
+        "group": "tape-foo",
+        "tape": "src/test/resources/tape.json"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay-tape"
+    },
+    "response" : {
+      "replay" : {
+        "group": "tape-foo",
+        "tape": "src/test/resources/tape.json"
+      }
+    }
   }
 ]

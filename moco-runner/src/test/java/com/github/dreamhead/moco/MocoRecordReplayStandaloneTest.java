@@ -40,4 +40,11 @@ public class MocoRecordReplayStandaloneTest extends AbstractMocoStandaloneTest {
         helper.postContent(remoteUrl("/record-group"), "foo");
         assertThat(helper.get(remoteUrl("/replay-group")), is("foo"));
     }
+
+    @Test
+    public void should_return_expected_response_with_tape() throws IOException {
+        runWithConfiguration("record_replay.json");
+        helper.postContent(remoteUrl("/record-tape"), "foo");
+        assertThat(helper.get(remoteUrl("/replay-tape")), is("foo"));
+    }
 }
