@@ -2591,7 +2591,48 @@ server.request(by(uri("/replay"))).response(replay(group("foo"),
 ]
 ```
 
+### Tape
+
+If you want to reuse recorded request after restart, `tape` will help you persist the recorded request just like a tape.
+
+* Java
+
+```java
+server.request(by(uri("/record"))).response(record(group("foo"), tape("/path/to/tape")));
+server.request(by(uri("/foo-replay"))).response(replay(record(group("foo"), 
+                                                              tape("/path/to/tape")));
+```
+
+* JSON
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+        "tape": "/path/to/tape"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+        "tape": "/path/to/tape"
+      }
+    }
+  }
+]
+```
+
 ## Event
+
 You may need to request another site when you receive a request, e.g. OAuth. Event could be your helper at that time.
 
 ### Complete
