@@ -1,15 +1,13 @@
 package com.github.dreamhead.moco.recorder;
 
-import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.internal.SessionContext;
 
 public class RecorderModifier implements RecorderConfig {
-    private ContentResource resource;
+    private ResponseHandler responseHandler;
 
-    public RecorderModifier(final ContentResource resource) {
-        this.resource = resource;
+    public RecorderModifier(final ResponseHandler responseHandler) {
+        this.responseHandler = responseHandler;
     }
 
     @Override
@@ -17,11 +15,8 @@ public class RecorderModifier implements RecorderConfig {
         return MODIFIER.equalsIgnoreCase(name);
     }
 
-    public final MessageContent getMessageContent(final HttpRequest request) {
-        return this.resource.readFor(request);
-    }
+    public void writeToResponse(final SessionContext context) {
+        responseHandler.writeToResponse(context);
 
-    public final MediaType getContentType(final HttpRequest request) {
-        return this.resource.getContentType(request);
     }
 }

@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.recorder;
 
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.with;
 
 public class RecorderConfigurations {
     private RecorderGroup group;
@@ -63,6 +64,6 @@ public class RecorderConfigurations {
             return modifier;
         }
 
-        return new RecorderModifier(template("${req.content}"));
+        return new RecorderModifier(with(template("${req.content}")));
     }
 }

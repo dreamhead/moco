@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.recorder;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.mount.AbstractHttpContentResponseHandler;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.handler.AbstractResponseHandler;
+import com.github.dreamhead.moco.internal.SessionContext;
 
-public class DynamicReplayHandler extends AbstractHttpContentResponseHandler {
+public class DynamicReplayHandler extends AbstractResponseHandler {
     private RecorderRegistry registry;
     private RecorderIdentifier identifier;
     private RecorderModifier modifier;
@@ -14,18 +14,6 @@ public class DynamicReplayHandler extends AbstractHttpContentResponseHandler {
         this.registry = configurations.getRecorderRegistry();
         this.identifier = configurations.getIdentifier();
         this.modifier = configurations.getModifier();
-    }
-
-    @Override
-    protected final MessageContent responseContent(final HttpRequest request) {
-        HttpRequest recordedRequest = getRequiredRecordedRequest(request);
-        return modifier.getMessageContent(recordedRequest);
-    }
-
-    @Override
-    protected final MediaType getContentType(final HttpRequest request) {
-        HttpRequest recordedRequest = getRecordedRequest(request);
-        return this.modifier.getContentType(recordedRequest);
     }
 
     private HttpRequest getRequiredRecordedRequest(final HttpRequest request) {
@@ -40,5 +28,13 @@ public class DynamicReplayHandler extends AbstractHttpContentResponseHandler {
         String name = this.identifier.getIdentifier(request);
         RequestRecorder recorder = registry.recorderOf(name);
         return recorder.getRequest();
+    }
+
+    @Override
+    public void writeToResponse(final SessionContext context) {
+        Request request = context.getRequest();
+        HttpRequest recordedRequest = getRequiredRecordedRequest((HttpRequest) request);
+        SessionContext newContext = new SessionContext(recordedRequest, context.getResponse());
+        modifier.writeToResponse(newContext);
     }
 }
