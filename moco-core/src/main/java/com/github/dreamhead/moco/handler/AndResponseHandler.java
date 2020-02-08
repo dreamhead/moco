@@ -1,12 +1,16 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 
 public final class AndResponseHandler extends AbstractResponseHandler {
@@ -34,11 +38,15 @@ public final class AndResponseHandler extends AbstractResponseHandler {
         return new AndResponseHandler(handlers);
     }
 
-    public static ResponseHandler and(final ResponseHandler handler, final ResponseHandler... handlers) {
+    public static ResponseHandler and(final ResponseElement handler, final ResponseElement... handlers) {
         if (handlers.length == 0) {
-            return handler;
+            return with(handler);
         }
 
-        return new AndResponseHandler(asIterable(handler, handlers));
+        List<ResponseElement> elements = asIterable(handler, handlers);
+        List<ResponseHandler> responseHandlers = elements.stream()
+                .map(Moco::with)
+                .collect(Collectors.toList());
+        return new AndResponseHandler(responseHandlers);
     }
 }

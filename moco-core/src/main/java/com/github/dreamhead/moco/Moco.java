@@ -248,7 +248,7 @@ public final class Moco {
                 checkNotNull(matchers, "Matcher should not be null")));
     }
 
-    public static ResponseHandler and(final ResponseHandler handler, final ResponseHandler... handlers) {
+    public static ResponseHandler and(final ResponseElement handler, final ResponseElement... handlers) {
         return AndResponseHandler.and(
                 checkNotNull(handler, "Handlers should not be null"),
                 checkNotNull(handlers, "Handlers should not be null"));
