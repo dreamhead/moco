@@ -1,10 +1,14 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.HttpResponse;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoRecorders.group;
 import static com.github.dreamhead.moco.MocoRecorders.identifier;
@@ -118,7 +122,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_record_and_replay_with_group_and_recorder_and_response() throws Exception {
+    public void should_record_and_replay_with_group_and_modifier() throws Exception {
         server.request(by(uri("/foo-record"))).response(record(group("foo"), identifier("${req.queries['type']}")));
         server.request(by(uri("/bar-record"))).response(record(group("foo"), identifier("${req.queries['type']}")));
         server.request(by(uri("/foo-replay"))).response(replay(group("foo"),
@@ -135,6 +139,25 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("blah"));
             assertThat(helper.get(remoteUrl("/foo-replay?type=blah")), is("blah"));
             assertThat(helper.get(remoteUrl("/bar-replay?type=blah")), is("blah"));
+        });
+    }
+
+    @Test
+    public void should_record_and_replay_with_group_and_response_handler_modifier() throws Exception {
+        server.request(by(uri("/record"))).response(record(group("foo")));
+        server.request(by(uri("/replay"))).response(replay(
+                group("foo"),
+                modifier(template("${req.content}"),
+                        header("X-REPLAY", template("${req.queries['type']}")))
+        ));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/record?type=blah"), "foo");
+            HttpResponse response = helper.getResponse(remoteUrl("/replay"));
+            assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("blah"));
+            ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outstream);
+            assertThat(new String(outstream.toByteArray()), is("foo"));
         });
     }
 }

@@ -51,7 +51,6 @@ public class RecorderConfigurations {
             return identifier;
         }
 
-
         if (group != null) {
             return new RecorderIdentifier(text(group.getName()));
         }

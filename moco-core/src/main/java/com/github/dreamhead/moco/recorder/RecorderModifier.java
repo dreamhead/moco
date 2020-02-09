@@ -17,6 +17,5 @@ public class RecorderModifier implements RecorderConfig {
 
     public void writeToResponse(final SessionContext context) {
         responseHandler.writeToResponse(context);
-
     }
 }
