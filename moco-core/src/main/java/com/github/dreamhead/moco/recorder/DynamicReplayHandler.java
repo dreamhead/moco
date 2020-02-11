@@ -44,17 +44,19 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
     }
 
     protected ResponseHandler doApply(final MocoConfig config) {
-        RecorderModifier applied = this.modifier.apply(config);
+        RecorderIdentifier appliedIdentifier = this.identifier.apply(config);
+        RecorderModifier appliedModifier = this.modifier.apply(config);
 
-        if (applied != this.modifier) {
+        if (appliedIdentifier != this.identifier || appliedModifier != this.modifier) {
             RecorderConfigurations configurations = RecorderConfigurations.create(ImmutableList.<RecorderConfig>of(
                     group(this.registry.getGroup()),
-                    this.identifier,
-                    modifier
+                    appliedIdentifier,
+                    appliedModifier
             ));
 
             return new DynamicReplayHandler(configurations);
         }
+
 
         return this;
     }
