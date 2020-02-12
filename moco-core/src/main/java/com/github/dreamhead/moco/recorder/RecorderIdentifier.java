@@ -29,6 +29,6 @@ public class RecorderIdentifier implements RecorderConfig, ConfigApplier<Recorde
             return new RecorderIdentifier((ContentResource) applied);
         }
 
-        return null;
+        return this;
     }
 }

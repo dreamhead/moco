@@ -7,7 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.fileRoot;
 import static com.github.dreamhead.moco.Moco.header;
+import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoRecorders.group;
@@ -155,6 +158,26 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             helper.postContent(remoteUrl("/record?type=blah"), "foo");
             HttpResponse response = helper.getResponse(remoteUrl("/replay"));
             assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("blah"));
+            ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outstream);
+            assertThat(new String(outstream.toByteArray()), is("foo"));
+        });
+    }
+
+    @Test
+    public void should_record_and_replay_with_global_file_root() throws Exception {
+        server = httpServer(port(), fileRoot("src/test/resources"));
+        server.request(by(uri("/record"))).response(record(group("foo")));
+        server.request(by(uri("/replay"))).response(replay(
+                group("foo"),
+                modifier(template("${req.content}"),
+                        header("X-REPLAY", template(file("foo.template"))))
+        ));
+
+        running(server, () -> {
+            helper.postContent(remoteUrl("/record?type=blah"), "foo");
+            HttpResponse response = helper.getResponse(remoteUrl("/replay"));
+            assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("POST"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);
             assertThat(new String(outstream.toByteArray()), is("foo"));
