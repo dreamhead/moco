@@ -103,5 +103,32 @@
         "tape": "src/test/resources/tape.json"
       }
     }
+  },
+  {
+    "request" : {
+      "uri" : "/record-modifier-with-header"
+    },
+    "response" : {
+      "record" : {
+        "identifier": "modifier"
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay-modifier-with-header"
+    },
+    "response" : {
+      "replay" : {
+        "identifier": "modifier",
+        "modifier": {
+          "headers": {
+            "X-REPLAY": {
+              "template": "${req.queries['type']}"
+            }
+          }
+        }
+      }
+    }
   }
 ]

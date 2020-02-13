@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.ReplayContainer;
+import com.github.dreamhead.moco.parser.model.ReplayModifierContainer;
+import com.github.dreamhead.moco.parser.model.ResponseSetting;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class ReplayContainerDeserializer extends JsonDeserializer<ReplayContaine
     private static class InternalReplayContainer {
         private String group;
         private TextContainer identifier;
-        private String modifier;
+        private ReplayModifierContainer modifier;
         private String tape;
 
         private ReplayContainer toContainer() {

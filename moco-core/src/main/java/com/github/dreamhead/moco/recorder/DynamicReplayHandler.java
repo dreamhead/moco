@@ -57,7 +57,6 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
             return new DynamicReplayHandler(configurations);
         }
 
-
         return this;
     }
 }

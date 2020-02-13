@@ -12,12 +12,12 @@ import java.util.List;
 public class ReplayContainer {
     private String group;
     private TextContainer identifier;
-    private String modifier;
+    private ReplayModifierContainer modifier;
     private String tape;
 
     public ReplayContainer(final String group,
                            final TextContainer identifier,
-                           final String modifier,
+                           final ReplayModifierContainer modifier,
                            final String tape) {
         this.group = group;
         this.identifier = identifier;
@@ -36,7 +36,7 @@ public class ReplayContainer {
         }
 
         if (modifier != null) {
-            configs.add(MocoRecorders.modifier(modifier));
+            configs.add(MocoRecorders.modifier(modifier.getResponseHandler()));
         }
 
         if (tape != null) {

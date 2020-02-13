@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.apache.http.HttpResponse;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -46,5 +47,13 @@ public class MocoRecordReplayStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("record_replay.json");
         helper.postContent(remoteUrl("/record-tape"), "foo");
         assertThat(helper.get(remoteUrl("/replay-tape")), is("foo"));
+    }
+
+    @Test
+    public void should_return_expected_response_with_modifier_for_header() throws IOException {
+        runWithConfiguration("record_replay.json");
+        helper.postContent(remoteUrl("/record-modifier-with-header?type=blah"), "foo");
+        HttpResponse response = helper.getResponse(remoteUrl("/replay-modifier-with-header?type=blah"));
+        assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("blah"));
     }
 }
