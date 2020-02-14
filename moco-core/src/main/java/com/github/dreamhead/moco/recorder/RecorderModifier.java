@@ -22,7 +22,7 @@ public class RecorderModifier implements RecorderConfig, ConfigApplier<RecorderM
     }
 
     @Override
-    public RecorderModifier apply(MocoConfig config) {
+    public RecorderModifier apply(final MocoConfig config) {
         ResponseHandler applied = this.responseHandler.apply(config);
         if (applied != this.responseHandler) {
             return new RecorderModifier(applied);
