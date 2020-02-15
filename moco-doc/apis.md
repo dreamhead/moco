@@ -2591,6 +2591,54 @@ server.request(by(uri("/replay"))).response(replay(group("foo"),
 ]
 ```
 
+By default, only response content will be set with modifier. If you want more, you can setup the response with other response configuration.
+
+* Java
+
+```java
+server.request(by(uri("/record"))).response(record(group("foo")));
+server.request(by(uri("/replay"))).response(replay(group("foo"),    
+    modifier(template("${req.content}"),
+             header("X-REPLAY", template("${req.queries['type']}"))
+    )
+));
+```
+
+* JSON
+
+```json
+[
+  {
+    "request" : {
+      "uri" : "/record"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+      }
+    }
+  },
+  {
+    "request" : {
+      "uri" : "/replay"
+    },
+    "response" : {
+      "record" : {
+        "group": "foo",
+        "modifier": {
+          "template": "${req.content}",
+          "header": {
+            "X-REPLAY": {
+              "template": "${req.queries['type']}"
+            }
+          }
+        }
+      }
+    }
+  }
+]
+```
+
 ### Tape
 
 If you want to reuse recorded request after restart, `tape` will help you persist the recorded request just like a tape.
