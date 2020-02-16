@@ -2626,7 +2626,9 @@ server.request(by(uri("/replay"))).response(replay(group("foo"),
       "record" : {
         "group": "foo",
         "modifier": {
-          "template": "${req.content}",
+          "text": {
+            "template": "${req.content}"
+          },
           "header": {
             "X-REPLAY": {
               "template": "${req.queries['type']}"
