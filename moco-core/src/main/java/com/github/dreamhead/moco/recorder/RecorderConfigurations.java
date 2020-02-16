@@ -8,7 +8,7 @@ public class RecorderConfigurations {
     private RecorderGroup group;
     private RecorderTape tape;
     private RecorderIdentifier identifier;
-    private RecorderModifier modifier;
+    private ReplayModifier modifier;
 
     public static RecorderConfigurations create(final Iterable<RecorderConfig> configs) {
         RecorderConfigurations configurations = new RecorderConfigurations();
@@ -21,7 +21,7 @@ public class RecorderConfigurations {
             } else if (config.isFor(RecorderConfig.IDENTIFIER)) {
                 configurations.identifier = (RecorderIdentifier) config;
             } else if (config.isFor(RecorderConfig.MODIFIER)) {
-                configurations.modifier = (RecorderModifier)config;
+                configurations.modifier = (ReplayModifier)config;
             } else {
                 throw new IllegalArgumentException("Unknown recorder config:" + config);
             }
@@ -58,11 +58,11 @@ public class RecorderConfigurations {
         throw new IllegalArgumentException("No identifier found");
     }
 
-    public final RecorderModifier getModifier() {
+    public final ReplayModifier getModifier() {
         if (modifier != null) {
             return modifier;
         }
 
-        return new RecorderModifier(with(template("${req.content}")));
+        return new ReplayModifier(with(template("${req.content}")));
     }
 }

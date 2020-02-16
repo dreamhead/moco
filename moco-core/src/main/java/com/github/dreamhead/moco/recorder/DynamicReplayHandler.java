@@ -13,7 +13,7 @@ import static com.github.dreamhead.moco.MocoRecorders.group;
 public class DynamicReplayHandler extends AbstractResponseHandler {
     private RecorderRegistry registry;
     private RecorderIdentifier identifier;
-    private RecorderModifier modifier;
+    private ReplayModifier modifier;
 
     public DynamicReplayHandler(final RecorderConfigurations configurations) {
         this.registry = configurations.getRecorderRegistry();
@@ -45,7 +45,7 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
 
     protected ResponseHandler doApply(final MocoConfig config) {
         RecorderIdentifier appliedIdentifier = this.identifier.apply(config);
-        RecorderModifier appliedModifier = this.modifier.apply(config);
+        ReplayModifier appliedModifier = this.modifier.apply(config);
 
         if (appliedIdentifier != this.identifier || appliedModifier != this.modifier) {
             RecorderConfigurations configurations = RecorderConfigurations.create(ImmutableList.<RecorderConfig>of(

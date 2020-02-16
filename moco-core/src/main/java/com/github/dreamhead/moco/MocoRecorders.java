@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.recorder.RecorderConfig;
 import com.github.dreamhead.moco.recorder.RecorderConfigurations;
 import com.github.dreamhead.moco.recorder.RecorderGroup;
 import com.github.dreamhead.moco.recorder.RecorderIdentifier;
-import com.github.dreamhead.moco.recorder.RecorderModifier;
+import com.github.dreamhead.moco.recorder.ReplayModifier;
 import com.github.dreamhead.moco.recorder.RecorderTape;
 import com.github.dreamhead.moco.resource.ContentResource;
 
@@ -47,12 +47,12 @@ public final class MocoRecorders {
         return new RecorderIdentifier(checkNotNull(text, "Identifier should not be empty"));
     }
 
-    public static RecorderModifier modifier(final String text) {
-        return new RecorderModifier(with(template(checkNotNullOrEmpty(text, "Identifier should not be empty"))));
+    public static ReplayModifier modifier(final String text) {
+        return new ReplayModifier(with(template(checkNotNullOrEmpty(text, "Modifier should not be empty"))));
     }
 
-    public static RecorderModifier modifier(final ResponseElement element, final ResponseElement... elements) {
-        return new RecorderModifier(and(checkNotNull(element, "Response should not be null"),
+    public static ReplayModifier modifier(final ResponseElement element, final ResponseElement... elements) {
+        return new ReplayModifier(and(checkNotNull(element, "Response should not be null"),
                 checkNotNull(elements, "Responses should not be null")));
     }
 

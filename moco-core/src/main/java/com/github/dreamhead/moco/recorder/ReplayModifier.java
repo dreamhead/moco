@@ -5,10 +5,10 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 
-public class RecorderModifier implements RecorderConfig, ConfigApplier<RecorderModifier> {
+public class ReplayModifier implements RecorderConfig, ConfigApplier<ReplayModifier> {
     private ResponseHandler responseHandler;
 
-    public RecorderModifier(final ResponseHandler responseHandler) {
+    public ReplayModifier(final ResponseHandler responseHandler) {
         this.responseHandler = responseHandler;
     }
 
@@ -22,10 +22,10 @@ public class RecorderModifier implements RecorderConfig, ConfigApplier<RecorderM
     }
 
     @Override
-    public RecorderModifier apply(final MocoConfig config) {
+    public ReplayModifier apply(final MocoConfig config) {
         ResponseHandler applied = this.responseHandler.apply(config);
         if (applied != this.responseHandler) {
-            return new RecorderModifier(applied);
+            return new ReplayModifier(applied);
         }
 
         return this;
