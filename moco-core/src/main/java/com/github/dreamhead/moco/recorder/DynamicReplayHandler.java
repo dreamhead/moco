@@ -36,14 +36,14 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         Request request = context.getRequest();
         HttpRequest recordedRequest = getRequiredRecordedRequest((HttpRequest) request);
         SessionContext newContext = new SessionContext(recordedRequest, context.getResponse());
         modifier.writeToResponse(newContext);
     }
 
-    protected ResponseHandler doApply(final MocoConfig config) {
+    protected final ResponseHandler doApply(final MocoConfig config) {
         RecorderIdentifier appliedIdentifier = this.identifier.apply(config);
         ReplayModifier appliedModifier = this.modifier.apply(config);
 
