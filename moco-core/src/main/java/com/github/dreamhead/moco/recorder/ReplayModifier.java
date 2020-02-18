@@ -17,12 +17,12 @@ public class ReplayModifier implements RecorderConfig, ConfigApplier<ReplayModif
         return MODIFIER.equalsIgnoreCase(name);
     }
 
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         responseHandler.writeToResponse(context);
     }
 
     @Override
-    public ReplayModifier apply(final MocoConfig config) {
+    public final ReplayModifier apply(final MocoConfig config) {
         ResponseHandler applied = this.responseHandler.apply(config);
         if (applied != this.responseHandler) {
             return new ReplayModifier(applied);
