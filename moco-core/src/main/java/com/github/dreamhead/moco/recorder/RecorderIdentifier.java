@@ -23,7 +23,7 @@ public class RecorderIdentifier implements RecorderConfig, ConfigApplier<Recorde
     }
 
     @Override
-    public RecorderIdentifier apply(final MocoConfig config) {
+    public final RecorderIdentifier apply(final MocoConfig config) {
         Resource applied = resource.apply(config);
         if (applied != this.resource) {
             return new RecorderIdentifier((ContentResource) applied);
