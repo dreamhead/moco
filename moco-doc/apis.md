@@ -55,6 +55,7 @@ Table of Contents
   * [Attachment](#attachment)
   * [Latency](#latency)
   * [Sequence](#sequence)
+  * [Cycle](#cycle)
   * [JSON Response](#json-response)
 * [Mount](#mount)
 * [Template](#template)
@@ -75,6 +76,11 @@ Table of Contents
   * [File Name Template](#file-name-template)
   * [Proxy](#proxy-1)
   * [Template for Event Action](#template-for-event-action)
+* [Record and Replay](#record-and-replay)
+  * [Group](#group)
+  * [Identifier](#identifier)
+  * [Modifier](#modifier)
+  * [Tape](#tape)
 * [Event](#event)
   * [Complete](#complete)
     * [Get Request](#get-request)
@@ -84,7 +90,7 @@ Table of Contents
 * [Miscellaneous](#miscellaneous)
   * [Port](#port)
   * [Log](#log)
-    * [Log with verifier](#log-with-verifier)
+  * [Log with verifier](#log-with-verifier)
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
