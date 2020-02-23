@@ -40,7 +40,7 @@ task uberjar(type: Jar, dependsOn: jar) {
         attributes 'Main-Class': 'com.github.dreamhead.moco.bootstrap.Main',
                 'Package': "com.github.dreamhead",
                 'Implementation-Title': "${project.name}",
-                'Implementation-Version': "${version}",
+                'Implementation-Version': "${archiveVersion.get()}",
                 'Implementation-Vendor': 'Zheng Ye',
                 'Built-By': 'Zheng Ye',
                 'Built-Date': new Date().getDateTimeString(),
