@@ -1,7 +1,7 @@
 allprojects {
     apply plugin: 'idea'
-    apply plugin: 'maven'
     apply plugin: 'signing'
+    apply plugin: 'maven-publish'
 }
 
 idea {
@@ -23,7 +23,7 @@ idea {
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
-    version = '1.1.0'
+    version = '1.1.0-SNAPSHOT'
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -32,44 +32,56 @@ subprojects {
         mavenCentral()
     }
 
-    project.uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { deployment -> signing.signPom(deployment) }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                version = project.version
 
-                repository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
+                from components.java
 
-                pom.project {
-                    name project.name
-                    packaging 'jar'
-                    description 'Moco is an easy setup stub framework, mainly focusing on testing and integration.'
-                    url 'https://github.com/dreamhead/moco'
-
-                    scm {
-                        url 'https://github.com/dreamhead/moco'
-                        connection 'https://github.com/dreamhead/moco.git'
-                        developerConnection 'git@github.com:dreamhead/moco.git'
-                    }
-
+                pom {
+                    name = project.name
+                    description = 'Moco is an easy setup stub framework, mainly focusing on testing and integration.'
+                    url = 'https://github.com/dreamhead/moco'
                     licenses {
                         license {
-                            name 'MIT Licence'
-                            url 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
-                            distribution 'repo'
+                            name = 'MIT Licence'
+                            url = 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
                         }
                     }
-
                     developers {
                         developer {
-                            id 'dreamhead'
-                            name 'Zheng Ye'
+                            id = 'dreamhead'
+                            name = 'Zheng Ye'
+                            email = 'dreamhead.cn@gmail.com'
                         }
+                    }
+                    scm {
+                        connection = 'https://github.com/dreamhead/moco.git'
+                        developerConnection = 'https://github.com/dreamhead/moco.git'
+                        url = 'https://github.com/dreamhead/moco'
                     }
                 }
             }
         }
+
+        repositories {
+            maven {
+                def releasesRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
     }
 
     project.jar {
