@@ -68,11 +68,12 @@ task proguardCheck(type: Test, dependsOn: proguard) {
     classpath = classpath - files(sourceSets.main.output.classesDirs) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
-signArchives.dependsOn proguardCheck
-
-artifacts {
-    archives proguard.outputs.files.singleFile
+publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.singleFile) {
+    classifier "standalone"
 }
+
+publishMavenJavaPublicationToMavenLocal.dependsOn proguard
+publishMavenJavaPublicationToMavenRepository.dependsOn proguard
 
 def javaRtLib() {
     javaLibPath("/lib/rt.jar", "/../Classes/classes.jar")
