@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class ReplayModifierContainerDeserializer extends JsonDeserializer<ReplayModifierContainer> {
     @Override
-    public ReplayModifierContainer deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
+    public final ReplayModifierContainer deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = p.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return new ReplayModifierContainer(strip(p.getText()));
