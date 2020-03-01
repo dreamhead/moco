@@ -128,7 +128,7 @@ public class MocoRunnerTest {
 ## Standalone
 
 Moco can be used as standalone to run with configuration and you can download standalone directly:
-[Standalone Moco Runner](http://central.maven.org/maven2/com/github/dreamhead/moco-runner/1.1.0/moco-runner-1.1.0-standalone.jar)
+[Standalone Moco Runner](https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/1.1.0/moco-runner-1.1.0-standalone.jar)
 
 First of all, a JSON configuration file needs to be provided to start Moco.
 
