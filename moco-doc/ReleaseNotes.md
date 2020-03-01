@@ -1,4 +1,4 @@
-# Release
+# Release 1.1.0 (1-Mar-2020)
 
 * Upgrade minimal Java version to Java 8.
 
