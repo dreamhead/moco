@@ -23,9 +23,14 @@ idea {
 subprojects {
     apply plugin: 'java'
     group = 'com.github.dreamhead'
-    version = '1.1.0-SNAPSHOT'
+    version = '1.1.0'
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
 
     repositories {
         jcenter()
@@ -127,27 +132,6 @@ subprojects {
                 }
             }
         }
-    }
-
-    task sourcesJar(type: Jar) {
-        from sourceSets.main.allSource
-        classifier = 'sources'
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from 'build/docs/javadoc'
-    }
-
-    artifacts {
-        archives jar
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    signing {
-        required { gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
     }
 
     tasks.withType(JavaCompile) {

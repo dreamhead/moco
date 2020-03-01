@@ -1,6 +1,13 @@
 # Release
 
-* Upgrade minimal Java version to Java 8
+* Upgrade minimal Java version to Java 8.
+
+## APIs
+* 'record' and 'replay' support dynamic stub server.
+  * group
+  * identifier
+  * modifier
+  * tape
 
 # Release 1.0.0 (1-Sep-2019)
 
