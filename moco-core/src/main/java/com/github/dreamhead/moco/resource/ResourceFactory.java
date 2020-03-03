@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
+import com.github.dreamhead.moco.resource.reader.JsonContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.resource.reader.Variable;
@@ -55,7 +56,8 @@ public final class ResourceFactory {
     }
 
     public static ContentResource jsonResource(final Resource resource) {
-        return contentResource(id("json"), jsonConfigApplier(resource), resource.reader(ContentResourceReader.class));
+        return contentResource(id("json"), jsonConfigApplier(resource),
+                new JsonContentResourceReader(resource));
     }
 
     public static ContentResource jsonResource(final Object pojo) {
@@ -64,40 +66,24 @@ public final class ResourceFactory {
     }
 
     public static Resource methodResource(final String method) {
-        return resource(id("method"), DO_NOTHING_APPLIER, new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Request request) {
-                return content(method.toUpperCase());
-            }
-        });
+        return resource(id("method"), DO_NOTHING_APPLIER, request -> content(method.toUpperCase()));
     }
 
     public static Resource versionResource(final Resource version) {
-        return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Request request) {
-                String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
-                return content(text);
-            }
+        return resource(id("version"), DO_NOTHING_APPLIER, request -> {
+            String text = HttpProtocolVersion.versionOf(version.readFor(request).toString()).text();
+            return content(text);
         });
     }
 
     public static Resource versionResource(final HttpProtocolVersion version) {
-        return resource(id("version"), DO_NOTHING_APPLIER, new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Request request) {
-                return content(version.text());
-            }
-        });
+        return resource(id("version"), DO_NOTHING_APPLIER, request -> content(version.text()));
     }
 
     public static Resource cookieResource(final String key, final Resource resource, final CookieAttribute... options) {
-        return resource(id("cookie"), cookieConfigApplier(key, resource), new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Request request) {
-                MessageContent messageContent = resource.readFor(request);
-                return content(new Cookies().encodeCookie(key, messageContent.toString(), options));
-            }
+        return resource(id("cookie"), cookieConfigApplier(key, resource), request -> {
+            MessageContent messageContent = resource.readFor(request);
+            return content(new Cookies().encodeCookie(key, messageContent.toString(), options));
         });
     }
 
@@ -108,12 +94,7 @@ public final class ResourceFactory {
     }
 
     public static Resource uriResource(final String uri) {
-        return resource(id(MocoConfig.URI_ID), uriConfigApplier(MocoConfig.URI_ID, uri), new ResourceReader() {
-            @Override
-            public MessageContent readFor(final Request request) {
-                return content(uri);
-            }
-        });
+        return resource(id(MocoConfig.URI_ID), uriConfigApplier(MocoConfig.URI_ID, uri), request -> content(uri));
     }
 
     private static ContentResource contentResource(final Identifiable id, final ResourceConfigApplier applier,

@@ -172,6 +172,21 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_json_for_text() throws Exception {
+        final PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        String text = Jsons.toJson(pojo);
+        server.response(Moco.json(text));
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                JsonSupport.assertEquals(pojo, helper.getResponse(root()));
+            }
+        });
+    }
+
+    @Test
     public void should_return_json_for_POJO_with_CJK() throws Exception {
         final PlainA pojo = new PlainA();
         pojo.code = 1;
