@@ -11,7 +11,8 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 public final class ContentResource extends Resource implements Content {
-    public ContentResource(final Identifiable identifiable, final ResourceConfigApplier configApplier,
+    public ContentResource(final Identifiable identifiable,
+                           final ResourceConfigApplier configApplier,
                            final ContentResourceReader reader) {
         super(identifiable, configApplier, reader);
     }

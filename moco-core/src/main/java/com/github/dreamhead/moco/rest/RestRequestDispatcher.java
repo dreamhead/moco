@@ -120,7 +120,8 @@ public final class RestRequestDispatcher {
         if (allMatcher.match(httpRequest)) {
             Iterable<RestSingleSetting> settings = getSingleSettings.getSettings();
             if (!Iterables.isEmpty(settings)
-                    && Iterables.all(settings, setting -> setting.getHandler() instanceof JsonResponseHandler)) {
+                    && StreamSupport.stream(settings.spliterator(), false)
+                    .allMatch(setting -> setting.getHandler() instanceof JsonResponseHandler)) {
                 List<Object> result = StreamSupport.stream(settings.spliterator(), false)
                         .map((Function<SimpleRestSetting, JsonResponseHandler>) setting -> JsonResponseHandler.class.cast(setting.getHandler()))
                         .map(JsonResponseHandler::getPojo)
