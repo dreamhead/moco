@@ -825,6 +825,7 @@ server.request(exist(header("foo"))).response("bar");
         "foo": {
           "exist" : "true"
         }
+      }
     },
   "response":
     {
@@ -843,8 +844,9 @@ For JSON API, you can decide whether the information does not exist.
     {
       "headers": {
         "foo": {
-          "exist" : "not"
+          "exist" : "false"
         }
+      }
     },
   "response":
     {
