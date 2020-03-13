@@ -20,7 +20,7 @@ public class ReplayModifierContainer {
         this.setting = setting;
     }
 
-    public ResponseElement getResponseHandler() {
+    public final ResponseElement getResponseHandler() {
         if (text != null) {
             return with(template(text));
         }
