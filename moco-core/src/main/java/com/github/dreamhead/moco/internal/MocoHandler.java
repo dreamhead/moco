@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.Setting;
@@ -14,6 +15,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static io.netty.channel.ChannelHandler.Sharable;
@@ -28,11 +31,28 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private final ImmutableList<Setting<HttpResponseSetting>> settings;
     private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
+    private final WebSocketServer websocketServer;
+    private WebSocketServerHandshaker handshaker;
 
     public MocoHandler(final ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
         this.monitor = server.getMonitor();
+        this.websocketServer = server.getWebsocketServer();
+    }
+
+    @Override
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+        if (websocketServer != null) {
+            websocketServer.addChannel(ctx.channel());
+        }
+    }
+
+    @Override
+    public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
+        if (websocketServer != null) {
+            websocketServer.removeChannel(ctx.channel());
+        }
     }
 
     @Override
@@ -42,10 +62,25 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
 
-    private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest message) {
+    private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest message) {
         FullHttpRequest request = message;
-        FullHttpResponse response = handleRequest(request);
-        closeIfNotKeepAlive(request, ctx.write(response));
+
+        if (!request.decoderResult().isSuccess()
+                || !("websocket".equals(request.headers().get("Upgrade")))) {
+            FullHttpResponse response = handleRequest(request);
+            closeIfNotKeepAlive(request, ctx.write(response));
+            return;
+        }
+
+        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
+                websocketServer.getUri(), null, false);
+        handshaker = wsFactory.newHandshaker(request);
+        if (handshaker == null) {
+            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
+        } else {
+            handshaker.handshake(ctx.channel(), request);
+            websocketServer.sendOpen(ctx.channel());
+        }
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface HttpServer extends HttpResponseSetting, Server<HttpResponseSett
     HttpResponseSetting proxy(ProxyConfig config);
 
     HttpResponseSetting proxy(ProxyConfig proxyConfig, Failover failover);
+
+    WebSocketServer websocket(String uri);
 }

@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
@@ -22,6 +23,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
     private final HttpsCertificate certificate;
     private final ServerConfig serverConfig;
+    private WebSocketServer websocketServer;
 
     protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
@@ -139,5 +141,15 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     @Override
     protected final HttpSetting newSetting(final RequestMatcher matcher) {
         return new HttpSetting(matcher);
+    }
+
+    @Override
+    public WebSocketServer websocket(final String url) {
+        this.websocketServer = new WebSocketServer(url);
+        return websocketServer;
+    }
+
+    public WebSocketServer getWebsocketServer() {
+        return websocketServer;
     }
 }

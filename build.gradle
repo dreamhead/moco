@@ -120,7 +120,12 @@ subprojects {
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
                 "org.apache.httpcomponents:fluent-hc:$httpComponentVersion",
-                "org.skyscreamer:jsonassert:$jsonAssertVersion"
+                "org.skyscreamer:jsonassert:$jsonAssertVersion",
+                "javax.websocket:javax.websocket-api:$websocketVersion"
+        )
+
+        testRuntime(
+                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
     }
 
