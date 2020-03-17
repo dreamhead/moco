@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.Setting;
+import com.github.dreamhead.moco.util.Strings;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -19,6 +20,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
+import static com.google.common.net.HttpHeaders.UPGRADE;
 import static io.netty.channel.ChannelHandler.Sharable;
 import static io.netty.handler.codec.http.HttpUtil.isContentLengthSet;
 import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;
@@ -32,7 +34,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
     private final WebSocketServer websocketServer;
-    private WebSocketServerHandshaker handshaker;
+
 
     public MocoHandler(final ActualHttpServer server) {
         this.settings = server.getSettings();
@@ -62,11 +64,9 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
 
-    private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest message) {
-        FullHttpRequest request = message;
-
+    private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         if (!request.decoderResult().isSuccess()
-                || !("websocket".equals(request.headers().get("Upgrade")))) {
+                || !upgradeWebsocket(request)) {
             FullHttpResponse response = handleRequest(request);
             closeIfNotKeepAlive(request, ctx.write(response));
             return;
@@ -74,13 +74,18 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
 
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                 websocketServer.getUri(), null, false);
-        handshaker = wsFactory.newHandshaker(request);
+        WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
         if (handshaker == null) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
             handshaker.handshake(ctx.channel(), request);
             websocketServer.sendOpen(ctx.channel());
         }
+    }
+
+    private boolean upgradeWebsocket(final FullHttpRequest request) {
+        String upgrade = request.headers().get(UPGRADE);
+        return "websocket".equals(Strings.strip(upgrade));
     }
 
     @Override
