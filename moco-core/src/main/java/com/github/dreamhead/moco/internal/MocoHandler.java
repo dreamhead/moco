@@ -65,13 +65,16 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
-        if (!request.decoderResult().isSuccess()
-                || !upgradeWebsocket(request)) {
+        if (!request.decoderResult().isSuccess() || !upgradeWebsocket(request)) {
             FullHttpResponse response = handleRequest(request);
             closeIfNotKeepAlive(request, ctx.write(response));
             return;
         }
 
+        handleWebsocketRequest(ctx, request);
+    }
+
+    private void handleWebsocketRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                 websocketServer.getUri(), null, false);
         WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
