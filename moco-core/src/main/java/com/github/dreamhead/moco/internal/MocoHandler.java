@@ -16,8 +16,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
-import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static com.google.common.net.HttpHeaders.UPGRADE;
@@ -34,7 +32,6 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
     private final WebSocketServer websocketServer;
-
 
     public MocoHandler(final ActualHttpServer server) {
         this.settings = server.getSettings();
@@ -71,19 +68,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
 
-        handleWebsocketRequest(ctx, request);
-    }
-
-    private void handleWebsocketRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
-        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                websocketServer.getUri(), null, false);
-        WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
-        if (handshaker == null) {
-            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
-        } else {
-            handshaker.handshake(ctx.channel(), request);
-            websocketServer.sendOpen(ctx.channel());
-        }
+        websocketServer.connectRequest(ctx, request);
     }
 
     private boolean upgradeWebsocket(final FullHttpRequest request) {
