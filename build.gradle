@@ -124,7 +124,7 @@ subprojects {
                 "javax.websocket:javax.websocket-api:$websocketVersion"
         )
 
-        testRuntime(
+        testRuntimeOnly(
                 "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
     }
