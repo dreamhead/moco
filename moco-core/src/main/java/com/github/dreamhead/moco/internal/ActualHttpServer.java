@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.monitor.ThreadSafeMonitor;
 import com.github.dreamhead.moco.setting.HttpSetting;
+import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import io.netty.handler.ssl.SslHandler;
 
 import javax.net.ssl.SSLEngine;
@@ -23,7 +24,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
     private final HttpsCertificate certificate;
     private final ServerConfig serverConfig;
-    private WebSocketServer websocketServer;
+    private ActualWebSocketServer websocketServer;
 
     protected ActualHttpServer(final int port,
                                final HttpsCertificate certificate,
@@ -145,11 +146,11 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
     @Override
     public WebSocketServer websocket(final String url) {
-        this.websocketServer = new WebSocketServer(url);
+        this.websocketServer = new ActualWebSocketServer(url);
         return websocketServer;
     }
 
-    public WebSocketServer getWebsocketServer() {
+    public ActualWebSocketServer getWebsocketServer() {
         return websocketServer;
     }
 }

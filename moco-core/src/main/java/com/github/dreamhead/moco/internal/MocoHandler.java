@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.util.Strings;
+import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -31,20 +32,13 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private final ImmutableList<Setting<HttpResponseSetting>> settings;
     private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
-    private final WebSocketServer websocketServer;
+    private final ActualWebSocketServer websocketServer;
 
     public MocoHandler(final ActualHttpServer server) {
         this.settings = server.getSettings();
         this.anySetting = server.getAnySetting();
         this.monitor = server.getMonitor();
         this.websocketServer = server.getWebsocketServer();
-    }
-
-    @Override
-    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        if (websocketServer != null) {
-            websocketServer.addChannel(ctx.channel());
-        }
     }
 
     @Override

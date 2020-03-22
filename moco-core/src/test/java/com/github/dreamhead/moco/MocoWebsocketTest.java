@@ -24,8 +24,8 @@ public class MocoWebsocketTest {
     @Test
     public void should_connect() throws Exception {
         HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("ws://localhost:12306/ws/");
-        webSocketServer.open(text("hello"));
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.connected(text("hello"));
 
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
