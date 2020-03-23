@@ -39,7 +39,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         return uri;
     }
 
-    public void sendOpen(final Channel channel) {
+    private void sendConnected(final Channel channel) {
         if (connected != null) {
             MessageContent messageContent = this.connected.readFor(null);
             channel.writeAndFlush(new TextWebSocketFrame(messageContent.toString()));
@@ -56,7 +56,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         } else {
             handshaker.handshake(channel, request);
             addChannel(channel);
-            sendOpen(channel);
+            sendConnected(channel);
         }
     }
 }
