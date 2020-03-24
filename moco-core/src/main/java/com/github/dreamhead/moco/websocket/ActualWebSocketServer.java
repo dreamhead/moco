@@ -27,7 +27,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         this.connected = resource;
     }
 
-    public void addChannel(final Channel channel) {
+    private void addChannel(final Channel channel) {
         this.group.add(channel);
     }
 
