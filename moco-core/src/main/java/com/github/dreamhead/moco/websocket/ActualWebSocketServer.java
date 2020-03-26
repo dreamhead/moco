@@ -31,7 +31,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         this.group.add(channel);
     }
 
-    public void removeChannel(final Channel channel) {
+    public void disconnect(final Channel channel) {
         this.group.remove(channel);
     }
 

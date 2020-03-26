@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.MocoMonitor;
-import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.Setting;
@@ -44,7 +43,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
         if (websocketServer != null) {
-            websocketServer.removeChannel(ctx.channel());
+            websocketServer.disconnect(ctx.channel());
         }
     }
 
