@@ -53,10 +53,11 @@ public class ActualWebSocketServer implements WebSocketServer {
         Channel channel = ctx.channel();
         if (handshaker == null) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(channel);
-        } else {
-            handshaker.handshake(channel, request);
-            addChannel(channel);
-            sendConnected(channel);
+            return;
         }
+
+        handshaker.handshake(channel, request);
+        addChannel(channel);
+        sendConnected(channel);
     }
 }
