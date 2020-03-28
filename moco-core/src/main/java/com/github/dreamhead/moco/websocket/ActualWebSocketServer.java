@@ -27,7 +27,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         this.connected = resource;
     }
 
-    private void addChannel(final Channel channel) {
+    private void connect(final Channel channel) {
         this.group.add(channel);
     }
 
@@ -57,7 +57,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         }
 
         handshaker.handshake(channel, request);
-        addChannel(channel);
+        connect(channel);
         sendConnected(channel);
     }
 }
