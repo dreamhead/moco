@@ -23,7 +23,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         this.group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     }
 
-    public void connected(final Resource resource) {
+    public final void connected(final Resource resource) {
         this.connected = resource;
     }
 
@@ -31,22 +31,22 @@ public class ActualWebSocketServer implements WebSocketServer {
         this.group.add(channel);
     }
 
-    public void disconnect(final Channel channel) {
+    public final void disconnect(final Channel channel) {
         this.group.remove(channel);
     }
 
-    public String getUri() {
+    public final String getUri() {
         return uri;
     }
 
-    private void sendConnected(final Channel channel) {
+    private final void sendConnected(final Channel channel) {
         if (connected != null) {
             MessageContent messageContent = this.connected.readFor(null);
             channel.writeAndFlush(new TextWebSocketFrame(messageContent.toString()));
         }
     }
 
-    public void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
+    public final void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                 getUri(), null, false);
         WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
