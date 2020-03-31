@@ -17,12 +17,12 @@ public class WebsocketSetting extends BaseSetting<WebsocketResponseSetting>
     }
 
     @Override
-    protected BaseSetting<WebsocketResponseSetting> createSetting(final RequestMatcher matcher) {
+    protected final BaseSetting<WebsocketResponseSetting> createSetting(final RequestMatcher matcher) {
         return new WebsocketSetting(matcher);
     }
 
     @Override
-    protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
+    protected final RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(matcher, config);
         if (config.isFor(MocoConfig.URI_ID) && matcher == appliedMatcher) {
             return new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));
