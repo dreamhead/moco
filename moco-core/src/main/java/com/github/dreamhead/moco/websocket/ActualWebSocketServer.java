@@ -39,7 +39,7 @@ public class ActualWebSocketServer implements WebSocketServer {
         return uri;
     }
 
-    private final void sendConnected(final Channel channel) {
+    private void sendConnected(final Channel channel) {
         if (connected != null) {
             MessageContent messageContent = this.connected.readFor(null);
             channel.writeAndFlush(new TextWebSocketFrame(messageContent.toString()));

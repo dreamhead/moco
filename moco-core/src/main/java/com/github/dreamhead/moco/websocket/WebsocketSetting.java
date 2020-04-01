@@ -10,19 +10,19 @@ import com.github.dreamhead.moco.setting.Setting;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.ImmutableList.of;
 
-public class WebsocketSetting extends BaseSetting<WebsocketResponseSetting>
+public final class WebsocketSetting extends BaseSetting<WebsocketResponseSetting>
         implements Setting<WebsocketResponseSetting> {
     protected WebsocketSetting(final RequestMatcher matcher) {
         super(matcher);
     }
 
     @Override
-    protected final BaseSetting<WebsocketResponseSetting> createSetting(final RequestMatcher matcher) {
+    protected BaseSetting<WebsocketResponseSetting> createSetting(final RequestMatcher matcher) {
         return new WebsocketSetting(matcher);
     }
 
     @Override
-    protected final RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
+    protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(matcher, config);
         if (config.isFor(MocoConfig.URI_ID) && matcher == appliedMatcher) {
             return new AndRequestMatcher(of(appliedMatcher, InternalApis.context((String) config.apply(""))));
