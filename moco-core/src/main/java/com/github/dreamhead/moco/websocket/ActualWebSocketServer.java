@@ -1,8 +1,13 @@
 package com.github.dreamhead.moco.websocket;
 
+import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.WebSocketServer;
+import com.github.dreamhead.moco.internal.BaseActualServer;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.setting.Setting;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
@@ -13,12 +18,13 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-public class ActualWebSocketServer implements WebSocketServer {
+public class ActualWebSocketServer extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer> implements WebSocketServer {
     private Resource connected;
     private ChannelGroup group;
     private String uri;
 
     public ActualWebSocketServer(final String uri) {
+        super(0, new QuietMonitor(), new MocoConfig[0]);
         this.uri = uri;
         this.group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     }
@@ -59,5 +65,22 @@ public class ActualWebSocketServer implements WebSocketServer {
         handshaker.handshake(channel, request);
         connect(channel);
         sendConnected(channel);
+    }
+
+    @Override
+    protected Setting<WebsocketResponseSetting> newSetting(final RequestMatcher matcher) {
+        return new WebsocketSetting(matcher);
+    }
+
+    @Override
+    protected ActualWebSocketServer createMergeServer(final ActualWebSocketServer thatServer) {
+        return new ActualWebSocketServer(this.uri);
+    }
+
+    @Override
+    protected WebsocketResponseSetting onRequestAttached(final RequestMatcher matcher) {
+        WebsocketSetting baseSetting = new WebsocketSetting(matcher);
+        addSetting(baseSetting);
+        return baseSetting;
     }
 }

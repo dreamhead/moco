@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class WebsocketSetting extends BaseSetting<WebsocketResponseSetting>
-        implements Setting<WebsocketResponseSetting> {
+        implements Setting<WebsocketResponseSetting>, WebsocketResponseSetting {
     protected WebsocketSetting(final RequestMatcher matcher) {
         super(matcher);
     }
