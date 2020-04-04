@@ -22,6 +22,7 @@ public final class WebsocketSetting extends BaseSetting<WebsocketResponseSetting
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected RequestMatcher configMatcher(final RequestMatcher matcher, final MocoConfig config) {
         RequestMatcher appliedMatcher = configItem(matcher, config);
         if (config.isFor(MocoConfig.URI_ID) && matcher == appliedMatcher) {
