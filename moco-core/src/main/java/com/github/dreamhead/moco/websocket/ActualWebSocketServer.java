@@ -37,11 +37,11 @@ public final class ActualWebSocketServer extends BaseActualServer<WebsocketRespo
         this.group.add(channel);
     }
 
-    public final void disconnect(final Channel channel) {
+    public void disconnect(final Channel channel) {
         this.group.remove(channel);
     }
 
-    public final String getUri() {
+    public String getUri() {
         return uri;
     }
 
@@ -52,7 +52,7 @@ public final class ActualWebSocketServer extends BaseActualServer<WebsocketRespo
         }
     }
 
-    public final void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
+    public void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                 getUri(), null, false);
         WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
