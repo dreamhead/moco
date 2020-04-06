@@ -18,7 +18,9 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-public final class ActualWebSocketServer extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer> implements WebSocketServer {
+public final class ActualWebSocketServer
+        extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
+        implements WebSocketServer {
     private Resource connected;
     private ChannelGroup group;
     private String uri;
