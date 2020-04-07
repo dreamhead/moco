@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.util.Strings;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
+import com.github.dreamhead.moco.websocket.WebsocketResponse;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -16,6 +17,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static com.google.common.net.HttpHeaders.UPGRADE;
@@ -51,6 +54,18 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     protected void channelRead0(final ChannelHandlerContext ctx, final Object message) {
         if (message instanceof FullHttpRequest) {
             handleHttpRequest(ctx, (FullHttpRequest) message);
+            return;
+        }
+
+        if (message instanceof WebSocketFrame) {
+            handleWebsocketFrame(ctx, (WebSocketFrame) message);
+        }
+    }
+
+    private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+        if (message instanceof TextWebSocketFrame) {
+            WebsocketResponse response = websocketServer.handleRequest(ctx, (TextWebSocketFrame) message);
+            ctx.channel().writeAndFlush(new TextWebSocketFrame(response.getContent().toString()));
         }
     }
 

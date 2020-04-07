@@ -10,11 +10,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
@@ -30,6 +32,19 @@ public class MocoWebsocketTest {
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
             assertThat(endpoint.getMessage(), is("hello"));
+        });
+    }
+
+    @Test
+    public void should_response_based_on_request() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by("foo")).response("bar");
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendMessage("foo");
+            assertThat(endpoint.getMessage(), is("bar"));
         });
     }
 
@@ -68,9 +83,11 @@ public class MocoWebsocketTest {
 
         public String getMessage() {
             try {
-                return message.get();
+                return message.get(1, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException e) {
                 return "";
+            } catch (TimeoutException e) {
+                throw new IllegalStateException("No message found");
             }
         }
     }

@@ -4,16 +4,19 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.internal.BaseActualServer;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.Setting;
+import com.google.common.collect.ImmutableList;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -84,5 +87,20 @@ public final class ActualWebSocketServer
         WebsocketSetting baseSetting = new WebsocketSetting(matcher);
         addSetting(baseSetting);
         return baseSetting;
+    }
+
+    public WebsocketResponse handleRequest(final ChannelHandlerContext ctx, final TextWebSocketFrame message) {
+        ImmutableList<Setting<WebsocketResponseSetting>> settings = this.getSettings();
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
+        DefaultWebsocketResponse response = new DefaultWebsocketResponse();
+        SessionContext context = new SessionContext(request, response);
+        for (Setting<WebsocketResponseSetting> setting : settings) {
+            if (setting.match(request)) {
+                setting.writeToResponse(context);
+                return response;
+            }
+        }
+
+        throw new IllegalArgumentException();
     }
 }
