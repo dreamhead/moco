@@ -4,7 +4,9 @@ import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.MocoMonitor;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.server.ServerSetting;
@@ -124,4 +126,23 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     protected abstract U createMergeServer(U thatServer);
+
+    public Optional<Response> getResponse(final SessionContext context) {
+        Request request = context.getRequest();
+        for (Setting<T> setting : this.getSettings()) {
+            if (setting.match(request)) {
+                setting.writeToResponse(context);
+                return Optional.of(context.getResponse());
+            }
+        }
+
+        Setting<T> anySetting = this.getAnySetting();
+        if (anySetting.match(request)) {
+            anySetting.writeToResponse(context);
+            return Optional.of(context.getResponse());
+        }
+
+        monitor.onUnexpectedMessage(request);
+        return Optional.empty();
+    }
 }

@@ -1,15 +1,12 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
-import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.util.Strings;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import com.github.dreamhead.moco.websocket.WebsocketResponse;
-import com.google.common.collect.ImmutableList;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,14 +28,12 @@ import static io.netty.handler.codec.http.HttpUtil.setKeepAlive;
 @Sharable
 public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private static final int DEFAULT_STATUS = HttpResponseStatus.OK.code();
-    private final ImmutableList<Setting<HttpResponseSetting>> settings;
-    private final Setting<HttpResponseSetting> anySetting;
     private final MocoMonitor monitor;
     private final ActualWebSocketServer websocketServer;
+    private final ActualHttpServer server;
 
     public MocoHandler(final ActualHttpServer server) {
-        this.settings = server.getSettings();
-        this.anySetting = server.getAnySetting();
+        this.server = server;
         this.monitor = server.getMonitor();
         this.websocketServer = server.getWebsocketServer();
     }
@@ -115,20 +110,8 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         DefaultMutableHttpResponse httpResponse = newResponse(request, DEFAULT_STATUS);
         SessionContext context = new SessionContext(request, httpResponse);
 
-        for (Setting setting : settings) {
-            if (setting.match(request)) {
-                setting.writeToResponse(context);
-                return httpResponse;
-            }
-        }
-
-        if (anySetting.match(request)) {
-            anySetting.writeToResponse(context);
-            return httpResponse;
-        }
-
-        monitor.onUnexpectedMessage(request);
-        return newResponse(request, HttpResponseStatus.BAD_REQUEST.code());
+        return (DefaultMutableHttpResponse) server.getResponse(context)
+                .orElse(newResponse(request, HttpResponseStatus.BAD_REQUEST.code()));
     }
 
     private void closeIfNotKeepAlive(final FullHttpRequest request, final ChannelFuture future) {

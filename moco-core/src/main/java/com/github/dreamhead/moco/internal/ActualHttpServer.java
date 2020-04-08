@@ -15,7 +15,6 @@ import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import io.netty.handler.ssl.SslHandler;
 
 import javax.net.ssl.SSLEngine;
-
 import java.util.Optional;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
