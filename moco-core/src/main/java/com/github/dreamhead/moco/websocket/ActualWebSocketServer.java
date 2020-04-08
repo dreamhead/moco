@@ -16,7 +16,6 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -90,17 +89,9 @@ public final class ActualWebSocketServer
     }
 
     public WebsocketResponse handleRequest(final ChannelHandlerContext ctx, final TextWebSocketFrame message) {
-        ImmutableList<Setting<WebsocketResponseSetting>> settings = this.getSettings();
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
-        for (Setting<WebsocketResponseSetting> setting : settings) {
-            if (setting.match(request)) {
-                setting.writeToResponse(context);
-                return response;
-            }
-        }
-
-        throw new IllegalArgumentException();
+        return (WebsocketResponse)this.getResponse(context).orElseThrow(IllegalArgumentException::new);
     }
 }

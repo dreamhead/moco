@@ -48,6 +48,20 @@ public class MocoWebsocketTest {
         });
     }
 
+    @Test
+    public void should_response_any_response() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by("foo")).response("bar");
+        webSocketServer.response("any");
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendMessage("blah");
+            assertThat(endpoint.getMessage(), is("any"));
+        });
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
