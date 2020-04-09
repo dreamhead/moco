@@ -128,6 +128,18 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     protected abstract U createMergeServer(U thatServer);
 
     public Optional<Response> getResponse(final SessionContext context) {
+        try {
+            monitor.onMessageArrived(context.getRequest());
+            Optional<Response> response = doGetResponse(context);
+            monitor.onMessageLeave(context.getResponse());
+            return response;
+        } catch (Exception e) {
+            monitor.onException(e);
+            throw e;
+        }
+    }
+
+    private Optional<Response> doGetResponse(SessionContext context) {
         Request request = context.getRequest();
         for (Setting<T> setting : this.getSettings()) {
             if (setting.match(request)) {

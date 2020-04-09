@@ -89,29 +89,24 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
         FullHttpResponse response = httpResponse.toFullResponse();
         prepareForKeepAlive(message, response);
-        monitor.onMessageLeave(httpResponse);
         return response;
     }
 
     private DefaultMutableHttpResponse getHttpResponse(final HttpRequest request) {
-        try {
-            monitor.onMessageArrived(request);
-            return doGetHttpResponse(request);
-        } catch (RuntimeException e) {
-            monitor.onException(e);
-            return newResponse(request, HttpResponseStatus.BAD_REQUEST.code());
-        } catch (Exception e) {
-            monitor.onException(e);
-            return newResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
-        }
-    }
-
-    private DefaultMutableHttpResponse doGetHttpResponse(final HttpRequest request) {
         DefaultMutableHttpResponse httpResponse = newResponse(request, DEFAULT_STATUS);
         SessionContext context = new SessionContext(request, httpResponse);
+        return doGetResponse(request, context);
+    }
 
-        return (DefaultMutableHttpResponse) server.getResponse(context)
-                .orElse(newResponse(request, HttpResponseStatus.BAD_REQUEST.code()));
+    private DefaultMutableHttpResponse doGetResponse(HttpRequest request, SessionContext context) {
+        try {
+            return (DefaultMutableHttpResponse) server.getResponse(context)
+                    .orElse(newResponse(request, HttpResponseStatus.BAD_REQUEST.code()));
+        } catch (RuntimeException e) {
+            return newResponse(request, HttpResponseStatus.BAD_REQUEST.code());
+        } catch (Exception e) {
+            return newResponse(request, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
+        }
     }
 
     private void closeIfNotKeepAlive(final FullHttpRequest request, final ChannelFuture future) {
