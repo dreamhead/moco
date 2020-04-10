@@ -77,6 +77,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return monitor;
     }
 
+    public final void onException(final Throwable cause) {
+        this.monitor.onException(cause);
+    }
+
     protected final void addSetting(final Setting<T> setting) {
         this.settings.add(setting);
     }

@@ -28,13 +28,11 @@ import static io.netty.handler.codec.http.HttpUtil.setKeepAlive;
 @Sharable
 public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private static final int DEFAULT_STATUS = HttpResponseStatus.OK.code();
-    private final MocoMonitor monitor;
     private final ActualWebSocketServer websocketServer;
     private final ActualHttpServer server;
 
     public MocoHandler(final ActualHttpServer server) {
         this.server = server;
-        this.monitor = server.getMonitor();
         this.websocketServer = server.getWebsocketServer();
     }
 
@@ -129,7 +127,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
-        monitor.onException(cause);
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
+        server.onException(cause);
     }
 }
