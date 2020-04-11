@@ -73,10 +73,6 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         return Optional.of(port);
     }
 
-    public final MocoMonitor getMonitor() {
-        return monitor;
-    }
-
     public final void onException(final Throwable cause) {
         this.monitor.onException(cause);
     }
