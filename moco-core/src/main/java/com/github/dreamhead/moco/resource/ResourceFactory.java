@@ -28,6 +28,7 @@ import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fi
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.jsonConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
+import static com.google.common.net.MediaType.APPLICATION_BINARY;
 
 public final class ResourceFactory {
     public static ContentResource textResource(final String text) {
@@ -40,6 +41,20 @@ public final class ResourceFactory {
             @Override
             public MessageContent readFor(final Request request) {
                 return content(text);
+            }
+        });
+    }
+
+    public static ContentResource binaryResource(final byte[] binary) {
+        return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
+            @Override
+            public MediaType getContentType(final HttpRequest request) {
+                return APPLICATION_BINARY;
+            }
+
+            @Override
+            public MessageContent readFor(final Request request) {
+                return content().withContent(binary).build();
             }
         });
     }

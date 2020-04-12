@@ -17,6 +17,7 @@ public final class ResponseHandlers {
             .put("file", ContentHandler.class)
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
+            .put("binary", ContentHandler.class)
             .put("template", ContentHandler.class)
             .put("version", VersionResponseHandler.class)
             .put("json", JsonResponseHandler.class)

@@ -48,6 +48,7 @@ import static com.github.dreamhead.moco.handler.CycleHandler.newCycle;
 import static com.github.dreamhead.moco.handler.ResponseHandlers.responseHandler;
 import static com.github.dreamhead.moco.handler.SequenceHandler.newSeq;
 import static com.github.dreamhead.moco.internal.ApiUtils.textToResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.binaryResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.jsonResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.methodResource;
@@ -266,6 +267,10 @@ public final class Moco {
 
     public static ContentResource text(final String text) {
         return textResource(checkNotNull(text, "Text should not be null"));
+    }
+
+    public static ContentResource binary(final byte[] binary) {
+        return binaryResource(checkNotNull(binary, "Binary should not be null"));
     }
 
     public static ResponseHandler with(final ResponseElement element) {

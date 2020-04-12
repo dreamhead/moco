@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.and;
+import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.contain;
 import static com.github.dreamhead.moco.Moco.cycle;
@@ -921,6 +922,16 @@ public class MocoTest extends AbstractMocoHttpTest {
                 assertThat(helper.getForStatus(remoteUrl("/foo")), is(302));
                 assertThat(helper.getForStatus(remoteUrl("/foo")), is(200));
             }
+        });
+    }
+
+    @Test
+    public void should_return_binary() throws Exception {
+        server.response(binary(new byte[] {1, 2, 3}));
+
+        running(server, () -> {
+            byte[] asBytes = helper.getAsBytes(root());
+            assertThat(asBytes, is(new byte[] {1, 2, 3}));
         });
     }
 }

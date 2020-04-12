@@ -43,7 +43,7 @@ public class MocoWebsocketTest {
 
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            endpoint.sendMessage("foo");
+            endpoint.sendTextMessage("foo");
             assertThat(endpoint.getMessage(), is("bar"));
         });
     }
@@ -57,7 +57,7 @@ public class MocoWebsocketTest {
 
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            endpoint.sendMessage("blah");
+            endpoint.sendTextMessage("blah");
             assertThat(endpoint.getMessage(), is("any"));
         });
     }
@@ -91,7 +91,7 @@ public class MocoWebsocketTest {
             this.message.complete(message);
         }
 
-        public void sendMessage(final String message) {
+        public void sendTextMessage(final String message) {
             this.userSession.getAsyncRemote().sendText(message);
         }
 
