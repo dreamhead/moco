@@ -1,17 +1,22 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.model.MessageContent;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 public class DefaultWebsocketRequest implements WebsocketRequest {
-    private TextWebSocketFrame frame;
+    private MessageContent content;
 
-    public DefaultWebsocketRequest(final TextWebSocketFrame frame) {
-        this.frame = frame;
+    public DefaultWebsocketRequest(final WebSocketFrame frame) {
+        ByteBuf buf = frame.content();
+        byte[] bytes = new byte[buf.readableBytes()];
+        int readerIndex = buf.readerIndex();
+        buf.getBytes(readerIndex, bytes);
+        this.content = MessageContent.content().withContent(bytes).build();
     }
 
     @Override
     public MessageContent getContent() {
-        return MessageContent.content().withContent(this.frame.text()).build(); 
+        return this.content;
     }
 }

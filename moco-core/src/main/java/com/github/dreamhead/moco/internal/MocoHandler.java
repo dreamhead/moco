@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpRequest;
-import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.util.Strings;
@@ -56,10 +55,8 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
-        if (message instanceof TextWebSocketFrame) {
-            WebsocketResponse response = websocketServer.handleRequest(ctx, (TextWebSocketFrame) message);
-            ctx.channel().writeAndFlush(new TextWebSocketFrame(response.getContent().toString()));
-        }
+        WebsocketResponse response = websocketServer.handleRequest(ctx, message);
+        ctx.channel().writeAndFlush(new TextWebSocketFrame(response.getContent().toString()));
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
