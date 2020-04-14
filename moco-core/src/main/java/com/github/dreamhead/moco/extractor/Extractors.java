@@ -10,6 +10,7 @@ public final class Extractors {
             .put("file", new ContentRequestExtractor())
             .put("text", new ContentRequestExtractor())
             .put("pathresource", new ContentRequestExtractor())
+            .put("binary", new ContentRequestExtractor())
             .put("json", new ContentRequestExtractor())
             .put("uri", new UriRequestExtractor())
             .put("method", new HttpMethodExtractor())

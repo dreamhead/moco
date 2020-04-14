@@ -11,11 +11,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Runner.running;
@@ -62,6 +64,20 @@ public class MocoWebsocketTest {
         });
     }
 
+    @Test
+    public void should_binary_response_based_on_binary_request() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendBinaryMessage(new byte[] {1, 2, 3});
+            assertThat(endpoint.getMessage().getBytes(), is(new byte[] {4, 5, 6}));
+        });
+    }
+
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
@@ -93,6 +109,11 @@ public class MocoWebsocketTest {
 
         public void sendTextMessage(final String message) {
             this.userSession.getAsyncRemote().sendText(message);
+        }
+
+        public void sendBinaryMessage(final byte[] message) {
+            ByteBuffer buffer = ByteBuffer.wrap(message);
+            this.userSession.getAsyncRemote().sendBinary(buffer);
         }
 
         public String getMessage() {
