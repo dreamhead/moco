@@ -9,7 +9,6 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.Setting;
-import com.google.common.collect.ImmutableList;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
