@@ -33,7 +33,7 @@ public final class ActualWebSocketServer
         this.group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     }
 
-    public final void connected(final Resource resource) {
+    public void connected(final Resource resource) {
         this.connected = resource;
     }
 
@@ -92,6 +92,6 @@ public final class ActualWebSocketServer
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
-        return (WebsocketResponse)this.getResponse(context).orElseThrow(IllegalArgumentException::new);
+        return (WebsocketResponse) this.getResponse(context).orElseThrow(IllegalArgumentException::new);
     }
 }
