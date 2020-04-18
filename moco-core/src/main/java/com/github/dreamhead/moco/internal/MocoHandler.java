@@ -6,6 +6,8 @@ import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.util.Strings;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import com.github.dreamhead.moco.websocket.WebsocketResponse;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,7 +15,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
@@ -56,7 +58,8 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
 
     private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         WebsocketResponse response = websocketServer.handleRequest(ctx, message);
-        ctx.channel().writeAndFlush(new TextWebSocketFrame(response.getContent().toString()));
+        ByteBuf byteBuf = Unpooled.wrappedBuffer(response.getContent().getContent());
+        ctx.channel().writeAndFlush(new BinaryWebSocketFrame(byteBuf));
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {

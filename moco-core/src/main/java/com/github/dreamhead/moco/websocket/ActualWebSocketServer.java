@@ -9,12 +9,14 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.Setting;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
@@ -52,7 +54,8 @@ public final class ActualWebSocketServer
     private void sendConnected(final Channel channel) {
         if (connected != null) {
             MessageContent messageContent = this.connected.readFor(null);
-            channel.writeAndFlush(new TextWebSocketFrame(messageContent.toString()));
+            ByteBuf byteBuf = Unpooled.wrappedBuffer(messageContent.getContent());
+            channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
         }
     }
 

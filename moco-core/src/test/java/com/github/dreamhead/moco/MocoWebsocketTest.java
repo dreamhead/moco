@@ -33,7 +33,7 @@ public class MocoWebsocketTest {
 
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            assertThat(endpoint.getMessage(), is("hello"));
+            assertThat(endpoint.getMessageAsText(), is("hello"));
         });
     }
 
@@ -46,7 +46,7 @@ public class MocoWebsocketTest {
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
             endpoint.sendTextMessage("foo");
-            assertThat(endpoint.getMessage(), is("bar"));
+            assertThat(endpoint.getMessageAsText(), is("bar"));
         });
     }
 
@@ -60,7 +60,7 @@ public class MocoWebsocketTest {
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
             endpoint.sendTextMessage("blah");
-            assertThat(endpoint.getMessage(), is("any"));
+            assertThat(endpoint.getMessageAsText(), is("any"));
         });
     }
 
@@ -73,15 +73,14 @@ public class MocoWebsocketTest {
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
             endpoint.sendBinaryMessage(new byte[] {1, 2, 3});
-            assertThat(endpoint.getMessage().getBytes(), is(new byte[] {4, 5, 6}));
+            assertThat(endpoint.getMessage(), is(new byte[] {4, 5, 6}));
         });
     }
-
 
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
-        private CompletableFuture<String> message = new CompletableFuture<>();
+        private CompletableFuture<byte[]> message = new CompletableFuture<>();
 
         public Endpoint(final URI uri) {
             try {
@@ -103,7 +102,8 @@ public class MocoWebsocketTest {
         }
 
         @OnMessage
-        public void onMessage(final String message) {
+        public void onMessage(final byte[] message) {
+            System.out.println("On message received");
             this.message.complete(message);
         }
 
@@ -116,13 +116,17 @@ public class MocoWebsocketTest {
             this.userSession.getAsyncRemote().sendBinary(buffer);
         }
 
-        public String getMessage() {
+        public String getMessageAsText() {
+            return new String(getMessage());
+        }
+
+        private byte[] getMessage() {
             try {
-                return message.get(1, TimeUnit.SECONDS);
+                return message.get(2, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException e) {
-                return "";
+                return new byte[0];
             } catch (TimeoutException e) {
-                throw new IllegalStateException("No message found");
+                throw new IllegalStateException("No message found", e);
             }
         }
     }
