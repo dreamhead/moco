@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -928,6 +929,16 @@ public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_binary() throws Exception {
         server.response(binary(new byte[] {1, 2, 3}));
+
+        running(server, () -> {
+            byte[] asBytes = helper.getAsBytes(root());
+            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+        });
+    }
+
+    @Test
+    public void should_return_binary_with_byte_buffer() throws Exception {
+        server.response(binary(ByteBuffer.wrap(new byte[] {1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());

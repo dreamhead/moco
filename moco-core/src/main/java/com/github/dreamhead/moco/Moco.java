@@ -39,6 +39,7 @@ import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -271,6 +272,10 @@ public final class Moco {
 
     public static ContentResource binary(final byte[] binary) {
         return binaryResource(checkNotNull(binary, "Binary should not be null"));
+    }
+
+    public static ContentResource binary(final ByteBuffer buffer) {
+        return binaryResource(checkNotNull(buffer.array(), "Binary should not be null"));
     }
 
     public static ResponseHandler with(final ResponseElement element) {
