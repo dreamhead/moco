@@ -17,10 +17,16 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
@@ -28,15 +34,24 @@ public final class ActualWebSocketServer
     private Resource connected;
     private ChannelGroup group;
     private String uri;
+    private List<PingPongSetting> settings;
 
     public ActualWebSocketServer(final String uri) {
         super(0, new QuietMonitor(), new MocoConfig[0]);
         this.uri = uri;
         this.group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+        this.settings = new ArrayList<>();
     }
 
     public void connected(final Resource resource) {
         this.connected = resource;
+    }
+
+    @Override
+    public PongResponse ping(String message) {
+        PingPongSetting setting = new PingPongSetting(message);
+        settings.add(setting);
+        return setting;
     }
 
     private void connect(final Channel channel) {
@@ -91,10 +106,26 @@ public final class ActualWebSocketServer
         return baseSetting;
     }
 
+    public PongWebSocketFrame handlePingPong(PingWebSocketFrame frame) {
+        ByteBuf content = frame.content();
+        byte[] bytes = new byte[content.readableBytes()];
+        content.readBytes(bytes);
+        for (PingPongSetting setting : settings) {
+            if (Arrays.equals(bytes, setting.getPing().getBytes())) {
+                ByteBuf buf = Unpooled.wrappedBuffer(setting.getPong().getBytes());
+                return new PongWebSocketFrame(buf);
+            }
+        }
+
+        throw new IllegalArgumentException();
+    }
+
     public WebsocketResponse handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
+
+
         return (WebsocketResponse) this.getResponse(context).orElseThrow(IllegalArgumentException::new);
     }
 }

@@ -8,8 +8,10 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
+import javax.websocket.PongMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
@@ -77,6 +79,20 @@ public class MocoWebsocketTest {
         });
     }
 
+    @Test
+    public void should_pong_based_on_ping() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
+        webSocketServer.ping("hello").pong("world");
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.ping("hello");
+            assertThat(endpoint.getMessage(), is("world".getBytes()));
+        });
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
@@ -103,8 +119,12 @@ public class MocoWebsocketTest {
 
         @OnMessage
         public void onMessage(final byte[] message) {
-            System.out.println("On message received");
             this.message.complete(message);
+        }
+
+        @OnMessage
+        public void onPong(final PongMessage message) {
+            this.message.complete(message.getApplicationData().array());
         }
 
         public void sendTextMessage(final String message) {
@@ -128,6 +148,16 @@ public class MocoWebsocketTest {
             } catch (TimeoutException e) {
                 throw new IllegalStateException("No message found", e);
             }
+        }
+
+        public void ping(final String message) {
+            ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
+            try {
+                this.userSession.getAsyncRemote().sendPing(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }

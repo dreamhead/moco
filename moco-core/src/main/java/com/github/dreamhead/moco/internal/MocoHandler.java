@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
@@ -57,6 +59,11 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+        if (message instanceof PingWebSocketFrame) {
+            PongWebSocketFrame pingPong = websocketServer.handlePingPong((PingWebSocketFrame) message);
+            ctx.channel().writeAndFlush(pingPong);
+            return;
+        }
         WebsocketResponse response = websocketServer.handleRequest(ctx, message);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(response.getContent().getContent());
         ctx.channel().writeAndFlush(new BinaryWebSocketFrame(byteBuf));
