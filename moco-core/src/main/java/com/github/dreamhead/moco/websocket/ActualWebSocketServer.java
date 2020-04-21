@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
+
 public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
         implements WebSocketServer {
@@ -108,8 +110,7 @@ public final class ActualWebSocketServer
 
     public PongWebSocketFrame handlePingPong(PingWebSocketFrame frame) {
         ByteBuf content = frame.content();
-        byte[] bytes = new byte[content.readableBytes()];
-        content.readBytes(bytes);
+        byte[] bytes = toByteArray(content);
         for (PingPongSetting setting : settings) {
             if (Arrays.equals(bytes, setting.getPing().getBytes())) {
                 ByteBuf buf = Unpooled.wrappedBuffer(setting.getPong().getBytes());
@@ -124,7 +125,6 @@ public final class ActualWebSocketServer
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
-
 
         return (WebsocketResponse) this.getResponse(context).orElseThrow(IllegalArgumentException::new);
     }
