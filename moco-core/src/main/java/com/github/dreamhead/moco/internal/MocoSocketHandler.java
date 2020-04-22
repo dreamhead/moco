@@ -6,9 +6,9 @@ import com.github.dreamhead.moco.SocketRequest;
 import com.github.dreamhead.moco.model.DefaultSocketRequest;
 import com.github.dreamhead.moco.model.DefaultSocketResponse;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.ByteBufs;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -34,7 +34,7 @@ public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf
         Optional<Response> response = server.getResponse(context);
         Response actual = response.orElseThrow(() ->
                 new MocoException(format("No handler found for request: %s", context.getRequest().getContent())));
-        ctx.write(Unpooled.wrappedBuffer(actual.getContent().getContent()));
+        ctx.write(ByteBufs.toByteBuf(actual.getContent().getContent()));
     }
 
     @Override

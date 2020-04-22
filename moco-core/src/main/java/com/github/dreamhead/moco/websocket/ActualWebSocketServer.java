@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.Setting;
+import com.github.dreamhead.moco.util.ByteBufs;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -71,7 +72,7 @@ public final class ActualWebSocketServer
     private void sendConnected(final Channel channel) {
         if (connected != null) {
             MessageContent messageContent = this.connected.readFor(null);
-            ByteBuf byteBuf = Unpooled.wrappedBuffer(messageContent.getContent());
+            ByteBuf byteBuf = ByteBufs.toByteBuf(messageContent.getContent());
             channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
         }
     }
@@ -113,7 +114,7 @@ public final class ActualWebSocketServer
         byte[] bytes = toByteArray(content);
         for (PingPongSetting setting : settings) {
             if (Arrays.equals(bytes, setting.getPing().getBytes())) {
-                ByteBuf buf = Unpooled.wrappedBuffer(setting.getPong().getBytes());
+                ByteBuf buf = ByteBufs.toByteBuf(setting.getPong().getBytes());
                 return new PongWebSocketFrame(buf);
             }
         }

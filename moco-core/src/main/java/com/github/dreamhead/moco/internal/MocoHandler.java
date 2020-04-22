@@ -3,11 +3,11 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
+import com.github.dreamhead.moco.util.ByteBufs;
 import com.github.dreamhead.moco.util.Strings;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import com.github.dreamhead.moco.websocket.WebsocketResponse;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -65,7 +65,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
         WebsocketResponse response = websocketServer.handleRequest(ctx, message);
-        ByteBuf byteBuf = Unpooled.wrappedBuffer(response.getContent().getContent());
+        ByteBuf byteBuf = ByteBufs.toByteBuf(response.getContent().getContent());
         ctx.channel().writeAndFlush(new BinaryWebSocketFrame(byteBuf));
     }
 
