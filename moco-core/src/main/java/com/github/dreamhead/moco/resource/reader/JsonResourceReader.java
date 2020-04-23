@@ -6,13 +6,14 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
+import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public final class JsonResourceReader implements ContentResourceReader {
-    private Object pojo;
+    private Supplier<Object> pojo;
 
-    public JsonResourceReader(final Object pojo) {
+    public JsonResourceReader(final Supplier<Object> pojo) {
         this.pojo = pojo;
     }
 
@@ -23,10 +24,10 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MessageContent readFor(final Request request) {
-        return MessageContent.content().withContent(toJson(pojo)).build();
+        return MessageContent.content().withContent(toJson(pojo.get())).build();
     }
 
     public Object getPojo() {
-        return pojo;
+        return pojo.get();
     }
 }

@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
+import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
@@ -75,7 +76,7 @@ public final class ResourceFactory {
                 new JsonContentResourceReader(resource));
     }
 
-    public static ContentResource jsonResource(final Object pojo) {
+    public static ContentResource jsonResource(final Supplier<Object> pojo) {
         return contentResource(id("json"), DO_NOTHING_APPLIER,
                 new JsonResourceReader(pojo));
     }

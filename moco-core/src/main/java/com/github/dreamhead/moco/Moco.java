@@ -36,6 +36,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
@@ -324,9 +325,9 @@ public final class Moco {
 
     public static ResponseHandler cookie(final String key, final Resource resource, final CookieAttribute... attributes) {
         return with(header(SET_COOKIE, cookieResource(
-                        checkNotNullOrEmpty(key, "Cookie key should not be null"),
-                        checkNotNull(resource, "Cookie value should not be null"),
-                        checkNotNull(attributes, "Cookie options should not be null"))));
+                checkNotNullOrEmpty(key, "Cookie key should not be null"),
+                checkNotNull(resource, "Cookie value should not be null"),
+                checkNotNull(attributes, "Cookie options should not be null"))));
     }
 
     public static RequestExtractor<String> form(final String key) {
@@ -364,7 +365,12 @@ public final class Moco {
     }
 
     public static ContentResource json(final Object pojo) {
-        return jsonResource(checkNotNull(pojo, "Json object should not be null"));
+        checkNotNull(pojo, "Json object should not be null");
+        return json(() -> pojo);
+    }
+
+    public static ContentResource json(final Supplier<Object> supplier) {
+        return jsonResource(checkNotNull(supplier, "Json object should not be null"));
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
