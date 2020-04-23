@@ -39,82 +39,48 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_content_based_on_jsonpath() throws Exception {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
+        running(server, () ->
                 assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"),
-                        is("jsonpath match success"));
-            }
-        });
+                is("jsonpath match success")));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_for_mismatch_jsonpath() throws Exception {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.postContent(root(), "{\"book\":{\"price\":\"2\"}}");
-            }
-        });
+        running(server, () -> helper.postContent(root(), "{\"book\":{\"price\":\"2\"}}"));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_if_no_json_path_found() throws Exception {
         server.request(eq(jsonPath("anything"), "1")).response("jsonpath match success");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.postContent(root(), "{}");
-            }
-        });
+        running(server, () -> helper.postContent(root(), "{}"));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_not_return_anything_if_no_json_found() throws Exception {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.postContent(root(), "{}");
-            }
-        });
+        running(server, () -> helper.postContent(root(), "{}"));
     }
 
     @Test
     public void should_match_exact_json() throws Exception {
         final String jsonText = Jsons.toJson(of("foo", "bar"));
         server.request(by(json(jsonText))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), jsonText), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), jsonText), is("foo")));
     }
 
     @Test
     public void should_match_exact_json_with_resource() throws Exception {
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(by(json(jsonContent))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), jsonContent), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), jsonContent), is("foo")));
     }
 
     @Test
     public void should_match_same_structure_json() throws Exception {
         final String jsonText = Jsons.toJson(of("foo", "bar"));
         server.request(by(json(jsonText))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), jsonText), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), jsonText), is("foo")));
     }
 
     @Test
@@ -123,12 +89,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.code = 1;
         pojo.message = "message";
         server.request(by(Moco.json(pojo))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo")));
     }
 
     @Test
@@ -137,24 +98,14 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.code = 1;
         pojo.message = "message";
         server.request(by(Moco.json(pojo))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), "{\n\t\"code\":1,\n\t\"message\":\"message\"\n}"), is("foo")));
     }
 
     @Test
     public void should_return_content_based_on_jsonpath_existing() throws Exception {
         server.request(exist(jsonPath("$.book.price"))).response("jsonpath match success");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"),
-                        is("jsonpath match success"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"),
+                is("jsonpath match success")));
     }
 
     @Test
@@ -163,12 +114,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.code = 1;
         pojo.message = "message";
         server.response(Moco.json(pojo));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                JsonSupport.assertEquals(pojo, helper.getResponse(root()));
-            }
-        });
+        running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
     }
 
     @Test
@@ -178,12 +124,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.message = "message";
         String text = Jsons.toJson(pojo);
         server.response(Moco.json(text));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                JsonSupport.assertEquals(pojo, helper.getResponse(root()));
-            }
-        });
+        running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
     }
 
     @Test
@@ -192,12 +133,9 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.code = 1;
         pojo.message = "消息";
         server.response(Moco.json(pojo));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String content = helper.get(remoteUrl(root()));
-                JsonSupport.assertEquals(pojo, content);
-            }
+        running(server, () -> {
+            String content = helper.get(remoteUrl(root()));
+            JsonSupport.assertEquals(pojo, content);
         });
     }
 
@@ -206,12 +144,9 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         server = httpServer(port(), log());
         server.request(by(json(pathResource("gbk.json", Charset.forName("GBK"))))).response("response");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String result = helper.postBytes(root(), "{\"message\": \"请求\"}".getBytes());
-                assertThat(result, is("response"));
-            }
+        running(server, () -> {
+            String result = helper.postBytes(root(), "{\"message\": \"请求\"}".getBytes());
+            assertThat(result, is("response"));
         });
     }
 
@@ -221,14 +156,11 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         final Charset gbk = Charset.forName("GBK");
         server.request(by(json(pathResource("gbk.json", gbk)))).response("response");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                URL resource = Resources.getResource("gbk.json");
-                byte[] bytes = ByteStreams.toByteArray(resource.openStream());
-                String result = helper.postBytes(root(), bytes, gbk);
-                assertThat(result, is("response"));
-            }
+        running(server, () -> {
+            URL resource = Resources.getResource("gbk.json");
+            byte[] bytes = ByteStreams.toByteArray(resource.openStream());
+            String result = helper.postBytes(root(), bytes, gbk);
+            assertThat(result, is("response"));
         });
     }
 
@@ -242,12 +174,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by(Moco.json(pojo)))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), Moco.json(pojo))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
