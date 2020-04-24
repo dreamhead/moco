@@ -36,13 +36,15 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.base.Supplier;
+import com.github.dreamhead.moco.util.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
@@ -364,13 +366,17 @@ public final class Moco {
         return jsonResource(checkNotNull(resource, "Json should not be null"));
     }
 
+    public static ContentResource json(final Supplier<Object> supplier) {
+        return json(Suppliers.from(checkNotNull(supplier, "Json object should not be null")));
+    }
+
+    public static ContentResource json(final Function<Request, Object> supplier) {
+        return jsonResource(checkNotNull(supplier, "Json object should not be null"));
+    }
+
     public static ContentResource json(final Object pojo) {
         checkNotNull(pojo, "Json object should not be null");
         return json(() -> pojo);
-    }
-
-    public static ContentResource json(final Supplier<Object> supplier) {
-        return jsonResource(checkNotNull(supplier, "Json object should not be null"));
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
