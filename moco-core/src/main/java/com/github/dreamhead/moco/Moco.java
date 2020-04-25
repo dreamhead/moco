@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.config.MocoRequestConfig;
 import com.github.dreamhead.moco.config.MocoResponseConfig;
 import com.github.dreamhead.moco.extractor.CookieRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormRequestExtractor;
+import com.github.dreamhead.moco.extractor.FunctionExtractor;
 import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
 import com.github.dreamhead.moco.extractor.JsonPathRequestExtractor;
 import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
@@ -576,6 +577,14 @@ public final class Moco {
                                            final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
         return templateResource(checkNotNull(template, "Template should not be null"),
                 ApiUtils.toVariables(checkNotNull(variables, "Template variable should not be null")));
+    }
+
+    public static RequestExtractor<Object> var(final Supplier<Object> supplier) {
+        return var(Suppliers.from(checkNotNull(supplier, "Template variable should not be null or empty")));
+    }
+
+    public static RequestExtractor<Object> var(final Function<Request, Object> supplier) {
+        return new FunctionExtractor<>(checkNotNull(supplier, "Template variable should not be null or empty"));
     }
 
     public static RequestExtractor<Object> var(final Object text) {

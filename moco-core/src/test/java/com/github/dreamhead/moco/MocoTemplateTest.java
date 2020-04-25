@@ -589,4 +589,28 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     public void should_throw_exception_for_reserved_name_as_variable_nem() {
         server.request(by(uri("/template"))).response(template("${random}", "random", "bar"));
     }
+
+    @Test
+    public void should_generate_response_with_dynamic_variable() throws Exception {
+        server.request(by(uri("/template"))).response(template("${var}", "var", var(() -> "TEMPLATE")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
+            }
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_dynamic_function_variable() throws Exception {
+        server.request(by(uri("/template"))).response(template("${var}", "var", var(request -> "TEMPLATE")));
+
+        running(server, new Runnable() {
+            @Override
+            public void run() throws Exception {
+                assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE"));
+            }
+        });
+    }
 }
