@@ -13,7 +13,6 @@ import com.github.dreamhead.moco.extractor.FunctionExtractor;
 import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
 import com.github.dreamhead.moco.extractor.JsonPathRequestExtractor;
 import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
-import com.github.dreamhead.moco.extractor.PlainExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
@@ -587,8 +586,9 @@ public final class Moco {
         return new FunctionExtractor<>(checkNotNull(supplier, "Template variable should not be null or empty"));
     }
 
-    public static RequestExtractor<Object> var(final Object text) {
-        return new PlainExtractor<>(checkNotNull(text, "Template variable should not be null or empty"));
+    public static RequestExtractor<Object> var(final Object obj) {
+        checkNotNull(obj, "Template variable should not be null or empty");
+        return var(() -> obj);
     }
 
     public static Failover failover(final String file, final int... statuses) {
