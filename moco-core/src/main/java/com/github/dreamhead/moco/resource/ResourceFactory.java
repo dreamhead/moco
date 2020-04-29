@@ -61,6 +61,21 @@ public final class ResourceFactory {
         });
     }
 
+    public static ContentResource binaryResource(final Function<Request, byte[]> binary) {
+        return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
+            @Override
+            public MediaType getContentType(final HttpRequest request) {
+                return APPLICATION_BINARY;
+            }
+
+            @Override
+            public MessageContent readFor(final Request request) {
+                byte[] result = binary.apply(request);
+                return content().withContent(result).build();
+            }
+        });
+    }
+
     public static ContentResource fileResource(final Resource filename, final Charset charset,
                                                final MocoConfig config) {
         return contentResource(id(MocoConfig.FILE_ID), fileConfigApplier(MocoConfig.FILE_ID, filename),

@@ -281,6 +281,14 @@ public final class Moco {
         return binaryResource(checkNotNull(buffer.array(), "Binary should not be null"));
     }
 
+    public static ContentResource binary(final Supplier<byte[]> supplier) {
+        return binary(Suppliers.from(checkNotNull(supplier, "Binary supplier should not be null")));
+    }
+
+    public static ContentResource binary(final Function<Request, byte[]> function) {
+        return binaryResource(checkNotNull(function, "Binary function should not be null"));
+    }
+
     public static ResponseHandler with(final ResponseElement element) {
         return responseHandler(checkNotNull(element, "Response element should not be null"));
     }
