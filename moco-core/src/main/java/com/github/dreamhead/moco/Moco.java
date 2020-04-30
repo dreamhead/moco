@@ -270,7 +270,17 @@ public final class Moco {
     }
 
     public static ContentResource text(final String text) {
-        return textResource(checkNotNull(text, "Text should not be null"));
+        checkNotNull(text, "Text should not be null");
+        return text(() -> text);
+    }
+
+    public static ContentResource text(final Supplier<String> supplier) {
+        Supplier<String> checkSupplier = checkNotNull(supplier, "Text supplier should not be null");
+        return textResource(Suppliers.from(checkSupplier));
+    }
+
+    public static ContentResource text(final Function<Request, String> supplier) {
+        return textResource(checkNotNull(supplier, "Text supplier should not be null"));
     }
 
     public static ContentResource binary(final byte[] binary) {

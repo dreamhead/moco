@@ -697,6 +697,26 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_dynamic_text() throws Exception {
+        server.response(text(() -> "foo"));
+
+        running(server, () -> {
+            String response = helper.get(root());
+            assertThat(response, is("foo"));
+        });
+    }
+
+    @Test
+    public void should_return_dynamic_text_with_function() throws Exception {
+        server.response(text((request) -> "foo"));
+
+        running(server, () -> {
+            String response = helper.get(root());
+            assertThat(response, is("foo"));
+        });
+    }
+
+    @Test
     public void should_return_dynamic_binary() throws Exception {
         server.response(binary(() -> new byte[] {1, 2, 3}));
 
