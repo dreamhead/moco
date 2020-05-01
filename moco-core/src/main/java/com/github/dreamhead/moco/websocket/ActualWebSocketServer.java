@@ -11,7 +11,6 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.Setting;
 import com.github.dreamhead.moco.util.ByteBufs;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;

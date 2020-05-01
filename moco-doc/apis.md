@@ -1780,7 +1780,27 @@ For JSON API, just give json object directly
 }
 ```
 
+
+
+**@Since will be at next release**
+
+For API user, if you want to return create dynamic JSON based on the request, you can use lambda to do this.
+
+* With request
+
+```java
+server.request(by(uri("/json"))).response(json((request) -> new Pojo()));
+```
+
+* Without request
+```java
+server.request(by(uri("/json"))).response(json(() -> new Pojo()));
+```
+
+
+
 ## Mount
+
 **@Since 0.7**
 
 Moco allows us to mount a directory to uri.
