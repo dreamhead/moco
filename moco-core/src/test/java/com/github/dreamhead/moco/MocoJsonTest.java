@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.support.JsonSupport;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
@@ -207,6 +208,15 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.code = 1;
         pojo.message = "message";
         running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
+    }
+
+    @Test
+    public void should_throw_exception_for_null_dynamic_json() throws Exception {
+        server.response(json((request) -> null));
+        running(server, () -> {
+            int status = helper.getForStatus(root());
+            assertThat(status, is(400));
+        });
     }
 
     private static class PlainA {

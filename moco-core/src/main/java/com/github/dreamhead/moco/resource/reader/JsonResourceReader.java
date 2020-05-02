@@ -7,7 +7,6 @@ import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
@@ -25,7 +24,11 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MessageContent readFor(final Request request) {
-        return MessageContent.content().withContent(toJson(pojo.apply(request))).build();
+        Object object = pojo.apply(request);
+        if (object == null) {
+            throw new NullPointerException("Null returned from json function");
+        }
+        return MessageContent.content().withContent(toJson(object)).build();
     }
 
     public Object getPojo() {
