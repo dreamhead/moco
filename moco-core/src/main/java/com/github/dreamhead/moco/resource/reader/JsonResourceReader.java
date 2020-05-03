@@ -3,18 +3,20 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.Functions;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
+import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public final class JsonResourceReader implements ContentResourceReader {
-    private Function<Request, Object> pojo;
+    private Function<Request, Object> function;
 
     public JsonResourceReader(final Function<Request, Object> pojo) {
-        this.pojo = pojo;
+        this.function = pojo;
     }
 
     @Override
@@ -24,14 +26,10 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MessageContent readFor(final Request request) {
-        Object object = pojo.apply(request);
-        if (object == null) {
-            throw new NullPointerException("Null returned from json function");
-        }
-        return MessageContent.content().withContent(toJson(object)).build();
+        return MessageContent.content().withContent(toJson(checkApply(this.function, request))).build();
     }
 
     public Object getPojo() {
-        return pojo.apply(null);
+        return function.apply(null);
     }
 }
