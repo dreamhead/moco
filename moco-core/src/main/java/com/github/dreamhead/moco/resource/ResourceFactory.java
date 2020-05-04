@@ -20,7 +20,6 @@ import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.resource.IdFactory.id;
@@ -30,6 +29,7 @@ import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fi
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.jsonConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
+import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.google.common.net.MediaType.APPLICATION_BINARY;
 
 public final class ResourceFactory {
@@ -42,7 +42,7 @@ public final class ResourceFactory {
 
             @Override
             public MessageContent readFor(final Request request) {
-                return content(function.apply(request));
+                return content(checkApply(function, request));
             }
         });
     }
@@ -61,7 +61,7 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource binaryResource(final Function<Request, byte[]> binary) {
+    public static ContentResource binaryResource(final Function<Request, byte[]> function) {
         return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public MediaType getContentType(final HttpRequest request) {
@@ -70,7 +70,7 @@ public final class ResourceFactory {
 
             @Override
             public MessageContent readFor(final Request request) {
-                byte[] result = binary.apply(request);
+                byte[] result = checkApply(function, request);
                 return content().withContent(result).build();
             }
         });

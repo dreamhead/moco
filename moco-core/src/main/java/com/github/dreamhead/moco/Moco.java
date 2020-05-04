@@ -279,8 +279,8 @@ public final class Moco {
         return textResource(Suppliers.from(checkSupplier));
     }
 
-    public static ContentResource text(final Function<Request, String> supplier) {
-        return textResource(checkNotNull(supplier, "Text supplier should not be null"));
+    public static ContentResource text(final Function<Request, String> function) {
+        return textResource(checkNotNull(function, "Text function should not be null"));
     }
 
     public static ContentResource binary(final byte[] binary) {
