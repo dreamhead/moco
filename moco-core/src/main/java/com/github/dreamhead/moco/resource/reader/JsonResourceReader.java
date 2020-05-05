@@ -1,22 +1,21 @@
 package com.github.dreamhead.moco.resource.reader;
 
 import com.github.dreamhead.moco.HttpRequest;
+import com.github.dreamhead.moco.function.ObjectResponseFunction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.util.Functions;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
-import java.util.function.Function;
 
 import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public final class JsonResourceReader implements ContentResourceReader {
-    private Function<Request, Object> function;
+    private ObjectResponseFunction function;
 
-    public JsonResourceReader(final Function<Request, Object> pojo) {
-        this.function = pojo;
+    public JsonResourceReader(final ObjectResponseFunction function) {
+        this.function = function;
     }
 
     @Override

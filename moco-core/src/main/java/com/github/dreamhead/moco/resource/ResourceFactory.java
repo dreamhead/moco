@@ -4,7 +4,9 @@ import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.function.ObjectResponseFunction;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.function.TextResponseFunction;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
@@ -33,7 +35,7 @@ import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.google.common.net.MediaType.APPLICATION_BINARY;
 
 public final class ResourceFactory {
-    public static ContentResource textResource(final Function<Request, String> function) {
+    public static ContentResource textResource(final TextResponseFunction function) {
         return contentResource(id("text"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public MediaType getContentType(final HttpRequest request) {
@@ -92,9 +94,9 @@ public final class ResourceFactory {
                 new JsonContentResourceReader(resource));
     }
 
-    public static ContentResource jsonResource(final Function<Request, Object> pojo) {
+    public static ContentResource jsonResource(final ObjectResponseFunction function) {
         return contentResource(id("json"), DO_NOTHING_APPLIER,
-                new JsonResourceReader(pojo));
+                new JsonResourceReader(function));
     }
 
     public static Resource methodResource(final String method) {
