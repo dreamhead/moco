@@ -20,6 +20,7 @@ import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
@@ -63,7 +64,7 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource binaryResource(final Function<Request, byte[]> function) {
+    public static ContentResource binaryResource(final Function<Request, Object> function) {
         return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public MediaType getContentType(final HttpRequest request) {
@@ -72,8 +73,17 @@ public final class ResourceFactory {
 
             @Override
             public MessageContent readFor(final Request request) {
-                byte[] result = checkApply(function, request);
-                return content().withContent(result).build();
+                Object result = checkApply(function, request);
+                if (result instanceof byte[]) {
+                    return content().withContent((byte[])result).build();
+                }
+
+                if (result instanceof ByteBuffer) {
+                    ByteBuffer buffer = (ByteBuffer) result;
+                    return content().withContent(buffer.array()).build();
+                }
+
+                throw new IllegalArgumentException("Not allowed " + result.getClass());
             }
         });
     }

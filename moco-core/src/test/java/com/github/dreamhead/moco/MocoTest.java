@@ -735,4 +735,14 @@ public class MocoTest extends AbstractMocoHttpTest {
             assertThat(asBytes, is(new byte[] {1, 2, 3}));
         });
     }
+
+    @Test
+    public void should_return_dynamic_binary_function_with_byte_buffer() throws Exception {
+        server.response(binary((request) -> ByteBuffer.wrap(new byte[] {1, 2, 3})));
+
+        running(server, () -> {
+            byte[] asBytes = helper.getAsBytes(root());
+            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+        });
+    }
 }
