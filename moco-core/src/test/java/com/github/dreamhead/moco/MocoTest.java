@@ -10,6 +10,7 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -689,6 +690,18 @@ public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_binary_with_byte_buffer() throws Exception {
         server.response(binary(ByteBuffer.wrap(new byte[] {1, 2, 3})));
+
+        running(server, () -> {
+            byte[] asBytes = helper.getAsBytes(root());
+            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+        });
+    }
+
+    @Test
+    public void should_return_binary_with_stream() throws Exception {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{1, 2, 3});
+
+        server.response(binary(inputStream));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());

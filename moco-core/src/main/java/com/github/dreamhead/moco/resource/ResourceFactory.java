@@ -18,6 +18,7 @@ import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.function.Function;
@@ -48,7 +49,7 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource binaryResource(final byte[] binary) {
+    public static ContentResource binaryResource(final InputStream binary) {
         return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override
             public MediaType getContentType(final HttpRequest request) {
