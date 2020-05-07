@@ -14,12 +14,6 @@ import com.github.dreamhead.moco.extractor.HeaderRequestExtractor;
 import com.github.dreamhead.moco.extractor.JsonPathRequestExtractor;
 import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
-import com.github.dreamhead.moco.function.ByteArrayResponseFunction;
-import com.github.dreamhead.moco.function.ByteArrayResponseSupplier;
-import com.github.dreamhead.moco.function.ObjectResponseFunction;
-import com.github.dreamhead.moco.function.ObjectResponseSupplier;
-import com.github.dreamhead.moco.function.TextResponseFunction;
-import com.github.dreamhead.moco.function.TextResponseSupplier;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
@@ -280,12 +274,12 @@ public final class Moco {
         return text(() -> text);
     }
 
-    public static ContentResource text(final TextResponseSupplier supplier) {
+    public static ContentResource text(final Supplier<String> supplier) {
         checkNotNull(supplier, "Text supplier should not be null");
-        return textResource(supplier.asFunction());
+        return textResource(Suppliers.from(supplier));
     }
 
-    public static ContentResource text(final TextResponseFunction function) {
+    public static ContentResource text(final Function<Request, String> function) {
         return textResource(checkNotNull(function, "Text function should not be null"));
     }
 
@@ -297,12 +291,12 @@ public final class Moco {
         return binaryResource(checkNotNull(buffer.array(), "Binary should not be null"));
     }
 
-    public static ContentResource binary(final ByteArrayResponseSupplier supplier) {
+    public static ContentResource binary(final Supplier<Object> supplier) {
         checkNotNull(supplier, "Binary supplier should not be null");
-        return binary(supplier.asFunction());
+        return binary(Suppliers.from(supplier));
     }
 
-    public static ContentResource binary(final ByteArrayResponseFunction function) {
+    public static ContentResource binary(final Function<Request, Object> function) {
         return binaryResource(checkNotNull(function, "Binary function should not be null"));
     }
 
@@ -391,12 +385,12 @@ public final class Moco {
         return jsonResource(checkNotNull(resource, "Json should not be null"));
     }
 
-    public static ContentResource json(final ObjectResponseSupplier supplier) {
+    public static ContentResource json(final Supplier<Object> supplier) {
         checkNotNull(supplier, "Json supplier should not be null");
-        return json(supplier.asFunction());
+        return json(Suppliers.from(supplier));
     }
 
-    public static ContentResource json(final ObjectResponseFunction function) {
+    public static ContentResource json(final Function<Request, Object> function) {
         return jsonResource(checkNotNull(function, "Json function should not be null"));
     }
 
