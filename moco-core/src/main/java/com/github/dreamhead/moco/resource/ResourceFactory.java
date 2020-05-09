@@ -82,6 +82,11 @@ public final class ResourceFactory {
                     return content().withContent(buffer.array()).build();
                 }
 
+                if (result instanceof InputStream) {
+                    InputStream is = (InputStream)result;
+                    return content().withContent(is).build();
+                }
+
                 throw new IllegalArgumentException("Not allowed " + result.getClass());
             }
         });
