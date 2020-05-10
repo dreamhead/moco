@@ -49,20 +49,6 @@ public final class ResourceFactory {
         });
     }
 
-    public static ContentResource binaryResource(final InputStream binary) {
-        return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
-            @Override
-            public MediaType getContentType(final HttpRequest request) {
-                return APPLICATION_BINARY;
-            }
-
-            @Override
-            public MessageContent readFor(final Request request) {
-                return content().withContent(binary).build();
-            }
-        });
-    }
-
     public static ContentResource binaryResource(final Function<Request, Object> function) {
         return contentResource(id("binary"), DO_NOTHING_APPLIER, new ContentResourceReader() {
             @Override

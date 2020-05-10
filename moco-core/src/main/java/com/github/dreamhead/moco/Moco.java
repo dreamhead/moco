@@ -38,10 +38,8 @@ import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.ByteSource;
 import com.google.common.net.HttpHeaders;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -288,11 +286,7 @@ public final class Moco {
 
     public static ContentResource binary(final byte[] binary) {
         checkNotNull(binary, "Binary should not be null");
-        try {
-            return binary(ByteSource.wrap(binary).openStream());
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return binary(() -> binary);
     }
 
     public static ContentResource binary(final ByteBuffer buffer) {
@@ -302,7 +296,7 @@ public final class Moco {
 
     public static ContentResource binary(final InputStream stream) {
         checkNotNull(stream, "Binary stream should not be null");
-        return binaryResource(stream);
+        return binary(() -> stream);
     }
 
     public static ContentResource binary(final Supplier<Object> supplier) {
