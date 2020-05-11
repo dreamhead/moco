@@ -5,11 +5,9 @@ import com.github.dreamhead.moco.support.JsonSupport;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
@@ -187,6 +185,21 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             pojo.code = 1;
             pojo.message = "message";
             return pojo;
+        }));
+
+        final PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
+    }
+
+    @Test
+    public void should_return_json_dynamically_with_text() throws Exception {
+        server.response(json(() -> {
+            PlainA pojo = new PlainA();
+            pojo.code = 1;
+            pojo.message = "message";
+            return Jsons.toJson(pojo);
         }));
 
         final PlainA pojo = new PlainA();

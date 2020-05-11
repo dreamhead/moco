@@ -25,7 +25,12 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MessageContent readFor(final Request request) {
-        return MessageContent.content().withContent(toJson(checkApply(this.function, request))).build();
+        Object value = checkApply(this.function, request);
+        if (value instanceof String) {
+            return MessageContent.content((String)value);
+        }
+
+        return MessageContent.content().withContent(toJson(value)).build();
     }
 
     public Object getPojo() {
