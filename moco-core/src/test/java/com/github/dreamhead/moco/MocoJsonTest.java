@@ -22,6 +22,7 @@ import static com.github.dreamhead.moco.Moco.jsonPath;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.post;
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -200,6 +201,21 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             pojo.code = 1;
             pojo.message = "message";
             return Jsons.toJson(pojo);
+        }));
+
+        final PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
+    }
+
+    @Test
+    public void should_return_json_dynamically_with_resource() throws Exception {
+        server.response(json(() -> {
+            PlainA pojo = new PlainA();
+            pojo.code = 1;
+            pojo.message = "message";
+            return text(Jsons.toJson(pojo));
         }));
 
         final PlainA pojo = new PlainA();

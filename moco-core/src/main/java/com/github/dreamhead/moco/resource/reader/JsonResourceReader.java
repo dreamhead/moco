@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
@@ -28,6 +29,11 @@ public final class JsonResourceReader implements ContentResourceReader {
         Object value = checkApply(this.function, request);
         if (value instanceof String) {
             return MessageContent.content((String)value);
+        }
+
+        if (value instanceof Resource) {
+            Resource resource = (Resource)value;
+            return resource.readFor(request);
         }
 
         return MessageContent.content().withContent(toJson(value)).build();
