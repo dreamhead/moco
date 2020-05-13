@@ -9,7 +9,6 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ClasspathFileResourceReader;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
-import com.github.dreamhead.moco.resource.reader.JsonContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.resource.reader.Variable;
@@ -28,7 +27,6 @@ import static com.github.dreamhead.moco.resource.IdFactory.id;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.DO_NOTHING_APPLIER;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.cookieConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fileConfigApplier;
-import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.jsonConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
 import static com.github.dreamhead.moco.util.Functions.checkApply;
@@ -87,11 +85,6 @@ public final class ResourceFactory {
     public static ContentResource classpathFileResource(final Resource filename, final Charset charset) {
         return contentResource(id("pathresource"), DO_NOTHING_APPLIER,
                 new ClasspathFileResourceReader(filename, charset));
-    }
-
-    public static ContentResource jsonResource(final Resource resource) {
-        return contentResource(id("json"), jsonConfigApplier(resource),
-                new JsonContentResourceReader(resource));
     }
 
     public static ContentResource jsonResource(final Function<Request, Object> function) {

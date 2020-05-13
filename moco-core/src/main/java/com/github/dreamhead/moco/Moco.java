@@ -390,7 +390,8 @@ public final class Moco {
     }
 
     public static ContentResource json(final Resource resource) {
-        return jsonResource(checkNotNull(resource, "Json should not be null"));
+        checkNotNull(resource, "Json should not be null");
+        return json(() -> resource);
     }
 
     public static ContentResource json(final Supplier<Object> supplier) {
@@ -404,7 +405,7 @@ public final class Moco {
 
     public static ContentResource json(final Object pojo) {
         checkNotNull(pojo, "Json object should not be null");
-        return json((request) -> pojo);
+        return json(() -> pojo);
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
