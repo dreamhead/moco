@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.resource.reader.Variable;
 import com.google.common.collect.ImmutableMap;
 
-import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
@@ -21,7 +20,6 @@ public final class ResourceConfigApplierFactory {
     public static ResourceConfigApplier fileConfigApplier(final String id, final Resource file) {
         return new SelfResourceConfigApplier(id) {
             @Override
-            @SuppressWarnings("unchecked")
             protected Resource newResource(final MocoConfig config) {
                 return fileResource(file, null, config);
             }
@@ -54,15 +52,6 @@ public final class ResourceConfigApplierFactory {
             @SuppressWarnings("unchecked")
             protected Resource newResource(final MocoConfig config) {
                 return uriResource((String) config.apply(uri));
-            }
-        };
-    }
-
-    public static ResourceConfigApplier jsonConfigApplier(final Resource resource) {
-        return new EmbeddedResourceConfigApplier(resource) {
-            @Override
-            protected Resource newResource(final MocoConfig config) {
-                return json(resource.apply(config));
             }
         };
     }
