@@ -50,7 +50,7 @@ public final class ActualWebSocketServer
     }
 
     @Override
-    public PongResponse ping(String message) {
+    public PongResponse ping(final String message) {
         PingPongSetting setting = new PingPongSetting(message);
         settings.add(setting);
         return setting;
@@ -108,7 +108,7 @@ public final class ActualWebSocketServer
         return baseSetting;
     }
 
-    public PongWebSocketFrame handlePingPong(PingWebSocketFrame frame) {
+    public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame) {
         ByteBuf content = frame.content();
         byte[] bytes = toByteArray(content);
         for (PingPongSetting setting : settings) {
