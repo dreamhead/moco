@@ -139,7 +139,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    private Optional<Response> doGetResponse(SessionContext context) {
+    private Optional<Response> doGetResponse(final SessionContext context) {
         Request request = context.getRequest();
         for (Setting<T> setting : this.getSettings()) {
             if (setting.match(request)) {
