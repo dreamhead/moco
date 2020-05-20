@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
-import net.minidev.json.JSONArray;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Configs {
     public static <T extends ConfigApplier<T>> T configItem(final T source, final MocoConfig... configs) {
