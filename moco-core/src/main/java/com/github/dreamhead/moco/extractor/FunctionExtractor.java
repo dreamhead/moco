@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class FunctionExtractor<T> implements RequestExtractor<T> {
-    public Function<Request, T> function;
+    private final Function<Request, T> function;
 
     public FunctionExtractor(final Function<Request, T> function) {
         this.function = function;
