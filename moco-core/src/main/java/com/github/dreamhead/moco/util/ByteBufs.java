@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.util;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-public class ByteBufs {
+public final class ByteBufs {
     public static byte[] toByteArray(final ByteBuf buf) {
         byte[] bytes = new byte[buf.readableBytes()];
         int readerIndex = buf.readerIndex();
