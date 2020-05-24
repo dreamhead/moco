@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.util;
 
 import java.util.function.Function;
 
-public class Functions {
+public final class Functions {
     public static <T, R> R checkApply(final Function<T, R> function, final T argument) {
         R result = function.apply(argument);
         if (result == null) {
