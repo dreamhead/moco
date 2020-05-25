@@ -103,7 +103,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         return doGetResponse(request, context);
     }
 
-    private DefaultMutableHttpResponse doGetResponse(HttpRequest request, SessionContext context) {
+    private DefaultMutableHttpResponse doGetResponse(final HttpRequest request, final SessionContext context) {
         try {
             return (DefaultMutableHttpResponse) server.getResponse(context)
                     .orElse(newResponse(request, HttpResponseStatus.BAD_REQUEST.code()));
