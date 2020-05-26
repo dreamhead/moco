@@ -28,9 +28,9 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
     protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
-            HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
             FullHttpRequest targetRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
             Charset charset = HttpUtil.getCharset(targetRequest);
+            HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE, charset);
             decoder = new HttpPostRequestDecoder(factory, targetRequest, charset);
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.ErrorDataDecoderException idde) {
