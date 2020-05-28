@@ -26,7 +26,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
