@@ -27,7 +27,7 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.lang.String.format;
 
 public final class Jsons {
-    private static Logger logger = LoggerFactory.getLogger(Jsons.class);
+    private static final Logger logger = LoggerFactory.getLogger(Jsons.class);
 
     private static final TypeFactory DEFAULT_FACTORY = TypeFactory.defaultInstance();
     private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
@@ -40,7 +40,7 @@ public final class Jsons {
         }
     }
 
-    public static String toJson(final Map map) {
+    public static String toJson(final Map<?, ?> map) {
         try {
             return DEFAULT_MAPPER.writeValueAsString(map);
         } catch (JsonProcessingException e) {

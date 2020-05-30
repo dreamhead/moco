@@ -12,14 +12,14 @@ public final class ServerRunner extends Runner {
     }
 
     @Override
-    public final void start() {
+    public void start() {
         ServerSetting setting = configuration.serverSetting();
         int port = this.server.start(setting.getPort().orElse(0), configuration.channelInitializer());
         setting.setPort(port);
     }
 
     @Override
-    public final void stop() {
+    public void stop() {
         server.stop();
     }
 }
