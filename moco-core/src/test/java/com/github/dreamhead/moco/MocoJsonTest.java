@@ -8,6 +8,7 @@ import com.google.common.io.Resources;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 
@@ -231,6 +232,22 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
             pojo.code = 1;
             pojo.message = "message";
             return pojo;
+        }));
+
+        final PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+        running(server, () -> JsonSupport.assertEquals(pojo, helper.getResponse(root())));
+    }
+
+    @Test
+    public void should_return_json_dynamically_with_stream() throws Exception {
+        server.response(json(() -> {
+            PlainA pojo = new PlainA();
+            pojo.code = 1;
+            pojo.message = "message";
+            String value = Jsons.toJson(pojo);
+            return new ByteArrayInputStream(value.getBytes());
         }));
 
         final PlainA pojo = new PlainA();

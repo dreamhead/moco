@@ -58,7 +58,7 @@ public final class ResourceFactory {
             public MessageContent readFor(final Request request) {
                 Object result = checkApply(function, request);
                 if (result instanceof byte[]) {
-                    return content().withContent((byte[])result).build();
+                    return content().withContent((byte[]) result).build();
                 }
 
                 if (result instanceof ByteBuffer) {
@@ -67,7 +67,7 @@ public final class ResourceFactory {
                 }
 
                 if (result instanceof InputStream) {
-                    InputStream is = (InputStream)result;
+                    InputStream is = (InputStream) result;
                     return content().withContent(is).build();
                 }
 
