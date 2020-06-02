@@ -8,4 +8,5 @@ public interface WebSocketServer extends Server<WebsocketResponseSetting> {
     void connected(Resource resource);
 
     PongResponse ping(String message);
+    PongResponse ping(Resource message);
 }

@@ -93,6 +93,20 @@ public class MocoWebsocketTest {
         });
     }
 
+    @Test
+    public void should_pong_based_on_ping_resource() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
+        webSocketServer.ping(text("hello")).pong(text("world"));
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.ping("hello");
+            assertThat(endpoint.getMessage(), is("world".getBytes()));
+        });
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;

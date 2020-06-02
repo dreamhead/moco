@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
 
 public final class ActualWebSocketServer
@@ -51,6 +52,11 @@ public final class ActualWebSocketServer
 
     @Override
     public PongResponse ping(final String message) {
+        return this.ping(text(message));
+    }
+
+    @Override
+    public PongResponse ping(final Resource message) {
         PingPongSetting setting = new PingPongSetting(message);
         settings.add(setting);
         return setting;
@@ -112,8 +118,10 @@ public final class ActualWebSocketServer
         ByteBuf content = frame.content();
         byte[] bytes = toByteArray(content);
         for (PingPongSetting setting : settings) {
-            if (Arrays.equals(bytes, setting.getPing().getBytes())) {
-                ByteBuf buf = ByteBufs.toByteBuf(setting.getPong().getBytes());
+            MessageContent messageContent = setting.getPing().readFor(null);
+            if (Arrays.equals(bytes, messageContent.getContent())) {
+                MessageContent pongContent = setting.getPong().readFor(null);
+                ByteBuf buf = ByteBufs.toByteBuf(pongContent.getContent());
                 return new PongWebSocketFrame(buf);
             }
         }

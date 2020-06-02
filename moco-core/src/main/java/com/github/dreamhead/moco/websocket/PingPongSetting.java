@@ -1,23 +1,32 @@
 package com.github.dreamhead.moco.websocket;
 
-public class PingPongSetting implements PongResponse {
-    private String ping;
-    private String pong;
+import com.github.dreamhead.moco.resource.Resource;
 
-    public PingPongSetting(final String ping) {
+import static com.github.dreamhead.moco.Moco.text;
+
+public class PingPongSetting implements PongResponse {
+    private Resource ping;
+    private Resource pong;
+
+    public PingPongSetting(final Resource ping) {
         this.ping = ping;
     }
 
     @Override
     public void pong(final String pong) {
+        this.pong = text(pong);
+    }
+
+    @Override
+    public void pong(final Resource pong) {
         this.pong = pong;
     }
 
-    public String getPing() {
+    public Resource getPing() {
         return ping;
     }
 
-    public String getPong() {
+    public Resource getPong() {
         return pong;
     }
 }
