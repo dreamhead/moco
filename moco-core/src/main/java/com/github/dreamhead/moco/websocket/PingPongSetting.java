@@ -14,7 +14,7 @@ public class PingPongSetting implements PongResponse {
 
     @Override
     public void pong(final String pong) {
-        this.pong = text(pong);
+        this.pong(text(pong));
     }
 
     @Override
