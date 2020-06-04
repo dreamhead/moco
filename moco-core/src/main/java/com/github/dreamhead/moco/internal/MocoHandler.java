@@ -59,14 +59,18 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+        WebSocketFrame frame = getResponseFrame(ctx, message);
+        ctx.channel().writeAndFlush(frame);
+    }
+
+    private WebSocketFrame getResponseFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         if (message instanceof PingWebSocketFrame) {
-            PongWebSocketFrame pingPong = websocketServer.handlePingPong((PingWebSocketFrame) message);
-            ctx.channel().writeAndFlush(pingPong);
-            return;
+            return websocketServer.handlePingPong((PingWebSocketFrame) message);
         }
+
         WebsocketResponse response = websocketServer.handleRequest(ctx, message);
         ByteBuf byteBuf = ByteBufs.toByteBuf(response.getContent().getContent());
-        ctx.channel().writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+        return new BinaryWebSocketFrame(byteBuf);
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
