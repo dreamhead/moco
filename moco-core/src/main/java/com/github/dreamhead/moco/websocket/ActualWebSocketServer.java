@@ -118,8 +118,7 @@ public final class ActualWebSocketServer
         ByteBuf content = frame.content();
         byte[] bytes = toByteArray(content);
         for (PingPongSetting setting : settings) {
-            MessageContent pingContent = setting.getPing().readFor(null);
-            if (Arrays.equals(bytes, pingContent.getContent())) {
+            if (setting.match(bytes)) {
                 MessageContent pongContent = setting.getPong().readFor(null);
                 ByteBuf buf = ByteBufs.toByteBuf(pongContent.getContent());
                 return new PongWebSocketFrame(buf);
