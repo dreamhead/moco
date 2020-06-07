@@ -25,7 +25,7 @@ public class PingPongSetting implements PongResponse {
         this.pong = pong;
     }
 
-    public boolean match(byte[] bytes) {
+    public boolean match(final byte[] bytes) {
         MessageContent pingContent = this.ping.readFor(null);
         return Arrays.equals(bytes, pingContent.getContent());
     }
