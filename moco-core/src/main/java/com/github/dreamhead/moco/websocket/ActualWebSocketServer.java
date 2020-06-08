@@ -25,11 +25,9 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
 
 public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
@@ -115,10 +113,9 @@ public final class ActualWebSocketServer
     }
 
     public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame) {
-        ByteBuf content = frame.content();
-        byte[] bytes = toByteArray(content);
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame);
         for (PingPongSetting setting : settings) {
-            if (setting.match(bytes)) {
+            if (setting.match(request)) {
                 MessageContent pongContent = setting.getPong().readFor(null);
                 ByteBuf buf = ByteBufs.toByteBuf(pongContent.getContent());
                 return new PongWebSocketFrame(buf);

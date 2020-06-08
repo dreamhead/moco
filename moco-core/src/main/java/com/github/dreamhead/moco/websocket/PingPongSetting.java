@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.websocket;
 
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 
@@ -25,9 +26,9 @@ public class PingPongSetting implements PongResponse {
         this.pong = pong;
     }
 
-    public boolean match(final byte[] bytes) {
+    public boolean match(final Request request) {
         MessageContent pingContent = this.ping.readFor(null);
-        return Arrays.equals(bytes, pingContent.getContent());
+        return request.getContent().equals(pingContent);
     }
 
     public Resource getPong() {

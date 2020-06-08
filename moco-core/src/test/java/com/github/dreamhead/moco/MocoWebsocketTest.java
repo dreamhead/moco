@@ -171,7 +171,6 @@ public class MocoWebsocketTest {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 }
