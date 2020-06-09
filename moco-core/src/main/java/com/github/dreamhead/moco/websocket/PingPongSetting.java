@@ -1,10 +1,11 @@
 package com.github.dreamhead.moco.websocket;
 
+import com.github.dreamhead.moco.MutableResponse;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.Response;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
-
-import java.util.Arrays;
 
 import static com.github.dreamhead.moco.Moco.text;
 
@@ -31,7 +32,12 @@ public class PingPongSetting implements PongResponse {
         return request.getContent().equals(pingContent);
     }
 
-    public Resource getPong() {
-        return pong;
+    public void writeToResponse(final SessionContext context) {
+        MessageContent pongContent = this.pong.readFor(null);
+        Response response = context.getResponse();
+        if (MutableResponse.class.isInstance(response)) {
+            MutableResponse mutableResponse = (MutableResponse) response;
+            mutableResponse.setContent(pongContent);
+        }
     }
 }

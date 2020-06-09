@@ -114,10 +114,12 @@ public final class ActualWebSocketServer
 
     public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame);
+        DefaultWebsocketResponse response = new DefaultWebsocketResponse();
+        SessionContext context = new SessionContext(request, response);
         for (PingPongSetting setting : settings) {
             if (setting.match(request)) {
-                MessageContent pongContent = setting.getPong().readFor(null);
-                ByteBuf buf = ByteBufs.toByteBuf(pongContent.getContent());
+                setting.writeToResponse(context);
+                ByteBuf buf = ByteBufs.toByteBuf(context.getResponse().getContent().getContent());
                 return new PongWebSocketFrame(buf);
             }
         }
