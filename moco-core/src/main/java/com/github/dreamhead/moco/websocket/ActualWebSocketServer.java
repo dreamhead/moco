@@ -1,7 +1,9 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.MocoConfig;
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.internal.BaseActualServer;
 import com.github.dreamhead.moco.internal.SessionContext;
@@ -26,6 +28,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.text;
 
@@ -116,15 +119,21 @@ public final class ActualWebSocketServer
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
+        Response result = this.getPongResponse(context).orElseThrow(IllegalArgumentException::new);
+        ByteBuf buf = ByteBufs.toByteBuf(result.getContent().getContent());
+        return new PongWebSocketFrame(buf);
+    }
+
+    private Optional<Response> getPongResponse(final SessionContext context) {
+        Request request = context.getRequest();
         for (PingPongSetting setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(context);
-                ByteBuf buf = ByteBufs.toByteBuf(context.getResponse().getContent().getContent());
-                return new PongWebSocketFrame(buf);
+                return Optional.of(context.getResponse());
             }
         }
 
-        throw new IllegalArgumentException();
+        return Optional.empty();
     }
 
     public WebsocketResponse handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
