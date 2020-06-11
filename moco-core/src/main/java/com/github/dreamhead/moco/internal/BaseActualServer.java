@@ -131,7 +131,12 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         try {
             monitor.onMessageArrived(context.getRequest());
             Optional<Response> response = doGetResponse(context);
-            monitor.onMessageLeave(context.getResponse());
+
+            if (response.isPresent()) {
+                monitor.onMessageLeave(context.getResponse());
+            } else {
+                monitor.onUnexpectedMessage(context.getRequest());
+            }
             return response;
         } catch (Exception e) {
             monitor.onException(e);
@@ -154,7 +159,6 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
             return Optional.of(context.getResponse());
         }
 
-        monitor.onUnexpectedMessage(request);
         return Optional.empty();
     }
 }
