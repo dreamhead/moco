@@ -25,13 +25,13 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         implements ServerSetting {
     protected abstract Setting<T> newSetting(RequestMatcher matcher);
 
-    private final MocoConfig[] configs;
+    private final MocoConfig<?>[] configs;
     private final MocoMonitor monitor;
     private final List<Setting<T>> settings = newArrayList();
     private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
 
-    public BaseActualServer(final int port, final MocoMonitor monitor, final MocoConfig[] configs) {
+    public BaseActualServer(final int port, final MocoMonitor monitor, final MocoConfig<?>[] configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
@@ -130,7 +130,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     public Optional<Response> getResponse(final SessionContext context) {
         try {
             monitor.onMessageArrived(context.getRequest());
-            Optional<Response> response = doGetResponse(context);
+            Optional<Response> response = doGetResponse(context, this.getSettings());
 
             if (response.isPresent()) {
                 monitor.onMessageLeave(context.getResponse());
@@ -144,9 +144,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    private Optional<Response> doGetResponse(final SessionContext context) {
+    private Optional<Response> doGetResponse(final SessionContext context,
+                                             final ImmutableList<Setting<T>> settings) {
         Request request = context.getRequest();
-        for (Setting<T> setting : this.getSettings()) {
+        for (Setting<T> setting : settings) {
             if (setting.match(request)) {
                 setting.writeToResponse(context);
                 return Optional.of(context.getResponse());
