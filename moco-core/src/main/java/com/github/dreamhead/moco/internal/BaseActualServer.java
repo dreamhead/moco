@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.MocoMonitor;
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseHandler;
@@ -22,7 +21,7 @@ import static com.github.dreamhead.moco.util.Configs.configItems;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T>
-        implements ServerSetting {
+        implements ServerSetting, SettingFetcher<T> {
     protected abstract Setting<T> newSetting(RequestMatcher matcher);
 
     private final MocoConfig<?>[] configs;
@@ -30,11 +29,13 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final List<Setting<T>> settings = newArrayList();
     private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
+    private Responser<T> responser;
 
     public BaseActualServer(final int port, final MocoMonitor monitor, final MocoConfig<?>[] configs) {
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
+        this.responser = new Responser<T>(this);
     }
 
     @Override
@@ -130,7 +131,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     public Optional<Response> getResponse(final SessionContext context) {
         try {
             monitor.onMessageArrived(context.getRequest());
-            Optional<Response> response = doGetResponse(context, this.getSettings());
+            Optional<Response> response = responser.getResponse(context);
 
             if (response.isPresent()) {
                 monitor.onMessageLeave(context.getResponse());
@@ -144,22 +145,5 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    private Optional<Response> doGetResponse(final SessionContext context,
-                                             final ImmutableList<Setting<T>> settings) {
-        Request request = context.getRequest();
-        for (Setting<T> setting : settings) {
-            if (setting.match(request)) {
-                setting.writeToResponse(context);
-                return Optional.of(context.getResponse());
-            }
-        }
 
-        Setting<T> anySetting = this.getAnySetting();
-        if (anySetting.match(request)) {
-            anySetting.writeToResponse(context);
-            return Optional.of(context.getResponse());
-        }
-
-        return Optional.empty();
-    }
 }
