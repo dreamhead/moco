@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
@@ -48,17 +50,17 @@ public final class ActualWebSocketServer
     }
 
     public void connected(final Resource resource) {
-        this.connected = resource;
+        this.connected = checkNotNull(resource, "Connected resource should not be null");
     }
 
     @Override
     public PongResponse ping(final String message) {
-        return this.ping(text(message));
+        return this.ping(text(checkNotNullOrEmpty(message, "Ping message should not be null")));
     }
 
     @Override
     public PongResponse ping(final Resource message) {
-        PingPongSetting setting = new PingPongSetting(message);
+        PingPongSetting setting = new PingPongSetting(checkNotNull(message, "Ping message should not be null"));
         settings.add(setting);
         return setting;
     }

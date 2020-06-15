@@ -8,6 +8,8 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PingPongSetting implements PongResponse {
     private Resource ping;
@@ -18,13 +20,13 @@ public class PingPongSetting implements PongResponse {
     }
 
     @Override
-    public void pong(final String pong) {
-        this.pong(text(pong));
+    public void pong(final String message) {
+        this.pong(text(checkNotNullOrEmpty(message, "Pong message should not be null")));
     }
 
     @Override
-    public void pong(final Resource pong) {
-        this.pong = pong;
+    public void pong(final Resource message) {
+        this.pong = checkNotNull(message, "Pong message should not be null");
     }
 
     public boolean match(final Request request) {
