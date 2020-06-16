@@ -30,12 +30,12 @@ public class PingPongSetting implements PongResponse {
     }
 
     public boolean match(final Request request) {
-        MessageContent pingContent = this.ping.readFor(null);
+        MessageContent pingContent = this.ping.readFor(request);
         return request.getContent().equals(pingContent);
     }
 
     public void writeToResponse(final SessionContext context) {
-        MessageContent pongContent = this.pong.readFor(null);
+        MessageContent pongContent = this.pong.readFor(context.getRequest());
         Response response = context.getResponse();
         if (MutableResponse.class.isInstance(response)) {
             MutableResponse mutableResponse = (MutableResponse) response;
