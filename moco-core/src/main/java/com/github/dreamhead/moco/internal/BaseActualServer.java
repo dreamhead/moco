@@ -56,6 +56,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     }
 
     public final Setting<T> getAnySetting() {
+        return configuredAnySetting();
+    }
+
+    private Setting<T> configuredAnySetting() {
         Setting<T> setting = newSetting(configuredAnyMatcher());
         if (this.handler != null) {
             setting.response(configuredAnyResponseHandler());
