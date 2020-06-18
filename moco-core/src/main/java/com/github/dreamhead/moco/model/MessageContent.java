@@ -10,6 +10,7 @@ import com.google.common.base.Objects;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -93,6 +94,11 @@ public class MessageContent {
             } catch (IOException e) {
                 throw new MocoException(e);
             }
+        }
+
+        public final Builder withContent(final ByteBuffer byteBuffer) {
+            this.content = byteBuffer.array();
+            return this;
         }
 
         public final Builder withContent(final byte[] content) {

@@ -63,7 +63,7 @@ public final class ResourceFactory {
 
                 if (result instanceof ByteBuffer) {
                     ByteBuffer buffer = (ByteBuffer) result;
-                    return content().withContent(buffer.array()).build();
+                    return content().withContent(buffer).build();
                 }
 
                 if (result instanceof InputStream) {
