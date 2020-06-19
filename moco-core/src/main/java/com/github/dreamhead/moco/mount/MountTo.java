@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import static com.github.dreamhead.moco.util.URLs.toBase;
 import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
 
 public final class MountTo implements ConfigApplier<MountTo> {
     private final String target;
@@ -18,7 +17,7 @@ public final class MountTo implements ConfigApplier<MountTo> {
 
     public Optional<String> extract(final String uri) {
         if (uri.startsWith(this.target) && uri.length() != this.target.length()) {
-            return ofNullable(uri.replaceFirst(this.target, ""));
+            return Optional.of(uri.replaceFirst(this.target, ""));
         }
 
         return empty();
