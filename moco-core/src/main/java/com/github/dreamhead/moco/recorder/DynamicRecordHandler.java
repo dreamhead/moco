@@ -6,8 +6,8 @@ import com.github.dreamhead.moco.mount.AbstractHttpContentResponseHandler;
 import com.google.common.net.MediaType;
 
 public class DynamicRecordHandler extends AbstractHttpContentResponseHandler implements RecordHandler {
-    private RecorderRegistry registry;
-    private RecorderIdentifier identifier;
+    private final RecorderRegistry registry;
+    private final RecorderIdentifier identifier;
 
     public DynamicRecordHandler(final RecorderConfigurations configurations) {
         this.registry = configurations.getRecorderRegistry();
