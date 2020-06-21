@@ -11,9 +11,9 @@ import com.google.common.collect.ImmutableList;
 import static com.github.dreamhead.moco.MocoRecorders.group;
 
 public class DynamicReplayHandler extends AbstractResponseHandler {
-    private RecorderRegistry registry;
-    private RecorderIdentifier identifier;
-    private ReplayModifier modifier;
+    private final RecorderRegistry registry;
+    private final RecorderIdentifier identifier;
+    private final ReplayModifier modifier;
 
     public DynamicReplayHandler(final RecorderConfigurations configurations) {
         this.registry = configurations.getRecorderRegistry();
