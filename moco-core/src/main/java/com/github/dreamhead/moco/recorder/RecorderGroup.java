@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.recorder;
 
 public class RecorderGroup implements RecorderConfig {
-    private String name;
+    private final String name;
 
     public RecorderGroup(final String name) {
         this.name = name;
