@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 
 public class RecorderIdentifier implements RecorderConfig, ConfigApplier<RecorderIdentifier> {
-    private ContentResource resource;
+    private final ContentResource resource;
 
     public RecorderIdentifier(final ContentResource resource) {
         this.resource = resource;
