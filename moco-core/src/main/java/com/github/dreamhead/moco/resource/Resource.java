@@ -6,10 +6,13 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.model.MessageContent;
 
+import java.util.function.Function;
+
 public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader, ResponseElement {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
+    private Function<MessageContent, MessageContent> transformer;
 
     public Resource(final Identifiable identifiable,
                     final ResourceConfigApplier configApplier,
@@ -31,7 +34,17 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
 
     @Override
     public final MessageContent readFor(final Request request) {
-        return reader.readFor(request);
+        MessageContent messageContent = reader.readFor(request);
+        if (transformer == null) {
+            return messageContent;
+        }
+
+        return transformer.apply(messageContent);
+    }
+
+    public Resource transform(final Function<MessageContent, MessageContent> transformer) {
+        this.transformer = transformer;
+        return this;
     }
 
     public final <T extends ResourceReader> T reader(final Class<T> clazz) {

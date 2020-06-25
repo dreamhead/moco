@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
@@ -121,6 +122,7 @@ public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_expected_response_based_on_specified_request() throws Exception {
         server.request(by("foo")).response("bar");
+
 
         running(server, () -> assertThat(helper.postContent(root(), "foo"), is("bar")));
     }
@@ -766,6 +768,26 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
             assertThat(asBytes, is(new byte[] {1, 2, 3}));
+        });
+    }
+
+    @Test
+    public void should_transform_response_content() throws Exception {
+        server.response(text("hello").transform(content -> {
+            byte[] raw = content.getContent();
+            byte[] transformed = new byte[raw.length];
+            for (int i = 0; i < raw.length; i++) {
+                transformed[i] = (byte)(raw[i] + 1);
+            }
+            return MessageContent.content()
+                    .withContent(transformed)
+                    .withCharset(content.getCharset())
+                    .build();
+        } ));
+
+        running(server, () -> {
+            String response = helper.get(root());
+            assertThat(response, is("ifmmp"));
         });
     }
 }
