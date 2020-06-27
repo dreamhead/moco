@@ -8,6 +8,8 @@ import com.github.dreamhead.moco.model.MessageContent;
 
 import java.util.function.Function;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader, ResponseElement {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
@@ -43,7 +45,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>, Resource
     }
 
     public Resource transform(final Function<MessageContent, MessageContent> transformer) {
-        this.transformer = transformer;
+        this.transformer = checkNotNull(transformer, "Transformer should not be null");
         return this;
     }
 
