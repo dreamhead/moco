@@ -783,7 +783,7 @@ public class MocoTest extends AbstractMocoHttpTest {
                     .withContent(transformed)
                     .withCharset(content.getCharset())
                     .build();
-        } ));
+        }));
 
         running(server, () -> {
             String response = helper.get(root());
