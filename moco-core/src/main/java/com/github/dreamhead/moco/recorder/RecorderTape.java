@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class RecorderTape implements RecorderConfig {
-    private Path path;
+    private final Path path;
 
     public RecorderTape(final String path) {
         this.path = Paths.get(path);

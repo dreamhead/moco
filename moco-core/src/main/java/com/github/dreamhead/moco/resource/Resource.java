@@ -10,7 +10,8 @@ import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Resource implements Identifiable, ConfigApplier<Resource>, ResourceReader, ResponseElement, Transformer<Resource, MessageContent> {
+public class Resource implements Identifiable, ConfigApplier<Resource>,
+        ResourceReader, ResponseElement, Transformer<Resource, MessageContent> {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
