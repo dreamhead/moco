@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 
 public class ReplayModifier implements RecorderConfig, ConfigApplier<ReplayModifier> {
-    private ResponseHandler responseHandler;
+    private final ResponseHandler responseHandler;
 
     public ReplayModifier(final ResponseHandler responseHandler) {
         this.responseHandler = responseHandler;
