@@ -10,7 +10,7 @@ import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TapeContent {
-    private Map<String, HttpRequest> content;
+    private final Map<String, HttpRequest> content;
 
     @JsonCreator
     public TapeContent(@JsonProperty("content") final Map<String, HttpRequest> content) {
