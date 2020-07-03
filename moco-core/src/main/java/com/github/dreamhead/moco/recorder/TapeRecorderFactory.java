@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.recorder;
 
 public class TapeRecorderFactory implements RecorderFactory {
-    private RecorderTape tape;
+    private final RecorderTape tape;
 
     public TapeRecorderFactory(final RecorderTape tape) {
         this.tape = tape;
