@@ -3,8 +3,8 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.resource.Resource;
 
 public final class HttpHeader implements ResponseElement, ConfigApplier<HttpHeader> {
-    private String name;
-    private Resource value;
+    private final String name;
+    private final Resource value;
 
     public HttpHeader(final String name, final Resource value) {
         this.name = name;
