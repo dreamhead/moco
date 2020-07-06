@@ -773,16 +773,12 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_transform_response_content() throws Exception {
-        server.response(text("hello").transform(content -> {
-            byte[] raw = content.getContent();
+        server.response(text("hello").transform(raw -> {
             byte[] transformed = new byte[raw.length];
             for (int i = 0; i < raw.length; i++) {
                 transformed[i] = (byte)(raw[i] + 1);
             }
-            return MessageContent.content()
-                    .withContent(transformed)
-                    .withCharset(content.getCharset())
-                    .build();
+            return transformed;
         }));
 
         running(server, () -> {

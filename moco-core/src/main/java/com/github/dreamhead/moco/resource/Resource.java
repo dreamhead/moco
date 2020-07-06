@@ -11,11 +11,11 @@ import java.util.function.Function;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>,
-        ResourceReader, ResponseElement, Transformer<Resource, MessageContent> {
+        ResourceReader, ResponseElement, Transformer<Resource, byte[]> {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
-    private Function<MessageContent, MessageContent> transformer;
+    private Function<byte[], byte[]> transformer;
 
     public Resource(final Identifiable identifiable,
                     final ResourceConfigApplier configApplier,
@@ -42,10 +42,14 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
             return messageContent;
         }
 
-        return transformer.apply(messageContent);
+        byte[] transformed = transformer.apply(messageContent.getContent());
+        return MessageContent.content()
+                .withCharset(messageContent.getCharset())
+                .withContent(transformed)
+                .build();
     }
 
-    public Resource transform(final Function<MessageContent, MessageContent> transformer) {
+    public Resource transform(final Function<byte[], byte[]> transformer) {
         this.transformer = checkNotNull(transformer, "Transformer should not be null");
         return this;
     }
