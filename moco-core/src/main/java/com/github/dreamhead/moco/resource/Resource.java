@@ -49,6 +49,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
                 .build();
     }
 
+    @Override
     public Resource transform(final Function<byte[], byte[]> transformer) {
         this.transformer = checkNotNull(transformer, "Transformer should not be null");
         return this;
