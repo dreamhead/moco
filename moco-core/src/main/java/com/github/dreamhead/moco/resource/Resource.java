@@ -11,7 +11,7 @@ import java.util.function.Function;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>,
-        ResourceReader, ResponseElement, Transformer<Resource, byte[]> {
+        ResourceReader, ResponseElement, Transformer<byte[]> {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private final ResourceReader reader;
@@ -50,7 +50,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
     }
 
     @Override
-    public Resource transform(final Function<byte[], byte[]> transformer) {
+    public Transformer<byte[]> transform(final Function<byte[], byte[]> transformer) {
         this.transformer = checkNotNull(transformer, "Transformer should not be null");
         return this;
     }
