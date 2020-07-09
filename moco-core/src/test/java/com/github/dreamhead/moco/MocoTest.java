@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import org.apache.http.Header;
