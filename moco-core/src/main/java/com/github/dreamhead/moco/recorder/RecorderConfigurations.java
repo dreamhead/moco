@@ -14,20 +14,25 @@ public class RecorderConfigurations {
         RecorderConfigurations configurations = new RecorderConfigurations();
 
         for (RecorderConfig config : configs) {
-            if (config.isFor(RecorderConfig.GROUP)) {
-                configurations.group = (RecorderGroup) config;
-            } else if (config.isFor(RecorderConfig.TAPE)) {
-                configurations.tape = (RecorderTape) config;
-            } else if (config.isFor(RecorderConfig.IDENTIFIER)) {
-                configurations.identifier = (RecorderIdentifier) config;
-            } else if (config.isFor(RecorderConfig.MODIFIER)) {
-                configurations.modifier = (ReplayModifier)config;
-            } else {
-                throw new IllegalArgumentException("Unknown recorder config:" + config);
-            }
+            addConfig(configurations, config);
         }
 
         return configurations;
+    }
+
+    private static void addConfig(final RecorderConfigurations configurations,
+                                  final RecorderConfig config) {
+        if (config.isFor(RecorderConfig.GROUP)) {
+            configurations.group = (RecorderGroup) config;
+        } else if (config.isFor(RecorderConfig.TAPE)) {
+            configurations.tape = (RecorderTape) config;
+        } else if (config.isFor(RecorderConfig.IDENTIFIER)) {
+            configurations.identifier = (RecorderIdentifier) config;
+        } else if (config.isFor(RecorderConfig.MODIFIER)) {
+            configurations.modifier = (ReplayModifier) config;
+        } else {
+            throw new IllegalArgumentException("Unknown recorder config:" + config);
+        }
     }
 
     public final RecorderRegistry getRecorderRegistry() {
