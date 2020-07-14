@@ -13,7 +13,7 @@ import java.lang.reflect.Constructor;
 import static java.lang.String.format;
 
 public final class ResponseHandlers {
-    private static final ImmutableMap<String, Class> HANDLERS = ImmutableMap.<String, Class>builder()
+    private static final ImmutableMap<String, Class<?>> HANDLERS = ImmutableMap.<String, Class<?>>builder()
             .put("file", ContentHandler.class)
             .put("text", ContentHandler.class)
             .put("pathresource", ContentHandler.class)
@@ -52,9 +52,9 @@ public final class ResponseHandlers {
     }
 
     private static ResponseHandler createResponseHandler(final Resource resource) {
-        Class clazz = HANDLERS.get(resource.id());
+        Class<?> clazz = HANDLERS.get(resource.id());
         try {
-            Constructor[] constructors = clazz.getConstructors();
+            Constructor<?>[] constructors = clazz.getConstructors();
             return (ResponseHandler) constructors[0].newInstance(resource);
         } catch (Exception e) {
             throw new MocoException(e);
