@@ -30,9 +30,9 @@ public class RecorderConfigurations {
             configurations.identifier = (RecorderIdentifier) config;
         } else if (config.isFor(RecorderConfig.MODIFIER)) {
             configurations.modifier = (ReplayModifier) config;
+        } else {
+            throw new IllegalArgumentException("Unknown recorder config:" + config);
         }
-
-        throw new IllegalArgumentException("Unknown recorder config:" + config);
     }
 
     public final RecorderRegistry getRecorderRegistry() {
