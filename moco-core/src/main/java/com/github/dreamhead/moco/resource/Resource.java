@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 
 import java.util.function.Function;
 
@@ -14,7 +15,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
         ResourceReader, ResponseElement, Transformer<byte[]> {
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
-    private final ResourceReader reader;
+    private ResourceReader reader;
     private Function<byte[], byte[]> transformer;
 
     public Resource(final Identifiable identifiable,
@@ -37,21 +38,13 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
 
     @Override
     public final MessageContent readFor(final Request request) {
-        MessageContent messageContent = reader.readFor(request);
-        if (transformer == null) {
-            return messageContent;
-        }
-
-        byte[] transformed = transformer.apply(messageContent.getContent());
-        return MessageContent.content()
-                .withCharset(messageContent.getCharset())
-                .withContent(transformed)
-                .build();
+        return reader.readFor(request);
     }
 
     @Override
     public Transformer<byte[]> transform(final Function<byte[], byte[]> transformer) {
-        this.transformer = checkNotNull(transformer, "Transformer should not be null");
+        checkNotNull(transformer, "Transformer should not be null");
+        this.reader = new TransformResourceReader(transformer, reader(ContentResourceReader.class));
         return this;
     }
 
