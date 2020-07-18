@@ -772,17 +772,29 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_transform_response_content() throws Exception {
-        server.response(text("hello").transform(raw -> {
-            byte[] transformed = new byte[raw.length];
-            for (int i = 0; i < raw.length; i++) {
-                transformed[i] = (byte)(raw[i] + 1);
-            }
-            return transformed;
-        }));
+        server.response(text("hello").transform(this::incrementByte));
 
         running(server, () -> {
             String response = helper.get(root());
             assertThat(response, is("ifmmp"));
         });
+    }
+
+    @Test
+    public void should_transform_response_content_many_times() throws Exception {
+        server.response(text("hello").transform(this::incrementByte).transform(this::incrementByte));
+
+        running(server, () -> {
+            String response = helper.get(root());
+            assertThat(response, is("jgnnq"));
+        });
+    }
+
+    private byte[] incrementByte(byte[] raw) {
+        byte[] transformed = new byte[raw.length];
+        for (int i = 0; i < raw.length; i++) {
+            transformed[i] = (byte) (raw[i] + 1);
+        }
+        return transformed;
     }
 }
