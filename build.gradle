@@ -53,7 +53,7 @@ subprojects {
                     licenses {
                         license {
                             name = 'MIT Licence'
-                            url = 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
+                            url = 'https://raw.githubusercontent.com/dreamhead/moco/master/MIT-LICENSE.txt'
                         }
                     }
                     developers {
