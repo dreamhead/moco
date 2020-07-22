@@ -18,7 +18,7 @@ public class TransformResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MessageContent readFor(Request request) {
+    public MessageContent readFor(final Request request) {
         MessageContent messageContent = reader.readFor(request);
         if (transformer == null) {
             return messageContent;
