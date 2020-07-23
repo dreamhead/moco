@@ -20,10 +20,6 @@ public class TransformResourceReader implements ContentResourceReader {
     @Override
     public MessageContent readFor(final Request request) {
         MessageContent messageContent = reader.readFor(request);
-        if (transformer == null) {
-            return messageContent;
-        }
-
         byte[] transformed = transformer.apply(messageContent.getContent());
         return MessageContent.content()
                 .withCharset(messageContent.getCharset())
