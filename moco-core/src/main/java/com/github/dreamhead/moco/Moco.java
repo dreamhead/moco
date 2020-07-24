@@ -36,7 +36,6 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.util.Jsons;
-import com.github.dreamhead.moco.util.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
@@ -45,7 +44,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
@@ -272,12 +270,7 @@ public final class Moco {
 
     public static ContentResource text(final String text) {
         checkNotNull(text, "Text should not be null");
-        return text(() -> text);
-    }
-
-    public static ContentResource text(final Supplier<String> supplier) {
-        checkNotNull(supplier, "Text supplier should not be null");
-        return textResource(Suppliers.from(supplier));
+        return text((request) -> text);
     }
 
     public static ContentResource text(final Function<Request, String> function) {
@@ -286,7 +279,7 @@ public final class Moco {
 
     public static ContentResource binary(final byte[] binary) {
         checkNotNull(binary, "Binary should not be null");
-        return binary(() -> binary);
+        return binary((request) -> binary);
     }
 
     public static ContentResource binary(final ByteBuffer buffer) {
@@ -296,12 +289,7 @@ public final class Moco {
 
     public static ContentResource binary(final InputStream stream) {
         checkNotNull(stream, "Binary stream should not be null");
-        return binary(() -> stream);
-    }
-
-    public static ContentResource binary(final Supplier<Object> supplier) {
-        checkNotNull(supplier, "Binary supplier should not be null");
-        return binary(Suppliers.from(supplier));
+        return binary((request) -> stream);
     }
 
     public static ContentResource binary(final Function<Request, Object> function) {
@@ -391,12 +379,7 @@ public final class Moco {
 
     public static ContentResource json(final Resource resource) {
         checkNotNull(resource, "Json should not be null");
-        return json(() -> resource);
-    }
-
-    public static ContentResource json(final Supplier<Object> supplier) {
-        checkNotNull(supplier, "Json supplier should not be null");
-        return json(Suppliers.from(supplier));
+        return json((request) -> resource);
     }
 
     public static ContentResource json(final Function<Request, Object> function) {
@@ -405,7 +388,7 @@ public final class Moco {
 
     public static ContentResource json(final Object pojo) {
         checkNotNull(pojo, "Json object should not be null");
-        return json(() -> pojo);
+        return json((request) -> pojo);
     }
 
     public static JsonPathRequestExtractor jsonPath(final String jsonPath) {
@@ -607,17 +590,13 @@ public final class Moco {
                 ApiUtils.toVariables(checkNotNull(variables, "Template variable should not be null")));
     }
 
-    public static RequestExtractor<Object> var(final Supplier<Object> supplier) {
-        return var(Suppliers.from(checkNotNull(supplier, "Template variable should not be null or empty")));
-    }
-
     public static RequestExtractor<Object> var(final Function<Request, Object> supplier) {
         return new FunctionExtractor<>(checkNotNull(supplier, "Template variable should not be null or empty"));
     }
 
     public static RequestExtractor<Object> var(final Object obj) {
         checkNotNull(obj, "Template variable should not be null or empty");
-        return var(() -> obj);
+        return var((request) -> obj);
     }
 
     public static Failover failover(final String file, final int... statuses) {

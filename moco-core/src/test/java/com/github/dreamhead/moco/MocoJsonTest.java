@@ -182,7 +182,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_dynamically() throws Exception {
-        server.response(json(() -> {
+        server.response(json((request) -> {
             PlainA pojo = new PlainA();
             pojo.code = 1;
             pojo.message = "message";
@@ -197,7 +197,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_dynamically_with_text() throws Exception {
-        server.response(json(() -> {
+        server.response(json((request) -> {
             PlainA pojo = new PlainA();
             pojo.code = 1;
             pojo.message = "message";
@@ -212,7 +212,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_dynamically_with_resource() throws Exception {
-        server.response(json(() -> {
+        server.response(json((request) -> {
             PlainA pojo = new PlainA();
             pojo.code = 1;
             pojo.message = "message";
@@ -242,7 +242,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_json_dynamically_with_stream() throws Exception {
-        server.response(json(() -> {
+        server.response(json((request) -> {
             PlainA pojo = new PlainA();
             pojo.code = 1;
             pojo.message = "message";

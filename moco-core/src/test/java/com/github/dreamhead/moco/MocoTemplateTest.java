@@ -437,7 +437,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_dynamic_variable() throws Exception {
-        server.request(by(uri("/template"))).response(template("${var}", "var", var(() -> "TEMPLATE")));
+        server.request(by(uri("/template"))).response(template("${var}", "var", var((request) -> "TEMPLATE")));
 
         running(server, () -> assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE")));
     }
