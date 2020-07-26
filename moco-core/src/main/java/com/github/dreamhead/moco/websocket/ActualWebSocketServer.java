@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -60,7 +61,8 @@ public final class ActualWebSocketServer
 
     @Override
     public PongResponse ping(final Resource message) {
-        PingPongSetting setting = new PingPongSetting(checkNotNull(message, "Ping message should not be null"));
+        Resource resource = checkNotNull(message, "Ping message should not be null");
+        PingPongSetting setting = new PingPongSetting(by(resource));
         settings.add(setting);
         return setting;
     }

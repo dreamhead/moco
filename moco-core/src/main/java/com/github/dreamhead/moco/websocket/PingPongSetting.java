@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.MutableResponse;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
@@ -12,10 +13,10 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PingPongSetting implements PongResponse {
-    private Resource ping;
+    private RequestMatcher ping;
     private Resource pong;
 
-    public PingPongSetting(final Resource ping) {
+    public PingPongSetting(final RequestMatcher ping) {
         this.ping = ping;
     }
 
@@ -30,8 +31,7 @@ public class PingPongSetting implements PongResponse {
     }
 
     public boolean match(final Request request) {
-        MessageContent pingContent = this.ping.readFor(request);
-        return request.getContent().equals(pingContent);
+        return this.ping.match(request);
     }
 
     public void writeToResponse(final SessionContext context) {
