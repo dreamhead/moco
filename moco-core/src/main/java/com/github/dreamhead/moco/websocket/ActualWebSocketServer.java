@@ -62,7 +62,13 @@ public final class ActualWebSocketServer
     @Override
     public PongResponse ping(final Resource message) {
         Resource resource = checkNotNull(message, "Ping message should not be null");
-        PingPongSetting setting = new PingPongSetting(by(resource));
+        return ping(by(resource));
+    }
+
+    @Override
+    public PongResponse ping(final RequestMatcher matcher) {
+        RequestMatcher actual = checkNotNull(matcher, "Ping message should not be null");
+        PingPongSetting setting = new PingPongSetting(actual);
         settings.add(setting);
         return setting;
     }

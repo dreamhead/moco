@@ -9,4 +9,5 @@ public interface WebSocketServer extends Server<WebsocketResponseSetting> {
 
     PongResponse ping(String message);
     PongResponse ping(Resource message);
+    PongResponse ping(RequestMatcher matcher);
 }
