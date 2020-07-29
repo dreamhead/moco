@@ -12,7 +12,7 @@ import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PingPongSetting implements PongResponse {
-    private RequestMatcher ping;
+    private final RequestMatcher ping;
     private ResponseHandler pong;
 
     public PingPongSetting(final RequestMatcher ping) {
@@ -26,7 +26,12 @@ public class PingPongSetting implements PongResponse {
 
     @Override
     public void pong(final Resource message) {
-        this.pong = with(checkNotNull(message, "Pong message should not be null"));
+        this.pong(with(with(checkNotNull(message, "Pong message should not be null"))));
+    }
+
+    @Override
+    public void pong(final ResponseHandler message) {
+        this.pong = checkNotNull(message, "Pong message should not be null");
     }
 
     public boolean match(final Request request) {

@@ -22,6 +22,7 @@ import java.util.concurrent.TimeoutException;
 import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -113,6 +114,20 @@ public class MocoWebsocketTest {
         WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
         webSocketServer.ping(by("hello")).pong("world");
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.ping("hello");
+            assertThat(endpoint.getMessage(), is("world".getBytes()));
+        });
+    }
+
+    @Test
+    public void should_pong_with_response_handler_based_on_ping() throws Exception {
+        HttpServer server = Moco.httpServer(12306);
+        WebSocketServer webSocketServer = server.websocket("/ws");
+        webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
+        webSocketServer.ping("hello").pong(with(text("world")));
 
         running(server, () -> {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
