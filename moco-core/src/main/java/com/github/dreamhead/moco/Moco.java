@@ -69,12 +69,12 @@ import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.lang.String.format;
 
 public final class Moco {
-    public static HttpServer httpServer(final int port, final MocoConfig... configs) {
+    public static HttpServer httpServer(final int port, final MocoConfig<?>... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createQuietServer(port, checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
+    public static HttpServer httpServer(final int port, final MocoMonitor monitor, final MocoConfig<?>... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpServerWithMonitor(port,
                 checkNotNull(monitor, "Monitor should not be null"),
@@ -90,23 +90,23 @@ public final class Moco {
                         checkNotNull(monitors, "Monitors should not be null")));
     }
 
-    public static HttpServer httpServer(final MocoConfig... configs) {
+    public static HttpServer httpServer(final MocoConfig<?>... configs) {
         return ActualHttpServer.createQuietServer(0,
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpServer httpServer(final MocoMonitor monitor, final MocoConfig... configs) {
+    public static HttpServer httpServer(final MocoMonitor monitor, final MocoConfig<?>... configs) {
         return ActualHttpServer.createHttpServerWithMonitor(0, checkNotNull(monitor, "Monitor should not be null"),
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoConfig... configs) {
+    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoConfig<?>... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsQuietServer(port, checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
+    public static HttpsServer httpsServer(final int port, final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig<?>... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
         return ActualHttpServer.createHttpsServerWithMonitor(port,
                 checkNotNull(certificate, "Certificate should not be null"),
@@ -114,12 +114,12 @@ public final class Moco {
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoConfig... configs) {
+    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoConfig<?>... configs) {
         return ActualHttpServer.createHttpsQuietServer(0, checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(configs, "Configuration should not be null"));
     }
 
-    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig... configs) {
+    public static HttpsServer httpsServer(final HttpsCertificate certificate, final MocoMonitor monitor, final MocoConfig<?>... configs) {
         return ActualHttpServer.createHttpsServerWithMonitor(0,
                 checkNotNull(certificate, "Certificate should not be null"),
                 checkNotNull(monitor, "Monitor should not be null"),
@@ -158,23 +158,23 @@ public final class Moco {
     }
 
 
-    public static MocoConfig context(final String context) {
+    public static MocoConfig<?> context(final String context) {
         return new MocoContextConfig(checkNotNullOrEmpty(context, "Context should not be null"));
     }
 
-    public static MocoConfig request(final RequestMatcher matcher) {
+    public static MocoConfig<?> request(final RequestMatcher matcher) {
         return new MocoRequestConfig(checkNotNull(matcher, "Request matcher should not be null"));
     }
 
-    public static MocoConfig response(final ResponseHandler handler) {
+    public static MocoConfig<?> response(final ResponseHandler handler) {
         return new MocoResponseConfig(checkNotNull(handler, "Response handler should not be null"));
     }
 
-    public static MocoConfig response(final HttpHeader header) {
+    public static MocoConfig<?> response(final HttpHeader header) {
         return response(with(checkNotNull(header, "Response handler should not be null")));
     }
 
-    public static MocoConfig fileRoot(final String fileRoot) {
+    public static MocoConfig<?> fileRoot(final String fileRoot) {
         return new MocoFileRootConfig(checkNotNullOrEmpty(fileRoot, "File root should not be null"));
     }
 
