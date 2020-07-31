@@ -10,12 +10,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.templateResourc
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 
 public final class ResourceConfigApplierFactory {
-    public static final ResourceConfigApplier DO_NOTHING_APPLIER = new ResourceConfigApplier() {
-        @Override
-        public Resource apply(final MocoConfig config, final Resource resource) {
-            return resource;
-        }
-    };
+    public static final ResourceConfigApplier DO_NOTHING_APPLIER = (config, resource) -> resource;
 
     public static ResourceConfigApplier fileConfigApplier(final String id, final Resource file) {
         return new SelfResourceConfigApplier(id) {
