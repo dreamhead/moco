@@ -67,7 +67,7 @@ public final class ResourceConfigApplierFactory {
     }
 
     private abstract static class SelfResourceConfigApplier extends BaseResourceConfigApplier {
-        private String id;
+        private final String id;
 
         private SelfResourceConfigApplier(final String id) {
             this.id = id;
@@ -80,7 +80,7 @@ public final class ResourceConfigApplierFactory {
     }
 
     private abstract static class EmbeddedResourceConfigApplier extends BaseResourceConfigApplier {
-        private Resource resource;
+        private final Resource resource;
 
         private EmbeddedResourceConfigApplier(final Resource resource) {
             this.resource = resource;
