@@ -85,7 +85,7 @@ public final class ApiUtils {
 
     public static <T> RequestMatcher by(final RequestExtractor<T> extractor, final Resource expected) {
         if ("json".equalsIgnoreCase(expected.id())) {
-            return new JsonRequestMatcher(expected, ContentRequestExtractor.class.cast(extractor));
+            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor);
         }
 
         return new EqRequestMatcher<>(extractor, expected);
