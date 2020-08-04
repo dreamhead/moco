@@ -10,7 +10,7 @@ public final class MocoAggregator extends ChannelInboundHandlerAdapter {
     private CompositeByteBuf bufs =  ByteBufAllocator.DEFAULT.compositeBuffer();
 
     @Override
-    public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) {
         if (msg instanceof ByteBuf) {
             ByteBuf buf = (ByteBuf) msg;
             bufs.addComponent(buf);
@@ -19,7 +19,7 @@ public final class MocoAggregator extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelReadComplete(final ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(final ChannelHandlerContext ctx) {
         if (bufs.numComponents() > 0) {
             ctx.fireChannelRead(bufs);
             bufs = ByteBufAllocator.DEFAULT.compositeBuffer();
