@@ -39,7 +39,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(final ChannelHandlerContext ctx) {
         if (websocketServer != null) {
             websocketServer.disconnect(ctx.channel());
         }
