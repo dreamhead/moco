@@ -35,7 +35,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         this.port = port;
         this.monitor = monitor;
         this.configs = configs;
-        this.responser = new Responser<T>(this);
+        this.responser = new Responser<>(this);
     }
 
     @Override
