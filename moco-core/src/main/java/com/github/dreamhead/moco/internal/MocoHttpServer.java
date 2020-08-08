@@ -26,7 +26,7 @@ public class MocoHttpServer implements ServerConfiguration {
     public final ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(final SocketChannel ch) throws Exception {
+            protected void initChannel(final SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
