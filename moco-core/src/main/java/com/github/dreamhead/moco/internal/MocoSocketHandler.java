@@ -27,7 +27,7 @@ public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, final ByteBuf msg) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final ByteBuf msg) {
         MessageContent content = content().withContent(new ByteBufInputStream(msg)).build();
         SocketRequest request = new DefaultSocketRequest(content);
         SessionContext context = new SessionContext(request, new DefaultSocketResponse());
@@ -43,7 +43,7 @@ public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf
     }
 
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
         this.server.onException(cause);
     }
 }
