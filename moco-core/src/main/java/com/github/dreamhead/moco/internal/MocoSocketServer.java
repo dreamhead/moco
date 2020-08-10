@@ -22,7 +22,7 @@ public final class MocoSocketServer implements ServerConfiguration {
     public ChannelInitializer<SocketChannel> channelInitializer() {
         return new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(final SocketChannel ch) throws Exception {
+            protected void initChannel(final SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("aggregator", new MocoAggregator());
                 pipeline.addLast("handler", new MocoSocketHandler(serverSetting));
