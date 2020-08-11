@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Optional;
 
 public class Responser<T extends ResponseSetting> {
-    private SettingFetcher<T> fetcher;
+    private final SettingFetcher<T> fetcher;
 
     public Responser(final SettingFetcher<T> fetcher) {
         this.fetcher = fetcher;
