@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.internal;
 
 public class ServerConfig {
-    private int headerSize;
-    private int contentLength;
+    private final int headerSize;
+    private final int contentLength;
 
     public ServerConfig(final int maxHeaderSize, final int maxContentLength) {
         this.headerSize = maxHeaderSize;
