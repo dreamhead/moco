@@ -11,10 +11,8 @@ buildscript {
 }
 
 project.dependencies {
-    implementation(
-            project(':moco-core'),
-            "commons-cli:commons-cli:$commonsCliVersion"
-    )
+    api(project(':moco-core'))
+    implementation("commons-cli:commons-cli:$commonsCliVersion")
 
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
 

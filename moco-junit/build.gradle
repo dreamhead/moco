@@ -1,9 +1,7 @@
 project.dependencies {
-    implementation(
-            project(':moco-core'),
-            project(':moco-runner'),
-            "junit:junit:$junitVersion"
-    )
+    api(project(':moco-core'))
+    api(project(':moco-runner'))
+    api("junit:junit:$junitVersion")
 
     testImplementation(
             project(':moco-core').sourceSets.test.output,

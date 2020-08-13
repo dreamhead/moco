@@ -21,7 +21,7 @@ idea {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     group = 'com.github.dreamhead'
     version = '1.1.0'
     sourceCompatibility = JavaVersion.VERSION_1_8
