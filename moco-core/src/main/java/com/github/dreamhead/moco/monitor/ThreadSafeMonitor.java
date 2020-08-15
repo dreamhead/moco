@@ -10,8 +10,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.github.dreamhead.moco.util.Locks.withLock;
 
 public final class ThreadSafeMonitor implements MocoMonitor {
-    private MocoMonitor monitor;
-    private Lock lock = new ReentrantLock();
+    private final MocoMonitor monitor;
+    private final Lock lock = new ReentrantLock();
 
     public ThreadSafeMonitor(final MocoMonitor monitor) {
         this.monitor = monitor;
