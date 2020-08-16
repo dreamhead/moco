@@ -19,41 +19,21 @@ public final class ThreadSafeMonitor implements MocoMonitor {
 
     @Override
     public void onMessageArrived(final Request request) {
-        withLock(lock, new Runnable() {
-            @Override
-            public void run() {
-                monitor.onMessageArrived(request);
-            }
-        });
+        withLock(lock, () -> monitor.onMessageArrived(request));
     }
 
     @Override
     public void onException(final Throwable t) {
-        withLock(lock, new Runnable() {
-            @Override
-            public void run() {
-                monitor.onException(t);
-            }
-        });
+        withLock(lock, () -> monitor.onException(t));
     }
 
     @Override
     public void onMessageLeave(final Response response) {
-        withLock(lock, new Runnable() {
-            @Override
-            public void run() {
-                monitor.onMessageLeave(response);
-            }
-        });
+        withLock(lock, () -> monitor.onMessageLeave(response));
     }
 
     @Override
     public void onUnexpectedMessage(final Request request) {
-        withLock(lock, new Runnable() {
-            @Override
-            public void run() {
-                monitor.onUnexpectedMessage(request);
-            }
-        });
+        withLock(lock, () -> monitor.onUnexpectedMessage(request));
     }
 }
