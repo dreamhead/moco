@@ -48,7 +48,7 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
         ReplayModifier appliedModifier = this.modifier.apply(config);
 
         if (appliedIdentifier != this.identifier || appliedModifier != this.modifier) {
-            RecorderConfigurations configurations = RecorderConfigurations.create(ImmutableList.<RecorderConfig>of(
+            RecorderConfigurations configurations = RecorderConfigurations.create(ImmutableList.of(
                     group(this.registry.getGroup()),
                     appliedIdentifier,
                     appliedModifier
