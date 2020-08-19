@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public final class JsonResourceReader implements ContentResourceReader {
-    private Function<Request, Object> function;
+    private final Function<Request, Object> function;
 
     public JsonResourceReader(final Function<Request, Object> function) {
         this.function = function;
