@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.util.Maps.arrayValueToSimple;
 
 public final class TemplateRequest {
-    private Request request;
+    private final Request request;
 
     public TemplateRequest(final Request request) {
         this.request = request;
