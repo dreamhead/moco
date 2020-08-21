@@ -16,7 +16,6 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
     private final Identifiable identifiable;
     private final ResourceConfigApplier configApplier;
     private ResourceReader reader;
-    private Function<byte[], byte[]> transformer;
 
     public Resource(final Identifiable identifiable,
                     final ResourceConfigApplier configApplier,
