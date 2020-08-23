@@ -23,7 +23,7 @@ public final class RestIdMatchers {
     }
 
     private static class BaseRestIdMatcher implements RestIdMatcher {
-        private String uriPart;
+        private final String uriPart;
 
         BaseRestIdMatcher(final String uriPart) {
             this.uriPart = uriPart;
