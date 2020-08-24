@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.server;
 import com.github.dreamhead.moco.Runner;
 
 public final class ServerRunner extends Runner {
-    private ServerConfiguration configuration;
+    private final ServerConfiguration configuration;
 
     private final MocoServer server = new MocoServer();
 
