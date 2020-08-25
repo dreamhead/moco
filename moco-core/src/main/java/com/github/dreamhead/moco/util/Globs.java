@@ -58,7 +58,7 @@ public final class Globs {
 
             Files.walkFileTree(searchPath, new SimpleFileVisitor<Path>() {
                 @Override
-                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
                     if (matcher.matches(file)) {
                         builder.add(file.toString());
                     }
