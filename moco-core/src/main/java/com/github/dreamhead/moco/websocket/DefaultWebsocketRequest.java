@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
 
 public class DefaultWebsocketRequest implements WebsocketRequest {
-    private MessageContent content;
+    private final MessageContent content;
 
     public DefaultWebsocketRequest(final WebSocketFrame frame) {
         byte[] bytes = toByteArray(frame.content());
