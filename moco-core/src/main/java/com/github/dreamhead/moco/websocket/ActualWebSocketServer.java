@@ -40,7 +40,7 @@ public final class ActualWebSocketServer
         implements WebSocketServer {
     private Resource connected;
     private ChannelGroup group;
-    private String uri;
+    private final String uri;
     private List<PingPongSetting> settings;
 
     public ActualWebSocketServer(final String uri) {
