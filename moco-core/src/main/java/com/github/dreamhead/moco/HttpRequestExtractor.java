@@ -8,8 +8,8 @@ public abstract class HttpRequestExtractor<T> implements RequestExtractor<T> {
     protected abstract Optional<T> doExtract(HttpRequest request);
 
     public final Optional<T> extract(final Request request) {
-        if (HttpRequest.class.isInstance(request)) {
-            return doExtract(HttpRequest.class.cast(request));
+        if (request instanceof HttpRequest) {
+            return doExtract((HttpRequest) request);
         }
 
         return empty();
