@@ -39,12 +39,9 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     public void should_match_form_value() throws Exception {
         server.post(eq(form("name"), "dreamhead")).response("foobar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                org.apache.http.client.fluent.Request request = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
-                assertThat(helper.executeAsString(request), is("foobar"));
-            }
+        running(server, () -> {
+            org.apache.http.client.fluent.Request request = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            assertThat(helper.executeAsString(request), is("foobar"));
         });
     }
 
@@ -53,12 +50,9 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server = httpServer(port(), log());
         server.post(eq(form("name"), "表单")).response("foobar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                org.apache.http.client.fluent.Request request = Post(root()).bodyForm(of(new BasicNameValuePair("name", "表单")), Charset.forName("GBK"));
-                assertThat(helper.executeAsString(request), is("foobar"));
-            }
+        running(server, () -> {
+            org.apache.http.client.fluent.Request request = Post(root()).bodyForm(of(new BasicNameValuePair("name", "表单")), Charset.forName("GBK"));
+            assertThat(helper.executeAsString(request), is("foobar"));
         });
     }
 
@@ -67,12 +61,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(form("password"), "hello")).response("foobar");
         server.response("foobar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root()), is("foobar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foobar")));
     }
 
     @Test
@@ -80,12 +69,9 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true"), status(302));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getForStatus(root()), is(302));
-                assertThat(helper.getForStatus(root()), is(200));
-            }
+        running(server, () -> {
+            assertThat(helper.getForStatus(root()), is(302));
+            assertThat(helper.getForStatus(root()), is(200));
         });
     }
 
@@ -94,14 +80,11 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", path("/")), status(302));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.path(), is("/"));
-            }
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(decodeCookie.path(), is("/"));
         });
     }
 
@@ -110,15 +93,12 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(302));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
 
-                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.maxAge(), is(3600L));
-            }
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(decodeCookie.maxAge(), is(3600L));
         });
     }
 
@@ -127,14 +107,11 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", secure()), status(302));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.isSecure(), is(true));
-            }
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(decodeCookie.isSecure(), is(true));
         });
     }
 
@@ -143,14 +120,11 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", httpOnly()), status(302));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.isHttpOnly(), is(true));
-            }
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(decodeCookie.isHttpOnly(), is(true));
         });
     }
 
@@ -158,14 +132,11 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     public void should_set_and_recognize_cookie_with_domain() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", domain("localhost")), status(302));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-                Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
-                assertThat(decodeCookie.domain(), is("localhost"));
-            }
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(decodeCookie.domain(), is("localhost"));
         });
     }
 
@@ -174,12 +145,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.get(by(uri("/"))).response("foo");
         server.get(by(uri("/redirectTo"))).redirectTo(root());
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/redirectTo")), is("foo")));
     }
 
     @Test
@@ -187,23 +153,13 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.get(by(uri("/"))).response("foo");
         server.redirectTo(root());
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/redirectTo")), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/redirectTo")), is("foo")));
     }
 
     @Test
     public void should_download_attachment() throws Exception {
         server.get(by(uri("/"))).response(attachment("foo.txt", file("src/test/resources/foo.response")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/")), is("foo.response"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/")), is("foo.response")));
     }
 }

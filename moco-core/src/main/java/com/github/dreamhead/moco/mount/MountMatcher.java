@@ -50,9 +50,9 @@ public final class MountMatcher extends AbstractRequestMatcher {
     }
 
     private boolean isTarget(final String relativePath) {
-        return !isNullOrEmpty(relativePath) &&
-                StreamSupport.stream(predicates.spliterator(), false)
-                        .allMatch(mountPredicate -> mountPredicate.test(relativePath));
+        return !isNullOrEmpty(relativePath)
+                && StreamSupport.stream(predicates.spliterator(), false)
+                .allMatch(mountPredicate -> mountPredicate.test(relativePath));
     }
 
 }
