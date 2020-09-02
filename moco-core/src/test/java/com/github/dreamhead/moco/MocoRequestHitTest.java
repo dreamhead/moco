@@ -55,12 +55,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), monitor);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
         verify(monitor).onMessageLeave(any(HttpResponse.class));
@@ -73,12 +68,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(monitor);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl(server.port(), "/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl(server.port(), "/foo")), is("bar")));
 
         verify(monitor).onMessageArrived(any(HttpRequest.class));
         verify(monitor).onMessageLeave(any(HttpResponse.class));
@@ -90,12 +80,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
 
         hit.verify(by(uri("/foo")), times(1));
     }
@@ -111,12 +96,9 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
         });
 
         hit.verify(by(uri("/foo")), atLeast(1));
@@ -127,13 +109,10 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
         });
 
         hit.verify(by(uri("/foo")), between(1, 3));
@@ -150,12 +129,9 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
         });
 
         hit.verify(by(uri("/foo")), atMost(2));
@@ -165,12 +141,9 @@ public class MocoRequestHitTest {
     public void should_fail_to_verify_at_most_expected_request_while_expectation_can_not_be_met() throws Exception {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
         });
 
         hit.verify(by(uri("/foo")), atMost(1));
@@ -181,12 +154,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
 
         hit.verify(by(uri("/foo")), once());
     }
@@ -202,12 +170,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
 
         hit.verify(unexpected(), never());
     }
@@ -216,13 +179,10 @@ public class MocoRequestHitTest {
     public void should_verify_unexpected_request_with_unexpected_request() throws Exception {
         final HttpServer server = httpServer(port(), hit);
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                try {
-                    helper.get(remoteUrl("/foo"));
-                } catch (IOException ignored) {
-                }
+        running(server, () -> {
+            try {
+                helper.get(remoteUrl("/foo"));
+            } catch (IOException ignored) {
             }
         });
 
@@ -233,13 +193,10 @@ public class MocoRequestHitTest {
     public void should_fail_to_verify_while_unexpected_request_expectation_can_not_be_met() throws Exception {
         final HttpServer server = httpServer(port(), hit);
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                try {
-                    helper.get(remoteUrl("/foo"));
-                } catch (IOException ignored) {
-                }
+        running(server, () -> {
+            try {
+                helper.get(remoteUrl("/foo"));
+            } catch (IOException ignored) {
             }
         });
 
@@ -256,13 +213,10 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.post(eq(form("name"), "dreamhead")).response("foobar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
-                String content = helper.executeAsString(request);
-                assertThat(content, is("foobar"));
-            }
+        running(server, () -> {
+            Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            String content = helper.executeAsString(request);
+            assertThat(content, is("foobar"));
         });
 
         hit.verify(eq(form("name"), "dreamhead"), once());
@@ -273,13 +227,10 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit);
         server.response("foobar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
-                String content = helper.executeAsString(request);
-                assertThat(content, is("foobar"));
-            }
+        running(server, () -> {
+            Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            String content = helper.executeAsString(request);
+            assertThat(content, is("foobar"));
         });
 
         hit.verify(eq(form("name"), "dreamhead"), once());
@@ -290,12 +241,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpServer(port(), hit, log());
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
 
         hit.verify(by(uri("/foo")), times(1));
     }
@@ -305,12 +251,7 @@ public class MocoRequestHitTest {
         final HttpServer server = httpsServer(port(), DEFAULT_CERTIFICATE, hit, log());
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteHttpsUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteHttpsUrl("/foo")), is("bar")));
 
         hit.verify(by(uri("/foo")), times(1));
     }
