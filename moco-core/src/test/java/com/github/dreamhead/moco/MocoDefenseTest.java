@@ -16,11 +16,6 @@ public class MocoDefenseTest extends AbstractMocoHttpTest {
         server = httpServer(12306, context("/foo"));
         server.request(by("bar"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.postContent(root(), "bar");
-            }
-        });
+        running(server, () -> helper.postContent(root(), "bar"));
     }
 }
