@@ -44,12 +44,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         MocoEventAction action = mock(MocoEventAction.class);
         server.response("foo").on(complete(action));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root()), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foo")));
 
         verify(action).execute(any(Request.class));
     }
@@ -59,12 +54,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         MocoEventAction action = mock(MocoEventAction.class);
         server.request(by(uri("/event"))).response("event").on(complete(action));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(action).execute(any(Request.class));
     }
@@ -75,12 +65,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/noevent"))).response("noevent");
         server.request(by(uri("/event"))).response("foo").on(complete(action));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/noevent")), is("noevent"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/noevent")), is("noevent")));
 
         verify(action, Mockito.never()).execute(any(Request.class));
     }
@@ -91,12 +76,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(remoteUrl("/target"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -108,12 +88,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/event"))).response("event").on(complete(get(remoteUrl("/target"),
                 header("foo", text("bar")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -124,12 +99,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -141,12 +111,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/event"))).response("event").on(complete(get(text(remoteUrl("/target")),
                 header("foo", text("bar")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -157,12 +122,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(template("${base}/${req.headers['foo']}", "base", root()))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -173,12 +133,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(pathResource("template.url"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -190,12 +145,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(template("${var}", "var", remoteUrl("/target")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -206,12 +156,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), "content")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -222,12 +167,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), "content")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -238,12 +178,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(pathResource("template.url"), "content")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -254,12 +189,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), pathResource("foo.request"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -270,12 +200,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), text("content"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -286,12 +211,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"), eq(header("foo"), "bar"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"), header("foo", text("bar")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -302,12 +222,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), template("${req.headers['foo']}"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "content")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "content")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -318,12 +233,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), text("content"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -334,13 +244,10 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(any(SessionContext.class));
-                Idles.idle(2, TimeUnit.SECONDS);
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/event")), is("event"));
+            verify(handler, never()).writeToResponse(any(SessionContext.class));
+            Idles.idle(2, TimeUnit.SECONDS);
         });
 
         verify(handler).writeToResponse(any(SessionContext.class));
@@ -352,13 +259,10 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(async(post(remoteUrl("/target"), text("content")), latency(1, TimeUnit.SECONDS))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-                verify(handler, never()).writeToResponse(any(SessionContext.class));
-                Idles.idle(2, TimeUnit.SECONDS);
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/event")), is("event"));
+            verify(handler, never()).writeToResponse(any(SessionContext.class));
+            Idles.idle(2, TimeUnit.SECONDS);
         });
 
         verify(handler).writeToResponse(any(SessionContext.class));
@@ -371,12 +275,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server = httpServer(port(), context("/context"));
         server.get(by(uri("/foo"))).response("foo").on(complete(action));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/context/foo")), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/context/foo")), is("foo")));
 
         verify(action).execute(any(Request.class));
     }
@@ -390,12 +289,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target")), by(file("foo.request"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), file("foo.request"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -407,12 +301,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by(pathResource("gbk.json", gbk)))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(text(remoteUrl("/target")), pathResource("gbk.json", gbk))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/event")), is("event"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/event")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
