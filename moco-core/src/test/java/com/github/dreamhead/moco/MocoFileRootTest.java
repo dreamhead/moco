@@ -36,12 +36,7 @@ public class MocoFileRootTest {
     public void should_config_file_root() throws Exception {
         server.response(file("foo.response"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(root()), is("foo.response"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foo.response")));
     }
 
     @Test
@@ -49,14 +44,11 @@ public class MocoFileRootTest {
         server = httpServer(port(), log(), fileRoot("src/test/resources"));
         server.response(header("foo", file("foo.response")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                Request request = Request.Get(root());
-                Header header = helper.execute(request).getFirstHeader("foo");
+        running(server, () -> {
+            Request request = Request.Get(root());
+            Header header = helper.execute(request).getFirstHeader("foo");
 
-                assertThat(header.getValue(), is("foo.response"));
-            }
+            assertThat(header.getValue(), is("foo.response"));
         });
     }
 
@@ -64,13 +56,10 @@ public class MocoFileRootTest {
     public void should_return_template_header_from_file_root() throws Exception {
         server.response(header("foo", template(file("foo.response"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                org.apache.http.HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("foo.response"));
-            }
+        running(server, () -> {
+            org.apache.http.HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("foo.response"));
         });
     }
 
@@ -78,23 +67,13 @@ public class MocoFileRootTest {
     public void should_return_template_from_file_root() throws Exception {
         server.response(template(file("foo.response")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(root()), is("foo.response"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foo.response")));
     }
 
     @Test
     public void should_mount_correctly() throws Exception {
         server.mount("test", to("/dir"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir")));
     }
 }
