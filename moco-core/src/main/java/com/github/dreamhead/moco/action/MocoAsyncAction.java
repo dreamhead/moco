@@ -20,12 +20,9 @@ public final class MocoAsyncAction implements MocoEventAction {
 
     @Override
     public void execute(final Request request) {
-        service.execute(new Runnable() {
-            @Override
-            public void run() {
-                procedure.execute();
-                action.execute(request);
-            }
+        service.execute(() -> {
+            procedure.execute();
+            action.execute(request);
         });
     }
 

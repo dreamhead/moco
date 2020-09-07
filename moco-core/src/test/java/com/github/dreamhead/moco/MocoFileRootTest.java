@@ -6,8 +6,6 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.fileRoot;
 import static com.github.dreamhead.moco.Moco.header;
