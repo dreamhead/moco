@@ -146,11 +146,20 @@ public final class ActualWebSocketServer
         return Optional.empty();
     }
 
-    public WebsocketResponse handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+    public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
-        SessionContext context = new SessionContext(request, response);
+        SessionContext context = new SessionContext(request, response, this.group);
 
-        return (WebsocketResponse) this.getResponse(context).orElseThrow(IllegalArgumentException::new);
+        return this.getResponse(context)
+                .flatMap(this::asWebsocketResponse);
+    }
+
+    private Optional<WebsocketResponse> asWebsocketResponse(final Response response) {
+        if (response.getContent() != null) {
+            return Optional.of((WebsocketResponse) response);
+        }
+
+        return Optional.empty();
     }
 }

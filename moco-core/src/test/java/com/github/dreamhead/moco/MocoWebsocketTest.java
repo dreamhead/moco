@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.websocket.ClientEndpoint;
@@ -23,15 +24,23 @@ import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MocoWebsocketTest {
+public class MocoWebsocketTest extends AbstractMocoHttpTest {
+    private WebSocketServer webSocketServer;
+
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+        webSocketServer = server.websocket("/ws");
+    }
+
     @Test
     public void should_connect() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.connected(text("hello"));
 
         running(server, () -> {
@@ -42,8 +51,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_response_based_on_request() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by("foo")).response("bar");
 
         running(server, () -> {
@@ -55,8 +62,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_response_any_response() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by("foo")).response("bar");
         webSocketServer.response("any");
 
@@ -69,8 +74,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_binary_response_based_on_binary_request() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
 
         running(server, () -> {
@@ -82,8 +85,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_pong_based_on_ping() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
         webSocketServer.ping("hello").pong("world");
 
@@ -96,8 +97,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_pong_based_on_ping_resource() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
         webSocketServer.ping(text("hello")).pong(text("world"));
 
@@ -110,8 +109,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_pong_based_on_ping_matcher() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
         webSocketServer.ping(by("hello")).pong("world");
 
@@ -124,8 +121,6 @@ public class MocoWebsocketTest {
 
     @Test
     public void should_pong_with_response_handler_based_on_ping() throws Exception {
-        HttpServer server = Moco.httpServer(12306);
-        WebSocketServer webSocketServer = server.websocket("/ws");
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
         webSocketServer.ping("hello").pong(with(text("world")));
 
@@ -133,6 +128,19 @@ public class MocoWebsocketTest {
             final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
             endpoint.ping("hello");
             assertThat(endpoint.getMessage(), is("world".getBytes()));
+        });
+    }
+
+    @Test
+    public void should_broadcast() throws Exception {
+        webSocketServer.request(by("foo")).response(broadcast("bar"));
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendTextMessage("foo");
+
+            assertThat(endpoint.getMessage(), is("bar".getBytes()));
+            assertThat(endpoint2.getMessage(), is("bar".getBytes()));
         });
     }
 

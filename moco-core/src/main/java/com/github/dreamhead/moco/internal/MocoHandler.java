@@ -19,6 +19,8 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
+import java.util.Optional;
+
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static com.google.common.net.HttpHeaders.UPGRADE;
 import static io.netty.channel.ChannelHandler.Sharable;
@@ -58,18 +60,22 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
-        WebSocketFrame frame = getResponseFrame(ctx, message);
-        ctx.channel().writeAndFlush(frame);
+        Optional<WebSocketFrame> frame = getResponseFrame(ctx, message);
+        frame.ifPresent(webSocketFrame -> ctx.channel().writeAndFlush(webSocketFrame));
     }
 
-    private WebSocketFrame getResponseFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+    private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         if (message instanceof PingWebSocketFrame) {
-            return websocketServer.handlePingPong((PingWebSocketFrame) message);
+            return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message));
         }
 
-        WebsocketResponse response = websocketServer.handleRequest(ctx, message);
-        ByteBuf byteBuf = ByteBufs.toByteBuf(response.getContent().getContent());
-        return new BinaryWebSocketFrame(byteBuf);
+        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message);
+        if (response.isPresent()) {
+            ByteBuf byteBuf = ByteBufs.toByteBuf(response.get().getContent().getContent());
+            return Optional.of(new BinaryWebSocketFrame(byteBuf));
+        }
+
+        return Optional.empty();
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
