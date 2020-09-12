@@ -144,6 +144,19 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         });
     }
 
+    @Test
+    public void should_broadcast_with_resource() throws Exception {
+        webSocketServer.request(by("foo")).response(broadcast(text("bar")));
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendTextMessage("foo");
+
+            assertThat(endpoint.getMessage(), is("bar".getBytes()));
+            assertThat(endpoint2.getMessage(), is("bar".getBytes()));
+        });
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
