@@ -25,6 +25,11 @@ public class WebSocketBroadcastHandler implements ResponseHandler {
 
     @Override
     public ResponseHandler apply(final MocoConfig config) {
-        return this;
+        Resource applied = content.apply(config);
+        if (applied == content) {
+            return this;
+        }
+
+        return new WebSocketBroadcastHandler(applied);
     }
 }
