@@ -32,11 +32,11 @@ public final class MocoRecorders {
     }
 
     public static RecorderGroup group(final String name) {
-        return new RecorderGroup(checkNotNullOrEmpty(name, "Identifier should not be empty"));
+        return new RecorderGroup(checkNotNullOrEmpty(name, "group should not be empty"));
     }
 
     public static RecorderTape tape(final String path) {
-        return new RecorderTape(checkNotNullOrEmpty(path, "Identifier should not be empty"));
+        return new RecorderTape(checkNotNullOrEmpty(path, "tape should not be empty"));
     }
 
     public static RecorderIdentifier identifier(final String text) {
