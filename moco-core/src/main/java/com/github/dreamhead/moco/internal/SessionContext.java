@@ -2,12 +2,13 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
-import io.netty.channel.group.ChannelGroup;
+
+import java.util.Objects;
 
 public final class SessionContext {
     private final Request request;
     private final Response response;
-    private final ChannelGroup group;
+    private final SessionGroup group;
 
     public SessionContext(final Request request, final Response response) {
         this.request = request;
@@ -15,7 +16,7 @@ public final class SessionContext {
         this.group = null;
     }
 
-    public SessionContext(final Request request, final Response response, final ChannelGroup group) {
+    public SessionContext(final Request request, final Response response, final SessionGroup group) {
         this.request = request;
         this.response = response;
         this.group = group;
@@ -29,7 +30,7 @@ public final class SessionContext {
         return response;
     }
 
-    public ChannelGroup getGroup() {
-        return group;
+    public void writeAndFlush(final Object message) {
+        Objects.requireNonNull(this.group).writeAndFlush(message);
     }
 }

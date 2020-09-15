@@ -149,7 +149,7 @@ public final class ActualWebSocketServer
     public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
-        SessionContext context = new SessionContext(request, response, this.group);
+        SessionContext context = new SessionContext(request, response, new ChannelSessionGroup(this.group));
 
         return this.getResponse(context)
                 .flatMap(this::asWebsocketResponse);

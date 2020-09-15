@@ -20,7 +20,7 @@ public class WebSocketBroadcastHandler implements ResponseHandler {
     public void writeToResponse(final SessionContext context) {
         MessageContent content = this.content.readFor(context.getRequest());
         ByteBuf byteBuf = ByteBufs.toByteBuf(content.getContent());
-        context.getGroup().writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+        context.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
     }
 
     @Override
