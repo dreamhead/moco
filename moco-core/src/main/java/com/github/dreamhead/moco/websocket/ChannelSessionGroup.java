@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.internal.SessionGroup;
 import io.netty.channel.group.ChannelGroup;
 
 public class ChannelSessionGroup implements SessionGroup {
-    private ChannelGroup group;
+    private final ChannelGroup group;
 
     public ChannelSessionGroup(final ChannelGroup group) {
         this.group = group;
