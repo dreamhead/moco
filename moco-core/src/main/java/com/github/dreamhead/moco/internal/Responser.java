@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 
-public class Responser<T extends ResponseSetting> {
+public class Responser<T extends ResponseSetting<T>> {
     private final SettingFetcher<T> fetcher;
 
     public Responser(final SettingFetcher<T> fetcher) {
