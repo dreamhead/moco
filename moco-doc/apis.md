@@ -958,6 +958,20 @@ server.response(pathResource("src/test/resources/gbk.response", Charset.forName(
 ]
 ```
 
+**@Since will be at next release**
+
+If your response need to be transformed for some reason, e.g. encryption, you can `transform` your content.
+
+```java
+server.response(text("hello").transform(raw -> {
+    byte[] transformed = new byte[raw.length];
+    for (int i = 0; i < raw.length; i++) {
+        transformed[i] = (byte) (raw[i] + 1);
+    }
+    return transformed;
+}));
+```
+
 ### Status Code
 **@Since 0.7**
 

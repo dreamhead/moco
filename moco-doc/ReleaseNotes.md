@@ -1,5 +1,8 @@
 # Release
 
+## APIs
+* `transform` API allow you transform your content.
+
 ## Implementation Details
 * Return application/json header for `json` API with text and resource. 
 
