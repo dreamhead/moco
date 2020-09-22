@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.websocket.WebsocketResponseSetting;
 
 public interface WebSocketServer extends Server<WebsocketResponseSetting> {
     void connected(Resource resource);
+    void connected(String text);
 
     PongResponse ping(String message);
     PongResponse ping(Resource message);

@@ -50,6 +50,16 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_connect_with_text() throws Exception {
+        webSocketServer.connected("hello");
+
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            assertThat(endpoint.getMessageAsText(), is("hello"));
+        });
+    }
+
+    @Test
     public void should_response_based_on_request() throws Exception {
         webSocketServer.request(by("foo")).response("bar");
 

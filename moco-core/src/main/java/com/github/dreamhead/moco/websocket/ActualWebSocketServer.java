@@ -54,6 +54,10 @@ public final class ActualWebSocketServer
         this.connected = checkNotNull(resource, "Connected resource should not be null");
     }
 
+    public void connected(final String text) {
+        this.connected(text(checkNotNull(text, "Connected text should not be null")));
+    }
+
     @Override
     public PongResponse ping(final String message) {
         return this.ping(text(checkNotNullOrEmpty(message, "Ping message should not be null")));
