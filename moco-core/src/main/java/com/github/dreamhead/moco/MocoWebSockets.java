@@ -9,11 +9,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class MocoWebSockets {
     public static ResponseHandler broadcast(final String content) {
-        return broadcast(text(checkNotNullOrEmpty(content, "Content should not be null")));
+        return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")));
     }
 
     public static ResponseHandler broadcast(final Resource content) {
-        return new WebSocketBroadcastHandler(checkNotNull(content, "Content should not be null"));
+        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"));
     }
 
     private MocoWebSockets() {
