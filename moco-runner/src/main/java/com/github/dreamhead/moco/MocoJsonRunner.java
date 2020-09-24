@@ -15,7 +15,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 public final class MocoJsonRunner {
-    private static HttpServerParser parser = new HttpServerParser();
+    private static final HttpServerParser PARSER = new HttpServerParser();
 
     public static HttpServer jsonHttpServer(final int port, final Resource resource) {
         checkArgument(port > 0, "Port must be greater than zero");
@@ -59,7 +59,7 @@ public final class MocoJsonRunner {
     }
 
     private static HttpServer parseHttpServer(final Resource resource, final Optional<Integer> port) {
-        return parser.parseServer(ImmutableList.of(toStream(resource)), port);
+        return PARSER.parseServer(ImmutableList.of(toStream(resource)), port);
     }
 
     private static InputStream toStream(final Resource resource) {
