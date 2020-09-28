@@ -31,12 +31,9 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(by(uri("/global-request"))).response("blah");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String result = helper.getWithHeader(remoteUrl("/global-request"), of("foo", "bar"));
-                assertThat(result, is("blah"));
-            }
+        running(server, () -> {
+            String result = helper.getWithHeader(remoteUrl("/global-request"), of("foo", "bar"));
+            assertThat(result, is("blah"));
         });
     }
 
@@ -45,12 +42,9 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(by(uri("/global-request"))).response("blah");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String result = helper.get(remoteUrl("/global-request"));
-                assertThat(result, is("blah"));
-            }
+        running(server, () -> {
+            String result = helper.get(remoteUrl("/global-request"));
+            assertThat(result, is("blah"));
         });
     }
 
@@ -59,13 +53,10 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.response("blah");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String result = helper.getWithHeader(root(), of("foo", "bar"));
-                assertThat(result, is("blah"));
+        running(server, () -> {
+            String result = helper.getWithHeader(root(), of("foo", "bar"));
+            assertThat(result, is("blah"));
 
-            }
         });
     }
 
@@ -74,12 +65,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.response("blah");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.get(root());
-            }
-        });
+        running(server, () -> helper.get(root()));
     }
 
     @Test
@@ -87,12 +73,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(exist(header("blah"))).response("header");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.getWithHeader(root(), of("foo", "bar", "blah", "any")), is("header"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(root(), of("foo", "bar", "blah", "any")), is("header")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -100,12 +81,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(exist(header("blah"))).response("header");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.getWithHeader(root(), of("blah", "any"));
-            }
-        });
+        running(server, () -> helper.getWithHeader(root(), of("blah", "any")));
     }
 
     @Test
@@ -113,12 +89,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(by(json(jsonContent))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(remoteUrl("/path"), jsonContent), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(remoteUrl("/path"), jsonContent), is("foo")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -126,36 +97,21 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(by(json(jsonContent))).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.postContent(root(), jsonContent);
-            }
-        });
+        running(server, () -> helper.postContent(root(), jsonContent));
     }
 
     @Test
     public void should_match_with_xml() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postFile(remoteUrl("/path"), "foo.xml"), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.postFile(remoteUrl("/path"), "foo.xml"), is("foo")));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_xml() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.postFile(root(), "foo.xml");
-            }
-        });
+        running(server, () -> helper.postFile(root(), "foo.xml"));
     }
 
     @Test
@@ -164,12 +120,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getWithHeader(remoteUrl("/dir/dir.response"), of("foo", "bar")), is("response from dir"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/dir/dir.response"), of("foo", "bar")), is("response from dir")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -178,12 +129,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir")));
     }
 
     @Test
@@ -191,12 +137,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(not(by(uri("/foo")))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getWithHeader(remoteUrl("/bar"), of("foo", "bar")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/bar"), of("foo", "bar")), is("bar")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -204,12 +145,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(not(by(uri("/foo")))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.get(remoteUrl("/bar"));
-            }
-        });
+        running(server, () -> helper.get(remoteUrl("/bar")));
     }
 
     @Test
@@ -217,12 +153,7 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar", "header", "blah")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar", "header", "blah")), is("bar")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -230,11 +161,6 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                helper.getWithHeader(remoteUrl("/foo"), of("header", "blah"));
-            }
-        });
+        running(server, () -> helper.getWithHeader(remoteUrl("/foo"), of("header", "blah")));
     }
 }
