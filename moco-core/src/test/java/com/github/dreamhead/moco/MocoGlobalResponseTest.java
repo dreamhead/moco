@@ -36,13 +36,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header(HttpHeaders.CONTENT_TYPE, "text/plain")));
         server.response(version(VERSION_1_0));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader(HttpHeaders.CONTENT_TYPE);
-                assertThat(header.getValue(), is("text/plain"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader(HttpHeaders.CONTENT_TYPE);
+            assertThat(header.getValue(), is("text/plain"));
         });
     }
 
@@ -51,16 +48,13 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response("hello");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-                ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-                response.getEntity().writeTo(outstream);
-                assertThat(new String(outstream.toByteArray()), is("hello"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
+            ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+            response.getEntity().writeTo(outstream);
+            assertThat(new String(outstream.toByteArray()), is("hello"));
         });
     }
 
@@ -69,13 +63,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response(header("blah", "param"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 
@@ -84,13 +75,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response(status(200));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 
@@ -99,13 +87,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response(status(200), with(version(VERSION_1_0)));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 
@@ -130,13 +115,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                HttpResponse response = helper.getResponse(remoteUrl("/dir/dir.response"));
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(remoteUrl("/dir/dir.response"));
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 
@@ -145,13 +127,10 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response(latency(1, TimeUnit.SECONDS));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 
@@ -160,17 +139,14 @@ public class MocoGlobalResponseTest {
         server = httpServer(port(), response(header("foo", "bar")));
         server.response(seq("hello", "world"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse response = helper.getResponse(root());
-                Header header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(root());
+            Header header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
 
-                response = helper.getResponse(root());
-                header = response.getFirstHeader("foo");
-                assertThat(header.getValue(), is("bar"));
-            }
+            response = helper.getResponse(root());
+            header = response.getFirstHeader("foo");
+            assertThat(header.getValue(), is("bar"));
         });
     }
 }
