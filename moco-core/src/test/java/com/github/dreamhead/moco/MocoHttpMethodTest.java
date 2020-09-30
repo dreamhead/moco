@@ -18,36 +18,23 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
     public void should_match_get_method() throws Exception {
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
     }
 
     @Test
     public void should_match_post_method() throws Exception {
         server.post(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(root(), "foo"), is("bar"));
-            }
-        });
+        running(server, () -> assertThat(helper.postContent(root(), "foo"), is("bar")));
     }
 
     @Test
     public void should_match_put_method() throws Exception {
         server.put(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                Request request = Request.Put(root()).bodyByteArray("foo".getBytes());
-                assertThat(helper.executeAsString(request), is("bar"));
-            }
+        running(server, () -> {
+            Request request = Request.Put(root()).bodyByteArray("foo".getBytes());
+            assertThat(helper.executeAsString(request), is("bar"));
         });
     }
 
@@ -55,13 +42,10 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
     public void should_match_delete_method() throws Exception {
         server.delete(by(uri("/foo"))).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                Request request = Request.Delete(remoteUrl("/foo"));
-                String response = helper.executeAsString(request);
-                assertThat(response, is("bar"));
-            }
+        running(server, () -> {
+            Request request = Request.Delete(remoteUrl("/foo"));
+            String response = helper.executeAsString(request);
+            assertThat(response, is("bar"));
         });
     }
 }
