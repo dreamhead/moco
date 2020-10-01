@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.context;
 import static com.github.dreamhead.moco.Moco.httpsServer;
@@ -12,7 +13,6 @@ import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoRequestHit.once;
 import static com.github.dreamhead.moco.MocoRequestHit.requestHit;
 import static com.github.dreamhead.moco.Runner.running;
-import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteHttpsUrl;
@@ -33,11 +33,8 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.response("foo");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(httpsRoot()), is("foo"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(httpsRoot()), is("foo"));
         });
     }
 
@@ -46,11 +43,8 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
         });
     }
 
@@ -60,11 +54,8 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
         });
 
         hit.verify(by("foo"), once());
@@ -75,11 +66,8 @@ public class MocoHttpsTest {
         final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
         });
     }
 
@@ -89,11 +77,8 @@ public class MocoHttpsTest {
         final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
         });
 
         hit.verify(by("foo"), once());
@@ -104,11 +89,8 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE, context("/foo"));
         server.request(by(uri("/bar"))).response("foo");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteHttpsUrl("/foo/bar")), is("foo"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteHttpsUrl("/foo/bar")), is("foo"));
         });
     }
 }
