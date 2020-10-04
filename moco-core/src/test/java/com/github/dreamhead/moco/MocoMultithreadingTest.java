@@ -38,24 +38,18 @@ public class MocoMultithreadingTest {
         final int count = 100;
         final CountDownLatch latch = new CountDownLatch(count);
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                for (int i = 0; i < count; i ++) {
-                    executorService.execute(new java.lang.Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-                                latch.countDown();
-                            } catch (IOException ignored) {
-                            }
-                        }
-                    });
-                }
-
-                latch.await();
+        running(server, () -> {
+            for (int i = 0; i < count; i ++) {
+                executorService.execute(() -> {
+                    try {
+                        assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+                        latch.countDown();
+                    } catch (IOException ignored) {
+                    }
+                });
             }
+
+            latch.await();
         });
 
         hit.verify(by(uri("/foo")), times(count));
