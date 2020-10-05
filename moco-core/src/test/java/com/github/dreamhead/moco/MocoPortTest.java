@@ -24,12 +24,7 @@ public class MocoPortTest {
         final HttpServer server = httpServer();
         server.response("foo");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root(server.port())), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root(server.port())), is("foo")));
     }
 
     @Test(expected = IllegalStateException.class)
