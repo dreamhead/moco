@@ -40,13 +40,10 @@ public class MocoSocketTest {
     public void should_return_expected_response() throws Exception {
         server.request(by("foo")).response(line("bar"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("foo"), is("bar"));
-                helper.close();
-            }
+        running(server, () -> {
+            helper.connect();
+            assertThat(helper.send("foo"), is("bar"));
+            helper.close();
         });
     }
 
@@ -55,14 +52,11 @@ public class MocoSocketTest {
         server.request(by("foo")).response(line("bar"));
         server.request(by("bar")).response(line("blah"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("foo"), is("bar"));
-                assertThat(helper.send("bar"), is("blah"));
-                helper.close();
-            }
+        running(server, () -> {
+            helper.connect();
+            assertThat(helper.send("foo"), is("bar"));
+            assertThat(helper.send("bar"), is("blah"));
+            helper.close();
         });
     }
 
@@ -70,13 +64,10 @@ public class MocoSocketTest {
     public void should_match_extreme_big_request() throws Exception {
         server.request(by(times("a", 1025))).response(line("long_a"));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send(times("a", 1025)), is("long_a"));
-                helper.close();
-            }
+        running(server, () -> {
+            helper.connect();
+            assertThat(helper.send(times("a", 1025)), is("long_a"));
+            helper.close();
         });
     }
 
@@ -86,13 +77,10 @@ public class MocoSocketTest {
         SocketServer socketServer = socketServer(port(), log(file.getAbsolutePath()));
         socketServer.request(by("0XCAFE")).response(line("0XBABE"));
 
-        running(socketServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("0XCAFE"), is("0XBABE"));
-                helper.close();
-            }
+        running(socketServer, () -> {
+            helper.connect();
+            assertThat(helper.send("0XCAFE"), is("0XBABE"));
+            helper.close();
         });
 
         String actual = asCharSource(file, Charset.defaultCharset()).read();
@@ -106,13 +94,10 @@ public class MocoSocketTest {
         SocketServer socketServer = socketServer(port(), hit);
         socketServer.request(by("0XCAFE")).response(line("0XBABE"));
 
-        running(socketServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("0XCAFE"), is("0XBABE"));
-                helper.close();
-            }
+        running(socketServer, () -> {
+            helper.connect();
+            assertThat(helper.send("0XCAFE"), is("0XBABE"));
+            helper.close();
         });
 
         hit.verify(by("0XCAFE"), once());
@@ -123,14 +108,11 @@ public class MocoSocketTest {
         final SocketServer socketServer = socketServer();
         socketServer.request(by("foo")).response(line("bar"));
 
-        running(socketServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper = new MocoSocketHelper(local(), socketServer.port());
-                helper.connect();
-                assertThat(helper.send("foo"), is("bar"));
-                helper.close();
-            }
+        running(socketServer, () -> {
+            helper = new MocoSocketHelper(local(), socketServer.port());
+            helper.connect();
+            assertThat(helper.send("foo"), is("bar"));
+            helper.close();
         });
     }
 
@@ -140,14 +122,11 @@ public class MocoSocketTest {
         final SocketServer socketServer = socketServer(port(), hit, log());
         socketServer.request(by("foo")).response(line("bar"));
 
-        running(socketServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper = new MocoSocketHelper(local(), socketServer.port());
-                helper.connect();
-                assertThat(helper.send("foo"), is("bar"));
-                helper.close();
-            }
+        running(socketServer, () -> {
+            helper = new MocoSocketHelper(local(), socketServer.port());
+            helper.connect();
+            assertThat(helper.send("foo"), is("bar"));
+            helper.close();
         });
 
         hit.verify(by("foo"), once());
