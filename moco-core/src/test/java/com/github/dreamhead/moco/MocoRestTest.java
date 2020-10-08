@@ -74,17 +74,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").response(json(resource2))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
-            }
+            Plain response2 = getResource("/targets/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
         });
     }
 
@@ -102,13 +99,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get().response(json(ImmutableList.of(resource1, resource2)))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                String uri = "/targets";
-                List<Plain> plains = getResources(uri);
-                assertThat(plains.size(), is(2));
-            }
+        running(server, () -> {
+            String uri = "/targets";
+            List<Plain> plains = getResources(uri);
+            assertThat(plains.size(), is(2));
         });
     }
 
@@ -127,12 +121,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").response(json(resource2))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                List<Plain> plains = getResources("/targets");
-                assertThat(plains.size(), is(2));
-            }
+        running(server, () -> {
+            List<Plain> plains = getResources("/targets");
+            assertThat(plains.size(), is(2));
         });
     }
 
@@ -140,12 +131,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     public void should_reply_404_for_unknown_resource() throws Exception {
         server.resource("targets", get("2").response(with(text("hello"))));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/targets/1"));
-                assertThat(response.getStatusLine().getStatusCode(), is(404));
-            }
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(remoteUrl("/targets/1"));
+            assertThat(response.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -166,20 +154,17 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").response(json(resource2))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/rest/targets/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/rest/targets/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/rest/targets/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
+            Plain response2 = getResource("/rest/targets/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
 
-                org.apache.http.HttpResponse response = helper.getResponse(remoteUrl("/rest/targets/1"));
-                assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
-            }
+            HttpResponse response = helper.getResponse(remoteUrl("/rest/targets/1"));
+            assertThat(response.getHeaders("foo")[0].getValue(), is("bar"));
         });
     }
 
@@ -203,12 +188,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         File file = folder.newFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.get(remoteUrl("/targets"));
-            }
-        });
+        running(server, () -> helper.get(remoteUrl("/targets")));
 
         String actual = asCharSource(file, Charset.defaultCharset()).read();
         assertThat(actual, containsString("0XCAFE"));
@@ -230,24 +210,21 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").request(eq(header(HttpHeaders.CONTENT_TYPE), "application/json")).response(json(resource2))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
-                        of(HttpHeaders.CONTENT_TYPE, "application/json"));
-                Plain response1 = asPlain(response);
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
+                    of(HttpHeaders.CONTENT_TYPE, "application/json"));
+            Plain response1 = asPlain(response);
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                org.apache.http.HttpResponse otherResponse = helper.getResponseWithHeader(remoteUrl("/targets/2"),
-                        of(HttpHeaders.CONTENT_TYPE, "application/json"));
-                Plain response2 = asPlain(otherResponse);
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
+            HttpResponse otherResponse = helper.getResponseWithHeader(remoteUrl("/targets/2"),
+                    of(HttpHeaders.CONTENT_TYPE, "application/json"));
+            Plain response2 = asPlain(otherResponse);
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
 
-                org.apache.http.HttpResponse notFoundResponse = helper.getResponse(remoteUrl("/targets/1"));
-                assertThat(notFoundResponse.getStatusLine().getStatusCode(), is(404));
-            }
+            HttpResponse notFoundResponse = helper.getResponse(remoteUrl("/targets/1"));
+            assertThat(notFoundResponse.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -266,15 +243,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get().request(eq(query("foo"), "bar")).response(json(ImmutableList.of(resource1, resource2)))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                List<Plain> plains = Jsons.toObjects(helper.get(remoteUrl("/targets?foo=bar")), Plain.class);
-                assertThat(plains.size(), is(2));
+        running(server, () -> {
+            List<Plain> plains = Jsons.toObjects(helper.get(remoteUrl("/targets?foo=bar")), Plain.class);
+            assertThat(plains.size(), is(2));
 
-                HttpResponse response = helper.getResponse(remoteUrl("/targets"));
-                assertThat(response.getStatusLine().getStatusCode(), is(404));
-            }
+            HttpResponse response = helper.getResponse(remoteUrl("/targets"));
+            assertThat(response.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -288,17 +262,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get(anyId()).response(json(resource))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/2");
-                assertThat(response2.code, is(1));
-                assertThat(response2.message, is("hello"));
-            }
+            Plain response2 = getResource("/targets/2");
+            assertThat(response2.code, is(1));
+            assertThat(response2.message, is("hello"));
         });
     }
 
@@ -313,14 +284,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 post().response(status(201), header("Location", "/targets/123"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
-                assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+            assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
         });
     }
 
@@ -336,18 +304,15 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                         .response(status(201), header("Location", "/targets/123"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
-                        Jsons.toJson(resource), "application/json");
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
-                assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
+        running(server, () -> {
+            HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+                    Jsons.toJson(resource), "application/json");
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+            assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
 
-                HttpResponse badRequest = helper.postForResponse(remoteUrl("/targets"),
-                        Jsons.toJson(resource));
-                assertThat(badRequest.getStatusLine().getStatusCode(), is(400));
-            }
+            HttpResponse badRequest = helper.postForResponse(remoteUrl("/targets"),
+                    Jsons.toJson(resource));
+            assertThat(badRequest.getStatusLine().getStatusCode(), is(400));
         });
     }
 
@@ -362,13 +327,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 post().response(status(201), header("Location", "/targets/123"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets/1"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets/1"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -383,13 +345,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 put("1").response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -404,13 +363,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 put("1").response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/2"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/2"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -425,13 +381,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 put("1").response(status(409))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
         });
     }
 
@@ -446,13 +399,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 put("1").request(eq(header(HttpHeaders.IF_MATCH), "moco")).response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.putForResponseWithHeaders(remoteUrl("/targets/1"),
-                        Jsons.toJson(resource1), of(HttpHeaders.IF_MATCH, "moco"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.putForResponseWithHeaders(remoteUrl("/targets/1"),
+                    Jsons.toJson(resource1), of(HttpHeaders.IF_MATCH, "moco"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -467,17 +417,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 put(anyId()).response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse1 = helper.putForResponse(remoteUrl("/targets/1"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+        running(server, () -> {
+            HttpResponse httpResponse1 = helper.putForResponse(remoteUrl("/targets/1"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
 
-                HttpResponse httpResponse2 = helper.putForResponse(remoteUrl("/targets/2"),
-                        Jsons.toJson(resource1));
-                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
-            }
+            HttpResponse httpResponse2 = helper.putForResponse(remoteUrl("/targets/2"),
+                    Jsons.toJson(resource1));
+            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -487,12 +434,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 delete("1").response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/2"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/2"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -502,12 +446,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 delete("1").response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -517,13 +458,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 delete("1").request(eq(header(HttpHeaders.IF_MATCH), "moco")).response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.deleteForResponseWithHeaders(remoteUrl("/targets/1"),
-                        ImmutableMultimap.of(HttpHeaders.IF_MATCH, "moco"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.deleteForResponseWithHeaders(remoteUrl("/targets/1"),
+                    ImmutableMultimap.of(HttpHeaders.IF_MATCH, "moco"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -533,12 +471,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 delete("1").response(status(409))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
         });
     }
 
@@ -548,15 +483,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 delete(anyId()).response(status(200))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse1 = helper.deleteForResponse(remoteUrl("/targets/1"));
-                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+        running(server, () -> {
+            HttpResponse httpResponse1 = helper.deleteForResponse(remoteUrl("/targets/1"));
+            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
 
-                HttpResponse httpResponse2 = helper.deleteForResponse(remoteUrl("/targets/2"));
-                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
-            }
+            HttpResponse httpResponse2 = helper.deleteForResponse(remoteUrl("/targets/2"));
+            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -566,13 +498,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 head().response(header("ETag", "Moco"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-                assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
         });
     }
 
@@ -582,12 +511,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 head("1").response(header("ETag", "Moco"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -597,12 +523,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 head("1").response(header("ETag", "Moco"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/2"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/2"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
         });
     }
 
@@ -612,12 +535,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 head("1").request(eq(query("name"), "foo")).response(header("ETag", "Moco"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1?name=foo"));
-                assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
-            }
+        running(server, () -> {
+            HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1?name=foo"));
+            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -627,15 +547,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 head(anyId()).response(header("ETag", "Moco"))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                HttpResponse httpResponse1 = helper.headForResponse(remoteUrl("/targets/1"));
-                assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+        running(server, () -> {
+            HttpResponse httpResponse1 = helper.headForResponse(remoteUrl("/targets/1"));
+            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
 
-                HttpResponse httpResponse2 = helper.headForResponse(remoteUrl("/targets/2"));
-                assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
-            }
+            HttpResponse httpResponse2 = helper.headForResponse(remoteUrl("/targets/2"));
+            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
         });
     }
 
@@ -645,12 +562,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 patch("1").response(with(text("patch result")))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
-            }
-        });
+        running(server, () -> assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result")));
     }
 
     @Test
@@ -659,12 +571,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 patch(anyId()).response(with(text("patch result")))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result"));
-            }
-        });
+        running(server, () -> assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result")));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -704,17 +611,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 )
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1/sub/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1/sub/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/1/sub/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
-            }
+            Plain response2 = getResource("/targets/1/sub/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
         });
     }
 
@@ -735,17 +639,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 )
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1/sub/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1/sub/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/2/sub/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
-            }
+            Plain response2 = getResource("/targets/2/sub/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
         });
     }
 
@@ -771,19 +672,16 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         server.response("hello");
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
+            Plain response2 = getResource("/targets/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
 
-                assertThat(helper.get(remoteUrl("/hello")), is("hello"));
-            }
+            assertThat(helper.get(remoteUrl("/hello")), is("hello"));
         });
     }
 
@@ -804,17 +702,14 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").response(json(resource2))
         );
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Plain response1 = getResource("/targets/1");
-                assertThat(response1.code, is(1));
-                assertThat(response1.message, is("hello"));
+        running(server, () -> {
+            Plain response1 = getResource("/targets/1");
+            assertThat(response1.code, is(1));
+            assertThat(response1.message, is("hello"));
 
-                Plain response2 = getResource("/targets/2");
-                assertThat(response2.code, is(2));
-                assertThat(response2.message, is("world"));
-            }
+            Plain response2 = getResource("/targets/2");
+            assertThat(response2.code, is(2));
+            assertThat(response2.message, is("world"));
         });
 
         hit.verify(by(uri("/targets/1")), times(1));
