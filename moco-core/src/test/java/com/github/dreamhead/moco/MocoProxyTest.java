@@ -87,28 +87,25 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
 
-                Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
-                assertThat(helper.executeAsString(putRequest), is("put_proxy"));
+            Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
+            assertThat(helper.executeAsString(putRequest), is("put_proxy"));
 
-                Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
-                assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
+            Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
+            assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
 
-                Request headRequest = Request.Head(remoteUrl("/proxy"));
-                StatusLine headStatusLine = helper.execute(headRequest).getStatusLine();
-                assertThat(headStatusLine.getStatusCode(), is(200));
+            Request headRequest = Request.Head(remoteUrl("/proxy"));
+            StatusLine headStatusLine = helper.execute(headRequest).getStatusLine();
+            assertThat(headStatusLine.getStatusCode(), is(200));
 
-                Request optionsRequest = Request.Options(remoteUrl("/proxy"));
-                assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
+            Request optionsRequest = Request.Options(remoteUrl("/proxy"));
+            assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
 
-                Request traceRequest = Request.Trace(remoteUrl("/proxy"));
-                assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
-            }
+            Request traceRequest = Request.Trace(remoteUrl("/proxy"));
+            assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
         });
     }
 
@@ -118,12 +115,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), eq(header("bar"), "bar"))).response("bar_proxy");
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getWithHeader(remoteUrl("/proxy"), of("foo", "foo")), is("foo_proxy"));
-            }
-        });
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/proxy"), of("foo", "foo")), is("foo_proxy")));
     }
 
     @Test
@@ -132,12 +124,9 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), eq(query("bar"), "bar"))).response("bar_proxy");
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/proxy?foo=foo")), is("foo_proxy"));
-                assertThat(helper.get(remoteUrl("/proxy?bar=bar")), is("bar_proxy"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/proxy?foo=foo")), is("foo_proxy"));
+            assertThat(helper.get(remoteUrl("/proxy?bar=bar")), is("bar_proxy"));
         });
     }
 
@@ -147,13 +136,10 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), eq(header("bar"), "bar"))).response(header("bar", "bar_header"));
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                Request request = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo");
-                String fooHeader = helper.execute(request).getFirstHeader("foo").getValue();
-                assertThat(fooHeader, is("foo_header"));
-            }
+        running(server, () -> {
+            Request request = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo");
+            String fooHeader = helper.execute(request).getFirstHeader("foo").getValue();
+            assertThat(fooHeader, is("foo_header"));
         });
     }
 
@@ -163,12 +149,9 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by(version(VERSION_1_1)))).response("1.1");
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_0), is("1.0"));
-                assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_1), is("1.1"));
-            }
+        running(server, () -> {
+            assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_0), is("1.0"));
+            assertThat(helper.getWithVersion(remoteUrl("/proxy"), HttpVersion.HTTP_1_1), is("1.1"));
         });
     }
 
@@ -179,21 +162,18 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by(version(VERSION_0_9)))).response(version(VERSION_1_0));
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                HttpResponse response10 = helper.execute(Request.Get(remoteUrl("/proxy"))
-                        .version(HttpVersion.HTTP_1_0));
-                assertThat(response10.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
+        running(server, () -> {
+            HttpResponse response10 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                    .version(HttpVersion.HTTP_1_0));
+            assertThat(response10.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
 
-                HttpResponse response11 = helper.execute(Request.Get(remoteUrl("/proxy"))
-                        .version(HttpVersion.HTTP_1_1));
-                assertThat(response11.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
+            HttpResponse response11 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                    .version(HttpVersion.HTTP_1_1));
+            assertThat(response11.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
 
-                HttpResponse response09 = helper.execute(Request.Get(remoteUrl("/proxy"))
-                        .version(HttpVersion.HTTP_0_9));
-                assertThat(response09.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
-            }
+            HttpResponse response09 = helper.execute(Request.Get(remoteUrl("/proxy"))
+                    .version(HttpVersion.HTTP_0_9));
+            assertThat(response09.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
         });
     }
 
@@ -203,12 +183,9 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
-                assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), containsString("proxy"));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
+            assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), containsString("proxy"));
         });
     }
 
@@ -220,15 +197,12 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-                String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
-                assertThat(failoverContent, containsString("get_proxy"));
-                assertThat(failoverContent, containsString("post_proxy"));
-            }
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
+            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
+            String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
+            assertThat(failoverContent, containsString("get_proxy"));
+            assertThat(failoverContent, containsString("post_proxy"));
         });
     }
 
@@ -239,13 +213,10 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         final File tempFile = tempFolder.newFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
-        running(server, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
-                assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
-                assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), countString("/proxy", 1));
-            }
+        running(server, () -> {
+            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
+            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
+            assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), countString("/proxy", 1));
         });
     }
 
