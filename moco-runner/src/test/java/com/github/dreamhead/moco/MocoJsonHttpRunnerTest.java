@@ -15,33 +15,18 @@ public class MocoJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response() throws Exception {
         final HttpServer server = jsonHttpServer(port(), file("src/test/resources/foo.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root()), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foo")));
     }
 
     @Test
     public void should_return_expected_response_from_path_resource() throws Exception {
         final HttpServer server = jsonHttpServer(port(), pathResource("foo.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root()), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root()), is("foo")));
     }
 
     @Test
     public void should_return_expected_response_without_port() throws Exception {
         final HttpServer server = jsonHttpServer(file("src/test/resources/foo.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(root(server.port())), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(root(server.port())), is("foo")));
     }
 }
