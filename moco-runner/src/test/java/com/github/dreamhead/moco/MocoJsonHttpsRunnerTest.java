@@ -18,33 +18,18 @@ public class MocoJsonHttpsRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response() throws Exception {
         final HttpServer server = jsonHttpsServer(port(), file("src/test/resources/foo.json"), DEFAULT_CERTIFICATE);
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(httpsRoot()), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(httpsRoot()), is("foo")));
     }
 
     @Test
     public void should_return_expected_response_from_path_resource() throws Exception {
         final HttpServer server = jsonHttpsServer(port(), pathResource("foo.json"), DEFAULT_CERTIFICATE);
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(httpsRoot()), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(httpsRoot()), is("foo")));
     }
 
     @Test
     public void should_return_expected_response_without_port() throws Exception {
         final HttpServer server = jsonHttpsServer(file("src/test/resources/foo.json"), DEFAULT_CERTIFICATE);
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(httpsRoot(server.port())), is("foo"));
-            }
-        });
+        running(server, () -> assertThat(helper.get(httpsRoot(server.port())), is("foo")));
     }
 }
