@@ -59,7 +59,6 @@ import java.io.IOException;
 import com.github.dreamhead.moco.HttpServer;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import com.github.dreamhead.moco.Runnable;
 
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.*;
