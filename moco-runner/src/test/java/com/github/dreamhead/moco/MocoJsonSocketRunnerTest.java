@@ -23,28 +23,22 @@ public class MocoJsonSocketRunnerTest {
     @Test
     public void should_return_expected_response() throws Exception {
         final SocketServer server = jsonSocketServer(port(), file("src/test/resources/base.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("foo", 3), is("bar"));
-                assertThat(helper.send("anything", 4), is("blah"));
-                helper.close();
-            }
+        running(server, () -> {
+            helper.connect();
+            assertThat(helper.send("foo", 3), is("bar"));
+            assertThat(helper.send("anything", 4), is("blah"));
+            helper.close();
         });
     }
 
     @Test
     public void should_return_expected_response_without_port() throws Exception {
         final SocketServer server = jsonSocketServer(file("src/test/resources/base.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                MocoSocketHelper mocoSocketHelper = new MocoSocketHelper(local(), server.port());
-                mocoSocketHelper.connect();
-                assertThat(mocoSocketHelper.send("foo", 3), is("bar"));
-                mocoSocketHelper.close();
-            }
+        running(server, () -> {
+            MocoSocketHelper mocoSocketHelper = new MocoSocketHelper(local(), server.port());
+            mocoSocketHelper.connect();
+            assertThat(mocoSocketHelper.send("foo", 3), is("bar"));
+            mocoSocketHelper.close();
         });
     }
 }
