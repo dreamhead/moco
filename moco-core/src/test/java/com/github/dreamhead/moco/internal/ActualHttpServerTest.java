@@ -3,12 +3,9 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.AbstractMocoHttpTest;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
-import com.github.dreamhead.moco.Runnable;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.by;
@@ -41,45 +38,25 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     @Test
     public void should_merge_http_server_with_any_handler_one_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo/anything")), is("foo"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(remoteUrl("/foo/anything")), is("foo")));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_for_merging_http_server_with_any_handler_one_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.get(remoteUrl("/bar/anything"));
-            }
-        });
+        running(mergedServer, () -> helper.get(remoteUrl("/bar/anything")));
     }
 
     @Test
     public void should_merge_http_server_with_any_handler_other_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteUrl("/foo/anything")), is("foo"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(remoteUrl("/foo/anything")), is("foo")));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_for_merging_http_server_with_any_handler_other_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.get(remoteUrl("/bar/anything"));
-            }
-        });
+        running(mergedServer, () -> helper.get(remoteUrl("/bar/anything")));
     }
 
     @Test
@@ -88,12 +65,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer.response(file("foo.response"));
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
 
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(root()), is("foo.response"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(root()), is("foo.response")));
     }
 
     @Test
@@ -102,12 +74,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer.response(file("foo.response"));
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
 
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws IOException {
-                assertThat(helper.get(root()), is("foo.response"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(root()), is("foo.response")));
     }
 
     private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
@@ -116,12 +83,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     public void should_merge_https_server() throws Exception {
         anotherServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/bar"));
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo")));
     }
 
     @Test
@@ -131,12 +93,9 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         anotherServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/bar"));
         anotherServer.request(by(uri("/bar"))).response("bar");
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo"));
-                assertThat(helper.get(remoteHttpsUrl("/bar/bar")), is("bar"));
-            }
+        running(mergedServer, () -> {
+            assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo"));
+            assertThat(helper.get(remoteHttpsUrl("/bar/bar")), is("bar"));
         });
     }
 
@@ -145,12 +104,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer = httpsServer(12306, DEFAULT_CERTIFICATE, context("/foo"));
         httpServer.response("foo");
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo"));
-            }
-        });
+        running(mergedServer, () -> assertThat(helper.get(remoteHttpsUrl("/foo/anything")), is("foo")));
     }
 
     @Test
@@ -158,12 +112,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(12306, context("/bar"));
         final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(mergedServer.port(), is(12306));
-            }
-        });
+        running(mergedServer, () -> assertThat(mergedServer.port(), is(12306)));
     }
 
     @Test
@@ -171,12 +120,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(12307, context("/bar"));
         final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(mergedServer.port(), is(12307));
-            }
-        });
+        running(mergedServer, () -> assertThat(mergedServer.port(), is(12307)));
     }
 
     @Test
@@ -184,12 +128,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer = httpServer(12306, context("/foo"));
         anotherServer = httpServer(context("/bar"));
         final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(mergedServer.port(), is(12306));
-            }
-        });
+        running(mergedServer, () -> assertThat(mergedServer.port(), is(12306)));
     }
 
     @Test
@@ -197,12 +136,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         httpServer = httpServer(context("/foo"));
         anotherServer = httpServer(12307, context("/bar"));
         final HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(mergedServer.port(), is(12307));
-            }
-        });
+        running(mergedServer, () -> assertThat(mergedServer.port(), is(12307)));
     }
 
     @Test
