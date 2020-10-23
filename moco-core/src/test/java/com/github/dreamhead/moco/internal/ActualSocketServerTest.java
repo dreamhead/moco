@@ -32,14 +32,11 @@ public class ActualSocketServerTest {
 
         SocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
 
-        running(newServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                helper.connect();
-                assertThat(helper.send("foo"), is("bar"));
-                assertThat(helper.send("foo1"), is("bar1"));
-                helper.close();
-            }
+        running(newServer, () -> {
+            helper.connect();
+            assertThat(helper.send("foo"), is("bar"));
+            assertThat(helper.send("foo1"), is("bar1"));
+            helper.close();
         });
     }
 
@@ -51,12 +48,7 @@ public class ActualSocketServerTest {
 
         final SocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
 
-        running(newServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(newServer.port(), is(12306));
-            }
-        });
+        running(newServer, () -> assertThat(newServer.port(), is(12306)));
     }
 
     @Test
@@ -66,12 +58,7 @@ public class ActualSocketServerTest {
 
         final SocketServer newServer = ((ActualSocketServer) server).mergeServer((ActualSocketServer) secondServer);
 
-        running(newServer, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                assertThat(newServer.port(), is(12307));
-            }
-        });
+        running(newServer, () -> assertThat(newServer.port(), is(12307)));
     }
 
     @Test
