@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.Runnable;
 import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.helper.MocoSocketHelper;
 import org.junit.Before;
