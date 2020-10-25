@@ -7,7 +7,6 @@ import org.apache.http.HttpResponse;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;

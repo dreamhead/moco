@@ -3,8 +3,6 @@ package com.github.dreamhead.moco;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
