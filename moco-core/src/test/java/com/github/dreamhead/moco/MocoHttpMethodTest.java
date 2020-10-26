@@ -3,8 +3,6 @@ package com.github.dreamhead.moco;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Runner.running;
