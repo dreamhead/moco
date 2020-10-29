@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoSocketHelper;
-import com.google.common.io.Files;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
