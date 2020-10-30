@@ -6,7 +6,6 @@ import io.netty.handler.codec.http.cookie.Cookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
