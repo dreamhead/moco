@@ -38,8 +38,8 @@ public final class WatcherFactory {
             try {
                 fileRunner.restart();
             } catch (Exception e) {
-                logger.error("Fail to load configuration in {}.", file.getName());
-                logger.error(e.getMessage());
+                logger.warn("Fail to load configuration in {}.", file.getName());
+                logger.warn(e.getMessage());
             }
 
             return null;

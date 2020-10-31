@@ -72,7 +72,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
             InputStream inputStream = new FileInputStream(file);
             return Jsons.toObjects(inputStream, Session.class);
         } catch (MocoException me) {
-            logger.error("exception found", me);
+            logger.warn("exception found", me);
             return of();
         } catch (IOException e) {
             throw new MocoException(e);
@@ -87,7 +87,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
             return session.get().getResponse();
         }
 
-        logger.error("No match request found: {}", request);
+        logger.warn("No match request found: {}", request);
         throw new MocoException("no failover response found");
     }
 
