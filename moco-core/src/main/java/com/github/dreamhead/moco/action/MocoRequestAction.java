@@ -42,12 +42,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
     }
 
     protected final Resource applyUrl(final MocoConfig config) {
-        Resource appliedResource = this.url.apply(config);
-        if (appliedResource == this.url) {
-            return this.url;
-        }
-
-        return appliedResource;
+        return this.url.apply(config);
     }
 
     protected final boolean isSameUrl(final Resource url) {
