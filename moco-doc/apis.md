@@ -3013,7 +3013,7 @@ The port will be returned only when server is started, otherwise the exception w
 For standalone server, if you need this behaviour, simply don't give port argument.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -c foo.json
+java -jar moco-runner-<version>-standalone.jar http -c foo.json
 ```
 
 The port information will shown on screen.

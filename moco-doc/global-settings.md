@@ -148,7 +148,7 @@ Now, environment will help you to configure all related configurations in one se
 You can start your server with different environment from CLI.
 
 ```shell
-java -jar moco-runner-<version>-standalone.jar start -p 12306 -g env.json -e remote
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -g env.json -e remote
 ```
 
 Now, when you access your server, all configurations with "remote" environment rocks!
