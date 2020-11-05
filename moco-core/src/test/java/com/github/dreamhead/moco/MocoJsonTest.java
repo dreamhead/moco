@@ -135,7 +135,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         pojo.message = "消息";
         server.response(Moco.json(pojo));
         running(server, () -> {
-            String content = helper.get(remoteUrl(root()));
+            String content = helper.get(root());
             JsonSupport.assertEquals(pojo, content);
         });
     }
