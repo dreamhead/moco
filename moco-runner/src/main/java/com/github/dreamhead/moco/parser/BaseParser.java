@@ -7,7 +7,6 @@ import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
-import java.util.Optional;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(ImmutableList<SessionSetting> read,
