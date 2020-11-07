@@ -43,6 +43,7 @@ public class MocoTestHelper {
         CloseableHttpClient client = HttpClients.custom()
                 .setConnectionManager(cm)
                 .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+                .disableDefaultUserAgent()
                 .build();
 
         executor = Executor.newInstance(client);
