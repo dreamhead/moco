@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -103,6 +105,11 @@ public final class Jsons {
                 throw new MocoException(e);
             }
         };
+    }
+
+    public static void writeValue(final File file, final Object value) throws IOException {
+        ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
+        writer.writeValue(file, value);
     }
 
     private Jsons() {

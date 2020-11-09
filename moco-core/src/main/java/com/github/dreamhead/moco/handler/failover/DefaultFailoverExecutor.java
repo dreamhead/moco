@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.handler.failover;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MocoException;
@@ -20,12 +18,12 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.github.dreamhead.moco.util.Jsons.writeValue;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class DefaultFailoverExecutor implements FailoverExecutor {
     private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
 
-    private final ObjectMapper mapper = new ObjectMapper();
     private final File file;
 
     public DefaultFailoverExecutor(final File file) {
@@ -35,9 +33,8 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     @Override
     public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
         try {
-            ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
             Session targetSession = Session.newSession(request, response);
-            writer.writeValue(this.file, prepareTargetSessions(this.file, targetSession));
+            writeValue(this.file, prepareTargetSessions(this.file, targetSession));
         } catch (IOException e) {
             throw new MocoException(e);
         }
