@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -110,6 +111,11 @@ public final class Jsons {
     public static void writeValue(final File file, final Object value) throws IOException {
         ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
         writer.writeValue(file, value);
+    }
+
+    public static void writeValue(final Path file, final Object value) throws IOException {
+        ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
+        writer.writeValue(file.toFile(), value);
     }
 
     private Jsons() {

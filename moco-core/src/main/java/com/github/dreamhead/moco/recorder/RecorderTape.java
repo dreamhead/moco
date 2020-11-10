@@ -24,8 +24,7 @@ public class RecorderTape implements RecorderConfig {
         content.addRequest(name, httpRequest);
 
         try {
-            String result = Jsons.toJson(content);
-            Files.write(path, result.getBytes());
+            Jsons.writeValue(path, content);
         } catch (IOException e) {
             throw new MocoException(e);
         }
