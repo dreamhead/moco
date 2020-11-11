@@ -114,8 +114,7 @@ public final class Jsons {
     }
 
     public static void writeValue(final Path file, final Object value) throws IOException {
-        ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
-        writer.writeValue(file.toFile(), value);
+        writeValue(file.toFile(), value);
     }
 
     private Jsons() {
