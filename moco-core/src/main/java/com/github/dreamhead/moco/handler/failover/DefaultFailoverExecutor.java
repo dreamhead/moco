@@ -32,12 +32,8 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
 
     @Override
     public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
-        try {
-            Session targetSession = Session.newSession(request, response);
-            writeValue(this.file, prepareTargetSessions(this.file, targetSession));
-        } catch (IOException e) {
-            throw new MocoException(e);
-        }
+        Session targetSession = Session.newSession(request, response);
+        writeValue(this.file, prepareTargetSessions(this.file, targetSession));
     }
 
     private ImmutableList<Session> prepareTargetSessions(final File file, final Session targetSession) {

@@ -22,12 +22,7 @@ public class RecorderTape implements RecorderConfig {
     public final void write(final String name, final HttpRequest httpRequest) {
         TapeContent content = getTapeContent();
         content.addRequest(name, httpRequest);
-
-        try {
-            Jsons.writeValue(path, content);
-        } catch (IOException e) {
-            throw new MocoException(e);
-        }
+        Jsons.writeValue(path, content);
     }
 
     private TapeContent getTapeContent() {

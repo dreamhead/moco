@@ -108,12 +108,16 @@ public final class Jsons {
         };
     }
 
-    public static void writeValue(final File file, final Object value) throws IOException {
+    public static void writeValue(final File file, final Object value) {
         ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
-        writer.writeValue(file, value);
+        try {
+            writer.writeValue(file, value);
+        } catch (IOException e) {
+            throw new MocoException(e);
+        }
     }
 
-    public static void writeValue(final Path file, final Object value) throws IOException {
+    public static void writeValue(final Path file, final Object value) {
         writeValue(file.toFile(), value);
     }
 
