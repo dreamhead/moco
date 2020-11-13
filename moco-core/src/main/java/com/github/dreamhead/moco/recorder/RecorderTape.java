@@ -22,7 +22,7 @@ public class RecorderTape implements RecorderConfig {
     public final void write(final String name, final HttpRequest httpRequest) {
         TapeContent content = getTapeContent();
         content.addRequest(name, httpRequest);
-        Jsons.writeValue(path, content);
+        Jsons.writeToFile(path, content);
     }
 
     private TapeContent getTapeContent() {

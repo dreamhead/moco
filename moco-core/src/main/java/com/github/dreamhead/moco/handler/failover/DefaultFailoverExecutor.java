@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.github.dreamhead.moco.util.Jsons.writeValue;
+import static com.github.dreamhead.moco.util.Jsons.writeToFile;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class DefaultFailoverExecutor implements FailoverExecutor {
@@ -33,7 +33,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     @Override
     public void onCompleteResponse(final HttpRequest request, final HttpResponse response) {
         Session targetSession = Session.newSession(request, response);
-        writeValue(this.file, prepareTargetSessions(this.file, targetSession));
+        Jsons.writeToFile(this.file, prepareTargetSessions(this.file, targetSession));
     }
 
     private ImmutableList<Session> prepareTargetSessions(final File file, final Session targetSession) {

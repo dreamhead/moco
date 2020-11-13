@@ -108,7 +108,7 @@ public final class Jsons {
         };
     }
 
-    public static void writeValue(final File file, final Object value) {
+    public static void writeToFile(final File file, final Object value) {
         ObjectWriter writer = DEFAULT_MAPPER.writerWithDefaultPrettyPrinter();
         try {
             writer.writeValue(file, value);
@@ -117,8 +117,8 @@ public final class Jsons {
         }
     }
 
-    public static void writeValue(final Path file, final Object value) {
-        writeValue(file.toFile(), value);
+    public static void writeToFile(final Path file, final Object value) {
+        writeToFile(file.toFile(), value);
     }
 
     private Jsons() {
