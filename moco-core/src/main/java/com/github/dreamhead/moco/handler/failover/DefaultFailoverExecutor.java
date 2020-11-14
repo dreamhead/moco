@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.github.dreamhead.moco.util.Jsons.writeToFile;
 import static com.google.common.collect.ImmutableList.of;
 
 public final class DefaultFailoverExecutor implements FailoverExecutor {
