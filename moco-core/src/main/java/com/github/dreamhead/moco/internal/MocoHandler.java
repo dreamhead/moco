@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
@@ -89,8 +90,12 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private boolean upgradeWebsocket(final FullHttpRequest request) {
-        String upgrade = request.headers().get(UPGRADE);
-        return "websocket".equals(Strings.strip(upgrade));
+        if (io.netty.handler.codec.http.HttpMethod.GET.equals(request.method())) {
+            String upgrade = request.headers().get(UPGRADE);
+            return "websocket".equals(Strings.strip(upgrade));
+        }
+
+        return false;
     }
 
     @Override
