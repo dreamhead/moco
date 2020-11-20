@@ -3,11 +3,8 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
-import com.github.dreamhead.moco.util.ByteBufs;
 import com.github.dreamhead.moco.util.Strings;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
-import com.github.dreamhead.moco.websocket.WebsocketResponse;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,11 +14,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-
-import java.util.Optional;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
 import static com.google.common.net.HttpHeaders.UPGRADE;
@@ -36,10 +29,12 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private static final int DEFAULT_STATUS = HttpResponseStatus.OK.code();
     private final ActualWebSocketServer websocketServer;
     private final ActualHttpServer server;
+    private final WebsocketHandler websocketHandler;
 
     public MocoHandler(final ActualHttpServer server) {
         this.server = server;
         this.websocketServer = server.getWebsocketServer();
+        this.websocketHandler = new WebsocketHandler(websocketServer);
     }
 
     @Override
@@ -57,27 +52,8 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
 
         if (message instanceof WebSocketFrame) {
-            handleWebsocketFrame(ctx, (WebSocketFrame) message);
+            websocketHandler.handleFrame(ctx, (WebSocketFrame) message);
         }
-    }
-
-    private void handleWebsocketFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
-        Optional<WebSocketFrame> frame = getResponseFrame(ctx, message);
-        frame.ifPresent(webSocketFrame -> ctx.channel().writeAndFlush(webSocketFrame));
-    }
-
-    private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
-        if (message instanceof PingWebSocketFrame) {
-            return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message));
-        }
-
-        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message);
-        if (response.isPresent()) {
-            ByteBuf byteBuf = ByteBufs.toByteBuf(response.get().getContent().getContent());
-            return Optional.of(new BinaryWebSocketFrame(byteBuf));
-        }
-
-        return Optional.empty();
     }
 
     private void handleHttpRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
