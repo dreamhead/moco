@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import com.github.dreamhead.moco.websocket.WebsocketResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
@@ -36,5 +37,9 @@ public class WebsocketHandler {
         }
 
         return Optional.empty();
+    }
+
+    public void connect(ChannelHandlerContext ctx, FullHttpRequest request) {
+        websocketServer.connectRequest(ctx, request);
     }
 }

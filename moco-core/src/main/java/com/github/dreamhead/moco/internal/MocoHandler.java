@@ -68,7 +68,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
 
-        websocketServer.connectRequest(ctx, request);
+        websocketHandler.connect(ctx, request);
     }
 
     private boolean upgradeWebsocket(final FullHttpRequest request) {
