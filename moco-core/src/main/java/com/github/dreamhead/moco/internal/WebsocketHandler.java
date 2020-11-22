@@ -39,7 +39,13 @@ public class WebsocketHandler {
         return Optional.empty();
     }
 
-    public void connect(ChannelHandlerContext ctx, FullHttpRequest request) {
+    public void connect(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         websocketServer.connectRequest(ctx, request);
+    }
+
+    void disconnect(final ChannelHandlerContext ctx) {
+        if (websocketServer != null) {
+            websocketServer.disconnect(ctx.channel());
+        }
     }
 }

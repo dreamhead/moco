@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.util.Strings;
-import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,21 +26,17 @@ import static io.netty.handler.codec.http.HttpUtil.setKeepAlive;
 @Sharable
 public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
     private static final int DEFAULT_STATUS = HttpResponseStatus.OK.code();
-    private final ActualWebSocketServer websocketServer;
     private final ActualHttpServer server;
     private final WebsocketHandler websocketHandler;
 
     public MocoHandler(final ActualHttpServer server) {
         this.server = server;
-        this.websocketServer = server.getWebsocketServer();
-        this.websocketHandler = new WebsocketHandler(websocketServer);
+        this.websocketHandler = new WebsocketHandler(server.getWebsocketServer());
     }
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
-        if (websocketServer != null) {
-            websocketServer.disconnect(ctx.channel());
-        }
+        websocketHandler.disconnect(ctx);
     }
 
     @Override
