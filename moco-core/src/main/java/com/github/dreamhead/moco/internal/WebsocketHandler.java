@@ -25,7 +25,8 @@ public class WebsocketHandler {
         frame.ifPresent(webSocketFrame -> ctx.channel().writeAndFlush(webSocketFrame));
     }
 
-    private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx, final WebSocketFrame message) {
+    private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx,
+                                                      final WebSocketFrame message) {
         if (message instanceof PingWebSocketFrame) {
             return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message));
         }
@@ -40,7 +41,9 @@ public class WebsocketHandler {
     }
 
     public void connect(final ChannelHandlerContext ctx, final FullHttpRequest request) {
-        websocketServer.connectRequest(ctx, request);
+        if (websocketServer != null) {
+            websocketServer.connectRequest(ctx, request);
+        }
     }
 
     void disconnect(final ChannelHandlerContext ctx) {
