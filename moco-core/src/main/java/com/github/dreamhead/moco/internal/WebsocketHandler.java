@@ -21,6 +21,10 @@ public class WebsocketHandler {
 
     public void handleFrame(final ChannelHandlerContext ctx,
                             final WebSocketFrame message) {
+        if (this.websocketServer == null) {
+            return;
+        }
+
         Optional<WebSocketFrame> frame = getResponseFrame(ctx, message);
         frame.ifPresent(webSocketFrame -> ctx.channel().writeAndFlush(webSocketFrame));
     }
