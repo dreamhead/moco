@@ -12,10 +12,10 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import java.util.Optional;
 
-public class WebsocketHandler {
+public class WebSocketHandler {
     private final ActualWebSocketServer websocketServer;
 
-    public WebsocketHandler(final ActualWebSocketServer websocketServer) {
+    public WebSocketHandler(final ActualWebSocketServer websocketServer) {
         this.websocketServer = websocketServer;
     }
 
