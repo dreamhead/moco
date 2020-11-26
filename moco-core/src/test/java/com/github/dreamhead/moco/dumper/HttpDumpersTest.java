@@ -20,47 +20,47 @@ public class HttpDumpersTest {
     private static final String BINARY_CONTENT_MESSAGE = StringUtil.NEWLINE + StringUtil.NEWLINE + "<content is binary>";
 
     @Test
-    public void should_parse_plain_text_media_type() throws Exception {
+    public void should_parse_plain_text_media_type() {
         assertMessageContent("text/html", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_complete_text_media_type() throws Exception {
+    public void should_parse_complete_text_media_type() {
         assertMessageContent("text/html; charset=ISO-8859-1", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_plain_json_media_type() throws Exception {
+    public void should_parse_plain_json_media_type() {
         assertMessageContent("application/json", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_complete_json_media_type() throws Exception {
+    public void should_parse_complete_json_media_type() {
         assertMessageContent("application/json; charset=ISO-8859-1", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_plain_javascript_media_type() throws Exception {
+    public void should_parse_plain_javascript_media_type() {
         assertMessageContent("text/javascript", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_complete_javascript_media_type() throws Exception {
+    public void should_parse_complete_javascript_media_type() {
         assertMessageContent("text/javascript; charset=UTF-8", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_plain_xml_media_type() throws Exception {
+    public void should_parse_plain_xml_media_type() {
         assertMessageContent("application/xml", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_parse_complete_xml_media_type() throws Exception {
+    public void should_parse_complete_xml_media_type() {
         assertMessageContent("application/rss+xml", EXPECTED_MESSAGE_BODY);
     }
 
     @Test
-    public void should_not_parse_binary_media_type() throws Exception {
+    public void should_not_parse_binary_media_type() {
         assertMessageContent("image/jpeg", BINARY_CONTENT_MESSAGE);
     }
 
