@@ -140,7 +140,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_merge_http_server_without_port_for_both_servers() throws Exception {
+    public void should_merge_http_server_without_port_for_both_servers() {
         httpServer = httpServer(context("/foo"));
         anotherServer = httpServer(context("/bar"));
         final ActualHttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
