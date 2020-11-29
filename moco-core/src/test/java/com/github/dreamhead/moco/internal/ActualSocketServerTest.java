@@ -17,7 +17,7 @@ public class ActualSocketServerTest {
     private MocoSocketHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.helper = new MocoSocketHelper(local(), port());
     }
 
@@ -61,7 +61,7 @@ public class ActualSocketServerTest {
     }
 
     @Test
-    public void should_merge_socket_servers_without_ports_for_both_server() throws Exception {
+    public void should_merge_socket_servers_without_ports_for_both_server() {
         SocketServer server = socketServer();
         SocketServer secondServer = socketServer();
 
