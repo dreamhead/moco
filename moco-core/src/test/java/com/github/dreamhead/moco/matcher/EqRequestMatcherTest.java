@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EqRequestMatcherTest {
-    private EqRequestMatcher matcher;
+    private EqRequestMatcher<String[]> matcher;
     private RequestExtractor<String[]> extractor;
     private HttpRequest request;
     private Resource expected;
@@ -25,7 +25,7 @@ public class EqRequestMatcherTest {
         extractor = (RequestExtractor<String[]>)mock(RequestExtractor.class);
         request = mock(HttpRequest.class);
         expected = mock(Resource.class);
-        matcher = new EqRequestMatcher(extractor, expected);
+        matcher = new EqRequestMatcher<>(extractor, expected);
     }
 
     @Test
