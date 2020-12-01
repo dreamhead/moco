@@ -28,7 +28,7 @@ import static org.junit.Assert.assertThat;
 
 public class MocoGlobalResponseTest {
     private HttpServer server;
-    private MocoTestHelper helper = new MocoTestHelper();
+    private final MocoTestHelper helper = new MocoTestHelper();
 
     @Test
     public void should_return_all_response_for_version_with_header() throws Exception {
