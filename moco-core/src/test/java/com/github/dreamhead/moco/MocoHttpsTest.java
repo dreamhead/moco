@@ -24,7 +24,7 @@ public class MocoHttpsTest {
     private MocoTestHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         helper = new MocoTestHelper();
     }
 
@@ -33,9 +33,7 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.response("foo");
 
-        running(server, () -> {
-            assertThat(helper.get(httpsRoot()), is("foo"));
-        });
+        running(server, () -> assertThat(helper.get(httpsRoot()), is("foo")));
     }
 
     @Test
@@ -43,9 +41,7 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
-        running(server, () -> {
-            assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
-        });
+        running(server, () -> assertThat(helper.postContent(httpsRoot(), "foo"), is("bar")));
     }
 
     @Test
@@ -54,9 +50,7 @@ public class MocoHttpsTest {
         HttpsServer server = httpsServer(port(), DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
-        running(server, () -> {
-            assertThat(helper.postContent(httpsRoot(), "foo"), is("bar"));
-        });
+        running(server, () -> assertThat(helper.postContent(httpsRoot(), "foo"), is("bar")));
 
         hit.verify(by("foo"), once());
     }
@@ -66,9 +60,7 @@ public class MocoHttpsTest {
         final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE);
         server.request(by("foo")).response("bar");
 
-        running(server, () -> {
-            assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
-        });
+        running(server, () -> assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar")));
     }
 
     @Test
@@ -77,9 +69,7 @@ public class MocoHttpsTest {
         final HttpsServer server = httpsServer(DEFAULT_CERTIFICATE, hit);
         server.request(by("foo")).response("bar");
 
-        running(server, () -> {
-            assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar"));
-        });
+        running(server, () -> assertThat(helper.postContent(httpsRoot(server.port()), "foo"), is("bar")));
 
         hit.verify(by("foo"), once());
     }
