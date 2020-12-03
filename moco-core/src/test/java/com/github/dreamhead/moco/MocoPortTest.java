@@ -28,7 +28,7 @@ public class MocoPortTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void should_not_get_port_without_binding() throws Exception {
+    public void should_not_get_port_without_binding() {
         final HttpServer server = httpServer();
         server.port();
     }
