@@ -86,9 +86,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
         newServer.request(by(uri("/tape-replay"))).response(replay(group("foo"), tape(temp.getPath()), identifier("${req.queries['type']}")));
 
-        running(newServer, () -> {
-            assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("foo"));
-        });
+        running(newServer, () -> assertThat(helper.get(remoteUrl("/tape-replay?type=blah")), is("foo")));
     }
 
     @Test
