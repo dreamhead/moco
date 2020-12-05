@@ -158,7 +158,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("blah"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);
-            assertThat(new String(outstream.toByteArray()), is("foo"));
+            assertThat(outstream.toString(), is("foo"));
         });
     }
 
@@ -178,7 +178,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
             assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("POST"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);
-            assertThat(new String(outstream.toByteArray()), is("foo"));
+            assertThat(outstream.toString(), is("foo"));
         });
     }
 }
