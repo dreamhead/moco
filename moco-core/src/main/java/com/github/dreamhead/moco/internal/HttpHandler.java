@@ -22,15 +22,15 @@ public class HttpHandler {
         this.server = server;
     }
 
-    public FullHttpResponse handleRequest(final FullHttpRequest message, MocoHandler mocoHandler) {
+    public FullHttpResponse handleRequest(final FullHttpRequest message) {
         HttpRequest request = DefaultHttpRequest.newRequest(message);
-        DefaultMutableHttpResponse httpResponse = getHttpResponse(request, mocoHandler);
+        DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
         FullHttpResponse response = httpResponse.toFullResponse();
-        prepareForKeepAlive(message, response, mocoHandler);
+        prepareForKeepAlive(message, response);
         return response;
     }
 
-    private DefaultMutableHttpResponse getHttpResponse(final HttpRequest request, MocoHandler mocoHandler) {
+    private DefaultMutableHttpResponse getHttpResponse(final HttpRequest request) {
         DefaultMutableHttpResponse httpResponse = newResponse(request, DEFAULT_STATUS);
         SessionContext context = new SessionContext(request, httpResponse);
         return doGetResponse(request, context);
@@ -53,7 +53,7 @@ public class HttpHandler {
         }
     }
 
-    private void prepareForKeepAlive(final FullHttpRequest request, final FullHttpResponse response, MocoHandler mocoHandler) {
+    private void prepareForKeepAlive(final FullHttpRequest request, final FullHttpResponse response) {
         if (isKeepAlive(request)) {
             setKeepAlive(response, true);
             setContentLengthForKeepAlive(response);
