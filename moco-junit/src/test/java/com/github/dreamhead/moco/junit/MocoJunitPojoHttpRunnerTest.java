@@ -10,7 +10,7 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJunitPojoHttpRunnerTest extends AbstractMocoStandaloneTest {
     private static HttpServer server;

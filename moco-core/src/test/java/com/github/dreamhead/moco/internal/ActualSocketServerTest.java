@@ -11,7 +11,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ActualSocketServerTest {
     private MocoSocketHelper helper;

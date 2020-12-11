@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.Files;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -17,7 +16,7 @@ import static com.github.dreamhead.moco.util.Idles.idle;
 import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     private static final long IDLE = 1200;

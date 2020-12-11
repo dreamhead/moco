@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MocoMulipleConfigurationsTest extends AbstractMocoStandaloneTest {
+public class MocoMultipleConfigurationsTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_run_with_many_configurations() throws IOException {
         runWithConfiguration("settings/details/foo.json", "settings/details/bar.json");

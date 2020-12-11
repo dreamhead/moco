@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 import static com.github.dreamhead.moco.util.Files.join;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GlobalSettingParserTest {
 

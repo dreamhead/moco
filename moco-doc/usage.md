@@ -63,7 +63,7 @@ import org.apache.http.client.fluent.Request;
 import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.*;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @Test
 public void should_response_as_expected() throws Exception {
@@ -95,7 +95,7 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Runner.runner;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoRunnerTest {
     private Runner runner;
@@ -162,7 +162,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test

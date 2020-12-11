@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.MocoRest.post;
 import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJunitPojoRestRunnerTest extends AbstractMocoStandaloneTest {
     private static RestServer server;

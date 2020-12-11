@@ -27,7 +27,7 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoWebsocketTest extends AbstractMocoHttpTest {
     private WebSocketServer webSocketServer;

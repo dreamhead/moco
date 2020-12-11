@@ -12,7 +12,7 @@ import static com.github.dreamhead.moco.Moco.socketServer;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJunitPojoSocketRunnerTest {
     private static SocketServer server;

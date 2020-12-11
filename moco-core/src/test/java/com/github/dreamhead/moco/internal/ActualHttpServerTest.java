@@ -21,7 +21,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteHttpsUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ActualHttpServerTest extends AbstractMocoHttpTest {
     private HttpServer httpServer;

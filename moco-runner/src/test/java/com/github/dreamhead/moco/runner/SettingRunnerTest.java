@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SettingRunnerTest {
     private final MocoTestHelper helper = new MocoTestHelper();

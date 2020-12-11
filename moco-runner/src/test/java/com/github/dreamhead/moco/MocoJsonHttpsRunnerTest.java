@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJsonHttpsRunnerTest extends AbstractMocoStandaloneTest {
     private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");

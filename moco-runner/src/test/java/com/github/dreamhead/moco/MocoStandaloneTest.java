@@ -15,8 +15,8 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
 
 public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test

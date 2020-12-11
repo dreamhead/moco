@@ -6,7 +6,7 @@ import java.io.File;
 
 import static com.github.dreamhead.moco.Moco.text;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileResourceReaderTest {
     @Test

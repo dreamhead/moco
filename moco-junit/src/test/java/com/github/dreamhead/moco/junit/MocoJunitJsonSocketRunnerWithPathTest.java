@@ -9,7 +9,7 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.local;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJunitJsonSocketRunnerWithPathTest {
     @Rule
