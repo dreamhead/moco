@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.util;
 
 import com.google.common.collect.ImmutableList;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,8 +50,14 @@ public final class Iterables {
         return elements[0];
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] tail(final T[] elements) {
         checkNotNull(elements);
+
+        if (elements.length <= 1) {
+            return (T[])Array.newInstance(elements.getClass().getComponentType(), 0);
+        }
+
         return Arrays.copyOfRange(elements, 1, elements.length);
     }
 
