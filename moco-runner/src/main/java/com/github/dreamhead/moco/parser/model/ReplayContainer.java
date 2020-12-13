@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoRecorders;
 import com.github.dreamhead.moco.parser.deserializer.ReplayContainerDeserializer;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
@@ -28,7 +29,7 @@ public class ReplayContainer {
     public final RecorderConfig[] getConfigs() {
         List<RecorderConfig> configs = new ArrayList<>();
         if (group != null) {
-            configs.add(MocoRecorders.group(this.group));
+            configs.add(Moco.group(this.group));
         }
 
         if (identifier != null) {

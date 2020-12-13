@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.recorder.DynamicRecordHandler;
 import com.github.dreamhead.moco.recorder.DynamicReplayHandler;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
 import com.github.dreamhead.moco.recorder.RecorderConfigurations;
-import com.github.dreamhead.moco.recorder.RecorderGroup;
+import com.github.dreamhead.moco.recorder.MocoGroup;
 import com.github.dreamhead.moco.recorder.RecorderIdentifier;
 import com.github.dreamhead.moco.recorder.ReplayModifier;
 import com.github.dreamhead.moco.recorder.RecorderTape;
@@ -29,10 +29,6 @@ public final class MocoRecorders {
         return new DynamicReplayHandler(RecorderConfigurations.create(
                 asIterable(checkNotNull(config, "Configuration should not be null"),
                         checkNotNull(configs, "Configuration should not be null"))));
-    }
-
-    public static RecorderGroup group(final String name) {
-        return new RecorderGroup(checkNotNullOrEmpty(name, "group should not be empty"));
     }
 
     public static RecorderTape tape(final String path) {

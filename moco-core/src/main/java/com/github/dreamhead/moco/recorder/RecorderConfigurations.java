@@ -5,7 +5,7 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 
 public class RecorderConfigurations {
-    private RecorderGroup group;
+    private MocoGroup group;
     private RecorderTape tape;
     private RecorderIdentifier identifier;
     private ReplayModifier modifier;
@@ -23,7 +23,7 @@ public class RecorderConfigurations {
     private static void addConfig(final RecorderConfigurations configurations,
                                   final RecorderConfig config) {
         if (config.isFor(RecorderConfig.GROUP)) {
-            configurations.group = (RecorderGroup) config;
+            configurations.group = (MocoGroup) config;
         } else if (config.isFor(RecorderConfig.TAPE)) {
             configurations.tape = (RecorderTape) config;
         } else if (config.isFor(RecorderConfig.IDENTIFIER)) {

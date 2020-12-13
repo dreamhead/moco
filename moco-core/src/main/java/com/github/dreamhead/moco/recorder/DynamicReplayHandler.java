@@ -8,7 +8,7 @@ import com.github.dreamhead.moco.handler.AbstractResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.google.common.collect.ImmutableList;
 
-import static com.github.dreamhead.moco.MocoRecorders.group;
+import static com.github.dreamhead.moco.Moco.group;
 
 public class DynamicReplayHandler extends AbstractResponseHandler {
     private final RecorderRegistry registry;

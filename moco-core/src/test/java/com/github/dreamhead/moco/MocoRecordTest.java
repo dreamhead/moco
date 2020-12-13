@@ -13,7 +13,7 @@ import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.MocoRecorders.group;
+import static com.github.dreamhead.moco.Moco.group;
 import static com.github.dreamhead.moco.MocoRecorders.identifier;
 import static com.github.dreamhead.moco.MocoRecorders.modifier;
 import static com.github.dreamhead.moco.MocoRecorders.record;
