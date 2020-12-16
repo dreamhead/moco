@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
+import com.github.dreamhead.moco.recorder.MocoGroup;
 
 import java.util.Objects;
 
@@ -30,7 +31,11 @@ public final class SessionContext {
         return response;
     }
 
-    public void writeAndFlush(final Object message) {
-        Objects.requireNonNull(this.group).writeAndFlush(message);
+    public void writeAndFlush(final Object message, final MocoGroup group) {
+        Objects.requireNonNull(this.group).writeAndFlush(message, group);
+    }
+
+    public void join(final MocoGroup group) {
+        this.group.join(group);
     }
 }

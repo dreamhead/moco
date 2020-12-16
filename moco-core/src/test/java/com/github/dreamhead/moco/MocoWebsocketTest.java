@@ -22,6 +22,8 @@ import java.util.concurrent.TimeoutException;
 
 import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.group;
+import static com.github.dreamhead.moco.Moco.join;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
@@ -167,15 +169,30 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         });
     }
 
+    @Test
+    public void should_broadcast_with_group() throws Exception {
+        webSocketServer.request(by("subscribe")).response(with("subscribed"), join(group("foo")));
+        webSocketServer.request(by("foo")).response(broadcast(text("foo"), group("foo")));
+        running(server, () -> {
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpoint.sendTextMessage("subscribe");
+            assertThat(endpoint.getMessage(), is("subscribed".getBytes()));
+
+            endpoint.sendTextMessage("foo");
+            assertThat(endpoint.getMessage(), is("foo".getBytes()));
+        });
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;
-        private CompletableFuture<byte[]> message = new CompletableFuture<>();
+        private CompletableFuture<byte[]> message;
 
         public Endpoint(final URI uri) {
             try {
                 WebSocketContainer container = ContainerProvider.getWebSocketContainer();
                 container.connectToServer(this, uri);
+                this.message = new CompletableFuture<>();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -202,10 +219,12 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         }
 
         public void sendTextMessage(final String message) {
+            this.message = new CompletableFuture<>();
             this.userSession.getAsyncRemote().sendText(message);
         }
 
         public void sendBinaryMessage(final byte[] message) {
+            this.message = new CompletableFuture<>();
             ByteBuffer buffer = ByteBuffer.wrap(message);
             this.userSession.getAsyncRemote().sendBinary(buffer);
         }

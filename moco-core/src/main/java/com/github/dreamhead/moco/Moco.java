@@ -672,6 +672,10 @@ public final class Moco {
                 with(checkNotNull(resource, "Resource should not be null")));
     }
 
+    public static ResponseHandler join(final MocoGroup group) {
+        return new JoinResponseHandler(group);
+    }
+
     public static MocoGroup group(final String name) {
         return new MocoGroup(checkNotNullOrEmpty(name, "group should not be empty"));
     }

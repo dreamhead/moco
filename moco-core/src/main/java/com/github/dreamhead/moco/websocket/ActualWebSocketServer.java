@@ -39,14 +39,14 @@ public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
         implements WebSocketServer {
     private Resource connected;
-    private ChannelGroup group;
+    private ChannelSessionGroup group;
     private final String uri;
     private List<PingPongSetting> settings;
 
     public ActualWebSocketServer(final String uri) {
         super(0, new QuietMonitor(), new MocoConfig[0]);
         this.uri = uri;
-        this.group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+        this.group = new ChannelSessionGroup(new DefaultChannelGroup(GlobalEventExecutor.INSTANCE));
         this.settings = new ArrayList<>();
     }
 
@@ -153,7 +153,7 @@ public final class ActualWebSocketServer
     public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
-        SessionContext context = new SessionContext(request, response, new ChannelSessionGroup(this.group));
+        SessionContext context = new SessionContext(request, response, new ContextSessionGroup(this.group, ctx.channel()));
 
         return this.getResponse(context)
                 .flatMap(this::asWebsocketResponse);

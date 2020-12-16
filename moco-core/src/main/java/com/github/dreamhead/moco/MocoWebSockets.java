@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.recorder.MocoGroup;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.websocket.WebSocketBroadcastHandler;
 
@@ -12,8 +13,16 @@ public final class MocoWebSockets {
         return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")));
     }
 
+    public static ResponseHandler broadcast(final String content, final MocoGroup group) {
+        return broadcast(text(content), group);
+    }
+
+    public static ResponseHandler broadcast(final Resource content, final MocoGroup group) {
+        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"), group);
+    }
+
     public static ResponseHandler broadcast(final Resource content) {
-        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"));
+        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"), null);
     }
 
     private MocoWebSockets() {
