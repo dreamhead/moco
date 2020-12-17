@@ -4,15 +4,15 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.recorder.MocoGroup;
 
 public class JoinResponseHandler implements ResponseHandler {
-    private MocoGroup group;
+    private final MocoGroup group;
 
     public JoinResponseHandler(final MocoGroup group) {
         this.group = group;
     }
 
     @Override
-    public ResponseHandler apply(MocoConfig config) {
-        return null;
+    public ResponseHandler apply(final MocoConfig config) {
+        return this;
     }
 
     @Override

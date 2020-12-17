@@ -673,7 +673,7 @@ public final class Moco {
     }
 
     public static ResponseHandler join(final MocoGroup group) {
-        return new JoinResponseHandler(group);
+        return new JoinResponseHandler(checkNotNull(group, "group should not be empty"));
     }
 
     public static MocoGroup group(final String name) {

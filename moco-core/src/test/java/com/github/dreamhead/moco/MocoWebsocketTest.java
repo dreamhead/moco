@@ -28,8 +28,10 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
 import static com.github.dreamhead.moco.Runner.running;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 public class MocoWebsocketTest extends AbstractMocoHttpTest {
     private WebSocketServer webSocketServer;
@@ -171,15 +173,28 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_broadcast_with_group() throws Exception {
-        webSocketServer.request(by("subscribe")).response(with("subscribed"), join(group("foo")));
+        webSocketServer.request(by("subscribeFoo")).response(with("fooSubscribed"), join(group("foo")));
+        webSocketServer.request(by("subscribeBar")).response(with("barSubscribed"), join(group("bar")));
         webSocketServer.request(by("foo")).response(broadcast(text("foo"), group("foo")));
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            endpoint.sendTextMessage("subscribe");
-            assertThat(endpoint.getMessage(), is("subscribed".getBytes()));
+            final Endpoint endpointFoo = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpointBar = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            endpointFoo.sendTextMessage("subscribeFoo");
+            endpointBar.sendTextMessage("subscribeBar");
+            assertThat(endpointFoo.getMessage(), is("fooSubscribed".getBytes()));
+            assertThat(endpointBar.getMessage(), is("barSubscribed".getBytes()));
 
-            endpoint.sendTextMessage("foo");
-            assertThat(endpoint.getMessage(), is("foo".getBytes()));
+            endpointBar.clearMessage();
+
+            endpointFoo.sendTextMessage("foo");
+            assertThat(endpointFoo.getMessage(), is("foo".getBytes()));
+
+            try {
+                endpointBar.getMessage();
+                fail();
+            } catch (IllegalStateException e) {
+                // ignored
+            }
         });
     }
 
@@ -192,7 +207,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
             try {
                 WebSocketContainer container = ContainerProvider.getWebSocketContainer();
                 container.connectToServer(this, uri);
-                this.message = new CompletableFuture<>();
+                clearMessage();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -219,14 +234,18 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         }
 
         public void sendTextMessage(final String message) {
-            this.message = new CompletableFuture<>();
+            clearMessage();
             this.userSession.getAsyncRemote().sendText(message);
         }
 
         public void sendBinaryMessage(final byte[] message) {
-            this.message = new CompletableFuture<>();
+            clearMessage();
             ByteBuffer buffer = ByteBuffer.wrap(message);
             this.userSession.getAsyncRemote().sendBinary(buffer);
+        }
+
+        public void clearMessage() {
+            this.message = new CompletableFuture<>();
         }
 
         public String getMessageAsText() {
