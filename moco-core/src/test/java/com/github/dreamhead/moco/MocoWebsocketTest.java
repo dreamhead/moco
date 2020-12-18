@@ -28,7 +28,6 @@ import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
 import static com.github.dreamhead.moco.Runner.running;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;

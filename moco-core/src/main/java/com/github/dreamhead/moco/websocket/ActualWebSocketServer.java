@@ -15,7 +15,6 @@ import com.github.dreamhead.moco.util.ByteBufs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -153,7 +152,8 @@ public final class ActualWebSocketServer
     public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
         DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
-        SessionContext context = new SessionContext(request, response, new ContextSessionGroup(this.group, ctx.channel()));
+        SessionContext context = new SessionContext(request, response,
+                new ContextSessionGroup(this.group, ctx.channel()));
 
         return this.getResponse(context)
                 .flatMap(this::asWebsocketResponse);
