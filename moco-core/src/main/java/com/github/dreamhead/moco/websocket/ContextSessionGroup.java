@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.websocket;
 import com.github.dreamhead.moco.internal.SessionGroup;
 import com.github.dreamhead.moco.recorder.MocoGroup;
 import io.netty.channel.Channel;
-import io.netty.channel.group.ChannelGroup;
 
 public class ContextSessionGroup implements SessionGroup {
     private final ChannelSessionGroup group;
