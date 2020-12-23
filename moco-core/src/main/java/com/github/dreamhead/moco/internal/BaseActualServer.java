@@ -127,8 +127,13 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         newServer.addEvents(this.eventTriggers);
         newServer.addEvents(thatServer.eventTriggers);
 
+        newServer.addExtension(this);
+        newServer.addExtension(thatServer);
+
         return newServer;
     }
+
+    protected abstract void addExtension(final U server);
 
     protected abstract U createMergeServer(U thatServer);
 

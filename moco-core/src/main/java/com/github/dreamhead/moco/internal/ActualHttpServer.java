@@ -144,6 +144,11 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     @Override
+    protected void addExtension(final ActualHttpServer server) {
+        this.websocketServer = server.websocketServer;
+    }
+
+    @Override
     public WebSocketServer websocket(final String url) {
         this.websocketServer = new ActualWebSocketServer(url);
         return websocketServer;

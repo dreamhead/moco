@@ -1,0 +1,8 @@
+[
+  {
+    "websocket": {
+      "uri": "/ws",
+      "connected": "connected"
+    }
+  }
+]

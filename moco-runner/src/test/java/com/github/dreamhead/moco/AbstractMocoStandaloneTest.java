@@ -15,7 +15,7 @@ import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStrea
 
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
-    private JsonRunner runner;
+    protected JsonRunner runner;
 
     @After
     public void teardown() {

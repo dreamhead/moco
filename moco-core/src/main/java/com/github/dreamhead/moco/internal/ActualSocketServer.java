@@ -25,6 +25,10 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
     }
 
     @Override
+    protected void addExtension(final ActualSocketServer server) {
+    }
+
+    @Override
     protected SocketResponseSetting onRequestAttached(final RequestMatcher matcher) {
         SocketSetting baseSetting = new SocketSetting(matcher);
         addSetting(baseSetting);

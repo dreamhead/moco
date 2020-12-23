@@ -117,6 +117,10 @@ public final class ActualWebSocketServer
     }
 
     @Override
+    protected void addExtension(final ActualWebSocketServer server) {
+    }
+
+    @Override
     protected ActualWebSocketServer createMergeServer(final ActualWebSocketServer thatServer) {
         return new ActualWebSocketServer(this.uri);
     }

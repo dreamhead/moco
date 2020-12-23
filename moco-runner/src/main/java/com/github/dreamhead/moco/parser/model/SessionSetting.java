@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.SocketServer;
+import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
@@ -29,13 +30,15 @@ public final class SessionSetting {
     private EventSetting on;
     private ProxyContainer proxy;
     private ResourceSetting resource;
+    private WebsocketSetting websocket;
 
     private boolean isMount() {
         return this.mount != null;
     }
 
     private boolean isAnyResponse() {
-        return request == null && mount == null && proxy == null && redirectTo == null && resource == null;
+        return request == null && mount == null && proxy == null && redirectTo == null && resource == null
+                && websocket == null;
     }
 
     @Override
@@ -75,9 +78,16 @@ public final class SessionSetting {
     public void bindTo(final HttpServer server) {
         HttpResponseSetting setting = bindToSession(server);
 
-        if (hasEvent()) {
+        if (hasEvent() && setting != null) {
             for (MocoEventTrigger trigger : on.triggers()) {
                 setting.on(trigger);
+            }
+        }
+
+        if (isWebsocketServer()) {
+            final WebSocketServer webSocketServer = server.websocket(this.websocket.getUri());
+            if (this.websocket.getConnected() != null) {
+                webSocketServer.connected(this.websocket.getConnected());
             }
         }
     }
@@ -91,7 +101,15 @@ public final class SessionSetting {
         server.request(getRequestMatcher()).response(getResponseHandler());
     }
 
+    private boolean isWebsocketServer() {
+        return websocket != null;
+    }
+
     private HttpResponseSetting bindToSession(final HttpServer server) {
+        if (isWebsocketServer()) {
+            return null;
+        }
+
         if (isMount()) {
             return server.mount(mount.getDir(), to(mount.getUri()), mount.getMountPredicates())
                     .response(mount.getResponseHandler());
