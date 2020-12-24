@@ -98,7 +98,7 @@ public final class ActualWebSocketServer
 
     public void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                getUri(), null, false);
+                uri, null, false);
         WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
         Channel channel = ctx.channel();
         if (handshaker == null) {
