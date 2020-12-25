@@ -16,7 +16,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
@@ -97,8 +101,15 @@ public final class ActualWebSocketServer
     }
 
     public void connectRequest(final ChannelHandlerContext ctx, final FullHttpRequest request) {
+        QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
+        final String actual = decoder.path();
+        if (!uri.equals(actual)) {
+            ctx.writeAndFlush(new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
+            return;
+        }
+
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                uri, null, false);
+                this.uri, null, false);
         WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(request);
         Channel channel = ctx.channel();
         if (handshaker == null) {

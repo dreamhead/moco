@@ -47,7 +47,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.connected(text("hello"));
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             assertThat(endpoint.getMessageAsText(), is("hello"));
         });
     }
@@ -57,8 +57,17 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.connected("hello");
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             assertThat(endpoint.getMessageAsText(), is("hello"));
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void should_fail_to_connect_with_unknown_uri() throws Exception {
+        webSocketServer.connected("hello");
+
+        running(server, () -> {
+            new Endpoint(new URI("ws://localhost:12306/unknown/"));
         });
     }
 
@@ -67,7 +76,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.request(by("foo")).response("bar");
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.sendTextMessage("foo");
             assertThat(endpoint.getMessageAsText(), is("bar"));
         });
@@ -79,7 +88,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.response("any");
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.sendTextMessage("blah");
             assertThat(endpoint.getMessageAsText(), is("any"));
         });
@@ -90,7 +99,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.request(by(binary(new byte[] {1, 2, 3}))).response(binary(new byte[] {4, 5, 6}));
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.sendBinaryMessage(new byte[] {1, 2, 3});
             assertThat(endpoint.getMessage(), is(new byte[] {4, 5, 6}));
         });
@@ -102,7 +111,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.ping("hello").pong("world");
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.ping("hello");
             assertThat(endpoint.getMessage(), is("world".getBytes()));
         });
@@ -114,7 +123,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.ping(text("hello")).pong(text("world"));
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.ping("hello");
             assertThat(endpoint.getMessage(), is("world".getBytes()));
         });
@@ -126,7 +135,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.ping(by("hello")).pong("world");
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.ping("hello");
             assertThat(endpoint.getMessage(), is("world".getBytes()));
         });
@@ -138,7 +147,7 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.ping("hello").pong(with(text("world")));
 
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.ping("hello");
             assertThat(endpoint.getMessage(), is("world".getBytes()));
         });
@@ -148,8 +157,8 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
     public void should_broadcast() throws Exception {
         webSocketServer.request(by("foo")).response(broadcast("bar"));
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.sendTextMessage("foo");
 
             assertThat(endpoint.getMessage(), is("bar".getBytes()));
@@ -161,8 +170,8 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
     public void should_broadcast_with_resource() throws Exception {
         webSocketServer.request(by("foo")).response(broadcast(text("bar")));
         running(server, () -> {
-            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+            final Endpoint endpoint2 = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpoint.sendTextMessage("foo");
 
             assertThat(endpoint.getMessage(), is("bar".getBytes()));
@@ -176,8 +185,8 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         webSocketServer.request(by("subscribeBar")).response(with("barSubscribed"), join(group("bar")));
         webSocketServer.request(by("foo")).response(broadcast(text("foo"), group("foo")));
         running(server, () -> {
-            final Endpoint endpointFoo = new Endpoint(new URI("ws://localhost:12306/ws/"));
-            final Endpoint endpointBar = new Endpoint(new URI("ws://localhost:12306/ws/"));
+            final Endpoint endpointFoo = new Endpoint(new URI("ws://localhost:12306/ws"));
+            final Endpoint endpointBar = new Endpoint(new URI("ws://localhost:12306/ws"));
             endpointFoo.sendTextMessage("subscribeFoo");
             endpointBar.sendTextMessage("subscribeBar");
             assertThat(endpointFoo.getMessage(), is("fooSubscribed".getBytes()));
