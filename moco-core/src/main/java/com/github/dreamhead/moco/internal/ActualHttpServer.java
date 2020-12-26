@@ -17,6 +17,8 @@ import io.netty.handler.ssl.SslHandler;
 import javax.net.ssl.SSLEngine;
 import java.util.Optional;
 
+import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private static final int MAX_HEADER_SIZE = 8192;
     private static final int MAX_CONTENT_LENGTH = 1048576;
@@ -149,8 +151,8 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     @Override
-    public WebSocketServer websocket(final String url) {
-        this.websocketServer = new ActualWebSocketServer(url);
+    public WebSocketServer websocket(final String uri) {
+        this.websocketServer = new ActualWebSocketServer(checkNotNullOrEmpty(uri, "uri should not be null or empty"));
         return websocketServer;
     }
 
