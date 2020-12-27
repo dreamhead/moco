@@ -18,6 +18,7 @@ import javax.net.ssl.SSLEngine;
 import java.util.Optional;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private static final int MAX_HEADER_SIZE = 8192;
@@ -152,6 +153,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
     @Override
     public WebSocketServer websocket(final String uri) {
+        checkArgument(websocketServer == null, "Only one websocket can be setup");
         this.websocketServer = new ActualWebSocketServer(checkNotNullOrEmpty(uri, "uri should not be null or empty"));
         return websocketServer;
     }
