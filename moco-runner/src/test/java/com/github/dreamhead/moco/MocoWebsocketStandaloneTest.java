@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import javax.websocket.ClientEndpoint;
@@ -12,7 +11,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.PongMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -23,9 +21,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -33,7 +28,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_connected() throws URISyntaxException, FileNotFoundException {
         runWithConfiguration("websocket.json");
-        final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws/"));
+        final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         assertThat(endpoint.getMessageAsText(), is("connected"));
     }
 

@@ -87,7 +87,7 @@ public final class SessionSetting {
         if (isWebsocketServer()) {
             final WebSocketServer webSocketServer = server.websocket(this.websocket.getUri());
             if (this.websocket.getConnected() != null) {
-                webSocketServer.connected(this.websocket.getConnected());
+                webSocketServer.connected(this.websocket.getConnected().asResource());
             }
         }
     }
