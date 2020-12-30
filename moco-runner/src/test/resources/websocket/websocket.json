@@ -2,7 +2,13 @@
   {
     "websocket": {
       "uri": "/ws",
-      "connected": "connected"
+      "connected": "connected",
+      "sessions": [
+        {
+          "request": "foo",
+          "response": "bar"
+        }
+      ]
     }
   }
 ]

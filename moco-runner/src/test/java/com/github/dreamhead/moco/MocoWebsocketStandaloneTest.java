@@ -26,10 +26,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
-    public void should_return_connected() throws URISyntaxException, FileNotFoundException {
+    public void should_return_connected() throws URISyntaxException {
         runWithConfiguration("websocket/websocket.json");
         final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         assertThat(endpoint.getMessageAsText(), is("connected"));
+        endpoint.sendTextMessage("foo");
+        assertThat(endpoint.getMessageAsText(), is("bar"));
     }
 
     @ClientEndpoint

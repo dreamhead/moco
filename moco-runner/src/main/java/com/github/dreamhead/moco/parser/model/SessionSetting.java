@@ -89,6 +89,10 @@ public final class SessionSetting {
             if (this.websocket.getConnected() != null) {
                 webSocketServer.connected(this.websocket.getConnected().asResource());
             }
+
+            if (this.websocket.hasSessions()) {
+                this.websocket.bindSessions(webSocketServer);
+            }
         }
     }
 
