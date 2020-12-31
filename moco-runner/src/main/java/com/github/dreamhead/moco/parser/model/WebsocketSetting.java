@@ -28,14 +28,14 @@ public class WebsocketSetting {
     public void bindSessions(final WebSocketServer webSocketServer) {
 
         for (WebsocketSession session : sessions) {
-            webSocketServer.request(by(session.request))
-                    .response(session.response);
+            webSocketServer.request(by(session.request.asResource()))
+                    .response(session.response.asResource());
         }
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     public static class WebsocketSession {
-        private String request;
-        private String response;
+        private TextContainer request;
+        private TextContainer response;
     }
 }
