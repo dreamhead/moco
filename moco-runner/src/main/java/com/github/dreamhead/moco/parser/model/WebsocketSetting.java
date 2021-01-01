@@ -17,19 +17,24 @@ public class WebsocketSetting {
         return this.uri;
     }
 
-    public TextContainer getConnected() {
-        return connected;
-    }
-
     public boolean hasSessions() {
         return this.sessions != null && !this.sessions.isEmpty();
     }
 
-    public void bindSessions(final WebSocketServer webSocketServer) {
-
+    private void bindSessions(final WebSocketServer webSocketServer) {
         for (WebsocketSession session : sessions) {
             webSocketServer.request(by(session.request.asResource()))
                     .response(session.response.asResource());
+        }
+    }
+
+    public void bind(final WebSocketServer webSocketServer) {
+        if (connected != null) {
+            webSocketServer.connected(connected.asResource());
+        }
+
+        if (hasSessions()) {
+            bindSessions(webSocketServer);
         }
     }
 
