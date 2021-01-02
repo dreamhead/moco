@@ -36,6 +36,7 @@ import java.util.Optional;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class ActualWebSocketServer
@@ -54,10 +55,12 @@ public final class ActualWebSocketServer
     }
 
     public void connected(final Resource resource) {
+        checkArgument(this.connected == null, "Only one connected can be setup");
         this.connected = checkNotNull(resource, "Connected resource should not be null");
     }
 
     public void connected(final String text) {
+        checkArgument(this.connected == null, "Only one connected can be setup");
         this.connected(text(checkNotNull(text, "Connected text should not be null")));
     }
 
