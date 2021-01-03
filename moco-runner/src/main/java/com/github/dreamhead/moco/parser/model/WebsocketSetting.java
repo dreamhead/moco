@@ -11,6 +11,7 @@ import static com.github.dreamhead.moco.Moco.by;
 public class WebsocketSetting {
     private String uri;
     private TextContainer connected;
+    private List<PingpongSession> pingpongs;
     private List<WebsocketSession> sessions;
 
     public String getUri() {
@@ -33,14 +34,30 @@ public class WebsocketSetting {
             webSocketServer.connected(connected.asResource());
         }
 
+        if (hasPingPongs()) {
+            for (PingpongSession pingpong : pingpongs) {
+                webSocketServer.ping(pingpong.ping.asResource()).pong(pingpong.pong.asResource());
+            }
+        }
+
         if (hasSessions()) {
             bindSessions(webSocketServer);
         }
+    }
+
+    private boolean hasPingPongs() {
+        return this.pingpongs != null && !this.pingpongs.isEmpty();
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     public static class WebsocketSession {
         private TextContainer request;
         private TextContainer response;
+    }
+
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    public static class PingpongSession {
+        private TextContainer ping;
+        private TextContainer pong;
     }
 }

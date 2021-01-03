@@ -30,6 +30,8 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("websocket/websocket.json");
         final Endpoint endpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         assertThat(endpoint.getMessageAsText(), is("connected"));
+        endpoint.ping("ping");
+        assertThat(endpoint.getMessageAsText(), is("pong"));
         endpoint.sendTextMessage("foo");
         assertThat(endpoint.getMessageAsText(), is("bar"));
     }
@@ -99,6 +101,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         }
 
         public void ping(final String message) {
+            clearMessage();
             ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
             try {
                 this.userSession.getAsyncRemote().sendPing(buffer);

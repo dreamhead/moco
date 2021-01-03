@@ -3,6 +3,12 @@
     "websocket": {
       "uri": "/ws",
       "connected": "connected",
+      "pingpongs": [
+        {
+          "ping": "ping",
+          "pong": "pong"
+        }
+      ],
       "sessions": [
         {
           "request": "foo",
