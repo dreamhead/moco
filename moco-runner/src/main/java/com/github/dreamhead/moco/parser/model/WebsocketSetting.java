@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.WebSocketServer;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.util.Iterables.isNullOrEmpty;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class WebsocketSetting {
@@ -19,7 +20,7 @@ public class WebsocketSetting {
     }
 
     public boolean hasSessions() {
-        return this.sessions != null && !this.sessions.isEmpty();
+        return !isNullOrEmpty(this.sessions);
     }
 
     private void bindSessions(final WebSocketServer webSocketServer) {
@@ -46,7 +47,7 @@ public class WebsocketSetting {
     }
 
     private boolean hasPingPongs() {
-        return this.pingpongs != null && !this.pingpongs.isEmpty();
+        return !isNullOrEmpty(this.pingpongs);
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

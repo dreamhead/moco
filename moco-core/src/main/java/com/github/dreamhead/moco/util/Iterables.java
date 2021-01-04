@@ -61,6 +61,10 @@ public final class Iterables {
         return Arrays.copyOfRange(elements, 1, elements.length);
     }
 
+    public static <T> boolean isNullOrEmpty(final Iterable<T> iterable) {
+        return iterable == null || com.google.common.collect.Iterables.isEmpty(iterable);
+    }
+
     private Iterables() {
     }
 }
