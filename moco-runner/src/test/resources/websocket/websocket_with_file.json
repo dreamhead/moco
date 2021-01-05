@@ -1,0 +1,18 @@
+[
+  {
+    "websocket": {
+      "uri": "/ws",
+      "connected": "connected",
+      "sessions": [
+        {
+          "request": {
+            "file": "src/test/resources/foo.request"
+          },
+          "response": {
+            "file": "src/test/resources/foo.response"
+          }
+        }
+      ]
+    }
+  }
+]
