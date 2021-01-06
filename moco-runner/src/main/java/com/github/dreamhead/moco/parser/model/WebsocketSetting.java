@@ -19,7 +19,7 @@ public class WebsocketSetting {
         return this.uri;
     }
 
-    public boolean hasSessions() {
+    private boolean hasSessions() {
         return !isNullOrEmpty(this.sessions);
     }
 
