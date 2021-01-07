@@ -44,6 +44,15 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(endpoint.getMessageAsText(), is("foo.response"));
     }
 
+    @Test
+    public void should_broadcast() throws URISyntaxException {
+        runWithConfiguration("websocket/websocket_with_broadcast.json");
+        final Endpoint fooEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+        final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+        subscribeEndpoint.sendTextMessage("subscribe");
+        assertThat(fooEndpoint.getMessageAsText(), is("login"));
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;

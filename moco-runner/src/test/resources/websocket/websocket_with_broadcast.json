@@ -2,18 +2,18 @@
   {
     "websocket": {
       "uri": "/ws",
-      "connected": "connected",
-      "pingpongs": [
-        {
-          "ping": "ping",
-          "pong": "pong"
-        }
-      ],
       "sessions": [
         {
           "request": "foo",
           "response": {
             "text": "bar"
+          }
+        },
+        {
+          "request": "subscribe",
+          "response": {
+            "text": "subcribed",
+            "broadcast": "login"
           }
         }
       ]
