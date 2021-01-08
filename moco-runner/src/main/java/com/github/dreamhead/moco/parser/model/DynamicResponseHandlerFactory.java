@@ -270,21 +270,10 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
             return fileContainer.asTemplateResource(name);
         }
 
-        TextContainer filename = fileContainer.getName();
-        if (filename.isRawText()) {
-            return asResource(name, fileContainer);
-        }
-
-        if (filename.isForTemplate()) {
-            Optional<Charset> charset = fileContainer.getCharset();
-            Resource resource = filename.asTemplateResource();
-            return asResource(name, resource, charset);
-        }
-
-        throw new IllegalArgumentException(format("unknown file container:[%s]", fileContainer));
+        return asFileResource(name, fileContainer);
     }
 
-    private Resource asResource(final String name, final Resource resource, final Optional<Charset> charset) {
+    private static Resource asResource(final String name, final Resource resource, final Optional<Charset> charset) {
         if (charset.isPresent()) {
             return invokeTarget(name, resource, charset.get(),
                     Resource.class, Resource.class, Charset.class);
@@ -293,7 +282,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         return invokeTarget(name, resource, Resource.class, Resource.class);
     }
 
-    private Resource asResource(final String name, final FileContainer fileContainer) {
+    private static Resource asResource(final String name, final FileContainer fileContainer) {
         Optional<Charset> charset = fileContainer.getCharset();
         String text = fileContainer.getName().getText();
         return asResource(name, text(text), charset);
@@ -310,5 +299,20 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         }
 
         return createRequestExtractor(getExtractorMethod(value.getOperation()), value.getText());
+    }
+
+    public static Resource asFileResource(final String name, final FileContainer fileContainer) {
+        TextContainer filename = fileContainer.getName();
+        if (filename.isRawText()) {
+            return asResource(name, fileContainer);
+        }
+
+        if (filename.isForTemplate()) {
+            Optional<Charset> charset = fileContainer.getCharset();
+            Resource resource = filename.asTemplateResource();
+            return asResource(name, resource, charset);
+        }
+
+        throw new IllegalArgumentException(format("unknown file container:[%s]", fileContainer));
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.asFileResource;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.isNullOrEmpty;
 import static com.github.dreamhead.moco.util.Iterables.tail;
@@ -82,7 +83,7 @@ public class WebsocketSetting {
             }
 
             if (file != null) {
-                handlers.add(with(this.file.asResource()));
+                handlers.add(with(asFileResource("file", this.file)));
             }
 
             if (broadcast != null) {
