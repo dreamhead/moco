@@ -1,10 +1,12 @@
-package com.github.dreamhead.moco.parser.model;
+package com.github.dreamhead.moco.parser.model.websocket;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoWebSockets;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.WebSocketServer;
+import com.github.dreamhead.moco.parser.model.FileContainer;
+import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,41 +60,5 @@ public class WebsocketSetting {
         return !isNullOrEmpty(this.pingpongs);
     }
 
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class WebsocketSession {
-        private TextContainer request;
-        private WebsocketResponseSetting response;
-    }
 
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class PingpongSession {
-        private TextContainer ping;
-        private TextContainer pong;
-    }
-
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class WebsocketResponseSetting {
-        private TextContainer text;
-        private FileContainer file;
-        private String broadcast;
-
-        public ResponseHandler asResponseHandler() {
-            List<ResponseHandler> handlers = new ArrayList<>();
-            if (text != null) {
-                handlers.add(with(this.text.asResource()));
-            }
-
-            if (file != null) {
-                handlers.add(with(asFileResource("file", this.file)));
-            }
-
-            if (broadcast != null) {
-                handlers.add(MocoWebSockets.broadcast(broadcast));
-            }
-
-            final ResponseHandler[] responseHandlers = handlers.toArray(new ResponseHandler[0]);
-
-            return Moco.and(head(responseHandlers), tail(responseHandlers));
-        }
-    }
 }

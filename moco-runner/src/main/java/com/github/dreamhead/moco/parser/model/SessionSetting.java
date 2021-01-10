@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
+import com.github.dreamhead.moco.parser.model.websocket.WebsocketSetting;
 import com.github.dreamhead.moco.rest.ActualRestServer;
 import com.google.common.base.MoreObjects;
 
