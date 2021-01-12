@@ -19,7 +19,7 @@ import static com.github.dreamhead.moco.util.Iterables.tail;
 public class WebsocketResponseSetting {
     private TextContainer text;
     private FileContainer file;
-    private String broadcast;
+    private TextContainer broadcast;
 
     public ResponseHandler asResponseHandler() {
         List<ResponseHandler> handlers = new ArrayList<>();
@@ -32,7 +32,7 @@ public class WebsocketResponseSetting {
         }
 
         if (broadcast != null) {
-            handlers.add(MocoWebSockets.broadcast(broadcast));
+            handlers.add(MocoWebSockets.broadcast(broadcast.asResource()));
         }
 
         final ResponseHandler[] responseHandlers = handlers.toArray(new ResponseHandler[0]);

@@ -50,6 +50,4 @@ public class WebsocketSetting {
     private boolean hasPingPongs() {
         return !isNullOrEmpty(this.pingpongs);
     }
-
-
 }
