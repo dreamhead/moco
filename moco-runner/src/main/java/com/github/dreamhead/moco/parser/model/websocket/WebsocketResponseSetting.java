@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoWebSockets;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
@@ -35,8 +36,6 @@ public class WebsocketResponseSetting {
             handlers.add(MocoWebSockets.broadcast(broadcast.asResource()));
         }
 
-        final ResponseHandler[] responseHandlers = handlers.toArray(new ResponseHandler[0]);
-
-        return Moco.and(head(responseHandlers), tail(responseHandlers));
+        return AndResponseHandler.and(handlers);
     }
 }
