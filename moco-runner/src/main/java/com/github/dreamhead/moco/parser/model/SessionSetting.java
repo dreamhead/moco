@@ -160,13 +160,4 @@ public final class SessionSetting {
         return server;
     }
 
-    public boolean isValid() {
-        return request != null
-                || response != null
-                || redirectTo != null
-                || mount != null
-                || on != null
-                || proxy != null
-                || resource != null;
-    }
 }
