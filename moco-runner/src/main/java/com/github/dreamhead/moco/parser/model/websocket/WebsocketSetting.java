@@ -6,8 +6,6 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 
 import java.util.List;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Iterables.isNullOrEmpty;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
