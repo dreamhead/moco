@@ -4,7 +4,9 @@
       "uri": "/ws",
       "sessions": [
         {
-          "request": "foo",
+          "request": {
+            "text": "foo"
+          },
           "response": {
             "text": "bar"
           }
