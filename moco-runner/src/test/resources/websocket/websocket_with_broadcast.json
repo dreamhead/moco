@@ -17,6 +17,15 @@
             "text": "subcribed",
             "broadcast": "login"
           }
+        },
+        {
+          "request": "subscribe2",
+          "response": {
+            "text": "subcribed2",
+            "broadcast": {
+              "text": "login2"
+            }
+          }
         }
       ]
     }
