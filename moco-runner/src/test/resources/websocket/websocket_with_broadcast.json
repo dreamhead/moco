@@ -26,6 +26,15 @@
               "text": "login2"
             }
           }
+        },
+        {
+          "request": "subscribe_with_file",
+          "response": {
+            "text": "subscribed_with_file",
+            "broadcast": {
+              "file": "src/test/resources/foo.response"
+            }
+          }
         }
       ]
     }
