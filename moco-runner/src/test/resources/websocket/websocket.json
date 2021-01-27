@@ -17,6 +17,14 @@
           "response": {
             "text": "bar"
           }
+        },
+        {
+          "request": {
+            "file": "src/test/resources/foo.request"
+          },
+          "response": {
+            "file": "src/test/resources/foo.response"
+          }
         }
       ]
     }
