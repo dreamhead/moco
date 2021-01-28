@@ -36,6 +36,6 @@ public final class SessionContext {
     }
 
     public void join(final MocoGroup group) {
-        this.group.join(group);
+        Objects.requireNonNull(this.group).join(group);
     }
 }
