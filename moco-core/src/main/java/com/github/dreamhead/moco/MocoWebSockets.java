@@ -14,7 +14,7 @@ public final class MocoWebSockets {
     }
 
     public static ResponseHandler broadcast(final String content, final MocoGroup group) {
-        return broadcast(text(content), group);
+        return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")), group);
     }
 
     public static ResponseHandler broadcast(final Resource content, final MocoGroup group) {
