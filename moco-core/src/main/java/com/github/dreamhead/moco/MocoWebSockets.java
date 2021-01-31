@@ -14,11 +14,13 @@ public final class MocoWebSockets {
     }
 
     public static ResponseHandler broadcast(final String content, final MocoGroup group) {
-        return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")), group);
+        return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")),
+                checkNotNull(group, "Group should not be null"));
     }
 
     public static ResponseHandler broadcast(final Resource content, final MocoGroup group) {
-        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"), group);
+        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"),
+                checkNotNull(group, "Group should not be null"));
     }
 
     public static ResponseHandler broadcast(final Resource content) {
