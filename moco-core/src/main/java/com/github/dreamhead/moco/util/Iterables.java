@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.of;
+import static com.google.common.collect.Iterables.isEmpty;
 
 public final class Iterables {
     public static <T> List<T> asIterable(final T handler, final T[] handlers) {
@@ -62,7 +63,7 @@ public final class Iterables {
     }
 
     public static <T> boolean isNullOrEmpty(final Iterable<T> iterable) {
-        return iterable == null || com.google.common.collect.Iterables.isEmpty(iterable);
+        return iterable == null || isEmpty(iterable);
     }
 
     private Iterables() {
