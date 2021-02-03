@@ -5,9 +5,17 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class IterablesTest {
+    @Test
+    public void should_get_head() {
+        assertThat(Iterables.head(new Integer[]{1, 2}), is(1));
+        assertThat(Iterables.head(new Integer[]{1}), is(1));
+        assertThat(Iterables.head(new Integer[0]), nullValue());
+    }
+
     @Test
     public void should_get_tail() {
         assertThat(Iterables.tail(new Integer[]{1, 2}), is(new Integer[] {2}));
