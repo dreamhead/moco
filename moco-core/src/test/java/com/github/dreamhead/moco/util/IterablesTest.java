@@ -7,6 +7,7 @@ import java.util.Arrays;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class IterablesTest {
     @Test
@@ -14,6 +15,7 @@ public class IterablesTest {
         assertThat(Iterables.head(new Integer[]{1, 2}), is(1));
         assertThat(Iterables.head(new Integer[]{1}), is(1));
         assertThat(Iterables.head(new Integer[0]), nullValue());
+        assertThrows(NullPointerException.class, () -> Iterables.head(null));
     }
 
     @Test
