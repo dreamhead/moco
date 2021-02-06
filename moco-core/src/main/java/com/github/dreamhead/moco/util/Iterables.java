@@ -11,7 +11,7 @@ import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.isEmpty;
 
 public final class Iterables {
-    public static <T> List<T> asIterable(final T handler, final T[] handlers) {
+    public static <T> List<T> asIterable(final T handler, final T... handlers) {
         checkNotNull(handler);
         checkNotNull(handlers);
 
