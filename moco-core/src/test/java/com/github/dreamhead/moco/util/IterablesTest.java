@@ -13,11 +13,12 @@ import static org.junit.Assert.assertThrows;
 public class IterablesTest {
     @Test
     public void should_be_as_iterable() {
-        final List<Integer> iterable = Iterables.asIterable(1, 2, 3);
+        final List<Integer> iterable = Iterables.asIterable(1, new Integer[] {2, 3});
         assertThat(iterable.get(0), is(1));
         assertThat(iterable.get(1), is(2));
         assertThat(iterable.get(2), is(3));
-        assertThrows(NullPointerException.class, () -> Iterables.asIterable(null));
+        assertThrows(NullPointerException.class, () -> Iterables.asIterable(null, new Integer[0]));
+        assertThrows(NullPointerException.class, () -> Iterables.asIterable(1, null));
     }
 
     @Test
