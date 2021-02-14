@@ -17,13 +17,16 @@ public class IterablesTest {
         assertThat(first.get(0), is(1));
         assertThat(first.get(1), is(2));
         assertThat(first.get(2), is(3));
+        assertThat(first.size(), is(3));
         assertThrows(NullPointerException.class, () -> Iterables.asIterable(null, new Integer[0]));
         assertThrows(NullPointerException.class, () -> Iterables.asIterable(1, null));
+
         final List<Integer> second = Iterables.asIterable(1, 2, new Integer[] {3, 4});
         assertThat(second.get(0), is(1));
         assertThat(second.get(1), is(2));
         assertThat(second.get(2), is(3));
         assertThat(second.get(3), is(4));
+        assertThat(second.size(), is(4));
     }
 
     @Test
