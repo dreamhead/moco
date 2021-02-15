@@ -27,6 +27,8 @@ public class IterablesTest {
         assertThat(second.get(2), is(3));
         assertThat(second.get(3), is(4));
         assertThat(second.size(), is(4));
+
+        assertThrows(NullPointerException.class, () -> Iterables.asIterable(null, 2, new Integer[0]));
     }
 
     @Test
