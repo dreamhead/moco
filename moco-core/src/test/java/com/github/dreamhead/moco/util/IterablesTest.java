@@ -30,6 +30,7 @@ public class IterablesTest {
 
         assertThrows(NullPointerException.class, () -> Iterables.asIterable(null, 2, new Integer[0]));
         assertThrows(NullPointerException.class, () -> Iterables.asIterable(1, null, new Integer[0]));
+        assertThrows(NullPointerException.class, () -> Iterables.asIterable(1, 2, null));
     }
 
     @Test
