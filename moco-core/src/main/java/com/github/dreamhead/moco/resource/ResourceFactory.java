@@ -71,6 +71,11 @@ public final class ResourceFactory {
                     return content().withContent(is).build();
                 }
 
+                if (result instanceof String) {
+                    final String text = (String) result;
+                    return content().withContent(text).build();
+                }
+
                 throw new IllegalArgumentException("Not allowed " + result.getClass());
             }
         });

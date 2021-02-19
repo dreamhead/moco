@@ -56,7 +56,7 @@ public final class Iterables {
         checkNotNull(elements);
 
         if (elements.length <= 1) {
-            return (T[])Array.newInstance(elements.getClass().getComponentType(), 0);
+            return (T[]) Array.newInstance(elements.getClass().getComponentType(), 0);
         }
 
         return Arrays.copyOfRange(elements, 1, elements.length);

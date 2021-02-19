@@ -771,6 +771,16 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_dynamic_binary_function_with_string() throws Exception {
+        server.response(binary((request) -> "foo"));
+
+        running(server, () -> {
+            byte[] asBytes = helper.getAsBytes(root());
+            assertThat(asBytes, is(new byte[] {'f', 'o', 'o'}));
+        });
+    }
+
+    @Test
     public void should_transform_response_content() throws Exception {
         server.response(text("hello").transform(this::incrementByte));
 
