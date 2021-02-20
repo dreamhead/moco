@@ -12,25 +12,25 @@
           }
         },
         {
-          "request": "subscribe",
+          "request": "broadcast",
           "response": {
             "text": "subcribed",
             "broadcast": "login"
           }
         },
         {
-          "request": "subscribe2",
+          "request": "broadcast2",
           "response": {
-            "text": "subcribed2",
+            "text": "broadcast2",
             "broadcast": {
               "text": "login2"
             }
           }
         },
         {
-          "request": "subscribe_with_file",
+          "request": "broadcast-with-file",
           "response": {
-            "text": "subscribed_with_file",
+            "text": "broadcast-with-file",
             "broadcast": {
               "file": "src/test/resources/foo.response"
             }

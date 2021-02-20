@@ -47,10 +47,10 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_broadcast() throws URISyntaxException {
         runWithConfiguration("websocket/websocket_with_broadcast.json");
-        final Endpoint fooEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
-        final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
-        subscribeEndpoint.sendTextMessage("subscribe");
-        assertThat(fooEndpoint.getMessageAsText(), is("login"));
+        final Endpoint subEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+        final Endpoint broadcast = new Endpoint(new URI("ws://localhost:12306/ws"));
+        broadcast.sendTextMessage("broadcast");
+        assertThat(subEndpoint.getMessageAsText(), is("login"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("websocket/websocket_with_broadcast.json");
         final Endpoint fooEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
-        subscribeEndpoint.sendTextMessage("subscribe2");
+        subscribeEndpoint.sendTextMessage("broadcast2");
         assertThat(fooEndpoint.getMessageAsText(), is("login2"));
     }
 
@@ -67,7 +67,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("websocket/websocket_with_broadcast.json");
         final Endpoint fooEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
-        subscribeEndpoint.sendTextMessage("subscribe_with_file");
+        subscribeEndpoint.sendTextMessage("broadcast-with-file");
         assertThat(fooEndpoint.getMessageAsText(), is("foo.response"));
     }
 
