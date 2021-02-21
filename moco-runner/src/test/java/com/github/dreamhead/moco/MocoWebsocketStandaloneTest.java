@@ -50,6 +50,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         final Endpoint subEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         final Endpoint broadcast = new Endpoint(new URI("ws://localhost:12306/ws"));
         broadcast.sendTextMessage("broadcast");
+        assertThat(broadcast.getMessageAsText(), is("login"));
         assertThat(subEndpoint.getMessageAsText(), is("login"));
     }
 
