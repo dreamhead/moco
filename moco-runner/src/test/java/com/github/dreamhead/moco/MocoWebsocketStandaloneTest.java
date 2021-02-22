@@ -61,6 +61,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
         subscribeEndpoint.sendTextMessage("broadcast2");
         assertThat(fooEndpoint.getMessageAsText(), is("login2"));
+        assertThat(subscribeEndpoint.getMessageAsText(), is("login2"));
     }
 
     @Test
