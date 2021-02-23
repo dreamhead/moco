@@ -73,6 +73,18 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(fooEndpoint.getMessageAsText(), is("foo.response"));
     }
 
+    @Test
+    public void should_broadcast_with_group() throws URISyntaxException {
+        runWithConfiguration("websocket/websocket_with_broadcast.json");
+        final Endpoint fooEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+        final Endpoint subscribeEndpoint = new Endpoint(new URI("ws://localhost:12306/ws"));
+        subscribeEndpoint.sendTextMessage("subscribe-with-group");
+        assertThat(subscribeEndpoint.getMessageAsText(), is("subscribed"));
+        subscribeEndpoint.clearMessage();
+        fooEndpoint.sendTextMessage("broadcast-with-group");
+        assertThat(subscribeEndpoint.getMessageAsText(), is("broadcast-with-group"));
+    }
+
     @ClientEndpoint
     public static class Endpoint {
         private Session userSession;

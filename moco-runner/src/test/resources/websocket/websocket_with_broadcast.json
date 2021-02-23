@@ -15,7 +15,9 @@
           "request": "broadcast",
           "response": {
             "text": "subcribed",
-            "broadcast": "login"
+            "broadcast": {
+              "text": "login"
+            }
           }
         },
         {
@@ -33,6 +35,23 @@
             "text": "broadcast-with-file",
             "broadcast": {
               "file": "src/test/resources/foo.response"
+            }
+          }
+        },
+        {
+          "request": "subscribe-with-group",
+          "response": {
+            "text": "subscribed",
+            "group": "group"
+          }
+        },
+        {
+          "request": "broadcast-with-group",
+          "response": {
+            "text": "subscribed",
+            "broadcast": {
+              "group" : "group",
+              "text": "broadcast-with-group"
             }
           }
         }

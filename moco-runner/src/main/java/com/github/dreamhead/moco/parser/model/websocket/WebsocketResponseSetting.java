@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.parser.model.websocket;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoWebSockets;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
@@ -10,6 +11,7 @@ import com.github.dreamhead.moco.parser.model.TextContainer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.dreamhead.moco.Moco.join;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFactory.asFileResource;
 
@@ -17,7 +19,8 @@ import static com.github.dreamhead.moco.parser.model.DynamicResponseHandlerFacto
 public class WebsocketResponseSetting {
     private TextContainer text;
     private FileContainer file;
-    private TextContainer broadcast;
+    private BroadcastSetting broadcast;
+    private String group;
 
     public ResponseHandler asResponseHandler() {
         List<ResponseHandler> handlers = new ArrayList<>();
@@ -30,7 +33,11 @@ public class WebsocketResponseSetting {
         }
 
         if (broadcast != null) {
-            handlers.add(MocoWebSockets.broadcast(broadcast.asResource()));
+            handlers.add(broadcast.asHandler());
+        }
+
+        if (group != null) {
+            handlers.add(join(Moco.group(this.group)));
         }
 
         return AndResponseHandler.and(handlers);
