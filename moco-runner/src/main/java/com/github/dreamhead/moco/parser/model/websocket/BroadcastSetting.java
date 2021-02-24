@@ -31,6 +31,10 @@ public class BroadcastSetting {
             return Moco.text(text);
         }
 
-        return Moco.file(file);
+        if (this.file != null) {
+            return Moco.file(file);
+        }
+
+        throw new IllegalArgumentException("Content is required for broadcast setting");
     }
 }
