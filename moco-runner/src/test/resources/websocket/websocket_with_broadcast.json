@@ -16,7 +16,7 @@
           "response": {
             "text": "subcribed",
             "broadcast": {
-              "text": "login"
+              "content": "login"
             }
           }
         },
@@ -25,7 +25,7 @@
           "response": {
             "text": "broadcast2",
             "broadcast": {
-              "text": "login2"
+              "content": "login2"
             }
           }
         },
@@ -34,7 +34,9 @@
           "response": {
             "text": "broadcast-with-file",
             "broadcast": {
-              "file": "src/test/resources/foo.response"
+              "content": {
+                "file": "src/test/resources/foo.response"
+              }
             }
           }
         },
@@ -51,7 +53,7 @@
             "text": "subscribed",
             "broadcast": {
               "group" : "group",
-              "text": "broadcast-with-group"
+              "content": "broadcast-with-group"
             }
           }
         }
