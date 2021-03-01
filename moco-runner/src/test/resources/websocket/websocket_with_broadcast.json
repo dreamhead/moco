@@ -53,7 +53,7 @@
             "text": "subscribed",
             "broadcast": {
               "group" : "group",
-              "content": "broadcast-with-group"
+              "content": "broadcast-content"
             }
           }
         }

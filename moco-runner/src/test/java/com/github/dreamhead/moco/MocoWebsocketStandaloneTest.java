@@ -82,7 +82,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(subscribeEndpoint.getMessageAsText(), is("subscribed"));
         subscribeEndpoint.clearMessage();
         fooEndpoint.sendTextMessage("broadcast-with-group");
-        assertThat(subscribeEndpoint.getMessageAsText(), is("broadcast-with-group"));
+        assertThat(subscribeEndpoint.getMessageAsText(), is("broadcast-content"));
     }
 
     @ClientEndpoint
