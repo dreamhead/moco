@@ -46,3 +46,24 @@ You can also create websocket server in standalone api.
   }
 }
 ```
+
+# Broadcast
+
+You can setup broadcast which means you broadcast your request to all client when you receive request. 
+
+```java
+server.request(by("foo")).response(broadcast("bar"));
+```
+
+```json
+{
+  "request": {
+    "text": "foo"
+  },
+  "response": {
+    "broadcast": {
+      "content": "bar"
+    }
+  }
+}
+```
