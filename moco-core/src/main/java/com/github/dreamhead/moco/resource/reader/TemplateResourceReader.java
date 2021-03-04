@@ -180,11 +180,13 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         private Optional<Long> getRange(final List<?> arguments) {
-            if (arguments.size() > 0) {
-                Object range = arguments.get(0);
-                if (range instanceof SimpleNumber) {
-                    return getRange((SimpleNumber) range);
-                }
+            if (arguments.size() <= 0) {
+                return Optional.empty();
+            }
+
+            Object range = arguments.get(0);
+            if (range instanceof SimpleNumber) {
+                return getRange((SimpleNumber) range);
             }
 
             return Optional.empty();
