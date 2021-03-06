@@ -67,3 +67,36 @@ server.request(by("foo")).response(broadcast("bar"));
   }
 }
 ```
+
+If you just want to broadcast your message to specific client, `group` may help you. But before your broadcast, a client is supposed to join this group as following: 
+
+```java
+server.request(by("subscribe")).response(with("subscribed"), join(group("group")));
+server.request(by("broadcast")).response(with("broadcasted"), broadcast("content", group("group")));
+```
+
+```json
+[
+  {
+    "request": {
+      "text": "subscribe"
+    },
+    "response": {
+      "content": "subscribed",
+      "group": "group"
+    }
+  },
+  {
+    "request": {
+      "text": "broadcast"
+    },
+    "response": {
+      "content": "broadcasted",
+      "broadcast": {
+        "content": "content",
+        "group": "group"
+      }
+    }
+  }
+]
+```
