@@ -121,9 +121,13 @@ subprojects {
                 "org.mockito:mockito-core:$mockitoVersion",
                 "org.apache.httpcomponents:fluent-hc:$httpComponentVersion",
                 "org.skyscreamer:jsonassert:$jsonAssertVersion",
-                "javax.websocket:javax.websocket-api:$websocketVersion",
+                "jakarta.websocket:jakarta.websocket-api:$websocketVersion"
+        )
+
+        testRuntimeOnly(
                 "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
+
     }
 
     test {
