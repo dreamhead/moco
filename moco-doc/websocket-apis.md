@@ -68,7 +68,7 @@ server.request(by("foo")).response(broadcast("bar"));
 }
 ```
 
-If you just want to broadcast your message to specific client, `group` may help you. But before your broadcast, a client is supposed to join this group as following: 
+If you just want to broadcast your message to some specific clients, `group` may help you. A client is supposed to join this group before your broadcast as following: 
 
 ```java
 server.request(by("subscribe")).response(with("subscribed"), join(group("group")));
