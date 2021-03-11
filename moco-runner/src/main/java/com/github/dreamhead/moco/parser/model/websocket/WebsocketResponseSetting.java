@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.parser.model.websocket;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.Moco;
-import com.github.dreamhead.moco.MocoWebSockets;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
 import com.github.dreamhead.moco.parser.model.FileContainer;
