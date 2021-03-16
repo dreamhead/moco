@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.model.MessageContent;
+import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
@@ -16,5 +17,12 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
     @Override
     public MessageContent getContent() {
         return this.content;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("content", content)
+                .toString();
     }
 }
