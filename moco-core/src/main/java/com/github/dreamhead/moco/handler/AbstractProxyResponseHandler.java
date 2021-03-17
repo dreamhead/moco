@@ -21,6 +21,7 @@ import io.netty.handler.codec.http.QueryStringEncoder;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -266,6 +267,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         try {
             HttpRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
             return setupResponse(request, client.execute(remoteRequest));
+        } catch (ClientProtocolException e) {
+            logger.error("Failed to create remote request", e);
+            throw new MocoException(e);
         } catch (IOException e) {
             logger.error("Failed to load remote and try to failover", e);
             return failover.failover(request);
