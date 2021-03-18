@@ -65,8 +65,10 @@ import static org.apache.http.util.EntityUtils.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
-    private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(HOST, CONTENT_LENGTH);
-    private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(DATE, SERVER);
+    private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(
+            HOST.toUpperCase(), CONTENT_LENGTH.toUpperCase());
+    private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(
+            DATE.toUpperCase(), SERVER.toUpperCase());
 
     private static CloseableHttpClient client;
 
@@ -147,11 +149,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private boolean isRequestHeader(final Map.Entry<String, String> entry) {
-        return !IGNORED_REQUEST_HEADERS.contains(entry.getKey());
+        return !IGNORED_REQUEST_HEADERS.contains(entry.getKey().toUpperCase());
     }
 
     private boolean isResponseHeader(final Header header) {
-        return !IGNORED_RESPONSE_HEADERS.contains(header.getName());
+        return !IGNORED_RESPONSE_HEADERS.contains(header.getName().toUpperCase());
     }
 
     private HttpRequestBase createBaseRequest(final URL url, final HttpMethod method) {

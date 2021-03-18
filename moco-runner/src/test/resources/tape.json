@@ -7,10 +7,10 @@
         "charset" : "UTF-8"
       },
       "headers" : {
+        "content-length" : [ "3" ],
         "Connection" : [ "Keep-Alive" ],
         "Host" : [ "localhost:12306" ],
         "Accept-Encoding" : [ "gzip,deflate" ],
-        "Content-Length" : [ "3" ],
         "Content-Type" : [ "text/plain; charset=UTF-8" ]
       },
       "method" : "POST",
