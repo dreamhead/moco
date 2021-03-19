@@ -158,7 +158,7 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return websocketServer;
     }
 
-    public ActualWebSocketServer getWebsocketServer() {
+    public final ActualWebSocketServer getWebsocketServer() {
         return websocketServer;
     }
 }
