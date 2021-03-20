@@ -15,7 +15,7 @@ public class WebsocketSetting {
     private List<PingpongSession> pingpongs;
     private List<WebsocketSession> sessions;
 
-    public String getUri() {
+    public final String getUri() {
         return this.uri;
     }
 
@@ -29,7 +29,7 @@ public class WebsocketSetting {
         }
     }
 
-    public void bind(final WebSocketServer webSocketServer) {
+    public final void bind(final WebSocketServer webSocketServer) {
         if (connected != null) {
             webSocketServer.connected(connected.asResource());
         }
