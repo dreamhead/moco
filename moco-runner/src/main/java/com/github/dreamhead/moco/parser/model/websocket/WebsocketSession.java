@@ -10,7 +10,7 @@ public class WebsocketSession {
     private TextContainer request;
     private WebsocketResponseSetting response;
 
-    public void bindSession(final WebSocketServer webSocketServer) {
+    public final void bindSession(final WebSocketServer webSocketServer) {
         webSocketServer.request(Moco.by(request.asResource()))
                 .response(response.asResponseHandler());
     }
