@@ -21,7 +21,7 @@ public class WebsocketResponseSetting {
     private BroadcastSetting broadcast;
     private String group;
 
-    public ResponseHandler asResponseHandler() {
+    public final ResponseHandler asResponseHandler() {
         List<ResponseHandler> handlers = new ArrayList<>();
         if (text != null) {
             handlers.add(with(this.text.asResource()));
