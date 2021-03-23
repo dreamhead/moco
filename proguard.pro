@@ -12,6 +12,7 @@
 -keep public class com.github.dreamhead.moco.model.*{*;}
 -keep public class com.github.dreamhead.moco.parser.deserializer.*{*;}
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
+-keep public class com.github.dreamhead.moco.parser.model.websocket.*{*;}
 -keep public class com.github.dreamhead.moco.resource.reader.TemplateRequest{*;}
 -keep public class com.github.dreamhead.moco.Moco{*;}
 -keep public class com.github.dreamhead.moco.MocoRest{*;}

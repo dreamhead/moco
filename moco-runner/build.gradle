@@ -3,10 +3,12 @@ import org.gradle.internal.os.OperatingSystem
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
+        google()
     }
 
     dependencies {
-        classpath "net.sf.proguard:proguard-gradle:$proguardVersion"
+        classpath "com.guardsquare:proguard-gradle:$proguardVersion"
     }
 }
 
