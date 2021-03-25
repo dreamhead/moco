@@ -141,7 +141,7 @@ public class MocoWebsocketStandaloneTest extends AbstractMocoStandaloneTest {
 
         private byte[] getMessage() {
             try {
-                return message.get(3, TimeUnit.SECONDS);
+                return message.get(10, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException e) {
                 return new byte[0];
             } catch (TimeoutException e) {
