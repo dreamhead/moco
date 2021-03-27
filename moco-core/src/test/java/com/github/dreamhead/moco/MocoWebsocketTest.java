@@ -213,9 +213,9 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
 
         public Endpoint(final URI uri) {
             try {
+                clearMessage();
                 WebSocketContainer container = ContainerProvider.getWebSocketContainer();
                 container.connectToServer(this, uri);
-                clearMessage();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
