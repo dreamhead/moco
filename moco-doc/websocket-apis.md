@@ -9,8 +9,8 @@ Moco supports websocket api.
 Websocket server is created from HTTP server.
 
 ```java
-HttpServer server = httpServer(12306);
-WebsocketServer webSocketServer = server.websocket("/ws");
+HttpServer httpServer = httpServer(12306);
+WebsocketServer server = httpServer.websocket("/ws");
 ```
 
 If you want to response according to request content, Moco server can be configured as following:
@@ -27,12 +27,6 @@ You can also create websocket server in standalone api.
 {
   "websocket": {
     "uri": "/ws",
-    "pingpongs": [
-      {
-        "ping": "ping",
-        "pong": "pong"
-      }
-    ],
     "sessions": [
       {
         "request": {
