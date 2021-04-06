@@ -9,8 +9,9 @@
   * `group` broadcast message to specific group
 
 ## APIs
-* `transform` API allow you transform your content.
-* `binary` API return binary message.
+* `transform` Java API allow you transform your content.
+* `binary` Java API return binary message.
+* `json` Java API return pojo dynamically.
 
 ## Implementation Details
 * Return application/json header for `json` API with text and resource. 

@@ -958,7 +958,7 @@ server.response(pathResource("src/test/resources/gbk.response", Charset.forName(
 ]
 ```
 
-**@Since will be at next release**
+**@Since 1.2.0**
 
 If your response need to be transformed for some reason, e.g. encryption, you can `transform` your content.
 
@@ -1796,7 +1796,7 @@ For JSON API, just give json object directly
 
 
 
-**@Since will be at next release**
+**@Since 1.2.0**
 
 For API user, if you want to return create dynamic JSON based on the request, you can use lambda to do this.
 
@@ -1805,13 +1805,6 @@ For API user, if you want to return create dynamic JSON based on the request, yo
 ```java
 server.request(by(uri("/json"))).response(json((request) -> new Pojo()));
 ```
-
-* Without request
-```java
-server.request(by(uri("/json"))).response(json(() -> new Pojo()));
-```
-
-
 
 ## Mount
 
@@ -2467,7 +2460,7 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://loc
 ```
 
 ## Record and Replay
-**@Since next release**
+**@Since 1.1.0**
 
 More powerful dynamic feature are required even if you can implement some with template. For instance, you want to change one URL to return different response. Record and replay will help.
 
