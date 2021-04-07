@@ -19,7 +19,7 @@ public class WebSocketHandler {
         this.websocketServer = websocketServer;
     }
 
-    public void handleFrame(final ChannelHandlerContext ctx,
+    public final void handleFrame(final ChannelHandlerContext ctx,
                             final WebSocketFrame message) {
         if (this.websocketServer == null) {
             return;
