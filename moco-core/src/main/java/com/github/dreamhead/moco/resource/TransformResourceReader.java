@@ -18,7 +18,7 @@ public class TransformResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MessageContent readFor(final Request request) {
+    public final MessageContent readFor(final Request request) {
         MessageContent messageContent = reader.readFor(request);
         byte[] transformed = transformer.apply(messageContent.getContent());
         return MessageContent.content()
@@ -28,7 +28,7 @@ public class TransformResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MediaType getContentType(final HttpRequest request) {
+    public final MediaType getContentType(final HttpRequest request) {
         return this.reader.getContentType(request);
     }
 }
