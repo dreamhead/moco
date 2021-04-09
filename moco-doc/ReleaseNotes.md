@@ -1,7 +1,7 @@
 # Release 1.2.0 (1-Apr-2021)
 
 ## Websocket
-* `connect` API return content when client connects to websocket server
+* `connected` API return content when client connects to websocket server
 * `request` match request content 
 * `response` return response content
 * `join` add client to specific group
