@@ -21,14 +21,14 @@ public class WebSocketBroadcastHandler extends AbstractResponseHandler {
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         MessageContent content = this.content.readFor(context.getRequest());
         ByteBuf byteBuf = ByteBufs.toByteBuf(content.getContent());
         context.writeAndFlush(new BinaryWebSocketFrame(byteBuf), group);
     }
 
     @Override
-    public ResponseHandler doApply(final MocoConfig config) {
+    public final ResponseHandler doApply(final MocoConfig config) {
         Resource applied = content.apply(config);
         if (applied == content) {
             return this;
