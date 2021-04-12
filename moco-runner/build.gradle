@@ -65,7 +65,7 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 
 task proguardCheck(type: Test, dependsOn: proguard) {
     testLogging { exceptionFormat "full" }
-    classpath = classpath - files(sourceSets.main.output.classesDirs) - configurations.runtime + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
+    classpath = classpath - files(sourceSets.main.output.classesDirs) - configurations.runtimeClasspath + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http')
 }
 
 publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.singleFile) {
@@ -108,5 +108,5 @@ def javaModPath() {
 }
 
 def findJar(String prefix) {
-    configurations.runtime.filter { it.name.startsWith(prefix) }
+    configurations.runtimeClasspath.filter { it.name.startsWith(prefix) }
 }
