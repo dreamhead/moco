@@ -120,6 +120,14 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return new ActualHttpServer(port, certificate, monitor, configs);
     }
 
+    public static ActualHttpServer createHttpServer(final int port,
+                                                     final HttpsCertificate certificate,
+                                                     final MocoMonitor monitor,
+                                                     final ServerConfig serverConfig,
+                                                     final MocoConfig... configs) {
+        return new ActualHttpServer(port, certificate, monitor, serverConfig, configs);
+    }
+
     public static ActualHttpServer createHttpsLogServer(final int port,
                                                         final HttpsCertificate certificate,
                                                         final MocoConfig... configs) {
