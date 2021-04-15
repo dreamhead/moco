@@ -155,12 +155,12 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     @Override
-    protected void addExtension(final ActualHttpServer server) {
+    protected final void addExtension(final ActualHttpServer server) {
         this.websocketServer = server.websocketServer;
     }
 
     @Override
-    public WebSocketServer websocket(final String uri) {
+    public final WebSocketServer websocket(final String uri) {
         checkArgument(websocketServer == null, "Only one websocket can be setup");
         this.websocketServer = new ActualWebSocketServer(checkNotNullOrEmpty(uri, "uri should not be null or empty"));
         return websocketServer;
