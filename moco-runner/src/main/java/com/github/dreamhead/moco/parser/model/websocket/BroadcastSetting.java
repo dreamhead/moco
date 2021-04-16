@@ -12,11 +12,11 @@ public class BroadcastSetting {
     private TextContainer content;
     private String group;
 
-    public String asResource() {
+    public final String asResource() {
         return null;
     }
 
-    public ResponseHandler asHandler() {
+    public final ResponseHandler asHandler() {
         ContentResource resource = this.content();
 
         if (this.group != null) {
