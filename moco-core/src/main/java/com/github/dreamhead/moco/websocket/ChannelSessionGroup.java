@@ -22,11 +22,11 @@ public class ChannelSessionGroup {
         this.channelGroups = newHashMap();
     }
 
-    public void add(final Channel channel) {
+    public final void add(final Channel channel) {
         this.group.add(channel);
     }
 
-    public void remove(final Channel channel) {
+    public final void remove(final Channel channel) {
         this.group.remove(channel);
 
         final MocoGroup group = this.channelGroups.get(channel);
@@ -36,7 +36,7 @@ public class ChannelSessionGroup {
         }
     }
 
-    public void writeAndFlush(final Object message, final MocoGroup group) {
+    public final void writeAndFlush(final Object message, final MocoGroup group) {
         if (group == null) {
             this.group.writeAndFlush(message);
             return;
@@ -48,7 +48,7 @@ public class ChannelSessionGroup {
         }
     }
 
-    public void join(final MocoGroup group, final Channel channel) {
+    public final void join(final MocoGroup group, final Channel channel) {
         this.groupChannels.put(group, channel);
         this.channelGroups.put(channel, group);
     }
