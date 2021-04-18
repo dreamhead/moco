@@ -14,12 +14,12 @@ public class ContextSessionGroup implements SessionGroup {
     }
 
     @Override
-    public void writeAndFlush(final Object message, final MocoGroup group) {
+    public final void writeAndFlush(final Object message, final MocoGroup group) {
         this.group.writeAndFlush(message, group);
     }
 
     @Override
-    public void join(final MocoGroup group) {
+    public final void join(final MocoGroup group) {
         this.group.join(group, channel);
     }
 }
