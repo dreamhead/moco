@@ -9,11 +9,11 @@ public class ServerConfig {
         this.contentLength = maxContentLength;
     }
 
-    public int getHeaderSize() {
+    public final int getHeaderSize() {
         return headerSize;
     }
 
-    public int getContentLength() {
+    public final int getContentLength() {
         return contentLength;
     }
 }
