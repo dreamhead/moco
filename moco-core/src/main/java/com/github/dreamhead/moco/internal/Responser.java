@@ -15,7 +15,7 @@ public class Responser<T extends ResponseSetting<T>> {
         this.fetcher = fetcher;
     }
 
-    public Optional<Response> getResponse(final SessionContext context) {
+    public final Optional<Response> getResponse(final SessionContext context) {
         Request request = context.getRequest();
         ImmutableList<Setting<T>> settings = fetcher.getSettings();
         for (Setting<?> setting : settings) {
