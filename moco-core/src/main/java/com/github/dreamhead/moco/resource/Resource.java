@@ -41,7 +41,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
     }
 
     @Override
-    public Transformer<byte[]> transform(final Function<byte[], byte[]> transformer) {
+    public final Transformer<byte[]> transform(final Function<byte[], byte[]> transformer) {
         checkNotNull(transformer, "Transformer should not be null");
         this.reader = new TransformResourceReader(transformer, reader(ContentResourceReader.class));
         return this;
