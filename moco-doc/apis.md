@@ -2466,7 +2466,7 @@ More powerful dynamic feature are required even if you can implement some with t
 
 In the following, `/record` will use to record request and `/replay` will return the recorded request content. You can also configure your record and replay for more capability.
 
-In this case, `group` will be used to distinguish diffrent record source.
+In this case, `group` will be used to distinguish different record source.
 
 ```java
 server.request(by(uri("/record"))).response(record(group("foo")));
@@ -2475,7 +2475,7 @@ server.request(by(uri("/replay"))).response(replay(group("foo")));
 
 ### Group
 
-`group` help you distinguish diffrent record source, which means you can have same configuration in different group. If no `group` is provided, default group will be applied.
+`group` help you distinguish different record source, which means you can have same configuration in different group. If no `group` is provided, default group will be applied.
 
 * Java
 
@@ -2538,7 +2538,7 @@ You can also specify `group` name explicitly.
 
 ### Identifier
 
-In the same group, you can use `identifier` to distinguish diffrent requst. You can extract identifier from request with template syntax.
+In the same group, you can use `identifier` to distinguish different requst. You can extract identifier from request with template syntax.
 
 * Java
 
