@@ -14,7 +14,7 @@ public class FunctionExtractor<T> implements RequestExtractor<T> {
     }
 
     @Override
-    public Optional<T> extract(final Request request) {
+    public final Optional<T> extract(final Request request) {
         return Optional.ofNullable(this.function.apply(request));
     }
 }
