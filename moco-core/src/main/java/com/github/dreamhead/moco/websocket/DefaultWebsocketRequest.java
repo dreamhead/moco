@@ -15,12 +15,12 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
     }
 
     @Override
-    public MessageContent getContent() {
+    public final MessageContent getContent() {
         return this.content;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("content", content)
                 .toString();
