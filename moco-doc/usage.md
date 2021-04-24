@@ -80,7 +80,7 @@ public void should_response_as_expected() throws Exception {
 
 As shown above, we created a new server and configure it as expected. And then run our test against this server.
 
-Here, We use [Apache Http Client Fluent API](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fluent.html) to request our testing server.
+Here, We use [Apache Http Client Fluent API](https://hc.apache.org/httpcomponents-client-5.0.x/current/httpclient5-fluent/apidocs/) to request our testing server.
 
 #### Runner API
 You may need to control server start/stop by yourself, for example, in your Before (or setup) method, runner API could be used.
