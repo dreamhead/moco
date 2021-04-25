@@ -25,6 +25,7 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.internal.ActualSocketServer;
 import com.github.dreamhead.moco.internal.ApiUtils;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
+import com.github.dreamhead.moco.matcher.ConditionalRequestMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.ExistMatcher;
 import com.github.dreamhead.moco.matcher.NotRequestMatcher;
@@ -45,6 +46,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.extractor.Extractors.extractor;
@@ -678,6 +680,10 @@ public final class Moco {
 
     public static MocoGroup group(final String name) {
         return new MocoGroup(checkNotNullOrEmpty(name, "group should not be empty"));
+    }
+
+    public static RequestMatcher conditional(final Predicate<Request> predicate) {
+        return new ConditionalRequestMatcher(checkNotNull(predicate, "Predicate should not be null"));
     }
 
     private Moco() {

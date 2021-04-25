@@ -23,6 +23,7 @@ import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.binary;
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.conditional;
 import static com.github.dreamhead.moco.Moco.contain;
 import static com.github.dreamhead.moco.Moco.cycle;
 import static com.github.dreamhead.moco.Moco.endsWith;
@@ -806,5 +807,15 @@ public class MocoTest extends AbstractMocoHttpTest {
             transformed[i] = (byte) (raw[i] + 1);
         }
         return transformed;
+    }
+
+    @Test
+    public void should_be_conditional() throws Exception {
+        server.request(conditional(request -> true)).response("foo");
+
+        running(server, () -> {
+            String response = helper.get(root());
+            assertThat(response, is("foo"));
+        });
     }
 }
