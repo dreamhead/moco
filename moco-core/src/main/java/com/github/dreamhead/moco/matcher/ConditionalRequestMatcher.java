@@ -19,7 +19,7 @@ public class ConditionalRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public RequestMatcher apply(MocoConfig config) {
+    public RequestMatcher apply(final MocoConfig config) {
         return this;
     }
 }
