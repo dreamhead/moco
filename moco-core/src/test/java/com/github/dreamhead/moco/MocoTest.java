@@ -818,4 +818,16 @@ public class MocoTest extends AbstractMocoHttpTest {
             assertThat(response, is("foo"));
         });
     }
+
+    @Test
+    public void should_be_conditional_with_content() throws Exception {
+        server.request(conditional(request -> request.getContent().toString().equals("foo"))).response("foo");
+
+        running(server, () -> {
+            String response = helper.postContent(root(), "foo");
+            assertThat(response, is("foo"));
+            final HttpResponse whole = helper.postForResponse(root(), "bar");
+            assertThat(whole.getStatusLine().getStatusCode(), is(400));
+        });
+    }
 }
