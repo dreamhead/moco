@@ -855,6 +855,16 @@ For JSON API, you can decide whether the information does not exist.
 }
 ```
 
+### Conditional
+
+**@Since will be at next release**
+
+If you want to implement your own matcher, you can write with `conditional` API which is supported in Java code.
+
+```java
+server.request(conditional(request -> request.getContent().toString().equals("foo"))).response("foo");
+```
+
 ## Response
 
 ### Content

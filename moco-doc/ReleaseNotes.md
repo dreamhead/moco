@@ -1,3 +1,7 @@
+# Release
+## APIs
+* `conditional` Java API allow you to write your own matcher
+
 # Release 1.2.0 (1-Apr-2021)
 
 ## Websocket
