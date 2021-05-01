@@ -3,6 +3,8 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
+import java.util.stream.StreamSupport;
+
 public final class AndRequestMatcher extends CompositeRequestMatcher {
     public AndRequestMatcher(final Iterable<RequestMatcher> matchers) {
         super(matchers);
@@ -10,13 +12,8 @@ public final class AndRequestMatcher extends CompositeRequestMatcher {
 
     @Override
     protected boolean doMatch(final Request request, final Iterable<RequestMatcher> matchers) {
-        for (RequestMatcher matcher : matchers) {
-            if (!matcher.match(request)) {
-                return false;
-            }
-        }
-
-        return true;
+        return StreamSupport.stream(matchers.spliterator(), false)
+                .allMatch(matcher -> matcher.match(request));
     }
 
     @Override
