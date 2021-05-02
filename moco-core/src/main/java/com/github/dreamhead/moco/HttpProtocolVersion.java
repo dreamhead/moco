@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.dreamhead.moco.dumper.HttpProtocolVersionDeserializer;
 import com.github.dreamhead.moco.dumper.HttpProtocolVersionSerializer;
 
+import java.util.Arrays;
+
 @JsonSerialize(using = HttpProtocolVersionSerializer.class)
 @JsonDeserialize(using = HttpProtocolVersionDeserializer.class)
 public enum HttpProtocolVersion {
@@ -29,12 +31,9 @@ public enum HttpProtocolVersion {
 
     public static HttpProtocolVersion versionOf(final String version) {
         HttpProtocolVersion[] values = HttpProtocolVersion.values();
-        for (HttpProtocolVersion value : values) {
-            if (value.text.equalsIgnoreCase(version)) {
-                return value;
-            }
-        }
-
-        throw new IllegalArgumentException("unknown HTTP version: " + version);
+        return Arrays.stream(values)
+                .filter(value -> value.text.equalsIgnoreCase(version))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("unknown HTTP version: " + version));
     }
 }
