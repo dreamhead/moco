@@ -50,6 +50,7 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -211,12 +212,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
         response.setStatus(status);
 
-        Header[] allHeaders = remoteResponse.getAllHeaders();
-        for (Header header : allHeaders) {
-            if (isResponseHeader(header)) {
-                response.headers().set(header.getName(), header.getValue());
-            }
-        }
+        Arrays.stream(remoteResponse.getAllHeaders())
+                .filter(this::isResponseHeader)
+                .forEach(header -> response.headers().set(header.getName(), header.getValue()));
 
         HttpEntity entity = remoteResponse.getEntity();
         if (entity != null) {
