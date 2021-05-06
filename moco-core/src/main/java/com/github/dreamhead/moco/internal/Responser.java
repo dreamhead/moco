@@ -18,13 +18,19 @@ public class Responser<T extends ResponseSetting<T>> {
     public final Optional<Response> getResponse(final SessionContext context) {
         Request request = context.getRequest();
         ImmutableList<Setting<T>> settings = fetcher.getSettings();
-        for (Setting<?> setting : settings) {
-            if (setting.match(request)) {
-                setting.writeToResponse(context);
-                return Optional.of(context.getResponse());
-            }
+        final Optional<Setting<T>> firstSetting = settings.stream()
+                .filter(setting -> setting.match(request))
+                .findFirst();
+        if (firstSetting.isPresent()) {
+            firstSetting.get().writeToResponse(context);
+            return Optional.of(context.getResponse());
         }
 
+        return getAnyResponse(context);
+    }
+
+    private Optional<Response> getAnyResponse(final SessionContext context) {
+        Request request = context.getRequest();
         Setting<T> anySetting = fetcher.getAnySetting();
         if (anySetting.match(request)) {
             anySetting.writeToResponse(context);
