@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
@@ -55,13 +56,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     private boolean isSingleValueHeader(final String name) {
-        for (String header : SINGLE_VALUE_HEADERS) {
-            if (header.equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arrays.stream(SINGLE_VALUE_HEADERS)
+                .anyMatch(header -> header.equalsIgnoreCase(name));
     }
 
     private void doAddHeader(final String name, final Object value) {
