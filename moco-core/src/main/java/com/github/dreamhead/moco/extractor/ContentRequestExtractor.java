@@ -13,7 +13,7 @@ public final class ContentRequestExtractor implements RequestExtractor<MessageCo
     @Override
     public Optional<MessageContent> extract(final Request request) {
         MessageContent content = request.getContent();
-        if (content.hasContent() || content.getContent().length > 0) {
+        if (content.hasContent()) {
             return of(content);
         }
 
