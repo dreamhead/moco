@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.net.HttpHeaders.COOKIE;
-import static java.util.Optional.of;
 
 public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
     private final RequestExtractor<String[]> extractor = new HeaderRequestExtractor(COOKIE);
@@ -19,11 +18,8 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
     @Override
     protected final Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         Optional<String[]> cookieString = extractor.extract(request);
-        if (!cookieString.isPresent()) {
-            return Optional.empty();
-        }
+        return cookieString.map(CookiesRequestExtractor::doExtractCookies);
 
-        return of(doExtractCookies(cookieString.get()));
     }
 
     private static ImmutableMap<String, String> doExtractCookies(final String[] cookieStrings) {
