@@ -19,7 +19,6 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
     protected final Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
         Optional<String[]> cookieString = extractor.extract(request);
         return cookieString.map(CookiesRequestExtractor::doExtractCookies);
-
     }
 
     private static ImmutableMap<String, String> doExtractCookies(final String[] cookieStrings) {

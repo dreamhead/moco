@@ -26,7 +26,9 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     @Override
     public boolean match(final Request request) {
         Optional<MessageContent> content = extractor.extract(request);
-        return content.isPresent() && doMatch(request, content.get());
+        return content.filter(messageContent -> doMatch(request, messageContent))
+                .isPresent();
+
     }
 
     private boolean doMatch(final Request request, final MessageContent content) {
