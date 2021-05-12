@@ -30,11 +30,11 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
     @Override
     public final boolean match(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
-        if (!extractContent.isPresent()) {
-            return false;
-        }
+        return extractContent.filter(this::matchContent).isPresent();
 
-        T target = extractContent.get();
+    }
+
+    private boolean matchContent(final T target) {
         if (target instanceof String) {
             return predicate.test((String) target);
         }
