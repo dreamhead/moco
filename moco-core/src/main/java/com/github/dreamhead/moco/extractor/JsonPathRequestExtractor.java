@@ -26,18 +26,18 @@ public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object>
     @Override
     protected Optional<Object> doExtract(final HttpRequest request) {
         Optional<MessageContent> requestBody = extractor.extract(request);
-        try {
-            if (!requestBody.isPresent()) {
-                return empty();
-            }
+        return requestBody.flatMap(this::extractContent);
+    }
 
-            MessageContent content = requestBody.get();
+    private Optional<Object> extractContent(final MessageContent content) {
+        try {
             Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(content.getContent()),
                     content.getCharset().toString(),
                     Configuration.defaultConfiguration());
             if (jsonPathContent == null) {
                 return empty();
             }
+
             return of(toStringArray(jsonPathContent));
         } catch (PathNotFoundException | IOException e) {
             return empty();
