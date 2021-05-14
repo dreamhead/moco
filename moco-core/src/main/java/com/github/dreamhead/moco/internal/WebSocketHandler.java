@@ -36,12 +36,12 @@ public class WebSocketHandler {
         }
 
         Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message);
-        if (response.isPresent()) {
-            ByteBuf byteBuf = ByteBufs.toByteBuf(response.get().getContent().getContent());
-            return Optional.of(new BinaryWebSocketFrame(byteBuf));
-        }
+        return response.map(this::asWebsocketFrame);
+    }
 
-        return Optional.empty();
+    private BinaryWebSocketFrame asWebsocketFrame(final WebsocketResponse actual) {
+        ByteBuf byteBuf = ByteBufs.toByteBuf(actual.getContent().getContent());
+        return new BinaryWebSocketFrame(byteBuf);
     }
 
     public final void connect(final ChannelHandlerContext ctx, final FullHttpRequest request) {
