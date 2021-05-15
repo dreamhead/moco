@@ -7,17 +7,10 @@ import org.xml.sax.InputSource;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-
 public class XmlExtractorHelper {
     public final Optional<InputSource> extractAsInputSource(final Request request,
                                                             final ContentRequestExtractor extractor) {
         Optional<MessageContent> content = extractor.extract(request);
-        if (content.isPresent()) {
-            return of(new InputSource(new ByteArrayInputStream(content.get().getContent())));
-        }
-
-        return empty();
+        return content.map(messageContent -> new InputSource(new ByteArrayInputStream(messageContent.getContent())));
     }
 }
