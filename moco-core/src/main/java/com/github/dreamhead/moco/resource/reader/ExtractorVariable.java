@@ -15,11 +15,10 @@ public final class ExtractorVariable<T> implements Variable {
     @Override
     public Object toTemplateVariable(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
-        if (!extractContent.isPresent()) {
-            return null;
-        }
+        return extractContent.map(this::asVariable).orElse(null);
+    }
 
-        T target = extractContent.get();
+    private Object asVariable(final T target) {
         if (target instanceof String[]) {
             return target;
         }
