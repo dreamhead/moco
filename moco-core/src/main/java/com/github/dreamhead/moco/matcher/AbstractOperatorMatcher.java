@@ -31,7 +31,6 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
     public final boolean match(final Request request) {
         Optional<T> extractContent = extractor.extract(request);
         return extractContent.filter(this::matchContent).isPresent();
-
     }
 
     private boolean matchContent(final T target) {

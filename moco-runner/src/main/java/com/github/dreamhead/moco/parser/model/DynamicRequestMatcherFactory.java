@@ -100,11 +100,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
             Method operationMethod = Moco.class.getMethod(operation, Resource.class);
             Object result = operationMethod.invoke(null, resource);
             Optional<RequestMatcher> matcher = createRequestMatcher(result);
-            if (matcher.isPresent()) {
-                return matcher.get();
-            }
-
-            throw new IllegalArgumentException("unknown operation [" + operation + "]");
+            return matcher.orElseThrow(() -> new IllegalArgumentException("unknown operation [" + operation + "]"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

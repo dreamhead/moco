@@ -94,7 +94,6 @@ public final class RestRequestDispatcher {
         }
 
         return all.getMatched(name, httpRequest);
-
     }
 
     private Optional<ResponseHandler> getHeadHandler(final HttpRequest httpRequest) {
@@ -102,6 +101,7 @@ public final class RestRequestDispatcher {
                 headSettings,
                 headAllSettings,
                 name);
+
         if (handler.isPresent()) {
             return handler;
         }
