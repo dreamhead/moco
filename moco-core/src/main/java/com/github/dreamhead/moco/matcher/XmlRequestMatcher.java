@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 public final class XmlRequestMatcher extends AbstractRequestMatcher {
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
@@ -38,17 +36,17 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
 
     @Override
     public boolean match(final Request request) {
+        Optional<Document> requestDocument = extractDocument(request, extractor);
+        return requestDocument.filter(document -> tryToMatch(request, document)).isPresent();
+    }
+
+    private boolean tryToMatch(final Request request, final Document document) {
         try {
-            Optional<Document> requestDocument = extractDocument(request, extractor);
-            return requestDocument.isPresent() && tryToMatch(request, requestDocument.get());
+            Document resourceDocument = getResourceDocument(request, this.resource);
+            return document.isEqualNode(resourceDocument);
         } catch (SAXException e) {
             return false;
         }
-    }
-
-    private boolean tryToMatch(final Request request, final Document document) throws SAXException {
-        Document resourceDocument = getResourceDocument(request, this.resource);
-        return document.isEqualNode(resourceDocument);
     }
 
     @Override
@@ -66,13 +64,9 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Optional<Document> extractDocument(final Request request,
-                                               final ContentRequestExtractor extractor) throws SAXException {
+                                               final ContentRequestExtractor extractor) {
         Optional<InputSource> inputSourceOptional = helper.extractAsInputSource(request, extractor);
-        if (!inputSourceOptional.isPresent()) {
-            return empty();
-        }
-
-        return of(extractDocument(inputSourceOptional.get()));
+        return inputSourceOptional.map(this::extractDocument);
     }
 
     private void trimChild(final Node node, final Node child) {
@@ -110,14 +104,14 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
         }
     }
 
-    private Document extractDocument(final InputSource inputSource) throws SAXException {
+    private Document extractDocument(final InputSource inputSource) {
         try {
             DocumentBuilder builder = documentBuilder();
             Document document = builder.parse(inputSource);
             document.normalizeDocument();
             trimNode(document);
             return document;
-        } catch (IOException e) {
+        } catch (IOException | SAXException e) {
             throw new MocoException(e);
         }
     }
