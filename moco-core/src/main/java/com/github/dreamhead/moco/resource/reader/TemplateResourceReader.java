@@ -168,12 +168,14 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         private Optional<? extends NumberFormat> getFormat(final List<?> arguments) {
-            if (arguments.size() > 0) {
-                Object last = arguments.get(arguments.size() - 1);
-                if (last instanceof SimpleScalar) {
-                    SimpleScalar lastArgument = (SimpleScalar) last;
-                    return Optional.of(new DecimalFormat(lastArgument.toString()));
-                }
+            if (arguments.size() <= 0) {
+                return Optional.empty();
+            }
+
+            Object last = arguments.get(arguments.size() - 1);
+            if (last instanceof SimpleScalar) {
+                SimpleScalar lastArgument = (SimpleScalar) last;
+                return Optional.of(new DecimalFormat(lastArgument.toString()));
             }
 
             return Optional.empty();
