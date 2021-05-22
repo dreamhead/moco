@@ -32,11 +32,8 @@ public abstract class SimpleRestSetting implements RestSetting {
 
     public final RequestMatcher getRequestMatcher(final RestIdMatcher resourceName) {
         RequestMatcher rootMatcher = getBaseRequestMatcher(resourceName);
-        if (this.matcher.isPresent()) {
-            return and(rootMatcher, this.matcher.get());
-        }
+        return this.matcher.map(requestMatcher -> and(rootMatcher, requestMatcher)).orElse(rootMatcher);
 
-        return rootMatcher;
     }
 
     public final boolean isFor(final HttpMethod method) {
