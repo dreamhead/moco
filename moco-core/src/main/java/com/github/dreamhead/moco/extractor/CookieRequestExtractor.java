@@ -6,9 +6,6 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.Optional;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
-
 public final class CookieRequestExtractor extends HttpRequestExtractor<String> {
     private final CookiesRequestExtractor extractor = new CookiesRequestExtractor();
 
