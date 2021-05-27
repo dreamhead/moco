@@ -231,12 +231,10 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     @Override
     protected final void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
-        if (!url.isPresent()) {
-            return;
-        }
-
-        HttpResponse response = doProxy(httpRequest, url.get());
-        doWritHttpResponse(response, httpResponse);
+        url.ifPresent(actual -> {
+            HttpResponse response = doProxy(httpRequest, actual);
+            doWritHttpResponse(response, httpResponse);
+        });
     }
 
     private void doWritHttpResponse(final HttpResponse response, final MutableHttpResponse httpResponse) {
