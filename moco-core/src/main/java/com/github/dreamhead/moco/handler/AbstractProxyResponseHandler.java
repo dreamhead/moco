@@ -285,12 +285,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private Optional<URL> remoteUrl(final HttpRequest request) {
-        java.util.Optional<String> remoteUrl = this.doRemoteUrl(request);
-        if (!remoteUrl.isPresent()) {
-            return empty();
-        }
+        Optional<String> remoteUrl = this.doRemoteUrl(request);
+        return remoteUrl.flatMap(actual -> doGetRemoteUrl(request, remoteUrl.get()));
+    }
 
-        QueryStringEncoder encoder = new QueryStringEncoder(remoteUrl.get());
+    private Optional<URL> doGetRemoteUrl(final HttpRequest request, final String actual) {
+        QueryStringEncoder encoder = new QueryStringEncoder(actual);
         for (Map.Entry<String, String[]> entry : request.getQueries().entrySet()) {
             for (String value : entry.getValue()) {
                 encoder.addParam(entry.getKey(), value);
