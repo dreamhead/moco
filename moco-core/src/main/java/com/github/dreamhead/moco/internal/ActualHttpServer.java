@@ -71,11 +71,9 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
-        Optional<Integer> optionalPort = thisServer.getPort();
+        Optional<Integer> optionalPort = thisServer.getPort().filter(port -> port != 0);
         if (optionalPort.isPresent()) {
-            if (optionalPort.get() != 0) {
-                return optionalPort;
-            }
+            return optionalPort;
         }
 
         return thatServer.getPort();
@@ -121,10 +119,10 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     public static ActualHttpServer createHttpServer(final int port,
-                                                     final HttpsCertificate certificate,
-                                                     final MocoMonitor monitor,
-                                                     final ServerConfig serverConfig,
-                                                     final MocoConfig... configs) {
+                                                    final HttpsCertificate certificate,
+                                                    final MocoMonitor monitor,
+                                                    final ServerConfig serverConfig,
+                                                    final MocoConfig... configs) {
         return new ActualHttpServer(port, certificate, monitor, serverConfig, configs);
     }
 
