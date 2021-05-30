@@ -290,6 +290,14 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private Optional<URL> doGetRemoteUrl(final HttpRequest request, final String actual) {
+        try {
+            return of(toUrl(getQueryStringEncoder(request, actual).toString()));
+        } catch (IllegalArgumentException e) {
+            return empty();
+        }
+    }
+
+    private QueryStringEncoder getQueryStringEncoder(final HttpRequest request, final String actual) {
         QueryStringEncoder encoder = new QueryStringEncoder(actual);
         for (Map.Entry<String, String[]> entry : request.getQueries().entrySet()) {
             for (String value : entry.getValue()) {
@@ -297,11 +305,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             }
         }
 
-        try {
-            return of(toUrl(encoder.toString()));
-        } catch (IllegalArgumentException e) {
-            return empty();
-        }
+        return encoder;
     }
 
     protected final Failover failover() {
