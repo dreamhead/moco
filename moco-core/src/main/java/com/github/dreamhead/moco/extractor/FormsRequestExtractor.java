@@ -16,11 +16,9 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.util.Optional.of;
 
 public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
@@ -35,8 +33,6 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
             return of(doExtractForms(decoder));
         } catch (HttpPostRequestDecoder.ErrorDataDecoderException idde) {
             return Optional.empty();
-        } catch (IOException e) {
-            throw new MocoException(e);
         } finally {
             if (decoder != null) {
                 decoder.destroy();
@@ -44,16 +40,20 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
         }
     }
 
-    private ImmutableMap<String, String> doExtractForms(final HttpPostRequestDecoder decoder) throws IOException {
+    private ImmutableMap<String, String> doExtractForms(final HttpPostRequestDecoder decoder) {
         List<InterfaceHttpData> bodyHttpDatas = decoder.getBodyHttpDatas();
-        Map<String, String> forms = newHashMap();
-        for (InterfaceHttpData data : bodyHttpDatas) {
-            if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
-                Attribute attribute = (Attribute) data;
-                forms.put(attribute.getName(), attribute.getValue());
-            }
-        }
 
-        return copyOf(forms);
+        return bodyHttpDatas.stream()
+                .filter(data -> data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute)
+                .map(data -> (Attribute) data)
+                .collect(toImmutableMap(Attribute::getName, this::getAttributeValue));
+    }
+
+    private String getAttributeValue(final Attribute attribute) {
+        try {
+            return attribute.getValue();
+        } catch (IOException e) {
+            throw new MocoException(e);
+        }
     }
 }
