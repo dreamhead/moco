@@ -15,7 +15,6 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
@@ -41,9 +40,7 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
     }
 
     private ImmutableMap<String, String> doExtractForms(final HttpPostRequestDecoder decoder) {
-        List<InterfaceHttpData> bodyHttpDatas = decoder.getBodyHttpDatas();
-
-        return bodyHttpDatas.stream()
+        return decoder.getBodyHttpDatas().stream()
                 .filter(data -> data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute)
                 .map(data -> (Attribute) data)
                 .collect(toImmutableMap(Attribute::getName, this::getAttributeValue));
