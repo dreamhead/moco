@@ -7,9 +7,11 @@ import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static com.google.common.net.HttpHeaders.COOKIE;
 
 public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
@@ -22,15 +24,8 @@ public class CookiesRequestExtractor extends HttpRequestExtractor<ImmutableMap<S
     }
 
     private static ImmutableMap<String, String> doExtractCookies(final String[] cookieStrings) {
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-
-        for (String cookie : cookieStrings) {
-            Set<Cookie> decodeCookies = ServerCookieDecoder.STRICT.decode(cookie);
-            for (Cookie decodeCookie : decodeCookies) {
-                builder.put(decodeCookie.name(), decodeCookie.value());
-            }
-        }
-
-        return builder.build();
+        return Arrays.stream(cookieStrings)
+                .flatMap(cookie -> ServerCookieDecoder.STRICT.decode(cookie).stream())
+                .collect(toImmutableMap(Cookie::name, Cookie::value));
     }
 }
