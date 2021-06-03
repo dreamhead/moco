@@ -16,8 +16,8 @@ public final class CompositeWatcher implements Watcher {
 
     @Override
     public void stop() {
-        for (Watcher monitor : watchers) {
-            monitor.stop();
+        for (Watcher watcher : watchers) {
+            watcher.stop();
         }
     }
 }
