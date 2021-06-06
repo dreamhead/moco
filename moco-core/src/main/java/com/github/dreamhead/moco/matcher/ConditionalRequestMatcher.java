@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 
 import java.util.function.Predicate;
 
-public class ConditionalRequestMatcher implements RequestMatcher {
+public final class ConditionalRequestMatcher implements RequestMatcher {
     private final Predicate<Request> predicate;
 
     public ConditionalRequestMatcher(final Predicate<Request> predicate) {
@@ -14,12 +14,12 @@ public class ConditionalRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         return predicate.test(request);
     }
 
     @Override
-    public RequestMatcher apply(final MocoConfig config) {
+    public final RequestMatcher apply(final MocoConfig config) {
         return this;
     }
 }
