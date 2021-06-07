@@ -15,7 +15,7 @@ public class RecorderRegistry {
         this.groupName = name;
     }
 
-    public String getGroup() {
+    public final String getGroup() {
         return groupName;
     }
 
