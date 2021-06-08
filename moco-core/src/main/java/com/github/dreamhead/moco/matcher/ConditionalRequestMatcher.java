@@ -14,12 +14,12 @@ public final class ConditionalRequestMatcher implements RequestMatcher {
     }
 
     @Override
-    public final boolean match(final Request request) {
+    public boolean match(final Request request) {
         return predicate.test(request);
     }
 
     @Override
-    public final RequestMatcher apply(final MocoConfig config) {
+    public RequestMatcher apply(final MocoConfig config) {
         return this;
     }
 }

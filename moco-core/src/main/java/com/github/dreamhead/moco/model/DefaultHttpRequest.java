@@ -21,13 +21,13 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.QueryStringEncoder;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.google.common.collect.ImmutableMap.copyOf;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
 public final class DefaultHttpRequest extends DefaultHttpMessage implements HttpRequest {
@@ -131,12 +131,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     private static ImmutableMap<String, String[]> toQueries(final QueryStringDecoder decoder) {
-        ImmutableMap.Builder<String, String[]> builder = ImmutableMap.builder();
-        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            List<String> value = entry.getValue();
-            builder.put(entry.getKey(), value.toArray(new String[0]));
-        }
-        return builder.build();
+        return decoder.parameters().entrySet().stream()
+                .collect(toImmutableMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
     }
 
     public FullHttpRequest toFullHttpRequest() {
