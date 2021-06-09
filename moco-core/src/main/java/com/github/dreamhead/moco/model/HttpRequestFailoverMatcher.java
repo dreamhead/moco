@@ -28,25 +28,26 @@ public final class HttpRequestFailoverMatcher {
             return true;
         }
 
-        for (Map.Entry<String, ?> entry : thisField.entrySet()) {
-            Object thisValue = entry.getValue();
-            Object thatValue = thatField.get(entry.getKey());
-            if (thisValue instanceof String && thatValue instanceof String) {
-                if (!doMatch((String) thisValue, (String) thatValue)) {
-                    return false;
-                }
-            }
+        return thisField.entrySet().stream()
+                .noneMatch(entry -> notMatchMapValue(entry.getValue(), thatField.get(entry.getKey())));
+    }
 
-            if (thisValue instanceof String[] && thatValue instanceof String[]) {
-                String[] thisValues = (String[]) thisValue;
-                String[] thatValues = (String[]) thatValue;
-                if (!doMatch(thisValues, thatValues)) {
-                    return false;
-                }
+    private boolean notMatchMapValue(final Object thisValue, final Object thatValue) {
+        if (thisValue instanceof String && thatValue instanceof String) {
+            if (!doMatch((String) thisValue, (String) thatValue)) {
+                return true;
             }
         }
 
-        return true;
+        if (thisValue instanceof String[] && thatValue instanceof String[]) {
+            String[] thisValues = (String[]) thisValue;
+            String[] thatValues = (String[]) thatValue;
+            if (!doMatch(thisValues, thatValues)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean doMatch(final String[] thisValues, final String[] thatValues) {
