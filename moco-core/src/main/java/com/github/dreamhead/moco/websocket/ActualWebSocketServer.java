@@ -157,14 +157,12 @@ public final class ActualWebSocketServer
 
     private Optional<Response> getPongResponse(final SessionContext context) {
         Request request = context.getRequest();
-        for (PingPongSetting setting : settings) {
-            if (setting.match(request)) {
-                setting.writeToResponse(context);
-                return Optional.of(context.getResponse());
-            }
-        }
+        final Optional<PingPongSetting> actual = settings.stream()
+                .filter(setting -> setting.match(request))
+                .findFirst();
 
-        return Optional.empty();
+        actual.ifPresent(setting -> setting.writeToResponse(context));
+        return actual.flatMap(setting -> Optional.of(context.getResponse()));
     }
 
     public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
