@@ -7,7 +7,6 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public final class JsonPathRequestExtractor extends HttpRequestExtractor<Object>
 
     private Optional<Object> extractContent(final MessageContent content) {
         try {
-            Object jsonPathContent = jsonPath.read(new ByteArrayInputStream(content.getContent()),
+            Object jsonPathContent = jsonPath.read(content.toInputStream(),
                     content.getCharset().toString(),
                     Configuration.defaultConfiguration());
             if (jsonPathContent == null) {

@@ -171,8 +171,7 @@ public final class ActualWebSocketServer
         SessionContext context = new SessionContext(request, response,
                 new ContextSessionGroup(this.group, ctx.channel()));
 
-        return this.getResponse(context)
-                .flatMap(this::asWebsocketResponse);
+        return this.getResponse(context).flatMap(this::asWebsocketResponse);
     }
 
     private Optional<WebsocketResponse> asWebsocketResponse(final Response response) {
