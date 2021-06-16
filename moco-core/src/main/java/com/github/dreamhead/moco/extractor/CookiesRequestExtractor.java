@@ -9,7 +9,6 @@ import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static com.google.common.net.HttpHeaders.COOKIE;
