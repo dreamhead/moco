@@ -137,7 +137,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
 
     protected abstract U createMergeServer(U thatServer);
 
-    public Optional<Response> getResponse(final SessionContext context) {
+    public final Optional<Response> getResponse(final SessionContext context) {
         try {
             monitor.onMessageArrived(context.getRequest());
             Optional<Response> response = responser.getResponse(context);
