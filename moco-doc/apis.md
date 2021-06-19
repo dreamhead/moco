@@ -166,6 +166,14 @@ server.request(by(file("foo.request"))).response("bar");
 }
 ```
 
+**@Since 1.2.0**
+
+You can also match binary request directly.
+
+```java
+server.request(binary(new byte[] {1, 2, 3})).response("bar");
+```
+
 ### URI
 **@Since 0.7**
 
@@ -966,6 +974,14 @@ server.response(pathResource("src/test/resources/gbk.response", Charset.forName(
     }
   }
 ]
+```
+
+**@Since 1.2.0**
+
+You can also write binary response directly.
+
+```java
+server.response(binary(new byte[] {1, 2, 3}));
 ```
 
 **@Since 1.2.0**
