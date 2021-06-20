@@ -998,6 +998,17 @@ server.response(text("hello").transform(raw -> {
 }));
 ```
 
+**@Since 1.2.0**
+
+If you need your own specific response content, you can write your own code with lambda.
+```java
+server.response(text((request) -> "foo"));
+```
+
+```java
+server.response(binary((request) -> new byte[] {1, 2, 3}));
+```
+
 ### Status Code
 **@Since 0.7**
 
