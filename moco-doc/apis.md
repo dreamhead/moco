@@ -1009,6 +1009,12 @@ server.response(text((request) -> "foo"));
 server.response(binary((request) -> new byte[] {1, 2, 3}));
 ```
 
+Currently, this function uses `com.github.dreamhead.moco.Request` as argument which provide content only. If you need HTTP information in HTTP scenario, you can cast request to `com.github.dreamhead.moco.HttpRequest`.
+```java
+server.response(text((request) -> ((HttpRequest)request).getUri()));
+```
+
+
 ### Status Code
 **@Since 0.7**
 
