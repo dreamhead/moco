@@ -16,6 +16,7 @@
 * `transform` Java API allow you transform your content.
 * `binary` Java API return binary message.
 * `json` Java API return pojo dynamically.
+* `text`, `binary`, `json`, `var` with function. 
 
 ## Implementation Details
 * Return application/json header for `json` API with text and resource. 
