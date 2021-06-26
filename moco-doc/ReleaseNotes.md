@@ -1,6 +1,6 @@
 # Release
 ## APIs
-* `conditional` Java API allow you to write your own matcher
+* `conditional` Java API allows you to write your own matcher
 
 # Release 1.2.0 (1-Apr-2021)
 
@@ -13,10 +13,10 @@
   * `group` broadcast message to specific group
 
 ## APIs
-* `transform` Java API allow you transform your content.
+* `transform` Java API allows you transform your content.
 * `binary` Java API return binary message.
 * `json` Java API return pojo dynamically.
-* `text`, `binary`, `json`, `var` with function. 
+* `text`, `binary`, `json`, `var` with function, Java API allows you write your own response content. 
 
 ## Implementation Details
 * Return application/json header for `json` API with text and resource. 
