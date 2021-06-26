@@ -156,9 +156,10 @@ public class TemplateResourceReader implements ContentResourceReader {
     private static class RandomMethod implements TemplateMethodModelEx {
         @Override
         public Object exec(final List arguments) {
+            Optional<Long> start = getStart(arguments);
             Optional<Long> range = getRange(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
-            double result = new Random().nextDouble() * range.orElse(1L);
+            double result = start.orElse(0L)+new Random().nextDouble() * range.orElse(1L);
 
             if (format.isPresent()) {
                 return format.get().format(result);
@@ -185,22 +186,40 @@ public class TemplateResourceReader implements ContentResourceReader {
             if (arguments.size() <= 0) {
                 return Optional.empty();
             }
+            Object first = arguments.get(0);
+            Object second = arguments.size()>=2?arguments.get(1):Optional.empty();
 
-            Object range = arguments.get(0);
-            if (range instanceof SimpleNumber) {
-                return getRange((SimpleNumber) range);
+            if (first instanceof SimpleNumber&&second instanceof SimpleNumber) {
+                return getRange((SimpleNumber) first,(SimpleNumber)second);
             }
-
+            if (first instanceof SimpleNumber) {
+                return getRange(new SimpleNumber(0L),(SimpleNumber) first);
+            }
             return Optional.empty();
         }
 
-        private Optional<Long> getRange(final SimpleNumber range) {
-            long reference = range.getAsNumber().longValue();
-            if (reference <= 0) {
-                throw new IllegalArgumentException("Random range should be greater than 0");
+        private Optional<Long> getRange(final SimpleNumber start, final SimpleNumber end) {
+            long startReference = start.getAsNumber().longValue();
+            long endReference = end.getAsNumber().longValue();
+            long rangeReference =endReference-startReference;
+
+            if (rangeReference<= 0) {
+                throw new IllegalArgumentException("Random-end should be greater than random-start(default 0)");
             }
 
-            return Optional.of(reference);
+            return Optional.of(rangeReference);
+        }
+        private Optional<Long> getStart(final List<?> arguments) {
+
+            if(arguments.size() >=2){
+                Object start = arguments.get(0);
+                Object end = arguments.get(0);
+                if (start instanceof SimpleNumber&&end instanceof SimpleNumber) {
+                    return Optional.of(((SimpleNumber)start).getAsNumber().longValue());
+                }
+            }
+
+            return Optional.empty();
         }
     }
 }

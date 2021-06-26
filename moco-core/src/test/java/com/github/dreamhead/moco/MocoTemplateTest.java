@@ -370,6 +370,22 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_generate_response_with_random_with_special_range() throws Exception {
+        server.request(by(uri("/random"))).response(template("${random(99,100)}"));
+
+        running(server, () -> {
+            String response = helper.get(remoteUrl("/random"));
+            try {
+                double result = Double.parseDouble(response);
+                assertThat(result, lessThan(100d));
+                assertThat(result, greaterThan(99d));
+            } catch (NumberFormatException e) {
+                fail();
+            }
+        });
+    }
+
+    @Test
     public void should_generate_response_with_random_with_data_format() throws Exception {
         server.request(by(uri("/random"))).response(template("${random('###.######')}"));
 
@@ -406,6 +422,24 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_generate_response_with_random_with_special_range_and_data_format() throws Exception {
+        server.request(by(uri("/random"))).response(template("${random(99,100, '###.######')}"));
+
+        running(server, () -> {
+            String response = helper.get(remoteUrl("/random"));
+            try {
+                double result = Double.parseDouble(response);
+                assertThat(result, lessThan(100d));
+                assertThat(result, greaterThan(99d));
+                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                assertThat(target.length(), lessThanOrEqualTo(6));
+            } catch (NumberFormatException e) {
+                fail();
+            }
+        });
+    }
+
+    @Test
     public void should_throw_exception_for_random_with_range_less_than_0() throws Exception {
         server.request(by(uri("/template"))).response(template("${random(-10)}"));
 
@@ -414,7 +448,15 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             assertThat(response.getStatusLine().getStatusCode(), is(400));
         });
     }
+    @Test
+    public void should_throw_exception_for_random_with_start_greater_than_end() throws Exception {
+        server.request(by(uri("/template"))).response(template("${random(100,99)}"));
 
+        running(server, () -> {
+            HttpResponse response = helper.getResponse(remoteUrl("/template"));
+            assertThat(response.getStatusLine().getStatusCode(), is(400));
+        });
+    }
     @Test
     public void should_return_json() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.json.code} ${req.json.message}"));
