@@ -152,9 +152,9 @@ public class TemplateResourceReader implements ContentResourceReader {
         @Override
         public Object exec(final List arguments) {
             Optional<Long> start = getStart(arguments);
-            Optional<Long> range = getRange(arguments);
+            Optional<Long> end = getEnd(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
-            double result = start.orElse(0L) + new Random().nextDouble() * range.orElse(1L);
+            double result = start.orElse(0L) + new Random().nextDouble() * end.orElse(1L);
 
             if (format.isPresent()) {
                 return format.get().format(result);
@@ -177,7 +177,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return Optional.empty();
         }
 
-        private Optional<Long> getRange(final List<?> arguments) {
+        private Optional<Long> getEnd(final List<?> arguments) {
             if (arguments.size() <= 0) {
                 return Optional.empty();
             }
@@ -185,15 +185,15 @@ public class TemplateResourceReader implements ContentResourceReader {
             Object second = arguments.size() >= 2 ? arguments.get(1) : Optional.empty();
 
             if (first instanceof SimpleNumber && second instanceof SimpleNumber) {
-                return getRange((SimpleNumber) first, (SimpleNumber) second);
+                return getEnd((SimpleNumber) first, (SimpleNumber) second);
             }
             if (first instanceof SimpleNumber) {
-                return getRange(new SimpleNumber(0L), (SimpleNumber) first);
+                return getEnd(new SimpleNumber(0L), (SimpleNumber) first);
             }
             return Optional.empty();
         }
 
-        private Optional<Long> getRange(final SimpleNumber start, final SimpleNumber end) {
+        private Optional<Long> getEnd(final SimpleNumber start, final SimpleNumber end) {
             long startReference = start.getAsNumber().longValue();
             long endReference = end.getAsNumber().longValue();
             long rangeReference = endReference - startReference;
