@@ -148,19 +148,42 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
+    private static class Range {
+        private Optional<Long> start;
+        private Optional<Long> end;
+
+        public Range(Optional<Long> start, Optional<Long> end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        private Long getStart(final long defaultValue) {
+            return start.orElse(defaultValue);
+        }
+
+        private Long getEnd(final long defaultValue) {
+            return end.orElse(defaultValue);
+        }
+    }
+
     private static class RandomMethod implements TemplateMethodModelEx {
         @Override
         public Object exec(final List arguments) {
-            Optional<Long> start = getStart(arguments);
-            Optional<Long> end = getEnd(arguments);
+            final Range range = getRange(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
-            double result = start.orElse(0L) + new Random().nextDouble() * end.orElse(1L);
+            double result = range.getStart(0L) + new Random().nextDouble() * range.getEnd(1L);
 
             if (format.isPresent()) {
                 return format.get().format(result);
             }
 
             return result;
+        }
+
+        private Range getRange(final List arguments) {
+            Optional<Long> start = getStart(arguments);
+            Optional<Long> end = getEnd(arguments);
+            return new Range(start, end);
         }
 
         private Optional<? extends NumberFormat> getFormat(final List<?> arguments) {
