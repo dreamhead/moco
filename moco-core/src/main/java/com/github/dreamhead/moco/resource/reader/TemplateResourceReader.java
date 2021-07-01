@@ -38,6 +38,7 @@ import java.util.Random;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
@@ -157,12 +158,11 @@ public class TemplateResourceReader implements ContentResourceReader {
             this.end = end;
         }
 
-        private Long getStart(final long defaultValue) {
-            return start.orElse(defaultValue);
-        }
-
-        private Long getEnd(final long defaultValue) {
-            return end.orElse(defaultValue);
+        private double random() {
+            final Long startValue = start.orElse(0L);
+            final Long endValue = end.orElse(1L);
+            final long range = endValue - startValue;
+            return startValue + new Random().nextDouble() * range;
         }
     }
 
@@ -171,7 +171,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         public Object exec(final List arguments) {
             final Range range = getRange(arguments);
             Optional<? extends NumberFormat> format = getFormat(arguments);
-            double result = range.getStart(0L) + new Random().nextDouble() * range.getEnd(1L);
+            double result = range.random();
 
             if (format.isPresent()) {
                 return format.get().format(result);
@@ -181,9 +181,45 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         private Range getRange(final List arguments) {
-            Optional<Long> start = getStart(arguments);
-            Optional<Long> end = getEnd(arguments);
-            return new Range(start, end);
+            if (arguments.size() <= 0) {
+                return new Range(Optional.empty(), Optional.empty());
+            }
+
+            if (arguments.size() == 1) {
+                final Object end = arguments.get(0);
+                if (end instanceof SimpleNumber) {
+                    return getSingleRange((SimpleNumber) end);
+                }
+
+                return new Range(Optional.empty(), Optional.empty());
+            }
+
+            final Object start = arguments.get(0);
+            final Object end = arguments.get(1);
+            if (start instanceof SimpleNumber && end instanceof SimpleNumber) {
+                return getDoubleRange((SimpleNumber) start, (SimpleNumber) end);
+            }
+
+            if (start instanceof SimpleNumber) {
+                return getSingleRange((SimpleNumber) start);
+            }
+
+            throw new IllegalArgumentException("Range should be number");
+        }
+
+        private Range getDoubleRange(final SimpleNumber start, final SimpleNumber end) {
+            final long startValue = start.getAsNumber().longValue();
+            final long endValue = end.getAsNumber().longValue();
+            checkArgument(startValue > 0, "Range start should be greater than 0");
+            checkArgument(endValue > 0, "Range end should be greater than 0");
+            checkArgument(endValue > startValue, "Range should be greater than 0");
+            return new Range(Optional.of(startValue), Optional.of(endValue));
+        }
+
+        private Range getSingleRange(final SimpleNumber end) {
+            final long value = end.getAsNumber().longValue();
+            checkArgument(value > 0);
+            return new Range(Optional.empty(), Optional.of(value));
         }
 
         private Optional<? extends NumberFormat> getFormat(final List<?> arguments) {
@@ -195,46 +231,6 @@ public class TemplateResourceReader implements ContentResourceReader {
             if (last instanceof SimpleScalar) {
                 SimpleScalar lastArgument = (SimpleScalar) last;
                 return Optional.of(new DecimalFormat(lastArgument.toString()));
-            }
-
-            return Optional.empty();
-        }
-
-        private Optional<Long> getEnd(final List<?> arguments) {
-            if (arguments.size() <= 0) {
-                return Optional.empty();
-            }
-            Object first = arguments.get(0);
-            Object second = arguments.size() >= 2 ? arguments.get(1) : Optional.empty();
-
-            if (first instanceof SimpleNumber && second instanceof SimpleNumber) {
-                return getEnd((SimpleNumber) first, (SimpleNumber) second);
-            }
-            if (first instanceof SimpleNumber) {
-                return getEnd(new SimpleNumber(0L), (SimpleNumber) first);
-            }
-            return Optional.empty();
-        }
-
-        private Optional<Long> getEnd(final SimpleNumber start, final SimpleNumber end) {
-            long startReference = start.getAsNumber().longValue();
-            long endReference = end.getAsNumber().longValue();
-            long rangeReference = endReference - startReference;
-
-            if (rangeReference <= 0) {
-                throw new IllegalArgumentException("Random-end should be greater than random-start(default 0)");
-            }
-
-            return Optional.of(rangeReference);
-        }
-
-        private Optional<Long> getStart(final List<?> arguments) {
-            if (arguments.size() >= 2) {
-                Object start = arguments.get(0);
-                Object end = arguments.get(1);
-                if (start instanceof SimpleNumber && end instanceof SimpleNumber) {
-                    return Optional.of(((SimpleNumber) start).getAsNumber().longValue());
-                }
             }
 
             return Optional.empty();

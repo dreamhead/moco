@@ -423,7 +423,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_random_with_special_range_and_data_format() throws Exception {
-        server.request(by(uri("/random"))).response(template("${random(99,100, '###.######')}"));
+        server.request(by(uri("/random"))).response(template("${random(99, 100, '###.######')}"));
 
         running(server, () -> {
             String response = helper.get(remoteUrl("/random"));
