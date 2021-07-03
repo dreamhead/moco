@@ -186,14 +186,22 @@ public class TemplateResourceReader implements ContentResourceReader {
             }
 
             if (arguments.size() == 1) {
-                final Object end = arguments.get(0);
-                if (end instanceof SimpleNumber) {
-                    return getSingleRange((SimpleNumber) end);
-                }
-
-                return new Range(Optional.empty(), Optional.empty());
+                return singleArgRange(arguments);
             }
 
+            return moreArgRange(arguments);
+        }
+
+        private Range singleArgRange(final List arguments) {
+            final Object end = arguments.get(0);
+            if (end instanceof SimpleNumber) {
+                return getSingleRange((SimpleNumber) end);
+            }
+
+            return new Range(Optional.empty(), Optional.empty());
+        }
+
+        private Range moreArgRange(final List arguments) {
             final Object start = arguments.get(0);
             final Object end = arguments.get(1);
             if (start instanceof SimpleNumber && end instanceof SimpleNumber) {
