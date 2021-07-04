@@ -153,7 +153,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         private Optional<Long> start;
         private Optional<Long> end;
 
-        public Range(Optional<Long> start, Optional<Long> end) {
+        Range(final Optional<Long> start, final Optional<Long> end) {
             this.start = start;
             this.end = end;
         }
