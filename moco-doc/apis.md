@@ -2332,12 +2332,12 @@ server.request(by(uri("/template"))).response(template("${random(100)}"));
 }
 ```
 
-The last argument is number format.
+If you want to limit your random number in a range. You can give two number as a start and an end.
 
 * Java
 
 ```java
-server.request(by(uri("/template"))).response(template("${random(100, '###.###')}"));
+server.request(by(uri("/template"))).response(template("${random(99, 100)}"));
 ```
 
 * JSON
@@ -2349,13 +2349,36 @@ server.request(by(uri("/template"))).response(template("${random(100, '###.###')
     },
     "response": {
         "text": {
-            "template": "${random(100, \"###.###\")}"
+            "template": "${random(99, 100)}"
         }
     }
 }
 ```
 
-You can also use number format directly without range.
+The last argument could be a number format.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${random(99, 100, '###.###')}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${random(99, 100, \"###.###\")}"
+        }
+    }
+}
+```
+
+You can also use number format directly without range. By default, range is from 0 to 1.
 
 * Java
 
