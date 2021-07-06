@@ -1,6 +1,7 @@
 # Release
 ## APIs
 * `conditional` Java API allows you to write your own matcher
+* `random` template function supports start and end as range
 
 # Release 1.2.0 (1-Apr-2021)
 
