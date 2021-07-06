@@ -91,6 +91,14 @@ public final class ApiUtils {
         return new EqRequestMatcher<>(extractor, expected);
     }
 
+    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected) {
+        if ("json".equalsIgnoreCase(expected.id())) {
+            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, JsonRequestMatcher.JsonMatchMode.STRUCT);
+        }
+
+        return new EqRequestMatcher<>(extractor, expected);
+    }
+
     public static ContentResource file(final Resource filename, final Charset charset) {
         return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
     }

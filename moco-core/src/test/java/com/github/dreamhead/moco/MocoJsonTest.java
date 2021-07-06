@@ -25,6 +25,7 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.post;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.uri;
+import static com.github.dreamhead.moco.Moco.as;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -42,7 +43,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
         running(server, () ->
                 assertThat(helper.postContent(root(), "{\"book\":{\"price\":\"1\"}}"),
-                is("jsonpath match success")));
+                        is("jsonpath match success")));
     }
 
     @Test(expected = HttpResponseException.class)
@@ -80,8 +81,26 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_same_structure_json() throws Exception {
         final String jsonText = Jsons.toJson(of("foo", "bar"));
-        server.request(by(json(jsonText))).response("foo");
-        running(server, () -> assertThat(helper.postContent(root(), jsonText), is("foo")));
+        final String jsonText2 = Jsons.toJson(of("foo", "bar2"));
+        server.request(as(json(jsonText))).response("foo");
+        running(server, () -> assertThat(helper.postContent(root(), jsonText2), is("foo")));
+    }
+
+    @Test
+    public void should_match_same_structure_json_with_resource() throws Exception {
+        final String jsonContent = "{\"foo\":\"bar\"}";
+        server.request(as(json(jsonContent))).response("foo");
+        running(server, () -> assertThat(helper.postContent(root(), "{\"foo\":\"bar2\"}"), is("foo")));
+    }
+
+    @Test
+    public void should_match_same_structure_POJO_json_resource() throws Exception {
+        PlainA pojo = new PlainA();
+        pojo.code = 1;
+        pojo.message = "message";
+
+        server.request(as(Moco.json(pojo))).response("foo");
+        running(server, () -> assertThat(helper.postContent(root(), "{\n\t\"code\":2,\n\t\"message\":\"information\"\n}"), is("foo")));
     }
 
     @Test
