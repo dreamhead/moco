@@ -216,18 +216,20 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
 
         private Range getDoubleRange(final SimpleNumber start, final SimpleNumber end) {
-            final long startValue = start.getAsNumber().longValue();
-            final long endValue = end.getAsNumber().longValue();
-            checkArgument(startValue > 0, "Range start should be greater than 0");
-            checkArgument(endValue > 0, "Range end should be greater than 0");
+            final long startValue = getValidValue(start, "Start");
+            final long endValue = getValidValue(end, "End");
             checkArgument(endValue > startValue, "Range should be greater than 0");
             return new Range(Optional.of(startValue), Optional.of(endValue));
         }
 
         private Range getSingleRange(final SimpleNumber end) {
-            final long value = end.getAsNumber().longValue();
-            checkArgument(value > 0);
-            return new Range(Optional.empty(), Optional.of(value));
+            return new Range(Optional.empty(), Optional.of(getValidValue(end, "Range")));
+        }
+
+        private long getValidValue(final SimpleNumber number, final String name) {
+            final long value = number.getAsNumber().longValue();
+            checkArgument(value > 0, name + " should be greater than 0");
+            return value;
         }
 
         private Optional<? extends NumberFormat> getFormat(final List<?> arguments) {
