@@ -44,6 +44,7 @@
 -keep public class com.fasterxml.jackson.annotation.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
 -keep public class io.netty.channel.DefaultChannelPipeline{*;}
+-keep public class io.netty.handler.codec.http.cookie.DefaultCookie{*;}
 
 #jce.jar
 -dontwarn org.apache.http.impl.auth.**
