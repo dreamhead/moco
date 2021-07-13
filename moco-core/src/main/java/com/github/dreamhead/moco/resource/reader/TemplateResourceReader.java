@@ -180,7 +180,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return result;
         }
 
-        private Range getRange(final List arguments) {
+        private Range getRange(final List<?> arguments) {
             if (arguments.size() <= 0) {
                 return new Range(Optional.empty(), Optional.empty());
             }
@@ -192,7 +192,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return moreArgRange(arguments);
         }
 
-        private Range singleArgRange(final List arguments) {
+        private Range singleArgRange(final List<?> arguments) {
             final Object end = arguments.get(0);
             if (end instanceof SimpleNumber) {
                 return getSingleRange((SimpleNumber) end);
@@ -201,7 +201,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             return new Range(Optional.empty(), Optional.empty());
         }
 
-        private Range moreArgRange(final List arguments) {
+        private Range moreArgRange(final List<?> arguments) {
             final Object start = arguments.get(0);
             final Object end = arguments.get(1);
             if (start instanceof SimpleNumber && end instanceof SimpleNumber) {
