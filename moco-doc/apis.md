@@ -174,6 +174,12 @@ You can also match binary request directly.
 server.request(binary(new byte[] {1, 2, 3})).response("bar");
 ```
 
+InputStream is also supported in `binary`.
+
+```java
+server.request(binary(new ByteArrayInputStream(new byte[]{1, 2, 3}))).response("bar");
+```
+
 ### URI
 **@Since 0.7**
 
