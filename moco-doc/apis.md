@@ -1020,7 +1020,6 @@ Currently, this function uses `com.github.dreamhead.moco.Request` as argument wh
 server.response(text((request) -> ((HttpRequest)request).getUri()));
 ```
 
-
 ### Status Code
 **@Since 0.7**
 

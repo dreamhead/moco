@@ -38,11 +38,9 @@ public final class MountHandler extends AbstractHttpContentResponseHandler {
 
     private File targetFile(final HttpRequest request) {
         Optional<String> relativePath = extractor.extract(request);
-        if (!relativePath.isPresent()) {
-            throw new IllegalStateException("Reach mount handler without relative path");
-        }
-
-        return new File(dir, relativePath.get());
+        final String actual =
+                relativePath.orElseThrow(() -> new IllegalStateException("Reach mount handler without relative path"));
+        return new File(dir, actual);
     }
 
     @Override
