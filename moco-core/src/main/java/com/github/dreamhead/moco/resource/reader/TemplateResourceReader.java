@@ -173,11 +173,7 @@ public class TemplateResourceReader implements ContentResourceReader {
             Optional<? extends NumberFormat> format = getFormat(arguments);
             double result = range.random();
 
-            if (format.isPresent()) {
-                return format.get().format(result);
-            }
-
-            return result;
+            return format.map(actual -> (Object)actual.format(result)).orElse(result);
         }
 
         private Range getRange(final List<?> arguments) {
