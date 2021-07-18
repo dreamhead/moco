@@ -22,12 +22,9 @@ public final class PostSetting extends BaseActionSetting {
 
     public MocoEventAction createAction() {
         Optional<ContentResource> postContent = postContent();
-        if (postContent.isPresent()) {
-            ContentResource content = postContent.get();
-            return doCreateAction(content);
-        }
-
-        throw new IllegalArgumentException("content or json should be setup for post event");
+        final ContentResource content = postContent.orElseThrow(() ->
+                new IllegalArgumentException("content or json should be setup for post event"));
+        return doCreateAction(content);
     }
 
     private MocoEventAction doCreateAction(final ContentResource content) {
