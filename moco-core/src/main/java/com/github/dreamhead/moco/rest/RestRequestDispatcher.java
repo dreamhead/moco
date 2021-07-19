@@ -10,13 +10,13 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
@@ -78,7 +78,8 @@ public final class RestRequestDispatcher {
 
     private <T extends RestSetting> ImmutableList<T> filter(final Iterable<RestSetting> settings,
                                                             final Class<T> type) {
-        return StreamSupport.stream(settings.spliterator(), false)
+
+        return Streams.stream(settings)
                 .filter(type::isInstance)
                 .map(type::cast)
                 .collect(toImmutableList());
@@ -120,9 +121,9 @@ public final class RestRequestDispatcher {
         if (allMatcher.match(httpRequest)) {
             Iterable<RestSingleSetting> settings = getSingleSettings.getSettings();
             if (!Iterables.isEmpty(settings)
-                    && StreamSupport.stream(settings.spliterator(), false)
+                    && Streams.stream(settings)
                     .allMatch(setting -> setting.getHandler() instanceof JsonResponseHandler)) {
-                List<Object> result = StreamSupport.stream(settings.spliterator(), false)
+                List<Object> result = Streams.stream(settings)
                         .map((Function<SimpleRestSetting, JsonResponseHandler>) setting -> JsonResponseHandler.class.cast(setting.getHandler()))
                         .map(JsonResponseHandler::getPojo)
                         .collect(Collectors.toList());
