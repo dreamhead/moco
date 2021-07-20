@@ -53,10 +53,9 @@ public final class DefaultLogFormatter implements LogFormatter {
         Optional<Class<? extends T>> dumpClass = dumperClasses.keySet().stream()
                 .filter(input -> input.isInstance(target))
                 .findFirst();
-        if (dumpClass.isPresent()) {
-            return dumperClasses.get(dumpClass.get());
-        }
 
-        throw new IllegalArgumentException("Unknown target type:" + target.getClass());
+        final Class<? extends T> clazz = dumpClass.orElseThrow(() ->
+                new IllegalArgumentException("Unknown target type:" + target.getClass()));
+        return dumperClasses.get(clazz);
     }
 }
