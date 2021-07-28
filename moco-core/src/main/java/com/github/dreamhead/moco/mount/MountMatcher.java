@@ -28,11 +28,9 @@ public final class MountMatcher extends AbstractRequestMatcher {
     @Override
     public boolean match(final Request request) {
         Optional<String> optionalPath = extractor.extract(request);
-        if (optionalPath.isPresent()) {
-            String relativePath = optionalPath.get();
-            return isTarget(relativePath) && new File(dir, relativePath).exists();
-        }
-        return false;
+        return optionalPath.filter(relativePath ->
+                        isTarget(relativePath) && new File(dir, relativePath).exists())
+                .isPresent();
     }
 
     @Override
