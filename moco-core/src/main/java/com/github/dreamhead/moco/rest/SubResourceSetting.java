@@ -4,8 +4,10 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
+import com.google.common.collect.Iterables;
 
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.util.URLs.join;
 
@@ -29,17 +31,19 @@ public final class SubResourceSetting implements RestSetting {
 
     @Override
     public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
-        for (RestSetting setting : settings) {
-            RestIdMatcher idMatcher = RestIdMatchers.match(join(resourceName.resourceUri(),
-                    this.id.resourceUri(),
-                    this.name));
-            Optional<ResponseHandler> responseHandler = setting.getMatched(idMatcher,
-                    httpRequest);
-            if (responseHandler.isPresent()) {
-                return responseHandler;
-            }
-        }
+        return StreamSupport.stream(settings.spliterator(), false)
+                .map(setting -> getResponseHandler(resourceName, httpRequest, setting))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
 
-        return Optional.empty();
+    private Optional<ResponseHandler> getResponseHandler(final RestIdMatcher resourceName,
+                                                         final HttpRequest httpRequest,
+                                                         final RestSetting setting) {
+        RestIdMatcher idMatcher = RestIdMatchers.match(join(resourceName.resourceUri(),
+                this.id.resourceUri(),
+                this.name));
+        return setting.getMatched(idMatcher, httpRequest);
     }
 }
