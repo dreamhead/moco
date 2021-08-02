@@ -167,14 +167,11 @@ public final class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getSubResponseHandler(final HttpRequest httpRequest) {
-        for (SubResourceSetting subResourceSetting : subResourceSettings) {
-            Optional<ResponseHandler> matched = subResourceSetting.getMatched(name, httpRequest);
-            if (matched.isPresent()) {
-                return matched;
-            }
-        }
-
-        return empty();
+        return Streams.stream(subResourceSettings)
+                .map(setting -> setting.getMatched(name, httpRequest))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
     private Optional<ResponseHandler> doGetResponseHandler(final HttpRequest httpRequest) {
