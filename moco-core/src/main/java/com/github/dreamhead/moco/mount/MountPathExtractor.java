@@ -18,10 +18,6 @@ public final class MountPathExtractor extends HttpRequestExtractor<String> {
     @Override
     protected Optional<String> doExtract(final HttpRequest request) {
         Optional<String> extractedUri = extractor.extract(request);
-        if (!extractedUri.isPresent()) {
-            return Optional.empty();
-        }
-
-        return target.extract(extractedUri.get());
+        return extractedUri.flatMap(target::extract);
     }
 }
