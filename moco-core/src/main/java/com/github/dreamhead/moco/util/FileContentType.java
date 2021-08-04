@@ -48,7 +48,7 @@ public final class FileContentType {
         Optional<Charset> targetCharset = toCharset(optionalType.orElse(null));
 
         MediaType type = optionalType.orElse(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
-        if (targetCharset.isPresent() && !type.charset().equals(targetCharset)) {
+        if (targetCharset.isPresent() && !type.charset().toJavaUtil().equals(targetCharset)) {
             return type.withCharset(targetCharset.get());
         }
 
