@@ -35,12 +35,12 @@ public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
 
     @Override
     protected final Optional<String[]> doExtract(final HttpRequest request) {
+        return helper.extractAsInputSource(request, extractor).flatMap(this::doExtract);
+    }
+
+    private Optional<String[]> doExtract(final InputSource source) {
         try {
-            Optional<InputSource> source = helper.extractAsInputSource(request, extractor);
-            if (!source.isPresent()) {
-                return empty();
-            }
-            NodeList list = (NodeList) xPathExpression.evaluate(source.get(), XPathConstants.NODESET);
+            NodeList list = (NodeList) xPathExpression.evaluate(source, XPathConstants.NODESET);
             if (list.getLength() == 0) {
                 return empty();
             }
