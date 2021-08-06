@@ -8,6 +8,6 @@ public final class JsonResponseHandler extends ContentHandler {
     }
 
     public Object getPojo() {
-        return getResource().getJsonObject().get();
+        return getResource().getJsonObject().orElse(null);
     }
 }
