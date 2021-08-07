@@ -76,7 +76,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = sessions.stream().filter(isForRequest(request)).findFirst();
         if (session.isPresent()) {
-            return session.get().getResponse();
+            return session.map(Session::getResponse).orElse(null);
         }
 
         logger.warn("No match request found: {}", request);
