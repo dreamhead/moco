@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.util.Maps.arrayValueToSimple;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
 public final class TemplateRequest {
     private final Request request;
@@ -58,13 +59,9 @@ public final class TemplateRequest {
     public ImmutableMap<String, String> getQueries() {
         if (this.request instanceof HttpRequest) {
             HttpRequest httpRequest = (HttpRequest) this.request;
-            ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
             ImmutableMap<String, String[]> queries = httpRequest.getQueries();
-            for (String key : queries.keySet()) {
-                builder.put(key, queries.get(key)[0]);
-            }
-
-            return builder.build();
+            return queries.entrySet().stream()
+                    .collect(toImmutableMap(Map.Entry::getKey, entry -> entry.getValue()[0]));
         }
 
         throw new IllegalArgumentException("Request is not HTTP request");
