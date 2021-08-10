@@ -37,11 +37,9 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
     }
 
     private void fireCompleteEvent(final Request request) {
-        for (MocoEventTrigger eventTrigger : eventTriggers) {
-            if (eventTrigger.isFor(MocoEvent.COMPLETE)) {
-                eventTrigger.fireEvent(request);
-            }
-        }
+        eventTriggers.stream()
+                .filter(trigger -> trigger.isFor(MocoEvent.COMPLETE))
+                .forEach(trigger -> trigger.fireEvent(request));
     }
 
     @Override
