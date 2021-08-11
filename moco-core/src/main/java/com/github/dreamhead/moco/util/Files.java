@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.util;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -8,11 +9,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class Files {
     public static String join(final String path1, final String path2, final String... paths) {
         String finalPath = actualJoin(path1, path2);
-        for (String path : paths) {
-            finalPath = actualJoin(finalPath, path);
-        }
-
-        return finalPath;
+        return Arrays.stream(paths)
+                .reduce(finalPath, Files::actualJoin, Files::actualJoin);
     }
 
     private static String actualJoin(final String path1, final String path2) {
