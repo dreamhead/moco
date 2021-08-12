@@ -8,10 +8,11 @@ import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Iterables.concat;
 
 public class Dynamics {
@@ -52,12 +53,12 @@ public class Dynamics {
     }
 
     private ImmutableList<Field> getFieldsForCurrent(final Class<?> clazz) {
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-        }
-
-        return copyOf(fields);
+        return Arrays.stream(clazz.getDeclaredFields())
+                .map(field -> {
+                    field.setAccessible(true);
+                    return field;
+                })
+                .collect(toImmutableList());
     }
 
     protected final <T> Predicate<Field> isValidField(final T target) {
