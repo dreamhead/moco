@@ -10,7 +10,7 @@ public final class Files {
     public static String join(final String path1, final String path2, final String... paths) {
         String finalPath = actualJoin(path1, path2);
         return Arrays.stream(paths)
-                .reduce(finalPath, Files::actualJoin, Files::actualJoin);
+                .reduce(finalPath, Files::actualJoin);
     }
 
     private static String actualJoin(final String path1, final String path2) {
