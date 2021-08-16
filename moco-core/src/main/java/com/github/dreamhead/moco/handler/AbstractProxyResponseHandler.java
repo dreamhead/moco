@@ -286,7 +286,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private Optional<URL> remoteUrl(final HttpRequest request) {
         Optional<String> remoteUrl = this.doRemoteUrl(request);
-        return remoteUrl.flatMap(actual -> doGetRemoteUrl(request, remoteUrl.get()));
+        return remoteUrl.flatMap(actual -> doGetRemoteUrl(request, actual));
     }
 
     private Optional<URL> doGetRemoteUrl(final HttpRequest request, final String actual) {
