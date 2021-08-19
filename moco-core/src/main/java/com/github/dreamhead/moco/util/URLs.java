@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
@@ -33,12 +34,7 @@ public final class URLs {
     }
 
     public static String join(final String base, final String... paths) {
-        String target = base;
-        for (String path : paths) {
-            target = doJoin(target, path);
-        }
-
-        return target;
+        return Arrays.stream(paths).reduce(base, URLs::doJoin);
     }
 
     private static String doJoin(final String base, final String path) {
