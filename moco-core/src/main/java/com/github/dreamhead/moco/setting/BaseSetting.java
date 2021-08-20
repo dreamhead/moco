@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.setting;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEvent;
-import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseSetting;
