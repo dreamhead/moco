@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.setting;
 
-
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEvent;
 import com.github.dreamhead.moco.Request;
