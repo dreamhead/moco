@@ -75,12 +75,11 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
     public HttpResponse failover(final HttpRequest request) {
         ImmutableList<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = sessions.stream().filter(isForRequest(request)).findFirst();
-        if (session.isPresent()) {
-            return session.map(Session::getResponse).orElse(null);
-        }
 
-        logger.warn("No match request found: {}", request);
-        throw new MocoException("no failover response found");
+        return session.map(Session::getResponse).orElseThrow(() -> {
+            logger.warn("No match request found: {}", request);
+            return new MocoException("no failover response found");
+        });
     }
 
     private Predicate<Session> isForRequest(final HttpRequest dumpedRequest) {
