@@ -15,7 +15,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -124,7 +123,7 @@ public final class RestRequestDispatcher {
                     && Streams.stream(settings)
                     .allMatch(setting -> setting.getHandler() instanceof JsonResponseHandler)) {
                 List<Object> result = Streams.stream(settings)
-                        .map((Function<SimpleRestSetting, JsonResponseHandler>) setting -> JsonResponseHandler.class.cast(setting.getHandler()))
+                        .map(setting -> (JsonResponseHandler)setting.getHandler())
                         .map(JsonResponseHandler::getPojo)
                         .collect(Collectors.toList());
                 return of(with(Moco.json(result)));
