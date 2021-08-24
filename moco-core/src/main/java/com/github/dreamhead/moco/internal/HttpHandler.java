@@ -22,7 +22,7 @@ public class HttpHandler {
         this.server = server;
     }
 
-    public FullHttpResponse handleRequest(final FullHttpRequest message) {
+    public final FullHttpResponse handleRequest(final FullHttpRequest message) {
         HttpRequest request = DefaultHttpRequest.newRequest(message);
         DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
         FullHttpResponse response = httpResponse.toFullResponse();
