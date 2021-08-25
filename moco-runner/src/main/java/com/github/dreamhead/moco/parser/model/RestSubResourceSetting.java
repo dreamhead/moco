@@ -15,7 +15,7 @@ import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class RestSubResourceSetting extends ResourceSetting {
+public final class RestSubResourceSetting extends ResourceSetting {
     private String id;
 
     @Override
