@@ -5,14 +5,13 @@ import com.google.common.collect.Iterables;
 
 import java.util.Map;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+
 public final class Maps {
     public static Map<String, String> arrayValueToSimple(final Map<String, String[]> map) {
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        for (Map.Entry<String, String[]> entry : map.entrySet()) {
-            builder.put(entry.getKey(), entry.getValue()[0]);
-        }
-
-        return builder.build();
+        return map.entrySet()
+                .stream()
+                .collect(toImmutableMap(Map.Entry::getKey, e -> e.getValue()[0]));
     }
 
     public static Map<String, String[]> simpleValueToArray(final Map<String, String> map) {
