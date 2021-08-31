@@ -19,7 +19,7 @@ public class MocoGroup implements RecorderConfig {
     }
 
     @Override
-    public boolean equals(final Object that) {
+    public final boolean equals(final Object that) {
         if (this == that) {
             return true;
         }
@@ -33,7 +33,7 @@ public class MocoGroup implements RecorderConfig {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(name);
     }
 }
