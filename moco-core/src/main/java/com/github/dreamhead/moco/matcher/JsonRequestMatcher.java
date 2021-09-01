@@ -9,6 +9,8 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -36,7 +38,6 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         Optional<MessageContent> content = extractor.extract(request);
         return content.filter(messageContent -> doMatch(request, messageContent))
                 .isPresent();
-
     }
 
     private boolean doMatch(final Request request, final MessageContent content) {
@@ -61,32 +62,31 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     }
 
     private boolean doStructMatch(final JsonNode requestNode, final JsonNode resourceNode) {
-
         if (requestNode == null) {
             return false;
         }
+
         if (resourceNode.isNull()) {
             return true;
         }
+
         if (requestNode.isNumber() && resourceNode.isNumber()) {
             return true;
         }
+
         if (requestNode.isBoolean() && resourceNode.isBoolean()) {
             return true;
         }
+
         if (requestNode.isTextual() && resourceNode.isTextual()) {
             return true;
         }
-        if (requestNode.isObject() && resourceNode.isObject()) {
 
-            for (Iterator<String> it = resourceNode.fieldNames(); it.hasNext(); ) {
-                String name = it.next();
-                if (!doStructMatch(requestNode.get(name), resourceNode.get(name))) {
-                    return false;
-                }
-            }
-            return true;
+        if (requestNode.isObject() && resourceNode.isObject()) {
+            return Streams.stream(resourceNode.fieldNames())
+                    .allMatch(name -> doStructMatch(requestNode.get(name), resourceNode.get(name)));
         }
+
         if (requestNode.isArray() && resourceNode.isArray()) {
             if (requestNode.isEmpty()) {
                 return true;
@@ -97,6 +97,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
                     return false;
                 }
             }
+
             return true;
         }
         return false;
