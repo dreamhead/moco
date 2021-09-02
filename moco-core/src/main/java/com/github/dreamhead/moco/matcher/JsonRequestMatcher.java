@@ -92,14 +92,10 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
                 return true;
             }
             JsonNode templateNode = requestNode.get(0);
-            for (JsonNode elementNode : resourceNode) {
-                if (!(doStructMatch(templateNode, elementNode))) {
-                    return false;
-                }
-            }
-
-            return true;
+            return Streams.stream(resourceNode)
+                    .allMatch(node -> doStructMatch(templateNode, node));
         }
+
         return false;
     }
 
