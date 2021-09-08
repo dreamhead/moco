@@ -23,7 +23,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         this(expected, extractor, JsonMatchMode.CONTENT);
     }
 
-    public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor, JsonMatchMode matchMode) {
+    public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor, final JsonMatchMode matchMode) {
         this.extractor = extractor;
         this.expected = expected;
         this.matchMode = matchMode;
