@@ -109,6 +109,7 @@ subprojects {
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
+                "org.springframework:spring-expression:$SpELVersion",
                 "org.freemarker:freemarker:$freemarkerVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion"
         )

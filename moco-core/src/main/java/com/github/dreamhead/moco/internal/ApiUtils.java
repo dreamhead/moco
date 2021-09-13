@@ -91,9 +91,10 @@ public final class ApiUtils {
         return new EqRequestMatcher<>(extractor, expected);
     }
 
-    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected) {
+    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected, final Boolean isRuleMatch) {
         if ("json".equalsIgnoreCase(expected.id())) {
-            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, JsonRequestMatcher.JsonMatchMode.STRUCT);
+
+            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, isRuleMatch ? JsonRequestMatcher.JsonMatchMode.RULE : JsonRequestMatcher.JsonMatchMode.STRUCT);
         }
 
         return new EqRequestMatcher<>(extractor, expected);

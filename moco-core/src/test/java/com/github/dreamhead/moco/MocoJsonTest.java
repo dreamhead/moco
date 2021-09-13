@@ -12,20 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.complete;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.exist;
-import static com.github.dreamhead.moco.Moco.httpServer;
-import static com.github.dreamhead.moco.Moco.json;
-import static com.github.dreamhead.moco.Moco.jsonPath;
-import static com.github.dreamhead.moco.Moco.log;
-import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.Moco.post;
-import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.as;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -93,6 +80,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.postContent(root(), "{\"foo\":\"bar2\"}"), is("foo")));
     }
 
+
     @Test
     public void should_match_same_structure_POJO_json_resource() throws Exception {
         PlainA pojo = new PlainA();
@@ -101,6 +89,26 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
         server.request(as(Moco.json(pojo))).response("foo");
         running(server, () -> assertThat(helper.postContent(root(), "{\n\t\"code\":2,\n\t\"message\":\"information\"\n}"), is("foo")));
+    }
+
+    @Test
+    public void should_match_rule_json() throws Exception {
+        final String ruleJsonText = Jsons.toJson("#value['foo'] == 'bar2'");
+//        final String ruleJsonText = Jsons.toJson(of("foo", "#value == 'bar2'"));
+        final String requestJsonText = Jsons.toJson(of("foo", "bar2"));
+        server.request(as(json(ruleJsonText), true)).response("foo");
+        running(server, () -> assertThat(helper.postContent(root(), requestJsonText), is("foo")));
+    }
+
+    @Test
+    public void should_match_rule_json_with_resource() throws Exception {
+
+        final String ruleJsonText = "\"#value[name].equalsIgnoreCase('linus')||#value[name]=='Dreamhead'\"";
+//        final String ruleJsonText = "{\"name\":\"#value.equalsIgnoreCase('linus')\"}";
+        final String requestJsonText = "{\"name\":\"Linus\",\"location\":\"Portland\"}";
+        final String responseText = "${req.json.name} is such a cool guy from ${req.json.location}.";
+        server.request(as(json(ruleJsonText), true)).response(template(responseText));
+        running(server, () -> assertThat(helper.postContent(root(), requestJsonText), is("Linus is such a cool guy from Portland.")));
     }
 
     @Test

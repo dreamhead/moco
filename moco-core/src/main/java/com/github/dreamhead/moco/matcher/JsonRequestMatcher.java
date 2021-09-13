@@ -3,15 +3,18 @@ package com.github.dreamhead.moco.matcher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
+import org.springframework.expression.*;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 
 public final class JsonRequestMatcher extends AbstractRequestMatcher {
@@ -19,6 +22,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     private final ObjectMapper mapper;
     private final Resource expected;
     private final JsonMatchMode matchMode;
+    private final ExpressionParser parser;
 
     public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor) {
         this(expected, extractor, JsonMatchMode.CONTENT);
@@ -29,6 +33,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         this.expected = expected;
         this.matchMode = matchMode;
         this.mapper = new ObjectMapper();
+        this.parser = new SpelExpressionParser();
     }
 
     @Override
@@ -46,12 +51,12 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
             switch (this.matchMode) {
                 case STRUCT:
                     return doStructMatch(requestNode, resourceNode);
-//                case REGEX :
-//                   return doRegexMatch(requestNode,resourceNode);
+                case RULE:
+                    return doRuleMatch(requestNode, resourceNode);
                 default:
                     return doContentMatch(requestNode, resourceNode);
             }
-        } catch (JsonProcessingException jpe) {
+        } catch (JsonProcessingException | ExpressionException e) {
             return false;
         }
     }
@@ -112,11 +117,105 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         return new JsonRequestMatcher(appliedResource, this.extractor, this.matchMode);
     }
 
+    private boolean doRuleMatch(JsonNode requestNode, final JsonNode resourceNode) {
+
+        if (resourceNode.isNull()) {
+            return true;
+        }
+        if (requestNode == null) {
+            requestNode = NullNode.getInstance();
+        }
+        // If it is a JSON String value,it will be as a expression
+        if (resourceNode.isTextual()) {
+
+            EvaluationContext context = new StandardEvaluationContext();
+
+            Expression exp = parser.parseExpression(resourceNode.asText());
+
+            context.setVariable("value", transform(requestNode));
+
+            return Optional.ofNullable(exp.getValue(context, Boolean.class)).orElse(false);
+
+        }
+        // If it is a JSON boolean value or numeric JSON value,it  will only be as a type to compare
+        if (resourceNode.isNumber()) {
+            return requestNode.isNumber();
+        }
+
+        if (resourceNode.isBoolean()) {
+            return requestNode.isBoolean();
+        }
+
+        if (resourceNode.isObject() && requestNode.isObject()) {
+
+            for (Iterator<String> it = resourceNode.fieldNames(); it.hasNext(); ) {
+                String name = it.next();
+                if (!doRuleMatch(requestNode.get(name), resourceNode.get(name))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        if (resourceNode.isArray() && requestNode.isArray()) {
+            if (resourceNode.isEmpty()) {
+                return true;
+            }
+            JsonNode templateNode = resourceNode.get(0);
+            for (JsonNode elementNode : resourceNode) {
+                if (!(doRuleMatch(elementNode, templateNode))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        return false;
+    }
+
+    private Object transform(JsonNode jsonNode) {
+
+        if (jsonNode == null || jsonNode.isNull()) {
+            return null;
+        }
+
+        if (jsonNode.isBoolean()) {
+            return jsonNode.asBoolean();
+        }
+
+        if (jsonNode.isNumber()) {
+            return jsonNode.asDouble();
+        }
+
+        if (jsonNode.isTextual()) {
+            return jsonNode.asText();
+        }
+
+        if (jsonNode.isArray()) {
+            List<Object> list = new ArrayList<>();
+            jsonNode.forEach(node -> {
+                list.add(transform(node));
+            });
+            return list;
+        }
+        if (jsonNode.isObject()) {
+            Map<String, Object> map = new HashMap<>();
+            for (Iterator<String> it = jsonNode.fieldNames(); it.hasNext(); ) {
+                String name = it.next();
+                map.put(name, transform(jsonNode.get(name)));
+            }
+            return map;
+        }
+        return null;
+    }
+
 
     public enum JsonMatchMode {
         //matched pattern
         CONTENT,
         STRUCT,
-        REGEX
+        RULE
     }
 }
