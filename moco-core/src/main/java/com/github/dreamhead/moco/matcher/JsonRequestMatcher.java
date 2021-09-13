@@ -96,9 +96,9 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
             if (requestNode.isEmpty()) {
                 return true;
             }
-            JsonNode templateNode = requestNode.get(0);
-            for (JsonNode elementNode : resourceNode) {
-                if (!(doStructMatch(templateNode, elementNode))) {
+            JsonNode templateNode = resourceNode.get(0);
+            for (JsonNode elementNode : requestNode) {
+                if (!(doStructMatch(elementNode, templateNode))) {
                     return false;
                 }
             }
