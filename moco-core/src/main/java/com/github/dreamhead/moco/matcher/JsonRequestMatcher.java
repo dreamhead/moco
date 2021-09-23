@@ -52,7 +52,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
                 case STRUCT:
                     return doStructMatch(requestNode, resourceNode);
                 case RULE:
-                    return doRuleMatch(requestNode, resourceNode);
+                    return doRuleMatch(requestNode, resourceNode, request);
                 default:
                     return doContentMatch(requestNode, resourceNode);
             }
@@ -117,7 +117,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         return new JsonRequestMatcher(appliedResource, this.extractor, this.matchMode);
     }
 
-    private boolean doRuleMatch(JsonNode requestNode, final JsonNode resourceNode) {
+    private boolean doRuleMatch(JsonNode requestNode, final JsonNode resourceNode, Request request) {
 
         if (resourceNode.isNull()) {
             return true;
@@ -133,6 +133,8 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
             Expression exp = parser.parseExpression(resourceNode.asText());
 
             context.setVariable("value", transform(requestNode));
+
+            context.setVariable("request", request);
 
             return Optional.ofNullable(exp.getValue(context, Boolean.class)).orElse(false);
 
@@ -150,7 +152,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
 
             for (Iterator<String> it = resourceNode.fieldNames(); it.hasNext(); ) {
                 String name = it.next();
-                if (!doRuleMatch(requestNode.get(name), resourceNode.get(name))) {
+                if (!doRuleMatch(requestNode.get(name), resourceNode.get(name),request)) {
                     return false;
                 }
             }
@@ -164,7 +166,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
             }
             JsonNode templateNode = resourceNode.get(0);
             for (JsonNode elementNode : resourceNode) {
-                if (!(doRuleMatch(elementNode, templateNode))) {
+                if (!(doRuleMatch(elementNode, templateNode,request))) {
                     return false;
                 }
             }
