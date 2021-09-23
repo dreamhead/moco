@@ -112,7 +112,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         return new JsonRequestMatcher(appliedResource, this.extractor, this.matchMode);
     }
 
-    private boolean doRuleMatch(final JsonNode requestNode, final JsonNode resourceNode, Request request) {
+    private boolean doRuleMatch(final JsonNode requestNode, final JsonNode resourceNode, final Request request) {
 
         if (requestNode == null || resourceNode.isNull()) {
             return true;
