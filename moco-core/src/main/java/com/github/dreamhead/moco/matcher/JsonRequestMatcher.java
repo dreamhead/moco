@@ -3,13 +3,13 @@ package com.github.dreamhead.moco.matcher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
+import com.google.common.collect.Streams;
 import org.springframework.expression.*;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -28,7 +28,7 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         this(expected, extractor, JsonMatchMode.CONTENT);
     }
 
-    public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor, JsonMatchMode matchMode) {
+    public JsonRequestMatcher(final Resource expected, final ContentRequestExtractor extractor, final JsonMatchMode matchMode) {
         this.extractor = extractor;
         this.expected = expected;
         this.matchMode = matchMode;
@@ -41,7 +41,6 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         Optional<MessageContent> content = extractor.extract(request);
         return content.filter(messageContent -> doMatch(request, messageContent))
                 .isPresent();
-
     }
 
     private boolean doMatch(final Request request, final MessageContent content) {
@@ -66,44 +65,40 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
     }
 
     private boolean doStructMatch(final JsonNode requestNode, final JsonNode resourceNode) {
-
         if (requestNode == null) {
             return false;
         }
+
         if (resourceNode.isNull()) {
             return true;
         }
+
         if (requestNode.isNumber() && resourceNode.isNumber()) {
             return true;
         }
+
         if (requestNode.isBoolean() && resourceNode.isBoolean()) {
             return true;
         }
+
         if (requestNode.isTextual() && resourceNode.isTextual()) {
             return true;
         }
-        if (requestNode.isObject() && resourceNode.isObject()) {
 
-            for (Iterator<String> it = resourceNode.fieldNames(); it.hasNext(); ) {
-                String name = it.next();
-                if (!doStructMatch(requestNode.get(name), resourceNode.get(name))) {
-                    return false;
-                }
-            }
-            return true;
+        if (requestNode.isObject() && resourceNode.isObject()) {
+            return Streams.stream(resourceNode.fieldNames())
+                    .allMatch(name -> doStructMatch(requestNode.get(name), resourceNode.get(name)));
         }
+
         if (requestNode.isArray() && resourceNode.isArray()) {
             if (requestNode.isEmpty()) {
                 return true;
             }
             JsonNode templateNode = resourceNode.get(0);
-            for (JsonNode elementNode : requestNode) {
-                if (!(doStructMatch(elementNode, templateNode))) {
-                    return false;
-                }
-            }
-            return true;
+            return Streams.stream(requestNode)
+                    .allMatch(node -> doStructMatch(templateNode, node));
         }
+
         return false;
     }
 
@@ -117,14 +112,12 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
         return new JsonRequestMatcher(appliedResource, this.extractor, this.matchMode);
     }
 
-    private boolean doRuleMatch(JsonNode requestNode, final JsonNode resourceNode, Request request) {
+    private boolean doRuleMatch(final JsonNode requestNode, final JsonNode resourceNode, Request request) {
 
-        if (resourceNode.isNull()) {
+        if (requestNode == null || resourceNode.isNull()) {
             return true;
         }
-        if (requestNode == null) {
-            requestNode = NullNode.getInstance();
-        }
+
         // If it is a JSON String value,it will be as a expression
         if (resourceNode.isTextual()) {
 
@@ -150,14 +143,8 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
 
         if (resourceNode.isObject() && requestNode.isObject()) {
 
-            for (Iterator<String> it = resourceNode.fieldNames(); it.hasNext(); ) {
-                String name = it.next();
-                if (!doRuleMatch(requestNode.get(name), resourceNode.get(name),request)) {
-                    return false;
-                }
-            }
-
-            return true;
+            return Streams.stream(resourceNode.fieldNames())
+                    .allMatch(name -> doRuleMatch(requestNode.get(name), resourceNode.get(name), request));
         }
 
         if (resourceNode.isArray() && requestNode.isArray()) {
@@ -165,12 +152,8 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
                 return true;
             }
             JsonNode templateNode = resourceNode.get(0);
-            for (JsonNode elementNode : resourceNode) {
-                if (!(doRuleMatch(elementNode, templateNode,request))) {
-                    return false;
-                }
-            }
-            return true;
+            return Streams.stream(requestNode)
+                    .allMatch(node -> doRuleMatch(templateNode, node, request));
         }
 
 
@@ -197,17 +180,14 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
 
         if (jsonNode.isArray()) {
             List<Object> list = new ArrayList<>();
-            jsonNode.forEach(node -> {
-                list.add(transform(node));
-            });
+            Streams.stream(jsonNode)
+                    .forEach(node -> list.add(transform(node)));
             return list;
         }
         if (jsonNode.isObject()) {
             Map<String, Object> map = new HashMap<>();
-            for (Iterator<String> it = jsonNode.fieldNames(); it.hasNext(); ) {
-                String name = it.next();
-                map.put(name, transform(jsonNode.get(name)));
-            }
+            Streams.stream(jsonNode.fieldNames())
+                    .forEach(name -> map.put(name, transform(jsonNode.get(name))));
             return map;
         }
         return null;
