@@ -96,7 +96,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         final String ruleJsonText = Jsons.toJson("#value['foo'] == 'bar2'");
 //        final String ruleJsonText = Jsons.toJson(of("foo", "#value == 'bar2'"));
         final String requestJsonText = Jsons.toJson(of("foo", "bar2"));
-        server.request(as(json(ruleJsonText), true)).response("foo");
+        server.request(rule(json(ruleJsonText))).response("foo");
         running(server, () -> assertThat(helper.postContent(root(), requestJsonText), is("foo")));
     }
 
@@ -107,7 +107,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 //        final String ruleJsonText = "{\"name\":\"#value.equalsIgnoreCase('linus')\"}";
         final String requestJsonText = "{\"name\":\"Linus\",\"location\":\"Portland\"}";
         final String responseText = "${req.json.name} is such a cool guy from ${req.json.location}.";
-        server.request(as(json(ruleJsonText), true)).response(template(responseText));
+        server.request(rule(json(ruleJsonText))).response(template(responseText));
         running(server, () -> assertThat(helper.postContent(root(), requestJsonText), is("Linus is such a cool guy from Portland.")));
     }
 

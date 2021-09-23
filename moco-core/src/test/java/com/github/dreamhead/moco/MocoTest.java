@@ -20,31 +20,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
-import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.binary;
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.conditional;
-import static com.github.dreamhead.moco.Moco.contain;
-import static com.github.dreamhead.moco.Moco.cycle;
-import static com.github.dreamhead.moco.Moco.endsWith;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.exist;
-import static com.github.dreamhead.moco.Moco.file;
-import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.Moco.latency;
-import static com.github.dreamhead.moco.Moco.match;
-import static com.github.dreamhead.moco.Moco.method;
-import static com.github.dreamhead.moco.Moco.not;
-import static com.github.dreamhead.moco.Moco.or;
-import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.Moco.query;
-import static com.github.dreamhead.moco.Moco.seq;
-import static com.github.dreamhead.moco.Moco.startsWith;
-import static com.github.dreamhead.moco.Moco.status;
-import static com.github.dreamhead.moco.Moco.text;
-import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.version;
-import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.Moco.*;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -400,6 +376,26 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_rule() throws Exception {
+        server.request(rule(uri("#value.startsWith('/foo')"))).response("bar");
+
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo/a")), is("bar"));
+            assertThat(helper.get(remoteUrl("/foo/b")), is("bar"));
+        });
+    }
+
+    @Test
+    public void should_rule_for_resource() throws Exception {
+        server.request(rule(header("foo"), "#value.endsWith('bar')")).response("bar");
+
+        running(server, () -> {
+            assertThat(helper.getWithHeader(root(), of("foo", "Abar")), is("bar"));
+            assertThat(helper.getWithHeader(root(), of("foo", "Bbar")), is("bar"));
+        });
+    }
+
+    @Test
     public void should_contain() throws Exception {
         server.request(contain(uri("foo"))).response("bar");
 
@@ -681,21 +677,21 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_binary() throws Exception {
-        server.response(binary(new byte[] {1, 2, 3}));
+        server.response(binary(new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_binary_with_byte_buffer() throws Exception {
-        server.response(binary(ByteBuffer.wrap(new byte[] {1, 2, 3})));
+        server.response(binary(ByteBuffer.wrap(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -707,7 +703,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -733,7 +729,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_dynamic_text_with_arguments_function() throws Exception {
-        server.response(text((request) -> ((HttpRequest)request).getUri()));
+        server.response(text((request) -> ((HttpRequest) request).getUri()));
 
         running(server, () -> {
             String response = helper.get(remoteUrl("/uri"));
@@ -743,41 +739,41 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_dynamic_binary() throws Exception {
-        server.response(binary((request) -> new byte[] {1, 2, 3}));
+        server.response(binary((request) -> new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function() throws Exception {
-        server.response(binary((request) -> new byte[] {1, 2, 3}));
+        server.response(binary((request) -> new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function_with_byte_buffer() throws Exception {
-        server.response(binary((request) -> ByteBuffer.wrap(new byte[] {1, 2, 3})));
+        server.response(binary((request) -> ByteBuffer.wrap(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function_with_input_stream() throws Exception {
-        server.response(binary((request) -> new ByteArrayInputStream(new byte[] {1, 2, 3})));
+        server.response(binary((request) -> new ByteArrayInputStream(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -787,7 +783,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {'f', 'o', 'o'}));
+            assertThat(asBytes, is(new byte[]{'f', 'o', 'o'}));
         });
     }
 

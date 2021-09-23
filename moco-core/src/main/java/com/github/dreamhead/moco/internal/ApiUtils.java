@@ -8,12 +8,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.handler.failover.DefaultFailoverExecutor;
 import com.github.dreamhead.moco.handler.failover.FailoverExecutor;
-import com.github.dreamhead.moco.matcher.ContainMatcher;
-import com.github.dreamhead.moco.matcher.EndsWithMatcher;
-import com.github.dreamhead.moco.matcher.EqRequestMatcher;
-import com.github.dreamhead.moco.matcher.JsonRequestMatcher;
-import com.github.dreamhead.moco.matcher.MatchMatcher;
-import com.github.dreamhead.moco.matcher.StartsWithMatcher;
+import com.github.dreamhead.moco.matcher.*;
 import com.github.dreamhead.moco.monitor.CompositeMonitor;
 import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
 import com.github.dreamhead.moco.monitor.FileLogWriter;
@@ -91,13 +86,22 @@ public final class ApiUtils {
         return new EqRequestMatcher<>(extractor, expected);
     }
 
-    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected, final Boolean isRuleMatch) {
+    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected) {
         if ("json".equalsIgnoreCase(expected.id())) {
 
-            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, isRuleMatch ? JsonRequestMatcher.JsonMatchMode.RULE : JsonRequestMatcher.JsonMatchMode.STRUCT);
+            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, JsonRequestMatcher.JsonMatchMode.STRUCT);
         }
 
         return new EqRequestMatcher<>(extractor, expected);
+    }
+
+    public static <T> RequestMatcher rule(final RequestExtractor<T> extractor, final Resource expected) {
+        if ("json".equalsIgnoreCase(expected.id())) {
+
+            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, JsonRequestMatcher.JsonMatchMode.RULE);
+        }
+
+        return new RuleRequestMatcher<>(expected, extractor);
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
