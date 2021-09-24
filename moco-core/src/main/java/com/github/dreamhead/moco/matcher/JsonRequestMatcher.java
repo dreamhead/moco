@@ -114,10 +114,12 @@ public final class JsonRequestMatcher extends AbstractRequestMatcher {
 
     private boolean doRuleMatch(final JsonNode requestNode, final JsonNode resourceNode, final Request request) {
 
-        if (requestNode == null || resourceNode.isNull()) {
+        if (resourceNode.isNull()) {
             return true;
         }
-
+        if (requestNode == null) {
+            return false;
+        }
         // If it is a JSON String value,it will be as a expression
         if (resourceNode.isTextual()) {
 
