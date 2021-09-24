@@ -1,0 +1,60 @@
+[
+  {
+    "request": {
+      "uri": {
+        "rule": "#value.startsWith('/foo')"
+      }
+    },
+    "response": {
+      "text": "uri_match"
+    }
+  },
+  {
+    "request": {
+      "uri": "/text-match",
+      "text": {
+        "rule": "#value.startsWith('foo')"
+      }
+    },
+    "response": {
+      "text": "text_match"
+    }
+  },
+  {
+    "request": {
+      "uri": "/header-match",
+      "headers": {
+        "content-type": {
+          "rule": "#value.startsWith('application')"
+        }
+      }
+    },
+    "response": {
+      "text": "header_match"
+    }
+  },
+  {
+    "request": {
+      "uri": "/query-match",
+      "queries": {
+        "foo": {
+          "rule": "#value.startsWith('b')"
+        }
+      }
+    },
+    "response": {
+      "text": "query_match"
+    }
+  },
+  {
+    "request": {
+      "uri": "/json-match",
+      "json_rule": {
+        "name": "#value.equalsIgnoreCase('Linus')"
+      }
+    },
+    "response": {
+      "text": "json_match"
+    }
+  }
+]

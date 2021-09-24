@@ -24,6 +24,8 @@ public final class RequestSetting extends BaseResourceSetting {
     private Map<String, TextContainer> queries;
     private Map<String, TextContainer> cookies;
     private Map<String, TextContainer> forms;
+    @JsonProperty("json_rule")
+    private Object jsonRule;
 
     protected MoreObjects.ToStringHelper toStringHelper() {
         return super.toStringHelper()
@@ -35,7 +37,9 @@ public final class RequestSetting extends BaseResourceSetting {
                 .add("json paths", jsonPaths)
                 .add("queries", queries)
                 .add("cookies", cookies)
-                .add("forms", forms);
+                .add("forms", forms)
+                .add("json_rule", jsonRule);
+
     }
 
     public RequestMatcher getRequestMatcher() {

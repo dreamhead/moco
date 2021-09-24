@@ -17,10 +17,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.exist;
-import static com.github.dreamhead.moco.Moco.not;
+import static com.github.dreamhead.moco.Moco.*;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
@@ -54,7 +51,9 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
         if ("json".equalsIgnoreCase(name)) {
             return by(Moco.json(value));
         }
-
+        if ("jsonRule".equalsIgnoreCase(name)) {
+            return rule(Moco.json(value));
+        }
         if (value instanceof Map) {
             return createCompositeMatcher(name, castToMap(value));
         }
