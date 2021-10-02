@@ -23,8 +23,16 @@ public abstract class FileRunner implements Runner {
 
     public synchronized void restart() {
         this.runner.stop();
-        this.runner = newRunner();
+        this.runner = refreshRunner(this.runner);
         this.runner.run();
+    }
+
+    private Runner refreshRunner(final Runner current) {
+        try {
+            return newRunner();
+        } catch (Exception e) {
+            return current;
+        }
     }
 
     public Runner getRunner() {
