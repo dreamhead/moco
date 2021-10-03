@@ -29,13 +29,10 @@ public final class StartTask implements BootstrapTask {
         final Stopwatch stopwatch = Stopwatch.createStarted();
         runner.run();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runner.stop();
-                stopwatch.stop();
-                logger.info("Total time: " + stopwatch);
-            }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            runner.stop();
+            stopwatch.stop();
+            logger.info("Total time: " + stopwatch);
         }));
     }
 

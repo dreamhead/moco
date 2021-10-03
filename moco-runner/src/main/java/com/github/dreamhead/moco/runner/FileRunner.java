@@ -31,6 +31,7 @@ public abstract class FileRunner implements Runner {
         try {
             return newRunner();
         } catch (Exception e) {
+            System.err.println("Fail to load new runner: " + e.getMessage());
             return current;
         }
     }
