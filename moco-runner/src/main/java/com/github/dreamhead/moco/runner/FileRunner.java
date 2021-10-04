@@ -2,6 +2,8 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,7 @@ import java.util.stream.StreamSupport;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
 
 public abstract class FileRunner implements Runner {
+    private Logger logger = LoggerFactory.getLogger(FileRunner.class);
     private Runner runner;
 
     protected abstract Runner newRunner();
@@ -31,7 +34,7 @@ public abstract class FileRunner implements Runner {
         try {
             return newRunner();
         } catch (Exception e) {
-            System.err.println("Fail to load new runner: " + e.getMessage());
+            logger.warn("Fail to load new runner: " + e.getMessage());
             return current;
         }
     }

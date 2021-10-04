@@ -35,13 +35,7 @@ public final class WatcherFactory {
     private Function<File, Void> listener(final FileRunner fileRunner) {
         return file -> {
             logger.info("{} change detected.", file.getName());
-            try {
-                fileRunner.restart();
-            } catch (Exception e) {
-                logger.warn("Fail to load configuration in {}.", file.getName());
-                logger.warn(e.getMessage());
-            }
-
+            fileRunner.restart();
             return null;
         };
     }
