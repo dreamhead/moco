@@ -3,6 +3,9 @@
 * `conditional` Java API allows you to write your own matcher
 * `random` template function supports start and end as range
 
+## Implementation Details
+* restart with configuration when new configuration is illegal. #304
+
 # Release 1.2.0 (1-Apr-2021)
 
 ## Websocket
