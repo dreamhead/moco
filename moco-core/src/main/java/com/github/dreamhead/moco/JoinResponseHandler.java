@@ -11,12 +11,12 @@ public class JoinResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler apply(final MocoConfig config) {
         return this;
     }
 
     @Override
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         context.join(group);
     }
 }
