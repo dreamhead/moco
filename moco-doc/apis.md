@@ -3048,7 +3048,7 @@ Many verification can be used:
 * **once**: only once this kind of request has been sent.
 * **time**: how many times this kind of request has been sent.
 * **atLeast**: at least how many time this kind of request has been sent.
-* **atMost**: at least how many time this kind of request has been sent.
+* **atMost**: at most how many time this kind of request has been sent.
 * **between**: the times this kind of request has been sent should be between min and max times.
 
 ## Miscellaneous
