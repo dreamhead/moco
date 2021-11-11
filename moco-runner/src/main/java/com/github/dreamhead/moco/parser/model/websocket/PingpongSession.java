@@ -9,7 +9,7 @@ public class PingpongSession {
     private TextContainer ping;
     private TextContainer pong;
 
-    public void bindPingPong(final WebSocketServer webSocketServer) {
+    public final void bindPingPong(final WebSocketServer webSocketServer) {
         webSocketServer.ping(ping.asResource()).pong(pong.asResource());
     }
 }
