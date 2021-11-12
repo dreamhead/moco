@@ -20,25 +20,25 @@ public class PingPongSetting implements PongResponse {
     }
 
     @Override
-    public void pong(final String message) {
+    public final void pong(final String message) {
         this.pong(text(checkNotNullOrEmpty(message, "Pong message should not be null")));
     }
 
     @Override
-    public void pong(final Resource message) {
+    public final void pong(final Resource message) {
         this.pong(with(with(checkNotNull(message, "Pong message should not be null"))));
     }
 
     @Override
-    public void pong(final ResponseHandler message) {
+    public final void pong(final ResponseHandler message) {
         this.pong = checkNotNull(message, "Pong message should not be null");
     }
 
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         return this.ping.match(request);
     }
 
-    public void writeToResponse(final SessionContext context) {
+    public final void writeToResponse(final SessionContext context) {
         this.pong.writeToResponse(context);
     }
 }
