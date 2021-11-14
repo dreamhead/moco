@@ -204,7 +204,7 @@ public final class Moco {
 
     public static RequestMatcher struct(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return ApiUtils.as(extractor(resource.id()), resource);
+        return ApiUtils.struct(extractor(resource.id()), resource);
     }
 
     public static <T> RequestMatcher eq(final RequestExtractor<T> extractor, final String expected) {

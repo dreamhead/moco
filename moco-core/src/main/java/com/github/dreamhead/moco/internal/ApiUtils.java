@@ -11,7 +11,8 @@ import com.github.dreamhead.moco.handler.failover.FailoverExecutor;
 import com.github.dreamhead.moco.matcher.ContainMatcher;
 import com.github.dreamhead.moco.matcher.EndsWithMatcher;
 import com.github.dreamhead.moco.matcher.EqRequestMatcher;
-import com.github.dreamhead.moco.matcher.JsonRequestMatcher;
+import com.github.dreamhead.moco.matcher.JsonContentRequestMatcher;
+import com.github.dreamhead.moco.matcher.JsonStructRequestMatcher;
 import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.monitor.CompositeMonitor;
@@ -85,15 +86,15 @@ public final class ApiUtils {
 
     public static <T> RequestMatcher by(final RequestExtractor<T> extractor, final Resource expected) {
         if ("json".equalsIgnoreCase(expected.id())) {
-            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor);
+            return new JsonContentRequestMatcher(expected, (ContentRequestExtractor) extractor);
         }
 
         return new EqRequestMatcher<>(extractor, expected);
     }
 
-    public static <T> RequestMatcher as(final RequestExtractor<T> extractor, final Resource expected) {
+    public static <T> RequestMatcher struct(final RequestExtractor<T> extractor, final Resource expected) {
         if ("json".equalsIgnoreCase(expected.id())) {
-            return new JsonRequestMatcher(expected, (ContentRequestExtractor) extractor, JsonRequestMatcher.JsonMatchMode.STRUCT);
+            return new JsonStructRequestMatcher(expected, (ContentRequestExtractor) extractor);
         }
 
         return new EqRequestMatcher<>(extractor, expected);
