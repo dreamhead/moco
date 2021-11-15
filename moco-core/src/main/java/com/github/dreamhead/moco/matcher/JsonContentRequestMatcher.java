@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
 
-public class JsonContentRequestMatcher extends JsonRequestMatcher {
+public final class JsonContentRequestMatcher extends JsonRequestMatcher {
     public JsonContentRequestMatcher(final Resource expected, final ContentRequestExtractor extractor) {
         super(expected, extractor);
     }

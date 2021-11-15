@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.collect.Streams;
 
-public class JsonStructRequestMatcher extends JsonRequestMatcher {
+public final class JsonStructRequestMatcher extends JsonRequestMatcher {
     public JsonStructRequestMatcher(final Resource expected, final ContentRequestExtractor extractor) {
         super(expected, extractor);
     }
