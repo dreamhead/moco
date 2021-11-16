@@ -13,7 +13,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import java.util.Optional;
 
 public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
-    protected abstract boolean doMatch(final JsonNode requestNode, final JsonNode resourceNode);
+    protected abstract boolean doMatch(final JsonNode actual, final JsonNode expected);
     protected abstract RequestMatcher newApplyMatcher(final Resource appliedResource, final ContentRequestExtractor extractor);
 
     private final ContentRequestExtractor extractor;
@@ -35,9 +35,9 @@ public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
 
     protected boolean doMatch(final Request request, final MessageContent content) {
         try {
-            JsonNode requestNode = mapper.readTree(content.toString());
-            JsonNode resourceNode = mapper.readTree(expected.readFor(request).toString());
-            return doMatch(requestNode, resourceNode);
+            JsonNode actual = mapper.readTree(content.toString());
+            JsonNode expected = mapper.readTree(this.expected.readFor(request).toString());
+            return doMatch(actual, expected);
         } catch (JsonProcessingException jpe) {
             return false;
         }

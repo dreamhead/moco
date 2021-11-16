@@ -11,38 +11,38 @@ public final class JsonStructRequestMatcher extends JsonRequestMatcher {
         super(expected, extractor);
     }
 
-    protected boolean doMatch(final JsonNode requestNode, final JsonNode resourceNode) {
-        if (requestNode == null) {
+    protected boolean doMatch(final JsonNode actual, final JsonNode expected) {
+        if (actual == null) {
             return false;
         }
 
-        if (resourceNode.isNull()) {
+        if (expected.isNull()) {
             return true;
         }
 
-        if (requestNode.isNumber() && resourceNode.isNumber()) {
+        if (actual.isNumber() && expected.isNumber()) {
             return true;
         }
 
-        if (requestNode.isBoolean() && resourceNode.isBoolean()) {
+        if (actual.isBoolean() && expected.isBoolean()) {
             return true;
         }
 
-        if (requestNode.isTextual() && resourceNode.isTextual()) {
+        if (actual.isTextual() && expected.isTextual()) {
             return true;
         }
 
-        if (requestNode.isObject() && resourceNode.isObject()) {
-            return Streams.stream(resourceNode.fieldNames())
-                    .allMatch(name -> doMatch(requestNode.get(name), resourceNode.get(name)));
+        if (actual.isObject() && expected.isObject()) {
+            return Streams.stream(expected.fieldNames())
+                    .allMatch(name -> doMatch(actual.get(name), expected.get(name)));
         }
 
-        if (requestNode.isArray() && resourceNode.isArray()) {
-            if (requestNode.isEmpty()) {
+        if (actual.isArray() && expected.isArray()) {
+            if (actual.isEmpty()) {
                 return true;
             }
-            JsonNode templateNode = requestNode.get(0);
-            return Streams.stream(resourceNode)
+            JsonNode templateNode = actual.get(0);
+            return Streams.stream(expected)
                     .allMatch(node -> doMatch(templateNode, node));
         }
 
