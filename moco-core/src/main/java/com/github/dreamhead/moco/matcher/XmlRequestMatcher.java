@@ -24,7 +24,10 @@ import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public final class XmlRequestMatcher extends AbstractRequestMatcher {
+public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
+    protected abstract boolean doMatch(final Document actual, final Document expected);
+    protected abstract RequestMatcher newAppliedMatcher(final Resource applied);
+
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor;
     private final Resource resource;
@@ -40,10 +43,10 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
         return requestDocument.filter(document -> tryToMatch(request, document)).isPresent();
     }
 
-    private boolean tryToMatch(final Request request, final Document document) {
+    private boolean tryToMatch(final Request request, final Document expected) {
         try {
-            Document resourceDocument = getResourceDocument(request, this.resource);
-            return document.isEqualNode(resourceDocument);
+            Document actual = getResourceDocument(request, this.resource);
+            return doMatch(actual, expected);
         } catch (SAXException e) {
             return false;
         }
@@ -52,7 +55,7 @@ public final class XmlRequestMatcher extends AbstractRequestMatcher {
     @Override
     public RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
-            return new XmlRequestMatcher(resource.apply(config));
+            return newAppliedMatcher(resource.apply(config));
         }
 
         return this;

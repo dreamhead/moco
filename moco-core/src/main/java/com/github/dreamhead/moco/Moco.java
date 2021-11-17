@@ -30,6 +30,7 @@ import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.ExistMatcher;
 import com.github.dreamhead.moco.matcher.NotRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
+import com.github.dreamhead.moco.matcher.XmlContentRequestMatcher;
 import com.github.dreamhead.moco.matcher.XmlRequestMatcher;
 import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
@@ -378,7 +379,7 @@ public final class Moco {
 
     public static RequestMatcher xml(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return new XmlRequestMatcher(resource);
+        return new XmlContentRequestMatcher(resource);
     }
 
     public static ContentResource json(final String jsonText) {

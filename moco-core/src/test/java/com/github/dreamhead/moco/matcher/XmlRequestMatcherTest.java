@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class XmlRequestMatcherTest {
     @Test
     public void should_return_false_for_empty_content() {
-        XmlRequestMatcher unitUnderTest = new XmlRequestMatcher(text("<request><parameters><id>1</id></parameters></request>"));
+        XmlRequestMatcher unitUnderTest = new XmlContentRequestMatcher(text("<request><parameters><id>1</id></parameters></request>"));
         HttpRequest request = DefaultHttpRequest.builder().withStringContent("").build();
         assertThat(unitUnderTest.match(request), is(false));
     }
