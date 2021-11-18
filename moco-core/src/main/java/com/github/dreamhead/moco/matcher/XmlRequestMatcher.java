@@ -38,7 +38,7 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         Optional<Document> requestDocument = extractDocument(request, extractor);
         return requestDocument.filter(document -> tryToMatch(request, document)).isPresent();
     }
@@ -53,7 +53,7 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    public RequestMatcher doApply(final MocoConfig config) {
+    public final RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
             return newAppliedMatcher(resource.apply(config));
         }

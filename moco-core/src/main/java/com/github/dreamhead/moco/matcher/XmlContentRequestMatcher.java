@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.Document;
 
-public class XmlContentRequestMatcher extends XmlRequestMatcher {
-    public XmlContentRequestMatcher(Resource resource) {
+public final class XmlContentRequestMatcher extends XmlRequestMatcher {
+    public XmlContentRequestMatcher(final Resource resource) {
         super(resource);
     }
 
