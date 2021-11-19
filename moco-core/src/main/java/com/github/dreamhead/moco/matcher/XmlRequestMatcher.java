@@ -40,12 +40,12 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     @Override
     public final boolean match(final Request request) {
         Optional<Document> requestDocument = extractDocument(request, extractor);
-        return requestDocument.filter(document -> tryToMatch(request, document)).isPresent();
+        return requestDocument.filter(actual -> tryToMatch(request, actual)).isPresent();
     }
 
-    private boolean tryToMatch(final Request request, final Document expected) {
+    private boolean tryToMatch(final Request request, final Document actual) {
         try {
-            Document actual = getResourceDocument(request, this.resource);
+            Document expected = getExpectedDocument(request, this.resource);
             return doMatch(actual, expected);
         } catch (SAXException e) {
             return false;
@@ -61,7 +61,7 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
         return this;
     }
 
-    private Document getResourceDocument(final Request request, final Resource resource) throws SAXException {
+    private Document getExpectedDocument(final Request request, final Resource resource) throws SAXException {
         InputStream stream = resource.readFor(request).toInputStream();
         return extractDocument(new InputSource(stream));
     }
