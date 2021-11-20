@@ -3,7 +3,9 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.Server;
+import com.github.dreamhead.moco.resource.Resource;
 
+import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.or;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
@@ -15,6 +17,10 @@ public abstract class BaseServer<T extends ResponseSetting<T>>
 
     public final T request(final RequestMatcher matcher) {
         return this.onRequestAttached(checkNotNull(matcher, "Matcher should not be null"));
+    }
+
+    public final T request(final Resource resource) {
+        return this.request(by(resource));
     }
 
     public final T request(final RequestMatcher... matchers) {

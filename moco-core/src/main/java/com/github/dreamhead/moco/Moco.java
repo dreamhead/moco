@@ -63,6 +63,7 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.templateResourc
 import static com.github.dreamhead.moco.resource.ResourceFactory.textResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
+import static com.github.dreamhead.moco.resource.ResourceFactory.xmlResource;
 import static com.github.dreamhead.moco.resource.reader.TemplateResourceReader.checkValidVariableName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
@@ -373,13 +374,13 @@ public final class Moco {
         return new XPathRequestExtractor(checkNotNullOrEmpty(xpath, "XPath should not be null"));
     }
 
-    public static RequestMatcher xml(final String resource) {
+    public static ContentResource xml(final String resource) {
         return xml(text(checkNotNullOrEmpty(resource, "Resource should not be null")));
     }
 
-    public static RequestMatcher xml(final Resource resource) {
+    public static ContentResource xml(final Resource resource) {
         checkNotNull(resource, "Resource should not be null");
-        return new XmlContentRequestMatcher(resource);
+        return xmlResource((request) -> resource);
     }
 
     public static ContentResource json(final String jsonText) {

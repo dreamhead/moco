@@ -1,12 +1,13 @@
 package com.github.dreamhead.moco.matcher;
 
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.Document;
 
 public final class XmlContentRequestMatcher extends XmlRequestMatcher {
-    public XmlContentRequestMatcher(final Resource resource) {
-        super(resource);
+    public XmlContentRequestMatcher(final Resource resource, final ContentRequestExtractor extractor) {
+        super(resource, extractor);
     }
 
     @Override
@@ -15,7 +16,7 @@ public final class XmlContentRequestMatcher extends XmlRequestMatcher {
     }
 
     @Override
-    protected RequestMatcher newAppliedMatcher(final Resource applied) {
-        return new XmlContentRequestMatcher(applied);
+    protected RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor) {
+        return new XmlContentRequestMatcher(applied, extractor);
     }
 }

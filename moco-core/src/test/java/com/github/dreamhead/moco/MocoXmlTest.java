@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.file;
@@ -49,14 +50,14 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_match_exact_xml() throws Exception {
-        server.request(xml(file("src/test/resources/foo.xml"))).response("foo");
+        server.request(by(xml(file("src/test/resources/foo.xml")))).response("foo");
 
         running(server, () -> assertThat(helper.postFile(root(), "foo.xml"), is("foo")));
     }
 
     @Test
     public void should_match_xml() throws Exception {
-        server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
+        server.request(by(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
 
         running(server, () -> assertThat(helper.postFile(root(), "foo.xml"), is("foo")));
     }

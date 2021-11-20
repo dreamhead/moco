@@ -12,6 +12,7 @@ import com.github.dreamhead.moco.resource.reader.FileResourceReader;
 import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
 import com.github.dreamhead.moco.resource.reader.TemplateResourceReader;
 import com.github.dreamhead.moco.resource.reader.Variable;
+import com.github.dreamhead.moco.resource.reader.XmlResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.google.common.collect.ImmutableMap;
@@ -90,6 +91,11 @@ public final class ResourceFactory {
     public static ContentResource classpathFileResource(final Resource filename, final Charset charset) {
         return contentResource(id("pathresource"), DO_NOTHING_APPLIER,
                 new ClasspathFileResourceReader(filename, charset));
+    }
+
+    public static ContentResource xmlResource(final Function<Request, Object> function) {
+        return contentResource(id("xml"), DO_NOTHING_APPLIER,
+                new XmlResourceReader(function));
     }
 
     public static ContentResource jsonResource(final Function<Request, Object> function) {

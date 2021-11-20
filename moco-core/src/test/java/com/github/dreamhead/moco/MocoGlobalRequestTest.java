@@ -101,14 +101,14 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     @Test
     public void should_match_with_xml() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
-        server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
+        server.request(by(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
         running(server, () -> assertThat(helper.postFile(remoteUrl("/path"), "foo.xml"), is("foo")));
     }
 
     @Test(expected = HttpResponseException.class)
     public void should_throw_exception_without_match_xml() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
-        server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
+        server.request(by(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
         running(server, () -> helper.postFile(root(), "foo.xml"));
     }
 

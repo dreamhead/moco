@@ -26,14 +26,14 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     protected abstract boolean doMatch(final Document actual, final Document expected);
-    protected abstract RequestMatcher newAppliedMatcher(final Resource applied);
+    protected abstract RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor);
 
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor;
     private final Resource resource;
 
-    public XmlRequestMatcher(final Resource resource) {
-        this.extractor = new ContentRequestExtractor();
+    public XmlRequestMatcher(final Resource resource, final ContentRequestExtractor extractor) {
+        this.extractor = extractor;
         this.resource = resource;
     }
 
@@ -55,7 +55,7 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     @Override
     public final RequestMatcher doApply(final MocoConfig config) {
         if (config.isFor(resource.id())) {
-            return newAppliedMatcher(resource.apply(config));
+            return newAppliedMatcher(resource.apply(config), this.extractor);
         }
 
         return this;
