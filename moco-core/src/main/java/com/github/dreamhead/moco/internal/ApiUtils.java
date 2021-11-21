@@ -16,6 +16,7 @@ import com.github.dreamhead.moco.matcher.JsonStructRequestMatcher;
 import com.github.dreamhead.moco.matcher.MatchMatcher;
 import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.matcher.XmlContentRequestMatcher;
+import com.github.dreamhead.moco.matcher.XmlStructRequestMatcher;
 import com.github.dreamhead.moco.monitor.CompositeMonitor;
 import com.github.dreamhead.moco.monitor.DefaultLogFormatter;
 import com.github.dreamhead.moco.monitor.FileLogWriter;
@@ -100,6 +101,10 @@ public final class ApiUtils {
     public static <T> RequestMatcher struct(final RequestExtractor<T> extractor, final Resource expected) {
         if ("json".equalsIgnoreCase(expected.id())) {
             return new JsonStructRequestMatcher(expected, (ContentRequestExtractor) extractor);
+        }
+
+        if ("xml".equalsIgnoreCase(expected.id())) {
+            return new XmlStructRequestMatcher(expected, (ContentRequestExtractor) extractor);
         }
 
         return new EqRequestMatcher<>(extractor, expected);

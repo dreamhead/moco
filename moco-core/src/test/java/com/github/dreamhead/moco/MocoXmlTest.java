@@ -9,6 +9,7 @@ import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.file;
+import static com.github.dreamhead.moco.Moco.struct;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.xml;
 import static com.github.dreamhead.moco.Moco.xpath;
@@ -81,5 +82,22 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
         server.request(exist(xpath("/request/parameters/id/text()"))).response("foo");
 
         running(server, () -> assertThat(helper.postFile(root(), "foo.xml"), is("foo")));
+    }
+
+    @Test
+    public void should_match_struct_of_xml() throws Exception {
+        server.request(struct(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+
+        running(server, () ->
+                assertThat(helper.postContent(root(), "<request><parameters><id>2</id></parameters></request>"), is("foo")));
+    }
+
+    @Test
+    public void should_not_match_struct_of_mismatch_xml() throws Exception {
+        server.request(struct(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+        server.response("mismatch");
+
+        running(server, () ->
+                assertThat(helper.postContent(root(), "<request><parameters><foo>2</foo></parameters></request>"), is("mismatch")));
     }
 }

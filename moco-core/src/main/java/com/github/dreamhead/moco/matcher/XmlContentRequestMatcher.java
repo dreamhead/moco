@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 public final class XmlContentRequestMatcher extends XmlRequestMatcher {
     public XmlContentRequestMatcher(final Resource resource, final ContentRequestExtractor extractor) {
@@ -11,7 +11,7 @@ public final class XmlContentRequestMatcher extends XmlRequestMatcher {
     }
 
     @Override
-    protected boolean doMatch(final Document actual, final Document expected) {
+    protected boolean doMatch(final Node actual, final Node expected) {
         return expected.isEqualNode(actual);
     }
 
