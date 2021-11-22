@@ -28,11 +28,18 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
         if (expected.getNodeType() == Node.ELEMENT_NODE) {
             final Element actualNode = (Element) actual;
             final Element expectedNode = (Element) expected;
-            return actualNode.getNodeName().equals(expectedNode.getNodeName())
-                    && doMatch(actualNode.getChildNodes(), expectedNode.getChildNodes());
+            return doMatch(actualNode, expectedNode);
         }
 
         return true;
+    }
+
+    private boolean doMatch(final Element actualNode, final Element expectedNode) {
+        if (!actualNode.getNodeName().equals(expectedNode.getNodeName())) {
+            return false;
+        }
+
+        return doMatch(actualNode.getChildNodes(), expectedNode.getChildNodes());
     }
 
     private boolean doMatch(final NodeList actualNodes, final NodeList expectedNodes) {
