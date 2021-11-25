@@ -58,7 +58,7 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
     }
 
     @Override
-    protected RequestMatcher newAppliedMatcher(Resource applied, ContentRequestExtractor extractor) {
-        return null;
+    protected RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor) {
+        return new XmlStructRequestMatcher(applied, extractor);
     }
 }
