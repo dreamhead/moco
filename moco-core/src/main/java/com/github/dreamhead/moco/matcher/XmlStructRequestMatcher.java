@@ -14,7 +14,7 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
     }
 
     @Override
-    protected boolean doMatch(final Node actual, final Node expected) {
+    protected final boolean doMatch(final Node actual, final Node expected) {
         if (actual.getNodeType() != expected.getNodeType()) {
             return false;
         }
@@ -58,7 +58,7 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
     }
 
     @Override
-    protected RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor) {
+    protected final RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor) {
         return new XmlStructRequestMatcher(applied, extractor);
     }
 }
