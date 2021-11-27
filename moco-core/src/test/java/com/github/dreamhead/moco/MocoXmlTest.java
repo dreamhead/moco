@@ -100,4 +100,12 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
         running(server, () ->
                 assertThat(helper.postContent(root(), "<request><parameters><foo>2</foo></parameters></request>"), is("mismatch")));
     }
+
+    @Test
+    public void should_match_struct_of_xml_ignoring_comment() throws Exception {
+        server.request(struct(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
+
+        running(server, () ->
+                assertThat(helper.postContent(root(), "<!--comment--><request><parameters><id>2</id></parameters></request>"), is("foo")));
+    }
 }
