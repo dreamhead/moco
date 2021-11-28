@@ -30,7 +30,7 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
     }
     
     @Test
-    public void should_return_expected_reponse_based_on_json_path_request() throws IOException {
+    public void should_return_expected_response_based_on_json_path_request() throws IOException {
     	runWithConfiguration("jsonpath.json");
     	assertThat(helper.postContent(remoteUrl("/jsonpath"), "{\"book\":{\"price\":\"1\"}}"), is("response_for_json_path_request"));
     }
