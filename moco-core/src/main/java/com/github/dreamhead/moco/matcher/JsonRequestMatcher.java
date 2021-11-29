@@ -33,7 +33,7 @@ public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
                 .isPresent();
     }
 
-    protected boolean doMatch(final Request request, final MessageContent content) {
+    private boolean doMatch(final Request request, final MessageContent content) {
         try {
             JsonNode actual = mapper.readTree(content.toString());
             JsonNode expected = mapper.readTree(this.expected.readFor(request).toString());
