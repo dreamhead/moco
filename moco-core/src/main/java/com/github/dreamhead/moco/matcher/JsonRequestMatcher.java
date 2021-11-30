@@ -27,7 +27,7 @@ public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    public boolean match(final Request request) {
+    public final boolean match(final Request request) {
         Optional<MessageContent> content = extractor.extract(request);
         return content.filter(messageContent -> doMatch(request, messageContent))
                 .isPresent();
@@ -44,7 +44,7 @@ public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
     }
 
     @Override
-    public RequestMatcher doApply(final MocoConfig config) {
+    public final RequestMatcher doApply(final MocoConfig config) {
         Resource appliedResource = this.expected.apply(config);
         if (appliedResource == this.expected) {
             return this;
