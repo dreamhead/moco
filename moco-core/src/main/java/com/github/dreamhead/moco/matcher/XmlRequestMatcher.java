@@ -25,8 +25,8 @@ import java.util.Optional;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
-    protected abstract boolean doMatch(final Node actual, final Node expected);
-    protected abstract RequestMatcher newAppliedMatcher(final Resource applied, final ContentRequestExtractor extractor);
+    protected abstract boolean doMatch(Node actual, Node expected);
+    protected abstract RequestMatcher newAppliedMatcher(Resource applied, ContentRequestExtractor extractor);
 
     private final XmlExtractorHelper helper = new XmlExtractorHelper();
     private final ContentRequestExtractor extractor;
