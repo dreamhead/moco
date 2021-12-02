@@ -13,8 +13,8 @@ import com.github.dreamhead.moco.resource.Resource;
 import java.util.Optional;
 
 public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
-    protected abstract boolean doMatch(final JsonNode actual, final JsonNode expected);
-    protected abstract RequestMatcher newApplyMatcher(final Resource appliedResource, final ContentRequestExtractor extractor);
+    protected abstract boolean doMatch(JsonNode actual, JsonNode expected);
+    protected abstract RequestMatcher newApplyMatcher(Resource appliedResource, final ContentRequestExtractor extractor);
 
     private final ContentRequestExtractor extractor;
     private final ObjectMapper mapper;
