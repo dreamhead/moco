@@ -19,6 +19,7 @@ import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.log;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -97,5 +98,20 @@ public class MocoLogTest {
         String actual = asCharSource(file, Charset.defaultCharset()).read();
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
+    }
+
+    @Test
+    public void should_log_request_and_response_with_queries() throws Exception {
+        HttpServer server = httpServer(port(), log());
+        server.request(by("0XCAFE")).response("0XBABE");
+        File file = folder.newFile();
+        System.setOut(new PrintStream(new FileOutputStream(file)));
+
+        running(server, () -> assertThat(helper.postContent(remoteUrl("/foo?param=actual"), "0XCAFE"), is("0XBABE")));
+
+        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        assertThat(actual, containsString("0XBABE"));
+        assertThat(actual, containsString("0XCAFE"));
+        assertThat(actual, containsString("/foo?param=actual"));
     }
 }
