@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.internal;
 
-import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoMonitor;
@@ -11,7 +10,6 @@ import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.monitor.Slf4jMonitor;
 import com.github.dreamhead.moco.monitor.ThreadSafeMonitor;
-import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import io.netty.handler.ssl.SslHandler;
