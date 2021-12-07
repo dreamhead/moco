@@ -11,7 +11,6 @@ import java.nio.charset.Charset;
 import java.util.function.Function;
 
 import static com.github.dreamhead.moco.util.Functions.checkApply;
-import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public class XmlResourceReader implements ContentResourceReader {
     private final Function<Request, Object> function;
@@ -26,7 +25,7 @@ public class XmlResourceReader implements ContentResourceReader {
     }
 
     @Override
-    public MessageContent readFor(Request request) {
+    public MessageContent readFor(final Request request) {
         Object value = checkApply(this.function, request);
         if (value instanceof String) {
             return MessageContent.content((String) value);
