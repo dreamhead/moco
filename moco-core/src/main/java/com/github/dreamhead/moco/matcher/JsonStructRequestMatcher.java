@@ -46,6 +46,10 @@ public final class JsonStructRequestMatcher extends JsonRequestMatcher {
                     .allMatch(node -> doMatch(templateNode, node));
         }
 
+        if (actual.isBinary() && expected.isBinary()) {
+            return true;
+        }
+
         return false;
     }
 
