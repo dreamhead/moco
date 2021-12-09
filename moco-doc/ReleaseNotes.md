@@ -6,6 +6,7 @@
 ## Implementation Details
 * restart with configuration when new configuration is illegal. #304
 * enhance log with query parameters
+* `xml` returns ContentResource which is break change.
 
 # Release 1.2.0 (1-Apr-2021)
 
