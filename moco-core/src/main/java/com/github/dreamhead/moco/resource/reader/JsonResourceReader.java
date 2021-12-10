@@ -13,7 +13,7 @@ import java.util.function.Function;
 import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
-public final class JsonResourceReader implements ContentResourceReader {
+public final class JsonResourceReader implements ContentResourceReader, FunctionResourceReader {
     private final Function<Request, Object> function;
 
     public JsonResourceReader(final Function<Request, Object> function) {
@@ -27,24 +27,15 @@ public final class JsonResourceReader implements ContentResourceReader {
 
     @Override
     public MessageContent readFor(final Request request) {
-        Object value = checkApply(this.function, request);
-        if (value instanceof String) {
-            return MessageContent.content((String) value);
-        }
-
-        if (value instanceof Resource) {
-            Resource resource = (Resource) value;
-            return resource.readFor(request);
-        }
-
-        if (value instanceof InputStream) {
-            return MessageContent.content().withContent((InputStream) value).build();
-        }
-
-        return MessageContent.content().withContent(toJson(value)).build();
+        return read(this.function, request);
     }
 
     public Object getPojo() {
         return function.apply(null);
+    }
+
+    @Override
+    public MessageContent defaultRead(final Object value) {
+        return MessageContent.content().withContent(toJson(value)).build();
     }
 }
