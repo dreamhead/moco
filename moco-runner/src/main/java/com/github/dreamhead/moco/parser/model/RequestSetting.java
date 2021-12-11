@@ -25,6 +25,8 @@ public final class RequestSetting extends BaseResourceSetting {
     private Map<String, TextContainer> cookies;
     private Map<String, TextContainer> forms;
 
+    private StructSetting struct;
+
     protected MoreObjects.ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("version", version)
@@ -35,7 +37,8 @@ public final class RequestSetting extends BaseResourceSetting {
                 .add("json paths", jsonPaths)
                 .add("queries", queries)
                 .add("cookies", cookies)
-                .add("forms", forms);
+                .add("forms", forms)
+                .add("struct", struct);
     }
 
     public RequestMatcher getRequestMatcher() {

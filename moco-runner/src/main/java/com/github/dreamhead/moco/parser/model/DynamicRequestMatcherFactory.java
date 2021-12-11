@@ -20,6 +20,7 @@ import java.util.stream.StreamSupport;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
+import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.not;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -52,7 +53,7 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
 
     private RequestMatcher createRequestMatcherFromValue(final String name, final Object value) {
         if ("json".equalsIgnoreCase(name)) {
-            return by(Moco.json(value));
+            return by(json(value));
         }
 
         if (value instanceof Map) {
@@ -61,6 +62,13 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
 
         if (value instanceof TextContainer) {
             return createSingleTextMatcher(name, (TextContainer) value);
+        }
+
+        if (value instanceof StructSetting) {
+            final StructSetting struct = (StructSetting) value;
+            if (struct.isJson()) {
+                return Moco.struct(json(struct.getJson()));
+            }
         }
 
         throw new IllegalArgumentException("unknown configuration :" + value);

@@ -1,0 +1,15 @@
+[
+  {
+    "request": {
+      "uri": "/json-struct",
+      "struct": {
+        "json": {
+          "foo": "bar"
+        }
+      }
+    },
+    "response": {
+      "text": "response_for_json_struct"
+    }
+  }
+]
