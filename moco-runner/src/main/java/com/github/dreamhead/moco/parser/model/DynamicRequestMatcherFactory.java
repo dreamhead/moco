@@ -69,6 +69,8 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
             if (struct.isJson()) {
                 return Moco.struct(json(struct.getJson()));
             }
+
+            throw new IllegalArgumentException("Unknown struct configuration: " + struct);
         }
 
         throw new IllegalArgumentException("unknown configuration :" + value);
