@@ -38,6 +38,7 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response_based_on_json_struct_request() throws IOException {
         runWithConfiguration("json_struct.json");
-        assertThat(helper.postContent(remoteUrl("/json-struct"), "{\n\t\"foo\":\"bar\"\n}"), is("response_for_json_struct"));
+        assertThat(helper.postContent(remoteUrl("/json-struct"), "{\"foo\":\"bar\"}"), is("response_for_json_struct"));
+        assertThat(helper.postContent(remoteUrl("/json-struct"), "{\"foo\":\"hello\"}"), is("response_for_json_struct"));
     }
 }
