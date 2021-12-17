@@ -22,6 +22,7 @@ import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.exist;
 import static com.github.dreamhead.moco.Moco.json;
 import static com.github.dreamhead.moco.Moco.not;
+import static com.github.dreamhead.moco.Moco.xml;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
@@ -68,6 +69,10 @@ public final class DynamicRequestMatcherFactory extends Dynamics implements Requ
             final StructSetting struct = (StructSetting) value;
             if (struct.isJson()) {
                 return Moco.struct(json(struct.getJson()));
+            }
+
+            if (struct.isXml()) {
+                return Moco.struct(xml(struct.getXml()));
             }
 
             throw new IllegalArgumentException("Unknown struct configuration: " + struct);
