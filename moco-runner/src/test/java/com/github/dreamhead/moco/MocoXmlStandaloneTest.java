@@ -37,5 +37,6 @@ public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_return_expected_response_based_on_struct_xml() throws IOException {
         runWithConfiguration("xml_struct.json");
         assertThat(helper.postFile(remoteUrl("/struct-xml"), "foo.xml"), is("response_for_xml_struct_request"));
+        assertThat(helper.postContent(remoteUrl("/struct-xml"), "<request><parameters><id>2</id></parameters></request>"), is("response_for_xml_struct_request"));
     }
 }
