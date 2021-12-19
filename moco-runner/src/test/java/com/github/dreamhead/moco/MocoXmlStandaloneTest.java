@@ -38,5 +38,6 @@ public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("xml_struct.json");
         assertThat(helper.postFile(remoteUrl("/struct-xml"), "foo.xml"), is("response_for_xml_struct_request"));
         assertThat(helper.postContent(remoteUrl("/struct-xml"), "<request><parameters><id>2</id></parameters></request>"), is("response_for_xml_struct_request"));
+        assertThat(helper.postForResponse(remoteUrl("/struct-xml"), "<request><parameters><foo>2</foo></parameters></request>").getStatusLine().getStatusCode(), is(400));
     }
 }
