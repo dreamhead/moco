@@ -669,7 +669,7 @@ server.request(json(file("your_file.json"))).response("foo");
 ### JSONPath
 **@Since 0.7**
 
-For the JSON/HTML request, Moco allows us to match request with JSONPath.
+For the JSON request, Moco allows us to match request with JSONPath.
 
 * Java API
 
@@ -683,7 +683,6 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
 {
   "request":
     {
-      "uri": "/jsonpath",
       "json_paths":
         {
           "$.book[*].price": "1"
@@ -693,6 +692,38 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
     {
       "text": "response_for_json_path_request"
     }
+}
+```
+
+### JSON Struct
+
+**@Since will be at next release**
+
+Moco also allows you to match a JSON request only for same struct no matter what actual content is.
+
+* Java API
+
+```java
+server.request(struct(json("{\"foo\":1}")).response("response_for_json_struct_request");
+```
+
+* JSON
+
+```json
+{
+  "request":
+  {
+    "struct":
+    {
+      "json" : {
+        "foo" :1
+      }
+    }
+  },
+  "response":
+  {
+    "text": "response_for_json_path_request"
+  }
 }
 ```
 
