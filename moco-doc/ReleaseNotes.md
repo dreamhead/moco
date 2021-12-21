@@ -2,11 +2,12 @@
 ## APIs
 * `conditional` Java API allows you to write your own matcher
 * `random` template function supports start and end as range
+* `struct` API for JSON and XML which matches only struct no matter what content is. 
 
 ## Implementation Details
 * restart with configuration when new configuration is illegal. #304
 * enhance log with query parameters
-* `xml` returns ContentResource which is break change.
+* `xml` returns ContentResource which is a break change.
 
 # Release 1.2.0 (1-Apr-2021)
 

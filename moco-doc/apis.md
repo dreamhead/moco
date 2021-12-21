@@ -553,6 +553,36 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 }
 ```
 
+### XML Struct
+
+**@Since will be at next release**
+
+Moco also allows you to match an XML request only for same struct no matter what actual content is.
+
+* Java API
+
+```java
+server.request(struct(xml("<foo>1</foo>")).response("response_for_xml_struct_request");
+```
+
+* JSON
+
+```json
+{
+  "request":
+  {
+    "struct":
+    {
+      "xml" : "<foo>1</foo>"
+    }
+  },
+  "response":
+  {
+    "text": "response_for_xml_struct_request"
+  }
+}
+```
+
 ### JSON Request
 
 #### JSON Text
@@ -722,7 +752,7 @@ server.request(struct(json("{\"foo\":1}")).response("response_for_json_struct_re
   },
   "response":
   {
-    "text": "response_for_json_path_request"
+    "text": "response_for_json_struct_request"
   }
 }
 ```
