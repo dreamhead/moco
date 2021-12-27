@@ -3,14 +3,11 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
 
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
-import static com.github.dreamhead.moco.util.Functions.checkApply;
 import static com.github.dreamhead.moco.util.Jsons.toJson;
 
 public final class JsonResourceReader implements ContentResourceReader, FunctionResourceReader {
