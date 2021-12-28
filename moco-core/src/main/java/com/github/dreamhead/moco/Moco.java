@@ -30,8 +30,6 @@ import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.ExistMatcher;
 import com.github.dreamhead.moco.matcher.NotRequestMatcher;
 import com.github.dreamhead.moco.matcher.OrRequestMatcher;
-import com.github.dreamhead.moco.matcher.XmlContentRequestMatcher;
-import com.github.dreamhead.moco.matcher.XmlRequestMatcher;
 import com.github.dreamhead.moco.monitor.StdLogWriter;
 import com.github.dreamhead.moco.procedure.LatencyProcedure;
 import com.github.dreamhead.moco.recorder.MocoGroup;
