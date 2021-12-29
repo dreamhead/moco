@@ -4,11 +4,9 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.util.URLs.join;
 
