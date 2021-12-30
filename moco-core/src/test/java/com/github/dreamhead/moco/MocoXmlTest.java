@@ -13,8 +13,8 @@ import static com.github.dreamhead.moco.Moco.struct;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.xml;
 import static com.github.dreamhead.moco.Moco.xpath;
-import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -107,5 +107,22 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
 
         running(server, () ->
                 assertThat(helper.postContent(root(), "<!--comment--><request><parameters><id>2</id></parameters></request>"), is("foo")));
+    }
+
+    @Test
+    public void should_match_struct_of_xml_wit_same_attribute() throws Exception {
+        server.request(struct(xml("<request><parameters foo=\"bar\"><id>1</id></parameters></request>"))).response("foo");
+
+        running(server, () ->
+                assertThat(helper.postContent(root(), "<request><parameters foo=\"bar\"><id>2</id></parameters></request>"), is("foo")));
+    }
+
+    @Test
+    public void should_not_match_struct_of_xml_wit_different_attribute() throws Exception {
+        server.request(struct(xml("<request><parameters foo=\"bar\"><id>1</id></parameters></request>"))).response("foo");
+
+        running(server, () ->
+                assertThat(helper.postForResponse(root(), "<request><parameters bar=\"bar\"><id>2</id></parameters></request>").getStatusLine().getStatusCode(), is(400))
+        );
     }
 }

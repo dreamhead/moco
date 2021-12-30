@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -39,7 +40,28 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
             return false;
         }
 
-        return doMatch(actualNode.getChildNodes(), expectedNode.getChildNodes());
+        if (!doMatch(actualNode.getChildNodes(), expectedNode.getChildNodes())) {
+            return false;
+        }
+
+        return doMatch(actualNode.getAttributes(), expectedNode.getAttributes());
+    }
+
+    private boolean doMatch(final NamedNodeMap actualAttributes, final NamedNodeMap expectedAttributes) {
+        final int actualLength = actualAttributes.getLength();
+        final int expectedLength = expectedAttributes.getLength();
+        if (actualLength == 0 && expectedLength == 0) {
+            return true;
+        }
+
+        for (int i = 0; i < actualLength; i++) {
+            final Node item = actualAttributes.item(i);
+            if (expectedAttributes.getNamedItem(item.getNodeName()) == null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean doMatch(final NodeList actualNodes, final NodeList expectedNodes) {
