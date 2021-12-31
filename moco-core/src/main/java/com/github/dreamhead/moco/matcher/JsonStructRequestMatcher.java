@@ -38,12 +38,12 @@ public final class JsonStructRequestMatcher extends JsonRequestMatcher {
         }
 
         if (actual.isArray() && expected.isArray()) {
-            if (actual.isEmpty()) {
+            if (actual.isEmpty() || expected.isEmpty()) {
                 return true;
             }
-            JsonNode templateNode = actual.get(0);
-            return Streams.stream(expected)
-                    .allMatch(node -> doMatch(templateNode, node));
+            JsonNode templateNode = expected.get(0);
+            return Streams.stream(actual)
+                    .allMatch(node -> doMatch(node, templateNode));
         }
 
         if (actual.isBinary() && expected.isBinary()) {
