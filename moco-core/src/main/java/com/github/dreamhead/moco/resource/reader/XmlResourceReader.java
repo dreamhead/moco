@@ -8,7 +8,7 @@ import com.google.common.net.MediaType;
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
-public class XmlResourceReader implements ContentResourceReader, FunctionResourceReader {
+public final class XmlResourceReader implements ContentResourceReader, FunctionResourceReader {
     private final Function<Request, Object> function;
 
     public XmlResourceReader(final Function<Request, Object> function) {
