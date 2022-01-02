@@ -31,7 +31,7 @@ Moco has been published on Maven repository, so you can refer to it directly in 
 <dependency>
   <groupId>com.github.dreamhead</groupId>
   <artifactId>moco-core</artifactId>
-  <version>1.2.0</version>
+  <version>1.3.0</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ repositories {
 
 dependencies {
   testImplementation(
-    "com.github.dreamhead:moco-core:1.2.0",
+    "com.github.dreamhead:moco-core:1.3.0",
   )
 }
 ```

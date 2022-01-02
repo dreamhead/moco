@@ -555,7 +555,7 @@ server.request(eq(xpath("/request/parameters/id/text()"), "1")).response("bar");
 
 ### XML Struct
 
-**@Since will be at next release**
+**@Since 1.3.0**
 
 Moco also allows you to match an XML request only for same struct no matter what actual content is.
 
@@ -598,7 +598,7 @@ server.request(json(text("{\"foo\":\"bar\"}"))).response("foo");
 
 
 **@Since 0.12.0**
-`json` will return a resource from next release
+`json` will return a resource from 1.3.0.
 
 ```java
 server.request(by(json(text("{\"foo\":\"bar\"}")))).response("foo");
@@ -640,7 +640,7 @@ server.request(json(pojo)).response("foo");
 ```
 
 **@Since 0.12.0**
-`json` will return a resource from next release
+`json` will return a resource from 1.3.0.
 
 ```java
 server.request(by(json(pojo))).response("foo");
@@ -727,7 +727,7 @@ server.request(eq(jsonPath("$.book[*].price"), "1")).response("response_for_json
 
 ### JSON Struct
 
-**@Since will be at next release**
+**@Since 1.3.0**
 
 Moco also allows you to match a JSON request only for same struct no matter what actual content is.
 
@@ -932,7 +932,7 @@ For JSON API, you can decide whether the information does not exist.
 
 ### Conditional
 
-**@Since will be at next release**
+**@Since 1.3.0**
 
 If you want to implement your own matcher, you can write with `conditional` API which is supported in Java code.
 
@@ -2397,6 +2397,7 @@ server.request(by(uri("/template"))).response(template("${random(100)}"));
     }
 }
 ```
+**@Since 1.3.0**
 
 If you want to limit your random number in a range. You can give two number as a start and an end.
 
