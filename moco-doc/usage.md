@@ -152,7 +152,7 @@ Now, open your browser and input "http://localhost:12306". You will see "foo". T
 
 **@Since 0.10.0**
 
-If you have setup your server with JSON configuration, you can also your configuration from Java API.
+If you have setup your server with JSON configuration, you can also run with your configuration from Java API.
 
 ```java
 import static com.github.dreamhead.moco.Moco.file;
