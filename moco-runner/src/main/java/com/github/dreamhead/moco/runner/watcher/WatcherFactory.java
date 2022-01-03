@@ -13,7 +13,7 @@ import java.util.function.Function;
 public final class WatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(WatcherFactory.class);
 
-    private FileWatcherFactory factory = new DefaultWatcherFactory();
+    private final FileWatcherFactory factory = new DefaultWatcherFactory();
 
     public ShutdownMocoRunnerWatcher createShutdownWatcher(final Runner runner,
                                                            final Integer shutdownPort,
