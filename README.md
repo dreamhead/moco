@@ -6,7 +6,8 @@
 
 # [Moco](https://github.com/dreamhead/moco) [![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
 
-Moco is an easy setup stub framework.
+Moco helps you to mock your web service and APIs for fast, robust and comprehensive testing. It is a simulator for HTTP-based APIs. 
+Some use it as a service virtualization tool or a mock server.
 
 ## Latest Release
 * __1.3.0__
