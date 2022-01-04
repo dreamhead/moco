@@ -9,6 +9,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.util.stream.IntStream;
+
 public class XmlStructRequestMatcher extends XmlRequestMatcher {
     public XmlStructRequestMatcher(final Resource resource, final ContentRequestExtractor extractor) {
         super(resource, extractor);
@@ -54,14 +56,11 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
             return true;
         }
 
-        for (int i = 0; i < actualLength; i++) {
-            final Node item = actualAttributes.item(i);
-            if (expectedAttributes.getNamedItem(item.getNodeName()) == null) {
-                return false;
-            }
-        }
-
-        return true;
+        return IntStream.range(0, actualLength)
+                .allMatch(index -> {
+                    final Node item = actualAttributes.item(index);
+                    return expectedAttributes.getNamedItem(item.getNodeName()) != null;
+                });
     }
 
     private boolean doMatch(final NodeList actualNodes, final NodeList expectedNodes) {
@@ -70,13 +69,8 @@ public class XmlStructRequestMatcher extends XmlRequestMatcher {
             return false;
         }
 
-        for (int i = 0; i < length; i++) {
-            if (!doMatch(actualNodes.item(i), expectedNodes.item(i))) {
-                return false;
-            }
-        }
-
-        return true;
+        return IntStream.range(0, length)
+                .allMatch(index -> doMatch(actualNodes.item(index), expectedNodes.item(index)));
     }
 
     @Override
