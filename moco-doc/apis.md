@@ -2595,11 +2595,11 @@ server.request(by(uri("/event"))).response("event").on(complete(post("http://loc
 ## Record and Replay
 **@Since 1.1.0**
 
-More powerful dynamic feature are required even if you can implement some with template. For instance, you want to change one URL to return different response. Record and replay will help.
+More powerful dynamic features are required even if you can implement some with a template. For instance, you may want to change one URL to return a different response. Record and replay will help.
 
-In the following, `/record` will use to record request and `/replay` will return the recorded request content. You can also configure your record and replay for more capability.
+In the following, `/record` will be used to record request and `/replay` will return the recorded request content. You can also configure record and replay for more capabilities.
 
-In this case, `group` will be used to distinguish different record source.
+In this case, `group` will be used to distinguish different record sources.
 
 ```java
 server.request(by(uri("/record"))).response(record(group("foo")));
