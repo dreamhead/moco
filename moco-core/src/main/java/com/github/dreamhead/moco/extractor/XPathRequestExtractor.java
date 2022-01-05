@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -11,10 +10,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
@@ -52,12 +50,8 @@ public class XPathRequestExtractor extends HttpRequestExtractor<String[]> {
     }
 
     private Optional<String[]> doExtract(final NodeList list) {
-        List<String> values = newArrayList();
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.item(i);
-            values.add(node.getNodeValue());
-        }
-
-        return of(values.toArray(new String[values.size()]));
+        return of(IntStream.range(0, list.getLength())
+                .mapToObj(index -> list.item(index).getNodeValue())
+                .toArray(String[]::new));
     }
 }
