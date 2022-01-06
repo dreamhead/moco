@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.google.common.base.Strings;
 
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public final class HttpRequestFailoverMatcher {
     private final HttpRequest source;
@@ -23,7 +24,7 @@ public final class HttpRequestFailoverMatcher {
                 && doMatch(source.getQueries(), target.getQueries());
     }
 
-    protected boolean doMatch(final Map<String, ?> thisField, final Map<String, ?> thatField) {
+    private boolean doMatch(final Map<String, ?> thisField, final Map<String, ?> thatField) {
         if (thisField == null || thisField.isEmpty()) {
             return true;
         }
@@ -55,13 +56,8 @@ public final class HttpRequestFailoverMatcher {
             return false;
         }
 
-        for (int i = 0; i < thatValues.length; i++) {
-            if (!doMatch(thisValues[i], thatValues[i])) {
-                return false;
-            }
-        }
-
-        return true;
+        return IntStream.range(0, thatValues.length)
+                .allMatch(index -> doMatch(thisValues[index], thatValues[index]));
     }
 
     protected boolean doMatch(final String thisField, final String thatField) {
