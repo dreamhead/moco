@@ -89,9 +89,10 @@ public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     // Whitespace will be kept by DOM parser.
     private void trimNode(final Node node) {
         NodeList children = node.getChildNodes();
-        for (int i = children.getLength() - 1; i >= 0; i--) {
-            trimChild(node, children.item(i));
-        }
+        final int length = children.getLength();
+        IntStream.range(0, length)
+                .map(i -> length - 1 - i)
+                .forEach(i -> trimChild(node, children.item(i)));
     }
 
     private DocumentBuilder documentBuilder() {
