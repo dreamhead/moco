@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 import static com.google.common.collect.ImmutableList.of;
 
@@ -75,11 +77,12 @@ public final class Globs {
         int nameCount = path.getNameCount();
         for (int i = 0; i < nameCount; i++) {
             String current = path.getName(i).toString();
-            int length = current.length();
-            for (int j = 0; j < length; j++) {
-                if (isGlobMeta(current.charAt(j))) {
-                    return i;
-                }
+
+            final OptionalInt index = IntStream.range(0, current.length())
+                    .filter(j -> isGlobMeta(current.charAt(j)))
+                    .findFirst();
+            if (index.isPresent()) {
+                return i;
             }
         }
 
