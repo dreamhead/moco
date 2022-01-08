@@ -4,7 +4,9 @@
   <img src="moco-doc/moco.png?raw=true" width="100px">
 </a>
 
-# [Moco](https://github.com/dreamhead/moco) [![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
+# [Moco](https://github.com/dreamhead/moco) 
+[![Build Status](https://travis-ci.org/dreamhead/moco.png?branch=master)](https://travis-ci.org/dreamhead/moco)
+[![HitCount](http://hits.dwyl.com/dreamhead/moco.svg?style=flat-square)](http://hits.dwyl.com/dreamhead/moco)
 
 Moco is an easy setup stub framework.
 
