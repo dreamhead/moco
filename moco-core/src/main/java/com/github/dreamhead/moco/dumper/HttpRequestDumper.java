@@ -5,10 +5,14 @@ import com.github.dreamhead.moco.Request;
 import com.google.common.collect.ImmutableMap;
 import io.netty.util.internal.StringUtil;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asHeaders;
+import static java.util.stream.Collectors.joining;
 
 public final class HttpRequestDumper implements Dumper<Request> {
     @Override
@@ -40,13 +44,15 @@ public final class HttpRequestDumper implements Dumper<Request> {
 
         final StringBuilder buf = new StringBuilder();
         buf.append('?');
-        for (Map.Entry<String, String[]> entry : queries.entrySet()) {
-            final String key = entry.getKey();
-            for (String value : entry.getValue()) {
-                buf.append(key).append('=').append(value);
-            }
-        }
-
+        final String queryResult = queries.entrySet().stream()
+                .flatMap(entry -> toValueStream(entry.getKey(), entry.getValue()))
+                .collect(joining("&"));
+        buf.append(queryResult);
         return buf.toString();
+    }
+
+    private Stream<String> toValueStream(final String key, final String[] value) {
+        return Arrays.stream(value)
+                .map(result -> key + "=" + result);
     }
 }
