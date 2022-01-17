@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.util.Jsons;
+import com.github.dreamhead.moco.util.Xmls;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
@@ -88,6 +89,15 @@ public final class TemplateRequest {
             return Jsons.toObject(this.request.getContent().toString(), Object.class);
         } catch (Exception e) {
             throw new IllegalArgumentException("Json content is expected", e);
+        }
+    }
+
+    public Object getXml() {
+        try {
+            final Object result = Xmls.toObject(this.request.getContent().toString(), Object.class);
+            return result;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Xml content is expected", e);
         }
     }
 }

@@ -490,4 +490,10 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
         running(server, () -> assertThat(helper.get(remoteUrl("/template")), is("TEMPLATE")));
     }
+
+    @Test
+    public void should_return_with_xml() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.xml.parameter.id}"));
+        running(server, () -> assertThat(helper.postContent(remoteUrl("/template"), "<request><parameter><id>1</id></parameter></request>"), is("1")));
+    }
 }
