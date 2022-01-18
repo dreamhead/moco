@@ -94,8 +94,7 @@ public final class TemplateRequest {
 
     public Object getXml() {
         try {
-            final Object result = Xmls.toObject(this.request.getContent().toString(), Object.class);
-            return result;
+            return Xmls.toObject(this.request.getContent().toString(), Object.class);
         } catch (Exception e) {
             throw new IllegalArgumentException("Xml content is expected", e);
         }
