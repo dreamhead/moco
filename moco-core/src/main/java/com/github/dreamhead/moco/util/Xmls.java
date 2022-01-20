@@ -6,17 +6,17 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.dreamhead.moco.MocoException;
 
 public final class Xmls {
-    private static final XmlMapper mapper = new XmlMapper();
+    private static final XmlMapper DEFAULT_MAPPER = new XmlMapper();
 
     static {
-        mapper.setVisibility(
-                mapper.getSerializationConfig().getDefaultVisibilityChecker()
+        DEFAULT_MAPPER.setVisibility(
+                DEFAULT_MAPPER.getSerializationConfig().getDefaultVisibilityChecker()
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY));
     }
 
     public static <T> T toObject(final String text, final Class<T> clazz) {
         try {
-            return mapper.readValue(text, clazz);
+            return DEFAULT_MAPPER.readValue(text, clazz);
         } catch (JsonProcessingException e) {
             throw new MocoException(e);
         }
