@@ -10,8 +10,8 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class InternalMessageContent {
-    private byte[] content;
-    private Charset charset;
+    private final byte[] content;
+    private final Charset charset;
 
     public InternalMessageContent(@JsonProperty("content") final byte[] content,
                                   @JsonProperty("charset") final Charset charset) {
