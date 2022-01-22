@@ -107,6 +107,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_return_xml_field_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        String content = helper.postContent(remoteUrl("/xml_template"), "<xml><foo>bar</foo></xml>");
+        assertThat(content, is("bar"));
+    }
+
+    @Test
     public void should_return_now_from_template() throws IOException {
         runWithConfiguration("template_with_function.json");
         Date date = new Date();

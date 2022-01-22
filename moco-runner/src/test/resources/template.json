@@ -106,5 +106,15 @@
                 "template": "${req.json.foo}"
             }
         }
+    },
+    {
+        "request": {
+            "uri": "/xml_template"
+        },
+        "response": {
+            "text": {
+                "template": "${req.xml.foo}"
+            }
+        }
     }
 ]
