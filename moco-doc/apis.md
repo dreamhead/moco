@@ -2253,6 +2253,31 @@ server.request(by(uri("/template"))).response(template("${req.json.foo}"));
 }
 ```
 
+#### XML
+**@Since will be at next release**
+
+If your request is an XML request, you can use `req.xml` to visit your json object.
+
+* Java
+
+```java
+server.request(by(uri("/template"))).response(template("${req.xml.foo}"));
+```
+
+* JSON
+
+```json
+{
+    "request": {
+        "uri": "/template"
+    },
+    "response": {
+        "text": {
+            "template": "${req.xml.foo}"
+        }
+    }
+}
+```
 
 ### Custom Variable
 **@Since 0.9.1**

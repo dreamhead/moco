@@ -1,3 +1,10 @@
+# Release
+## APIs
+* `req.xml` is supported in template
+
+## Implementation Details
+* enhance log with query parameters
+
 # Release 1.3.0 (1-Jan-2022)
 ## APIs
 * `conditional` Java API allows you to write your own matcher
