@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.fluent.Request;
@@ -111,6 +112,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template.json");
         String content = helper.postContent(remoteUrl("/xml_template"), "<xml><foo>bar</foo></xml>");
         assertThat(content, is("bar"));
+    }
+
+    @Test
+    public void should_not_return_xml_field_from_template_for_unknown_content() throws IOException {
+        runWithConfiguration("template.json");
+        final HttpResponse response = helper.postForResponse(remoteUrl("/xml_template"), "blah");
+        assertThat(response.getStatusLine().getStatusCode(), is(400));
     }
 
     @Test
