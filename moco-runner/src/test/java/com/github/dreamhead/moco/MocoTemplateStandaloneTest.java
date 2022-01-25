@@ -108,6 +108,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_not_return_json_field_from_template_for_unknown_content() throws IOException {
+        runWithConfiguration("template.json");
+        final HttpResponse response = helper.postForResponse(remoteUrl("/json_template"), "blah");
+        assertThat(response.getStatusLine().getStatusCode(), is(400));
+    }
+
+    @Test
     public void should_return_xml_field_from_template() throws IOException {
         runWithConfiguration("template.json");
         String content = helper.postContent(remoteUrl("/xml_template"), "<xml><foo>bar</foo></xml>");
