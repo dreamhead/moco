@@ -66,3 +66,6 @@
 -dontwarn org.apache.commons.logging.**
 -dontwarn com.google.**
 -dontwarn net.sf.cglib.**
+-dontwarn org.osgi.framework.**
+-dontwarn com.ctc.wstx.**
+-dontwarn jakarta.json.**
