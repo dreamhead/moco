@@ -4,6 +4,7 @@
 
 ## Implementation Details
 * enhance log with query parameters
+* event action log is supported
 
 # Release 1.3.0 (1-Jan-2022)
 ## APIs
