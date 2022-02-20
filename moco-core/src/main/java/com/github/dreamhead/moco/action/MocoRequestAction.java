@@ -24,13 +24,11 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +97,6 @@ public abstract class MocoRequestAction implements MocoEventAction {
     }
 
     private Map<String, String[]> asQueries(final List<NameValuePair> queries) {
-        final HashMap<String, List<String>> map = new HashMap<>();
         final ArrayListMultimap<String, String> multimap = ArrayListMultimap.create();
         for (NameValuePair query : queries) {
             multimap.put(query.getName(), query.getValue());
@@ -125,7 +122,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
         logger.info("Action Response: {}\n", responseDumper.dump(dumped));
     }
 
-    private Map<String, String> asHeaders(Header[] allHeaders) {
+    private Map<String, String> asHeaders(final Header[] allHeaders) {
         return Arrays.stream(allHeaders)
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
