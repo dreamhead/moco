@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.NameValuePair;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,7 @@ public class ActionMonitor {
     }
 
     private Map<String, String[]> asQueries(final List<NameValuePair> queries) {
-        final ArrayListMultimap<String, String> multimap = ArrayListMultimap.create();
+        final Multimap<String, String> multimap = ArrayListMultimap.create();
         for (NameValuePair query : queries) {
             multimap.put(query.getName(), query.getValue());
         }
@@ -52,7 +54,7 @@ public class ActionMonitor {
         Map<String, String[]> result = new HashMap<>();
 
         for (String key : multimap.keys()) {
-            final List<String> strings = multimap.get(key);
+            final Collection<String> strings = multimap.get(key);
             result.put(key, strings.toArray(new String[0]));
         }
 
