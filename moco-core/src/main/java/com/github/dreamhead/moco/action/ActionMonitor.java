@@ -11,6 +11,7 @@ import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -46,10 +47,9 @@ public class ActionMonitor {
     }
 
     private Map<String, String[]> asQueries(final List<NameValuePair> queries) {
-        final Multimap<String, String> multimap = ArrayListMultimap.create();
-        for (NameValuePair query : queries) {
-            multimap.put(query.getName(), query.getValue());
-        }
+        final Multimap<String, String> multimap = queries.stream()
+                .collect(ImmutableListMultimap.toImmutableListMultimap(
+                        NameValuePair::getName, NameValuePair::getValue));
 
         Map<String, String[]> result = new HashMap<>();
 
