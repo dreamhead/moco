@@ -51,14 +51,10 @@ public class ActionMonitor {
                 .collect(ImmutableListMultimap.toImmutableListMultimap(
                         NameValuePair::getName, NameValuePair::getValue));
 
-        Map<String, String[]> result = new HashMap<>();
-
-        for (String key : multimap.keys()) {
-            final Collection<String> strings = multimap.get(key);
-            result.put(key, strings.toArray(new String[0]));
-        }
-
-        return result;
+        return multimap.asMap()
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
     }
 
     private Map<String, String> asHeaders(final Header[] allHeaders) {
