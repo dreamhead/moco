@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 
 public abstract class MocoRequestAction implements MocoEventAction {
-    private ActionMonitor monitor = new ActionMonitor();
+    private final ActionMonitor monitor = new ActionMonitor();
 
     private final Resource url;
     private final HttpHeader[] headers;
