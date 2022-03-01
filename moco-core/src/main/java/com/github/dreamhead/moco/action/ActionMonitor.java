@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 
 public class ActionMonitor {
     private static Logger logger = LoggerFactory.getLogger(ActionMonitor.class);
-    private static final Dumper<Response> responseDumper = new HttpResponseDumper();
-    private static final Dumper<Request> requestDumper = new HttpRequestDumper();
+    private final Dumper<Response> responseDumper = new HttpResponseDumper();
+    private final Dumper<Request> requestDumper = new HttpRequestDumper();
 
     private String toPath(final URI uri) {
         final String path = uri.toString();
