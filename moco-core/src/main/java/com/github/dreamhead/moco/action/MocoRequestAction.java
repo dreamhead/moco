@@ -29,10 +29,10 @@ public abstract class MocoRequestAction implements MocoEventAction {
     @Override
     public final void execute(final Request request) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
-            final HttpUriRequest actionRequest = prepareRequest(request);
-            monitor.dump(actionRequest);
-            final CloseableHttpResponse response = client.execute(actionRequest);
-            monitor.dump(response);
+            final HttpUriRequest actual = prepareRequest(request);
+            monitor.preAction(actual);
+            final CloseableHttpResponse response = client.execute(actual);
+            monitor.postAction(response);
         } catch (IOException e) {
             throw new MocoException(e);
         }

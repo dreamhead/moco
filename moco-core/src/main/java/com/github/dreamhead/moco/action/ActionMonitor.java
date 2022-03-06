@@ -59,7 +59,7 @@ public class ActionMonitor {
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
 
-    public final void dump(final CloseableHttpResponse response) throws IOException {
+    public final void postAction(final CloseableHttpResponse response) throws IOException {
         final DefaultHttpResponse dumped = DefaultHttpResponse.builder()
                 .withVersion(HttpProtocolVersion.versionOf(response.getProtocolVersion().toString()))
                 .withStatus(response.getStatusLine().getStatusCode())
@@ -69,7 +69,7 @@ public class ActionMonitor {
         logger.info("Action Response: {}\n", responseDumper.dump(dumped));
     }
 
-    public final void dump(final HttpUriRequest request) {
+    public final void preAction(final HttpUriRequest request) {
         final URIBuilder uriBuilder = new URIBuilder(request.getURI());
         final DefaultHttpRequest.Builder builder = DefaultHttpRequest.builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.getProtocolVersion().toString()))
