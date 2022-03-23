@@ -30,4 +30,9 @@ public final class Slf4jMonitor extends AbstractMonitor {
     public void onMessageLeave(final Response response) {
         logger.info("Response return:\n\n{}\n", responseDumper.dump(response));
     }
+
+    @Override
+    public boolean isQuiet() {
+        return false;
+    }
 }

@@ -147,6 +147,7 @@ public final class SessionSetting {
     }
 
     public ActualHttpServer newHttpServer(final int port,
+                                          final boolean quiet,
                                           final MocoConfig[] configs) {
         if (isResource()) {
             ActualRestServer server = new ActualRestServer(port, null, log(), configs);
@@ -155,7 +156,7 @@ public final class SessionSetting {
             return server;
         }
 
-        ActualHttpServer server = ActualHttpServer.createLogServer(port, configs);
+        ActualHttpServer server = quiet ? ActualHttpServer.createQuietServer(port) : ActualHttpServer.createLogServer(port, configs);
         bindTo(server);
         return server;
     }

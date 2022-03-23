@@ -17,6 +17,7 @@ public final class HttpsArgsParser extends StartArgsParser {
         String globalSettings = cmd.getOptionValue("g");
         String shutdownPort = cmd.getOptionValue("s");
         String env = cmd.getOptionValue("e");
+        boolean quiet = cmd.hasOption("q");
 
         if (config == null && globalSettings == null) {
             throw new ParseArgException("config or global setting is required");
@@ -41,6 +42,7 @@ public final class HttpsArgsParser extends StartArgsParser {
                 .withSettings(globalSettings)
                 .withEnv(env)
                 .withHttpsArg(httpsArg(cmd))
+                .withQuiet(quiet)
                 .build();
     }
 

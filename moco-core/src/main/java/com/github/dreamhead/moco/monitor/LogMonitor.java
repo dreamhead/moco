@@ -26,4 +26,9 @@ public final class LogMonitor extends AbstractMonitor {
     public void onMessageLeave(final Response response) {
         writer.write(formatter.format(response));
     }
+
+    @Override
+    public boolean isQuiet() {
+        return false;
+    }
 }

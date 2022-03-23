@@ -27,6 +27,11 @@ public final class DefaultRequestHit extends AbstractMonitor implements RequestH
     }
 
     @Override
+    public boolean isQuiet() {
+        return true;
+    }
+
+    @Override
     public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
         checkNotNull(mode, "Verification mode should not be null")
                 .verify(new VerificationData(unexpectedRequests,

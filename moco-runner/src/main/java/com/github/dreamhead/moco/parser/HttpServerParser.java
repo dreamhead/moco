@@ -14,12 +14,14 @@ public final class HttpServerParser extends BaseParser<HttpServer> {
     @Override
     protected HttpServer createServer(final ImmutableList<SessionSetting> sessionSettings,
                                       final int port,
+                                      final boolean quiet,
                                       final MocoConfig... configs) {
-        ActualHttpServer targetServer = ActualHttpServer.createLogServer(port, configs);
+        ActualHttpServer targetServer = quiet ? ActualHttpServer.createQuietServer(port, configs) :
+                ActualHttpServer.createLogServer(port, configs);
 
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
-            targetServer = targetServer.mergeServer(session.newHttpServer(port, configs));
+            targetServer = targetServer.mergeServer(session.newHttpServer(port, quiet, configs));
         }
 
         return targetServer;

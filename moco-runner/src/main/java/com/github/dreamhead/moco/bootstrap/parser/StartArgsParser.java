@@ -55,6 +55,13 @@ public abstract class StartArgsParser {
         return opt;
     }
 
+    protected final Option logOption() {
+        Option opt = new Option("q", false, "quiet");
+        opt.setType(String.class);
+        opt.setRequired(false);
+        return opt;
+    }
+
     protected final Option httpsCertificate() {
         Option option = new Option(null, "https", true, "Https certificate filename");
         option.setType(String.class);

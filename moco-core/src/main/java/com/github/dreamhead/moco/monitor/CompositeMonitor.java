@@ -38,4 +38,15 @@ public final class CompositeMonitor implements MocoMonitor {
             monitor.onUnexpectedMessage(request);
         }
     }
+
+    @Override
+    public boolean isQuiet() {
+        for (MocoMonitor monitor : monitors) {
+            if (!monitor.isQuiet()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -10,12 +10,13 @@ import java.io.InputStream;
 
 public abstract class BaseParser<T extends Server> implements Parser<T> {
     protected abstract T createServer(ImmutableList<SessionSetting> read,
-                                      int port, MocoConfig... configs);
+                                      int port, boolean quiet, MocoConfig... configs);
 
     public final T parseServer(final ImmutableList<InputStream> streams,
                                final int port,
+                               final boolean quiet,
                                final MocoConfig... configs) {
         ImmutableList<SessionSetting> settings = Jsons.toObjects(streams, SessionSetting.class);
-        return createServer(settings, port, configs);
+        return createServer(settings, port, quiet, configs);
     }
 }

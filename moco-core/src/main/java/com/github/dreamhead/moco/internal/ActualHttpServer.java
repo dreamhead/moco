@@ -67,7 +67,11 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     protected final ActualHttpServer createMergeServer(final ActualHttpServer thatServer) {
-        return newBaseServer(mergePort(this, thatServer).orElse(0), mergedCertificate(this.certificate, thatServer.certificate));
+        return newBaseServer(mergePort(this, thatServer).orElse(0), isQuiet(this, thatServer), mergedCertificate(this.certificate, thatServer.certificate));
+    }
+
+    private boolean isQuiet(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
+        return thisServer.isQuiet() && thatServer.isQuiet();
     }
 
     private Optional<Integer> mergePort(final ActualHttpServer thisServer, final ActualHttpServer thatServer) {
@@ -88,9 +92,17 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return other;
     }
 
-    private ActualHttpServer newBaseServer(final int port, final HttpsCertificate certificate) {
+    private ActualHttpServer newBaseServer(final int port, final boolean quite, final HttpsCertificate certificate) {
         if (certificate != null) {
+            if (quite) {
+                return createHttpsQuietServer(port, certificate);
+            }
+
             return createHttpsLogServer(port, certificate);
+        }
+
+        if (quite) {
+            return createQuietServer(port);
         }
 
         return createLogServer(port);

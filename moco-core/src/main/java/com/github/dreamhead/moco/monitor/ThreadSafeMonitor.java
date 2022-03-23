@@ -36,4 +36,9 @@ public final class ThreadSafeMonitor implements MocoMonitor {
     public void onUnexpectedMessage(final Request request) {
         withLock(lock, () -> monitor.onUnexpectedMessage(request));
     }
+
+    @Override
+    public boolean isQuiet() {
+        return monitor.isQuiet();
+    }
 }

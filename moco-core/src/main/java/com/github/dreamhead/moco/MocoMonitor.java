@@ -14,4 +14,6 @@ public interface MocoMonitor {
 
     @Subscribe
     void onUnexpectedMessage(Request request);
+
+    boolean isQuiet();
 }

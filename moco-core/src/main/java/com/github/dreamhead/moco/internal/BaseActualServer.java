@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
+import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.server.ServerSetting;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.collect.ImmutableList;
@@ -154,5 +155,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-
+    public boolean isQuiet() {
+        return this.monitor.isQuiet();
+    }
 }

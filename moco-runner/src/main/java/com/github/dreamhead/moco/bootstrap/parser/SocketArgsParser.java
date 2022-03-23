@@ -14,6 +14,7 @@ public final class SocketArgsParser extends StartArgsParser {
         String port = cmd.getOptionValue("p");
         String config = cmd.getOptionValue("c");
         String shutdownPort = cmd.getOptionValue("s");
+        boolean quiet = cmd.hasOption("q");
 
         if (config == null) {
             throw new ParseArgException("config is required");
@@ -27,6 +28,7 @@ public final class SocketArgsParser extends StartArgsParser {
                 .withPort(getPort(port))
                 .withShutdownPort(getPort(shutdownPort))
                 .withConfigurationFile(config)
+                .withQuiet(quiet)
                 .build();
     }
 

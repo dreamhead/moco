@@ -5,4 +5,9 @@ public final class QuietMonitor extends AbstractMonitor {
     public void onException(final Throwable t) {
         t.printStackTrace(System.err);
     }
+
+    @Override
+    public boolean isQuiet() {
+        return true;
+    }
 }

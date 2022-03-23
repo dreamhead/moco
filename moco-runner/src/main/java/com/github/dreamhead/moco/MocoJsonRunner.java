@@ -52,11 +52,11 @@ public final class MocoJsonRunner {
     private static SocketServer jsonSocketServer(final Resource resource, final int port) {
         SocketServerParser parser = new SocketServerParser();
         return parser.parseServer(ImmutableList.of(
-                toStream(checkNotNull(resource, "resource should not be null"))), port);
+                toStream(checkNotNull(resource, "resource should not be null"))), port, false);
     }
 
     private static HttpServer parseHttpServer(final Resource resource, final int port) {
-        return PARSER.parseServer(ImmutableList.of(toStream(resource)), port);
+        return PARSER.parseServer(ImmutableList.of(toStream(resource)), port, false);
     }
 
     private static InputStream toStream(final Resource resource) {
