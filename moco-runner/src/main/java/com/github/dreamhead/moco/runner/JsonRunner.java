@@ -55,12 +55,8 @@ public final class JsonRunner implements Runner {
     private SocketServer createSocketServer(final Iterable<? extends RunnerSetting> settings,
                                             final StartArgs startArgs) {
         int port = startArgs.getPort().orElse(0);
-        SocketServer socketServer = null;
-        if (startArgs.isQuiet()) {
-            socketServer = ActualSocketServer.createQuietServer(port);
-        } else {
-            socketServer = ActualSocketServer.createLogServer(port);
-        }
+
+        SocketServer socketServer = ActualSocketServer.createSocketServer(port, startArgs.isQuiet());
 
         for (RunnerSetting setting : settings) {
             SocketServer parsedServer = socketParser.parseServer(setting.getStreams(), port, startArgs.isQuiet(),
@@ -100,17 +96,10 @@ public final class JsonRunner implements Runner {
         final int port = startArgs.getPort().orElse(0);
 
         if (startArgs.isHttps()) {
-            if (startArgs.isQuiet()) {
-                return ActualHttpServer.createHttpsQuietServer(port, startArgs.getHttpsCertificate().get());
-            }
-
-            return ActualHttpServer.createHttpsLogServer(port, startArgs.getHttpsCertificate().get());
+            return ActualHttpServer.createHttpsServer(port, startArgs.isQuiet(), startArgs.getHttpsCertificate().get());
         }
 
-        if (startArgs.isQuiet()) {
-            return ActualHttpServer.createQuietServer(port);
-        }
-        return ActualHttpServer.createLogServer(port);
+        return ActualHttpServer.createHttpServer(port, startArgs.isQuiet());
     }
 
     private MocoConfig[] toConfigs(final RunnerSetting setting) {

@@ -16,8 +16,7 @@ public final class SocketServerParser extends BaseParser<SocketServer> {
                                         final int port,
                                         final boolean quiet,
                                         final MocoConfig... configs) {
-        SocketServer server = quiet ? ActualSocketServer.createQuietServer(port)
-                : ActualSocketServer.createLogServer(port);
+        SocketServer server = ActualSocketServer.createSocketServer(port, quiet);
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
 
@@ -26,4 +25,5 @@ public final class SocketServerParser extends BaseParser<SocketServer> {
 
         return server;
     }
+
 }

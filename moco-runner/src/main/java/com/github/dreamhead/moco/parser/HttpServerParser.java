@@ -16,8 +16,7 @@ public final class HttpServerParser extends BaseParser<HttpServer> {
                                       final int port,
                                       final boolean quiet,
                                       final MocoConfig... configs) {
-        ActualHttpServer targetServer = quiet ? ActualHttpServer.createQuietServer(port, configs) :
-                ActualHttpServer.createLogServer(port, configs);
+        ActualHttpServer targetServer = ActualHttpServer.createHttpServer(port, quiet, configs);
 
         for (SessionSetting session : sessionSettings) {
             logger.debug("Parse session: {}", session);
@@ -26,4 +25,5 @@ public final class HttpServerParser extends BaseParser<HttpServer> {
 
         return targetServer;
     }
+
 }

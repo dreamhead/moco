@@ -156,7 +156,7 @@ public final class SessionSetting {
             return server;
         }
 
-        ActualHttpServer server = quiet ? ActualHttpServer.createQuietServer(port) : ActualHttpServer.createLogServer(port, configs);
+        ActualHttpServer server = ActualHttpServer.createHttpServer(port, quiet);
         bindTo(server);
         return server;
     }

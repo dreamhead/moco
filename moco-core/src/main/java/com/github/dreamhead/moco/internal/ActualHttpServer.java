@@ -94,13 +94,22 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
     private ActualHttpServer newBaseServer(final int port, final boolean quite, final HttpsCertificate certificate) {
         if (certificate != null) {
-            if (quite) {
-                return createHttpsQuietServer(port, certificate);
-            }
-
-            return createHttpsLogServer(port, certificate);
+            return createHttpsServer(port, quite, certificate);
         }
 
+        return createHttpServer(port, quite);
+    }
+
+    public static ActualHttpServer createHttpsServer(final int port, final boolean quite,
+                                                      final HttpsCertificate certificate) {
+        if (quite) {
+            return createHttpsQuietServer(port, certificate);
+        }
+
+        return createHttpsLogServer(port, certificate);
+    }
+
+    public static ActualHttpServer createHttpServer(final int port, final boolean quite) {
         if (quite) {
             return createQuietServer(port);
         }
@@ -112,6 +121,10 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
                                                                final MocoMonitor monitor,
                                                                final MocoConfig... configs) {
         return new ActualHttpServer(port, null, new ThreadSafeMonitor(monitor), configs);
+    }
+
+    public static ActualHttpServer createHttpServer(final int port, final boolean quiet, final MocoConfig[] configs) {
+        return quiet ? createQuietServer(port, configs) : createLogServer(port, configs);
     }
 
     public static ActualHttpServer createLogServer(final int port, final MocoConfig... configs) {
