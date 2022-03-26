@@ -127,7 +127,6 @@ subprojects {
         testRuntimeOnly(
                 "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
-
     }
 
     test {

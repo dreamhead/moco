@@ -124,7 +124,11 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     }
 
     public static ActualHttpServer createHttpServer(final int port, final boolean quiet, final MocoConfig[] configs) {
-        return quiet ? createQuietServer(port, configs) : createLogServer(port, configs);
+        if (quiet) {
+            return createQuietServer(port, configs);
+        }
+
+        return createLogServer(port, configs);
     }
 
     public static ActualHttpServer createLogServer(final int port, final MocoConfig... configs) {
