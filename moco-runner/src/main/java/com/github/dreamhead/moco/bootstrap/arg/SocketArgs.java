@@ -36,7 +36,7 @@ public final class SocketArgs extends StartArgs {
             return new SocketArgs(port, shutdownPort, configurationFile, quiet);
         }
 
-        public Builder withQuiet(boolean quiet) {
+        public Builder withQuiet(final boolean quiet) {
             this.quiet = quiet;
             return this;
         }
