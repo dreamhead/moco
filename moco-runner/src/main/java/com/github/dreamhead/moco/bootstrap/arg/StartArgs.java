@@ -71,7 +71,7 @@ public abstract class StartArgs extends ShutdownPortOption {
         return this.type == ServerType.SOCKET;
     }
 
-    public boolean isQuiet() {
+    public final boolean isQuiet() {
         return quiet;
     }
 }
