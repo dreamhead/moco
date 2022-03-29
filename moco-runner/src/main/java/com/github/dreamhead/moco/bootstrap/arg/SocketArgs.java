@@ -32,13 +32,13 @@ public final class SocketArgs extends StartArgs {
             return this;
         }
 
-        public final SocketArgs build() {
-            return new SocketArgs(port, shutdownPort, configurationFile, quiet);
-        }
-
-        public Builder withQuiet(final boolean quiet) {
+        public final Builder withQuiet(final boolean quiet) {
             this.quiet = quiet;
             return this;
+        }
+
+        public final SocketArgs build() {
+            return new SocketArgs(port, shutdownPort, configurationFile, quiet);
         }
     }
 }
