@@ -49,8 +49,11 @@ public final class ActualSocketServer extends BaseActualServer<SocketResponseSet
     }
 
     public static ActualSocketServer createSocketServer(final int port, final boolean quiet) {
-        return quiet ? createQuietServer(port)
-                : createLogServer(port);
+        if (quiet) {
+            return createQuietServer(port);
+        }
+
+        return createLogServer(port);
     }
 
     public static ActualSocketServer createServerWithMonitor(final int port, final MocoMonitor monitor) {
