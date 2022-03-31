@@ -30,7 +30,7 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.lang.String.format;
 
 public final class Jsons {
-    private static final Logger logger = LoggerFactory.getLogger(Jsons.class);
+    private static Logger logger = LoggerFactory.getLogger(Jsons.class);
 
     private static final TypeFactory DEFAULT_FACTORY = TypeFactory.defaultInstance();
     private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
