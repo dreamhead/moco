@@ -2230,7 +2230,9 @@ server.request(by(uri("/template"))).response(template("${req.cookies['foo']}"))
 #### JSON
 **@Since 1.0.0**
 
-If your request is a JSON request, you can use `req.json` to visit your json object.
+If your request is a JSON request, you can use `req.json` to visit your json object. 
+
+**Note** that make sure your request is a JSON request, otherwise an exception will be thrown. 
 
 * Java
 
@@ -2257,6 +2259,8 @@ server.request(by(uri("/template"))).response(template("${req.json.foo}"));
 **@Since will be at next release**
 
 If your request is an XML request, you can use `req.xml` to visit your json object.
+
+**Note** that make sure your request is an XML request, otherwise an exception will be thrown.
 
 * Java
 
