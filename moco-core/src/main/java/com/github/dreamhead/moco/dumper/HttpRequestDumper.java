@@ -6,8 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import io.netty.util.internal.StringUtil;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
