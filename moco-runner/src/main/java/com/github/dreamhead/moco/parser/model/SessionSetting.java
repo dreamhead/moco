@@ -156,7 +156,7 @@ public final class SessionSetting {
             return server;
         }
 
-        ActualHttpServer server = ActualHttpServer.createHttpServer(port, quiet);
+        ActualHttpServer server = ActualHttpServer.createHttpServer(port, quiet, configs);
         bindTo(server);
         return server;
     }
