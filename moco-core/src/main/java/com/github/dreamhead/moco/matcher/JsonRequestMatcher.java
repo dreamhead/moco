@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public abstract class JsonRequestMatcher extends AbstractRequestMatcher {
     protected abstract boolean doMatch(JsonNode actual, JsonNode expected);
-    protected abstract RequestMatcher newApplyMatcher(Resource appliedResource, final ContentRequestExtractor extractor);
+    protected abstract RequestMatcher newApplyMatcher(Resource appliedResource, ContentRequestExtractor extractor);
 
     private final ContentRequestExtractor extractor;
     private final ObjectMapper mapper;
