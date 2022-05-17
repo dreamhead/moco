@@ -107,7 +107,7 @@ subprojects {
                 "io.netty:netty-codec-http:$nettyVersion",
                 "io.netty:netty-handler:$nettyVersion",
                 "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-                "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonXmlVersion",
+                "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion",
                 "org.apache.httpcomponents:httpclient:$httpComponentVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
                 "org.freemarker:freemarker:$freemarkerVersion",
