@@ -112,7 +112,7 @@ An available port will be picked up by Moco and you can see the port in console.
 
 ## Quiet Mode
 
-If you don't want see too many logs, you could make the server quiet.
+If you don't want see too many logs, you could make the server quiet with `-q` option.
 ```shell
 java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json -q
 ```
