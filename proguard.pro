@@ -37,7 +37,7 @@
 -keep public class com.google.common.io.Resources{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class com.google.common.net.MediaType{*;}
--keep public class org.slf4j.** {*;}
+-keep public class org.slf4j.LoggerFactory{*;}
 -keep public class ch.qos.logback.** {*;}
 -keep public class org.apache.commons.logging.impl.**{*;}
 -keep public class com.fasterxml.jackson.databind.**{*;}
