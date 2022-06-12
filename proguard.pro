@@ -39,7 +39,8 @@
 -keep public class com.google.common.net.MediaType{*;}
 -keep public class org.slf4j.LoggerFactory{*;}
 -keep public class ch.qos.logback.** {*;}
--keep public class org.apache.commons.logging.impl.**{*;}
+-keep public class org.apache.commons.logging.impl.SimpleLog{*;}
+-keep public class org.apache.commons.logging.impl.LogFactoryImpl{*;}
 -keep public class com.fasterxml.jackson.databind.**{*;}
 -keep public class com.fasterxml.jackson.annotation.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
