@@ -27,10 +27,6 @@
 -keep public class com.github.dreamhead.moco.runner.ShutdownRunner{
     public int shutdownPort();
 }
--keepclassmembers enum com.jayway.jsonpath.Option {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
 
 -keep public class org.apache.http.**{*;}
 -keep public class com.google.common.io.Files{*;}
@@ -41,9 +37,14 @@
 -keep public class ch.qos.logback.** {*;}
 -keep public class org.apache.commons.logging.impl.SimpleLog{*;}
 -keep public class org.apache.commons.logging.impl.LogFactoryImpl{*;}
--keep public class com.fasterxml.jackson.databind.**{*;}
--keep public class com.fasterxml.jackson.annotation.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
+
+-keepclassmembers class * extends java.lang.Enum {
+    <fields>;
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
 -keep public class io.netty.channel.DefaultChannelPipeline{*;}
 -keep public class io.netty.handler.codec.http.cookie.DefaultCookie{*;}
 -keep public class com.ctc.wstx.stax.WstxInputFactory{*;}
