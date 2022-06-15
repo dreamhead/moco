@@ -28,13 +28,23 @@
     public int shutdownPort();
 }
 
--keep public class org.apache.http.**{*;}
+#-keep public class org.apache.http.**{*;}
+-keep public class org.apache.http.conn.ssl.SSLConnectionSocketFactory{*;}
+-keep public class org.apache.http.impl.client.HttpClientBuilder{*;}
+-keep public class org.apache.http.client.fluent.Executor{*;}
+-keep public class org.apache.http.impl.conn.PoolingHttpClientConnectionManager{*;}
+-keep public class org.apache.http.client.protocol.HttpClientContext{*;}
+-keep public class org.apache.http.client.HttpClient{*;}
+-keep public class org.apache.http.impl.client.InternalHttpClient{*;}
+-keep public class org.apache.http.entity.ContentType{*;}
+-keep public class org.apache.http.entity.ByteArrayEntity{*;}
+-keep public class org.apache.http.util.EntityUtils{*;}
 -keep public class com.google.common.io.Files{*;}
 -keep public class com.google.common.io.Resources{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class com.google.common.net.MediaType{*;}
 -keep public class org.slf4j.LoggerFactory{*;}
--keep public class ch.qos.logback.** {*;}
+-keep public class ch.qos.logback.**{*;}
 -keep public class org.apache.commons.logging.impl.SimpleLog{*;}
 -keep public class org.apache.commons.logging.impl.LogFactoryImpl{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
