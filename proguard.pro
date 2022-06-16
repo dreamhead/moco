@@ -28,7 +28,6 @@
     public int shutdownPort();
 }
 
-#-keep public class org.apache.http.**{*;}
 -keep public class org.apache.http.conn.ssl.SSLConnectionSocketFactory{*;}
 -keep public class org.apache.http.impl.client.HttpClientBuilder{*;}
 -keep public class org.apache.http.client.fluent.Executor{*;}
