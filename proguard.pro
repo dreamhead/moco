@@ -9,7 +9,6 @@
     public static void main(java.lang.String[]);
 }
 
--keep public class com.github.dreamhead.moco.model.*{*;}
 -keep public class com.github.dreamhead.moco.parser.deserializer.*{*;}
 -keep public class com.github.dreamhead.moco.parser.model.*{*;}
 -keep public class com.github.dreamhead.moco.parser.model.websocket.*{*;}
