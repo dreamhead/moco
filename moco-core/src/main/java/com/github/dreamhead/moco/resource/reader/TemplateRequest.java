@@ -99,4 +99,12 @@ public final class TemplateRequest {
             throw new IllegalArgumentException("Xml content is expected", e);
         }
     }
+
+    public String getClientAddress() {
+        if (this.request instanceof DefaultHttpRequest) {
+            return ((DefaultHttpRequest) this.request).getClientAddress();
+        }
+
+        throw new IllegalArgumentException("Request is not HTTP request");
+    }
 }

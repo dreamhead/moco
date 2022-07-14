@@ -52,7 +52,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
 
         if (!upgradeWebsocket(request)) {
-            FullHttpResponse response = httpHandler.handleRequest(request);
+            FullHttpResponse response = httpHandler.handleRequest(ctx, request);
             closeIfNotKeepAlive(request, ctx.write(response));
             return;
         }

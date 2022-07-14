@@ -38,15 +38,18 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     private final String uri;
     private final ImmutableMap<String, String[]> queries;
+    private String clientAddress;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final HttpMethod method, final String uri,
                                final ImmutableMap<String, String[]> headers,
-                               final ImmutableMap<String, String[]> queries) {
+                               final ImmutableMap<String, String[]> queries,
+                               final String clientAddress) {
         super(version, content, headers);
         this.method = method;
         this.uri = uri;
         this.queries = queries;
+        this.clientAddress = clientAddress;
         this.formSupplier = formSupplier();
         this.cookieSupplier = cookieSupplier();
     }
@@ -93,11 +96,16 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         });
     }
 
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
     protected MoreObjects.ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("uri", this.uri)
                 .add("method", this.method)
-                .add("queries", this.queries);
+                .add("queries", this.queries)
+                .add("clientAddress", this.clientAddress);
     }
 
     public static Builder builder() {
@@ -116,7 +124,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .build();
     }
 
-    public static HttpRequest newRequest(final FullHttpRequest request) {
+    public static HttpRequest newRequest(final FullHttpRequest request, final String clientIp) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
         ImmutableMap<String, String[]> queries = toQueries(decoder);
 
@@ -127,6 +135,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .withUri(decoder.path())
                 .withQueries(queries)
                 .withContent(toMessageContent(request))
+                .withClientAddress(clientIp)
                 .build();
     }
 
@@ -167,6 +176,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         private HttpMethod method;
         private String uri;
         private ImmutableMap<String, String[]> queries;
+        private String clientAddress;
 
         public Builder withMethod(final HttpMethod method) {
             this.method = method;
@@ -186,9 +196,17 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
+        public Builder withClientAddress(final String clientAddress) {
+            if (clientAddress != null) {
+                this.clientAddress = clientAddress;
+            }
+
+            return this;
+        }
+
         public DefaultHttpRequest build() {
             return new DefaultHttpRequest(this.getVersion(), this.getContent(), method,
-                    this.uri, this.getHeaders(), this.queries);
+                    this.uri, this.getHeaders(), this.queries, this.clientAddress);
         }
     }
 }

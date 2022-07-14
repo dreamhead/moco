@@ -502,4 +502,13 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(template("${req.xml.parameter.id}"));
         running(server, () -> assertThat(helper.postForResponse(remoteUrl("/template"), "foo").getStatusLine().getStatusCode(), is(400)));
     }
+
+    @Test
+    public void should_generate_response_with_client_address() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.clientAddress}"));
+
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/template")), is("127.0.0.1"));
+        });
+    }
 }
