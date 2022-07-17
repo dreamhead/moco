@@ -1,120 +1,130 @@
 [
-    {
-        "request": {
-            "uri": "/template"
-        },
-        "response": {
-            "text": {
-                "template": "${req.method}"
-            }
-        }
+  {
+    "request": {
+      "uri": "/template"
     },
-    {
-        "request": {
-            "uri": "/file_template"
-        },
-        "response": {
-            "file": {
-                "template": "src/test/resources/template.foo"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/path_resource_template"
-        },
-        "response": {
-            "path_resource": {
-                "template": "template.foo"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/version_template"
-        },
-        "response": {
-            "version": {
-                "template": "${req.version}"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/header_template"
-        },
-        "response": {
-            "headers": {
-                "foo": {
-                    "template": "${req.headers['foo']}"
-                }
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/cookie_template",
-            "cookies": {
-                "foo": "GET"
-            }
-        },
-        "response": {
-            "text": {
-                "template": "${req.cookies['foo']}"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/cookie_template"
-        },
-        "response": {
-            "cookies": {
-                "foo": {
-                    "template": "${req.method}"
-                }
-            },
-            "status": 302
-        }
-    },
-    {
-        "request": {
-            "uri": "/form_template"
-        },
-        "response": {
-            "text": {
-                "template": "${req.forms['foo']}"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/query_template"
-        },
-        "response": {
-            "text": {
-                "template": "${req.queries['foo']}"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/json_template"
-        },
-        "response": {
-            "text": {
-                "template": "${req.json.foo}"
-            }
-        }
-    },
-    {
-        "request": {
-            "uri": "/xml_template"
-        },
-        "response": {
-            "text": {
-                "template": "${req.xml.foo}"
-            }
-        }
+    "response": {
+      "text": {
+        "template": "${req.method}"
+      }
     }
+  },
+  {
+    "request": {
+      "uri": "/file_template"
+    },
+    "response": {
+      "file": {
+        "template": "src/test/resources/template.foo"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/path_resource_template"
+    },
+    "response": {
+      "path_resource": {
+        "template": "template.foo"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/version_template"
+    },
+    "response": {
+      "version": {
+        "template": "${req.version}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/header_template"
+    },
+    "response": {
+      "headers": {
+        "foo": {
+          "template": "${req.headers['foo']}"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/cookie_template",
+      "cookies": {
+        "foo": "GET"
+      }
+    },
+    "response": {
+      "text": {
+        "template": "${req.cookies['foo']}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/cookie_template"
+    },
+    "response": {
+      "cookies": {
+        "foo": {
+          "template": "${req.method}"
+        }
+      },
+      "status": 302
+    }
+  },
+  {
+    "request": {
+      "uri": "/form_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.forms['foo']}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/query_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.queries['foo']}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/json_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.json.foo}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/xml_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.xml.foo}"
+      }
+    }
+  },
+  {
+    "request": {
+      "uri": "/client_address_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.clientAddress}"
+      }
+    }
+  }
 ]

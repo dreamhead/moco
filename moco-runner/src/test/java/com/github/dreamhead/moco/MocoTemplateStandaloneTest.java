@@ -129,6 +129,13 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
+    public void should_return_client_address_from_template() throws IOException {
+        runWithConfiguration("template.json");
+        String content = helper.get(remoteUrl("/client_address_template"));
+        assertThat(content, is("127.0.0.1"));
+    }
+
+    @Test
     public void should_return_now_from_template() throws IOException {
         runWithConfiguration("template_with_function.json");
         Date date = new Date();
