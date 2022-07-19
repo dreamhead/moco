@@ -38,7 +38,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     private final String uri;
     private final ImmutableMap<String, String[]> queries;
-    private String clientAddress;
+    private final String clientAddress;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final HttpMethod method, final String uri,
@@ -124,7 +124,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .build();
     }
 
-    public static HttpRequest newRequest(final FullHttpRequest request, final String clientIp) {
+    public static HttpRequest newRequest(final FullHttpRequest request, final String clientAddress) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
         ImmutableMap<String, String[]> queries = toQueries(decoder);
 
@@ -135,7 +135,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .withUri(decoder.path())
                 .withQueries(queries)
                 .withContent(toMessageContent(request))
-                .withClientAddress(clientIp)
+                .withClientAddress(clientAddress)
                 .build();
     }
 
