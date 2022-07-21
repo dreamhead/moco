@@ -505,7 +505,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_generate_response_with_client_address() throws Exception {
-        server.request(by(uri("/template"))).response(template("${req.clientAddress}"));
+        server.request(by(uri("/template"))).response(template("${req.client.address}"));
 
         running(server, () -> {
             assertThat(helper.get(remoteUrl("/template")), is("127.0.0.1"));

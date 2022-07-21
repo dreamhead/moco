@@ -123,7 +123,7 @@
     },
     "response": {
       "text": {
-        "template": "${req.clientAddress}"
+        "template": "${req.client.address}"
       }
     }
   }
