@@ -2286,10 +2286,10 @@ server.request(by(uri("/template"))).response(template("${req.xml.foo}"));
 #### Client Address
 **@Since will be at next release**
 
-`req.clientAddress` can be used in template to return client IP address.
+`req.client.address` can be used in template to return client IP address.
 
 ```java
-server.request(by(uri("/template"))).response(template("${req.clientAddress}"));
+server.request(by(uri("/template"))).response(template("${req.client.address}"));
 ```
 
 ```json
@@ -2299,7 +2299,7 @@ server.request(by(uri("/template"))).response(template("${req.clientAddress}"));
     },
     "response": {
         "text": {
-            "template": "${req.clientAddress}"
+            "template": "${req.client.address}"
         }
     }
 }

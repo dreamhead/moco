@@ -1,7 +1,7 @@
 # Release
 ## APIs
 * `req.xml` is supported in template
-* `req.clientAddress` is supported in template
+* `req.client.address` is supported in template
 
 ## CLI
 * add `-q` for quiet mode in standalone server  
