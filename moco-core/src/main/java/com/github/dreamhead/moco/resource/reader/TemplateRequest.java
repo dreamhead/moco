@@ -115,7 +115,7 @@ public final class TemplateRequest {
             this.address = address;
         }
 
-        public String getAddress() {
+        public final String getAddress() {
             return address;
         }
     }
