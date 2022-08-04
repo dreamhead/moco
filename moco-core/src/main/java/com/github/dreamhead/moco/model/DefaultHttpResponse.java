@@ -15,7 +15,8 @@ import static com.github.dreamhead.moco.model.MessageContent.content;
 public final class DefaultHttpResponse extends DefaultHttpMessage implements HttpResponse {
     private final int status;
 
-    public DefaultHttpResponse(final HttpProtocolVersion version, final int status,
+    public DefaultHttpResponse(final HttpProtocolVersion version,
+                               final int status,
                                final ImmutableMap<String, String[]> headers,
                                final MessageContent content) {
         super(version, content, headers);
