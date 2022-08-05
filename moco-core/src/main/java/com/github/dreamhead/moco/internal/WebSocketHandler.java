@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
+import java.net.InetSocketAddress;
 import java.util.Optional;
 
 public class WebSocketHandler {
@@ -31,11 +32,14 @@ public class WebSocketHandler {
 
     private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx,
                                                       final WebSocketFrame message) {
+        final InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        final String clientAddress = address.getAddress().getHostAddress();
         if (message instanceof PingWebSocketFrame) {
-            return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message));
+            return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message,
+                    clientAddress));
         }
 
-        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message);
+        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message, clientAddress);
         return response.map(this::asWebsocketFrame);
     }
 

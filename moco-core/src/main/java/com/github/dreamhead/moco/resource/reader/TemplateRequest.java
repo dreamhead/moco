@@ -101,11 +101,7 @@ public final class TemplateRequest {
     }
 
     public TemplateClient getClient() {
-        if (this.request instanceof DefaultHttpRequest) {
-            return new TemplateClient(((DefaultHttpRequest) this.request).getClientAddress());
-        }
-
-        throw new IllegalArgumentException("Request is not HTTP request");
+        return new TemplateClient(this.request.getClientAddress());
     }
 
     public static class TemplateClient {

@@ -96,6 +96,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         });
     }
 
+    @Override
     public String getClientAddress() {
         return clientAddress;
     }

@@ -8,8 +8,10 @@ import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
 
 public class DefaultWebsocketRequest implements WebsocketRequest {
     private final MessageContent content;
+    private final String clientAddress;
 
-    public DefaultWebsocketRequest(final WebSocketFrame frame) {
+    public DefaultWebsocketRequest(final WebSocketFrame frame, final String clientAddress) {
+        this.clientAddress = clientAddress;
         byte[] bytes = toByteArray(frame.content());
         this.content = MessageContent.content().withContent(bytes).build();
     }
@@ -24,5 +26,10 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
         return MoreObjects.toStringHelper(this)
                 .add("content", content)
                 .toString();
+    }
+
+    @Override
+    public String getClientAddress() {
+        return this.clientAddress;
     }
 }

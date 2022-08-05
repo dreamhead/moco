@@ -146,8 +146,8 @@ public final class ActualWebSocketServer
         return baseSetting;
     }
 
-    public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame) {
-        DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame);
+    public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame, final String clientAddress) {
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame, clientAddress);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
         Response result = this.getPongResponse(context).orElseThrow(IllegalArgumentException::new);
@@ -165,8 +165,10 @@ public final class ActualWebSocketServer
         return actual.flatMap(setting -> Optional.of(context.getResponse()));
     }
 
-    public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx, final WebSocketFrame message) {
-        DefaultWebsocketRequest request = new DefaultWebsocketRequest(message);
+    public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx,
+                                                     final WebSocketFrame message,
+                                                     final String clientAddress) {
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(message, clientAddress);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response,
                 new ContextSessionGroup(this.group, ctx.channel()));
