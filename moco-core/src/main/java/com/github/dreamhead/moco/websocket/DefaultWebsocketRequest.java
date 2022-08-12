@@ -25,6 +25,7 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
     public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("content", content)
+                .add("clientAddress", clientAddress)
                 .toString();
     }
 
