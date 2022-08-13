@@ -30,7 +30,7 @@ public class MocoHttpServer implements ServerConfiguration {
                 ChannelPipeline pipeline = ch.pipeline();
 
                 if (serverSetting.isSecure()) {
-                    pipeline.addFirst("ssl", serverSetting.sslHandler().get());
+                    pipeline.addFirst("ssl", serverSetting.getRequiredSslHandler());
                 }
 
                 ServerConfig serverConfig = serverSetting.getServerConfig();

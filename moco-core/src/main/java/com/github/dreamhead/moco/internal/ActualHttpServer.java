@@ -52,12 +52,12 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return certificate != null;
     }
 
-    public final Optional<SslHandler> sslHandler() {
-        if (this.certificate != null) {
-            return Optional.of(asSslHandler(certificate));
+    public final SslHandler getRequiredSslHandler() {
+        if (this.certificate == null) {
+            throw new IllegalArgumentException();
         }
 
-        return Optional.empty();
+        return asSslHandler(certificate);
     }
 
     private SslHandler asSslHandler(final HttpsCertificate certificate) {
