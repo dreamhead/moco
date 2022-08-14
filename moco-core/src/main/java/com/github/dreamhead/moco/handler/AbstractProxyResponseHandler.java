@@ -23,6 +23,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -195,7 +196,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse setupResponse(final HttpRequest request,
-                                       final org.apache.http.HttpResponse remoteResponse) throws IOException {
+                                       final CloseableHttpResponse remoteResponse) throws IOException {
         if (failover.shouldFailover(remoteResponse)) {
             return failover.failover(request);
         }
@@ -206,7 +207,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return httpResponse;
     }
 
-    private HttpResponse setupNormalResponse(final org.apache.http.HttpResponse remoteResponse) throws IOException {
+    private HttpResponse setupNormalResponse(final CloseableHttpResponse remoteResponse) throws IOException {
         HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString());
         HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode());
         FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
