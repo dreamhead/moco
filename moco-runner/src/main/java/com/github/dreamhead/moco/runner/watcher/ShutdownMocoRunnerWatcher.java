@@ -70,12 +70,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
         }
 
         private void shutdownMonitorSelf() {
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    stop();
-                }
-            });
+            service.execute(ShutdownMocoRunnerWatcher.this::stop);
         }
 
         private boolean shouldShutdown(final String message) {
