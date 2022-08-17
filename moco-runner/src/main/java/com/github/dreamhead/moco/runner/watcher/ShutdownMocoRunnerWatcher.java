@@ -37,7 +37,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
     public void start() {
         int actualPort = server.start(this.shutdownPort, new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(final SocketChannel ch) throws Exception {
+            protected void initChannel(final SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("decoder", new StringDecoder());
                 pipeline.addLast("handler", new ShutdownHandler());
@@ -62,7 +62,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
         private final ExecutorService service = Executors.newCachedThreadPool();
 
         @Override
-        protected void channelRead0(final ChannelHandlerContext ctx, final String msg) throws Exception {
+        protected void channelRead0(final ChannelHandlerContext ctx, final String msg) {
             if (shouldShutdown(msg)) {
                 shutdownListener.onShutdown();
                 shutdownMonitorSelf();
