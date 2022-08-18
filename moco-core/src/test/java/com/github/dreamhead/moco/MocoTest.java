@@ -442,6 +442,13 @@ public class MocoTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_eq_insensitive_header() throws Exception {
+        server.request(eq(header("foo"), "bar")).response("blah");
+
+        running(server, () -> assertThat(helper.getWithHeader(root(), of("FOO", "bar")), is("blah")));
+    }
+
+    @Test
     public void should_set_multiple_header_with_same_name() throws Exception {
         server.response(header("foo", "bar"), header("foo", "another"));
 
