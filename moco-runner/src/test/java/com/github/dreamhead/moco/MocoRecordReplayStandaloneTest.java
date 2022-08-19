@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.HttpResponse;
 import org.junit.Test;
 
 import java.io.IOException;

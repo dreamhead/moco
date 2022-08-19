@@ -3,7 +3,8 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
@@ -39,9 +40,9 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.code = 1;
         resource1.message = "hello";
 
-        org.apache.http.HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
+        ClassicHttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
                 Jsons.toJson(resource1));
-        assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+        assertThat(httpResponse.getCode(), is(201));
         assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
     }
 
@@ -53,9 +54,9 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.code = 1;
         resource1.message = "hello";
 
-        org.apache.http.HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
+        ClassicHttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
                 Jsons.toJson(resource1));
-        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+        assertThat(httpResponse.getCode(), is(200));
     }
 
     @Test
@@ -66,8 +67,8 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.code = 1;
         resource1.message = "hello";
 
-        org.apache.http.HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
-        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+        ClassicHttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
+        assertThat(httpResponse.getCode(), is(200));
     }
 
     @Test
@@ -78,8 +79,8 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         resource1.code = 1;
         resource1.message = "hello";
 
-        org.apache.http.HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
-        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+        ClassicHttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
+        assertThat(httpResponse.getCode(), is(200));
         assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
@@ -98,14 +99,14 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_resource_with_any_id() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
         assertThat(plain.code, is(1));
         assertThat(plain.message, is("any"));
 
-        org.apache.http.HttpResponse response2 = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
+        ClassicHttpResponse response2 = helper.getResponseWithHeader(remoteUrl("/any-targets/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain2 = asPlain(response2);
         assertThat(plain2.code, is(1));
@@ -116,14 +117,14 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_resource_with_any_id_and_any_sub() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/any-targets/1/any-subs/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/any-targets/1/any-subs/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
         assertThat(plain.code, is(100));
         assertThat(plain.message, is("any-sub"));
 
-        org.apache.http.HttpResponse response2 = helper.getResponseWithHeader(remoteUrl("/any-targets/2/any-subs/2"),
+        ClassicHttpResponse response2 = helper.getResponseWithHeader(remoteUrl("/any-targets/2/any-subs/2"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain2 = asPlain(response2);
         assertThat(plain2.code, is(100));
@@ -134,7 +135,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_sub_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
@@ -146,7 +147,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_sub_sub_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1/sub-subs/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/subs/1/sub-subs/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
@@ -158,7 +159,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_sub_resource_with_any_id() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/any-subs/1"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1/any-subs/1"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
         Plain plain = asPlain(response);
 
@@ -175,10 +176,10 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_get_all_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse response = helper.getResponseWithHeader(remoteUrl("/all-resources"),
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/all-resources"),
                 of(HttpHeaders.CONTENT_TYPE, "application/json"));
 
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+        assertThat(response.getCode(), is(200));
         HttpEntity entity = response.getEntity();
         List<Plain> plains = Jsons.toObjects(entity.getContent(), Plain.class);
         assertThat(plains.size(), is(2));
@@ -188,8 +189,8 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_head_all_resource() throws IOException {
         runWithConfiguration("rest/rest.json");
 
-        org.apache.http.HttpResponse httpResponse = helper.headForResponse(remoteUrl("/all-resources"));
-        assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+        ClassicHttpResponse httpResponse = helper.headForResponse(remoteUrl("/all-resources"));
+        assertThat(httpResponse.getCode(), is(200));
         assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
@@ -209,14 +210,15 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     private Plain getResource(final String uri) throws IOException {
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
+        ClassicHttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
     }
 
-    private Plain asPlain(org.apache.http.HttpResponse response) throws IOException {
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+    private Plain asPlain(ClassicHttpResponse response) throws IOException {
+        assertThat(response.getCode(), is(200));
+
         HttpEntity entity = response.getEntity();
-        MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
+        MediaType mediaType = MediaType.parse(entity.getContentType());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
         return Jsons.toObject(entity.getContent(), Plain.class);

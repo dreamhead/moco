@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -9,11 +9,11 @@ import java.io.File;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.fileRoot;
+import static com.github.dreamhead.moco.Moco.group;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.httpServer;
 import static com.github.dreamhead.moco.Moco.template;
 import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.group;
 import static com.github.dreamhead.moco.MocoRecorders.identifier;
 import static com.github.dreamhead.moco.MocoRecorders.modifier;
 import static com.github.dreamhead.moco.MocoRecorders.record;
@@ -154,7 +154,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             helper.postContent(remoteUrl("/record?type=blah"), "foo");
-            HttpResponse response = helper.getResponse(remoteUrl("/replay"));
+            ClassicHttpResponse response = helper.getResponse(remoteUrl("/replay"));
             assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("blah"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);
@@ -174,7 +174,7 @@ public class MocoRecordTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             helper.postContent(remoteUrl("/record?type=blah"), "foo");
-            HttpResponse response = helper.getResponse(remoteUrl("/replay"));
+            ClassicHttpResponse response = helper.getResponse(remoteUrl("/replay"));
             assertThat(response.getFirstHeader("X-REPLAY").getValue(), is("POST"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);

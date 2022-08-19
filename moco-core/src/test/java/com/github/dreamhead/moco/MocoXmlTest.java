@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.client.HttpResponseException;
+import org.apache.hc.client5.http.HttpResponseException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
         server.request(struct(xml("<request><parameters foo=\"bar\"><id>1</id></parameters></request>"))).response("foo");
 
         running(server, () ->
-                assertThat(helper.postForResponse(root(), "<request><parameters bar=\"bar\"><id>2</id></parameters></request>").getStatusLine().getStatusCode(), is(400))
+                assertThat(helper.postForResponse(root(), "<request><parameters bar=\"bar\"><id>2</id></parameters></request>").getCode(), is(400))
         );
     }
 }

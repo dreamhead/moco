@@ -2,8 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,11 +31,11 @@ public class MocoCycleStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     private void assertJson(final String url, final String content) throws IOException {
-        HttpResponse response = helper.getResponse(url);
+        ClassicHttpResponse response = helper.getResponse(url);
         HttpEntity entity = response.getEntity();
         byte[] bytes = ByteStreams.toByteArray(entity.getContent());
         assertThat(new String(bytes), is(content));
-        MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
+        MediaType mediaType = MediaType.parse(entity.getContentType());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
     }

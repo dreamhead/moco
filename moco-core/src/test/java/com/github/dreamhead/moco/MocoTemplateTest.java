@@ -5,13 +5,13 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.ProtocolVersion;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -108,9 +108,9 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(version(template("${req.version}")));
 
         running(server, () -> {
-            ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/template"))
+            ProtocolVersion version = helper.execute(Request.get(remoteUrl("/template"))
                     .version(HttpVersion.HTTP_1_0))
-                    .getProtocolVersion();
+                    .getVersion();
             assertThat(version.toString(), is("HTTP/1.0"));
         });
     }
@@ -120,7 +120,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(header("foo", template("${req.method}")));
 
         running(server, () -> {
-            Header header = helper.execute(Request.Get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0)).getFirstHeader("foo");
+            Header header = helper.execute(Request.get(remoteUrl("/template")).version(HttpVersion.HTTP_1_0)).getFirstHeader("foo");
             assertThat(header.getValue(), is("GET"));
         });
     }
@@ -140,7 +140,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(template("${req.forms['name']}"));
 
         running(server, () -> {
-            Request request = Request.Post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            Request request = Request.post(remoteUrl("/template")).bodyForm(new BasicNameValuePair("name", "dreamhead"));
             assertThat(helper.executeAsString(request), is("dreamhead"));
         });
     }
@@ -333,7 +333,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/template"));
-            assertThat(response.getStatusLine().getStatusCode(), is(400));
+            assertThat(response.getCode(), is(400));
         });
     }
 
@@ -445,7 +445,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/template"));
-            assertThat(response.getStatusLine().getStatusCode(), is(400));
+            assertThat(response.getCode(), is(400));
         });
     }
     @Test
@@ -454,7 +454,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/template"));
-            assertThat(response.getStatusLine().getStatusCode(), is(400));
+            assertThat(response.getCode(), is(400));
         });
     }
     @Test
@@ -468,7 +468,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(template("${req.json.code} ${req.json.message}"));
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/template"));
-            assertThat(response.getStatusLine().getStatusCode(), is(400));
+            assertThat(response.getCode(), is(400));
         });
     }
 
@@ -500,7 +500,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_bad_request_for_unknown_xml() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.xml.parameter.id}"));
-        running(server, () -> assertThat(helper.postForResponse(remoteUrl("/template"), "foo").getStatusLine().getStatusCode(), is(400)));
+        running(server, () -> assertThat(helper.postForResponse(remoteUrl("/template"), "foo").getCode(), is(400)));
     }
 
     @Test

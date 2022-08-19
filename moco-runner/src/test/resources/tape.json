@@ -8,9 +8,9 @@
       },
       "headers" : {
         "content-length" : [ "3" ],
-        "Connection" : [ "Keep-Alive" ],
+        "Connection" : [ "keep-alive" ],
         "Host" : [ "localhost:12306" ],
-        "Accept-Encoding" : [ "gzip,deflate" ],
+        "Accept-Encoding" : [ "gzip, x-gzip, deflate" ],
         "Content-Type" : [ "text/plain; charset=UTF-8" ]
       },
       "method" : "POST",

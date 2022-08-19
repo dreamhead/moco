@@ -2,12 +2,11 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpVersion;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
 import org.junit.Rule;
@@ -90,20 +89,20 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
             assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
             assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
 
-            Request putRequest = Request.Put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
+            Request putRequest = Request.put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
             assertThat(helper.executeAsString(putRequest), is("put_proxy"));
 
-            Request deleteRequest = Request.Delete(remoteUrl("/proxy"));
+            Request deleteRequest = Request.delete(remoteUrl("/proxy"));
             assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
 
-            Request headRequest = Request.Head(remoteUrl("/proxy"));
-            StatusLine headStatusLine = helper.execute(headRequest).getStatusLine();
-            assertThat(headStatusLine.getStatusCode(), is(200));
+            Request headRequest = Request.head(remoteUrl("/proxy"));
+            int code = helper.execute(headRequest).getCode();
+            assertThat(code, is(200));
 
-            Request optionsRequest = Request.Options(remoteUrl("/proxy"));
+            Request optionsRequest = Request.options(remoteUrl("/proxy"));
             assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
 
-            Request traceRequest = Request.Trace(remoteUrl("/proxy"));
+            Request traceRequest = Request.trace(remoteUrl("/proxy"));
             assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
         });
     }
@@ -136,7 +135,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, () -> {
-            Request request = Request.Get(remoteUrl("/proxy")).addHeader("foo", "foo");
+            Request request = Request.get(remoteUrl("/proxy")).addHeader("foo", "foo");
             String fooHeader = helper.execute(request).getFirstHeader("foo").getValue();
             assertThat(fooHeader, is("foo_header"));
         });
@@ -162,17 +161,17 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, () -> {
-            HttpResponse response10 = helper.execute(Request.Get(remoteUrl("/proxy"))
+            HttpResponse response10 = helper.execute(Request.get(remoteUrl("/proxy"))
                     .version(HttpVersion.HTTP_1_0));
-            assertThat(response10.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
+            assertThat(response10.getVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
 
-            HttpResponse response11 = helper.execute(Request.Get(remoteUrl("/proxy"))
+            HttpResponse response11 = helper.execute(Request.get(remoteUrl("/proxy"))
                     .version(HttpVersion.HTTP_1_1));
-            assertThat(response11.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
+            assertThat(response11.getVersion().toString(), is(HttpVersion.HTTP_1_1.toString()));
 
-            HttpResponse response09 = helper.execute(Request.Get(remoteUrl("/proxy"))
+            HttpResponse response09 = helper.execute(Request.get(remoteUrl("/proxy"))
                     .version(HttpVersion.HTTP_0_9));
-            assertThat(response09.getProtocolVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
+            assertThat(response09.getVersion().toString(), is(HttpVersion.HTTP_1_0.toString()));
         });
     }
 
@@ -395,7 +394,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
         running(server, () -> {
-            HttpResponse response = helper.execute(Request.Get(remoteUrl("/proxy")));
+            HttpResponse response = helper.execute(Request.get(remoteUrl("/proxy")));
             assertThat(response.getFirstHeader("Date"), nullValue());
             assertThat(response.getFirstHeader("Server"), nullValue());
         });

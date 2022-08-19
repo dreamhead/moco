@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.AbstractMocoHttpTest;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
-import org.apache.http.client.HttpResponseException;
+import org.apache.hc.client5.http.HttpResponseException;
 import org.junit.Before;
 import org.junit.Test;
 

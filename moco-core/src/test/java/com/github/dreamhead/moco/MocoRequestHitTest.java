@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -214,7 +214,7 @@ public class MocoRequestHitTest {
         server.post(eq(form("name"), "dreamhead")).response("foobar");
 
         running(server, () -> {
-            Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            Request request = Request.post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
             String content = helper.executeAsString(request);
             assertThat(content, is("foobar"));
         });
@@ -228,7 +228,7 @@ public class MocoRequestHitTest {
         server.response("foobar");
 
         running(server, () -> {
-            Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            Request request = Request.post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
             String content = helper.executeAsString(request);
             assertThat(content, is("foobar"));
         });

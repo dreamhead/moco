@@ -2,7 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.client.HttpResponseException;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class MocoMountStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_mount_dir_to_uri_with_response() throws IOException {
         runWithConfiguration("mount.json");
 
-        org.apache.http.HttpResponse httpResponse = helper.getResponse(remoteUrl("/mount-response/mount.response"));
+        ClassicHttpResponse httpResponse = helper.getResponse(remoteUrl("/mount-response/mount.response"));
         String value = httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
         assertThat(value, is("text/plain"));
         String content = CharStreams.toString(new InputStreamReader(httpResponse.getEntity().getContent()));

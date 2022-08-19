@@ -2,8 +2,9 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpResponse;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -48,12 +49,12 @@ public class MocoGlobalResponseTest {
         server.response("hello");
 
         running(server, () -> {
-            HttpResponse response = helper.getResponse(root());
+            ClassicHttpResponse response = helper.getResponse(root());
             Header header = response.getFirstHeader("foo");
             assertThat(header.getValue(), is("bar"));
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outstream);
-            assertThat(new String(outstream.toByteArray()), is("hello"));
+            assertThat(outstream.toString(), is("hello"));
         });
     }
 

@@ -5,8 +5,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -132,7 +133,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/targets/1"));
-            assertThat(response.getStatusLine().getStatusCode(), is(404));
+            assertThat(response.getCode(), is(404));
         });
     }
 
@@ -210,20 +211,20 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         );
 
         running(server, () -> {
-            HttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
+            ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/targets/1"),
                     of(HttpHeaders.CONTENT_TYPE, "application/json"));
             Plain response1 = asPlain(response);
             assertThat(response1.code, is(1));
             assertThat(response1.message, is("hello"));
 
-            HttpResponse otherResponse = helper.getResponseWithHeader(remoteUrl("/targets/2"),
+            ClassicHttpResponse otherResponse = helper.getResponseWithHeader(remoteUrl("/targets/2"),
                     of(HttpHeaders.CONTENT_TYPE, "application/json"));
             Plain response2 = asPlain(otherResponse);
             assertThat(response2.code, is(2));
             assertThat(response2.message, is("world"));
 
             HttpResponse notFoundResponse = helper.getResponse(remoteUrl("/targets/1"));
-            assertThat(notFoundResponse.getStatusLine().getStatusCode(), is(404));
+            assertThat(notFoundResponse.getCode(), is(404));
         });
     }
 
@@ -247,7 +248,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
             assertThat(plains.size(), is(2));
 
             HttpResponse response = helper.getResponse(remoteUrl("/targets"));
-            assertThat(response.getStatusLine().getStatusCode(), is(404));
+            assertThat(response.getCode(), is(404));
         });
     }
 
@@ -286,7 +287,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+            assertThat(httpResponse.getCode(), is(201));
             assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
         });
     }
@@ -306,12 +307,12 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets"),
                     Jsons.toJson(resource), "application/json");
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(201));
+            assertThat(httpResponse.getCode(), is(201));
             assertThat(httpResponse.getFirstHeader("Location").getValue(), is("/targets/123"));
 
             HttpResponse badRequest = helper.postForResponse(remoteUrl("/targets"),
                     Jsons.toJson(resource));
-            assertThat(badRequest.getStatusLine().getStatusCode(), is(400));
+            assertThat(badRequest.getCode(), is(400));
         });
     }
 
@@ -329,7 +330,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.postForResponse(remoteUrl("/targets/1"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            assertThat(httpResponse.getCode(), is(404));
         });
     }
 
@@ -347,7 +348,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -365,7 +366,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/2"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            assertThat(httpResponse.getCode(), is(404));
         });
     }
 
@@ -383,7 +384,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.putForResponse(remoteUrl("/targets/1"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
+            assertThat(httpResponse.getCode(), is(409));
         });
     }
 
@@ -399,9 +400,9 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         );
 
         running(server, () -> {
-            HttpResponse httpResponse = helper.putForResponseWithHeaders(remoteUrl("/targets/1"),
+            ClassicHttpResponse httpResponse = helper.putForResponseWithHeaders(remoteUrl("/targets/1"),
                     Jsons.toJson(resource1), of(HttpHeaders.IF_MATCH, "moco"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -419,11 +420,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse1 = helper.putForResponse(remoteUrl("/targets/1"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse1.getCode(), is(200));
 
             HttpResponse httpResponse2 = helper.putForResponse(remoteUrl("/targets/2"),
                     Jsons.toJson(resource1));
-            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse2.getCode(), is(200));
         });
     }
 
@@ -435,7 +436,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/2"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            assertThat(httpResponse.getCode(), is(404));
         });
     }
 
@@ -447,7 +448,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -460,7 +461,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> {
             HttpResponse httpResponse = helper.deleteForResponseWithHeaders(remoteUrl("/targets/1"),
                     ImmutableMultimap.of(HttpHeaders.IF_MATCH, "moco"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -472,7 +473,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.deleteForResponse(remoteUrl("/targets/1"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(409));
+            assertThat(httpResponse.getCode(), is(409));
         });
     }
 
@@ -484,10 +485,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse1 = helper.deleteForResponse(remoteUrl("/targets/1"));
-            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse1.getCode(), is(200));
 
             HttpResponse httpResponse2 = helper.deleteForResponse(remoteUrl("/targets/2"));
-            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse2.getCode(), is(200));
         });
     }
 
@@ -499,7 +500,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
             assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
         });
     }
@@ -512,7 +513,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -524,7 +525,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/2"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(404));
+            assertThat(httpResponse.getCode(), is(404));
         });
     }
 
@@ -536,7 +537,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.headForResponse(remoteUrl("/targets/1?name=foo"));
-            assertThat(httpResponse.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse.getCode(), is(200));
         });
     }
 
@@ -548,10 +549,10 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse1 = helper.headForResponse(remoteUrl("/targets/1"));
-            assertThat(httpResponse1.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse1.getCode(), is(200));
 
             HttpResponse httpResponse2 = helper.headForResponse(remoteUrl("/targets/2"));
-            assertThat(httpResponse2.getStatusLine().getStatusCode(), is(200));
+            assertThat(httpResponse2.getCode(), is(200));
         });
     }
 
@@ -716,29 +717,30 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     private Plain getResource(String uri) throws IOException {
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
+        ClassicHttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlain(response);
     }
 
-    private Plain asPlain(final HttpResponse response) throws IOException {
+    private Plain asPlain(final ClassicHttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
         return Jsons.toObject(entity.getContent(), Plain.class);
     }
 
     private List<Plain> getResources(final String uri) throws IOException {
-        HttpResponse response = helper.getResponse(remoteUrl(uri));
+        ClassicHttpResponse response = helper.getResponse(remoteUrl(uri));
         return asPlains(response);
     }
 
-    private List<Plain> asPlains(final HttpResponse response) throws IOException {
+    private List<Plain> asPlains(final ClassicHttpResponse response) throws IOException {
         HttpEntity entity = checkJsonResponse(response);
         return Jsons.toObjects(entity.getContent(), Plain.class);
     }
 
-    private HttpEntity checkJsonResponse(final HttpResponse response) {
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+    private HttpEntity checkJsonResponse(final ClassicHttpResponse response) {
+        assertThat(response.getCode(), is(200));
+
         HttpEntity entity = response.getEntity();
-        MediaType mediaType = MediaType.parse(entity.getContentType().getValue());
+        MediaType mediaType = MediaType.parse(entity.getContentType());
         assertThat(mediaType.type(), is("application"));
         assertThat(mediaType.subtype(), is("json"));
         return entity;

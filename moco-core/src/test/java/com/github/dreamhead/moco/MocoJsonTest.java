@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.support.JsonSupport;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
-import org.apache.http.client.HttpResponseException;
+import org.apache.hc.client5.http.HttpResponseException;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

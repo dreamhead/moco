@@ -40,6 +40,6 @@ public class MocoJsonStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("json_struct.json");
         assertThat(helper.postContent(remoteUrl("/json-struct"), "{\"foo\":\"bar\"}"), is("response_for_json_struct"));
         assertThat(helper.postContent(remoteUrl("/json-struct"), "{\"foo\":\"hello\"}"), is("response_for_json_struct"));
-        assertThat(helper.postForResponse(remoteUrl("/json-struct"), "{\"bar\":\"hello\"}").getStatusLine().getStatusCode(), is(400));
+        assertThat(helper.postForResponse(remoteUrl("/json-struct"), "{\"bar\":\"hello\"}").getCode(), is(400));
     }
 }

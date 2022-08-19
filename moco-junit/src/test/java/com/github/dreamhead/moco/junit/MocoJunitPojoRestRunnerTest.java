@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.junit;
 
 import com.github.dreamhead.moco.AbstractMocoStandaloneTest;
 import com.github.dreamhead.moco.RestServer;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.HttpResponse;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class MocoJunitPojoRestRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_message() throws IOException {
         HttpResponse response = helper.postForResponse(remoteUrl("/targets"), "hello");
-        assertThat(response.getStatusLine().getStatusCode(), is(201));
+        assertThat(response.getCode(), is(201));
         assertThat(response.getFirstHeader("Location").getValue(), is("/targets/123"));
     }
 }

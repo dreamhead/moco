@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
@@ -29,7 +29,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableSet.of;
-import static org.apache.http.client.fluent.Request.Post;
+import static org.apache.hc.client5.http.fluent.Request.post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -39,7 +39,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.post(eq(form("name"), "dreamhead")).response("foobar");
 
         running(server, () -> {
-            org.apache.http.client.fluent.Request request = Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+            org.apache.hc.client5.http.fluent.Request request = post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
             assertThat(helper.executeAsString(request), is("foobar"));
         });
     }
@@ -50,7 +50,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.post(eq(form("name"), "表单")).response("foobar");
 
         running(server, () -> {
-            org.apache.http.client.fluent.Request request = Post(root()).bodyForm(of(new BasicNameValuePair("name", "表单")), Charset.forName("GBK"));
+            org.apache.hc.client5.http.fluent.Request request = post(root()).bodyForm(of(new BasicNameValuePair("name", "表单")), Charset.forName("GBK"));
             assertThat(helper.executeAsString(request), is("foobar"));
         });
     }
@@ -80,7 +80,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.response(cookie("loggedIn", "true", path("/")), status(302));
 
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
             assertThat(decodeCookie.path(), is("/"));
@@ -93,7 +93,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(302));
 
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
 
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
@@ -107,7 +107,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.response(cookie("loggedIn", "true", secure()), status(302));
 
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
             assertThat(decodeCookie.isSecure(), is(true));
@@ -120,7 +120,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.response(cookie("loggedIn", "true", httpOnly()), status(302));
 
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
             assertThat(decodeCookie.isHttpOnly(), is(true));
@@ -132,7 +132,7 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", domain("localhost")), status(302));
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
             assertThat(decodeCookie.domain(), is("localhost"));

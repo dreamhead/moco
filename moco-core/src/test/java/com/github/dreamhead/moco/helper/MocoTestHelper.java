@@ -2,23 +2,23 @@ package com.github.dreamhead.moco.helper;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.Resources;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.fluent.Executor;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.fluent.Content;
+import org.apache.hc.client5.http.fluent.Executor;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.client5.http.fluent.Response;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -42,7 +42,8 @@ public class MocoTestHelper {
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
         CloseableHttpClient client = HttpClients.custom()
                 .setConnectionManager(cm)
-                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+                .setDefaultRequestConfig(RequestConfig.custom()
+                        .build())
                 .disableDefaultUserAgent()
                 .build();
 
@@ -50,15 +51,15 @@ public class MocoTestHelper {
     }
 
     public String get(final String url) throws IOException {
-        return executeAsString(Request.Get(url));
+        return executeAsString(Request.get(url));
     }
 
     public byte[] getAsBytes(final String url) throws IOException {
-        return EntityUtils.toByteArray(execute(Request.Get(url)).getEntity());
+        return executor.execute(Request.get(url)).returnContent().asBytes();
     }
 
-    public HttpResponse getResponse(final String url) throws IOException {
-        return execute(Request.Get(url));
+    public ClassicHttpResponse getResponse(final String url) throws IOException {
+        return execute(Request.get(url));
     }
 
     public String getWithHeader(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
@@ -66,20 +67,20 @@ public class MocoTestHelper {
     }
 
     private Request getRequest(final String url, final ImmutableMultimap<String, String> headers) {
-        Request request = Request.Get(url);
+        Request request = Request.get(url);
         for (Map.Entry<String, String> entry : headers.entries()) {
             request = request.addHeader(entry.getKey(), entry.getValue());
         }
         return request;
     }
 
-    public HttpResponse getResponseWithHeader(final String url, final ImmutableMultimap<String, String> headers)
+    public ClassicHttpResponse getResponseWithHeader(final String url, final ImmutableMultimap<String, String> headers)
             throws IOException {
         return execute(getRequest(url, headers));
     }
 
     public String getWithVersion(final String url, final HttpVersion version) throws IOException {
-        return executeAsString(Request.Get(url).version(version));
+        return executeAsString(Request.get(url).version(version));
     }
 
     public String postContent(final String url, final String postContent) throws IOException {
@@ -91,30 +92,30 @@ public class MocoTestHelper {
     }
 
     public String postBytes(final String url, final byte[] bytes, final Charset charset) throws IOException {
-        return executeAsString(Request.Post(url)
+        return executeAsString(Request.post(url)
                 .bodyByteArray(bytes, ContentType.create("text/plain", charset)));
     }
 
-    public HttpResponse postForResponse(final String url, final String content) throws IOException {
+    public ClassicHttpResponse postForResponse(final String url, final String content) throws IOException {
         return postForResponse(url, content, PLAIN_TEXT_UTF_8.toString());
     }
 
-    public HttpResponse postForResponse(final String url, final String content, final String contentType)
+    public ClassicHttpResponse postForResponse(final String url, final String content, final String contentType)
             throws IOException {
-        return execute(Request.Post(url)
+        return execute(Request.post(url)
                 .addHeader(CONTENT_TYPE, contentType)
                 .bodyByteArray(content.getBytes()));
     }
 
-    public HttpResponse putForResponse(final String url, final String content) throws IOException {
-        return execute(Request.Put(url)
+    public ClassicHttpResponse putForResponse(final String url, final String content) throws IOException {
+        return execute(Request.put(url)
                 .addHeader(CONTENT_TYPE, PLAIN_TEXT_UTF_8.toString())
                 .bodyByteArray(content.getBytes()));
     }
 
-    public HttpResponse putForResponseWithHeaders(final String url, final String content,
+    public ClassicHttpResponse putForResponseWithHeaders(final String url, final String content,
                                                   final ImmutableMultimap<String, String> headers) throws IOException {
-        Request request = Request.Put(url)
+        Request request = Request.put(url)
                 .bodyByteArray(content.getBytes());
         for (Map.Entry<String, String> entry : headers.entries()) {
             request.addHeader(entry.getKey(), entry.getValue());
@@ -122,21 +123,21 @@ public class MocoTestHelper {
         return execute(request);
     }
 
-    public HttpResponse deleteForResponse(final String url) throws IOException {
-        return execute(Request.Delete(url));
+    public ClassicHttpResponse deleteForResponse(final String url) throws IOException {
+        return execute(Request.delete(url));
     }
 
-    public HttpResponse deleteForResponseWithHeaders(final String url, final ImmutableMultimap<String, String> headers)
+    public ClassicHttpResponse deleteForResponseWithHeaders(final String url, final ImmutableMultimap<String, String> headers)
             throws IOException {
-        Request request = Request.Delete(url);
+        Request request = Request.delete(url);
         for (Map.Entry<String, String> entry : headers.entries()) {
             request.addHeader(entry.getKey(), entry.getValue());
         }
         return execute(request);
     }
 
-    public HttpResponse headForResponse(final String url) throws IOException {
-        return execute(Request.Head(url));
+    public ClassicHttpResponse headForResponse(final String url) throws IOException {
+        return execute(Request.head(url));
     }
 
     public String postStream(final String url, final InputStream stream) throws IOException {
@@ -148,20 +149,26 @@ public class MocoTestHelper {
     }
 
     public int getForStatus(final String url) throws IOException {
-        return execute(Request.Get(url)).getStatusLine().getStatusCode();
+        return execute(Request.get(url)).getCode();
     }
 
     public String patchForResponse(final String url, final String content) throws IOException {
-        return executeAsString(Request.Patch(url)
+        return executeAsString(Request.patch(url)
                 .bodyString(content, ContentType.DEFAULT_TEXT));
     }
 
-    public HttpResponse execute(final Request request) throws IOException {
-        return executor.execute(request).returnResponse();
+    public ClassicHttpResponse execute(final Request request) throws IOException {
+        return (ClassicHttpResponse) executor.execute(request).returnResponse();
     }
 
     public String executeAsString(final Request request) throws IOException {
-        return executor.execute(request).returnContent().asString();
+        final Response response = executor.execute(request);
+        final Content content = response.returnContent();
+        if (content.asBytes().length <= 0) {
+            return null;
+        }
+
+        return content.asString();
     }
 
     private static final String PROTOCOL = "TLS";

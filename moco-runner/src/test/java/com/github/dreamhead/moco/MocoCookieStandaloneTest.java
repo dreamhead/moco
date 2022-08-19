@@ -66,7 +66,7 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     private Cookie getCookie(String uri) throws IOException {
-        org.apache.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
+        org.apache.hc.core5.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
 
         String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
         return ClientCookieDecoder.STRICT.decode(value);

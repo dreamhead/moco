@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.ProtocolVersion;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -42,16 +42,16 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_version_from_template() throws IOException {
         runWithConfiguration("template.json");
-        ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/version_template"))
+        ProtocolVersion version = helper.execute(Request.get(remoteUrl("/version_template"))
                 .version(HttpVersion.HTTP_1_0))
-                .getProtocolVersion();
+                .getVersion();
         assertThat(version.toString(), is("HTTP/1.0"));
     }
 
     @Test
     public void should_return_header_from_template() throws IOException {
         runWithConfiguration("template.json");
-        Header header = helper.execute(Request.Get(remoteUrl("/header_template")).addHeader("foo", "bar"))
+        Header header = helper.execute(Request.get(remoteUrl("/header_template")).addHeader("foo", "bar"))
                 .getFirstHeader("foo");
         assertThat(header.getValue(), is("bar"));
     }
@@ -69,7 +69,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_form_value_from_template() throws IOException {
         runWithConfiguration("template.json");
-        Request request = Request.Post(remoteUrl("/form_template")).bodyForm(new BasicNameValuePair("foo", "dreamhead"));
+        Request request = Request.post(remoteUrl("/form_template")).bodyForm(new BasicNameValuePair("foo", "dreamhead"));
         assertThat(helper.executeAsString(request), is("dreamhead"));
     }
 
@@ -111,7 +111,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_not_return_json_field_from_template_for_unknown_content() throws IOException {
         runWithConfiguration("template.json");
         final HttpResponse response = helper.postForResponse(remoteUrl("/json_template"), "blah");
-        assertThat(response.getStatusLine().getStatusCode(), is(400));
+        assertThat(response.getCode(), is(400));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_not_return_xml_field_from_template_for_unknown_content() throws IOException {
         runWithConfiguration("template.json");
         final HttpResponse response = helper.postForResponse(remoteUrl("/xml_template"), "blah");
-        assertThat(response.getStatusLine().getStatusCode(), is(400));
+        assertThat(response.getCode(), is(400));
     }
 
     @Test

@@ -2,7 +2,8 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.client.HttpResponseException;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
 import java.io.InputStreamReader;
@@ -67,7 +68,7 @@ public class MocoMountTest extends AbstractMocoHttpTest {
         server.mount(MOUNT_DIR, to("/dir")).response(header(HttpHeaders.CONTENT_TYPE, "text/plain"));
 
         running(server, () -> {
-            org.apache.http.HttpResponse httpResponse = helper.getResponse(remoteUrl("/dir/dir.response"));
+            ClassicHttpResponse httpResponse = helper.getResponse(remoteUrl("/dir/dir.response"));
             String value = httpResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE).getValue();
             assertThat(value, is("text/plain"));
             String content = CharStreams.toString(new InputStreamReader(httpResponse.getEntity().getContent()));

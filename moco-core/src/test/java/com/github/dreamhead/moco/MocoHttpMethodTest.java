@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.apache.http.client.fluent.Request;
+import org.apache.hc.client5.http.fluent.Request;
 import org.junit.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -31,7 +31,7 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
         server.put(by("foo")).response("bar");
 
         running(server, () -> {
-            Request request = Request.Put(root()).bodyByteArray("foo".getBytes());
+            Request request = Request.put(root()).bodyByteArray("foo".getBytes());
             assertThat(helper.executeAsString(request), is("bar"));
         });
     }
@@ -41,7 +41,7 @@ public class MocoHttpMethodTest extends AbstractMocoHttpTest {
         server.delete(by(uri("/foo"))).response("bar");
 
         running(server, () -> {
-            Request request = Request.Delete(remoteUrl("/foo"));
+            Request request = Request.delete(remoteUrl("/foo"));
             String response = helper.executeAsString(request);
             assertThat(response, is("bar"));
         });

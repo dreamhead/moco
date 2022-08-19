@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.apache.http.Header;
-import org.apache.http.client.fluent.Request;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.client5.http.fluent.Request;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class MocoFileRootTest {
         server.response(header("foo", file("foo.response")));
 
         running(server, () -> {
-            Request request = Request.Get(root());
+            Request request = Request.get(root());
             Header header = helper.execute(request).getFirstHeader("foo");
 
             assertThat(header.getValue(), is("foo.response"));
@@ -55,7 +55,7 @@ public class MocoFileRootTest {
         server.response(header("foo", template(file("foo.response"))));
 
         running(server, () -> {
-            org.apache.http.HttpResponse response = helper.getResponse(root());
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             Header header = response.getFirstHeader("foo");
             assertThat(header.getValue(), is("foo.response"));
         });

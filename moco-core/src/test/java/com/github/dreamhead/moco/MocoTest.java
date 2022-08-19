@@ -2,12 +2,12 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.fluent.Request;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.ProtocolVersion;
+import org.apache.hc.client5.http.fluent.Request;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -217,7 +217,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/foo")), by(method("put")))).response("bar");
 
         running(server, () -> {
-            Request request = Request.Put(remoteUrl("/foo"));
+            Request request = Request.put(remoteUrl("/foo"));
             assertThat(helper.executeAsString(request), is("bar"));
         });
     }
@@ -227,7 +227,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/foo")), by(method("delete")))).response("bar");
 
         running(server, () -> {
-            Request request = Request.Delete(remoteUrl("/foo"));
+            Request request = Request.delete(remoteUrl("/foo"));
             String response = helper.executeAsString(request);
             assertThat(response, is("bar"));
         });
@@ -494,7 +494,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         server.response(version(VERSION_1_0));
 
         running(server, () -> {
-            ProtocolVersion version = helper.getResponse(root()).getProtocolVersion();
+            ProtocolVersion version = helper.getResponse(root()).getVersion();
             assertThat(version.getMajor(), is(1));
             assertThat(version.getMinor(), is(0));
         });
@@ -505,7 +505,7 @@ public class MocoTest extends AbstractMocoHttpTest {
         server.response(version(VERSION_1_0));
 
         running(server, () -> {
-            ProtocolVersion version = helper.getResponse(root()).getProtocolVersion();
+            ProtocolVersion version = helper.getResponse(root()).getVersion();
             assertThat(version.getMajor(), is(1));
             assertThat(version.getMinor(), is(0));
         });
@@ -600,15 +600,15 @@ public class MocoTest extends AbstractMocoHttpTest {
         server.response("foobar");
 
         running(server, () -> {
-            ProtocolVersion version10 = helper.execute(Request.Get(root())
-                    .version(HttpVersion.HTTP_1_0))
-                    .getProtocolVersion();
+            ProtocolVersion version10 = helper.execute(Request.get(root())
+                            .version(HttpVersion.HTTP_1_0))
+                    .getVersion();
             assertThat(version10.getMajor(), is(1));
             assertThat(version10.getMinor(), is(0));
 
-            ProtocolVersion version11 = helper.execute(Request.Get(root())
-                    .version(HttpVersion.HTTP_1_1))
-                    .getProtocolVersion();
+            ProtocolVersion version11 = helper.execute(Request.get(root())
+                            .version(HttpVersion.HTTP_1_1))
+                    .getVersion();
             assertThat(version11.getMajor(), is(1));
             assertThat(version11.getMinor(), is(1));
         });
@@ -617,15 +617,15 @@ public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_same_http_version_without_specified_version_for_error_response() throws Exception {
         running(server, () -> {
-            ProtocolVersion version10 = helper.execute(Request.Get(root())
-                    .version(HttpVersion.HTTP_1_0))
-                    .getProtocolVersion();
+            ProtocolVersion version10 = helper.execute(Request.get(root())
+                            .version(HttpVersion.HTTP_1_0))
+                    .getVersion();
             assertThat(version10.getMajor(), is(1));
             assertThat(version10.getMinor(), is(0));
 
-            ProtocolVersion version11 = helper.execute(Request.Get(root())
-                    .version(HttpVersion.HTTP_1_1))
-                    .getProtocolVersion();
+            ProtocolVersion version11 = helper.execute(Request.get(root())
+                            .version(HttpVersion.HTTP_1_1))
+                    .getVersion();
             assertThat(version11.getMajor(), is(1));
             assertThat(version11.getMinor(), is(1));
         });
@@ -688,21 +688,21 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_binary() throws Exception {
-        server.response(binary(new byte[] {1, 2, 3}));
+        server.response(binary(new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_binary_with_byte_buffer() throws Exception {
-        server.response(binary(ByteBuffer.wrap(new byte[] {1, 2, 3})));
+        server.response(binary(ByteBuffer.wrap(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -714,7 +714,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -740,7 +740,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_dynamic_text_with_arguments_function() throws Exception {
-        server.response(text((request) -> ((HttpRequest)request).getUri()));
+        server.response(text((request) -> ((HttpRequest) request).getUri()));
 
         running(server, () -> {
             String response = helper.get(remoteUrl("/uri"));
@@ -750,41 +750,41 @@ public class MocoTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_return_dynamic_binary() throws Exception {
-        server.response(binary((request) -> new byte[] {1, 2, 3}));
+        server.response(binary((request) -> new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function() throws Exception {
-        server.response(binary((request) -> new byte[] {1, 2, 3}));
+        server.response(binary((request) -> new byte[]{1, 2, 3}));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function_with_byte_buffer() throws Exception {
-        server.response(binary((request) -> ByteBuffer.wrap(new byte[] {1, 2, 3})));
+        server.response(binary((request) -> ByteBuffer.wrap(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
     @Test
     public void should_return_dynamic_binary_function_with_input_stream() throws Exception {
-        server.response(binary((request) -> new ByteArrayInputStream(new byte[] {1, 2, 3})));
+        server.response(binary((request) -> new ByteArrayInputStream(new byte[]{1, 2, 3})));
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {1, 2, 3}));
+            assertThat(asBytes, is(new byte[]{1, 2, 3}));
         });
     }
 
@@ -794,7 +794,7 @@ public class MocoTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             byte[] asBytes = helper.getAsBytes(root());
-            assertThat(asBytes, is(new byte[] {'f', 'o', 'o'}));
+            assertThat(asBytes, is(new byte[]{'f', 'o', 'o'}));
         });
     }
 
@@ -844,7 +844,7 @@ public class MocoTest extends AbstractMocoHttpTest {
             String response = helper.postContent(root(), "foo");
             assertThat(response, is("foo"));
             final HttpResponse whole = helper.postForResponse(root(), "bar");
-            assertThat(whole.getStatusLine().getStatusCode(), is(400));
+            assertThat(whole.getCode(), is(400));
         });
     }
 }

@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.net.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.ProtocolVersion;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -96,14 +96,14 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_return_expected_response_based_on_specified_put_request() throws IOException {
         runWithConfiguration("put_method.json");
 
-        Request request = Request.Put(remoteUrl("/put"));
+        Request request = Request.put(remoteUrl("/put"));
         assertThat(helper.executeAsString(request), is("response_for_put_method"));
     }
 
     @Test
     public void should_return_expected_response_based_on_specified_delete_request() throws IOException {
         runWithConfiguration("delete_method.json");
-        String response = helper.executeAsString(Request.Delete(remoteUrl("/delete")));
+        String response = helper.executeAsString(Request.delete(remoteUrl("/delete")));
         assertThat(response, is("response_for_delete_method"));
     }
 
@@ -116,7 +116,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_specified_version_for_request() throws IOException {
         runWithConfiguration("foo.json");
-        ProtocolVersion version = helper.execute(Request.Get(remoteUrl("/version10"))).getProtocolVersion();
+        ProtocolVersion version = helper.execute(Request.get(remoteUrl("/version10"))).getVersion();
         assertThat(version.getProtocol(), is("HTTP"));
         assertThat(version.getMajor(), is(1));
         assertThat(version.getMinor(), is(0));
@@ -190,7 +190,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_expected_composite_response() throws IOException {
         runWithConfiguration("foo.json");
         HttpResponse response = helper.getResponse(remoteUrl("/composite-response"));
-        assertThat(response.getStatusLine().getStatusCode(), is(200));
+        assertThat(response.getCode(), is(200));
         assertThat(response.getFirstHeader("foo").getValue(), is("bar"));
     }
 
@@ -226,7 +226,7 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     public void should_match_form_value() throws IOException {
         runWithConfiguration("form.json");
 
-        Request request = Request.Post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
+        Request request = Request.post(root()).bodyForm(new BasicNameValuePair("name", "dreamhead"));
         assertThat(helper.executeAsString(request), is("foobar"));
     }
 
