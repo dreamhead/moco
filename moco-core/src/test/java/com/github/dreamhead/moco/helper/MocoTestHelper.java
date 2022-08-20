@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.helper;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.io.Resources;
-import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Executor;
 import org.apache.hc.client5.http.fluent.Request;
@@ -42,8 +41,6 @@ public class MocoTestHelper {
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
         CloseableHttpClient client = HttpClients.custom()
                 .setConnectionManager(cm)
-                .setDefaultRequestConfig(RequestConfig.custom()
-                        .build())
                 .disableDefaultUserAgent()
                 .build();
 
