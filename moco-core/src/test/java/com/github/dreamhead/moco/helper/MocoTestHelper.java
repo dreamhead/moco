@@ -52,7 +52,7 @@ public class MocoTestHelper {
     }
 
     public byte[] getAsBytes(final String url) throws IOException {
-        return executor.execute(Request.get(url)).returnContent().asBytes();
+        return executeForContent(Request.get(url)).asBytes();
     }
 
     public ClassicHttpResponse getResponse(final String url) throws IOException {
@@ -157,15 +157,20 @@ public class MocoTestHelper {
     public ClassicHttpResponse execute(final Request request) throws IOException {
         return (ClassicHttpResponse) executor.execute(request).returnResponse();
     }
+    
 
     public String executeAsString(final Request request) throws IOException {
-        final Response response = executor.execute(request);
-        final Content content = response.returnContent();
+        final Content content = executeForContent(request);
         if (content.asBytes().length <= 0) {
             return null;
         }
 
         return content.asString();
+    }
+
+    private Content executeForContent(Request request) throws IOException {
+        final Response response = executor.execute(request);
+        return response.returnContent();
     }
 
     private static final String PROTOCOL = "TLS";
