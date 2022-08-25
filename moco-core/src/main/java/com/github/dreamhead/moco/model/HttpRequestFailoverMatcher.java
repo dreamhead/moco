@@ -46,17 +46,13 @@ public final class HttpRequestFailoverMatcher {
 
     private boolean notMatchHeaderMapValue(final Object thisValue, final Object thatValue) {
         if (thisValue instanceof String && thatValue instanceof String) {
-            if (!doMatch(((String) thisValue).toLowerCase(), ((String) thatValue).toLowerCase())) {
-                return true;
-            }
+            return !doMatch(((String) thisValue).toLowerCase(), ((String) thatValue).toLowerCase());
         }
 
         if (thisValue instanceof String[] && thatValue instanceof String[]) {
             String[] thisValues = (String[]) thisValue;
             String[] thatValues = (String[]) thatValue;
-            if (!doMatchHeader(thisValues, thatValues)) {
-                return true;
-            }
+            return !doMatchHeader(thisValues, thatValues);
         }
 
         return false;
