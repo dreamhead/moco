@@ -104,20 +104,20 @@ public final class HttpRequestFailoverMatcher {
                 .allMatch(index -> doMatch(thisValues[index], thatValues[index]));
     }
 
-    protected boolean doMatch(final String thisField, final String thatField) {
+    private boolean doMatch(final String thisField, final String thatField) {
         return Strings.isNullOrEmpty(thisField) || thisField.equals(thatField);
     }
 
-    protected boolean doMatch(final HttpProtocolVersion thisField, final HttpProtocolVersion thatField) {
+    private boolean doMatch(final HttpProtocolVersion thisField, final HttpProtocolVersion thatField) {
         return thisField == null || thisField == thatField;
     }
 
-    protected boolean doMatch(final MessageContent thisField, final MessageContent thatField) {
+    private boolean doMatch(final MessageContent thisField, final MessageContent thatField) {
         return thisField == null || thisField.equals(thatField)
                 || (thatField != null && thisField.toString().equals(thatField.toString()));
     }
 
-    protected boolean doMatch(final HttpMethod thisField, final HttpMethod thatField) {
+    private boolean doMatch(final HttpMethod thisField, final HttpMethod thatField) {
         return thisField == null || thisField == thatField;
     }
 }
