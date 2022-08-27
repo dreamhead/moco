@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
-import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
@@ -17,7 +16,7 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
-        if (hasContent(message)) {
+        if (message.hasContent()) {
             return StringUtil.NEWLINE + StringUtil.NEWLINE + contentForDump(message);
         }
 
@@ -47,15 +46,6 @@ public final class HttpDumpers {
         }
     }
 
-    private static boolean hasContent(final HttpMessage message) {
-        String lengthText = message.getHeader(HttpHeaders.CONTENT_LENGTH);
-        if (lengthText != null) {
-            return true;
-        }
-
-        MessageContent content = message.getContent();
-        return content != null && content.hasContent();
-    }
 
     private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 
