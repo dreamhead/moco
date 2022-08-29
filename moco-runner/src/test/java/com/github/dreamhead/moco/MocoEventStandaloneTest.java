@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
-    private static final long IDLE = 1200;
+    private static final long IDLE = 1500;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
