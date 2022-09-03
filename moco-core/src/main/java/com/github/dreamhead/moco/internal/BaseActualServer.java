@@ -8,7 +8,6 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
-import com.github.dreamhead.moco.monitor.QuietMonitor;
 import com.github.dreamhead.moco.server.ServerSetting;
 import com.github.dreamhead.moco.setting.Setting;
 import com.google.common.collect.ImmutableList;
