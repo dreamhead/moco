@@ -17,7 +17,7 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
 
     protected abstract BaseSetting<T> createSetting(RequestMatcher matcher);
 
-    protected abstract RequestMatcher configMatcher(RequestMatcher matcher, MocoConfig config);
+    protected abstract RequestMatcher configMatcher(RequestMatcher matcher, MocoConfig<?> config);
 
     protected BaseSetting(final RequestMatcher matcher) {
         this.matcher = matcher;
