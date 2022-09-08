@@ -30,7 +30,7 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
     }
 
     @Override
-    public String getClientAddress() {
+    public final String getClientAddress() {
         return this.clientAddress;
     }
 }
