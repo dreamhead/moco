@@ -8,7 +8,6 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import static com.github.dreamhead.moco.model.DefaultMutableHttpResponse.newResponse;
