@@ -20,7 +20,7 @@ public final class HttpHeader implements ResponseElement, ConfigApplier<HttpHead
     }
 
     @Override
-    public HttpHeader apply(final MocoConfig config) {
+    public HttpHeader apply(final MocoConfig<?> config) {
         Resource applied = this.value.apply(config);
         if (applied.equals(value)) {
             return this;
