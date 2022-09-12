@@ -11,7 +11,7 @@ public class JoinResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public final ResponseHandler apply(final MocoConfig config) {
+    public final ResponseHandler apply(final MocoConfig<?> config) {
         return this;
     }
 
