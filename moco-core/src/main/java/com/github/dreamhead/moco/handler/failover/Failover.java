@@ -30,8 +30,8 @@ public final class Failover {
         return ImmutableSet.copyOf(Ints.asList(proxyStatuses));
     }
 
-    public boolean shouldFailover(final org.apache.http.HttpResponse remoteResponse) {
-        int statusCode = remoteResponse.getStatusLine().getStatusCode();
+    public boolean shouldFailover(final org.apache.hc.core5.http.HttpResponse remoteResponse) {
+        int statusCode = remoteResponse.getCode();
         return statuses.contains(statusCode);
     }
 

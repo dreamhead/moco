@@ -18,29 +18,32 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringEncoder;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpTrace;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.hc.client5.http.ClientProtocolException;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpHead;
+import org.apache.hc.client5.http.classic.methods.HttpOptions;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpTrace;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.URIScheme;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +57,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
@@ -63,7 +67,7 @@ import static com.google.common.net.HttpHeaders.HOST;
 import static com.google.common.net.HttpHeaders.SERVER;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static org.apache.http.util.EntityUtils.toByteArray;
+import static org.apache.hc.core5.http.io.entity.EntityUtils.toByteArray;
 
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
@@ -72,13 +76,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(
             DATE.toUpperCase(), SERVER.toUpperCase());
 
-    private static CloseableHttpClient client;
-
-    static {
+    private static CloseableHttpClient createClient() {
         // Try to ignore SSL certification
         // https://memorynotfound.com/ignore-certificate-errors-apache-httpclient/
         try {
-            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+
             SSLContext sslContext = SSLContextBuilder.create()
                     .loadTrustMaterial(new TrustSelfSignedStrategy())
                     .build();
@@ -86,10 +88,16 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
             SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
 
-            client = HttpClients.custom()
+            RegistryBuilder.<ConnectionSocketFactory>create()
+                    .register(URIScheme.HTTP.id, PlainConnectionSocketFactory.getSocketFactory())
+                    .register(URIScheme.HTTPS.id, connectionFactory)
+                    .build();
+
+            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+
+            return HttpClients.custom()
                     .setConnectionManager(connManager)
                     .setConnectionManagerShared(true)
-                    .setSSLSocketFactory(connectionFactory)
                     .build();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             throw new MocoException(e);
@@ -106,14 +114,13 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         this.failover = failover;
     }
 
-    private HttpRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
-        HttpRequestBase remoteRequest = createRemoteRequest(request, url);
+    private HttpUriRequestBase prepareRemoteRequest(final FullHttpRequest request, final URL url) {
+        HttpUriRequestBase remoteRequest = createRemoteRequest(request, url);
         remoteRequest.setConfig(createRequestConfig());
 
         long contentLength = HttpUtil.getContentLength(request, -1);
-        if (contentLength > 0 && remoteRequest instanceof HttpEntityEnclosingRequest) {
-            HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) remoteRequest;
-            entityRequest.setEntity(createEntity(request.content(), contentLength));
+        if (contentLength > 0) {
+            remoteRequest.setEntity(createEntity(request.content(), contentLength));
         }
 
         return remoteRequest;
@@ -123,15 +130,16 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private RequestConfig createRequestConfig() {
         return RequestConfig.custom()
                 .setRedirectsEnabled(false)
-                .setSocketTimeout(0)
-                .setStaleConnectionCheckEnabled(true)
+                .setResponseTimeout(0, TimeUnit.SECONDS)
+//                .setSocketTimeout(0)
+//                .setStaleConnectionCheckEnabled(true)
                 .build();
     }
 
-    private HttpRequestBase createRemoteRequest(final FullHttpRequest request, final URL url) {
-        HttpRequestBase remoteRequest = createBaseRequest(url, request.method());
+    private HttpUriRequestBase createRemoteRequest(final FullHttpRequest request, final URL url) {
+        HttpUriRequestBase remoteRequest = createBaseRequest(url, request.method());
 
-        remoteRequest.setProtocolVersion(createVersion(request));
+        remoteRequest.setVersion(createVersion(request));
         for (Map.Entry<String, String> entry : request.headers()) {
             if (isRequestHeader(entry)) {
                 remoteRequest.addHeader(entry.getKey(), entry.getValue());
@@ -142,12 +150,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpEntity createEntity(final ByteBuf content, final long contentLength) {
-        return new InputStreamEntity(new ByteBufInputStream(content), contentLength);
+        return new InputStreamEntity(new ByteBufInputStream(content), contentLength, null);
     }
 
-    private org.apache.http.HttpVersion createVersion(final FullHttpRequest request) {
+    private org.apache.hc.core5.http.HttpVersion createVersion(final FullHttpRequest request) {
         HttpVersion protocolVersion = request.protocolVersion();
-        return new org.apache.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
+        return new org.apache.hc.core5.http.HttpVersion(protocolVersion.majorVersion(), protocolVersion.minorVersion());
     }
 
     private boolean isRequestHeader(final Map.Entry<String, String> entry) {
@@ -158,7 +166,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return !IGNORED_RESPONSE_HEADERS.contains(header.getName().toUpperCase());
     }
 
-    private HttpRequestBase createBaseRequest(final URL url, final HttpMethod method) {
+    private HttpUriRequestBase createBaseRequest(final URL url, final HttpMethod method) {
         String uri = url.toString();
         if (method == HttpMethod.GET) {
             return new HttpGet(uri);
@@ -208,12 +216,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse setupNormalResponse(final CloseableHttpResponse remoteResponse) throws IOException {
-        HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getProtocolVersion().toString());
-        HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getStatusLine().getStatusCode());
+        HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getVersion().toString());
+        HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getCode());
         FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
         response.setStatus(status);
 
-        Arrays.stream(remoteResponse.getAllHeaders())
+        Arrays.stream(remoteResponse.getHeaders())
                 .filter(this::isResponseHeader)
                 .forEach(header -> response.headers().set(header.getName(), header.getValue()));
 
@@ -263,24 +271,25 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
-        try {
-            HttpRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
-            return setupResponse(request, client.execute(remoteRequest));
-        } catch (ClientProtocolException e) {
-            logger.error("Failed to create remote request", e);
-            throw new MocoException(e);
-        } catch (IOException e) {
-            logger.error("Failed to load remote and try to failover", e);
-            return failover.failover(request);
-        } finally {
+        try (CloseableHttpClient client = createClient()) {
             try {
-                client.close();
-            } catch (IOException ignored) {
+                HttpUriRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
+                try (CloseableHttpResponse response = client.execute(remoteRequest)) {
+                    return setupResponse(request, response);
+                }
+            } catch (ClientProtocolException e) {
+                logger.error("Failed to create remote request", e);
+                throw new MocoException(e);
+            } catch (IOException e) {
+                logger.error("Failed to load remote and try to failover", e);
+                return failover.failover(request);
             }
+        } catch (IOException e) {
+            throw new MocoException(e);
         }
     }
 
-    private HttpRequestBase prepareRemoteRequest(final HttpRequest request, final URL remoteUrl) {
+    private HttpUriRequestBase prepareRemoteRequest(final HttpRequest request, final URL remoteUrl) {
         FullHttpRequest httpRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
         return prepareRemoteRequest(httpRequest, remoteUrl);
     }

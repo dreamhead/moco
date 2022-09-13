@@ -8,11 +8,11 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.google.common.net.MediaType;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 
 import java.nio.charset.Charset;
 
@@ -25,7 +25,7 @@ public final class MocoPostRequestAction extends MocoRequestAction {
         this.content = content;
     }
 
-    protected HttpUriRequest createRequest(final String url, final Request request) {
+    protected ClassicHttpRequest createRequest(final String url, final Request request) {
         HttpPost targetRequest = new HttpPost(url);
         targetRequest.setEntity(asEntity(content, request));
         return targetRequest;
