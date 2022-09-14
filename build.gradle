@@ -120,7 +120,6 @@ subprojects {
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
                 "org.apache.httpcomponents.client5:httpclient5-fluent:$httpClientVersion",
-//                "org.apache.httpcomponents:fluent-hc:$httpComponentVersion",
                 "org.skyscreamer:jsonassert:$jsonAssertVersion",
                 "jakarta.websocket:jakarta.websocket-api:$websocketVersion"
         )
