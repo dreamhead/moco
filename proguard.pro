@@ -80,3 +80,4 @@
 -dontwarn org.osgi.framework.**
 -dontwarn com.ctc.wstx.**
 -dontwarn jakarta.json.**
+-dontwarn org.conscrypt.**
