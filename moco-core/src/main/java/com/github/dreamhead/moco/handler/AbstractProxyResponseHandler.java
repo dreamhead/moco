@@ -76,7 +76,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(
             DATE.toUpperCase(), SERVER.toUpperCase());
 
-    private static CloseableHttpClient createClient() {
+    private CloseableHttpClient createClient() {
         // Try to ignore SSL certification
         // https://memorynotfound.com/ignore-certificate-errors-apache-httpclient/
         try {
