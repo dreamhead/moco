@@ -167,35 +167,35 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     private HttpUriRequestBase createBaseRequest(final URL url, final HttpMethod method) {
         String uri = url.toString();
-        if (method == HttpMethod.GET) {
+        if (HttpMethod.GET.equals(method)) {
             return new HttpGet(uri);
         }
 
-        if (method == HttpMethod.POST) {
+        if (HttpMethod.POST.equals(method)) {
             return new HttpPost(uri);
         }
 
-        if (method == HttpMethod.PUT) {
+        if (HttpMethod.PUT.equals(method)) {
             return new HttpPut(uri);
         }
 
-        if (method == HttpMethod.DELETE) {
+        if (HttpMethod.DELETE.equals(method)) {
             return new HttpDelete(uri);
         }
 
-        if (method == HttpMethod.HEAD) {
+        if (HttpMethod.HEAD.equals(method)) {
             return new HttpHead(uri);
         }
 
-        if (method == HttpMethod.OPTIONS) {
+        if (HttpMethod.OPTIONS.equals(method)) {
             return new HttpOptions(uri);
         }
 
-        if (method == HttpMethod.TRACE) {
+        if (HttpMethod.TRACE.equals(method)) {
             return new HttpTrace(uri);
         }
 
-        if (method == HttpMethod.PATCH) {
+        if (HttpMethod.PATCH.equals(method)) {
             return new HttpPatch(uri);
         }
 
