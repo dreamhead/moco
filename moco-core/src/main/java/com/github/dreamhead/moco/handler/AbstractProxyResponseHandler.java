@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -166,40 +167,11 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpUriRequestBase createBaseRequest(final URL url, final HttpMethod method) {
-        String uri = url.toString();
-        if (HttpMethod.GET.equals(method)) {
-            return new HttpGet(uri);
+        try {
+            return new HttpUriRequestBase(method.name(), url.toURI());
+        } catch (URISyntaxException e) {
+            throw new MocoException(e);
         }
-
-        if (HttpMethod.POST.equals(method)) {
-            return new HttpPost(uri);
-        }
-
-        if (HttpMethod.PUT.equals(method)) {
-            return new HttpPut(uri);
-        }
-
-        if (HttpMethod.DELETE.equals(method)) {
-            return new HttpDelete(uri);
-        }
-
-        if (HttpMethod.HEAD.equals(method)) {
-            return new HttpHead(uri);
-        }
-
-        if (HttpMethod.OPTIONS.equals(method)) {
-            return new HttpOptions(uri);
-        }
-
-        if (HttpMethod.TRACE.equals(method)) {
-            return new HttpTrace(uri);
-        }
-
-        if (HttpMethod.PATCH.equals(method)) {
-            return new HttpPatch(uri);
-        }
-
-        throw new MocoException("unknown HTTP method");
     }
 
     private HttpResponse setupResponse(final HttpRequest request,
