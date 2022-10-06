@@ -15,7 +15,9 @@ project.dependencies {
     api(project(':moco-core'))
     implementation("commons-cli:commons-cli:$commonsCliVersion")
 
-    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
+    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion") {
+        exclude group: 'com.sun.mail', module: 'javax.mail'
+    }
 
     testImplementation project(':moco-core').sourceSets.test.output
 
