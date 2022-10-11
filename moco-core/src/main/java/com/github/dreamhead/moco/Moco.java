@@ -223,6 +223,10 @@ public final class Moco {
         return ApiUtils.match(checkNotNull(extractor, "Extractor should not be null"), text(checkNotNullOrEmpty(expected, "Expected content should not be null")));
     }
 
+    public static RequestMatcher path(final Resource resource) {
+        return ApiUtils.path(extractor(resource.id()), checkNotNull(resource, "Resource should not be null"));
+    }
+
     public static <T> RequestMatcher exist(final RequestExtractor<T> extractor) {
         return new ExistMatcher<>(checkNotNull(extractor, "Extractor should not be null"));
     }

@@ -14,6 +14,7 @@ import com.github.dreamhead.moco.matcher.EqRequestMatcher;
 import com.github.dreamhead.moco.matcher.JsonContentRequestMatcher;
 import com.github.dreamhead.moco.matcher.JsonStructRequestMatcher;
 import com.github.dreamhead.moco.matcher.MatchMatcher;
+import com.github.dreamhead.moco.matcher.PathMatcher;
 import com.github.dreamhead.moco.matcher.StartsWithMatcher;
 import com.github.dreamhead.moco.matcher.XmlContentRequestMatcher;
 import com.github.dreamhead.moco.matcher.XmlStructRequestMatcher;
@@ -116,6 +117,10 @@ public final class ApiUtils {
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
         return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
+    }
+
+    public static <T> RequestMatcher path(final RequestExtractor<T> extractor, final Resource expected) {
+        return new PathMatcher<>(extractor, expected);
     }
 
     private ApiUtils() {

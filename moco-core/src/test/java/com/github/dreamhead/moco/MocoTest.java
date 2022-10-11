@@ -36,6 +36,7 @@ import static com.github.dreamhead.moco.Moco.match;
 import static com.github.dreamhead.moco.Moco.method;
 import static com.github.dreamhead.moco.Moco.not;
 import static com.github.dreamhead.moco.Moco.or;
+import static com.github.dreamhead.moco.Moco.path;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.query;
 import static com.github.dreamhead.moco.Moco.seq;
@@ -845,6 +846,28 @@ public class MocoTest extends AbstractMocoHttpTest {
             assertThat(response, is("foo"));
             final HttpResponse whole = helper.postForResponse(root(), "bar");
             assertThat(whole.getCode(), is(400));
+        });
+    }
+
+    @Test
+    public void should_return_expected_response_based_on_uri_path() throws Exception {
+        server.request(path(uri("/{path}"))).response("bar");
+        server.request(path(uri("/path/{path}"))).response("path");
+        server.request(path(uri("/path/{path}/sub/{sub}"))).response("sub");
+
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/foo")), is("bar"));
+            assertThat(helper.get(remoteUrl("/path/hello")), is("path"));
+            assertThat(helper.get(remoteUrl("/path/hello/sub/sub")), is("sub"));
+        });
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void should_not_response_while_uri_path_is_not_matched() throws Exception {
+        server.request(path(uri("/path/{path}"))).response("path");
+
+        running(server, () -> {
+            helper.get(remoteUrl("/foo/hello"));
         });
     }
 }
