@@ -1,0 +1,22 @@
+[
+    {
+        "request": {
+            "uri": {
+                "path": "/path/{path}"
+            }
+        },
+        "response": {
+            "text": "path"
+        }
+    },
+    {
+        "request": {
+            "uri": {
+                "path": "/path/{path}/sub/{sub}"
+            }
+        },
+        "response": {
+            "text": "sub"
+        }
+    }
+]
