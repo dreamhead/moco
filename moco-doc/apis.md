@@ -2684,7 +2684,7 @@ The default parameter for `record` and `replay` is group.
       "uri" : "/record"
     },
     "response" : {
-      "record" : "foo
+      "record" : "foo"
     }
   },
   {
