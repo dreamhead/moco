@@ -935,6 +935,35 @@ For JSON API, you can decide whether the information does not exist.
 }
 ```
 
+#### Path
+**@Since will be at next release**
+
+**path** operator is provided to match uri with path variable.
+
+* Java API
+
+```java
+server.request(path(uri("/path/{path}/sub/{sub}"))).response("bar");
+```
+
+* JSON
+
+```json
+{
+  "request": 
+  {
+    "uri": 
+    {
+      "path": "/path/{path}/sub/{sub}"
+    }
+  },
+  "response": 
+  {
+    "text": "sub"
+  }
+}
+```
+
 ### Conditional
 
 **@Since 1.3.0**

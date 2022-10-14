@@ -1,5 +1,6 @@
 # Release
 ## APIs
+* `path` is introduced for uri
 * `req.xml` is supported in template
 * `req.client.address` is supported in template
 
