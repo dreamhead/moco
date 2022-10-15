@@ -106,7 +106,7 @@ subprojects {
                 "com.google.guava:guava:$guavaVersion",
                 "io.netty:netty-codec-http:$nettyVersion",
                 "io.netty:netty-handler:$nettyVersion",
-                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+                "com.fasterxml.jackson.core:jackson-databind:$jacksonDataBindVersion",
                 "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion",
                 "org.apache.httpcomponents.client5:httpclient5:$httpClientVersion",
                 "com.jayway.jsonpath:json-path:$jsonpathVersion",
