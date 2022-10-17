@@ -27,6 +27,10 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
         this.expected = expected;
     }
 
+    protected Resource getExpected() {
+        return expected;
+    }
+
     @Override
     public final boolean match(final Request request) {
         Optional<T> extractContent = extractor.extract(request);

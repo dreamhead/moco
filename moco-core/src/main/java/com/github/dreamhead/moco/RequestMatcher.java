@@ -1,11 +1,15 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.matcher.AbstractRequestMatcher;
 
 import static com.github.dreamhead.moco.internal.InternalApis.context;
 
 public interface RequestMatcher extends ConfigApplier<RequestMatcher> {
     boolean match(Request request);
+
+    default void attach(final SessionContext context) {
+    }
 
     RequestMatcher ANY_REQUEST_MATCHER = new AbstractRequestMatcher() {
         @Override

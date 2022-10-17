@@ -30,6 +30,7 @@ public abstract class BaseSetting<T extends ResponseSetting<T>>
 
     @Override
     public final void writeToResponse(final SessionContext context) {
+        this.matcher.attach(context);
         this.handler.writeToResponse(context);
         this.fireCompleteEvent(context.getRequest());
     }
