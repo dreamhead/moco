@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseElement;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 
@@ -38,6 +39,11 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
     @Override
     public final MessageContent readFor(final Request request) {
         return reader.readFor(request);
+    }
+
+    @Override
+    public final MessageContent readFor(final SessionContext context) {
+        return reader.readFor(context);
     }
 
     @Override

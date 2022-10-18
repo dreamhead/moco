@@ -13,7 +13,7 @@ import com.google.common.net.MediaType;
 public abstract class AbstractContentResponseHandler extends AbstractResponseHandler {
     private final HeaderDetector detector = new HeaderDetector();
 
-    protected abstract MessageContent responseContent(Request request);
+    protected abstract MessageContent responseContent(SessionContext request);
     protected abstract MediaType getContentType(HttpRequest request);
 
     @Override
@@ -24,16 +24,17 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         if (request instanceof HttpRequest && response instanceof MutableHttpResponse) {
             HttpRequest httpRequest = (HttpRequest) request;
             MutableHttpResponse httpResponse = (MutableHttpResponse) response;
-            doWriteToResponse(httpRequest, httpResponse);
+            doWriteToResponse(context, httpRequest, httpResponse);
             return;
         }
 
         MutableResponse mutableResponse = (MutableResponse) response;
-        mutableResponse.setContent(requireResponseContent(request));
+        mutableResponse.setContent(requireResponseContent(context));
     }
 
-    private void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        MessageContent content = requireResponseContent(httpRequest);
+    private void doWriteToResponse(final SessionContext context,
+                                   final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+        MessageContent content = requireResponseContent(context);
         httpResponse.setContent(content);
         httpResponse.addHeader(HttpHeaders.CONTENT_LENGTH, content.getContent().length);
 
@@ -42,8 +43,8 @@ public abstract class AbstractContentResponseHandler extends AbstractResponseHan
         }
     }
 
-    private MessageContent requireResponseContent(final Request request) {
-        MessageContent content = responseContent(request);
+    private MessageContent requireResponseContent(final SessionContext context) {
+        MessageContent content = responseContent(context);
         if (content == null) {
             throw new IllegalStateException("Message content is expected. Please make sure responseContent method has been implemented correctly");
         }

@@ -29,6 +29,7 @@ import static com.github.dreamhead.moco.Moco.eq;
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.jsonPath;
+import static com.github.dreamhead.moco.Moco.path;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.template;
@@ -509,6 +510,18 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             assertThat(helper.get(remoteUrl("/template")), is("127.0.0.1"));
+        });
+    }
+
+    @Test
+    public void should_generate_response_with_path() throws Exception {
+        server.request(path(uri("/path/{path}"))).response(template("${req.path.path}"));
+        server.request(path(uri("/path/{path}/sub/{sub}"))).response(template("${req.path.path}/${req.path.sub}"));
+
+        running(server, () -> {
+            assertThat(helper.get(remoteUrl("/path/hello")), is("hello"));
+            assertThat(helper.get(remoteUrl("/path/foo")), is("foo"));
+            assertThat(helper.get(remoteUrl("/path/foo/sub/bar")), is("foo/bar"));
         });
     }
 }

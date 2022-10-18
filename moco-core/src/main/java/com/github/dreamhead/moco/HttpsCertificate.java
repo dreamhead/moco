@@ -59,7 +59,7 @@ public final class HttpsCertificate {
     }
 
     private InputStream getKeyStore() {
-        MessageContent messageContent = resource.readFor(null);
+        MessageContent messageContent = resource.readFor((Request) null);
         return messageContent.toInputStream();
     }
 

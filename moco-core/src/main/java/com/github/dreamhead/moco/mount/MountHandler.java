@@ -3,6 +3,8 @@ package com.github.dreamhead.moco.mount;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.handler.AbstractContentResponseHandler;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.FileResourceReader;
@@ -14,7 +16,7 @@ import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.text;
 
-public final class MountHandler extends AbstractHttpContentResponseHandler {
+public final class MountHandler extends AbstractContentResponseHandler {
     private final MountPathExtractor extractor;
 
     private final File dir;
@@ -27,9 +29,9 @@ public final class MountHandler extends AbstractHttpContentResponseHandler {
     }
 
     @Override
-    protected MessageContent responseContent(final HttpRequest httpRequest) {
-        FileResourceReader reader = new FileResourceReader(asResource(httpRequest));
-        return reader.readFor(httpRequest);
+    protected MessageContent responseContent(final SessionContext context) {
+        FileResourceReader reader = new FileResourceReader(asResource((HttpRequest) context.getRequest()));
+        return reader.readFor(context);
     }
 
     private Resource asResource(final HttpRequest httpRequest) {

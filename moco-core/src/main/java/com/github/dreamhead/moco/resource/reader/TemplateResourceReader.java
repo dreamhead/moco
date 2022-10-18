@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.google.common.collect.ImmutableList;
@@ -78,13 +79,22 @@ public class TemplateResourceReader implements ContentResourceReader {
             throw new IllegalStateException("Request is required to render template");
         }
 
-        MessageContent content = this.template.readFor(request);
+        return this.readFor(new SessionContext(request, null));
+    }
+
+    @Override
+    public final MessageContent readFor(final SessionContext context) {
+        if (context == null) {
+            throw new IllegalStateException("Request is required to render template");
+        }
+
+        MessageContent content = this.template.readFor(context.getRequest());
 
         try {
             Template targetTemplate = createTemplate(content);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(stream);
-            targetTemplate.process(variables(request), writer);
+            targetTemplate.process(variables(context), writer);
             return content().withContent(stream.toByteArray()).build();
         } catch (ParseException e) {
             logger.warn("Fail to parse template: {}", content.toString());
@@ -114,17 +124,17 @@ public class TemplateResourceReader implements ContentResourceReader {
         return cfg;
     }
 
-    private ImmutableMap<String, Object> variables(final Request request) {
+    private ImmutableMap<String, Object> variables(final SessionContext context) {
         return ImmutableMap.<String, Object>builder()
-                .putAll(toVariableString(request))
+                .putAll(toVariableString(context.getRequest()))
                 .put("now", new NowMethod())
                 .put("random", new RandomMethod())
-                .put("req", toTemplateRequest(request))
+                .put("req", toTemplateRequest(context))
                 .build();
     }
 
-    private TemplateRequest toTemplateRequest(final Request request) {
-        return new TemplateRequest(request);
+    private TemplateRequest toTemplateRequest(final SessionContext context) {
+        return new TemplateRequest(context);
     }
 
     private ImmutableMap<String, Object> toVariableString(final Request request) {

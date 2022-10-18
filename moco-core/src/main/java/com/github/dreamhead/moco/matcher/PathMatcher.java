@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.matcher;
 
+import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.ContextKey;
@@ -12,7 +13,7 @@ public class PathMatcher<T> extends AbstractOperatorMatcher<T> {
 
     public PathMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, input -> {
-            final String target = expected.readFor(null).toString();
+            final String target = expected.readFor((Request) null).toString();
             return matcher.match(target, input);
         });
     }

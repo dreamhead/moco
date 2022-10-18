@@ -3,8 +3,12 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.internal.ContextKey;
+import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.resource.Resource;
+import com.github.dreamhead.moco.util.AntPathMatcher;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.Xmls;
 import com.google.common.collect.ImmutableMap;
@@ -16,9 +20,11 @@ import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
 public final class TemplateRequest {
     private final Request request;
+    private final SessionContext context;
 
-    public TemplateRequest(final Request request) {
-        this.request = request;
+    public TemplateRequest(final SessionContext context) {
+        this.request = context.getRequest();
+        this.context = context;
     }
 
     public MessageContent getContent() {
@@ -98,6 +104,18 @@ public final class TemplateRequest {
         } catch (Exception e) {
             throw new IllegalArgumentException("Xml content is expected", e);
         }
+    }
+
+    public Map<String, String> getPath() {
+        if (context == null) {
+            throw new IllegalArgumentException("Uri path is expected");
+        }
+
+        final Resource resource = this.context.get(ContextKey.PATH, Resource.class);
+        final MessageContent content = resource.readFor(this.context);
+        final String path = content.toString();
+        AntPathMatcher matcher = new AntPathMatcher();
+        return matcher.extractUriTemplateVariables(path, this.getUri());
     }
 
     public TemplateClient getClient() {

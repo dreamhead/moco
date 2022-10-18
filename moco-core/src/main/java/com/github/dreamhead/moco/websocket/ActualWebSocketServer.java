@@ -97,7 +97,7 @@ public final class ActualWebSocketServer
 
     private void sendConnected(final Channel channel) {
         if (connected != null) {
-            MessageContent messageContent = this.connected.readFor(null);
+            MessageContent messageContent = this.connected.readFor((Request) null);
             ByteBuf byteBuf = ByteBufs.toByteBuf(messageContent.getContent());
             channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
         }
