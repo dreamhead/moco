@@ -126,5 +126,17 @@
         "template": "${req.client.address}"
       }
     }
+  },
+  {
+    "request": {
+      "uri": {
+        "path": "/path/{path}"
+      }
+    },
+    "response": {
+      "text": {
+        "template": "${req.path.path}"
+      }
+    }
   }
 ]

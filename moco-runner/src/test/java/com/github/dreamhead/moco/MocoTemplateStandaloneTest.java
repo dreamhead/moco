@@ -181,4 +181,11 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(result, lessThan(1d));
         assertThat(result, greaterThan(0d));
     }
+
+    @Test
+    public void should_return_path_in_template() throws IOException {
+        runWithConfiguration("template.json");
+        assertThat(helper.get(remoteUrl("/path/path")), is("path"));
+        assertThat(helper.get(remoteUrl("/path/foo")), is("foo"));
+    }
 }
