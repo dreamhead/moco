@@ -2339,6 +2339,30 @@ server.request(by(uri("/template"))).response(template("${req.client.address}"))
 }
 ```
 
+#### Client Address
+**@Since will be at next release**
+
+`req.path` can work with `path` API to extract path parameter as template variable.
+
+```java
+server.request(path(uri("/path/{foo}"))).response(template("${req.path.foo}"));
+```
+
+```json
+{
+  "request": {
+    "uri": {
+      "path": "/path/{foo}"
+    }
+  },
+  "response": {
+    "text": {
+      "template": "${req.path.foo}"
+    }
+  }
+}
+```
+
 ### Custom Variable
 **@Since 0.9.1**
 
