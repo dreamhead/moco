@@ -112,6 +112,10 @@ public final class TemplateRequest {
         }
 
         final Resource resource = this.context.get(ContextKey.PATH, Resource.class);
+        if (resource == null) {
+            throw new IllegalArgumentException("Uri path is expected");
+        }
+
         final MessageContent content = resource.readFor(this.context);
         final String path = content.toString();
         AntPathMatcher matcher = new AntPathMatcher();
