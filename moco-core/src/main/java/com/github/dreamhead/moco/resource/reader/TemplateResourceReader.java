@@ -31,8 +31,8 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -153,9 +153,9 @@ public class TemplateResourceReader implements ContentResourceReader {
                 throw new IllegalArgumentException("Date format is required");
             }
 
-            Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat(arguments.get(0).toString());
-            return format.format(date);
+            final ZonedDateTime now = ZonedDateTime.now();
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(arguments.get(0).toString());
+            return now.format(formatter);
         }
     }
 
