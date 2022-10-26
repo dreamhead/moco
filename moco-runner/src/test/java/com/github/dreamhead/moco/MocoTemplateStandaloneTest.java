@@ -1,16 +1,16 @@
 package com.github.dreamhead.moco;
 
+import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.ProtocolVersion;
-import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
@@ -138,9 +138,10 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_now_from_template() throws IOException {
         runWithConfiguration("template_with_function.json");
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        assertThat(helper.get(remoteUrl("/now_template")), is(format.format(date)));
+
+        final ZonedDateTime now = ZonedDateTime.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        assertThat(helper.get(remoteUrl("/now_template")), is(formatter.format(now)));
     }
 
     @Test
