@@ -6,11 +6,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.ProtocolVersion;
-import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -322,9 +322,9 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         server.request(by(uri("/template"))).response(template("${now('yyyy-MM-dd')}"));
 
         running(server, () -> {
-            Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            assertThat(helper.get(remoteUrl("/template")), is(format.format(date)));
+            final ZonedDateTime now = ZonedDateTime.now();
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            assertThat(helper.get(remoteUrl("/template")), is(formatter.format(now)));
         });
     }
 
