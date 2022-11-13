@@ -35,6 +35,7 @@
 -keep public class org.apache.hc.core5.http.io.HttpClientResponseHandler{*;}
 -keep public class org.apache.hc.client5.http.config.RequestConfig{*;}
 -keep public class org.apache.hc.client5.http.ClientProtocolException{*;}
+-keep public class org.apache.hc.client5.http.impl.classic.CloseableHttpClient{*;}
 
 -keep public class com.google.common.io.Files{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
@@ -79,3 +80,4 @@
 -dontwarn com.ctc.wstx.**
 -dontwarn jakarta.json.**
 -dontwarn org.conscrypt.**
+-dontwarn org.brotli.dec.**
