@@ -27,7 +27,7 @@ public abstract class AbstractOperatorMatcher<T> extends AbstractRequestMatcher 
         this.expected = expected;
     }
 
-    protected Resource getExpected() {
+    protected final Resource getExpected() {
         return expected;
     }
 
