@@ -2292,7 +2292,7 @@ server.request(by(uri("/template"))).response(template("${req.json.foo}"));
 #### XML
 **@Since will be at next release**
 
-If your request is an XML request, you can use `req.xml` to visit your json object.
+If your request is an XML request, you can use `req.xml` to visit your xml object.
 
 **Note** that make sure your request is an XML request, otherwise an exception will be thrown.
 
