@@ -499,6 +499,14 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_return_xml_with_declaration() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.xml.parameter.id}"));
+        running(server, () -> assertThat(helper.postContent(remoteUrl("/template"),
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><parameter><id>1</id></parameter></request>"),
+                is("1")));
+    }
+
+    @Test
     public void should_return_bad_request_for_unknown_xml() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.xml.parameter.id}"));
         running(server, () -> assertThat(helper.postForResponse(remoteUrl("/template"), "foo").getCode(), is(400)));
