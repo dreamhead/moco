@@ -32,6 +32,7 @@
 -keep public class org.apache.hc.client5.http.impl.classic.HttpClientBuilder{*;}
 -keep public class org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder{*;}
 -keep public class org.apache.hc.core5.http.message.BasicClassicHttpRequest{*;}
+-keep public class org.apache.hc.core5.http.message.BasicClassicHttpResponse{*;}
 -keep public class org.apache.hc.core5.http.io.HttpClientResponseHandler{*;}
 -keep public class org.apache.hc.client5.http.config.RequestConfig{*;}
 -keep public class org.apache.hc.client5.http.ClientProtocolException{*;}
