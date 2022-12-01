@@ -450,34 +450,6 @@ public class AntPathMatcher {
         return variables;
     }
 
-    /**
-     * Combine two patterns into a new pattern.
-     * <p>This implementation simply concatenates the two patterns, unless
-     * the first pattern contains a file extension match (e.g., {@code *.html}).
-     * In that case, the second pattern will be merged into the first. Otherwise,
-     * an {@code IllegalArgumentException} will be thrown.
-     * <h3>Examples</h3>
-     * <table border="1">
-     * <tr><th>Pattern 1</th><th>Pattern 2</th><th>Result</th></tr>
-     * <tr><td>{@code null}</td><td>{@code null}</td><td>&nbsp;</td></tr>
-     * <tr><td>/hotels</td><td>{@code null}</td><td>/hotels</td></tr>
-     * <tr><td>{@code null}</td><td>/hotels</td><td>/hotels</td></tr>
-     * <tr><td>/hotels</td><td>/bookings</td><td>/hotels/bookings</td></tr>
-     * <tr><td>/hotels</td><td>bookings</td><td>/hotels/bookings</td></tr>
-     * <tr><td>/hotels/*</td><td>/bookings</td><td>/hotels/bookings</td></tr>
-     * <tr><td>/hotels/&#42;&#42;</td><td>/bookings</td><td>/hotels/&#42;&#42;/bookings</td></tr>
-     * <tr><td>/hotels</td><td>{hotel}</td><td>/hotels/{hotel}</td></tr>
-     * <tr><td>/hotels/*</td><td>{hotel}</td><td>/hotels/{hotel}</td></tr>
-     * <tr><td>/hotels/&#42;&#42;</td><td>{hotel}</td><td>/hotels/&#42;&#42;/{hotel}</td></tr>
-     * <tr><td>/*.html</td><td>/hotels.html</td><td>/hotels.html</td></tr>
-     * <tr><td>/*.html</td><td>/hotels</td><td>/hotels.html</td></tr>
-     * <tr><td>/*.html</td><td>/*.txt</td><td>{@code IllegalArgumentException}</td></tr>
-     * </table>
-     * @param pattern1 the first pattern
-     * @param pattern2 the second pattern
-     * @return the combination of the two patterns
-     * @throws IllegalArgumentException if the two patterns cannot be combined
-     */
     public String combine(String pattern1, String pattern2) {
         if (!Strings.hasText(pattern1) && !Strings.hasText(pattern2)) {
             return "";

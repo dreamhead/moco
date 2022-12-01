@@ -43,7 +43,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
-    private static final Version CURRENT_VERSION = Configuration.getVersion();
+    private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_31;
     private static final String TEMPLATE_NAME = "template";
     private static final List<String> RESERVED_NAME = ImmutableList.of("req", "now", "random");
 
