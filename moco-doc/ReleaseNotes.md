@@ -1,4 +1,4 @@
-# Release
+# Release 1.4.0 (1-Dec-2022)
 ## APIs
 * `path` is introduced for uri
 * `req.xml` is supported in template
@@ -11,7 +11,6 @@
 ## Implementation Details
 * enhance log with query parameters
 * event action log is supported
-* reduce standalone jar size
 
 # Release 1.3.0 (1-Jan-2022)
 ## APIs
@@ -300,7 +299,7 @@ the first public release of Moco
 
 ## Usage
 * API
-* stanalone server
+* standalone server
 * shell
 * maven plugin (external)
 * gradle plugin (external)

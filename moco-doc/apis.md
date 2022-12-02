@@ -936,7 +936,7 @@ For JSON API, you can decide whether the information does not exist.
 ```
 
 #### Path
-**@Since will be at next release**
+**@Since 1.4.0**
 
 **path** operator is provided to match uri with path variable.
 
@@ -2290,7 +2290,7 @@ server.request(by(uri("/template"))).response(template("${req.json.foo}"));
 ```
 
 #### XML
-**@Since will be at next release**
+**@Since 1.4.0**
 
 If your request is an XML request, you can use `req.xml` to visit your xml object.
 
@@ -2318,7 +2318,7 @@ server.request(by(uri("/template"))).response(template("${req.xml.foo}"));
 ```
 
 #### Client Address
-**@Since will be at next release**
+**@Since 1.4.0**
 
 `req.client.address` can be used in template to return client IP address.
 
@@ -2339,8 +2339,8 @@ server.request(by(uri("/template"))).response(template("${req.client.address}"))
 }
 ```
 
-#### Client Address
-**@Since will be at next release**
+#### Path
+**@Since 1.4.0**
 
 `req.path` can work with `path` API to extract path parameter as template variable.
 
