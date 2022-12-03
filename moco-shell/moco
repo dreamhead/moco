@@ -76,7 +76,7 @@ function parse_tag {
 }
 
 function parse_maven_metadata {
-    MOCO_METADATA_URL="http://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/maven-metadata.xml"
+    MOCO_METADATA_URL="https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/maven-metadata.xml"
     MOCO_METADATA="/tmp/maven-metadata.xml"
     download $MOCO_METADATA_URL $MOCO_METADATA
     parse_tag $MOCO_METADATA latest
