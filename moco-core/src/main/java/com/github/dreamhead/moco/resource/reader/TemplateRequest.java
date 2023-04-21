@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.internal.ContextKey;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
@@ -123,18 +124,23 @@ public final class TemplateRequest {
     }
 
     public TemplateClient getClient() {
-        return new TemplateClient(this.request.getClientAddress());
+        return new TemplateClient(this.request.getClient());
     }
 
     public static class TemplateClient {
-        private final String address;
+        private final Client client;
 
-        public TemplateClient(final String address) {
-            this.address = address;
+        public TemplateClient(final Client client) {
+            this.client = client;
         }
 
         public final String getAddress() {
-            return address;
+            return client.getAddress();
+        }
+
+        public final int getPort() {
+            return client.getPort();
         }
     }
 }
+

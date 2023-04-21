@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -26,8 +27,9 @@ public class HttpHandler {
     }
 
     public final FullHttpResponse handleRequest(ChannelHandlerContext ctx, final FullHttpRequest message) {
-        final InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-        HttpRequest request = DefaultHttpRequest.newRequest(message, address.getAddress().getHostAddress());
+        final Channel channel = ctx.channel();
+        final InetSocketAddress address = (InetSocketAddress) channel.remoteAddress();
+        HttpRequest request = DefaultHttpRequest.newRequest(message, new Client(address));
         DefaultMutableHttpResponse httpResponse = getHttpResponse(request);
         FullHttpResponse response = httpResponse.toFullResponse();
         prepareForKeepAlive(message, response);

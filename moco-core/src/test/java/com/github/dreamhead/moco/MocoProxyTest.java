@@ -376,6 +376,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         server = httpServer(port(), hit);
         server.request(by(uri("/target"))).response("proxy");
         final File file = tempFolder.newFile();
+        System.out.println(file.getAbsolutePath());
         server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));
 
         running(server, () -> {

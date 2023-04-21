@@ -129,6 +129,16 @@
   },
   {
     "request": {
+      "uri": "/client_port_template"
+    },
+    "response": {
+      "text": {
+        "template": "${req.client.port}"
+      }
+    }
+  },
+  {
+    "request": {
       "uri": {
         "path": "/path/{path}"
       }

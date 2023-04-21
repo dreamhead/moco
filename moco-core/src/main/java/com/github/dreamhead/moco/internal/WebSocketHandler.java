@@ -11,6 +11,8 @@ import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import java.net.InetSocketAddress;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 public class WebSocketHandler {
@@ -21,7 +23,7 @@ public class WebSocketHandler {
     }
 
     public final void handleFrame(final ChannelHandlerContext ctx,
-                            final WebSocketFrame message) {
+                                  final WebSocketFrame message) {
         if (this.websocketServer == null) {
             return;
         }
@@ -33,13 +35,13 @@ public class WebSocketHandler {
     private Optional<WebSocketFrame> getResponseFrame(final ChannelHandlerContext ctx,
                                                       final WebSocketFrame message) {
         final InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-        final String clientAddress = address.getAddress().getHostAddress();
+        final Client client = new Client(address);
         if (message instanceof PingWebSocketFrame) {
             return Optional.of(websocketServer.handlePingPong((PingWebSocketFrame) message,
-                    clientAddress));
+                    client));
         }
 
-        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message, clientAddress);
+        Optional<WebsocketResponse> response = websocketServer.handleRequest(ctx, message, client);
         return response.map(this::asWebsocketFrame);
     }
 

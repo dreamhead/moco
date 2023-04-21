@@ -121,6 +121,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         cfg.setObjectWrapper(new DefaultObjectWrapperBuilder(CURRENT_VERSION).build());
         cfg.setDefaultEncoding(charset.name());
         cfg.setTemplateLoader(templateLoader);
+        cfg.setNumberFormat("#.#");
         return cfg;
     }
 

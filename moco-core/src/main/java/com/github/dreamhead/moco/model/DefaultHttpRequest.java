@@ -8,6 +8,7 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
+import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.util.Suppliers;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
@@ -38,18 +39,20 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     private final String uri;
     private final ImmutableMap<String, String[]> queries;
-    private final String clientAddress;
+
+    @JsonIgnore
+    private final Client client;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final HttpMethod method, final String uri,
                                final ImmutableMap<String, String[]> headers,
                                final ImmutableMap<String, String[]> queries,
-                               final String clientAddress) {
+                               final Client client) {
         super(version, content, headers);
         this.method = method;
         this.uri = uri;
         this.queries = queries;
-        this.clientAddress = clientAddress;
+        this.client = client;
         this.formSupplier = formSupplier();
         this.cookieSupplier = cookieSupplier();
     }
@@ -97,8 +100,8 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     @Override
-    public String getClientAddress() {
-        return clientAddress;
+    public Client getClient() {
+        return client;
     }
 
     protected MoreObjects.ToStringHelper toStringHelper() {
@@ -106,7 +109,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .add("uri", this.uri)
                 .add("method", this.method)
                 .add("queries", this.queries)
-                .add("clientAddress", this.clientAddress);
+                .add("client", this.client);
     }
 
     public static Builder builder() {
@@ -125,7 +128,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .build();
     }
 
-    public static HttpRequest newRequest(final FullHttpRequest request, final String clientAddress) {
+    public static HttpRequest newRequest(final FullHttpRequest request, final Client client) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
         ImmutableMap<String, String[]> queries = toQueries(decoder);
 
@@ -136,7 +139,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .withUri(decoder.path())
                 .withQueries(queries)
                 .withContent(toMessageContent(request))
-                .withClientAddress(clientAddress)
+                .withClient(client)
                 .build();
     }
 
@@ -177,7 +180,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         private HttpMethod method;
         private String uri;
         private ImmutableMap<String, String[]> queries;
-        private String clientAddress;
+        private Client client;
 
         public Builder withMethod(final HttpMethod method) {
             this.method = method;
@@ -197,9 +200,9 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
             return this;
         }
 
-        public Builder withClientAddress(final String clientAddress) {
-            if (clientAddress != null) {
-                this.clientAddress = clientAddress;
+        public Builder withClient(final Client client) {
+            if (client != null) {
+                this.client = client;
             }
 
             return this;
@@ -207,7 +210,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         public DefaultHttpRequest build() {
             return new DefaultHttpRequest(this.getVersion(), this.getContent(), method,
-                    this.uri, this.getHeaders(), this.queries, this.clientAddress);
+                    this.uri, this.getHeaders(), this.queries, this.client);
         }
     }
 }

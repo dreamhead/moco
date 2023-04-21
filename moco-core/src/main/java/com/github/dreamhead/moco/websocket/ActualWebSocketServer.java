@@ -6,6 +6,7 @@ import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.WebSocketServer;
 import com.github.dreamhead.moco.internal.BaseActualServer;
+import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.monitor.QuietMonitor;
@@ -146,8 +147,8 @@ public final class ActualWebSocketServer
         return baseSetting;
     }
 
-    public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame, final String clientAddress) {
-        DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame, clientAddress);
+    public PongWebSocketFrame handlePingPong(final PingWebSocketFrame frame, final Client client) {
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(frame, client);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response);
         Response result = this.getPongResponse(context).orElseThrow(IllegalArgumentException::new);
@@ -167,8 +168,8 @@ public final class ActualWebSocketServer
 
     public Optional<WebsocketResponse> handleRequest(final ChannelHandlerContext ctx,
                                                      final WebSocketFrame message,
-                                                     final String clientAddress) {
-        DefaultWebsocketRequest request = new DefaultWebsocketRequest(message, clientAddress);
+                                                     final Client client) {
+        DefaultWebsocketRequest request = new DefaultWebsocketRequest(message, client);
         DefaultWebsocketResponse response = new DefaultWebsocketResponse();
         SessionContext context = new SessionContext(request, response,
                 new ContextSessionGroup(this.group, ctx.channel()));

@@ -46,6 +46,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.Assert.fail;
 
 public class MocoTemplateTest extends AbstractMocoHttpTest {
@@ -516,8 +517,16 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     public void should_generate_response_with_client_address() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.client.address}"));
 
+        running(server, () -> assertThat(helper.get(remoteUrl("/template")), is("127.0.0.1")));
+    }
+
+    @Test
+    public void should_generate_response_with_client_port() throws Exception {
+        server.request(by(uri("/template"))).response(template("${req.client.port}"));
+
         running(server, () -> {
-            assertThat(helper.get(remoteUrl("/template")), is("127.0.0.1"));
+            final String actual = helper.get(remoteUrl("/template"));
+            assertThat(actual, matchesRegex("^[1-9]\\d*$"));
         });
     }
 

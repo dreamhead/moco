@@ -31,7 +31,7 @@ public final class MocoSocketHandler extends SimpleChannelInboundHandler<ByteBuf
     protected void channelRead0(final ChannelHandlerContext ctx, final ByteBuf msg) {
         final InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         MessageContent content = content().withContent(new ByteBufInputStream(msg)).build();
-        SocketRequest request = new DefaultSocketRequest(content, address.getAddress().getHostAddress());
+        SocketRequest request = new DefaultSocketRequest(content, new Client(address));
         SessionContext context = new SessionContext(request, new DefaultSocketResponse());
         Optional<Response> response = server.getResponse(context);
         Response actual = response.orElseThrow(() ->

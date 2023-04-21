@@ -1,15 +1,16 @@
 package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.SocketRequest;
+import com.github.dreamhead.moco.internal.Client;
 import com.google.common.base.MoreObjects;
 
 public final class DefaultSocketRequest implements SocketRequest {
     private final MessageContent content;
-    private final String clientAddress;
+    private final Client client;
 
-    public DefaultSocketRequest(final MessageContent content, final String clientAddress) {
+    public DefaultSocketRequest(final MessageContent content, final Client client) {
         this.content = content;
-        this.clientAddress = clientAddress;
+        this.client = client;
     }
 
     @Override
@@ -18,15 +19,15 @@ public final class DefaultSocketRequest implements SocketRequest {
     }
 
     @Override
-    public String getClientAddress() {
-        return clientAddress;
+    public Client getClient() {
+        return client;
     }
 
     @Override
     public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("content", content)
-                .add("clientAddress", clientAddress)
+                .add("client", client)
                 .toString();
     }
 }

@@ -15,8 +15,7 @@
       },
       "method" : "POST",
       "uri" : "/record-tape",
-      "queries" : { },
-      "clientAddress" : "127.0.0.1"
+      "queries" : { }
     }
   }
 }
