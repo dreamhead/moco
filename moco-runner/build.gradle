@@ -28,7 +28,7 @@ project.dependencies {
 }
 
 task uberjar(type: Jar, dependsOn: jar) {
-    classifier = 'uber'
+    archiveClassifier = 'uber'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude('META-INF/maven/**')
 
