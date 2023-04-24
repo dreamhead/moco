@@ -51,8 +51,8 @@ task uberjar(type: Jar, dependsOn: jar) {
 }
 
 task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
-    injars uberjar.archivePath
-    outjars uberjar.archivePath.toString().replace(uberjar.archiveClassifier.get(), 'standalone')
+    injars uberjar.archiveFile
+    outjars uberjar.archiveFile.toString().replace(uberjar.archiveClassifier.get(), 'standalone')
     if (JavaVersion.current().isJava9Compatible()) {
         libraryjars javaModPath()
     } else {
