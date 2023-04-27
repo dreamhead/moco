@@ -33,6 +33,7 @@ subprojects {
     }
 
     repositories {
+        jcenter()
         mavenCentral()
     }
 
