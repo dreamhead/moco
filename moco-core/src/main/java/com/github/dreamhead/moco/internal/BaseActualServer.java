@@ -154,7 +154,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    public boolean isQuiet() {
+    public final boolean isQuiet() {
         return this.monitor.isQuiet();
     }
 }
