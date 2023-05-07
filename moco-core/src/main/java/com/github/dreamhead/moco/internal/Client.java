@@ -13,16 +13,16 @@ public class Client {
         this.port = address.getPort();
     }
 
-    public String getAddress() {
+    public final String getAddress() {
         return address;
     }
 
-    public int getPort() {
+    public final int getPort() {
         return port;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("address", address)
                 .add("port", port)
