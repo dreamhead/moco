@@ -19,12 +19,12 @@ public class PathMatcher<T> extends AbstractOperatorMatcher<T> {
     }
 
     @Override
-    public void attach(final SessionContext context) {
+    public final void attach(final SessionContext context) {
         context.register(ContextKey.PATH, getExpected());
     }
 
     @Override
-    protected RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
+    protected final RequestMatcher newMatcher(final RequestExtractor<T> extractor, final Resource resource) {
         return new PathMatcher<>(extractor, resource);
     }
 }
