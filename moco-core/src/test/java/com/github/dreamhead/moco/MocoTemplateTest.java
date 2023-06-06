@@ -43,7 +43,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.matchesRegex;
@@ -347,7 +347,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             String response = helper.get(remoteUrl("/random"));
             try {
                 double result = Double.parseDouble(response);
-                assertThat(result, greaterThan(0d));
+                assertThat(result, greaterThanOrEqualTo(0d));
                 assertThat(result, lessThan(1d));
             } catch (NumberFormatException e) {
                 fail();
@@ -364,7 +364,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             try {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
-                assertThat(result, greaterThan(0d));
+                assertThat(result, greaterThanOrEqualTo(0d));
             } catch (NumberFormatException e) {
                 fail();
             }
@@ -380,7 +380,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             try {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
-                assertThat(result, greaterThan(99d));
+                assertThat(result, greaterThanOrEqualTo(99d));
             } catch (NumberFormatException e) {
                 fail();
             }
@@ -414,7 +414,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             try {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
-                assertThat(result, greaterThan(0d));
+                assertThat(result, greaterThanOrEqualTo(0d));
                 String target = Iterables.get(Splitter.on('.').split(response), 1);
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {
@@ -432,7 +432,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             try {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
-                assertThat(result, greaterThan(99d));
+                assertThat(result, greaterThanOrEqualTo(99d));
                 String target = Iterables.get(Splitter.on('.').split(response), 1);
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {

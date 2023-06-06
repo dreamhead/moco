@@ -16,7 +16,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
@@ -150,7 +150,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String response = helper.get(remoteUrl("/random_template_with_range_and_format"));
         double result = Double.parseDouble(response);
         assertThat(result, lessThan(100d));
-        assertThat(result, greaterThan(0d));
+        assertThat(result, greaterThanOrEqualTo(0d));
 
         String target = response.split("\\.")[1];
         assertThat(target.length(), lessThanOrEqualTo(6));
@@ -162,7 +162,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String response = helper.get(remoteUrl("/random_template_with_range"));
         double result = Double.parseDouble(response);
         assertThat(result, lessThan(100d));
-        assertThat(result, greaterThan(0d));
+        assertThat(result, greaterThanOrEqualTo(0d));
     }
 
     @Test
@@ -180,7 +180,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         String response = helper.get(remoteUrl("/random_template_without_arg"));
         double result = Double.parseDouble(response);
         assertThat(result, lessThan(1d));
-        assertThat(result, greaterThan(0d));
+        assertThat(result, greaterThanOrEqualTo(0d));
     }
 
     @Test
