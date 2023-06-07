@@ -26,7 +26,7 @@ public class HttpHandler {
         this.server = server;
     }
 
-    public final FullHttpResponse handleRequest(ChannelHandlerContext ctx, final FullHttpRequest message) {
+    public final FullHttpResponse handleRequest(final ChannelHandlerContext ctx, final FullHttpRequest message) {
         final Channel channel = ctx.channel();
         final InetSocketAddress address = (InetSocketAddress) channel.remoteAddress();
         HttpRequest request = DefaultHttpRequest.newRequest(message, new Client(address));
