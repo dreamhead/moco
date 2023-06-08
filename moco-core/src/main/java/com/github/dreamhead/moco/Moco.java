@@ -15,6 +15,7 @@ import com.github.dreamhead.moco.extractor.JsonPathRequestExtractor;
 import com.github.dreamhead.moco.extractor.ParamRequestExtractor;
 import com.github.dreamhead.moco.extractor.XPathRequestExtractor;
 import com.github.dreamhead.moco.handler.AndResponseHandler;
+import com.github.dreamhead.moco.handler.MocoCorsHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
@@ -693,6 +694,10 @@ public final class Moco {
 
     public static RequestMatcher conditional(final Predicate<Request> predicate) {
         return new ConditionalRequestMatcher(checkNotNull(predicate, "Predicate should not be null"));
+    }
+
+    public static ResponseHandler cors() {
+        return new MocoCorsHandler();
     }
 
     private Moco() {
