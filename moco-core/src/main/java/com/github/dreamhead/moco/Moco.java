@@ -19,6 +19,10 @@ import com.github.dreamhead.moco.handler.MocoCorsHandler;
 import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
+import com.github.dreamhead.moco.handler.cors.CorsConfig;
+import com.github.dreamhead.moco.handler.cors.CorsHeadersConfig;
+import com.github.dreamhead.moco.handler.cors.CorsMethodsConfig;
+import com.github.dreamhead.moco.handler.cors.CorsOriginConfig;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.handler.failover.FailoverStrategy;
 import com.github.dreamhead.moco.handler.proxy.ProxyConfig;
@@ -696,8 +700,20 @@ public final class Moco {
         return new ConditionalRequestMatcher(checkNotNull(predicate, "Predicate should not be null"));
     }
 
-    public static ResponseHandler cors() {
-        return new MocoCorsHandler();
+    public static ResponseHandler cors(final CorsConfig... configs) {
+        return new MocoCorsHandler(configs);
+    }
+
+    public static CorsConfig allowOrigin(String origin) {
+        return new CorsOriginConfig(origin);
+    }
+
+    public static CorsConfig allowMethods(final String... methods) {
+        return new CorsMethodsConfig(methods);
+    }
+
+    public static CorsConfig allowHeaders(String... headers) {
+        return new CorsHeadersConfig(headers);
     }
 
     private Moco() {
