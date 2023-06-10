@@ -44,12 +44,32 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_support_cors_with_multiple_methods() throws Exception {
+        server.response(cors(allowOrigin("foo"), allowMethods("GET", "POST")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponse(root());
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST"));
+        });
+    }
+
+    @Test
     public void should_support_cors_with_headers() throws Exception {
         server.response(cors(allowHeaders("X-Header")));
 
         running(server, () -> {
             ClassicHttpResponse response = helper.getResponse(root());
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
+        });
+    }
+
+    @Test
+    public void should_support_cors_with_multiple_headers() throws Exception {
+        server.response(cors(allowHeaders("X-Header", "Y-Header")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponse(root());
+            assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header,Y-Header"));
         });
     }
 
@@ -64,4 +84,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
     }
+
+
+
 }
