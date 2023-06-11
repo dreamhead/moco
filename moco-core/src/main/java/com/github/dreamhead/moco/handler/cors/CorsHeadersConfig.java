@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.handler.cors;
 
+import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.base.Joiner;
 
@@ -11,7 +12,7 @@ public class CorsHeadersConfig implements CorsConfig {
     }
 
     @Override
-    public void configure(MutableHttpResponse httpResponse) {
+    public void configure(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         httpResponse.addHeader("Access-Control-Allow-Headers", headers);
     }
 }

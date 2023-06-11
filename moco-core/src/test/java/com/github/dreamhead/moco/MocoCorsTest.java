@@ -9,7 +9,9 @@ import static com.github.dreamhead.moco.Moco.allowOrigin;
 import static com.github.dreamhead.moco.Moco.cors;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
+import static com.google.common.collect.ImmutableListMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoCorsTest extends AbstractMocoHttpTest {
@@ -30,6 +32,19 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         running(server, () -> {
             ClassicHttpResponse response = helper.getResponse(root());
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("foo"));
+        });
+    }
+
+    @Test
+    public void should_support_cors_with_matched_origin() throws Exception {
+        server.response(cors(allowOrigin("www.github.com")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("www.github.com"));
+
+            ClassicHttpResponse wrongResponse = helper.getResponseWithHeader(root(), of("Origin", "docs.github.com"));
+            assertThat(wrongResponse.getHeader("Access-Control-Allow-Origin"), nullValue());
         });
     }
 
@@ -75,16 +90,13 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_support_cors_with_origin_methods_and_headers() throws Exception {
-        server.response(cors(allowOrigin("foo"), allowMethods("GET"), allowHeaders("X-Header")));
+        server.response(cors(allowOrigin("www.github.com"), allowMethods("GET"), allowHeaders("X-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponse(root());
-            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("foo"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("www.github.com"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
     }
-
-
-
 }

@@ -41,7 +41,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public final String getHeader(final String name) {
+    public final String gstgetHeader(final String name) {
         if (!this.headers.containsKey(name)) {
             return null;
         }
