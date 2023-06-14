@@ -25,8 +25,6 @@ public class CorsMethodsConfig implements CorsConfig {
                     return;
                 }
             }
-        } else {
-            httpResponse.addHeader("Access-Control-Allow-Methods", Joiner.on(",").join(methods));
         }
     }
 }

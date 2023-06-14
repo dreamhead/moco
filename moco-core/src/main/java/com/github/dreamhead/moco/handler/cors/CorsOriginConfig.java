@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.handler.cors;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
-import com.google.common.base.Strings;
 
 public class CorsOriginConfig implements CorsConfig {
     private final String origin;
@@ -14,7 +13,7 @@ public class CorsOriginConfig implements CorsConfig {
     @Override
     public void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         String requestOrigin = httpRequest.getHeader("Origin");
-        if (origin.equals(requestOrigin) || origin.equals("*") || Strings.isNullOrEmpty(requestOrigin)) {
+        if (origin.equals(requestOrigin) || origin.equals("*")) {
             httpResponse.addHeader("Access-Control-Allow-Origin", origin);
         }
     }
