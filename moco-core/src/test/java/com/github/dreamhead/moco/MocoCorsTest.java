@@ -26,6 +26,16 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_support_cors_without_origin() throws Exception {
+        server.response(cors());
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponse(root());
+            assertThat(response.getHeader("Access-Control-Allow-Origin"), nullValue());
+        });
+    }
+
+    @Test
     public void should_support_cors_with_origin() throws Exception {
         server.response(cors(allowOrigin("*")));
 
