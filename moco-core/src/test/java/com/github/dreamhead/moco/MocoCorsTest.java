@@ -20,7 +20,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors());
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("*"));
         });
     }
@@ -40,20 +40,20 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowOrigin("*")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("*"));
         });
     }
 
     @Test
     public void should_support_cors_with_matched_origin() throws Exception {
-        server.response(cors(allowOrigin("www.github.com")));
+        server.response(cors(allowOrigin("https://www.github.com/")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
-            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
 
-            ClassicHttpResponse wrongResponse = helper.getResponseWithHeader(root(), of("Origin", "docs.github.com"));
+            ClassicHttpResponse wrongResponse = helper.getResponseWithHeader(root(), of("Origin", "https://docs.github.com"));
             assertThat(wrongResponse.getHeader("Access-Control-Allow-Origin"), nullValue());
         });
     }
@@ -63,7 +63,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowOrigin("foo"), allowMethods("GET")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
         });
     }
@@ -73,7 +73,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowOrigin("foo"), allowMethods("GET", "POST")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST"));
         });
     }
@@ -83,10 +83,10 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowMethods("GET")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
 
-            ClassicHttpResponse wrongResponse = helper.deleteForResponseWithHeaders(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse wrongResponse = helper.deleteForResponseWithHeaders(root(), of("Origin", "https://www.github.com/"));
             assertThat(wrongResponse.getHeader("Access-Control-Allow-Methods"), nullValue());
         });
     }
@@ -96,7 +96,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowHeaders("X-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
     }
@@ -106,18 +106,18 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowHeaders("X-Header", "Y-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header,Y-Header"));
         });
     }
 
     @Test
     public void should_support_cors_with_origin_methods_and_headers() throws Exception {
-        server.response(cors(allowOrigin("www.github.com"), allowMethods("GET"), allowHeaders("X-Header")));
+        server.response(cors(allowOrigin("https://www.github.com/"), allowMethods("GET"), allowHeaders("X-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "www.github.com"));
-            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("www.github.com"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
