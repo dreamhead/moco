@@ -3,6 +3,7 @@ package com.github.dreamhead.moco;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
+import static com.github.dreamhead.moco.Moco.allowCredentials;
 import static com.github.dreamhead.moco.Moco.allowHeaders;
 import static com.github.dreamhead.moco.Moco.allowMethods;
 import static com.github.dreamhead.moco.Moco.allowOrigin;
@@ -121,5 +122,17 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
+    }
+
+    @Test
+    public void should_support_allow_credentials() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com/"), allowCredentials(true)));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Credentials").getValue(), is("true"));
+        });
+        
     }
 }

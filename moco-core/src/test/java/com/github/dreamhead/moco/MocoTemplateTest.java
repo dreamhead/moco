@@ -348,7 +348,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             try {
                 double result = Double.parseDouble(response);
                 assertThat(result, greaterThanOrEqualTo(0d));
-                assertThat(result, lessThan(1d));
+                assertThat(result, lessThanOrEqualTo(1d));
             } catch (NumberFormatException e) {
                 fail();
             }

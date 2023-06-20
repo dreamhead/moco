@@ -20,6 +20,7 @@ import com.github.dreamhead.moco.handler.ProxyBatchResponseHandler;
 import com.github.dreamhead.moco.handler.ProxyResponseHandler;
 import com.github.dreamhead.moco.handler.StatusCodeResponseHandler;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
+import com.github.dreamhead.moco.handler.cors.CorsCredentialsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsHeadersConfig;
 import com.github.dreamhead.moco.handler.cors.CorsMethodsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsOriginConfig;
@@ -712,8 +713,12 @@ public final class Moco {
         return new CorsMethodsConfig(methods);
     }
 
-    public static CorsConfig allowHeaders(String... headers) {
+    public static CorsConfig allowHeaders(final String... headers) {
         return new CorsHeadersConfig(headers);
+    }
+
+    public static CorsConfig allowCredentials(final boolean allowed) {
+        return new CorsCredentialsConfig(allowed);
     }
 
     private Moco() {
