@@ -4,7 +4,8 @@ import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
+
+import java.util.Arrays;
 
 public class CorsMethodsConfig implements CorsConfig {
     private final String[] methods;
@@ -16,15 +17,10 @@ public class CorsMethodsConfig implements CorsConfig {
 
     @Override
     public void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        String requestOrigin = httpRequest.getHeader("Origin");
-        if (!Strings.isNullOrEmpty(requestOrigin)) {
-            HttpMethod method = httpRequest.getMethod();
-            for (String m : methods) {
-                if (method.name().equalsIgnoreCase(m)) {
-                    httpResponse.addHeader("Access-Control-Allow-Methods", Joiner.on(",").join(methods));
-                    return;
-                }
-            }
+        HttpMethod method = httpRequest.getMethod();
+        if (Arrays.stream(methods)
+                .anyMatch(m -> method.name().equalsIgnoreCase(m))) {
+            httpResponse.addHeader("Access-Control-Allow-Methods", Joiner.on(",").join(methods));
         }
     }
 }
