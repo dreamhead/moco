@@ -12,14 +12,12 @@ public class CorsMethodsConfig implements CorsConfig {
 
     public CorsMethodsConfig(final String[] methods) {
         this.methods = methods;
-        ;
     }
 
     @Override
     public void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         HttpMethod method = httpRequest.getMethod();
-        if (Arrays.stream(methods)
-                .anyMatch(m -> method.name().equalsIgnoreCase(m))) {
+        if (Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m))) {
             httpResponse.addHeader("Access-Control-Allow-Methods", Joiner.on(",").join(methods));
         }
     }
