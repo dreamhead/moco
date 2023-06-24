@@ -8,6 +8,7 @@ import static com.github.dreamhead.moco.Moco.allowHeaders;
 import static com.github.dreamhead.moco.Moco.allowMethods;
 import static com.github.dreamhead.moco.Moco.allowOrigin;
 import static com.github.dreamhead.moco.Moco.cors;
+import static com.github.dreamhead.moco.Moco.exposeHeaders;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableListMultimap.of;
@@ -133,5 +134,18 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Credentials").getValue(), is("true"));
         });
+    }
+
+    @Test
+    public void should_support_cors_with_expose_headers() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com/"), exposeHeaders("X-Header")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Expose-Headers").getValue(), is("X-Header"));
+        });
+
     }
 }
