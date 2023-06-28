@@ -146,6 +146,5 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Expose-Headers").getValue(), is("X-Header"));
         });
-
     }
 }

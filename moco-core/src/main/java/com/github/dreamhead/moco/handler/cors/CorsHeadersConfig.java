@@ -11,7 +11,7 @@ public class CorsHeadersConfig implements CorsConfig {
     }
 
     @Override
-    public void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    public final void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         httpResponse.addHeader("Access-Control-Allow-Headers", headers);
     }
 }

@@ -14,7 +14,7 @@ public class CorsMethodsConfig implements CorsConfig {
     }
 
     @Override
-    public void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    public final void configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         HttpMethod method = httpRequest.getMethod();
         if (Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m))) {
             httpResponse.addHeader("Access-Control-Allow-Methods", String.join(",", methods));
