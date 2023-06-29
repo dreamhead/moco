@@ -62,20 +62,20 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_support_cors_with_methods() throws Exception {
-        server.response(cors(allowOrigin("foo"), allowMethods("GET")));
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("GET")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
         });
     }
 
     @Test
     public void should_support_cors_with_multiple_methods() throws Exception {
-        server.response(cors(allowOrigin("foo"), allowMethods("GET", "POST")));
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("GET", "POST")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST"));
         });
     }

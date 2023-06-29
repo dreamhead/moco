@@ -27,7 +27,9 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
         }
 
         for (CorsConfig config : configs) {
-            config.configure(httpRequest, httpResponse);
+            if (!config.configure(httpRequest, httpResponse)) {
+                return;
+            }
         }
     }
 }
