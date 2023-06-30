@@ -11,8 +11,12 @@ public class CorsCredentialsConfig implements CorsConfig {
     }
 
     @Override
-    public final boolean configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        httpResponse.addHeader("Access-Control-Allow-Credentials", this.allowed);
+    public boolean isQualified(HttpRequest httpRequest) {
         return true;
+    }
+
+    @Override
+    public final void configure(final MutableHttpResponse httpResponse) {
+        httpResponse.addHeader("Access-Control-Allow-Credentials", this.allowed);
     }
 }

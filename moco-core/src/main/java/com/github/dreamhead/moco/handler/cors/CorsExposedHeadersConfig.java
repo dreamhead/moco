@@ -12,8 +12,12 @@ public class CorsExposedHeadersConfig implements CorsConfig {
 
 
     @Override
-    public final boolean configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
-        httpResponse.addHeader("Access-Control-Expose-Headers", String.join(",", headers));
+    public boolean isQualified(HttpRequest httpRequest) {
         return true;
+    }
+
+    @Override
+    public final void configure(final MutableHttpResponse httpResponse) {
+        httpResponse.addHeader("Access-Control-Expose-Headers", String.join(",", headers));
     }
 }

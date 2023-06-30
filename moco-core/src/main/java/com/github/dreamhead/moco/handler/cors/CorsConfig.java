@@ -4,5 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 
 public interface CorsConfig {
-    boolean configure(HttpRequest httpRequest, MutableHttpResponse httpResponse);
+    boolean isQualified(HttpRequest httpRequest);
+    void configure(MutableHttpResponse httpResponse);
 }

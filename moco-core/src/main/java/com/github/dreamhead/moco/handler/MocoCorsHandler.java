@@ -5,6 +5,8 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
 import com.google.common.base.Strings;
 
+import java.util.Arrays;
+
 public class MocoCorsHandler extends AbstractHttpResponseHandler {
     private final CorsConfig[] configs;
 
@@ -26,10 +28,12 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
             return;
         }
 
+        if (!Arrays.stream(configs).allMatch(config -> config.isQualified(httpRequest))) {
+            return;
+        }
+
         for (CorsConfig config : configs) {
-            if (!config.configure(httpRequest, httpResponse)) {
-                return;
-            }
+            config.configure(httpResponse);
         }
     }
 }

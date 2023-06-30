@@ -11,13 +11,13 @@ public class CorsOriginConfig implements CorsConfig {
     }
 
     @Override
-    public final boolean configure(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+    public boolean isQualified(HttpRequest httpRequest) {
         String requestOrigin = httpRequest.getHeader("Origin");
-        if (origin.equals(requestOrigin) || origin.equals("*")) {
-            httpResponse.addHeader("Access-Control-Allow-Origin", origin);
-            return true;
-        }
+        return origin.equals(requestOrigin) || origin.equals("*");
+    }
 
-        return false;
+    @Override
+    public final void configure(final MutableHttpResponse httpResponse) {
+        httpResponse.addHeader("Access-Control-Allow-Origin", origin);
     }
 }
