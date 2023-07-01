@@ -11,7 +11,7 @@ public class CorsCredentialsConfig implements CorsConfig {
     }
 
     @Override
-    public boolean isQualified(HttpRequest httpRequest) {
+    public final boolean isQualified(final HttpRequest httpRequest) {
         return true;
     }
 

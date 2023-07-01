@@ -12,7 +12,7 @@ public class CorsExposedHeadersConfig implements CorsConfig {
 
 
     @Override
-    public boolean isQualified(HttpRequest httpRequest) {
+    public final boolean isQualified(final HttpRequest httpRequest) {
         return true;
     }
 

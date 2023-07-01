@@ -11,7 +11,7 @@ public class CorsOriginConfig implements CorsConfig {
     }
 
     @Override
-    public boolean isQualified(HttpRequest httpRequest) {
+    public final boolean isQualified(final HttpRequest httpRequest) {
         String requestOrigin = httpRequest.getHeader("Origin");
         return origin.equals(requestOrigin) || origin.equals("*");
     }
