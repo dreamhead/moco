@@ -60,20 +60,20 @@ public class MocoTestHelper {
     }
 
     public String getWithHeader(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
-        return executeAsString(getRequest(url, headers));
+        return executeAsString(requestWithHeaders(Request.get(url), headers));
     }
 
-    private Request getRequest(final String url, final ImmutableMultimap<String, String> headers) {
-        Request request = Request.get(url);
+    private Request requestWithHeaders(final Request request, final ImmutableMultimap<String, String> headers) {
+        Request target = request;
         for (Map.Entry<String, String> entry : headers.entries()) {
-            request = request.addHeader(entry.getKey(), entry.getValue());
+            target = target.addHeader(entry.getKey(), entry.getValue());
         }
-        return request;
+        return target;
     }
 
     public ClassicHttpResponse getResponseWithHeader(final String url, final ImmutableMultimap<String, String> headers)
             throws IOException {
-        return execute(getRequest(url, headers));
+        return execute(requestWithHeaders(Request.get(url), headers));
     }
 
     public String getWithVersion(final String url, final HttpVersion version) throws IOException {
@@ -152,6 +152,10 @@ public class MocoTestHelper {
     public String patchForResponse(final String url, final String content) throws IOException {
         return executeAsString(Request.patch(url)
                 .bodyString(content, ContentType.DEFAULT_TEXT));
+    }
+
+    public ClassicHttpResponse optionsForResponse(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
+        return execute(requestWithHeaders(Request.options(url), headers));
     }
 
     public ClassicHttpResponse execute(final Request request) throws IOException {

@@ -16,7 +16,7 @@ public class CorsMethodsConfig implements CorsConfig {
     @Override
     public final boolean isQualified(final HttpRequest httpRequest) {
         HttpMethod method = httpRequest.getMethod();
-        return Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m));
+        return method.equals(HttpMethod.OPTIONS) || Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m));
     }
 
     @Override
