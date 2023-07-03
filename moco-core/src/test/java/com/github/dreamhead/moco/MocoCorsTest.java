@@ -9,6 +9,7 @@ import static com.github.dreamhead.moco.Moco.allowMethods;
 import static com.github.dreamhead.moco.Moco.allowOrigin;
 import static com.github.dreamhead.moco.Moco.cors;
 import static com.github.dreamhead.moco.Moco.exposeHeaders;
+import static com.github.dreamhead.moco.Moco.maxAge;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableListMultimap.of;
@@ -157,6 +158,18 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
+        });
+    }
+
+    @Test
+    public void should_support_cors_with_max_age() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com/"), maxAge(1728000)));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Max-Age").getValue(), is("1728000"));
         });
     }
 }

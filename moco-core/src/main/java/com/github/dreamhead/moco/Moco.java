@@ -23,6 +23,7 @@ import com.github.dreamhead.moco.handler.cors.CorsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsCredentialsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsExposedHeadersConfig;
 import com.github.dreamhead.moco.handler.cors.CorsHeadersConfig;
+import com.github.dreamhead.moco.handler.cors.CorsMaxAgeConfig;
 import com.github.dreamhead.moco.handler.cors.CorsMethodsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsOriginConfig;
 import com.github.dreamhead.moco.handler.failover.Failover;
@@ -724,6 +725,10 @@ public final class Moco {
 
     public static CorsConfig exposeHeaders(final String... headers) {
         return new CorsExposedHeadersConfig(headers);
+    }
+
+    public static CorsConfig maxAge(final long maxAge) {
+        return new CorsMaxAgeConfig(maxAge);
     }
 
     private Moco() {
