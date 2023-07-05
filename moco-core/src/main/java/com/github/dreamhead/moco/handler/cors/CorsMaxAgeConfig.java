@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 public final class CorsMaxAgeConfig implements CorsConfig {
     private final long maxAge;
 
-    public CorsMaxAgeConfig(long maxAge) {
+    public CorsMaxAgeConfig(final long maxAge) {
         this.maxAge = maxAge;
     }
 

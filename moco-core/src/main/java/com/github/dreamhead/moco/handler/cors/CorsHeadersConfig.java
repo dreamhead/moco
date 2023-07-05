@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.handler.cors;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 
-public class CorsHeadersConfig implements CorsConfig {
+public final class CorsHeadersConfig implements CorsConfig {
     private final String headers;
 
     public CorsHeadersConfig(final String[] headers) {
@@ -11,12 +11,12 @@ public class CorsHeadersConfig implements CorsConfig {
     }
 
     @Override
-    public final boolean isQualified(final HttpRequest httpRequest) {
+    public boolean isQualified(final HttpRequest httpRequest) {
         return true;
     }
 
     @Override
-    public final void configure(final MutableHttpResponse httpResponse) {
+    public void configure(final MutableHttpResponse httpResponse) {
         httpResponse.addHeader("Access-Control-Allow-Headers", headers);
     }
 }
