@@ -703,34 +703,6 @@ public final class Moco {
         return new ConditionalRequestMatcher(checkNotNull(predicate, "Predicate should not be null"));
     }
 
-    public static ResponseHandler cors(final CorsConfig... configs) {
-        return new MocoCorsHandler(configs);
-    }
-
-    public static CorsConfig allowOrigin(String origin) {
-        return new CorsOriginConfig(origin);
-    }
-
-    public static CorsConfig allowMethods(final String... methods) {
-        return new CorsMethodsConfig(methods);
-    }
-
-    public static CorsConfig allowHeaders(final String... headers) {
-        return new CorsHeadersConfig(headers);
-    }
-
-    public static CorsConfig allowCredentials(final boolean allowed) {
-        return new CorsCredentialsConfig(allowed);
-    }
-
-    public static CorsConfig exposeHeaders(final String... headers) {
-        return new CorsExposedHeadersConfig(headers);
-    }
-
-    public static CorsConfig maxAge(final long maxAge) {
-        return new CorsMaxAgeConfig(maxAge);
-    }
-
     private Moco() {
     }
 }
