@@ -4,10 +4,10 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 
 public final class CorsExposedHeadersConfig implements CorsConfig {
-    private final String[] headers;
+    private final String headers;
 
     public CorsExposedHeadersConfig(final String[] headers) {
-        this.headers = headers;
+        this.headers = String.join(",", headers);
     }
 
 
@@ -18,6 +18,6 @@ public final class CorsExposedHeadersConfig implements CorsConfig {
 
     @Override
     public void configure(final MutableHttpResponse httpResponse) {
-        httpResponse.addHeader("Access-Control-Expose-Headers", String.join(",", headers));
+        httpResponse.addHeader("Access-Control-Expose-Headers", headers);
     }
 }
