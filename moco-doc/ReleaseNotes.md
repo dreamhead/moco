@@ -1,3 +1,7 @@
+# Release
+## APIs
+* `req.client.port` is supported in template
+
 # Release 1.4.0 (1-Dec-2022)
 ## APIs
 * `path` is introduced for uri
