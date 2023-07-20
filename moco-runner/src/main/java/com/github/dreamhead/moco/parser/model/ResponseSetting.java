@@ -24,6 +24,8 @@ public class ResponseSetting extends BaseResourceSetting {
     private ReplayContainer record;
     private ReplayContainer replay;
 
+    private CorsContainer cors;
+
     protected final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());
         responseSetting.status = status;
@@ -37,6 +39,7 @@ public class ResponseSetting extends BaseResourceSetting {
         responseSetting.cycle = cycle;
         responseSetting.record = record;
         responseSetting.replay = replay;
+        responseSetting.cors = cors;
 
         return responseSetting;
     }
@@ -53,7 +56,8 @@ public class ResponseSetting extends BaseResourceSetting {
                 .add("seq", seq)
                 .add("cycle", cycle)
                 .add("record", record)
-                .add("replay", replay);
+                .add("replay", replay)
+                .add("cors", cors);
 
     }
 

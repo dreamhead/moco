@@ -1,0 +1,12 @@
+[
+  {
+    "request": {
+      "uri": "/cors-allows-origin-star"
+    },
+    "response": {
+      "cors": {
+        "allowOrigin": "*"
+      }
+    }
+  }
+]

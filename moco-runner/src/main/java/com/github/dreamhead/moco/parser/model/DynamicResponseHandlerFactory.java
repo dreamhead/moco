@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.Moco;
+import com.github.dreamhead.moco.MocoCors;
 import com.github.dreamhead.moco.MocoRecorders;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.ResponseElement;
@@ -131,6 +132,11 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
             ReplayContainer container = (ReplayContainer) value;
             RecorderConfig[] configs = container.getConfigs();
             return MocoRecorders.replay(head(configs), tail(configs));
+        }
+
+        if ("cors".equalsIgnoreCase(name)) {
+            CorsContainer container = (CorsContainer) value;
+            return MocoCors.cors(MocoCors.allowOrigin(container.getAllowOrigin()));
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
