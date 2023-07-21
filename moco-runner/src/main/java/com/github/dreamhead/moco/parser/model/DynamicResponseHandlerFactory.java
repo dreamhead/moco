@@ -136,7 +136,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
 
         if ("cors".equalsIgnoreCase(name)) {
             CorsContainer container = (CorsContainer) value;
-            return MocoCors.cors(MocoCors.allowOrigin(container.getAllowOrigin()));
+            return MocoCors.cors(container.getConfigs());
         }
 
         throw new IllegalArgumentException(format("unknown field [%s]", name));
