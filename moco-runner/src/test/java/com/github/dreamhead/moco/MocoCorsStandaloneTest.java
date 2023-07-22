@@ -15,7 +15,8 @@ public class MocoCorsStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_support_allow_origin() throws IOException, ProtocolException {
         runWithConfiguration("cors.json");
-        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/cors-allows-origin-star"), of("Origin", "https://www.github.com/"));
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/cors"), of("Origin", "https://www.github.com/"));
         assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("*"));
+        assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST,PUT,DELETE,OPTIONS"));
     }
 }
