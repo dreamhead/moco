@@ -6,7 +6,8 @@
     "response": {
       "cors": {
         "allowOrigin": "*",
-        "allowMethods": "GET,POST,PUT,DELETE,OPTIONS"
+        "allowMethods": "GET,POST,PUT,DELETE,OPTIONS",
+        "allowHeaders": "Content-Type, Authorization, Accept, X-Requested-With"
       }
     }
   }
