@@ -7,7 +7,8 @@
       "cors": {
         "allowOrigin": "*",
         "allowMethods": "GET,POST,PUT,DELETE,OPTIONS",
-        "allowHeaders": "Content-Type, Authorization, Accept, X-Requested-With"
+        "allowHeaders": "Content-Type, Authorization, Accept, X-Requested-With",
+        "maxAge": 1728000
       }
     }
   }
