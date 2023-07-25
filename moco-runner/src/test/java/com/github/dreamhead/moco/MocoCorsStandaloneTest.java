@@ -21,4 +21,14 @@ public class MocoCorsStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("Content-Type, Authorization, Accept, X-Requested-With"));
         assertThat(response.getHeader("Access-Control-Max-Age").getValue(), is("1728000"));
     }
+
+    @Test
+    public void should_support_cors_alias() throws IOException, ProtocolException {
+        runWithConfiguration("cors.json");
+        ClassicHttpResponse response = helper.getResponseWithHeader(remoteUrl("/cors-alias"), of("Origin", "https://www.github.com/"));
+        assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("*"));
+        assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST,PUT,DELETE,OPTIONS"));
+        assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("Content-Type, Authorization, Accept, X-Requested-With"));
+        assertThat(response.getHeader("Access-Control-Max-Age").getValue(), is("1728000"));
+    }
 }

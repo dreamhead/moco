@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
 
@@ -13,11 +14,16 @@ import static com.github.dreamhead.moco.MocoCors.maxAge;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CorsContainer {
+    @JsonAlias("Access-Control-Allow-Origin")
     private String allowOrigin;
+
+    @JsonAlias("Access-Control-Allow-Methods")
     private String allowMethods;
 
+    @JsonAlias("Access-Control-Allow-Headers")
     private String allowHeaders;
 
+    @JsonAlias("Access-Control-Max-Age")
     private Long maxAge;
 
     public CorsConfig[] getConfigs() {
