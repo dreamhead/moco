@@ -8,7 +8,8 @@
         "allowOrigin": "*",
         "allowMethods": "GET,POST,PUT,DELETE,OPTIONS",
         "allowHeaders": "Content-Type, Authorization, Accept, X-Requested-With",
-        "maxAge": 1728000
+        "maxAge": 1728000,
+        "exposeHeaders": "X-My-Custom-Header, X-Another-Custom-Header"
       }
     }
   },
@@ -21,7 +22,8 @@
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With",
-        "Access-Control-Max-Age": 1728000
+        "Access-Control-Max-Age": 1728000,
+        "Access-Control-Expose-Headers": "X-My-Custom-Header, X-Another-Custom-Header"
       }
     }
   }

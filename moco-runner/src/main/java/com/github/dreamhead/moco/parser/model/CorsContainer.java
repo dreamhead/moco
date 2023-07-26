@@ -10,6 +10,7 @@ import java.util.List;
 import static com.github.dreamhead.moco.MocoCors.allowHeaders;
 import static com.github.dreamhead.moco.MocoCors.allowMethods;
 import static com.github.dreamhead.moco.MocoCors.allowOrigin;
+import static com.github.dreamhead.moco.MocoCors.exposeHeaders;
 import static com.github.dreamhead.moco.MocoCors.maxAge;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -25,6 +26,9 @@ public class CorsContainer {
 
     @JsonAlias("Access-Control-Max-Age")
     private Long maxAge;
+
+    @JsonAlias("Access-Control-Expose-Headers")
+    private String exposeHeaders;
 
     public CorsConfig[] getConfigs() {
         List<CorsConfig> configs = new ArrayList<>();
@@ -42,6 +46,10 @@ public class CorsContainer {
 
         if (maxAge != null) {
             configs.add(maxAge(maxAge));
+        }
+
+        if (exposeHeaders != null) {
+            configs.add(exposeHeaders(exposeHeaders.split(",")));
         }
 
         return configs.toArray(new CorsConfig[0]);
