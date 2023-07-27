@@ -7,6 +7,7 @@ import com.github.dreamhead.moco.handler.cors.CorsConfig;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.dreamhead.moco.MocoCors.allowCredentials;
 import static com.github.dreamhead.moco.MocoCors.allowHeaders;
 import static com.github.dreamhead.moco.MocoCors.allowMethods;
 import static com.github.dreamhead.moco.MocoCors.allowOrigin;
@@ -30,6 +31,9 @@ public class CorsContainer {
     @JsonAlias("Access-Control-Expose-Headers")
     private String exposeHeaders;
 
+    @JsonAlias("Access-Control-Allow-Credentials")
+    private boolean allowCredentials;
+
     public CorsConfig[] getConfigs() {
         List<CorsConfig> configs = new ArrayList<>();
         if (allowOrigin != null) {
@@ -50,6 +54,10 @@ public class CorsContainer {
 
         if (exposeHeaders != null) {
             configs.add(exposeHeaders(exposeHeaders.split(",")));
+        }
+
+        if (allowCredentials) {
+            configs.add(allowCredentials(allowCredentials));
         }
 
         return configs.toArray(new CorsConfig[0]);
