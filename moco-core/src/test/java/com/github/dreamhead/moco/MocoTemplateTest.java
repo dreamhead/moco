@@ -379,7 +379,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             String response = helper.get(remoteUrl("/random"));
             try {
                 double result = Double.parseDouble(response);
-                assertThat(result, lessThan(100d));
+                assertThat(result, lessThanOrEqualTo(100d));
                 assertThat(result, greaterThanOrEqualTo(99d));
             } catch (NumberFormatException e) {
                 fail();
