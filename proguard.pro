@@ -38,6 +38,11 @@
 -keep public class org.apache.hc.client5.http.config.RequestConfig{*;}
 -keep public class org.apache.hc.client5.http.ClientProtocolException{*;}
 -keep public class org.apache.hc.client5.http.impl.classic.CloseableHttpClient{*;}
+-keep public class org.apache.hc.core5.http.ClassicHttpResponse{*;}
+-keep public class org.apache.hc.core5.http.HttpResponse{*;}
+-keep public class org.apache.hc.core5.http.HttpMessage{*;}
+-keep public class org.apache.hc.core5.http.MessageHeaders{*;}
+-keep public class org.apache.hc.core5.http.Header{*;}
 
 -keep public class com.google.common.io.Files{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
