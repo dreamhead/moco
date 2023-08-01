@@ -20,4 +20,14 @@ public final class CorsOriginConfig implements CorsConfig {
     public void configure(final MutableHttpResponse httpResponse) {
         httpResponse.addHeader("Access-Control-Allow-Origin", origin);
     }
+
+    @Override
+    public boolean isSimpleRequestConfig() {
+        return true;
+    }
+
+    @Override
+    public boolean isNonSimpleRequestConfig() {
+        return true;
+    }
 }

@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.handler.cors;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 
-public final class CorsHeadersConfig implements CorsConfig {
+public final class CorsHeadersConfig implements NonSimpleRequestCorsConfig {
     private final String headers;
 
     public CorsHeadersConfig(final String[] headers) {

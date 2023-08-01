@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.google.common.collect.ImmutableMultimap;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
@@ -63,31 +64,31 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_support_cors_with_methods() throws Exception {
-        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("GET")));
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("PUT")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com"));
-            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT"));
         });
     }
 
     @Test
     public void should_support_cors_with_multiple_methods() throws Exception {
-        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("GET", "POST")));
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("PUT", "POST")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com"));
-            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET,POST"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT,POST"));
         });
     }
 
     @Test
     public void should_support_cors_with_matched_method() throws Exception {
-        server.response(cors(allowMethods("GET")));
+        server.response(cors(allowMethods("PUT")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
-            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", ImmutableMultimap.of("Origin", "https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT"));
 
             ClassicHttpResponse wrongResponse = helper.deleteForResponseWithHeaders(root(), of("Origin", "https://www.github.com/"));
             assertThat(wrongResponse.getHeader("Access-Control-Allow-Methods"), nullValue());
@@ -99,7 +100,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowHeaders("X-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
     }
@@ -109,19 +110,19 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowHeaders("X-Header", "Y-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", ImmutableMultimap.of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header,Y-Header"));
         });
     }
 
     @Test
     public void should_support_cors_with_origin_methods_and_headers() throws Exception {
-        server.response(cors(allowOrigin("https://www.github.com/"), allowMethods("GET"), allowHeaders("X-Header")));
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("PUT"), allowHeaders("X-Header")));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
-            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
-            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("GET"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", ImmutableMultimap.of("Origin", "https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT"));
             assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("X-Header"));
         });
     }
@@ -166,7 +167,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         server.response(cors(allowOrigin("https://www.github.com/"), maxAge(1728000)));
 
         running(server, () -> {
-            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com/"));
 
             assertThat(response.getHeader("Access-Control-Allow-Origin").getValue(), is("https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Max-Age").getValue(), is("1728000"));

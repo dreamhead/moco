@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.handler.cors;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 
-public final class CorsMaxAgeConfig implements CorsConfig {
+public final class CorsMaxAgeConfig implements NonSimpleRequestCorsConfig {
     private final long maxAge;
 
     public CorsMaxAgeConfig(final long maxAge) {

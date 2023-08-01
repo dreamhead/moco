@@ -1,11 +1,16 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MocoCorsHandler extends AbstractHttpResponseHandler {
     private final CorsConfig[] configs;
@@ -21,6 +26,20 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
             return;
         }
 
+        if (isSimpleRequest(httpRequest)) {
+            writeSimpleResponse(httpRequest, httpResponse, CorsConfig::isSimpleRequestConfig);
+            return;
+        }
+
+        if (httpRequest.getMethod() == HttpMethod.OPTIONS) {
+            writeNoSimpleResponse(httpRequest, httpResponse);
+            return;
+        }
+
+        writeNoSimpleResponse(httpRequest, httpResponse);
+    }
+
+    private void writeNoSimpleResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
         if (configs.length == 0) {
             httpResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpResponse.addHeader("Access-Control-Allow-Methods", "*");
@@ -28,12 +47,38 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
             return;
         }
 
-        if (!Arrays.stream(configs).allMatch(config -> config.isQualified(httpRequest))) {
+        writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig);
+    }
+
+    private void writeSimpleResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse, final Predicate<CorsConfig> isSimpleRequestConfig) {
+        if (configs.length == 0) {
+            httpResponse.addHeader("Access-Control-Allow-Origin", "*");
             return;
         }
 
-        for (CorsConfig config : configs) {
+        writeCorsResponse(httpRequest, httpResponse, isSimpleRequestConfig);
+    }
+
+    private void writeCorsResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse,
+                                   final Predicate<CorsConfig> requestPredicate) {
+        List<CorsConfig> filteredConfigs = Arrays.stream(configs)
+                .filter(requestPredicate)
+                .collect(Collectors.toList());
+
+        if (!filteredConfigs.stream().allMatch(config -> config.isQualified(httpRequest))) {
+            return;
+        }
+
+        for (CorsConfig config : filteredConfigs) {
             config.configure(httpResponse);
         }
+    }
+
+    private static final ImmutableSet<HttpMethod> simpleRequestMethods
+            = ImmutableSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
+
+    private boolean isSimpleRequest(final HttpRequest httpRequest) {
+        HttpMethod method = httpRequest.getMethod();
+        return simpleRequestMethods.contains(method);
     }
 }
