@@ -16,7 +16,7 @@ public final class CorsMethodsConfig implements NonSimpleRequestCorsConfig {
     @Override
     public boolean isQualified(final HttpRequest httpRequest) {
         HttpMethod method = httpRequest.getMethod();
-        return method.equals(HttpMethod.OPTIONS) || Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m));
+        return method.equals(HttpMethod.OPTIONS) || "*".equals(methods[0]) || Arrays.stream(methods).anyMatch(m -> method.name().equalsIgnoreCase(m));
     }
 
     @Override

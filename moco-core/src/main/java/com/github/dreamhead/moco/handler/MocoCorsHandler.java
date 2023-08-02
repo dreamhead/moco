@@ -32,11 +32,22 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
         }
 
         if (httpRequest.getMethod() == HttpMethod.OPTIONS) {
-            writeNoSimpleResponse(httpRequest, httpResponse);
+            writeOptionResponse(httpRequest, httpResponse);
             return;
         }
 
         writeNoSimpleResponse(httpRequest, httpResponse);
+    }
+
+    private void writeOptionResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
+        if (configs.length == 0) {
+            httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpResponse.addHeader("Access-Control-Allow-Methods", "*");
+            httpResponse.addHeader("Access-Control-Allow-Headers", "*");
+            return;
+        }
+
+        writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig, false);
     }
 
     private void writeNoSimpleResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
@@ -47,7 +58,7 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
             return;
         }
 
-        writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig);
+        writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig, true);
     }
 
     private void writeSimpleResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse, final Predicate<CorsConfig> isSimpleRequestConfig) {
@@ -56,16 +67,16 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
             return;
         }
 
-        writeCorsResponse(httpRequest, httpResponse, isSimpleRequestConfig);
+        writeCorsResponse(httpRequest, httpResponse, isSimpleRequestConfig, true);
     }
 
     private void writeCorsResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse,
-                                   final Predicate<CorsConfig> requestPredicate) {
+                                   final Predicate<CorsConfig> requestPredicate, final boolean isQualified) {
         List<CorsConfig> filteredConfigs = Arrays.stream(configs)
                 .filter(requestPredicate)
                 .collect(Collectors.toList());
 
-        if (!filteredConfigs.stream().allMatch(config -> config.isQualified(httpRequest))) {
+        if (isQualified && !filteredConfigs.stream().allMatch(config -> config.isQualified(httpRequest))) {
             return;
         }
 

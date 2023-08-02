@@ -173,4 +173,14 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             assertThat(response.getHeader("Access-Control-Max-Age").getValue(), is("1728000"));
         });
     }
+
+    @Test
+    public void should_fail_to_get_cors_response() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com/"), allowMethods("PUT"), allowHeaders("X-Header")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods"), nullValue());
+        });
+    }
 }
