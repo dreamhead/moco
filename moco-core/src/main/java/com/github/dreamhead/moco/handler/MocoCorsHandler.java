@@ -41,24 +41,26 @@ public class MocoCorsHandler extends AbstractHttpResponseHandler {
 
     private void writeOptionResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         if (configs.length == 0) {
-            httpResponse.addHeader("Access-Control-Allow-Origin", "*");
-            httpResponse.addHeader("Access-Control-Allow-Methods", "*");
-            httpResponse.addHeader("Access-Control-Allow-Headers", "*");
+            writeDefaultAllowHeaders(httpResponse);
             return;
         }
 
         writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig, false);
     }
 
-    private void writeNoSimpleResponse(HttpRequest httpRequest, MutableHttpResponse httpResponse) {
+    private void writeNoSimpleResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         if (configs.length == 0) {
-            httpResponse.addHeader("Access-Control-Allow-Origin", "*");
-            httpResponse.addHeader("Access-Control-Allow-Methods", "*");
-            httpResponse.addHeader("Access-Control-Allow-Headers", "*");
+            writeDefaultAllowHeaders(httpResponse);
             return;
         }
 
         writeCorsResponse(httpRequest, httpResponse, CorsConfig::isNonSimpleRequestConfig, true);
+    }
+
+    private static void writeDefaultAllowHeaders(final MutableHttpResponse httpResponse) {
+        httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+        httpResponse.addHeader("Access-Control-Allow-Methods", "*");
+        httpResponse.addHeader("Access-Control-Allow-Headers", "*");
     }
 
     private void writeSimpleResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse, final Predicate<CorsConfig> isSimpleRequestConfig) {
