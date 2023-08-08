@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class MocoCorsHandler extends AbstractHttpResponseHandler {
+public final class MocoCorsHandler extends AbstractHttpResponseHandler {
     private final CorsConfig[] configs;
 
     public MocoCorsHandler(final CorsConfig[] configs) {
