@@ -14,7 +14,7 @@ public final class MocoCors {
         return new MocoCorsHandler(configs);
     }
 
-    public static CorsConfig allowOrigin(String origin) {
+    public static CorsConfig allowOrigin(final String origin) {
         return new CorsOriginConfig(origin);
     }
 
