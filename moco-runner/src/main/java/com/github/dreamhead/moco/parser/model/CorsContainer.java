@@ -15,7 +15,7 @@ import static com.github.dreamhead.moco.MocoCors.exposeHeaders;
 import static com.github.dreamhead.moco.MocoCors.maxAge;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class CorsContainer {
+public final class CorsContainer {
     @JsonAlias("Access-Control-Allow-Origin")
     private String allowOrigin;
 
