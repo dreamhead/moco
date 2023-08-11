@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
+import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +62,18 @@ public final class CorsContainer {
         }
 
         return configs.toArray(new CorsConfig[0]);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("allowOrigin", allowOrigin)
+                .add("allowMethods", allowMethods)
+                .add("allowHeaders", allowHeaders)
+                .add("maxAge", maxAge)
+                .add("exposeHeaders", exposeHeaders)
+                .add("allowCredentials", allowCredentials)
+                .toString();
     }
 }
