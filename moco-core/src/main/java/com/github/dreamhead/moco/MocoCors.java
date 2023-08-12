@@ -9,6 +9,8 @@ import com.github.dreamhead.moco.handler.cors.CorsMaxAgeConfig;
 import com.github.dreamhead.moco.handler.cors.CorsMethodsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsOriginConfig;
 
+import java.util.Arrays;
+
 public final class MocoCors {
     public static ResponseHandler cors(final CorsConfig... configs) {
         return new MocoCorsHandler(configs);
@@ -19,6 +21,11 @@ public final class MocoCors {
     }
 
     public static CorsConfig allowMethods(final String... methods) {
+        return new CorsMethodsConfig(Arrays.stream(methods)
+                .map(method -> HttpMethod.valueOf(HttpMethod.class, method)).toArray(HttpMethod[]::new));
+    }
+
+    public static CorsConfig allowMethods(final HttpMethod... methods) {
         return new CorsMethodsConfig(methods);
     }
 
