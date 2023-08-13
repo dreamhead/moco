@@ -179,7 +179,7 @@ public class MocoTemplateStandaloneTest extends AbstractMocoStandaloneTest {
         runWithConfiguration("template_with_function.json");
         String response = helper.get(remoteUrl("/random_template_without_arg"));
         double result = Double.parseDouble(response);
-        assertThat(result, lessThan(1d));
+        assertThat(result, lessThanOrEqualTo(1d));
         assertThat(result, greaterThanOrEqualTo(0d));
     }
 

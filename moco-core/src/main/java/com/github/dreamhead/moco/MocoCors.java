@@ -21,12 +21,28 @@ public final class MocoCors {
     }
 
     public static CorsConfig allowMethods(final String... methods) {
-        return new CorsMethodsConfig(Arrays.stream(methods)
-                .map(method -> HttpMethod.valueOf(HttpMethod.class, method)).toArray(HttpMethod[]::new));
+        if (Arrays.stream(methods).allMatch(method -> isValidMethod(method))) {
+            return new CorsMethodsConfig(methods);
+        }
+
+        throw new IllegalArgumentException("Invalid HTTP method");
+    }
+
+    private static boolean isValidMethod(final String method) {
+        if ("*".equals(method)) {
+            return true;
+        }
+
+        try {
+            HttpMethod.valueOf(method.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public static CorsConfig allowMethods(final HttpMethod... methods) {
-        return new CorsMethodsConfig(methods);
+        return new CorsMethodsConfig(Arrays.stream(methods).map(Enum::toString).toArray(String[]::new));
     }
 
     public static CorsConfig allowHeaders(final String... headers) {
