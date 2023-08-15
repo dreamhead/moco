@@ -73,6 +73,26 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_support_cors_with_http_methods() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods(HttpMethod.PUT)));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("PUT"));
+        });
+    }
+
+    @Test
+    public void should_support_cors_with_any_methods() throws Exception {
+        server.response(cors(allowOrigin("https://www.github.com"), allowMethods("*")));
+
+        running(server, () -> {
+            ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com"));
+            assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("*"));
+        });
+    }
+
+    @Test
     public void should_support_cors_with_multiple_methods() throws Exception {
         server.response(cors(allowOrigin("https://www.github.com"), allowMethods("PUT", "POST")));
 
@@ -182,5 +202,10 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
             ClassicHttpResponse response = helper.getResponseWithHeader(root(), of("Origin", "https://www.github.com/"));
             assertThat(response.getHeader("Access-Control-Allow-Methods"), nullValue());
         });
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_not_allow_unknown_headers() {
+        allowMethods("foo");
     }
 }

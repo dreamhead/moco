@@ -21,7 +21,7 @@ public final class MocoCors {
     }
 
     public static CorsConfig allowMethods(final String... methods) {
-        if (Arrays.stream(methods).allMatch(method -> isValidMethod(method))) {
+        if (Arrays.stream(methods).allMatch(MocoCors::isValidMethod)) {
             return new CorsMethodsConfig(methods);
         }
 
