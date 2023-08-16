@@ -3223,11 +3223,8 @@ RequestHit hit = requestHit();
 final HttpServer server = httpServer(12306, hit);
 server.get(by(uri("/foo"))).response("bar");
 
-running(server, new Runnable() {
-  @Override
-  public void run() throws Exception {
+running(server, () -> {
     assertThat(helper.get(remoteUrl("/foo")), is("bar"));
-  }
 });
 
 hit.verify(by(uri("/foo"))), times(1));
@@ -3258,12 +3255,9 @@ Moco provides you another way to start your server: specify no port, and it will
 final HttpServer server = httpServer();
 server.response("foo");
 
-running(server, new Runnable() {
-  @Override
-  public void run() throws Exception {
+running(server, () -> {
     Content content = Request.Get("http://localhost:" + server.port()).execute().returnContent();
     assertThat(content.asString(), is("foo"));
-  }
 });
 ```
 
@@ -3298,7 +3292,7 @@ final HttpServer server = httpServer(log("path/to/log.log"));
 
 Log content may contain some non UTF-8 character, charset could be specified in log API:
 
-```
+```java
 final HttpServer server = httpServer(log("path/to/log.log", Charset.forName("GBK")));
 ```
 

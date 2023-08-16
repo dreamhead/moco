@@ -168,12 +168,9 @@ public class MocoJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_response() throws Exception {
         final HttpServer server = jsonHttpServer(12306, file("foo.json"));
-        running(server, new Runnable() {
-            @Override
-            public void run() throws Exception {
-                Content content = Request.Get("http://localhost:12306").execute().returnContent();
-                assertThat(content.asString(), is("foo"));
-            }
+        running(server, () -> {
+            Content content = Request.Get("http://localhost:12306").execute().returnContent();
+            assertThat(content.asString(), is("foo"));
         });
     }
 }
