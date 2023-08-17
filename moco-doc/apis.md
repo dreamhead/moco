@@ -8,94 +8,97 @@ That means if we get the expected request and then return our response. Now, you
 
 Table of Contents
 =================
-
-* [Composite Java API Design](#composite-java-api-design)
-* [Description as comment](#description-as-comment)
-* [Request](#request)
-  * [Content](#content)
-  * [URI](#uri)
-  * [Query Parameter](#query-parameter)
-  * [HTTP Method](#http-method)
-  * [Version](#version)
-  * [Header](#header)
-  * [Cookie](#cookie)
-  * [Form](#form)
-  * [XML](#xml)
-  * [XPath](#xpath)
-  * [XML Struct](#xml-struct)
-  * [JSON Request](#json-request)
-    * [JSON Text](#json-text)
-    * [JSON Shortcut](#json-shortcut)
-    * [JSON File](#json-file)
-  * [JSONPath](#jsonpath)
-  * [JSON Struct](#json-struct)
-  * [Operator](#operator)
-    * [Match](#match)
-    * [Starts With](#starts-with)
-    * [Ends With](#ends-with)
-    * [Contain](#contain)
-    * [Exist](#exist)
-  * [Conditional](#conditional)
-* [Response](#response)
-  * [Content](#content-1)
-  * [Status Code](#status-code)
-  * [Version](#version-1)
-  * [Header](#header-1)
-  * [Proxy](#proxy)
-    * [Single URL](#single-url)
-    * [Failover](#failover)
-    * [Playback](#playback)
-    * [Customize Failover/Playback Status](#customize-failoverplayback-status)
-    * [Batch URLs](#batch-urls)
-  * [Redirect](#redirect)
-  * [Cookie](#cookie-1)
-    * [Cookie Attributes](#cookie-attributes)
-      * [Path](#path)
-      * [Domain](#domain)
-      * [Secure](#secure)
-      * [HTTP Only](#http-only)
-      * [Max Age](#max-age)
-  * [Attachment](#attachment)
-  * [Latency](#latency)
-  * [Sequence](#sequence)
-  * [Cycle](#cycle)
-  * [JSON Response](#json-response)
-* [Mount](#mount)
-* [Template](#template)
-  * [Request](#request-1)
-    * [Version](#version-2)
-    * [Method](#method)
-    * [Content](#content-2)
-    * [Header](#header-2)
-    * [Query](#query)
-    * [Form](#form-1)
-    * [Cookie](#cookie-2)
-    * [JSON](#json)
-    * [XML](#xml-1)
-    * [Client Address](#client-address)
-  * [Custom Variable](#custom-variable)
-  * [Template Function](#template-function)
-    * [now](#now)
-    * [random](#random)
-  * [Redirect](#redirect-1)
-  * [File Name Template](#file-name-template)
-  * [Proxy](#proxy-1)
-  * [Template for Event Action](#template-for-event-action)
-* [Record and Replay](#record-and-replay)
-  * [Group](#group)
-  * [Identifier](#identifier)
-  * [Modifier](#modifier)
-  * [Tape](#tape)
-* [Event](#event)
-  * [Complete](#complete)
-    * [Get Request](#get-request)
-    * [Post Request](#post-request)
-  * [Asynchronous](#asynchronous)
-* [Verify](#verify)
-* [Miscellaneous](#miscellaneous)
-  * [Port](#port)
-  * [Log](#log)
-    * [Log with verifier](#log-with-verifier)
+- [Composite Java API Design](#composite-java-api-design)
+- [Description as comment](#description-as-comment)
+- [Request](#request)
+  - [Content](#content)
+  - [URI](#uri)
+  - [Query Parameter](#query-parameter)
+  - [HTTP Method](#http-method)
+  - [Version](#version)
+  - [Header](#header)
+  - [Cookie](#cookie)
+  - [Form](#form)
+  - [XML](#xml)
+  - [XPath](#xpath)
+  - [XML Struct](#xml-struct)
+  - [JSON Request](#json-request)
+    - [JSON Text](#json-text)
+    - [JSON Shortcut](#json-shortcut)
+    - [JSON File](#json-file)
+  - [JSONPath](#jsonpath)
+  - [JSON Struct](#json-struct)
+  - [Operator](#operator)
+    - [Match](#match)
+    - [Starts With](#starts-with)
+    - [Ends With](#ends-with)
+    - [Contain](#contain)
+    - [Exist](#exist)
+    - [Path](#path)
+  - [Conditional](#conditional)
+- [Response](#response)
+  - [Content](#content-1)
+  - [Status Code](#status-code)
+  - [Version](#version-1)
+  - [Header](#header-1)
+  - [Proxy](#proxy)
+    - [Single URL](#single-url)
+    - [Failover](#failover)
+    - [Playback](#playback)
+    - [Customize Failover/Playback Status](#customize-failoverplayback-status)
+    - [Batch URLs](#batch-urls)
+  - [Redirect](#redirect)
+  - [Cookie](#cookie-1)
+    - [Cookie Attributes](#cookie-attributes)
+      - [Path](#path-1)
+      - [Domain](#domain)
+      - [Secure](#secure)
+      - [HTTP Only](#http-only)
+      - [Max Age](#max-age)
+  - [Attachment](#attachment)
+  - [Latency](#latency)
+  - [Sequence](#sequence)
+  - [Cycle](#cycle)
+  - [JSON Response](#json-response)
+- [Mount](#mount)
+- [Template](#template)
+  - [Request](#request-1)
+    - [Version](#version-2)
+    - [Method](#method)
+    - [Content](#content-2)
+    - [Header](#header-2)
+    - [Query](#query)
+    - [Form](#form-1)
+    - [Cookie](#cookie-2)
+    - [JSON](#json)
+    - [XML](#xml-1)
+    - [Client](#client)
+      - [Address](#address)
+      - [Port](#port)
+    - [Path](#path-2)
+  - [Custom Variable](#custom-variable)
+  - [Template Function](#template-function)
+    - [now](#now)
+    - [random](#random)
+  - [Redirect](#redirect-1)
+  - [File Name Template](#file-name-template)
+  - [Proxy](#proxy-1)
+  - [Template for Event Action](#template-for-event-action)
+- [Record and Replay](#record-and-replay)
+  - [Group](#group)
+  - [Identifier](#identifier)
+  - [Modifier](#modifier)
+  - [Tape](#tape)
+- [Event](#event)
+  - [Complete](#complete)
+    - [Get Request](#get-request)
+    - [Post Request](#post-request)
+  - [Asynchronous](#asynchronous)
+- [Verify](#verify)
+- [Miscellaneous](#miscellaneous)
+  - [Port](#port-1)
+  - [Log](#log)
+    - [Log with verifier](#log-with-verifier)
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
@@ -1697,6 +1700,123 @@ server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(30
 }
 ```
 
+### CORS
+**@Sinace will be at next release**
+
+Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) on a web page to be requested from another domain outside the domain from which the resource originated. You can add your own `cors` to your response.
+
+#### Default All CORS
+
+You can add default all CORS to your response with `cors` operator without any arguments. 
+
+* Java API
+```java
+server.response(cors());
+```
+
+#### CORS with Origin
+
+You can allow CORS with specific origin with `cors` operator with `origin` argument, which provides `Access-Control-Allow-Origin` header.
+
+* Java API
+```java
+server.response(cors(allowOrigin("https://www.github.com/")));
+```
+
+* JSON API
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "allowOrigin" : "https://www.github.com/"
+        }
+    }
+}
+```
+
+If you allow any origin with `*` in `origin`.
+
+* Java API
+```java
+server.response(cors(origin("*")));
+```
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "allowOrigin" : "*"
+        }
+    }
+}
+```
+
+In JSON API, you can also use `Access-Control-Allow-Origin` directly.
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Allow-Origin" : "https://www.github.com"
+        }
+    }
+}
+```
+
+#### CORS with Methods
+
+You can allow CORS with specific methods with `cors` operator with `methods` argument, which provides `Access-Control-Allow-Methods` header.
+
+* Java API
+```java
+server.response(cors(allowMethods("GET", "PUP")));
+server.response(cors(allowMethods(HttpMethod.GET, HttpMethod.PUT)));
+```
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "allowMethods" : "GET,PUT"
+        }
+    }
+}
+```
+
+In JSON API, you can also use `Access-Control-Allow-Methods` directly.
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Allow-Methods" : "GET,PUT"
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
 ### Attachment
 **@Since 0.10.0**
 
@@ -1936,8 +2056,6 @@ For JSON API, just give json object directly
       }
 }
 ```
-
-
 
 **@Since 1.2.0**
 
