@@ -21,16 +21,16 @@ public final class CorsContainer {
     private String allowOrigin;
 
     @JsonAlias("Access-Control-Allow-Methods")
-    private String allowMethods;
+    private List<String> allowMethods;
 
     @JsonAlias("Access-Control-Allow-Headers")
-    private String allowHeaders;
+    private List<String> allowHeaders;
 
     @JsonAlias("Access-Control-Max-Age")
     private Long maxAge;
 
     @JsonAlias("Access-Control-Expose-Headers")
-    private String exposeHeaders;
+    private List<String> exposeHeaders;
 
     @JsonAlias("Access-Control-Allow-Credentials")
     private boolean allowCredentials;
@@ -42,11 +42,11 @@ public final class CorsContainer {
         }
 
         if (allowMethods != null) {
-            configs.add(allowMethods(allowMethods.split(",")));
+            configs.add(allowMethods(allowMethods.toArray(new String[0])));
         }
 
         if (allowHeaders != null) {
-            configs.add(allowHeaders(allowHeaders.split(",")));
+            configs.add(allowHeaders(allowHeaders.toArray(new String[0])));
         }
 
         if (maxAge != null) {
@@ -54,7 +54,7 @@ public final class CorsContainer {
         }
 
         if (exposeHeaders != null) {
-            configs.add(exposeHeaders(exposeHeaders.split(",")));
+            configs.add(exposeHeaders(exposeHeaders.toArray(new String[0])));
         }
 
         if (allowCredentials) {
