@@ -8,97 +8,105 @@ That means if we get the expected request and then return our response. Now, you
 
 Table of Contents
 =================
-- [Composite Java API Design](#composite-java-api-design)
-- [Description as comment](#description-as-comment)
-- [Request](#request)
-  - [Content](#content)
-  - [URI](#uri)
-  - [Query Parameter](#query-parameter)
-  - [HTTP Method](#http-method)
-  - [Version](#version)
-  - [Header](#header)
-  - [Cookie](#cookie)
-  - [Form](#form)
-  - [XML](#xml)
-  - [XPath](#xpath)
-  - [XML Struct](#xml-struct)
-  - [JSON Request](#json-request)
-    - [JSON Text](#json-text)
-    - [JSON Shortcut](#json-shortcut)
-    - [JSON File](#json-file)
-  - [JSONPath](#jsonpath)
-  - [JSON Struct](#json-struct)
-  - [Operator](#operator)
-    - [Match](#match)
-    - [Starts With](#starts-with)
-    - [Ends With](#ends-with)
-    - [Contain](#contain)
-    - [Exist](#exist)
-    - [Path](#path)
-  - [Conditional](#conditional)
-- [Response](#response)
-  - [Content](#content-1)
-  - [Status Code](#status-code)
-  - [Version](#version-1)
-  - [Header](#header-1)
-  - [Proxy](#proxy)
-    - [Single URL](#single-url)
-    - [Failover](#failover)
-    - [Playback](#playback)
-    - [Customize Failover/Playback Status](#customize-failoverplayback-status)
-    - [Batch URLs](#batch-urls)
-  - [Redirect](#redirect)
-  - [Cookie](#cookie-1)
-    - [Cookie Attributes](#cookie-attributes)
-      - [Path](#path-1)
-      - [Domain](#domain)
-      - [Secure](#secure)
-      - [HTTP Only](#http-only)
-      - [Max Age](#max-age)
-  - [Attachment](#attachment)
-  - [Latency](#latency)
-  - [Sequence](#sequence)
-  - [Cycle](#cycle)
-  - [JSON Response](#json-response)
-- [Mount](#mount)
-- [Template](#template)
-  - [Request](#request-1)
-    - [Version](#version-2)
-    - [Method](#method)
-    - [Content](#content-2)
-    - [Header](#header-2)
-    - [Query](#query)
-    - [Form](#form-1)
-    - [Cookie](#cookie-2)
-    - [JSON](#json)
-    - [XML](#xml-1)
-    - [Client](#client)
-      - [Address](#address)
-      - [Port](#port)
-    - [Path](#path-2)
-  - [Custom Variable](#custom-variable)
-  - [Template Function](#template-function)
-    - [now](#now)
-    - [random](#random)
-  - [Redirect](#redirect-1)
-  - [File Name Template](#file-name-template)
-  - [Proxy](#proxy-1)
-  - [Template for Event Action](#template-for-event-action)
-- [Record and Replay](#record-and-replay)
-  - [Group](#group)
-  - [Identifier](#identifier)
-  - [Modifier](#modifier)
-  - [Tape](#tape)
-- [Event](#event)
-  - [Complete](#complete)
-    - [Get Request](#get-request)
-    - [Post Request](#post-request)
-  - [Asynchronous](#asynchronous)
-- [Verify](#verify)
-- [Miscellaneous](#miscellaneous)
-  - [Port](#port-1)
-  - [Log](#log)
-    - [Log with verifier](#log-with-verifier)
+- [HTTP(s) APIs](#https-apis)
+- [Table of Contents](#table-of-contents)
+  - [Composite Java API Design](#composite-java-api-design)
+  - [Description as comment](#description-as-comment)
+  - [Request](#request)
+    - [Content](#content)
+    - [URI](#uri)
+    - [Query Parameter](#query-parameter)
+    - [HTTP Method](#http-method)
+    - [Version](#version)
+    - [Header](#header)
+    - [Cookie](#cookie)
+    - [Form](#form)
+    - [XML](#xml)
+    - [XPath](#xpath)
+    - [XML Struct](#xml-struct)
+    - [JSON Request](#json-request)
+      - [JSON Text](#json-text)
+      - [JSON Shortcut](#json-shortcut)
+      - [JSON File](#json-file)
+    - [JSONPath](#jsonpath)
+    - [JSON Struct](#json-struct)
+    - [Operator](#operator)
+      - [Match](#match)
+      - [Starts With](#starts-with)
+      - [Ends With](#ends-with)
+      - [Contain](#contain)
+      - [Exist](#exist)
+      - [Path](#path)
+    - [Conditional](#conditional)
+  - [Response](#response)
+    - [Content](#content-1)
+    - [Status Code](#status-code)
+    - [Version](#version-1)
+    - [Header](#header-1)
+    - [Proxy](#proxy)
+      - [Single URL](#single-url)
+      - [Failover](#failover)
+      - [Playback](#playback)
+      - [Customize Failover/Playback Status](#customize-failoverplayback-status)
+      - [Batch URLs](#batch-urls)
+    - [Redirect](#redirect)
+    - [Cookie](#cookie-1)
+      - [Cookie Attributes](#cookie-attributes)
+        - [Path](#path-1)
+        - [Domain](#domain)
+        - [Secure](#secure)
+        - [HTTP Only](#http-only)
+        - [Max Age](#max-age)
+    - [CORS](#cors)
+      - [Default All CORS](#default-all-cors)
+      - [CORS with allowOrigin/Access-Control-Allow-Origin](#cors-with-alloworiginaccess-control-allow-origin)
+      - [CORS with allowMethods/Access-Control-Allow-Methods](#cors-with-allowmethodsaccess-control-allow-methods)
+      - [CORS with allowHeaders/Access-Control-Allow-Headers](#cors-with-allowheadersaccess-control-allow-headers)
+    - [Attachment](#attachment)
+    - [Latency](#latency)
+    - [Sequence](#sequence)
+    - [Cycle](#cycle)
+    - [JSON Response](#json-response)
+  - [Mount](#mount)
+  - [Template](#template)
+    - [Request](#request-1)
+      - [Version](#version-2)
+      - [Method](#method)
+      - [Content](#content-2)
+      - [Header](#header-2)
+      - [Query](#query)
+      - [Form](#form-1)
+      - [Cookie](#cookie-2)
+      - [JSON](#json)
+      - [XML](#xml-1)
+      - [Client](#client)
+        - [Address](#address)
+        - [Port](#port)
+      - [Path](#path-2)
+    - [Custom Variable](#custom-variable)
+    - [Template Function](#template-function)
+      - [now](#now)
+      - [random](#random)
+    - [Redirect](#redirect-1)
+    - [File Name Template](#file-name-template)
+    - [Proxy](#proxy-1)
+    - [Template for Event Action](#template-for-event-action)
+  - [Record and Replay](#record-and-replay)
+    - [Group](#group)
+    - [Identifier](#identifier)
+    - [Modifier](#modifier)
+    - [Tape](#tape)
+  - [Event](#event)
+    - [Complete](#complete)
+      - [Get Request](#get-request)
+      - [Post Request](#post-request)
+    - [Asynchronous](#asynchronous)
+  - [Verify](#verify)
+  - [Miscellaneous](#miscellaneous)
+    - [Port](#port-1)
+    - [Log](#log)
+      - [Log with verifier](#log-with-verifier)
+
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
@@ -1714,9 +1722,9 @@ You can add default all CORS to your response with `cors` operator without any a
 server.response(cors());
 ```
 
-#### CORS with Origin
+#### CORS with allowOrigin/Access-Control-Allow-Origin
 
-You can allow CORS with specific origin with `cors` operator with `origin` argument, which provides `Access-Control-Allow-Origin` header.
+You can allow CORS with specific origin with `cors` operator with `allowOrigin` argument, which provides `Access-Control-Allow-Origin` header.
 
 * Java API
 ```java
@@ -1771,13 +1779,13 @@ In JSON API, you can also use `Access-Control-Allow-Origin` directly.
 }
 ```
 
-#### CORS with Methods
+#### CORS with allowMethods/Access-Control-Allow-Methods
 
-You can allow CORS with specific methods with `cors` operator with `methods` argument, which provides `Access-Control-Allow-Methods` header.
+You can allow CORS with specific methods with `cors` operator with `allowMethods` argument, which provides `Access-Control-Allow-Methods` header.
 
 * Java API
 ```java
-server.response(cors(allowMethods("GET", "PUP")));
+server.response(cors(allowMethods("GET", "PUT")));
 server.response(cors(allowMethods(HttpMethod.GET, HttpMethod.PUT)));
 ```
 
@@ -1788,7 +1796,7 @@ server.response(cors(allowMethods(HttpMethod.GET, HttpMethod.PUT)));
     {
       "cors" :
         {
-          "allowMethods" : "GET,PUT"
+          "allowMethods" : ["GET", "PUT"],
         }
     }
 }
@@ -1803,19 +1811,46 @@ In JSON API, you can also use `Access-Control-Allow-Methods` directly.
     {
       "cors" :
         {
-          "Access-Control-Allow-Methods" : "GET,PUT"
+          "Access-Control-Allow-Methods" : ["GET", "PUT"]
         }
     }
 }
 ```
 
+#### CORS with allowHeaders/Access-Control-Allow-Headers
 
+You can allow CORS with specific headers with `cors` operator with `allowHeaders` argument, which provides `Access-Control-Allow-Headers` header.
 
+* Java API
+```java
+server.response(cors(allowHeaders("X-Header", "Y-Header")));
+```
 
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "allowHeaders" : ["X-Header", "Y-Header"]
+        }
+    }
+}
+```
 
-
-
-
+In JSON API, you can also use `Access-Control-Allow-Methods` directly.
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Allow-Headers" : ["X-Header", "Y-Header"]
+        }
+    }
+}
+```
 
 ### Attachment
 **@Since 0.10.0**
