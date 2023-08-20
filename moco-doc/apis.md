@@ -8,8 +8,6 @@ That means if we get the expected request and then return our response. Now, you
 
 Table of Contents
 =================
-- [HTTP(s) APIs](#https-apis)
-- [Table of Contents](#table-of-contents)
   - [Composite Java API Design](#composite-java-api-design)
   - [Description as comment](#description-as-comment)
   - [Request](#request)
@@ -62,6 +60,9 @@ Table of Contents
       - [CORS with allowOrigin/Access-Control-Allow-Origin](#cors-with-alloworiginaccess-control-allow-origin)
       - [CORS with allowMethods/Access-Control-Allow-Methods](#cors-with-allowmethodsaccess-control-allow-methods)
       - [CORS with allowHeaders/Access-Control-Allow-Headers](#cors-with-allowheadersaccess-control-allow-headers)
+      - [CORS with maxAge/Access-Control-Max-Age](#cors-with-maxageaccess-control-max-age)
+      - [CORS with allowCredentials/Access-Control-Allow-Credentials](#cors-with-allowcredentialsaccess-control-allow-credentials)
+      - [CORS with exposeHeaders/Access-Control-Expose-Headers](#cors-with-exposeheadersaccess-control-expose-headers)
     - [Attachment](#attachment)
     - [Latency](#latency)
     - [Sequence](#sequence)
@@ -106,7 +107,6 @@ Table of Contents
     - [Port](#port-1)
     - [Log](#log)
       - [Log with verifier](#log-with-verifier)
-
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
@@ -1847,6 +1847,111 @@ In JSON API, you can also use `Access-Control-Allow-Methods` directly.
       "cors" :
         {
           "Access-Control-Allow-Headers" : ["X-Header", "Y-Header"]
+        }
+    }
+}
+```
+
+#### CORS with maxAge/Access-Control-Max-Age
+
+You can allow CORS with specific max age with `cors` operator with `maxAge` argument, which provides `Access-Control-Max-Age` header.
+
+* Java API
+```java
+server.response(cors(maxAge(1)));
+```
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "maxAge" : 1
+        }
+    }
+}
+```
+
+In JSON API, you can also use `Access-Control-Max-Age` directly.
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Max-Age" : 1
+        }
+    }
+}
+```
+
+#### CORS with allowCredentials/Access-Control-Allow-Credentials
+
+You can allow CORS with specific credentials with `cors` operator with `allowCredentials` argument, which provides `Access-Control-Allow-Credentials` header.
+
+* Java API
+```java
+server.response(cors(allowCredentials(true)));
+```
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "allowCredentials" : true
+        }
+    }
+}
+```
+
+In JSON API, you can also use `Access-Control-Allow-Credentials` directly.
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Allow-Credentials" : true
+        }
+    }
+}
+```
+
+#### CORS with exposeHeaders/Access-Control-Expose-Headers
+
+You can allow CORS with specific expose headers with `cors` operator with `exposeHeaders` argument, which provides `Access-Control-Expose-Headers` header.
+
+* Java API
+```java
+server.response(cors(exposeHeaders("X-Header", "Y-Header")));
+```
+
+* JSON
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "exposeHeaders" : ["X-Header", "Y-Header"]
+        }
+    }
+}
+```
+
+In JSON API, you can also use `Access-Control-Expose-Headers` directly.
+```json
+{
+  "response" :
+    {
+      "cors" :
+        {
+          "Access-Control-Expose-Headers" : ["X-Header", "Y-Header"]
         }
     }
 }
