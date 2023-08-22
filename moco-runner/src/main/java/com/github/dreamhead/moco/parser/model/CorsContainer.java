@@ -33,7 +33,7 @@ public final class CorsContainer {
     private List<String> exposeHeaders;
 
     @JsonAlias("Access-Control-Allow-Credentials")
-    private boolean allowCredentials;
+    private Boolean allowCredentials;
 
     public CorsConfig[] getConfigs() {
         List<CorsConfig> configs = new ArrayList<>();
@@ -57,7 +57,7 @@ public final class CorsContainer {
             configs.add(exposeHeaders(exposeHeaders.toArray(new String[0])));
         }
 
-        if (allowCredentials) {
+        if (allowCredentials != null) {
             configs.add(allowCredentials(allowCredentials));
         }
 
