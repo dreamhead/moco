@@ -1,6 +1,13 @@
-# Release
+# Release 1.5.0
 ## APIs
 * `req.client.port` is supported in template
+* `cors` in response is supported for CORS.
+  * `allowOrigin`(Access-Control-Allow-Credentials)
+  * `allowCredentials`(Access-Control-Allow-Credentials)
+  * `exposeHeaders`(Access-Control-Expose-Headers)
+  * `maxAge`(Access-Control-Max-Age)
+  * `allowMethods`(Access-Control-Allow-Methods)
+  * `allowHeaders`(Access-Control-Allow-Headers)
 
 # Release 1.4.0 (1-Dec-2022)
 ## APIs
