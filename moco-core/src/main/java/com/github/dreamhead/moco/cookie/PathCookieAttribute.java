@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.cookie;
 
-import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 
 public class PathCookieAttribute extends ActualCookieAttribute {
     private final String path;
@@ -10,7 +10,7 @@ public class PathCookieAttribute extends ActualCookieAttribute {
     }
 
     @Override
-    public final void visit(final Cookie cookie) {
+    public final void visit(final DefaultCookie cookie) {
         cookie.setPath(path);
     }
 }

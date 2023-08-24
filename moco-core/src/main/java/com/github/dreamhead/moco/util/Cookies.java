@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.cookie.DefaultCookie;
 
 public final class Cookies {
     public String encodeCookie(final String key, final String value, final CookieAttribute... options) {
-        Cookie cookie = new DefaultCookie(key, value);
+        DefaultCookie cookie = new DefaultCookie(key, value);
         for (CookieAttribute option : options) {
             ((ActualCookieAttribute) option).visit(cookie);
         }
