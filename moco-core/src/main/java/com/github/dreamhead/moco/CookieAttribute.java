@@ -4,7 +4,9 @@ import com.github.dreamhead.moco.cookie.DomainCookieAttribute;
 import com.github.dreamhead.moco.cookie.HttpOnlyAttribute;
 import com.github.dreamhead.moco.cookie.MaxAgeCookieAttribute;
 import com.github.dreamhead.moco.cookie.PathCookieAttribute;
+import com.github.dreamhead.moco.cookie.SameSiteAttribute;
 import com.github.dreamhead.moco.cookie.SecureCookieAttribute;
+import io.netty.handler.codec.http.cookie.CookieHeaderNames;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,5 +29,22 @@ public abstract class CookieAttribute {
 
     public static CookieAttribute httpOnly() {
         return new HttpOnlyAttribute();
+    }
+
+    public static CookieAttribute sameSite(final String sameSite) {
+        CookieHeaderNames.SameSite name = ofSameSite(sameSite);
+        return new SameSiteAttribute(name);
+    }
+
+    private static CookieHeaderNames.SameSite ofSameSite(final String name) {
+        if (name != null) {
+            for (CookieHeaderNames.SameSite each : CookieHeaderNames.SameSite.class.getEnumConstants()) {
+                if (each.name().equalsIgnoreCase(name)) {
+                    return each;
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Unknown SameSite value: " + name);
     }
 }

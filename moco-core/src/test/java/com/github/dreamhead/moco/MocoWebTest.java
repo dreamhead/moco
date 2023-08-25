@@ -3,6 +3,8 @@ package com.github.dreamhead.moco;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.CookieHeaderNames;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.Test;
 
@@ -13,6 +15,7 @@ import static com.github.dreamhead.moco.CookieAttribute.domain;
 import static com.github.dreamhead.moco.CookieAttribute.httpOnly;
 import static com.github.dreamhead.moco.CookieAttribute.maxAge;
 import static com.github.dreamhead.moco.CookieAttribute.path;
+import static com.github.dreamhead.moco.CookieAttribute.sameSite;
 import static com.github.dreamhead.moco.CookieAttribute.secure;
 import static com.github.dreamhead.moco.Moco.attachment;
 import static com.github.dreamhead.moco.Moco.by;
@@ -137,6 +140,23 @@ public class MocoWebTest extends AbstractMocoHttpTest {
             Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
             assertThat(decodeCookie.domain(), is("localhost"));
         });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_samesite() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", sameSite("NONE")), status(302));
+        running(server, () -> {
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(((DefaultCookie)decodeCookie).sameSite(), is(CookieHeaderNames.SameSite.None));
+        });
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_exception_for_unknown_samesite_value() throws Exception {
+        sameSite("Unknown");
     }
 
     @Test
