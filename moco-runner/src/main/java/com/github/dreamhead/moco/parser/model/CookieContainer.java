@@ -17,6 +17,7 @@ public final class CookieContainer implements Container {
     private LatencyContainer maxAge;
     private boolean secure;
     private boolean httpOnly;
+    private String sameSite;
     private String template;
 
     public static CookieContainer newContainer(final String text) {
@@ -28,6 +29,7 @@ public final class CookieContainer implements Container {
     public static CookieContainer newContainer(final String text, final String path,
                                                final String domain, final LatencyContainer maxAge,
                                                final boolean secure, final boolean httpOnly,
+                                               final String sameSite,
                                                final String template) {
         CookieContainer container = new CookieContainer();
         container.value = text;
@@ -36,6 +38,7 @@ public final class CookieContainer implements Container {
         container.maxAge = maxAge;
         container.secure = secure;
         container.httpOnly = httpOnly;
+        container.sameSite = sameSite;
         container.template = template;
         return container;
     }
@@ -74,6 +77,10 @@ public final class CookieContainer implements Container {
             options.add(CookieAttribute.maxAge(this.maxAge.getLatency(), this.maxAge.getUnit()));
         }
 
+        if (this.sameSite != null) {
+            options.add(CookieAttribute.sameSite(this.sameSite));
+        }
+
         return options.toArray(new CookieAttribute[options.size()]);
     }
 
@@ -87,6 +94,7 @@ public final class CookieContainer implements Container {
                 .add("max age", maxAge)
                 .add("secure", secure)
                 .add("HTTP only", httpOnly)
+                .add("same site", sameSite)
                 .add("template", template)
                 .toString();
 

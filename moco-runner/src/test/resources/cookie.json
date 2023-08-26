@@ -76,5 +76,18 @@
         }
       }
     }
+  },
+  {
+    "request": {
+      "uri": "/cookie-with-same-site"
+    },
+    "response": {
+      "cookies": {
+        "login": {
+          "value": "true",
+          "sameSite": "Lax"
+        }
+      }
+    }
   }
 ]

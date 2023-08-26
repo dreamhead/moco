@@ -37,10 +37,11 @@ public final class CookieContainerDeserializer extends JsonDeserializer<CookieCo
         private LatencyContainer maxAge;
         private boolean secure;
         private boolean httpOnly;
+        private String sameSite;
         private String template;
 
         public CookieContainer toContainer() {
-            return CookieContainer.newContainer(value, path, domain, maxAge, secure, httpOnly, template);
+            return CookieContainer.newContainer(value, path, domain, maxAge, secure, httpOnly, sameSite, template);
         }
     }
 }

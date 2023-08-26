@@ -3,6 +3,8 @@ package com.github.dreamhead.moco;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.CookieHeaderNames;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -65,10 +67,19 @@ public class MocoCookieStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(decodeCookie.maxAge(), is(3600L));
     }
 
-    private Cookie getCookie(String uri) throws IOException {
+    @Test
+    public void should_set_and_recognize_cookie_with_same_site() throws IOException {
+        runWithConfiguration("cookie.json");
+        DefaultCookie decodeCookie = getCookie("/cookie-with-same-site");
+        assertThat(decodeCookie.name(), is("login"));
+        assertThat(decodeCookie.value(), is("true"));
+        assertThat(decodeCookie.sameSite(), is(CookieHeaderNames.SameSite.Lax));
+    }
+
+    private DefaultCookie getCookie(String uri) throws IOException {
         org.apache.hc.core5.http.HttpResponse response = helper.getResponse(remoteUrl(uri));
 
         String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
-        return ClientCookieDecoder.STRICT.decode(value);
+        return (DefaultCookie)ClientCookieDecoder.STRICT.decode(value);
     }
 }
