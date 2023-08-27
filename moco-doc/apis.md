@@ -1708,6 +1708,41 @@ server.response(cookie("loggedIn", "true", maxAge(1, TimeUnit.HOURS)), status(30
 }
 ```
 
+##### Same Site
+
+**@Since will be at next release**
+
+The SameSite attribute can be set to control whether or not a cookie is sent with cross-site requests, providing some protection against cross-site request forgery attacks (CSRF).
+
+Only "**Strict**", "**Lax**" and "**None**" can be set as sameSite value.
+
+* Java
+
+```java
+server.response(cookie("loggedIn", "true", sameSite("Lax")), status(302))
+```
+
+* JSON
+
+```json
+{
+  "request" :
+    {
+      "uri" : "/cookie"
+    },
+  "response" :
+    {
+      "cookies" :
+      {
+        "login" : {
+            "value" : "true",
+             "sameSite": "Lax"
+        }
+      }
+    }
+}
+```
+
 ### CORS
 **@Sinace will be at next release**
 
