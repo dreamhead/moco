@@ -55,6 +55,7 @@ Table of Contents
         - [Secure](#secure)
         - [HTTP Only](#http-only)
         - [Max Age](#max-age)
+        - [Same Site](#same-site)
     - [CORS](#cors)
       - [Default All CORS](#default-all-cors)
       - [CORS with allowOrigin/Access-Control-Allow-Origin](#cors-with-alloworiginaccess-control-allow-origin)
@@ -107,6 +108,7 @@ Table of Contents
     - [Port](#port-1)
     - [Log](#log)
       - [Log with verifier](#log-with-verifier)
+
 
 ## Composite Java API Design
 Moco Java API is designed in functional fashion which means you can composite any request or response easily.
@@ -1755,6 +1757,16 @@ You can add default all CORS to your response with `cors` operator without any a
 * Java API
 ```java
 server.response(cors());
+```
+
+* JSON API
+```json
+{
+  "response" :
+    {
+      "cors" : true
+    }
+}
 ```
 
 #### CORS with allowOrigin/Access-Control-Allow-Origin

@@ -1,6 +1,14 @@
 [
   {
     "request": {
+      "uri": "/default-cors"
+    },
+    "response": {
+      "cors": true
+    }
+  },
+  {
+    "request": {
       "uri": "/cors"
     },
     "response": {

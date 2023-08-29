@@ -2,7 +2,10 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
+import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
+import com.github.dreamhead.moco.parser.deserializer.CorsContainerDeserializer;
 import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import static com.github.dreamhead.moco.MocoCors.exposeHeaders;
 import static com.github.dreamhead.moco.MocoCors.maxAge;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonDeserialize(using = CorsContainerDeserializer.class)
 public final class CorsContainer {
     @JsonAlias("Access-Control-Allow-Origin")
     private String allowOrigin;
@@ -34,6 +38,26 @@ public final class CorsContainer {
 
     @JsonAlias("Access-Control-Allow-Credentials")
     private Boolean allowCredentials;
+
+    public static CorsContainer newContainer() {
+        return new CorsContainer();
+    }
+
+    public static CorsContainer newContainer(final String allowOrigin,
+                                             final List<String> allowMethods,
+                                             final List<String> allowHeaders,
+                                             final long maxAge,
+                                             final List<String> exposeHeaders,
+                                             final Boolean allowCredentials) {
+        CorsContainer container = new CorsContainer();
+        container.allowOrigin = allowOrigin;
+        container.allowMethods = allowMethods;
+        container.allowHeaders = allowHeaders;
+        container.maxAge = maxAge;
+        container.exposeHeaders = exposeHeaders;
+        container.allowCredentials = allowCredentials;
+        return container;
+    }
 
     public CorsConfig[] getConfigs() {
         List<CorsConfig> configs = new ArrayList<>();
