@@ -143,9 +143,21 @@ public class MocoWebTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_set_and_recognize_cookie_with_samesite() throws Exception {
+    public void should_set_and_recognize_cookie_with_samesite_text() throws Exception {
         server.request(eq(cookie("loggedIn"), "true")).response(status(200));
         server.response(cookie("loggedIn", "true", sameSite("NONE")), status(302));
+        running(server, () -> {
+            org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
+            String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();
+            Cookie decodeCookie = ClientCookieDecoder.STRICT.decode(value);
+            assertThat(((DefaultCookie)decodeCookie).sameSite(), is(CookieHeaderNames.SameSite.None));
+        });
+    }
+
+    @Test
+    public void should_set_and_recognize_cookie_with_samesite_enum() throws Exception {
+        server.request(eq(cookie("loggedIn"), "true")).response(status(200));
+        server.response(cookie("loggedIn", "true", sameSite(CookieAttribute.SameSite.NONE)), status(302));
         running(server, () -> {
             org.apache.hc.core5.http.HttpResponse response = helper.getResponse(root());
             String value = response.getFirstHeader(HttpHeaders.SET_COOKIE).getValue();

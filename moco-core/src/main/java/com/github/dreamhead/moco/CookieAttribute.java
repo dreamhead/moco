@@ -36,6 +36,18 @@ public abstract class CookieAttribute {
         return new SameSiteAttribute(name);
     }
 
+    public static CookieAttribute sameSite(final SameSite sameSite) {
+        CookieHeaderNames.SameSite name = ofSameSite(sameSite.name());
+        return new SameSiteAttribute(name);
+    }
+
+
+    public enum SameSite {
+        STRICT,
+        LAX,
+        NONE
+    }
+
     private static CookieHeaderNames.SameSite ofSameSite(final String name) {
         if (name != null) {
             for (CookieHeaderNames.SameSite each : CookieHeaderNames.SameSite.class.getEnumConstants()) {
