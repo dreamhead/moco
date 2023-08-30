@@ -60,6 +60,8 @@
 
 -keep public class io.netty.channel.DefaultChannelPipeline{*;}
 -keep public class io.netty.handler.codec.http.cookie.DefaultCookie{*;}
+-keep public class io.netty.handler.codec.http.cookie.CookieHeaderNames{*;}
+-keep public class io.netty.handler.codec.http.cookie.CookieHeaderNames$SameSite{*;}
 -keep public class com.ctc.wstx.stax.WstxInputFactory{*;}
 -keep public class com.ctc.wstx.stax.WstxOutputFactory{*;}
 
