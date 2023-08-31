@@ -31,7 +31,7 @@ public final class CorsContainer {
     private List<String> allowHeaders;
 
     @JsonAlias("Access-Control-Max-Age")
-    private Long maxAge;
+    private LatencyContainer maxAge;
 
     @JsonAlias("Access-Control-Expose-Headers")
     private List<String> exposeHeaders;
@@ -46,7 +46,7 @@ public final class CorsContainer {
     public static CorsContainer newContainer(final String allowOrigin,
                                              final List<String> allowMethods,
                                              final List<String> allowHeaders,
-                                             final long maxAge,
+                                             final LatencyContainer maxAge,
                                              final List<String> exposeHeaders,
                                              final Boolean allowCredentials) {
         CorsContainer container = new CorsContainer();
@@ -74,7 +74,7 @@ public final class CorsContainer {
         }
 
         if (maxAge != null) {
-            configs.add(maxAge(maxAge));
+            configs.add(maxAge(maxAge.getLatency(), maxAge.getUnit()));
         }
 
         if (exposeHeaders != null) {

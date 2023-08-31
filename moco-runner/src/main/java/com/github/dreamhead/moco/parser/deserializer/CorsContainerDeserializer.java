@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.github.dreamhead.moco.parser.model.CorsContainer;
+import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +41,7 @@ public class CorsContainerDeserializer extends JsonDeserializer<CorsContainer> {
         private List<String> allowHeaders;
 
         @JsonAlias("Access-Control-Max-Age")
-        private Long maxAge;
+        private LatencyContainer maxAge;
 
         @JsonAlias("Access-Control-Expose-Headers")
         private List<String> exposeHeaders;

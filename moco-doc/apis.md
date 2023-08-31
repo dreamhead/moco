@@ -1905,7 +1905,7 @@ You can allow CORS with specific max age with `cors` operator with `maxAge` argu
 
 * Java API
 ```java
-server.response(cors(maxAge(1)));
+server.response(cors(maxAge(1728000, TimeUnit.SECONDS)));
 ```
 
 * JSON
@@ -1915,7 +1915,10 @@ server.response(cors(maxAge(1)));
     {
       "cors" :
         {
-          "maxAge" : 1
+          "maxAge": {
+            "duration": 1728000,
+            "unit": "second"
+          }
         }
     }
 }
@@ -1928,7 +1931,10 @@ In JSON API, you can also use `Access-Control-Max-Age` directly.
     {
       "cors" :
         {
-          "Access-Control-Max-Age" : 1
+          "Access-Control-Max-Age" : {
+            "duration": 1728000,
+            "unit": "second"
+          }
         }
     }
 }

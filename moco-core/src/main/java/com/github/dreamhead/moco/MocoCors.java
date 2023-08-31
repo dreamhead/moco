@@ -10,6 +10,7 @@ import com.github.dreamhead.moco.handler.cors.CorsMethodsConfig;
 import com.github.dreamhead.moco.handler.cors.CorsOriginConfig;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public final class MocoCors {
     public static ResponseHandler cors(final CorsConfig... configs) {
@@ -57,8 +58,8 @@ public final class MocoCors {
         return new CorsExposedHeadersConfig(headers);
     }
 
-    public static CorsConfig maxAge(final long maxAge) {
-        return new CorsMaxAgeConfig(maxAge);
+    public static CorsConfig maxAge(final long maxAge, final TimeUnit unit) {
+        return new CorsMaxAgeConfig(unit.toSeconds(maxAge));
     }
 
     private MocoCors() {

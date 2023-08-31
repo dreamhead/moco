@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.github.dreamhead.moco.MocoCors.allowCredentials;
 import static com.github.dreamhead.moco.MocoCors.allowHeaders;
 import static com.github.dreamhead.moco.MocoCors.allowMethods;
@@ -184,7 +186,7 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_support_cors_with_max_age() throws Exception {
-        server.response(cors(allowOrigin("https://www.github.com/"), maxAge(1728000)));
+        server.response(cors(allowOrigin("https://www.github.com/"), maxAge(1728000, TimeUnit.SECONDS)));
 
         running(server, () -> {
             ClassicHttpResponse response = helper.putForResponseWithHeaders(root(), "", of("Origin", "https://www.github.com/"));

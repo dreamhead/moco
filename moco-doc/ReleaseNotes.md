@@ -1,8 +1,8 @@
 # Release 1.5.0
 ## APIs
 * `req.client.port` is supported in template
-* `sameSite` cookie attribute is supported in template
-* `cors` in response is supported for CORS.
+* `sameSite` cookie attribute is supported
+* `cors` in response is supported for CORS
   * `allowOrigin`(Access-Control-Allow-Credentials)
   * `allowCredentials`(Access-Control-Allow-Credentials)
   * `exposeHeaders`(Access-Control-Expose-Headers)
