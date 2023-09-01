@@ -73,6 +73,8 @@ publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.
     classifier "standalone"
 }
 
+uberjar.dependsOn ":moco-core:jar"
+signMavenJavaPublication.dependsOn proguard
 publishMavenJavaPublicationToMavenLocal.dependsOn proguard
 publishMavenJavaPublicationToMavenRepository.dependsOn proguard
 
