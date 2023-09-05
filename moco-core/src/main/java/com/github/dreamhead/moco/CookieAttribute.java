@@ -41,7 +41,6 @@ public abstract class CookieAttribute {
         return new SameSiteAttribute(name);
     }
 
-
     public enum SameSite {
         STRICT,
         LAX,
