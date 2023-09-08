@@ -3,8 +3,8 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -33,6 +33,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -43,7 +44,7 @@ public class MocoRequestHitTest {
     private MocoTestHelper helper;
     private RequestHit hit;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
         hit = requestHit();
@@ -85,10 +86,12 @@ public class MocoRequestHitTest {
         hit.verify(by(uri("/foo")), times(1));
     }
 
-    @Test(expected = VerificationException.class)
-    public void should_fail_to_verify_while_expectation_can_not_be_met() throws Exception {
+    @Test
+    public void should_fail_to_verify_while_expectation_can_not_be_met() {
         httpServer(port(), hit);
-        hit.verify(by(uri("/foo")), times(1));
+
+        assertThrows(VerificationException.class, () ->
+                hit.verify(by(uri("/foo")), times(1)));
     }
 
     @Test
@@ -118,10 +121,12 @@ public class MocoRequestHitTest {
         hit.verify(by(uri("/foo")), between(1, 3));
     }
 
-    @Test(expected = VerificationException.class)
-    public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() throws Exception {
+    @Test
+    public void should_fail_to_verify_at_least_expected_request_while_expectation_can_not_be_met() {
         httpServer(port(), hit);
-        hit.verify(by(uri("/foo")), atLeast(1));
+
+        assertThrows(VerificationException.class, () ->
+                hit.verify(by(uri("/foo")), atLeast(1)));
     }
 
     @Test
@@ -137,7 +142,7 @@ public class MocoRequestHitTest {
         hit.verify(by(uri("/foo")), atMost(2));
     }
 
-    @Test(expected = VerificationException.class)
+    @Test
     public void should_fail_to_verify_at_most_expected_request_while_expectation_can_not_be_met() throws Exception {
         final HttpServer server = httpServer(port(), hit);
         server.get(by(uri("/foo"))).response("bar");
@@ -146,7 +151,7 @@ public class MocoRequestHitTest {
             assertThat(helper.get(remoteUrl("/foo")), is("bar"));
         });
 
-        hit.verify(by(uri("/foo")), atMost(1));
+        assertThrows(VerificationException.class, () -> hit.verify(by(uri("/foo")), atMost(1)));
     }
 
     @Test
@@ -159,10 +164,11 @@ public class MocoRequestHitTest {
         hit.verify(by(uri("/foo")), once());
     }
 
-    @Test(expected = VerificationException.class)
+    @Test
     public void should_fail_to_verify_while_once_expectation_can_not_be_met() throws Exception {
         httpServer(port(), hit);
-        hit.verify(by(uri("/foo")), times(1));
+
+        assertThrows(VerificationException.class, () -> hit.verify(by(uri("/foo")), times(1)));
     }
 
     @Test
@@ -189,7 +195,7 @@ public class MocoRequestHitTest {
         hit.verify(unexpected(), times(1));
     }
 
-    @Test(expected = VerificationException.class)
+    @Test
     public void should_fail_to_verify_while_unexpected_request_expectation_can_not_be_met() throws Exception {
         final HttpServer server = httpServer(port(), hit);
 
@@ -200,12 +206,12 @@ public class MocoRequestHitTest {
             }
         });
 
-        hit.verify(unexpected(), never());
+        assertThrows(VerificationException.class, () -> hit.verify(unexpected(), never()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_negative_number_for_times() {
-        times(-1);
+        assertThrows(IllegalArgumentException.class, () -> times(-1));
     }
 
     @Test

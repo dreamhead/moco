@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.google.common.collect.ImmutableMultimap;
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +19,7 @@ import static com.google.common.collect.ImmutableListMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoCorsTest extends AbstractMocoHttpTest {
     @Test
@@ -206,8 +207,9 @@ public class MocoCorsTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_not_allow_unknown_headers() {
-        allowMethods("foo");
+        assertThrows(IllegalArgumentException.class, () ->
+                allowMethods("foo"));
     }
 }

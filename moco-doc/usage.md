@@ -54,7 +54,7 @@ dependencies {
 Here is an typical Moco test case in JUnit.
 
 ```java
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import com.github.dreamhead.moco.HttpServer;
 import org.apache.http.client.fluent.Content;
@@ -86,9 +86,9 @@ Here, We use [Apache Http Client Fluent API](https://hc.apache.org/httpcomponent
 You may need to control server start/stop by yourself, for example, in your Before (or setup) method, runner API could be used.
 
 ```java
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -100,7 +100,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MocoRunnerTest {
     private Runner runner;
 
-    @Before
+    @BeforeEach
     public void setup() {
         HttpServer server = httpServer(12306);
         server.response("foo");
@@ -108,7 +108,7 @@ public class MocoRunnerTest {
         runner.start();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         runner.stop();
     }

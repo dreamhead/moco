@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
     protected JsonRunner runner;
 
-    @After
+    @AfterEach
     public void teardown() {
         if (runner != null) {
             runner.stop();

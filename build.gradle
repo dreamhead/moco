@@ -115,7 +115,8 @@ subprojects {
         )
 
         testImplementation(
-                "junit:junit:$junitVersion",
+                "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+                "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
@@ -127,6 +128,10 @@ subprojects {
         testRuntimeOnly(
                 "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
     test {

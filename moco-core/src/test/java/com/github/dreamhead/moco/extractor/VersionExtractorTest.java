@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.extractor;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import io.netty.handler.codec.http.HttpVersion;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,7 +15,7 @@ public class VersionExtractorTest {
 	private VersionExtractor extractor;
 	private HttpRequest request;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		extractor = new VersionExtractor();
         request = mock(HttpRequest.class);

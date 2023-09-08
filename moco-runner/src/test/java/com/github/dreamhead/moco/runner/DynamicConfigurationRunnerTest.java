@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.runner;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -14,12 +14,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DynamicConfigurationRunnerTest extends AbstractRunnerTest {
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
-    public void should_reload_configuration() throws IOException, InterruptedException {
-        final File config = tempFolder.newFile();
+    public void should_reload_configuration(@TempDir final Path path) throws IOException, InterruptedException {
+        final File config = path.resolve("tempfile").toFile();
         changeFileContent(config, "[{\"response\" :{"
                 + "\"text\" : \"foo\""
                 + "}}]");

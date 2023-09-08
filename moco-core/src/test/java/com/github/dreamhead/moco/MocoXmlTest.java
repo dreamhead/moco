@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.hc.client5.http.HttpResponseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoXmlTest extends AbstractMocoHttpTest {
     @Test
@@ -30,16 +31,20 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_anything_for_mismatch_xpath() throws Exception {
         server.request(eq(xpath("/request/parameters/id/text()"), "3")).response("foo");
-        running(server, () -> helper.postFile(root(), "foo.xml"));
+
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postFile(root(), "foo.xml")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_anything_for_unknown_xpath() throws Exception {
         server.request(eq(xpath("/response/parameters/id/text()"), "3")).response("foo");
-        running(server, () -> helper.postFile(root(), "foo.xml"));
+
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postFile(root(), "foo.xml")));
     }
 
     @Test
@@ -70,11 +75,12 @@ public class MocoXmlTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.postFile(root(), "foo.xml"), is("foo")));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void should_throw_exception_for_unknown_content() throws Exception {
         server.request(xml("<request><parameters><id>1</id></parameters></request>")).response("foo");
 
-        running(server, () -> helper.postContent(root(), "blah"));
+        assertThrows(IOException.class, () ->
+                running(server, () -> helper.postContent(root(), "blah")));
     }
 
     @Test

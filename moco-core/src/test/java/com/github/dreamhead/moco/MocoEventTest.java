@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Idles;
 import com.google.common.collect.ImmutableMultimap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.nio.charset.Charset;

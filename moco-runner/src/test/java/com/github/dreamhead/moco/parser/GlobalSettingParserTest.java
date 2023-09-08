@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ public class GlobalSettingParserTest {
 
     private GlobalSettingParser parser;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         parser = new GlobalSettingParser();
     }

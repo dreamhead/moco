@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class MocoRunnerTest {
     private Runner runner;
     private MocoTestHelper helper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         HttpServer server = httpServer(port());
         server.response("foo");
@@ -26,7 +26,7 @@ public class MocoRunnerTest {
         helper = new MocoTestHelper();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         runner.stop();
     }

@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.Header;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +15,14 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SettingRunnerTest {
     private final MocoTestHelper helper = new MocoTestHelper();
     private SettingRunner runner;
     private InputStream stream;
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         if (runner != null) {
             runner.stop();
@@ -71,13 +72,15 @@ public class SettingRunnerTest {
         assertThat(helper.get(remoteUrl("/foo/foo")), is("foo"));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_run_without_env() throws IOException {
         stream = getResourceAsStream("settings/env-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306, "bar"));
         runner.run();
 
-        helper.get(remoteUrl("/foo/foo"));
+        assertThrows(HttpResponseException.class, () -> {
+            helper.get(remoteUrl("/foo/foo"));
+        });
     }
 
     @Test
@@ -99,13 +102,13 @@ public class SettingRunnerTest {
         assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar")), is("foo"));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_without_global_request_settings() throws IOException {
+    @Test
+    public void should_throw_exception_without_global_request_settings() {
         stream = getResourceAsStream("settings/request-settings.json");
         runner = new SettingRunner(stream, createStartArgs(12306));
         runner.run();
 
-        helper.get(remoteUrl("/foo"));
+        assertThrows(HttpResponseException.class, () -> helper.get(remoteUrl("/foo")));
     }
 
     private StartArgs createStartArgs(final int port, final String env) {

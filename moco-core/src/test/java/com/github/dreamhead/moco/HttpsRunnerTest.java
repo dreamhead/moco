@@ -1,17 +1,17 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.httpsServer;
 import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.httpsRoot;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
-import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -19,7 +19,7 @@ public class HttpsRunnerTest {
     private Runner runner;
     private MocoTestHelper helper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         HttpsServer server = httpsServer(port(), certificate(pathResource("cert.jks"), "mocohttps", "mocohttps"));
         server.response("foo");
@@ -28,7 +28,7 @@ public class HttpsRunnerTest {
         helper = new MocoTestHelper();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         runner.stop();
     }

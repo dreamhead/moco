@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.text;
 import static org.hamcrest.CoreMatchers.is;

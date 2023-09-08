@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
 import static java.lang.String.format;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AbstractRunnerTest {
     private static final long INTERVAL = TimeUnit.SECONDS.toMillis(1);
@@ -19,7 +19,7 @@ public abstract class AbstractRunnerTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
     protected Runner runner;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (runner != null) {
             runner.stop();

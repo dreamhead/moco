@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.hc.client5.http.fluent.Request;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;

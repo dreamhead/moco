@@ -1,12 +1,13 @@
 package com.github.dreamhead.moco;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -15,10 +16,13 @@ public class MocoXmlStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.postFile(remoteUrl("/xpath"), "foo.xml"), is("response_for_xpath_request"));
     }
 
-    @Test(expected = IOException.class)
-    public void should_throw_exception_for_unknown_xpath_request() throws IOException {
+    @Test
+    public void should_throw_exception_for_unknown_xpath_request() {
         runWithConfiguration("xpath.json");
-        helper.postFile(remoteUrl("/xpath"), "bar.xml");
+
+        assertThrows(IOException.class, () -> {
+            helper.postFile(remoteUrl("/xpath"), "bar.xml");
+        });
     }
 
     @Test

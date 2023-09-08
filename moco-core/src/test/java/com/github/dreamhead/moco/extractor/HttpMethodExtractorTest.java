@@ -2,8 +2,8 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -14,7 +14,7 @@ public class HttpMethodExtractorTest {
     private HttpMethodExtractor extractor;
     private HttpRequest request;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         extractor = new HttpMethodExtractor();
         request = mock(HttpRequest.class);

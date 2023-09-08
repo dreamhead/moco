@@ -12,7 +12,7 @@ import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.ProtocolVersion;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -47,7 +47,8 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.matchesRegex;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class MocoTemplateTest extends AbstractMocoHttpTest {
     @Test
@@ -81,11 +82,12 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/template"), ImmutableMultimap.of("foo", "bar")), is("bar")));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_for_unknown_header() throws Exception {
+    @Test
+    public void should_throw_exception_for_unknown_header() {
         server.request(by(uri("/template"))).response(template("${req.headers['foo']}"));
 
-        running(server, () -> helper.get(remoteUrl("/template")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/template"))));
     }
 
     @Test
@@ -474,9 +476,11 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_reserved_name_as_variable_nem() {
-        server.request(by(uri("/template"))).response(template("${random}", "random", "bar"));
+        assertThrows(IllegalArgumentException.class, () ->
+                server.request(by(uri("/template"))).response(template("${random}", "random", "bar")));
+
     }
 
     @Test

@@ -1,13 +1,13 @@
 package com.github.dreamhead.moco;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
@@ -20,13 +20,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     private static final long IDLE = 1500;
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
     @Test
-    public void should_fire_event() throws IOException {
+    public void should_fire_event(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/event")), is("post_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -35,9 +32,9 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_get_event() throws IOException {
+    public void should_fire_get_event(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/get_event")), is("get_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -46,9 +43,10 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_get_event_with_template() throws IOException {
+    public void should_fire_get_event_with_template(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
+
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/get_event_template")), is("get_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -57,9 +55,9 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_unit() throws IOException {
+    public void should_fire_event_with_unit(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/event-with-unit")), is("post_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -68,9 +66,9 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_post_url_template() throws IOException {
+    public void should_fire_event_with_post_url_template(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/post-event-with-template-url")), is("post_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -79,9 +77,9 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_post_content_template() throws IOException {
+    public void should_fire_event_with_post_content_template(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/post-event-with-template-content")), is("post_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -90,9 +88,9 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_post_json() throws IOException {
+    public void should_fire_event_with_post_json(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/event-with-json-post")), is("post_json_foo"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -101,10 +99,11 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_get_for_header() throws IOException {
+    public void should_fire_event_with_get_for_header(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
 
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
+
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/get_event_with_header")), is("get_foo_with_header"));
         idle(IDLE, TimeUnit.MILLISECONDS);
@@ -113,10 +112,10 @@ public class MocoEventStandaloneTest extends AbstractMocoStandaloneTest {
     }
 
     @Test
-    public void should_fire_event_with_post_for_header() throws IOException {
+    public void should_fire_event_with_post_for_header(@TempDir final Path folder) throws IOException {
         runWithConfiguration("event.json");
 
-        File file = folder.newFile();
+        File file = folder.resolve("tempfile").toFile();
         System.setOut(new PrintStream(file));
         assertThat(helper.get(remoteUrl("/post_event_with_header")), is("post_foo_with_header"));
         idle(IDLE, TimeUnit.MILLISECONDS);

@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

@@ -4,7 +4,7 @@ import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 
@@ -16,6 +16,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoMountTest extends AbstractMocoHttpTest {
 
@@ -28,11 +29,12 @@ public class MocoMountTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_return_bad_request_for_nonexistence_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"));
 
-        running(server, () -> helper.get(remoteUrl("/dir/unknown.response")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/dir/unknown.response"))));
     }
 
     @Test
@@ -42,18 +44,20 @@ public class MocoMountTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_non_inclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), include("*.response"));
 
-        running(server, () -> helper.get(remoteUrl("/dir/foo.bar")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/dir/foo.bar"))));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_exclusion_file() throws Exception {
         server.mount(MOUNT_DIR, to("/dir"), exclude("*.response"));
 
-        running(server, () -> helper.get(remoteUrl("/dir/dir.response")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/dir/dir.response"))));
     }
 
     @Test

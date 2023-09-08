@@ -8,7 +8,7 @@ import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.ProtocolVersion;
 import org.apache.hc.client5.http.fluent.Request;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -53,6 +53,7 @@ import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoTest extends AbstractMocoHttpTest {
     @Test
@@ -115,9 +116,10 @@ public class MocoTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_for_unknown_request() throws Exception {
-        running(server, () -> assertThat(helper.get(root()), is("bar")));
+    @Test
+    public void should_throw_exception_for_unknown_request() {
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> assertThat(helper.get(root()), is("bar"))));
     }
 
     @Test
@@ -158,11 +160,12 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.postContent(remoteUrl("/foo"), "foo"), is("bar")));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_even_if_match_one_of_conditions() throws Exception {
+    @Test
+    public void should_throw_exception_even_if_match_one_of_conditions() {
         server.request(and(by("foo"), by(uri("/foo")))).response("bar");
 
-        running(server, () -> helper.get(remoteUrl("/foo")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/foo"))));
     }
 
     @Test
@@ -206,11 +209,12 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.get(remoteUrl("/foo")), is("bar")));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_not_response_for_get_while_http_method_is_not_get() throws Exception {
+    @Test
+    public void should_not_response_for_get_while_http_method_is_not_get() {
         server.get(by(uri("/foo"))).response("bar");
 
-        running(server, () -> helper.postContent(remoteUrl("/foo"), ""));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postContent(remoteUrl("/foo"), "")));
     }
 
     @Test
@@ -234,11 +238,12 @@ public class MocoTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_not_response_for_post_while_http_method_is_not_post() throws Exception {
+    @Test
+    public void should_not_response_for_post_while_http_method_is_not_post() {
         server.post(by(uri("/foo"))).response("bar");
 
-        running(server, () -> helper.get(remoteUrl("/foo")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/foo"))));
     }
 
     @Test
@@ -435,11 +440,11 @@ public class MocoTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(root(), of("foo", "bar", "foo", "bar2")), is("blah")));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_throw_exception_without_specified_header() throws Exception {
+    @Test
+    public void should_throw_exception_without_specified_header() {
         server.request(eq(header("foo"), "bar")).response("blah");
 
-        running(server, () -> helper.get(remoteUrl("/foo")));
+        assertThrows(HttpResponseException.class, () -> running(server, () -> helper.get(remoteUrl("/foo"))));
     }
 
     @Test
@@ -862,12 +867,11 @@ public class MocoTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_response_while_uri_path_is_not_matched() throws Exception {
         server.request(path(uri("/path/{path}"))).response("path");
 
-        running(server, () -> {
-            helper.get(remoteUrl("/foo/hello"));
-        });
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/foo/hello"))));
     }
 }

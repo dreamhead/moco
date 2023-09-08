@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.RequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public class EqRequestMatcherTest {
     private HttpRequest request;
     private Resource expected;
 
-    @Before
+    @BeforeEach
     @SuppressWarnings("unchecked")
     public void setUp() {
         extractor = (RequestExtractor<String[]>)mock(RequestExtractor.class);

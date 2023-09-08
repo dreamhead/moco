@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.net.HttpHeaders;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

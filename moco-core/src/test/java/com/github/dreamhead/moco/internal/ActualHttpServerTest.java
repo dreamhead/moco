@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.AbstractMocoHttpTest;
 import com.github.dreamhead.moco.HttpServer;
 import com.github.dreamhead.moco.HttpsCertificate;
 import org.apache.hc.client5.http.HttpResponseException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.by;
@@ -22,12 +22,13 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ActualHttpServerTest extends AbstractMocoHttpTest {
     private HttpServer httpServer;
     private HttpServer anotherServer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         httpServer = httpServer(12306, context("/foo"));
@@ -41,10 +42,11 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         running(mergedServer, () -> assertThat(helper.get(remoteUrl("/foo/anything")), is("foo")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_for_merging_http_server_with_any_handler_one_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) anotherServer).mergeServer((ActualHttpServer) httpServer);
-        running(mergedServer, () -> helper.get(remoteUrl("/bar/anything")));
+        assertThrows(HttpResponseException.class, () ->
+                running(mergedServer, () -> helper.get(remoteUrl("/bar/anything"))));
     }
 
     @Test
@@ -53,10 +55,11 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         running(mergedServer, () -> assertThat(helper.get(remoteUrl("/foo/anything")), is("foo")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_for_merging_http_server_with_any_handler_other_side() throws Exception {
         HttpServer mergedServer = ((ActualHttpServer) httpServer).mergeServer((ActualHttpServer) anotherServer);
-        running(mergedServer, () -> helper.get(remoteUrl("/bar/anything")));
+        assertThrows(HttpResponseException.class, () ->
+                running(mergedServer, () -> helper.get(remoteUrl("/bar/anything"))));
     }
 
     @Test

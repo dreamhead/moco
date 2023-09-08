@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.by;
@@ -23,7 +23,7 @@ public class MocoHttpsTest {
     private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
     private MocoTestHelper helper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         helper = new MocoTestHelper();
     }

@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.util.Strings.strip;
 import static org.hamcrest.CoreMatchers.is;

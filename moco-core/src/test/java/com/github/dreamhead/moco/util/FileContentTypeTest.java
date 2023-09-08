@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.net.MediaType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
 

@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -33,6 +33,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -46,22 +47,26 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
                         is("jsonpath match success")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_anything_for_mismatch_jsonpath() throws Exception {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
-        running(server, () -> helper.postContent(root(), "{\"book\":{\"price\":\"2\"}}"));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postContent(root(), "{\"book\":{\"price\":\"2\"}}")));
+
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_anything_if_no_json_path_found() throws Exception {
         server.request(eq(jsonPath("anything"), "1")).response("jsonpath match success");
-        running(server, () -> helper.postContent(root(), "{}"));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postContent(root(), "{}")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_return_anything_if_no_json_found() throws Exception {
         server.request(eq(jsonPath("$.book.price"), "1")).response("jsonpath match success");
-        running(server, () -> helper.postContent(root(), "{}"));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.postContent(root(), "{}")));
     }
 
     @Test

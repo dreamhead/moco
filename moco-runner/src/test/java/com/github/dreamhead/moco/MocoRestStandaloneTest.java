@@ -5,7 +5,7 @@ import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +14,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -167,9 +168,11 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(plain.message, is("any-sub"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_while_no_response_found_in_rest_setting() {
-        runWithConfiguration("rest/rest_error_without_response.json");
+        assertThrows(IllegalArgumentException.class, () -> {
+            runWithConfiguration("rest/rest_error_without_response.json");
+        });
     }
 
     @Test
@@ -194,19 +197,25 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(httpResponse.getHeaders("ETag")[0].getValue(), is("Moco"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_without_put_id() {
-        runWithConfiguration("rest/rest_error_without_put_id.json");
+        assertThrows(IllegalArgumentException.class, () -> {
+            runWithConfiguration("rest/rest_error_without_put_id.json");
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_without_delete_id() {
-        runWithConfiguration("rest/rest_error_without_delete_id.json");
+        assertThrows(IllegalArgumentException.class, () -> {
+            runWithConfiguration("rest/rest_error_without_delete_id.json");
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_without_patch_id() {
-        runWithConfiguration("rest/rest_error_without_patch_id.json");
+        assertThrows(IllegalArgumentException.class, () -> {
+            runWithConfiguration("rest/rest_error_without_patch_id.json");
+        });
     }
 
     private Plain getResource(final String uri) throws IOException {

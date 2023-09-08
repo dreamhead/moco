@@ -1,13 +1,14 @@
 package com.github.dreamhead.moco;
 
 import org.apache.hc.client5.http.HttpResponseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoPathStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -17,9 +18,12 @@ public class MocoPathStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.get(remoteUrl("/path/path/sub/sub")), is("sub"));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_not_match_uri_path() throws IOException {
+    @Test
+    public void should_not_match_uri_path() {
         runWithConfiguration("path.json");
-        helper.get(remoteUrl("/unknown/path"));
+        assertThrows(HttpResponseException.class, () -> {
+            helper.get(remoteUrl("/unknown/path"));
+        });
+
     }
 }

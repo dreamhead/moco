@@ -9,13 +9,13 @@ import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
@@ -56,11 +56,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoProxyTest extends AbstractMocoHttpTest {
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
-
 //    @Test
 //    public void should_fetch_remote_url() throws Exception {
 //        server.response(proxy("http://github.com/"));
@@ -176,9 +174,9 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_failover_with_response_content() throws Exception {
+    public void should_failover_with_response_content(@TempDir final Path path) throws Exception {
         server.post(and(by(uri("/target")), by("proxy"))).response("proxy");
-        final File tempFile = tempFolder.newFile();
+        final File tempFile = path.resolve("tempfile").toFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, () -> {
@@ -188,11 +186,11 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_failover_with_many_response_content() throws Exception {
+    public void should_failover_with_many_response_content(@TempDir final Path path) throws Exception {
         server.get(by(uri("/target"))).response("get_proxy");
         server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
 
-        final File tempFile = tempFolder.newFile();
+        final File tempFile = path.resolve("tempfile").toFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, () -> {
@@ -205,10 +203,10 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_failover_with_same_response_once() throws Exception {
+    public void should_failover_with_same_response_once(@TempDir final Path path) throws Exception {
         server = httpServer(port(), log());
         server.post(and(by(uri("/target")), by("proxy"))).response("0XCAFEBABE");
-        final File tempFile = tempFolder.newFile();
+        final File tempFile = path.resolve("tempfile").toFile();
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target"), failover(tempFile.getAbsolutePath())));
 
         running(server, () -> {
@@ -334,11 +332,12 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_not_proxy_url_for_unmatching_url_for_batch_proxy_from_server() throws Exception {
         server.proxy(from("/proxy").to(remoteUrl("/target")));
 
-        running(server, () -> helper.get(remoteUrl("/proxy1/1")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/proxy1/1"))));
     }
 
     @Test
@@ -362,20 +361,20 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
     }
 
     @Test
-    public void should_proxy_with_playback() throws Exception {
+    public void should_proxy_with_playback(@TempDir final Path path) throws Exception {
         server.request(by(uri("/target"))).response("proxy");
-        final File file = tempFolder.newFile();
+        final File file = path.resolve("tempfile").toFile();
         server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));
 
         running(server, () -> assertThat(helper.get(remoteUrl("/proxy_playback")), is("proxy")));
     }
 
     @Test
-    public void should_proxy_with_playback_to_access_remote_only_once() throws Exception {
+    public void should_proxy_with_playback_to_access_remote_only_once(@TempDir final Path path) throws Exception {
         RequestHit hit = requestHit();
         server = httpServer(port(), hit);
         server.request(by(uri("/target"))).response("proxy");
-        final File file = tempFolder.newFile();
+        final File file = path.resolve("tempfile").toFile();
         System.out.println(file.getAbsolutePath());
         server.request(by(uri("/proxy_playback"))).response(proxy(remoteUrl("/target"), playback(file.getAbsolutePath())));
 

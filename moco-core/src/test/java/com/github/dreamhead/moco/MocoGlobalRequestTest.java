@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import org.apache.hc.client5.http.HttpResponseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -22,6 +22,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static com.google.common.collect.ImmutableMultimap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
     @Test
@@ -35,15 +36,16 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_global_matcher() throws Exception {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(by(uri("/global-request"))).response("blah");
 
-        running(server, () -> {
-            String result = helper.get(remoteUrl("/global-request"));
-            assertThat(result, is("blah"));
-        });
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> {
+                    String result = helper.get(remoteUrl("/global-request"));
+                    assertThat(result, is("blah"));
+                }));
     }
 
     @Test
@@ -58,12 +60,12 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_global_matcher_for_any_response() throws Exception {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.response("blah");
 
-        running(server, () -> helper.get(root()));
+        assertThrows(HttpResponseException.class, () -> running(server, () -> helper.get(root())));
     }
 
     @Test
@@ -74,12 +76,13 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(root(), of("foo", "bar", "blah", "any")), is("header")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_global_matcher_for_exist() throws Exception {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(exist(header("blah"))).response("header");
 
-        running(server, () -> helper.getWithHeader(root(), of("blah", "any")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.getWithHeader(root(), of("blah", "any"))));
     }
 
     @Test
@@ -90,12 +93,13 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.postContent(remoteUrl("/path"), jsonContent), is("foo")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_match_json() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         final String jsonContent = "{\"foo\":\"bar\"}";
         server.request(by(json(jsonContent))).response("foo");
-        running(server, () -> helper.postContent(root(), jsonContent));
+
+        assertThrows(HttpResponseException.class, () -> running(server, () -> helper.postContent(root(), jsonContent)));
     }
 
     @Test
@@ -105,11 +109,11 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.postFile(remoteUrl("/path"), "foo.xml"), is("foo")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_match_xml() throws Exception {
         server = httpServer(port(), request(by(uri("/path"))));
         server.request(by(xml("<request><parameters><id>1</id></parameters></request>"))).response("foo");
-        running(server, () -> helper.postFile(root(), "foo.xml"));
+        assertThrows(HttpResponseException.class, () -> running(server, () -> helper.postFile(root(), "foo.xml")));
     }
 
     @Test
@@ -121,13 +125,14 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/dir/dir.response"), of("foo", "bar")), is("response from dir")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_match_mount() throws Exception {
         final String MOUNT_DIR = "src/test/resources/test";
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.mount(MOUNT_DIR, to("/dir"));
 
-        running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> assertThat(helper.get(remoteUrl("/dir/dir.response")), is("response from dir"))));
     }
 
     @Test
@@ -138,12 +143,13 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/bar"), of("foo", "bar")), is("bar")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_match_not() throws Exception {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(not(by(uri("/foo")))).response("bar");
 
-        running(server, () -> helper.get(remoteUrl("/bar")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.get(remoteUrl("/bar"))));
     }
 
     @Test
@@ -154,11 +160,12 @@ public class MocoGlobalRequestTest extends AbstractMocoHttpTest {
         running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/foo"), of("foo", "bar", "header", "blah")), is("bar")));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_throw_exception_without_match_and_matcher() throws Exception {
         server = httpServer(port(), request(eq(header("foo"), "bar")));
         server.request(and(by(uri("/foo")), eq(header("header"), "blah"))).response("bar");
 
-        running(server, () -> helper.getWithHeader(remoteUrl("/foo"), of("header", "blah")));
+        assertThrows(HttpResponseException.class, () ->
+                running(server, () -> helper.getWithHeader(remoteUrl("/foo"), of("header", "blah"))));
     }
 }

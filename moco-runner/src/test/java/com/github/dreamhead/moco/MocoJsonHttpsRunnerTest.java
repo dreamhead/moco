@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.HttpsCertificate.certificate;
 import static com.github.dreamhead.moco.Moco.file;

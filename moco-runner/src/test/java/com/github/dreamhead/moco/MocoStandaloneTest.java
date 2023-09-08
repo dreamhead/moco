@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.net.HttpHeaders;
+import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.ProtocolVersion;
-import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -74,10 +75,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.get(remoteUrl("/get")), is("response_for_get_method"));
     }
 
-    @Test(expected = IOException.class)
-    public void should_throw_exception_while_request_non_get_request() throws IOException {
+    @Test
+    public void should_throw_exception_while_request_non_get_request() {
         runWithConfiguration("get_method.json");
-        helper.postContent(remoteUrl("/get"), "");
+
+        assertThrows(IOException.class, () -> {
+            helper.postContent(remoteUrl("/get"), "");
+        });
     }
 
     @Test
@@ -86,10 +90,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.postContent(remoteUrl("/post"), ""), is("response_for_post_method"));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void should_throw_exception_while_request_non_post_request() throws IOException {
         runWithConfiguration("post_method.json");
-        helper.get(remoteUrl("/post"));
+
+        assertThrows(IOException.class, () -> {
+            helper.get(remoteUrl("/post"));
+        });
     }
 
     @Test
@@ -128,10 +135,13 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.getWithHeader(remoteUrl("/header"), of(HttpHeaders.CONTENT_TYPE, "application/json")), is("response_for_header_request"));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void should_throw_exception_for_unknown_header() throws IOException {
         runWithConfiguration("header.json");
-        helper.get(remoteUrl("/header"));
+
+        assertThrows(IOException.class, () -> {
+            helper.get(remoteUrl("/header"));
+        });
     }
 
     @Test
@@ -140,16 +150,22 @@ public class MocoStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.get(remoteUrl("/query?param=foo")), is("response_for_query_request"));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void should_throw_exception_for_different_query_param() throws IOException {
         runWithConfiguration("query.json");
-        helper.get(remoteUrl("/query?param2=foo"));
+
+        assertThrows(IOException.class, () -> {
+            helper.get(remoteUrl("/query?param2=foo"));
+        });
     }
 
-    @Test(expected = IOException.class)
-    public void should_throw_exception_for_different_query_param_value() throws IOException {
+    @Test
+    public void should_throw_exception_for_different_query_param_value() {
         runWithConfiguration("query.json");
-        helper.get(remoteUrl("/query?param=foo2"));
+
+        assertThrows(IOException.class, () -> {
+            helper.get(remoteUrl("/query?param=foo2"));
+        });
     }
 
     @Test

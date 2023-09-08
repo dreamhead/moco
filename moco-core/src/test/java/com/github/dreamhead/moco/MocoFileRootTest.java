@@ -3,8 +3,8 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.client5.http.fluent.Request;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.Moco.fileRoot;
@@ -24,7 +24,7 @@ public class MocoFileRootTest {
     private HttpServer server;
     private MocoTestHelper helper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         helper = new MocoTestHelper();
         server = httpServer(port(), fileRoot("src/test/resources"));

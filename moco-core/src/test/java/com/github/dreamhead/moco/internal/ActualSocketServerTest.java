@@ -2,8 +2,8 @@ package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.SocketServer;
 import com.github.dreamhead.moco.helper.MocoSocketHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.socketServer;
@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ActualSocketServerTest {
     private MocoSocketHelper helper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.helper = new MocoSocketHelper(local(), port());
     }

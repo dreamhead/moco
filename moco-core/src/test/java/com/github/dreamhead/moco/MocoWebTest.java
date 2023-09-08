@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.CookieHeaderNames;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +35,7 @@ import static com.google.common.collect.ImmutableSet.of;
 import static org.apache.hc.client5.http.fluent.Request.post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoWebTest extends AbstractMocoHttpTest {
     @Test
@@ -166,9 +167,9 @@ public class MocoWebTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_exception_for_unknown_samesite_value() throws Exception {
-        sameSite("Unknown");
+    @Test
+    public void should_throw_exception_for_unknown_samesite_value() {
+        assertThrows(IllegalArgumentException.class, () -> sameSite("Unknown"));
     }
 
     @Test

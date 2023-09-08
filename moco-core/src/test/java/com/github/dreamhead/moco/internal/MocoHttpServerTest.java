@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.server.ServerRunner;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 

@@ -1,12 +1,13 @@
 package com.github.dreamhead.moco;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -39,19 +40,26 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(content2, is("target_2"));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void should_throw_exception_if_proxy_has_both_url_and_batch() {
-        runWithConfiguration("proxy_error_multiple_mode.json");
+        assertThrows(RuntimeException.class, () -> {
+            runWithConfiguration("proxy_error_multiple_mode.json");
+        });
+
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void should_throw_exception_if_from_is_missing() {
-        runWithConfiguration("proxy_error_from_missing.json");
+        assertThrows(RuntimeException.class, () -> {
+            runWithConfiguration("proxy_error_from_missing.json");
+        });
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void should_throw_exception_if_to_is_missing() {
-        runWithConfiguration("proxy_error_to_missing.json");
+        assertThrows(RuntimeException.class, () -> {
+            runWithConfiguration("proxy_error_to_missing.json");
+        });
     }
 
     @Test
@@ -77,9 +85,11 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(content, is("proxy"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_not_proxy_from_server_with_url() throws IOException {
-        runWithConfiguration("proxy_error_url_from_server.json");
+    @Test
+    public void should_not_proxy_from_server_with_url() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            runWithConfiguration("proxy_error_url_from_server.json");
+        });
     }
 
     @Test

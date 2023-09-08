@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MocoMultithreadingTest {
     private MocoTestHelper helper;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         helper = new MocoTestHelper();
     }

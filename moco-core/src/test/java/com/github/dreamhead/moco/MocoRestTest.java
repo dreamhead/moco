@@ -8,15 +8,15 @@ import com.google.common.net.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpResponse;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.by;
@@ -49,11 +49,9 @@ import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
     @Override
     protected RestServer createServer(final int port) {
         return restServer(port, log());
@@ -169,7 +167,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
     }
 
     @Test
-    public void should_log_request_and_response() throws Exception {
+    public void should_log_request_and_response(@TempDir final Path path) throws Exception {
         RestServer server = restServer(port(), log());
 
         Plain resource1 = new Plain();
@@ -185,7 +183,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
                 get("2").response(json(resource2))
         );
 
-        File file = folder.newFile();
+        File file = path.resolve("tempfile").toFile();
         System.setOut(new PrintStream(new FileOutputStream(file)));
 
         running(server, () -> helper.get(remoteUrl("/targets")));
@@ -574,24 +572,26 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         running(server, () -> assertThat(helper.patchForResponse(remoteUrl("/targets/1"), "result"), is("patch result")));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_get_id_with_slash() {
-        get("1/1").response(status(200));
+        assertThrows(IllegalArgumentException.class, () -> get("1/1").response(status(200)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_get_id_with_space() {
-        get("1 1").response(status(200));
+        assertThrows(IllegalArgumentException.class, () -> get("1 1").response(status(200)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_resource_name_with_slash() {
-        server.resource("hello/world", get().response("hello"));
+        assertThrows(IllegalArgumentException.class, () ->
+                server.resource("hello/world", get().response("hello")));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_resource_name_with_space() {
-        server.resource("hello world", get().response("hello"));
+        assertThrows(IllegalArgumentException.class, () ->
+                server.resource("hello world", get().response("hello")));
     }
 
     @Test
@@ -650,9 +650,11 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_throw_exception_for_invalid_sub_resource_name() {
-        id(anyId()).name("hello world");
+        assertThrows(IllegalArgumentException.class, () ->
+                        id(anyId()).name("hello world")
+        );
     }
 
     @Test

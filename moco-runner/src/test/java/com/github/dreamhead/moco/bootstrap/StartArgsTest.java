@@ -4,17 +4,18 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.bootstrap.parser.HttpArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.SocketArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StartArgsTest {
 
     private StartArgsParser startArgsParser;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         startArgsParser = new HttpArgsParser();
     }
@@ -38,24 +39,32 @@ public class StartArgsTest {
         assertThat(args.getEnv().get(), is("foo"));
     }
 
-    @Test(expected = ParseArgException.class)
+    @Test
     public void should_set_at_least_config_or_settings() {
-        startArgsParser.parse(new String[]{"start", "-p", "12306"});
+        assertThrows(ParseArgException.class, () -> {
+            startArgsParser.parse(new String[]{"start", "-p", "12306"});
+        });
     }
 
-    @Test(expected = ParseArgException.class)
+    @Test
     public void should_not_set_config_and_settings() {
-        startArgsParser.parse(new String[]{"start", "-p", "12306", "-c", "foo.json", "-g", "settings.json"});
+        assertThrows(ParseArgException.class, () -> {
+            startArgsParser.parse(new String[]{"start", "-p", "12306", "-c", "foo.json", "-g", "settings.json"});
+        });
     }
 
-    @Test(expected = ParseArgException.class)
+    @Test
     public void should_not_set_environment_without_global_settings() {
-        startArgsParser.parse(new String[]{"start", "-p", "12306", "-e", "foo"});
+        assertThrows(ParseArgException.class, () -> {
+            startArgsParser.parse(new String[]{"start", "-p", "12306", "-e", "foo"});
+        });
     }
 
-    @Test(expected = ParseArgException.class)
+    @Test
     public void should_not_set_environment_with_config() {
-        startArgsParser.parse(new String[]{"start", "-p", "12306", "-c", "foo.json", "-e", "foo"});
+        assertThrows(ParseArgException.class, () -> {
+            startArgsParser.parse(new String[]{"start", "-p", "12306", "-c", "foo.json", "-e", "foo"});
+        });
     }
 
     @Test

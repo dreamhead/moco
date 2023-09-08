@@ -4,7 +4,7 @@ import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoMountStandaloneTest extends AbstractMocoStandaloneTest {
     @Test
@@ -26,10 +27,13 @@ public class MocoMountStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.get(remoteUrl("/mount-include/mount.response")), is("response from mount"));
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void should_return_non_inclusion() throws IOException {
         runWithConfiguration("mount.json");
-        helper.get(remoteUrl("/mount-include/foo.bar"));
+        assertThrows(HttpResponseException.class, () -> {
+            helper.get(remoteUrl("/mount-include/foo.bar"));
+        });
+
     }
 
     @Test
@@ -38,10 +42,13 @@ public class MocoMountStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(helper.get(remoteUrl("/mount-exclude/foo.bar")), is("foo.bar"));
     }
 
-    @Test(expected = HttpResponseException.class)
-    public void should_return_exclusion() throws IOException {
+    @Test
+    public void should_return_exclusion() {
         runWithConfiguration("mount.json");
-        helper.get(remoteUrl("/mount-exclude/mount.response"));
+        assertThrows(HttpResponseException.class, () -> {
+            helper.get(remoteUrl("/mount-exclude/mount.response"));
+        });
+
     }
 
     @Test

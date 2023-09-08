@@ -1,14 +1,14 @@
 package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.util.Files;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Path;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
@@ -18,12 +18,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DynamicSettingRunnerTest extends AbstractRunnerTest {
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
-    public void should_load_configuration() throws IOException, InterruptedException {
-        final File config = tempFolder.newFile("config.json");
+    public void should_load_configuration(@TempDir final Path path) throws IOException, InterruptedException {
+        final File config = path.resolve("config.json").toFile();
         changeFileContent(config, "[{\"response\" :{"
                 + "\"text\" : \"foo\""
                 + "}}]");
@@ -39,8 +37,8 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     }
 
     @Test
-    public void should_load_glob_configuration() throws IOException, InterruptedException {
-        final File config = tempFolder.newFile("config.json");
+    public void should_load_glob_configuration(@TempDir final Path path) throws IOException, InterruptedException {
+        final File config = path.resolve("config.json").toFile();
         changeFileContent(config, "[{\"response\" :{"
                 + "\"text\" : \"foo\""
                 + "}}]");
@@ -58,13 +56,13 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     }
 
     @Test
-    public void should_reload_configuration() throws IOException, InterruptedException {
-        final File config = tempFolder.newFile("config.json");
+    public void should_reload_configuration(@TempDir final Path tempFolder) throws IOException, InterruptedException {
+        final File config = tempFolder.resolve("config.json").toFile();
         changeFileContent(config, "[{\"response\" :{"
                 + "\"text\" : \"foo\""
                 + "}}]");
 
-        final File setting = tempFolder.newFile("settings.json");
+        final File setting = tempFolder.resolve("settings.json").toFile();
         String path = config.getAbsolutePath();
         changeFileContent(setting, "[{"
                 + "\"include\" : \"" + path + "\""
@@ -89,8 +87,8 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
     }
 
     @Test
-    public void should_reload_configuration_with_multiple_modification() throws IOException, InterruptedException {
-        final File config1 = tempFolder.newFile("config1.json");
+    public void should_reload_configuration_with_multiple_modification(@TempDir final Path tempFolder) throws IOException, InterruptedException {
+        final File config1 = tempFolder.resolve("config1.json").toFile();
         changeFileContent(config1, "[{" +
                 "        \"request\": {" +
                 "            \"uri\": \"/foo\"" +
@@ -100,7 +98,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "        }" +
                 "}]");
 
-        final File config2 = tempFolder.newFile("config2.json");
+        final File config2 = tempFolder.resolve("config2.json").toFile();
         changeFileContent(config2, "[{" +
                 "        \"request\": {" +
                 "            \"uri\": \"/bar\"" +
@@ -111,7 +109,7 @@ public class DynamicSettingRunnerTest extends AbstractRunnerTest {
                 "}]");
 
 
-        final File setting = tempFolder.newFile("settings.json");
+        final File setting = tempFolder.resolve("settings.json").toFile();
         changeFileContent(setting, "["
                 + "{\"include\" : \"" + config1.getAbsolutePath() + "\"},"
                 + "{\"include\" : \"" + config2.getAbsolutePath() + "\"}"

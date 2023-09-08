@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
@@ -15,13 +15,14 @@ import static com.github.dreamhead.moco.MocoWebSockets.broadcast;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class MocoWebsocketTest extends AbstractMocoHttpTest {
     private WebSocketServer webSocketServer;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         webSocketServer = server.websocket("/ws");
@@ -47,13 +48,12 @@ public class MocoWebsocketTest extends AbstractMocoHttpTest {
         });
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void should_fail_to_connect_with_unknown_uri() throws Exception {
         webSocketServer.connected("hello");
 
-        running(server, () -> {
-            new Endpoint(new URI("ws://localhost:12306/unknown/"));
-        });
+        assertThrows(RuntimeException.class, () ->
+                running(server, () -> new Endpoint(new URI("ws://localhost:12306/unknown/"))));
     }
 
     @Test
