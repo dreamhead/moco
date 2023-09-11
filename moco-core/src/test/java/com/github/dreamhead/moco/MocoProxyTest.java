@@ -2,11 +2,16 @@ package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
+import java.net.URI;
 import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.client5.http.fluent.Content;
+import org.apache.hc.client5.http.fluent.ContentResponseHandler;
 import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.Method;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.SubstringMatcher;
 import org.junit.jupiter.api.Test;
@@ -16,6 +21,9 @@ import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_0_9;
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
@@ -71,37 +79,23 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 //        });
 //    }
 
-    @Test
-    public void should_proxy_with_request_method() throws Exception {
-        server.get(by(uri("/target"))).response("get_proxy");
-        server.post(and(by(uri("/target")), by("proxy"))).response("post_proxy");
-        server.request(and(by(uri("/target")), by(method("put")), by("proxy"))).response("put_proxy");
-        server.request(and(by(uri("/target")), by(method("delete")))).response("delete_proxy");
-        server.request(and(by(uri("/target")), by(method("head")))).response(status(200));
-        server.request(and(by(uri("/target")), by(method("options")))).response("options_proxy");
-        server.request(and(by(uri("/target")), by(method("trace")))).response("trace_proxy");
-
+    @ParameterizedTest(name = "{0}")
+    @EnumSource(value = Method.class, names = {"CONNECT"}, mode = Mode.EXCLUDE)
+    public void should_proxy_with_request_method(Method method) throws Exception {
+        server.request(and(by(uri("/target")), by(method(method.name())))).response(method.name());
         server.request(by(uri("/proxy"))).response(proxy(remoteUrl("/target")));
 
+        Request request = Request.create(method, new URI(remoteUrl("/proxy")));
         running(server, () -> {
-            assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
-            assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-
-            Request putRequest = Request.put(remoteUrl("/proxy")).bodyString("proxy", ContentType.DEFAULT_TEXT);
-            assertThat(helper.executeAsString(putRequest), is("put_proxy"));
-
-            Request deleteRequest = Request.delete(remoteUrl("/proxy"));
-            assertThat(helper.executeAsString(deleteRequest), is("delete_proxy"));
-
-            Request headRequest = Request.head(remoteUrl("/proxy"));
-            int code = helper.execute(headRequest).getCode();
-            assertThat(code, is(200));
-
-            Request optionsRequest = Request.options(remoteUrl("/proxy"));
-            assertThat(helper.executeAsString(optionsRequest), is("options_proxy"));
-
-            Request traceRequest = Request.trace(remoteUrl("/proxy"));
-            assertThat(helper.executeAsString(traceRequest), is("trace_proxy"));
+            try (ClassicHttpResponse response = helper.execute(request)) {
+                assertThat(response.getCode(), is(200));
+                Content content = new ContentResponseHandler().handleEntity(response.getEntity());
+                if (method.isSame("HEAD")) {
+                    assertThat(content, is(Content.NO_CONTENT));
+                } else {
+                    assertThat(content.asString(), is(method.name()));
+                }
+            }
         });
     }
 
