@@ -117,6 +117,7 @@ subprojects {
         testImplementation(
                 "org.junit.jupiter:junit-jupiter-api:$junitVersion",
                 "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
+                "org.junit.jupiter:junit-jupiter-params:$junitVersion",
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
