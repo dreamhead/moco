@@ -11,9 +11,8 @@
 Moco is an easy setup stub framework.
 
 ## Latest Release
-* __1.5.0__
-
-More details in [Release Notes](moco-doc/ReleaseNotes.md)
+* [![Maven Central](https://img.shields.io/maven-central/v/com.github.dreamhead/moco-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.github.dreamhead/moco-core)
+* [Release Notes](moco-doc/ReleaseNotes.md)
 
 ## User Voice
 * [Let me know](https://jinshuju.net/f/Agawf9) if you are using Moco.
