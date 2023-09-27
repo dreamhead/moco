@@ -127,7 +127,8 @@ subprojects {
         )
 
         testRuntimeOnly(
-                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
+                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion",
+                "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
         )
     }
 
