@@ -6,5 +6,11 @@ project.dependencies {
     testImplementation(
             project(':moco-core').sourceSets.test.output,
             project(':moco-runner').sourceSets.test.output
+//                    {
+//                exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+//                exclude group: 'org.junit.jupiter', module: 'junit-jupiter-engine'
+//                exclude group: 'org.junit.jupiter', module: 'junit-jupiter-params'
+//                exclude group: 'org.junit.platform', module: 'junit-platform-launcher'
+//            }
     )
 }

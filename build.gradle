@@ -115,9 +115,6 @@ subprojects {
         )
 
         testImplementation(
-                "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-                "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-                "org.junit.jupiter:junit-jupiter-params:$junitVersion",
                 "org.hamcrest:hamcrest-core:$hamcrestVersion",
                 "org.hamcrest:hamcrest-library:$hamcrestVersion",
                 "org.mockito:mockito-core:$mockitoVersion",
@@ -127,13 +124,8 @@ subprojects {
         )
 
         testRuntimeOnly(
-                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion",
-                "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
+                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
         )
-    }
-
-    test {
-        useJUnitPlatform()
     }
 
     test {
@@ -150,6 +142,24 @@ subprojects {
         options.compilerArgs << "-Xlint:unchecked"
         options.compilerArgs << "-Xlint:deprecation"
         options.encoding = 'UTF-8'
+    }
+}
+
+configure(subprojects.findAll {it.name != "moco-junit"}) {
+    dependencies {
+        testImplementation(
+                "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+                "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
+                "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+        )
+
+        testRuntimeOnly(
+                "org.glassfish.tyrus.bundles:tyrus-standalone-client:$tyrusClientVersion"
+        )
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
