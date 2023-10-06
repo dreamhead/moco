@@ -145,7 +145,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name != "moco-junit"}) {
+configure(subprojects.findAll {!it.name.startsWith("moco-junit")}) {
     dependencies {
         testImplementation(
                 "org.junit.jupiter:junit-jupiter-api:$junitVersion",
