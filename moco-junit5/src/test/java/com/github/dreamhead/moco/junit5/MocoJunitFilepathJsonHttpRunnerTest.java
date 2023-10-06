@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @ExtendWith(MocoJunit5Extension.class)
-@MocoConfiguration(filepath = "src/test/resources/foo.json", port=12306)
+@MocoHttpServer(filepath = "src/test/resources/foo.json", port=12306)
 public class MocoJunitFilepathJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test
     public void should_return_expected_message() throws IOException {

@@ -43,7 +43,7 @@ public class MocoJunit5Extension implements TestInstancePostProcessor, BeforeEac
     @Override
     public void postProcessTestInstance(final Object testInstance, final ExtensionContext context) throws Exception {
         Class<?> testInstanceClass = testInstance.getClass();
-        MocoConfiguration configuration = testInstanceClass.getAnnotation(MocoConfiguration.class);
+        MocoHttpServer configuration = testInstanceClass.getAnnotation(MocoHttpServer.class);
         MocoCertificate certificate = testInstanceClass.getAnnotation(MocoCertificate.class);
 
         if (configuration == null) {
@@ -53,7 +53,7 @@ public class MocoJunit5Extension implements TestInstancePostProcessor, BeforeEac
         context.getStore(MOCO).put(SERVER, runner(newServer(configuration, certificate)));
     }
 
-    private HttpServer newServer(final MocoConfiguration configuration, final MocoCertificate certificate) {
+    private HttpServer newServer(final MocoHttpServer configuration, final MocoCertificate certificate) {
         Resource resource = getResource(configuration);
         int port = configuration.port();
 
@@ -68,7 +68,7 @@ public class MocoJunit5Extension implements TestInstancePostProcessor, BeforeEac
         return HttpsCertificate.certificate(getResource(certificate), certificate.keyStorePassword(), certificate.certPassword());
     }
 
-    private ContentResource getResource(final MocoConfiguration configuration) {
+    private ContentResource getResource(final MocoHttpServer configuration) {
         return getResource(configuration.filepath(), configuration.classpath());
     }
 

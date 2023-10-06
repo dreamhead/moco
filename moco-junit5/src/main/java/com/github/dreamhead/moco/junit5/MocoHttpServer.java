@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface MocoConfiguration {
+public @interface MocoHttpServer {
     int port();
 
     String classpath() default "";
