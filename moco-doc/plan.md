@@ -7,7 +7,6 @@
 
 ### Handler
 * Template function
-* Path variables extraction
 
 ## More
 * Client

@@ -19,7 +19,7 @@ import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpsServer;
 import static com.github.dreamhead.moco.Runner.runner;
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
 
-public class MocoJunit5Extension implements TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback, Extension {
+public class MocoExtension implements TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback, Extension {
     private static final ExtensionContext.Namespace MOCO = create("com.github.dreamhead.moco.junit5");
     private static final String SERVER = "server";
 

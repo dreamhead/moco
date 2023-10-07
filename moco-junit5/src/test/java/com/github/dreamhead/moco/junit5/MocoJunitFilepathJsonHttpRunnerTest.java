@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@ExtendWith(MocoJunit5Extension.class)
+@ExtendWith(MocoExtension.class)
 @MocoHttpServer(filepath = "src/test/resources/foo.json", port=12306)
 public class MocoJunitFilepathJsonHttpRunnerTest extends AbstractMocoStandaloneTest {
     @Test
