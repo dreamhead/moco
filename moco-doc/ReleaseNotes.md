@@ -1,3 +1,8 @@
+# Release
+
+## JUnit 5
+* HTTP and HTTPS with JSON configuration from file/class path
+
 # Release 1.5.0(1-Sep-2023)
 ## APIs
 * `req.client.port` is supported in template
