@@ -10,6 +10,7 @@ public final class JsonContentRequestMatcher extends JsonRequestMatcher {
         super(expected, extractor);
     }
 
+    @Override
     protected boolean doMatch(final JsonNode actual, final JsonNode expected) {
         return actual.equals(expected);
     }

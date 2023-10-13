@@ -11,6 +11,7 @@ public final class JsonStructRequestMatcher extends JsonRequestMatcher {
         super(expected, extractor);
     }
 
+    @Override
     protected boolean doMatch(final JsonNode actual, final JsonNode expected) {
         if (actual == null) {
             return false;
