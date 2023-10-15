@@ -17,12 +17,14 @@ public abstract class StartArgs extends ShutdownPortOption {
     private final Optional<String> settings;
     private final Optional<String> env;
     private final boolean quiet;
+    private final Optional<Integer> contentLength;
     private final Optional<HttpsArg> httpsArg;
 
     protected StartArgs(final ServerType type, final Integer port, final Integer shutdownPort,
                         final String configurationFile, final String globalSettings,
                         final String env,
                         final boolean quiet,
+                        Integer contentLength,
                         final HttpsArg httpsArg) {
         super(shutdownPort);
         this.type = type;
@@ -31,6 +33,7 @@ public abstract class StartArgs extends ShutdownPortOption {
         this.settings = ofNullable(globalSettings);
         this.env = ofNullable(env);
         this.quiet = quiet;
+        this.contentLength = ofNullable(contentLength);
         this.httpsArg = ofNullable(httpsArg);
     }
 
@@ -73,5 +76,9 @@ public abstract class StartArgs extends ShutdownPortOption {
 
     public final boolean isQuiet() {
         return quiet;
+    }
+
+    public Optional<Integer> getContentLength() {
+        return contentLength;
     }
 }

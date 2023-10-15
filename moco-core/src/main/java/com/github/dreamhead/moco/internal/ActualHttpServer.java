@@ -117,6 +117,29 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return createLogServer(port);
     }
 
+    public static ActualHttpServer createHttpsServer(final int port,
+                                                     final HttpsCertificate certificate,
+                                                     final boolean quite,
+                                                     final int contentLength) {
+        if (quite) {
+            return createHttpServer(port, certificate, new QuietMonitor(),
+                    new ServerConfig(MAX_HEADER_SIZE, contentLength));
+        }
+
+        return createHttpServer(port, certificate, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()),
+                new ServerConfig(MAX_HEADER_SIZE, contentLength));
+    }
+
+    public static ActualHttpServer createHttpServer(final int port, final boolean quite, final int contentLength) {
+        if (quite) {
+            return createHttpServer(port, null, new QuietMonitor(),
+                    new ServerConfig(MAX_HEADER_SIZE, contentLength));
+        }
+
+        return createHttpServer(port, null, new Slf4jMonitor(new HttpRequestDumper(), new HttpResponseDumper()),
+                new ServerConfig(MAX_HEADER_SIZE, contentLength));
+    }
+
     public static ActualHttpServer createHttpServerWithMonitor(final int port,
                                                                final MocoMonitor monitor,
                                                                final MocoConfig<?>... configs) {
@@ -168,13 +191,6 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
     }
 
-    public static ActualHttpServer createHttpsServer(final int port,
-                                                     final HttpsCertificate certificate,
-                                                     final MocoMonitor monitor,
-                                                     final ServerConfig serverConfig,
-                                                     final MocoConfig<?>... configs) {
-        return new ActualHttpServer(port, certificate, monitor, serverConfig, configs);
-    }
 
     @Override
     protected final HttpSetting newSetting(final RequestMatcher matcher) {

@@ -14,6 +14,7 @@ import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -95,6 +96,20 @@ public final class JsonRunner implements Runner {
     private HttpServer createHttpServer(final StartArgs startArgs) {
         final int port = startArgs.getPort().orElse(0);
 
+        Optional<Integer> contentLength = startArgs.getContentLength();
+        if (contentLength.isPresent()) {
+            if (startArgs.isHttps()) {
+                return ActualHttpServer.createHttpsServer(port, startArgs.getHttpsCertificate().get(),
+                        startArgs.isQuiet(), contentLength.get());
+            }
+
+            return ActualHttpServer.createHttpServer(port, startArgs.isQuiet(), contentLength.get());
+        }
+
+        return doCreateHttpServer(startArgs, port);
+    }
+
+    private static ActualHttpServer doCreateHttpServer(final StartArgs startArgs, final int port) {
         if (startArgs.isHttps()) {
             return ActualHttpServer.createHttpsServer(port, startArgs.isQuiet(), startArgs.getHttpsCertificate().get());
         }

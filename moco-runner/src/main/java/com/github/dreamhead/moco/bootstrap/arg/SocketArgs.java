@@ -4,7 +4,7 @@ import static com.github.dreamhead.moco.bootstrap.ServerType.SOCKET;
 
 public final class SocketArgs extends StartArgs {
     private SocketArgs(final Integer port, final Integer shutdownPort, final String configurationFile, boolean quiet) {
-        super(SOCKET, port, shutdownPort, configurationFile, null, null, quiet, null);
+        super(SOCKET, port, shutdownPort, configurationFile, null, null, quiet, null, null);
     }
 
     public static Builder socketArgs() {

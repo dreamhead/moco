@@ -83,11 +83,26 @@ public abstract class StartArgsParser {
         return option;
     }
 
+    protected Option contengLengthOption() {
+        Option option = new Option(null, "content-length", true, "Content Length");
+        option.setType(Long.class);
+        option.setRequired(false);
+        return option;
+    }
+
     public static Integer getPort(final String port) {
         if (port == null) {
             return null;
         }
 
         return Integer.valueOf(port);
+    }
+
+    public static Integer getContentLength(final String contentLengthValue) {
+        if (contentLengthValue == null) {
+            return null;
+        }
+
+        return Integer.valueOf(contentLengthValue);
     }
 }

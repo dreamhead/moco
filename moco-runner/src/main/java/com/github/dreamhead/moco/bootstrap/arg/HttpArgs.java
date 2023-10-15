@@ -5,8 +5,8 @@ import com.github.dreamhead.moco.bootstrap.ServerType;
 public final class HttpArgs extends StartArgs {
     private HttpArgs(final Integer port, final Integer shutdownPort,
                      final String configurationFile, final String globalSettings,
-                     final String env, boolean quiet) {
-        super(ServerType.HTTP, port, shutdownPort, configurationFile, globalSettings, env, quiet, null);
+                     final String env, boolean quiet, final Integer contentLength) {
+        super(ServerType.HTTP, port, shutdownPort, configurationFile, globalSettings, env, quiet, contentLength, null);
     }
 
     public static Builder httpArgs() {
@@ -20,6 +20,7 @@ public final class HttpArgs extends StartArgs {
         private String settings;
         private String env;
         private boolean quiet;
+        private Integer contentLength;
 
         public final Builder withPort(final Integer port) {
             this.port = port;
@@ -51,8 +52,13 @@ public final class HttpArgs extends StartArgs {
             return this;
         }
 
+        public Builder withContentLength(final Integer contentLength) {
+            this.contentLength = contentLength;
+            return this;
+        }
+
         public final HttpArgs build() {
-            return new HttpArgs(port, shutdownPort, configurationFile, settings, env, quiet);
+            return new HttpArgs(port, shutdownPort, configurationFile, settings, env, quiet, contentLength);
         }
     }
 }
