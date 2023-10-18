@@ -1,14 +1,14 @@
 project.dependencies {
     api(project(':moco-core'))
     api(project(':moco-runner'))
-    api("org.junit.jupiter:junit-jupiter-api:5.0.0")
+    api("org.junit.jupiter:junit-jupiter-api:$junit5BaseVersion")
 
     testImplementation(
             project(':moco-core').sourceSets.test.output,
             project(':moco-runner').sourceSets.test.output,
-            "org.junit.jupiter:junit-jupiter-api:5.0.0",
-            "org.junit.jupiter:junit-jupiter-engine:5.0.0",
-            "org.junit.jupiter:junit-jupiter-params:5.0.0"
+            "org.junit.jupiter:junit-jupiter-api:$junit5BaseVersion",
+            "org.junit.jupiter:junit-jupiter-engine:$junit5BaseVersion",
+            "org.junit.jupiter:junit-jupiter-params:$junit5BaseVersion"
     )
 
 
