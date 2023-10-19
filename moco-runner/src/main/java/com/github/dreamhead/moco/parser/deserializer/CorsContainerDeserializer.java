@@ -12,7 +12,7 @@ import com.github.dreamhead.moco.parser.model.LatencyContainer;
 import java.io.IOException;
 import java.util.List;
 
-public class CorsContainerDeserializer extends JsonDeserializer<CorsContainer> {
+public final class CorsContainerDeserializer extends JsonDeserializer<CorsContainer> {
     @Override
     public CorsContainer deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
