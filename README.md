@@ -8,7 +8,8 @@
 [![Build](https://github.com/dreamhead/moco/actions/workflows/build.yaml/badge.svg)](https://github.com/dreamhead/moco/actions/workflows/build.yaml)
 [![HitCount](http://hits.dwyl.com/dreamhead/moco.svg?style=flat-square)](http://hits.dwyl.com/dreamhead/moco)
 
-Moco is an easy setup stub framework.
+Moco helps you to mock your web service and APIs for fast, robust and comprehensive testing. It is a simulator for HTTP-based APIs. 
+Some use it as a service virtualization tool or a mock server.
 
 ## Latest Release
 * [![Maven Central](https://img.shields.io/maven-central/v/com.github.dreamhead/moco-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.github.dreamhead/moco-core)
