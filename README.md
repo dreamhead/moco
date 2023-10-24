@@ -91,3 +91,8 @@ https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt
 ## Powered By
 
 <img src="moco-doc/logo_intellij_idea.png?raw=true">
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=dreamhead/moco&type=Date)](https://star-history.com/#dreamhead/moco&Date)
+
