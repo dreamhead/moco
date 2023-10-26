@@ -8,7 +8,6 @@ project.dependencies {
             project(':moco-runner').sourceSets.test.output,
             "org.junit.jupiter:junit-jupiter-api:$junit5BaseVersion",
             "org.junit.jupiter:junit-jupiter-engine:$junit5BaseVersion",
-            "org.junit.jupiter:junit-jupiter-params:$junit5BaseVersion"
     )
 
 
