@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,9 +57,24 @@ public class ActionMonitor {
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
     }
 
-    private Map<String, String> asHeaders(final Header[] allHeaders) {
-        return Arrays.stream(allHeaders)
-                .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
+    private static Map<String, Iterable<String>> asHeaders(final Header[] httpHeaders) {
+        Map<String, Iterable<String>> headers = new HashMap<>();
+        for (Header header : httpHeaders) {
+            String key = header.getName();
+            List<String> values = getValues(headers, key);
+            values.add(header.getValue());
+            headers.put(key, values);
+        }
+
+        return headers;
+    }
+
+    private static List<String> getValues(final Map<String, Iterable<String>> headers, final String key) {
+        if (headers.containsKey(key)) {
+            return (List<String>) headers.get(key);
+        }
+
+        return new ArrayList<>();
     }
 
     public final void postAction(final CloseableHttpResponse response) throws IOException {
