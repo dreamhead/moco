@@ -10,13 +10,10 @@ import static com.github.dreamhead.moco.dumper.HttpDumpers.asHeaders;
 public final class HttpResponseDumper implements Dumper<Response> {
     @Override
     public String dump(final Response response) {
-        HttpResponse httpResponse = (HttpResponse) response;
-        return new StringBuilder()
-                .append(responseProtocolLine(httpResponse))
-                .append(StringUtil.NEWLINE)
-                .append(asHeaders(httpResponse))
-                .append(asContent(httpResponse))
-                .toString();
+        return responseProtocolLine((HttpResponse) response) +
+                StringUtil.NEWLINE +
+                asHeaders((HttpResponse) response) +
+                asContent((HttpResponse) response);
     }
 
     private String responseProtocolLine(final HttpResponse httpResponse) {
