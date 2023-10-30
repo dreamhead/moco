@@ -35,7 +35,7 @@ public final class HttpDumpers {
     private static boolean isText(final String type) {
         try {
             MediaType mediaType = MediaType.parse(type);
-            return mediaType.is(MediaType.ANY_TEXT_TYPE)
+            return mediaType.type().equals("text")
                     || mediaType.subtype().endsWith("javascript")
                     || mediaType.subtype().endsWith("json")
                     || mediaType.subtype().endsWith("xml")

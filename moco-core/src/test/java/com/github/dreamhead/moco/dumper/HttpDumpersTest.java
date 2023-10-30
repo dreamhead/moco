@@ -70,6 +70,11 @@ public class HttpDumpersTest {
     }
 
     @Test
+    public void should_parse_css_media_type() {
+        assertMessageContent("text/css", EXPECTED_MESSAGE_BODY);
+    }
+
+    @Test
     public void should_parse_content_when_content_length_not_set() {
         assertThat(asContent(messageWithHeaders(ImmutableMap.of(HttpHeaders.CONTENT_TYPE, "text/plain"))), is(EXPECTED_MESSAGE_BODY));
     }
