@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.server.ServerSetting;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
@@ -34,9 +35,11 @@ public class MocoHttpServer implements ServerConfiguration {
                 }
 
                 ServerConfig serverConfig = serverSetting.getServerConfig();
-                pipeline.addLast("codec", new HttpServerCodec(MAX_INITIAL_LINE_LENGTH,
-                        serverConfig.getHeaderSize(),
-                        MAX_CHUNK_SIZE, false));
+                HttpDecoderConfig config = new HttpDecoderConfig().setMaxInitialLineLength(MAX_INITIAL_LINE_LENGTH)
+                        .setMaxChunkSize(MAX_CHUNK_SIZE)
+                        .setMaxHeaderSize(serverConfig.getHeaderSize())
+                        .setValidateHeaders(false);
+                pipeline.addLast("codec", new HttpServerCodec(config));
                 pipeline.addLast("aggregator", new HttpObjectAggregator(serverConfig.getContentLength()));
                 pipeline.addLast("handler", new MocoHandler(serverSetting));
             }
