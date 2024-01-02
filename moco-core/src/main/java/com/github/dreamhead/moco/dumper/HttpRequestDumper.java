@@ -16,23 +16,20 @@ public final class HttpRequestDumper implements Dumper<Request> {
     @Override
     public String dump(final Request request) {
         HttpRequest httpRequest = (HttpRequest) request;
-        StringBuilder buf = new StringBuilder();
-        buf.append(requestProtocolLine(httpRequest))
-                .append(StringUtil.NEWLINE)
-                .append(asHeaders(httpRequest))
-                .append(asContent(httpRequest));
-        return buf.toString();
+        return requestProtocolLine(httpRequest) +
+                StringUtil.NEWLINE +
+                asHeaders(httpRequest) +
+                asContent(httpRequest);
     }
 
     private String requestProtocolLine(final HttpRequest request) {
-        StringBuilder buf = new StringBuilder();
-        buf.append(request.getMethod().name())
-                .append(' ')
-                .append(request.getUri())
-                .append(asQuery(request.getQueries()))
-                .append(' ')
-                .append(request.getVersion().text());
-        return buf.toString();
+        String buf = request.getMethod().name() +
+                ' ' +
+                request.getUri() +
+                asQuery(request.getQueries()) +
+                ' ' +
+                request.getVersion().text();
+        return buf;
     }
 
     private String asQuery(final ImmutableMap<String, String[]> queries) {

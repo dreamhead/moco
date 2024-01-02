@@ -27,7 +27,6 @@ public final class MocoExtension implements TestInstancePostProcessor, BeforeEac
     public void afterEach(final ExtensionContext context) throws Exception {
         Runner runner = context.getStore(MOCO).get(SERVER, Runner.class);
         runner.stop();
-
     }
 
     @Override
