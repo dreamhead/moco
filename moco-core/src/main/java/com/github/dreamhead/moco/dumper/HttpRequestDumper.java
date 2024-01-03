@@ -2,6 +2,7 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import io.netty.util.internal.StringUtil;
 
@@ -23,13 +24,11 @@ public final class HttpRequestDumper implements Dumper<Request> {
     }
 
     private String requestProtocolLine(final HttpRequest request) {
-        String buf = request.getMethod().name() +
-                ' ' +
-                request.getUri() +
-                asQuery(request.getQueries()) +
-                ' ' +
-                request.getVersion().text();
-        return buf;
+        return Joiner.on(' ').join(request.getMethod().name(), getUri(request), request.getVersion().text());
+    }
+
+    private String getUri(final HttpRequest request) {
+        return request.getUri() + asQuery(request.getQueries());
     }
 
     private String asQuery(final ImmutableMap<String, String[]> queries) {
