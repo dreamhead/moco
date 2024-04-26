@@ -90,3 +90,5 @@
 -dontwarn jakarta.json.**
 -dontwarn org.conscrypt.**
 -dontwarn org.brotli.dec.**
+-dontwarn edu.umd.cs.findbugs.annotations.**
+-dontwarn com.sun.jna.**
