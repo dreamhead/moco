@@ -1,5 +1,8 @@
 # Release
 
+## CLI
+* add `--content-length` for max request content length in standalone server
+
 ## JUnit 5
 * HTTP and HTTPS with JSON configuration from file/class path
 

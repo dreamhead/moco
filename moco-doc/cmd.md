@@ -117,6 +117,12 @@ If you don't want see too many logs, you could make the server quiet with `-q` o
 java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json -q
 ```
 
+## Max Content Length
+Max content length for a single request is set by default, but it is not enough for some case. You can set your own content length with content-length arguments.
+```shell
+java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json --content-length 2097152
+```
+
 ## Version
 
 You can query Moco version by the following command: 
