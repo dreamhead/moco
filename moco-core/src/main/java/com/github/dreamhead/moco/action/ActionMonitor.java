@@ -13,11 +13,7 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.core5.http.ClassicHttpRequest;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.ProtocolVersion;
+import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +73,7 @@ public class ActionMonitor {
         return new ArrayList<>();
     }
 
-    public final void postAction(final CloseableHttpResponse response) throws IOException {
+    public final void postAction(final ClassicHttpResponse response) throws IOException {
         final DefaultHttpResponse dumped = DefaultHttpResponse.builder()
                 .withVersion(getVersion(response.getVersion()))
                 .withStatus(response.getCode())

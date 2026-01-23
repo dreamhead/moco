@@ -10,32 +10,25 @@ import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpUtil;
-import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http.QueryStringEncoder;
+import io.netty.handler.codec.http.*;
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
 import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.URIScheme;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +47,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
-import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
-import static com.google.common.net.HttpHeaders.DATE;
-import static com.google.common.net.HttpHeaders.HOST;
-import static com.google.common.net.HttpHeaders.SERVER;
+import static com.google.common.net.HttpHeaders.*;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.apache.hc.core5.http.io.entity.EntityUtils.toByteArray;
@@ -75,7 +65,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         try {
 
             SSLContext sslContext = SSLContextBuilder.create()
-                    .loadTrustMaterial(new TrustSelfSignedStrategy())
+                    .loadTrustMaterial(new TrustStrategy() {
+                        @Override
+                        public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                            return true; // Trust all certificates
+                        }
+                    })
                     .build();
 
             HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
@@ -167,7 +162,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     private HttpResponse setupResponse(final HttpRequest request,
-                                       final CloseableHttpResponse remoteResponse) throws IOException {
+                                       final ClassicHttpResponse remoteResponse) throws IOException {
         if (failover.shouldFailover(remoteResponse)) {
             return failover.failover(request);
         }
@@ -178,7 +173,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return httpResponse;
     }
 
-    private HttpResponse setupNormalResponse(final CloseableHttpResponse remoteResponse) throws IOException {
+    private HttpResponse setupNormalResponse(final ClassicHttpResponse remoteResponse) throws IOException {
         HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getVersion().toString());
         HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getCode());
         FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
@@ -237,9 +232,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         try (CloseableHttpClient client = createClient()) {
             try {
                 HttpUriRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
-                try (CloseableHttpResponse response = client.execute(remoteRequest)) {
-                    return setupResponse(request, response);
-                }
+                return client.execute(remoteRequest, response -> setupResponse(request, response));
             } catch (ClientProtocolException e) {
                 logger.error("Failed to create remote request", e);
                 throw new MocoException(e);

@@ -1,15 +1,11 @@
 package com.github.dreamhead.moco.action;
 
-import com.github.dreamhead.moco.HttpHeader;
-import com.github.dreamhead.moco.MocoConfig;
-import com.github.dreamhead.moco.MocoEventAction;
-import com.github.dreamhead.moco.MocoException;
-import com.github.dreamhead.moco.Request;
+import com.github.dreamhead.moco.*;
 import com.github.dreamhead.moco.resource.Resource;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -32,7 +28,7 @@ public abstract class MocoRequestAction implements MocoEventAction {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             final ClassicHttpRequest actual = prepareRequest(request);
             monitor.preAction(actual);
-            final CloseableHttpResponse response = client.execute(actual);
+            final ClassicHttpResponse response = client.execute(actual, resp -> resp);
             monitor.postAction(response);
         } catch (IOException | URISyntaxException e) {
             throw new MocoException(e);

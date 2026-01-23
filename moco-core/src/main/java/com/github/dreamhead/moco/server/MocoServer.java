@@ -7,7 +7,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 
@@ -20,7 +21,7 @@ public final class MocoServer {
     private ChannelFuture future;
 
     public MocoServer() {
-        group = new NioEventLoopGroup(0, MocoExecutors.executor());
+        group = new MultiThreadIoEventLoopGroup(0, MocoExecutors.executor(), NioIoHandler.newFactory());
     }
 
     public int start(final int port, final ChannelInitializer<? extends Channel> pipelineFactory) {

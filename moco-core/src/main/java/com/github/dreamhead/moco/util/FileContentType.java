@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco.util;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import static java.util.Optional.of;
@@ -61,7 +61,7 @@ public final class FileContentType {
         }
 
         if (type == null) {
-            return of(Charsets.UTF_8);
+            return of(StandardCharsets.UTF_8);
         }
 
         return type.charset().toJavaUtil();

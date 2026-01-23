@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -64,9 +65,11 @@ public final class URLs {
 
     public static URL toUrl(final String url) {
         try {
-            return new URL(checkNotNullOrEmpty(url, "URL should not be null"));
+            return URI.create(checkNotNullOrEmpty(url, "URL should not be null")).toURL();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid URL: " + url, e);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Invalid URL: " + url, e);
         }
     }
 

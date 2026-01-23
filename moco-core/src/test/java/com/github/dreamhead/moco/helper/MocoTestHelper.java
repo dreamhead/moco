@@ -18,6 +18,9 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.Timeout;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -34,14 +37,19 @@ public class MocoTestHelper {
 
     public MocoTestHelper() {
         // make fluent HC accept any certificates so we can test HTTPS calls as well
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+        SSLContext sslContext = createClientContext();
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", new SSLConnectionSocketFactory(createClientContext()))
+                .register("https", new SSLConnectionSocketFactory(sslContext))
                 .build();
-        HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+
+        HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
         CloseableHttpClient client = HttpClients.custom()
                 .setConnectionManager(cm)
                 .disableDefaultUserAgent()
+                .setDefaultRequestConfig(org.apache.hc.client5.http.config.RequestConfig.custom()
+                        .setResponseTimeout(Timeout.ofMilliseconds(5000))
+                        .build())
                 .build();
 
         executor = Executor.newInstance(client);
@@ -161,7 +169,7 @@ public class MocoTestHelper {
     public ClassicHttpResponse execute(final Request request) throws IOException {
         return (ClassicHttpResponse) executor.execute(request).returnResponse();
     }
-    
+
 
     public String executeAsString(final Request request) throws IOException {
         final Content content = executeForContent(request);
