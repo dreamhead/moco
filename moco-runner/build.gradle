@@ -65,12 +65,22 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 }
 
 task proguardCheck(type: Test, dependsOn: proguard) {
-    testLogging { exceptionFormat "full" }
-    classpath = testing.suites.test.sources.runtimeClasspath - files(sourceSets.main.output.classesDirs) - configurations.runtimeClasspath + files(proguard.outputs.files.singleFile) + findJar('netty-codec-http') + findTestJar('httpclient5') + findTestJar('httpcore5')
+    testLogging { exceptionFormat = "full" }
+
+    testClassesDirs = files()
+    useJUnitPlatform()
+    
+    classpath = sourceSets.test.output +
+                configurations.testRuntimeClasspath -
+                configurations.runtimeClasspath +
+                files(proguard.outputs.files.singleFile) +
+                findJar('netty-codec-http') +
+                findTestJar('httpclient5') +
+                findTestJar('httpcore5')
 }
 
 publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.singleFile) {
-    classifier "standalone"
+    classifier = "standalone"
 }
 
 uberjar.dependsOn ":moco-core:jar"
