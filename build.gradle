@@ -26,8 +26,9 @@ subprojects {
     version = '1.5.0'
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
+        }
         withSourcesJar()
         withJavadocJar()
     }
@@ -165,5 +166,5 @@ configure(subprojects.findAll {!it.name.startsWith("moco-junit")}) {
 }
 
 wrapper {
-    gradleVersion = '8.7'
+    gradleVersion = '8.14.3'
 }
