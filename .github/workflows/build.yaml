@@ -13,29 +13,23 @@ jobs:
       fail-fast: false
       matrix:
         java-version: ["8", "11", "17", "21"]
-        distribution: ["temurin"]
-        include:
-          # 测试 Java 11 也用 Oracle 发行版（对应 Travis 的 oraclejdk11）
-          - java-version: "11"
-            distribution: "oracle-graal"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java ${{ matrix.java-version }} (${{ matrix.distribution }})
+      - name: Setup Java ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
-          distribution: '${{ matrix.distribution }}'
+          distribution: 'temurin'
           java-version: '${{ matrix.java-version }}'
           cache: gradle
 
-      - name: Make hosts file entry
-        run: |
-          sudo echo "127.0.0.1 mocobuild" | sudo tee -a /etc/hosts
-
       - name: Run checks
         run: ./gradlew check -i
+
+      - name: Run ProGuard check
+        run: ./gradlew :moco-runner:proguardCheck -i
 
       - name: Upload test reports
         if: failure()
