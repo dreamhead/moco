@@ -67,16 +67,16 @@ task proguard(type: proguard.gradle.ProGuardTask, dependsOn: uberjar) {
 task proguardCheck(type: Test, dependsOn: proguard) {
     testLogging { exceptionFormat = "full" }
 
-    testClassesDirs = files()
+    testClassesDirs = sourceSets.test.output.classesDirs
     useJUnitPlatform()
-    
-    classpath = sourceSets.test.output +
-                configurations.testRuntimeClasspath -
-                configurations.runtimeClasspath +
+
+    classpath = findTestJar('httpclient5') +
+                findTestJar('httpclient5-fluent') +
+                findTestJar('httpcore5') +
                 files(proguard.outputs.files.singleFile) +
-                findJar('netty-codec-http') +
-                findTestJar('httpclient5') +
-                findTestJar('httpcore5')
+                configurations.testRuntimeClasspath -
+                files(sourceSets.main.output.classesDirs) +
+                sourceSets.test.output
 }
 
 publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.singleFile) {
