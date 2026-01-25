@@ -19,8 +19,7 @@
 -keep public class com.github.dreamhead.moco.HttpMethod{*;}
 -keep public class com.github.dreamhead.moco.Runner{*;}
 -keep public class com.github.dreamhead.moco.Runnable{*;}
--keep public class com.github.dreamhead.moco.MocoRunner{*;}
--keep public class com.github.dreamhead.moco.handler.*{*;}
+-keep public class com.github.dreamhead.moco.handler.**{*;}
 -keep public class com.github.dreamhead.moco.dumper.*{*;}
 -keep public class com.github.dreamhead.moco.MocoJsonRunner{*;}
 -keep public class com.github.dreamhead.moco.util.Jsons{*;}
@@ -48,8 +47,6 @@
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class org.slf4j.LoggerFactory{*;}
 -keep public class ch.qos.logback.**{*;}
--keep public class org.apache.commons.logging.impl.SimpleLog{*;}
--keep public class org.apache.commons.logging.impl.LogFactoryImpl{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
 
 -keepclassmembers class * extends java.lang.Enum {
@@ -74,7 +71,7 @@
 -dontwarn io.netty.**
 -dontwarn com.jayway.jsonpath.spi.impl.JacksonProvider
 -dontwarn com.jayway.jsonpath.spi.json.JsonOrgJsonProvider
--dontwarn com.jayway.jsonpath.spi.json.JettisonProvider**
+-dontwarn com.jayway.jsonpath.spi.json.JettisonProvider*
 -dontwarn com.jayway.jsonpath.spi.json.TapestryJsonProvider
 -dontwarn com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider
 -dontwarn ch.qos.logback.core.**
