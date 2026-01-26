@@ -177,6 +177,10 @@ public final class Moco {
         return response(with(checkNotNull(header, "Response handler should not be null")));
     }
 
+    public static com.github.dreamhead.moco.sse.SseResponse sse() {
+        return new com.github.dreamhead.moco.sse.SseResponse();
+    }
+
     public static MocoConfig<?> fileRoot(final String fileRoot) {
         return new MocoFileRootConfig(checkNotNullOrEmpty(fileRoot, "File root should not be null"));
     }
