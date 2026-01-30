@@ -6,18 +6,18 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class SseResponseBuilder {
+public class SseResponse {
     private final List<SseEvent> events = Lists.newArrayList();
     private SseEvent.Builder currentEventBuilder;
 
-    public SseResponseBuilder() {
+    SseResponse() {
     }
 
-    public static SseResponseBuilder builder() {
-        return new SseResponseBuilder();
+    public static SseResponse create() {
+        return new SseResponse();
     }
 
-    public SseResponseBuilder event(final String eventName, final String first, final String... rest) {
+    public SseResponse event(final String eventName, final String first, final String... rest) {
         if (currentEventBuilder != null) {
             events.add(currentEventBuilder.build());
         }
@@ -27,7 +27,7 @@ public class SseResponseBuilder {
         return this;
     }
 
-    public SseResponseBuilder data(final String first, final String... rest) {
+    public SseResponse data(final String first, final String... rest) {
         if (currentEventBuilder != null) {
             events.add(currentEventBuilder.build());
         }
@@ -37,7 +37,7 @@ public class SseResponseBuilder {
         return this;
     }
 
-    public SseResponseBuilder id(final String id) {
+    public SseResponse id(final String id) {
         if (currentEventBuilder == null) {
             currentEventBuilder = SseEvent.id(id);
         } else {
@@ -46,7 +46,7 @@ public class SseResponseBuilder {
         return this;
     }
 
-    public SseResponseBuilder retry(final int retry) {
+    public SseResponse retry(final int retry) {
         if (currentEventBuilder == null) {
             currentEventBuilder = SseEvent.retry(retry);
         } else {
