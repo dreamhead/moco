@@ -2,9 +2,13 @@ package com.github.dreamhead.moco.sse;
 
 import com.github.dreamhead.moco.handler.SseResponseHandler;
 import com.github.dreamhead.moco.util.Iterables;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SseResponse {
     private final List<SseEvent> events = Lists.newArrayList();
@@ -18,6 +22,10 @@ public class SseResponse {
     }
 
     public SseResponse event(final String eventName, final String first, final String... rest) {
+        checkNotNull(eventName, "Event name cannot be null");
+        checkNotNull(first, "Data cannot be null");
+        checkNotNull(rest, "Data cannot be null");
+
         if (currentEventBuilder != null) {
             events.add(currentEventBuilder.build());
         }
@@ -28,6 +36,9 @@ public class SseResponse {
     }
 
     public SseResponse data(final String first, final String... rest) {
+        checkNotNull(first, "Data cannot be null");
+        checkNotNull(rest, "Data cannot be null");
+
         if (currentEventBuilder != null) {
             events.add(currentEventBuilder.build());
         }
@@ -38,6 +49,8 @@ public class SseResponse {
     }
 
     public SseResponse id(final String id) {
+        checkNotNull(id, "Event ID cannot be null");
+
         if (currentEventBuilder == null) {
             currentEventBuilder = SseEvent.id(id);
         } else {
@@ -47,6 +60,8 @@ public class SseResponse {
     }
 
     public SseResponse retry(final int retry) {
+        checkArgument(retry > 0, "Retry must be positive");
+
         if (currentEventBuilder == null) {
             currentEventBuilder = SseEvent.retry(retry);
         } else {
