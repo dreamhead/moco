@@ -20,22 +20,32 @@ public class SseEvent {
     }
 
     public static Builder data(final String... data) {
-        return new Builder(null, null, null, data != null ? ImmutableList.copyOf(data) : ImmutableList.of());
+        Preconditions.checkNotNull(data, "Event data cannot be null");
+        Builder builder = new Builder();
+        builder.data(data);
+        return builder;
     }
 
     public static Builder event(final String event, final String... data) {
         Preconditions.checkNotNull(event, "Event name cannot be null");
-        return new Builder(null, event, null, data != null ? ImmutableList.copyOf(data) : ImmutableList.of());
+        Builder builder = new Builder();
+        builder.event(event);
+        builder.data(data);
+        return builder;
     }
 
     public static Builder id(final String id) {
         Preconditions.checkNotNull(id, "Event ID cannot be null");
-        return new Builder(id, null, null, ImmutableList.of());
+        Builder builder = new Builder();
+        builder.id(id);
+        return builder;
     }
 
     public static Builder retry(final int retry) {
         Preconditions.checkArgument(retry > 0, "Retry must be positive");
-        return new Builder(null, null, retry, ImmutableList.of());
+        Builder builder = new Builder();
+        builder.retry(retry);
+        return builder;
     }
 
     public String toEventString() {
@@ -98,11 +108,7 @@ public class SseEvent {
         private Integer retry;
         private ImmutableList<String> data;
 
-        private Builder(final String id, final String event, final Integer retry, final ImmutableList<String> data) {
-            this.id = id;
-            this.event = event;
-            this.retry = retry;
-            this.data = data;
+        private Builder() {
         }
 
         public Builder id(final String id) {
