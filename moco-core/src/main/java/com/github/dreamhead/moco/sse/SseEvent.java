@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco.sse;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -94,12 +95,14 @@ public class SseEvent {
 
     @Override
     public String toString() {
-        return "SseEvent{" +
-                "id='" + id + '\'' +
-                ", event='" + event + '\'' +
-                ", retry=" + retry +
-                ", data=" + data +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .omitEmptyValues()
+                .add("id", id)
+                .add("event", event)
+                .add("retry", retry)
+                .add("data", data)
+                .toString();
     }
 
     public static class Builder {
