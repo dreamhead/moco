@@ -52,25 +52,24 @@ public class SseEvent {
     public String toEventString() {
         StringBuilder sb = new StringBuilder();
 
-        if (id != null) {
-            sb.append("id: ").append(id).append("\n");
-        }
-
-        if (event != null) {
-            sb.append("event: ").append(event).append("\n");
-        }
-
-        if (retry != null) {
-            sb.append("retry: ").append(retry).append("\n");
-        }
+        sb.append(toLine("id", id));
+        sb.append(toLine("event", event));
+        sb.append(toLine("retry", retry));
 
         for (String line : data) {
-            sb.append("data: ").append(line).append("\n");
+            sb.append(toLine("data", line));
         }
 
         sb.append("\n");
 
         return sb.toString();
+    }
+
+    private String toLine(final String key, final Object value) {
+        if (value != null) {
+            return key + ": " + value + "\n";
+        }
+        return "";
     }
 
     @Override
