@@ -23,10 +23,6 @@ public class SseResponseHandler extends AbstractHttpResponseHandler {
         this.events = events != null ? ImmutableList.copyOf(events) : ImmutableList.of();
     }
 
-    public final List<SseEvent> getEvents() {
-        return events;
-    }
-
     @Override
     protected void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         // Set SSE specific headers

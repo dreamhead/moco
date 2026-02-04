@@ -60,11 +60,4 @@ public class SseResponseHandlerTest {
 
         verify(response).addHeader("X-Accel-Buffering", "no");
     }
-
-    @Test
-    public void should_get_events() {
-        List<SseEvent> events = handler.getEvents();
-
-        assertThat(events.size(), is(2));
-    }
 }
