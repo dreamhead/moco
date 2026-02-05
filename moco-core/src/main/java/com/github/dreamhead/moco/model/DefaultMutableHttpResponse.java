@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -67,10 +68,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private String[] newValues(final String name, final Object value) {
         if (this.headers.containsKey(name)) {
             String[] values = this.headers.get(name);
-            String[] newValues = new String[values.length + 1];
-            System.arraycopy(values, 0, newValues, 0, values.length);
-            newValues[values.length] = value.toString();
-            return newValues;
+            return ObjectArrays.concat(values, value.toString());
         }
 
         return new String[]{value.toString()};
