@@ -4,6 +4,7 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.net.HttpHeaders;
@@ -12,7 +13,6 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
@@ -43,9 +43,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         this.content = content;
     }
 
-    private static final String[] SINGLE_VALUE_HEADERS = new String[] {
-            HttpHeaders.CONTENT_TYPE
-    };
+    private static final ImmutableSet<String> SINGLE_VALUE_HEADERS =
+            ImmutableSet.of(HttpHeaders.CONTENT_TYPE);
 
     @Override
     public void addHeader(final String name, final Object value) {
@@ -57,7 +56,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     private boolean isSingleValueHeader(final String name) {
-        return Arrays.stream(SINGLE_VALUE_HEADERS)
+        return SINGLE_VALUE_HEADERS.stream()
                 .anyMatch(header -> header.equalsIgnoreCase(name));
     }
 
