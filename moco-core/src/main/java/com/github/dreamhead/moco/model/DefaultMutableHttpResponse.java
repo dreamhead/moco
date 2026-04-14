@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
+import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -13,6 +14,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.List;
 import java.util.Map;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
@@ -20,6 +22,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private Map<String, String[]> headers = Maps.newHashMap();
     private int status;
     private MessageContent content;
+    private List<SseEvent> sseEvents;
 
     private DefaultMutableHttpResponse() {
     }
@@ -108,6 +111,18 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         httpResponse.version = request.getVersion();
         httpResponse.status = status;
         return httpResponse;
+    }
+
+    public boolean isSse() {
+        return sseEvents != null && !sseEvents.isEmpty();
+    }
+
+    public List<SseEvent> getSseEvents() {
+        return sseEvents;
+    }
+
+    public void setSseEvents(final List<SseEvent> events) {
+        this.sseEvents = events;
     }
 
     public FullHttpResponse toFullResponse() {

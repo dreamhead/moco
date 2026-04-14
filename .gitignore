@@ -12,3 +12,6 @@ reports
 *.output
 .gmoco_pid
 gmoco.log
+CLAUDE.md
+.claude
+docs/superpowers

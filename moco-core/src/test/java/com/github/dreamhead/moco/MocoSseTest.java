@@ -1,207 +1,213 @@
 package com.github.dreamhead.moco;
 
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.client5.http.fluent.Request;
+import com.github.dreamhead.moco.helper.SseTestHelper;
+import com.github.dreamhead.moco.sse.SseEvent;
 import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.sse;
+import static com.github.dreamhead.moco.MocoSse.data;
+import static com.github.dreamhead.moco.MocoSse.event;
+import static com.github.dreamhead.moco.MocoSse.sse;
 import static com.github.dreamhead.moco.Runner.running;
+import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoSseTest extends AbstractMocoHttpTest {
 
     @Test
-    public void should_return_sse_events() throws Exception {
+    public void should_reject_null_first_event() {
+        assertThrows(NullPointerException.class, () -> MocoSse.sse(null));
+    }
+
+    @Test
+    public void should_reject_null_event_name() {
+        assertThrows(NullPointerException.class, () -> MocoSse.event(null, "data"));
+    }
+
+    @Test
+    public void should_reject_null_data() {
+        assertThrows(NullPointerException.class, () -> MocoSse.data(null));
+    }
+
+    @Test
+    public void should_return_sse_events_frame_by_frame() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse()
-                  .data("first event")
-                  .data("second event")
-                  .end());
+              .response(sse(
+                  event("message", "Hello"),
+                  event("message", " World")
+              ));
 
         running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("event: message"));
+                assertThat(event1.toEventString(), containsString("data: Hello"));
 
-            assertThat(content, containsString("data: first event"));
-            assertThat(content, containsString("data: second event"));
+                SseEvent event2 = sse.readNextEvent();
+                assertThat(event2.toEventString(), containsString("event: message"));
+                assertThat(event2.toEventString(), containsString("data: World"));
+            }
         });
     }
 
     @Test
-    public void should_return_sse_events_with_type() throws Exception {
+    public void should_return_data_events_frame_by_frame() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse()
-                  .event("message", "Hello World")
-                  .event("notification", "New update")
-                  .end());
+              .response(sse(
+                  data("first"),
+                  data("second")
+              ));
 
         running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("data: first"));
 
-            assertThat(content, containsString("event: message"));
-            assertThat(content, containsString("data: Hello World"));
-            assertThat(content, containsString("event: notification"));
-            assertThat(content, containsString("data: New update"));
+                SseEvent event2 = sse.readNextEvent();
+                assertThat(event2.toEventString(), containsString("data: second"));
+            }
+        });
+    }
+
+    @Test
+    public void should_not_have_content_length_for_streaming() throws Exception {
+        server.request(by(uri("/sse")))
+              .response(sse(event("message", "Hello")));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                assertThat(sse.getHeader("Content-Type"), is("text/event-stream"));
+                assertThat(sse.hasHeader("Content-Length"), is(false));
+            }
+        });
+    }
+
+    @Test
+    public void should_stream_events_with_delay() throws Exception {
+        server.request(by(uri("/sse")))
+              .response(sse(
+                  event("message", "token1").delay(100),
+                  event("message", "token2").delay(100),
+                  event("message", "token3").delay(100)
+              ));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                sse.readNextEvent();
+
+                long between1and2 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed1 = System.currentTimeMillis() - between1and2;
+
+                long between2and3 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed2 = System.currentTimeMillis() - between2and3;
+
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+            }
+        });
+    }
+
+    @Test
+    public void should_stream_events_without_delay_quickly() throws Exception {
+        server.request(by(uri("/sse")))
+              .response(sse(
+                  event("message", "a"),
+                  event("message", "b"),
+                  event("message", "c")
+              ));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                sse.readNextEvent();
+
+                long start = System.currentTimeMillis();
+                sse.readNextEvent();
+                sse.readNextEvent();
+                long elapsed = System.currentTimeMillis() - start;
+
+                assertThat("Events without delay should arrive quickly", elapsed, lessThan(100L));
+            }
         });
     }
 
     @Test
     public void should_set_correct_content_type() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse().data("test").end());
+              .response(sse(data("test")));
 
         running(server, () -> {
-            HttpResponse response = helper.execute(Request.get("http://localhost:12306/sse"));
-
-            assertThat(response.getFirstHeader("Content-Type").getValue(), is("text/event-stream"));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                assertThat(sse.getHeader("Content-Type"), is("text/event-stream"));
+            }
         });
     }
 
     @Test
     public void should_set_cache_control_header() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse().data("test").end());
+              .response(sse(data("test")));
 
         running(server, () -> {
-            HttpResponse response = helper.execute(Request.get("http://localhost:12306/sse"));
-
-            assertThat(response.getFirstHeader("Cache-Control").getValue(), is("no-cache"));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                assertThat(sse.getHeader("Cache-Control"), is("no-cache"));
+            }
         });
     }
 
     @Test
-    public void should_set_connection_header() throws Exception {
+    public void should_return_event_with_id() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse().data("test").end());
+              .response(sse(data("Hello").id("msg-001")));
 
         running(server, () -> {
-            HttpResponse response = helper.execute(Request.get("http://localhost:12306/sse"));
-
-            // Connection header might not be set in HTTP/1.1 default behavior
-            // So we just check that we get a successful response
-            assertThat(response.getCode(), is(200));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("id: msg-001"));
+                assertThat(event1.toEventString(), containsString("data: Hello"));
+            }
         });
     }
 
     @Test
-    public void should_return_empty_sse_response() throws Exception {
+    public void should_return_event_with_retry() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse().data("").end());
+              .response(sse(data("Hello").retry(3000)));
 
         running(server, () -> {
-            HttpResponse response = helper.execute(Request.get("http://localhost:12306/sse"));
-
-            // Empty SSE response should still be successful
-            assertThat(response.getCode(), is(200));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("retry: 3000"));
+                assertThat(event1.toEventString(), containsString("data: Hello"));
+            }
         });
     }
 
     @Test
-    public void should_return_sse_event_with_id() throws Exception {
+    public void should_return_multiple_events_with_different_ids() throws Exception {
         server.request(by(uri("/sse")))
-              .response(sse()
-                  .data("event with id")
-                  .id("msg-001")
-                  .end());
+              .response(sse(
+                  event("update", "First").id("001"),
+                  event("update", "Second").id("002")
+              ));
 
         running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("id: 001"));
+                assertThat(event1.toEventString(), containsString("data: First"));
 
-            assertThat(content, containsString("id: msg-001"));
-            assertThat(content, containsString("data: event with id"));
-        });
-    }
-
-    @Test
-    public void should_return_sse_event_with_retry() throws Exception {
-        server.request(by(uri("/sse")))
-              .response(sse()
-                  .data("event with retry")
-                  .retry(5000)
-                  .end());
-
-        running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
-
-            assertThat(content, containsString("retry: 5000"));
-            assertThat(content, containsString("data: event with retry"));
-        });
-    }
-
-    @Test
-    public void should_return_sse_event_with_id_and_retry() throws Exception {
-        server.request(by(uri("/sse")))
-              .response(sse()
-                  .event("message", "Hello World")
-                  .id("msg-123")
-                  .retry(3000)
-                  .end());
-
-        running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
-
-            assertThat(content, containsString("id: msg-123"));
-            assertThat(content, containsString("retry: 3000"));
-            assertThat(content, containsString("event: message"));
-            assertThat(content, containsString("data: Hello World"));
-        });
-    }
-
-    @Test
-    public void should_return_multiple_events_with_ids() throws Exception {
-        server.request(by(uri("/sse")))
-              .response(sse()
-                  .event("update", "First update")
-                  .id("001")
-                  .event("update", "Second update")
-                  .id("002")
-                  .end());
-
-        running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
-
-            assertThat(content, containsString("id: 001"));
-            assertThat(content, containsString("data: First update"));
-            assertThat(content, containsString("id: 002"));
-            assertThat(content, containsString("data: Second update"));
-        });
-    }
-
-    @Test
-    public void should_support_complex_fluent_api() throws Exception {
-        server.request(by(uri("/sse")))
-              .response(sse()
-                  .event("message", "Hello")
-                  .id("msg-001")
-                  .retry(3000)
-                  .event("notification", "New update")
-                  .id("notif-002")
-                  .retry(5000)
-                  .data("Simple event")
-                  .id("simple-003")
-                  .end());
-
-        running(server, () -> {
-            String content = helper.executeAsString(Request.get("http://localhost:12306/sse"));
-
-            // First event
-            assertThat(content, containsString("event: message"));
-            assertThat(content, containsString("data: Hello"));
-            assertThat(content, containsString("id: msg-001"));
-            assertThat(content, containsString("retry: 3000"));
-
-            // Second event
-            assertThat(content, containsString("event: notification"));
-            assertThat(content, containsString("data: New update"));
-            assertThat(content, containsString("id: notif-002"));
-            assertThat(content, containsString("retry: 5000"));
-
-            // Third event
-            assertThat(content, containsString("data: Simple event"));
-            assertThat(content, containsString("id: simple-003"));
+                SseEvent event2 = sse.readNextEvent();
+                assertThat(event2.toEventString(), containsString("id: 002"));
+                assertThat(event2.toEventString(), containsString("data: Second"));
+            }
         });
     }
 }

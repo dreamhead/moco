@@ -33,6 +33,7 @@ import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 
 public class MocoTestHelper {
+    private final CloseableHttpClient client;
     private final Executor executor;
 
     public MocoTestHelper() {
@@ -52,6 +53,7 @@ public class MocoTestHelper {
                         .build())
                 .build();
 
+        this.client = client;
         executor = Executor.newInstance(client);
     }
 
@@ -164,6 +166,14 @@ public class MocoTestHelper {
 
     public ClassicHttpResponse optionsForResponse(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
         return execute(requestWithHeaders(Request.options(url), headers));
+    }
+
+    public Executor getExecutor() {
+        return executor;
+    }
+
+    public CloseableHttpClient getClient() {
+        return client;
     }
 
     public ClassicHttpResponse execute(final Request request) throws IOException {

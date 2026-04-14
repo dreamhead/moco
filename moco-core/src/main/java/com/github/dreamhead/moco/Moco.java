@@ -36,7 +36,7 @@ import com.github.dreamhead.moco.recorder.MocoGroup;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
-import com.github.dreamhead.moco.sse.SseResponse;
+
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
@@ -178,9 +178,6 @@ public final class Moco {
         return response(with(checkNotNull(header, "Response handler should not be null")));
     }
 
-    public static SseResponse sse() {
-        return SseResponse.create();
-    }
 
     public static MocoConfig<?> fileRoot(final String fileRoot) {
         return new MocoFileRootConfig(checkNotNullOrEmpty(fileRoot, "File root should not be null"));

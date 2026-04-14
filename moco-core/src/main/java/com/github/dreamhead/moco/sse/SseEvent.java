@@ -2,74 +2,69 @@ package com.github.dreamhead.moco.sse;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Objects;
 
-public class SseEvent {
+public final class SseEvent {
     private final String id;
     private final String event;
-    private final Integer retry;
     private final List<String> data;
+    private final Integer retry;
+    private final int delay;
 
-    private SseEvent(final String id, final String event, final Integer retry, final List<String> data) {
+    SseEvent(final String id, final String event, final List<String> data,
+             final Integer retry, final int delay) {
         this.id = id;
         this.event = event;
+        this.data = data;
         this.retry = retry;
-        this.data = data != null ? ImmutableList.copyOf(data) : ImmutableList.of();
+        this.delay = delay;
     }
 
-    public static Builder data(final String... data) {
-        Preconditions.checkNotNull(data, "Event data cannot be null");
-        Builder builder = new Builder();
-        builder.data(data);
-        return builder;
+    public static SseEvent event(final String name, final List<String> data) {
+        return new SseEvent(null, name, data, null, 0);
     }
 
-    public static Builder event(final String event, final String... data) {
-        Preconditions.checkNotNull(event, "Event name cannot be null");
-        Builder builder = new Builder();
-        builder.event(event);
-        builder.data(data);
-        return builder;
+    public static SseEvent data(final List<String> data) {
+        return new SseEvent(null, null, data, null, 0);
     }
 
-    public static Builder id(final String id) {
-        Preconditions.checkNotNull(id, "Event ID cannot be null");
-        Builder builder = new Builder();
-        builder.id(id);
-        return builder;
+    public SseEvent id(final String id) {
+        Preconditions.checkNotNull(id, "Event ID should not be null");
+        return new SseEvent(id, this.event, this.data, this.retry, this.delay);
     }
 
-    public static Builder retry(final int retry) {
+    public SseEvent retry(final int retry) {
         Preconditions.checkArgument(retry > 0, "Retry must be positive");
-        Builder builder = new Builder();
-        builder.retry(retry);
-        return builder;
+        return new SseEvent(this.id, this.event, this.data, retry, this.delay);
+    }
+
+    public SseEvent delay(final int delay) {
+        Preconditions.checkArgument(delay > 0, "Delay must be positive");
+        return new SseEvent(this.id, this.event, this.data, this.retry, delay);
+    }
+
+    public int getDelay() {
+        return delay;
     }
 
     public String toEventString() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append(toLine("id", id));
-        sb.append(toLine("event", event));
-        sb.append(toLine("retry", retry));
-
+        if (id != null) {
+            sb.append("id: ").append(id).append('\n');
+        }
+        if (event != null) {
+            sb.append("event: ").append(event).append('\n');
+        }
+        if (retry != null) {
+            sb.append("retry: ").append(retry).append('\n');
+        }
         for (String line : data) {
-            sb.append(toLine("data", line));
+            sb.append("data: ").append(line).append('\n');
         }
-
-        sb.append("\n");
-
+        sb.append('\n');
         return sb.toString();
-    }
-
-    private String toLine(final String key, final Object value) {
-        if (value != null) {
-            return key + ": " + value + "\n";
-        }
-        return "";
     }
 
     @Override
@@ -81,15 +76,16 @@ public class SseEvent {
             return false;
         }
         SseEvent sseEvent = (SseEvent) o;
-        return Objects.equals(id, sseEvent.id) &&
-                Objects.equals(event, sseEvent.event) &&
-                Objects.equals(retry, sseEvent.retry) &&
-                Objects.equals(data, sseEvent.data);
+        return delay == sseEvent.delay
+                && Objects.equals(id, sseEvent.id)
+                && Objects.equals(event, sseEvent.event)
+                && Objects.equals(data, sseEvent.data)
+                && Objects.equals(retry, sseEvent.retry);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, retry, data);
+        return Objects.hash(id, event, data, retry, delay);
     }
 
     @Override
@@ -99,42 +95,9 @@ public class SseEvent {
                 .omitEmptyValues()
                 .add("id", id)
                 .add("event", event)
-                .add("retry", retry)
                 .add("data", data)
+                .add("retry", retry)
+                .add("delay", delay)
                 .toString();
-    }
-
-    public static class Builder {
-        private String id;
-        private String event;
-        private Integer retry;
-        private ImmutableList<String> data;
-
-        private Builder() {
-        }
-
-        public Builder id(final String id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder event(final String event) {
-            this.event = event;
-            return this;
-        }
-
-        public Builder retry(final int retry) {
-            this.retry = retry;
-            return this;
-        }
-
-        public Builder data(final String... data) {
-            this.data = data != null ? ImmutableList.copyOf(data) : ImmutableList.of();
-            return this;
-        }
-
-        public SseEvent build() {
-            return new SseEvent(id, event, retry, data);
-        }
     }
 }
