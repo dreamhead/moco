@@ -1,5 +1,6 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.eventbus.Subscribe;
 
 public interface MocoMonitor {
@@ -14,6 +15,8 @@ public interface MocoMonitor {
 
     @Subscribe
     void onUnexpectedMessage(Request request);
+
+    void onEvent(SseEvent event);
 
     boolean isQuiet();
 }

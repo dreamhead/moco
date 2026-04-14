@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.monitor;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
+import com.github.dreamhead.moco.sse.SseEvent;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,6 +36,11 @@ public final class ThreadSafeMonitor implements MocoMonitor {
     @Override
     public void onUnexpectedMessage(final Request request) {
         withLock(lock, () -> monitor.onUnexpectedMessage(request));
+    }
+
+    @Override
+    public void onEvent(final SseEvent event) {
+        withLock(lock, () -> monitor.onEvent(event));
     }
 
     @Override

@@ -110,6 +110,7 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
 
         SseEvent event = events.get(index);
+        server.getMonitor().onEvent(event);
         ChannelFuture future = ctx.writeAndFlush(new DefaultHttpContent(
                 Unpooled.copiedBuffer(event.toEventString(), StandardCharsets.UTF_8)
         ));

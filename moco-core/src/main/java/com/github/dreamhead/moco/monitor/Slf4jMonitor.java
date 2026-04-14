@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.monitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.dumper.Dumper;
+import com.github.dreamhead.moco.sse.SseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,11 @@ public final class Slf4jMonitor extends AbstractMonitor {
     @Override
     public void onMessageLeave(final Response response) {
         logger.info("Response return:\n\n{}\n", responseDumper.dump(response));
+    }
+
+    @Override
+    public void onEvent(final SseEvent event) {
+        logger.info("SSE event:\n\n{}\n", event.toEventString());
     }
 
     @Override

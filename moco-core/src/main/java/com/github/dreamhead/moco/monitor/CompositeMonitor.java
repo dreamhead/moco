@@ -3,6 +3,7 @@ package com.github.dreamhead.moco.monitor;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
+import com.github.dreamhead.moco.sse.SseEvent;
 
 public final class CompositeMonitor implements MocoMonitor {
     private final Iterable<MocoMonitor> monitors;
@@ -36,6 +37,13 @@ public final class CompositeMonitor implements MocoMonitor {
     public void onUnexpectedMessage(final Request request) {
         for (MocoMonitor monitor : monitors) {
             monitor.onUnexpectedMessage(request);
+        }
+    }
+
+    @Override
+    public void onEvent(final SseEvent event) {
+        for (MocoMonitor monitor : monitors) {
+            monitor.onEvent(event);
         }
     }
 

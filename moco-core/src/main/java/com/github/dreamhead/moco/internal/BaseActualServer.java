@@ -26,6 +26,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
 
     private final MocoConfig<?>[] configs;
     private final MocoMonitor monitor;
+
+    public final MocoMonitor getMonitor() {
+        return monitor;
+    }
     private final List<Setting<T>> settings = newArrayList();
     private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
