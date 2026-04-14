@@ -1,0 +1,35 @@
+[
+   {
+      "request" : {
+         "uri" : "/sse"
+      },
+      "response" : {
+         "sse" : {
+            "file" : "src/test/resources/events.sse"
+         }
+      }
+   },
+   {
+      "request" : {
+         "uri" : "/inline"
+      },
+      "response" : {
+         "sse" : [
+            { "event": "message", "data": "Hello" },
+            { "event": "message", "data": " World" }
+         ]
+      }
+   },
+   {
+      "request" : {
+         "uri" : "/delay"
+      },
+      "response" : {
+         "sse" : [
+            { "event": "message", "data": "token1", "delay": 100 },
+            { "event": "message", "data": "token2", "delay": 100 },
+            { "event": "message", "data": "token3", "delay": 100 }
+         ]
+      }
+   }
+]

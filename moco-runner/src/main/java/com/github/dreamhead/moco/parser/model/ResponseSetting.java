@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.parser.deserializer.SseContainerDeserializer;
 
 import java.util.Map;
 
@@ -26,6 +27,9 @@ public class ResponseSetting extends BaseResourceSetting {
 
     private CorsContainer cors;
 
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = SseContainerDeserializer.class)
+    private SseContainer sse;
+
     protected final ResponseSetting asResponseSetting() {
         ResponseSetting responseSetting = asBaseResourceSetting(new ResponseSetting());
         responseSetting.status = status;
@@ -40,6 +44,7 @@ public class ResponseSetting extends BaseResourceSetting {
         responseSetting.record = record;
         responseSetting.replay = replay;
         responseSetting.cors = cors;
+        responseSetting.sse = sse;
 
         return responseSetting;
     }
@@ -57,7 +62,8 @@ public class ResponseSetting extends BaseResourceSetting {
                 .add("cycle", cycle)
                 .add("record", record)
                 .add("replay", replay)
-                .add("cors", cors);
+                .add("cors", cors)
+                .add("sse", sse);
 
     }
 
