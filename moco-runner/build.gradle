@@ -15,9 +15,8 @@ project.dependencies {
     api(project(':moco-core'))
     implementation("commons-cli:commons-cli:$commonsCliVersion")
 
-    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion") {
-        exclude group: 'com.sun.mail', module: 'javax.mail'
-    }
+    runtimeOnly("org.tinylog:slf4j-tinylog:$tinylogVersion")
+    runtimeOnly("org.tinylog:tinylog-impl:$tinylogVersion")
 
     testImplementation project(':moco-core').sourceSets.test.output
 
@@ -33,8 +32,8 @@ task uberjar(type: Jar, dependsOn: jar) {
     exclude('META-INF/maven/**')
     exclude('META-INF/native-image/**')
     exclude('mozilla/**')
-    exclude('ch/qos/logback/classic/db/**')
-    exclude('ch/qos/logback/core/testUtil/**')
+    exclude('org/tinylog/implementation/**')
+    exclude('META-INF/maven/org.tinylog/**')
     exclude('freemarker/ext/jython/**')
 
     from files(project(':moco-core').sourceSets.main.output.classesDirs)

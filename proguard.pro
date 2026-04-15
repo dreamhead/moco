@@ -46,7 +46,7 @@
 -keep public class com.google.common.io.Files{*;}
 -keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class org.slf4j.LoggerFactory{*;}
--keep public class ch.qos.logback.**{*;}
+-keep public class org.tinylog.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
 
 -keepclassmembers class * extends java.lang.Enum {
@@ -74,8 +74,8 @@
 -dontwarn com.jayway.jsonpath.spi.json.JettisonProvider*
 -dontwarn com.jayway.jsonpath.spi.json.TapestryJsonProvider
 -dontwarn com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider
--dontwarn ch.qos.logback.core.**
--dontwarn ch.qos.logback.classic.**
+-dontwarn ch.qos.logback.**
+-dontwarn org.tinylog.**
 -dontwarn freemarker.**
 -dontwarn org.slf4j.**
 -dontwarn org.apache.log4j.**
