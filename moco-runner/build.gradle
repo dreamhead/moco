@@ -31,6 +31,11 @@ task uberjar(type: Jar, dependsOn: jar) {
     archiveClassifier = 'uber'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude('META-INF/maven/**')
+    exclude('META-INF/native-image/**')
+    exclude('mozilla/**')
+    exclude('ch/qos/logback/classic/db/**')
+    exclude('ch/qos/logback/core/testUtil/**')
+    exclude('freemarker/ext/jython/**')
 
     from files(project(':moco-core').sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.classesDirs)

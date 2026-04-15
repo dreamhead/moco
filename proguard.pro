@@ -79,6 +79,7 @@
 -dontwarn freemarker.**
 -dontwarn org.slf4j.**
 -dontwarn org.apache.log4j.**
+-dontwarn org.apache.logging.log4j.**
 -dontwarn org.apache.commons.logging.**
 -dontwarn com.google.**
 -dontwarn net.sf.cglib.**
