@@ -83,6 +83,32 @@ server.request(by(uri("/events")))
 }
 ```
 
+### sse(...).delay(int)
+
+Sets a default delay (ms) for all events without their own delay. Event-level `delay` takes precedence.
+
+* Java API
+
+```java
+sse(event("message", "Hello"), event("message", " World")).delay(50)
+```
+
+* JSON
+
+```json
+{
+  "response" : {
+    "sse" : {
+      "delay" : 50,
+      "events" : [
+        { "event": "message", "data": "Hello" },
+        { "event": "message", "data": " World" }
+      ]
+    }
+  }
+}
+```
+
 ### event(String name, String data, String... rest)
 
 Creates a named SSE event.
@@ -128,6 +154,7 @@ SSE responses are **streamed** over a persistent HTTP connection:
 
 - Each event is sent as a separate HTTP chunk
 - Events with `delay()` are sent with the specified interval between them
+- Use `sse(...).delay(ms)` to set a default delay for all events at once
 - Connection is closed after all events are sent
 - `delay` is a Moco mock feature, not part of the SSE wire format
 

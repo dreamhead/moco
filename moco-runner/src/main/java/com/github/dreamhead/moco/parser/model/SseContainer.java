@@ -3,41 +3,51 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.MocoSse;
 import com.github.dreamhead.moco.ResponseHandler;
+import com.github.dreamhead.moco.handler.SseResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-
-import static com.github.dreamhead.moco.Moco.file;
-import static com.github.dreamhead.moco.Moco.with;
 
 @JsonDeserialize(using = com.github.dreamhead.moco.parser.deserializer.SseContainerDeserializer.class)
 public class SseContainer implements Container {
     private final FileContainer fileContainer;
     private final List<SseEvent> events;
+    private final int delay;
 
-    private SseContainer(final FileContainer fileContainer, final List<SseEvent> events) {
+    private SseContainer(final FileContainer fileContainer, final List<SseEvent> events, final int delay) {
         this.fileContainer = fileContainer;
         this.events = events;
+        this.delay = delay;
     }
 
-    public static SseContainer fromFile(final FileContainer fileContainer) {
-        return new SseContainer(fileContainer, null);
+    public static SseContainer fromFile(final FileContainer fileContainer, final int delay) {
+        return new SseContainer(fileContainer, null, delay);
     }
 
     public static SseContainer fromEvents(final List<SseEvent> events) {
-        return new SseContainer(null, events);
+        return new SseContainer(null, events, 0);
+    }
+
+    public static SseContainer fromEvents(final List<SseEvent> events, final int delay) {
+        return new SseContainer(null, events, delay);
     }
 
     public final ResponseHandler asResponseHandler() {
         if (fileContainer != null) {
-            return MocoSse.sse(toResource());
+            return applyDelay(MocoSse.sse(toResource()));
         }
 
-        return MocoSse.sse(events.get(0),
-                events.subList(1, events.size()).toArray(new SseEvent[0]));
+        return applyDelay(MocoSse.sse(events.get(0),
+                events.subList(1, events.size()).toArray(new SseEvent[0])));
+    }
+
+    private ResponseHandler applyDelay(final SseResponseHandler handler) {
+        if (delay > 0) {
+            return handler.delay(delay);
+        }
+        return handler;
     }
 
     private Resource toResource() {

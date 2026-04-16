@@ -117,6 +117,33 @@ public class MocoSseTest extends AbstractMocoHttpTest {
     }
 
     @Test
+    public void should_stream_events_with_sse_delay() throws Exception {
+        server.request(by(uri("/sse")))
+              .response(sse(
+                  event("message", "token1"),
+                  event("message", "token2"),
+                  event("message", "token3")
+              ).delay(100));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                sse.readNextEvent();
+
+                long between1and2 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed1 = System.currentTimeMillis() - between1and2;
+
+                long between2and3 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed2 = System.currentTimeMillis() - between2and3;
+
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+            }
+        });
+    }
+
+    @Test
     public void should_stream_events_without_delay_quickly() throws Exception {
         server.request(by(uri("/sse")))
               .response(sse(

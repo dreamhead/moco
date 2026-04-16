@@ -24,24 +24,36 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
         }
 
         if (currentToken == JsonToken.START_OBJECT) {
-            return SseContainer.fromFile(parseFile(jp, ctxt));
+            return parseObject(jp);
         }
 
         return (SseContainer) ctxt.handleUnexpectedToken(SseContainer.class, jp);
     }
 
-    private FileContainer parseFile(final JsonParser jp, final DeserializationContext ctxt) throws IOException {
-        SseFileVar fileVar = jp.readValueAs(SseFileVar.class);
-        return fileVar.toFileContainer();
+    private SseContainer parseObject(final JsonParser jp) throws IOException {
+        SseObjectVar var = jp.readValueAs(SseObjectVar.class);
+        int delay = var.delay != null ? var.delay : 0;
+
+        if (var.file != null) {
+            return SseContainer.fromFile(FileContainer.asFileContainer(var.file), delay);
+        }
+
+        if (var.events != null) {
+            ImmutableList.Builder<SseEvent> builder = ImmutableList.builder();
+            for (EventVar eventVar : var.events) {
+                builder.add(eventVar.toEvent());
+            }
+            return SseContainer.fromEvents(builder.build(), delay);
+        }
+
+        throw new IOException("Invalid SSE configuration: expected 'file' or 'events'");
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class SseFileVar {
+    private static class SseObjectVar {
         private TextContainer file;
-
-        public FileContainer toFileContainer() {
-            return FileContainer.asFileContainer(file);
-        }
+        private Integer delay;
+        private List<EventVar> events;
     }
 
     private List<SseEvent> parseEvents(final JsonParser jp) throws IOException {

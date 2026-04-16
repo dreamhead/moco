@@ -15,13 +15,13 @@ public final class MocoSse {
     private MocoSse() {
     }
 
-    public static ResponseHandler sse(final SseEvent first, final SseEvent... rest) {
+    public static SseResponseHandler sse(final SseEvent first, final SseEvent... rest) {
         Preconditions.checkNotNull(first, "SSE event should not be null");
         List<SseEvent> events = Iterables.asIterable(first, rest);
         return new SseResponseHandler(events);
     }
 
-    public static ResponseHandler sse(final Resource resource) {
+    public static SseResponseHandler sse(final Resource resource) {
         Preconditions.checkNotNull(resource, "Resource should not be null");
         Iterable<String> lines = Splitter.on('\n').split(resource.readFor((Request) null).toString());
         return new SseResponseHandler(new SseEventParser().parse(lines));

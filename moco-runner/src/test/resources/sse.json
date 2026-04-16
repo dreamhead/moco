@@ -31,5 +31,20 @@
             { "event": "message", "data": "token3", "delay": 100 }
          ]
       }
+   },
+   {
+      "request" : {
+         "uri" : "/sse-delay"
+      },
+      "response" : {
+         "sse" : {
+            "delay": 100,
+            "events": [
+               { "event": "message", "data": "token1" },
+               { "event": "message", "data": "token2" },
+               { "event": "message", "data": "token3" }
+            ]
+         }
+      }
    }
 ]

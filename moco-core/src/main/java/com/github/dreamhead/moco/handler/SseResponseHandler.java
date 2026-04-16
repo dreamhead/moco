@@ -14,9 +14,15 @@ public class SseResponseHandler extends AbstractHttpResponseHandler {
     private static final MediaType SSE_CONTENT_TYPE = MediaType.create("text", "event-stream");
 
     private final Iterable<SseEvent> events;
+    private int defaultDelay;
 
     public SseResponseHandler(final Iterable<SseEvent> events) {
         this.events = events;
+    }
+
+    public SseResponseHandler delay(final int delay) {
+        this.defaultDelay = delay;
+        return this;
     }
 
     @Override
@@ -27,8 +33,24 @@ public class SseResponseHandler extends AbstractHttpResponseHandler {
         httpResponse.addHeader("X-Accel-Buffering", "no");
 
         if (httpResponse instanceof DefaultMutableHttpResponse) {
-            ((DefaultMutableHttpResponse) httpResponse).setSseEvents(ImmutableList.copyOf(events));
+            ((DefaultMutableHttpResponse) httpResponse).setSseEvents(eventsWithDelay(events));
         }
+    }
+
+    private Iterable<SseEvent> eventsWithDelay(final Iterable<SseEvent> events) {
+        if (defaultDelay <= 0) {
+            return events;
+        }
+
+        ImmutableList.Builder<SseEvent> builder = ImmutableList.builder();
+        for (SseEvent event : events) {
+            if (event.getDelay() > 0) {
+                builder.add(event);
+            } else {
+                builder.add(event.delay(defaultDelay));
+            }
+        }
+        return builder.build();
     }
 
     @Override
