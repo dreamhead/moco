@@ -31,6 +31,8 @@ import static com.github.dreamhead.moco.MocoSse.sse;
 
 Creates an SSE streaming response handler with one or more events.
 
+* Java API
+
 ```java
 server.request(by(uri("/events")))
       .response(sse(
@@ -39,18 +41,53 @@ server.request(by(uri("/events")))
       ));
 ```
 
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/events"
+  },
+  "response" : {
+    "sse" : [
+      { "event": "message", "data": "Hello" },
+      { "event": "message", "data": " World" }
+    ]
+  }
+}
+```
+
 ### sse(Resource resource)
 
 Creates an SSE streaming response from a resource file.
+
+* Java API
 
 ```java
 server.request(by(uri("/events")))
       .response(sse(file("events.txt")));
 ```
 
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/events"
+  },
+  "response" : {
+    "sse" : {
+      "file" : "events.txt"
+    }
+  }
+}
+```
+
 ### event(String name, String data, String... rest)
 
 Creates a named SSE event.
+
+* Java API
 
 ```java
 event("message", "Hello World")
@@ -60,6 +97,8 @@ event("message", "Hello World")
 
 Creates an anonymous SSE event (no event name).
 
+* Java API
+
 ```java
 data("Hello World")
 ```
@@ -68,11 +107,19 @@ data("Hello World")
 
 Chain modifiers on events:
 
+* Java API
+
 ```java
 event("message", "Hello").id("1")           // Set event ID
 event("message", "Hello").retry(3000)        // Set reconnection time (ms)
 event("message", "Hello").delay(50)          // Set send delay (ms), must be > 0
 event("message", "Hello").id("1").retry(3000).delay(50)  // Combine modifiers
+```
+
+* JSON
+
+```json
+{ "event": "message", "data": "Hello", "id": "1", "retry": 3000, "delay": 50 }
 ```
 
 ## Streaming Behavior
@@ -97,6 +144,8 @@ SSE responses automatically include:
 
 ### LLM Token Streaming
 
+* Java API
+
 ```java
 server.request(by(uri("/chat")))
       .response(sse(
@@ -106,7 +155,26 @@ server.request(by(uri("/chat")))
       ));
 ```
 
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/chat"
+  },
+  "response" : {
+    "sse" : [
+      { "event": "message", "data": "Hello", "delay": 50 },
+      { "event": "message", "data": " World", "delay": 50 },
+      { "event": "message", "data": "!", "delay": 50 }
+    ]
+  }
+}
+```
+
 ### Multiple Events with IDs
+
+* Java API
 
 ```java
 server.request(by(uri("/events")))
@@ -116,7 +184,25 @@ server.request(by(uri("/events")))
       ));
 ```
 
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/events"
+  },
+  "response" : {
+    "sse" : [
+      { "event": "update", "data": "First", "id": "001" },
+      { "event": "update", "data": "Second", "id": "002" }
+    ]
+  }
+}
+```
+
 ### Anonymous Data Events
+
+* Java API
 
 ```java
 server.request(by(uri("/events")))
@@ -126,7 +212,25 @@ server.request(by(uri("/events")))
       ));
 ```
 
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/events"
+  },
+  "response" : {
+    "sse" : [
+      { "data": "first" },
+      { "data": "second" }
+    ]
+  }
+}
+```
+
 ### File-Based Events
+
+* Java API
 
 Create `events.txt`:
 
@@ -144,6 +248,21 @@ Use it:
 ```java
 server.request(by(uri("/events")))
       .response(sse(file("events.txt")));
+```
+
+* JSON
+
+```json
+{
+  "request" : {
+    "uri" : "/events"
+  },
+  "response" : {
+    "sse" : {
+      "file" : "events.txt"
+    }
+  }
+}
 ```
 
 ### SSE Event File Format

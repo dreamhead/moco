@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.handler.SseResponseHandler;
-import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.sse.SseEventParser;
