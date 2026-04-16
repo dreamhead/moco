@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.MocoMonitor;
 import com.github.dreamhead.moco.RequestMatcher;
+import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
@@ -27,9 +28,6 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final MocoConfig<?>[] configs;
     private final MocoMonitor monitor;
 
-    public final MocoMonitor getMonitor() {
-        return monitor;
-    }
     private final List<Setting<T>> settings = newArrayList();
     private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
@@ -84,6 +82,10 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
 
     public final void onException(final Throwable cause) {
         this.monitor.onException(cause);
+    }
+
+    public final void onEvent(final SseEvent event) {
+        this.monitor.onEvent(event);
     }
 
     protected final void addSetting(final Setting<T> setting) {

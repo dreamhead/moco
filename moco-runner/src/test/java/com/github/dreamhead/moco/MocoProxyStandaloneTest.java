@@ -1,5 +1,7 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.helper.SseTestHelper;
+import com.github.dreamhead.moco.sse.SseEvent;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -7,6 +9,8 @@ import java.io.IOException;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
@@ -107,5 +111,38 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
 
         content = helper.get(remoteUrl("/failover-with-status"));
         assertThat(content, is("proxy"));
+    }
+
+    @Test
+    public void should_proxy_sse_events() throws Exception {
+        runWithConfiguration("proxy.json");
+
+        try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse-proxy"))) {
+            assertThat(sse.getHeader("Content-Type"), is("text/event-stream"));
+
+            SseEvent event1 = sse.readNextEvent();
+            assertThat(event1.toEventString(), containsString("event: message"));
+            assertThat(event1.toEventString(), containsString("data: Hello"));
+
+            SseEvent event2 = sse.readNextEvent();
+            assertThat(event2.toEventString(), containsString("event: message"));
+            assertThat(event2.toEventString(), containsString("data: World"));
+        }
+    }
+
+    @Test
+    public void should_proxy_sse_events_with_delay() throws Exception {
+        runWithConfiguration("proxy.json");
+
+        try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse-proxy-delay"))) {
+            sse.readNextEvent();
+
+            long between1and2 = System.currentTimeMillis();
+            sse.readNextEvent();
+            long elapsed = System.currentTimeMillis() - between1and2;
+
+            assertThat("Delay between proxied events should be preserved",
+                    elapsed, greaterThanOrEqualTo(100L));
+        }
     }
 }

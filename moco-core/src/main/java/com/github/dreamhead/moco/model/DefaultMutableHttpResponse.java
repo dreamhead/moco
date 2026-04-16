@@ -22,7 +22,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private Map<String, String[]> headers = Maps.newHashMap();
     private int status;
     private MessageContent content;
-    private List<SseEvent> sseEvents;
+    private Iterable<SseEvent> sseEvents;
 
     private DefaultMutableHttpResponse() {
     }
@@ -114,14 +114,14 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     public boolean isSse() {
-        return sseEvents != null && !sseEvents.isEmpty();
+        return sseEvents != null;
     }
 
-    public List<SseEvent> getSseEvents() {
+    public Iterable<SseEvent> getSseEvents() {
         return sseEvents;
     }
 
-    public void setSseEvents(final List<SseEvent> events) {
+    public void setSseEvents(final Iterable<SseEvent> events) {
         this.sseEvents = events;
     }
 

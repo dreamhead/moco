@@ -31,7 +31,7 @@ public class SseTestHelper implements Closeable {
         InputStreamReader reader =
                 new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8);
         SseEventParser parser = new SseEventParser();
-        eventIterator = parser.parse(() -> new ReaderLineIterator(reader));
+        eventIterator = parser.parse(() -> new ReaderLineIterator(reader)).iterator();
     }
 
     /**

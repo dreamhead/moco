@@ -20,7 +20,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -97,31 +97,43 @@ public final class MocoHandler extends SimpleChannelInboundHandler<Object> {
         }
 
         ctx.write(headerResponse);
-
-        List<SseEvent> events = httpResponse.getSseEvents();
-        streamEvents(ctx, events, 0);
+        ctx.executor().execute(() -> streamSseEvents(ctx, httpResponse.getSseEvents().iterator()));
     }
 
-    private void streamEvents(final ChannelHandlerContext ctx, final List<SseEvent> events, final int index) {
-        if (!ctx.channel().isActive() || index >= events.size()) {
-            ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT)
-               .addListener(ChannelFutureListener.CLOSE);
-            return;
+    private void streamSseEvents(final ChannelHandlerContext ctx,
+                                 final Iterator<SseEvent> events) {
+        try {
+            while (ctx.channel().isActive()) {
+                if (!events.hasNext()) {
+                    finishSseStream(ctx);
+                    return;
+                }
+                SseEvent event = events.next();
+                writeSseEvent(ctx, event);
+                int delay = event.getDelay();
+                if (delay > 0) {
+                    ctx.executor().schedule(
+                            () -> streamSseEvents(ctx, events),
+                            delay, TimeUnit.MILLISECONDS);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            server.onException(e);
         }
+    }
 
-        SseEvent event = events.get(index);
-        server.getMonitor().onEvent(event);
-        ChannelFuture future = ctx.writeAndFlush(new DefaultHttpContent(
+    private void writeSseEvent(ChannelHandlerContext ctx, SseEvent event) {
+        server.onEvent(event);
+        ctx.writeAndFlush(new DefaultHttpContent(
                 Unpooled.copiedBuffer(event.toEventString(), StandardCharsets.UTF_8)
         ));
+    }
 
-        int delay = event.getDelay();
-        if (delay > 0) {
-            ctx.executor().schedule(
-                    () -> streamEvents(ctx, events, index + 1),
-                    delay, TimeUnit.MILLISECONDS);
-        } else {
-            future.addListener(f -> streamEvents(ctx, events, index + 1));
+    private void finishSseStream(final ChannelHandlerContext ctx) {
+        if (ctx.channel().isActive()) {
+            ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT)
+               .addListener(ChannelFutureListener.CLOSE);
         }
     }
 

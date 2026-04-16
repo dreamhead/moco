@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.sse.SseEvent;
 import org.junit.jupiter.api.Test;
 
 import static com.github.dreamhead.moco.Moco.by;
+import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.MocoSse.data;
 import static com.github.dreamhead.moco.MocoSse.event;
@@ -207,6 +208,58 @@ public class MocoSseTest extends AbstractMocoHttpTest {
                 SseEvent event2 = sse.readNextEvent();
                 assertThat(event2.toEventString(), containsString("id: 002"));
                 assertThat(event2.toEventString(), containsString("data: Second"));
+            }
+        });
+    }
+
+    @Test
+    public void should_proxy_sse_events() throws Exception {
+        server.request(by(uri("/target")))
+              .response(sse(
+                  event("message", "Hello"),
+                  event("message", "World")
+              ));
+        server.request(by(uri("/proxy")))
+              .response(proxy(remoteUrl("/target")));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/proxy"))) {
+                assertThat(sse.getHeader("Content-Type"), is("text/event-stream"));
+
+                SseEvent event1 = sse.readNextEvent();
+                assertThat(event1.toEventString(), containsString("event: message"));
+                assertThat(event1.toEventString(), containsString("data: Hello"));
+
+                SseEvent event2 = sse.readNextEvent();
+                assertThat(event2.toEventString(), containsString("event: message"));
+                assertThat(event2.toEventString(), containsString("data: World"));
+            }
+        });
+    }
+
+    @Test
+    public void should_proxy_sse_events_with_delay() throws Exception {
+        server.request(by(uri("/target")))
+              .response(sse(
+                  event("message", "first").delay(100),
+                  event("message", "second").delay(100)
+              ));
+        server.request(by(uri("/proxy")))
+              .response(proxy(remoteUrl("/target")));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/proxy"))) {
+                long start = System.currentTimeMillis();
+                sse.readNextEvent();
+                long firstElapsed = System.currentTimeMillis() - start;
+                assertThat("First event should arrive quickly", firstElapsed, lessThan(100L));
+
+                long between1and2 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed = System.currentTimeMillis() - between1and2;
+
+                assertThat("Delay between proxied events should be preserved",
+                        elapsed, greaterThanOrEqualTo(100L));
             }
         });
     }

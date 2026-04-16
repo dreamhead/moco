@@ -7,6 +7,8 @@ import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
@@ -40,8 +42,9 @@ public class DefaultMutableHttpResponseTest {
         DefaultMutableHttpResponse response = newResponse();
         response.setSseEvents(ImmutableList.of(event1, event2));
 
-        assertThat(response.getSseEvents().size(), is(2));
-        assertThat(response.getSseEvents().get(0), is(event1));
-        assertThat(response.getSseEvents().get(1), is(event2));
+        Iterator<SseEvent> events = response.getSseEvents().iterator();
+        assertThat(events.next(), is(event1));
+        assertThat(events.next(), is(event2));
+        assertThat(events.hasNext(), is(false));
     }
 }

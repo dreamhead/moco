@@ -6,6 +6,10 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
+import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
+import com.github.dreamhead.moco.sse.SseEvent;
+import com.github.dreamhead.moco.sse.SseEventParser;
+import com.github.dreamhead.moco.util.ReaderLineIterator;
 import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -22,6 +26,7 @@ import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
@@ -41,20 +46,27 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
+import static com.google.common.net.HttpHeaders.CACHE_CONTROL;
+import static com.google.common.net.HttpHeaders.CONNECTION;
 import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.net.HttpHeaders.DATE;
 import static com.google.common.net.HttpHeaders.HOST;
 import static com.google.common.net.HttpHeaders.SERVER;
@@ -171,16 +183,35 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
     }
 
-    private HttpResponse setupResponse(final HttpRequest request,
-                                       final ClassicHttpResponse remoteResponse) throws IOException {
+    private ProxyResult setupResponse(final HttpRequest request,
+                                       final ClassicHttpResponse remoteResponse,
+                                       final CloseableHttpClient client) throws IOException {
         if (failover.shouldFailover(remoteResponse)) {
-            return failover.failover(request);
+            closeQuietly(remoteResponse);
+            closeQuietly(client);
+            return ProxyResult.normal(failover.failover(request));
+        }
+
+        if (isSseResponse(remoteResponse)) {
+            return setupSseResult(remoteResponse, client);
         }
 
         HttpResponse httpResponse = setupNormalResponse(remoteResponse);
-
         failover.onCompleteResponse(request, httpResponse);
-        return httpResponse;
+        closeQuietly(remoteResponse);
+        closeQuietly(client);
+        return ProxyResult.normal(httpResponse);
+    }
+
+    private ProxyResult setupSseResult(ClassicHttpResponse remoteResponse, CloseableHttpClient client) throws IOException {
+        ReaderLineIterator lineIterator = new ReaderLineIterator(
+                new InputStreamReader(remoteResponse.getEntity().getContent(), StandardCharsets.UTF_8));
+        Iterable<String> lines = () -> lineIterator;
+        Iterable<SseEvent> events = new SseEventParser().parse(lines);
+        return ProxyResult.sse(new CloseOnExhaustIterable(events, () -> {
+            closeQuietly(remoteResponse);
+            closeQuietly(client);
+        }));
     }
 
     private HttpResponse setupNormalResponse(final ClassicHttpResponse remoteResponse) throws IOException {
@@ -209,8 +240,12 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     protected final void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
         url.ifPresent(actual -> {
-            HttpResponse response = doProxy(httpRequest, actual);
-            doWritHttpResponse(response, httpResponse);
+            ProxyResult result = doProxy(httpRequest, actual);
+            if (result.isSse()) {
+                writeSseResponse(result.getSseEvents(), httpResponse);
+            } else {
+                doWritHttpResponse(result.getResponse(), httpResponse);
+            }
         });
     }
 
@@ -227,10 +262,10 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         httpResponse.setContent(response.getContent());
     }
 
-    private HttpResponse doProxy(final HttpRequest request, final URL remoteUrl) {
+    private ProxyResult doProxy(final HttpRequest request, final URL remoteUrl) {
         if (failover.isPlayback()) {
             try {
-                return failover.failover(request);
+                return ProxyResult.normal(failover.failover(request));
             } catch (RuntimeException ignored) {
             }
         }
@@ -238,20 +273,32 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         return doForward(request, remoteUrl);
     }
 
-    private HttpResponse doForward(final HttpRequest request, final URL remoteUrl) {
-        try (CloseableHttpClient client = createClient()) {
-            try {
-                HttpUriRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
-                return client.execute(remoteRequest, response -> setupResponse(request, response));
-            } catch (ClientProtocolException e) {
-                logger.error("Failed to create remote request", e);
-                throw new MocoException(e);
-            } catch (IOException e) {
-                logger.error("Failed to load remote and try to failover", e);
-                return failover.failover(request);
-            }
-        } catch (IOException e) {
+    private ProxyResult doForward(final HttpRequest request, final URL remoteUrl) {
+        CloseableHttpClient client = createClient();
+        CloseableHttpResponse remoteResponse = null;
+        try {
+            HttpUriRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
+            remoteResponse = client.execute(remoteRequest);
+            return setupResponse(request, remoteResponse, client);
+        } catch (ClientProtocolException e) {
+            closeQuietly(remoteResponse);
+            closeQuietly(client);
+            logger.error("Failed to create remote request", e);
             throw new MocoException(e);
+        } catch (IOException e) {
+            closeQuietly(remoteResponse);
+            closeQuietly(client);
+            logger.error("Failed to load remote and try to failover", e);
+            return ProxyResult.normal(failover.failover(request));
+        }
+    }
+
+    private void closeQuietly(final Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException ignored) {
+            }
         }
     }
 
@@ -286,5 +333,94 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     protected final Failover failover() {
         return failover;
+    }
+
+    private void writeSseResponse(final Iterable<SseEvent> events, final MutableHttpResponse httpResponse) {
+        httpResponse.addHeader(CONTENT_TYPE, "text/event-stream");
+        httpResponse.addHeader(CACHE_CONTROL, "no-cache");
+        httpResponse.addHeader(CONNECTION, "keep-alive");
+        httpResponse.addHeader("X-Accel-Buffering", "no");
+
+        if (httpResponse instanceof DefaultMutableHttpResponse) {
+            ((DefaultMutableHttpResponse) httpResponse).setSseEvents(events);
+        }
+    }
+
+    private boolean isSseResponse(final ClassicHttpResponse remoteResponse) {
+        Header contentType = remoteResponse.getFirstHeader("Content-Type");
+        return contentType != null && contentType.getValue().contains("text/event-stream");
+    }
+
+    private static final class CloseOnExhaustIterable implements Iterable<SseEvent> {
+        private final Iterable<SseEvent> events;
+        private final Closeable closeable;
+        private boolean iterated;
+
+        CloseOnExhaustIterable(final Iterable<SseEvent> events, final Closeable closeable) {
+            this.events = events;
+            this.closeable = closeable;
+        }
+
+        @Override
+        public Iterator<SseEvent> iterator() {
+            if (iterated) {
+                throw new IllegalStateException("SSE events can only be iterated once");
+            }
+            iterated = true;
+            return new Iterator<SseEvent>() {
+                private final Iterator<SseEvent> delegate = events.iterator();
+
+                @Override
+                public boolean hasNext() {
+                    boolean hasMore = delegate.hasNext();
+                    if (!hasMore) {
+                        closeQuietly();
+                    }
+                    return hasMore;
+                }
+
+                @Override
+                public SseEvent next() {
+                    return delegate.next();
+                }
+            };
+        }
+
+        private void closeQuietly() {
+            try {
+                closeable.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    private static final class ProxyResult {
+        private final HttpResponse response;
+        private final Iterable<SseEvent> sseEvents;
+
+        private ProxyResult(final HttpResponse response, final Iterable<SseEvent> sseEvents) {
+            this.response = response;
+            this.sseEvents = sseEvents;
+        }
+
+        static ProxyResult normal(final HttpResponse response) {
+            return new ProxyResult(response, null);
+        }
+
+        static ProxyResult sse(final Iterable<SseEvent> events) {
+            return new ProxyResult(null, events);
+        }
+
+        HttpResponse getResponse() {
+            return response;
+        }
+
+        Iterable<SseEvent> getSseEvents() {
+            return sseEvents;
+        }
+
+        boolean isSse() {
+            return sseEvents != null;
+        }
     }
 }

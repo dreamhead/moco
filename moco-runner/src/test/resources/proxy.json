@@ -12,11 +12,57 @@
     {
         "request" :
         {
+            "uri" : "/sse-target"
+        },
+        "response" :
+        {
+            "sse" : [
+                { "event": "message", "data": "Hello" },
+                { "event": "message", "data": "World" }
+            ]
+        }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/sse-delay-target"
+        },
+        "response" :
+        {
+            "sse" : [
+                { "event": "message", "data": "first", "delay": 100 },
+                { "event": "message", "data": "second", "delay": 100 }
+            ]
+        }
+    },
+    {
+        "request" :
+        {
             "uri" : "/proxy"
         },
         "response" :
         {
             "proxy" : "http://localhost:12306/target"
+        }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/sse-proxy"
+        },
+        "response" :
+        {
+            "proxy" : "http://localhost:12306/sse-target"
+        }
+    },
+    {
+        "request" :
+        {
+            "uri" : "/sse-proxy-delay"
+        },
+        "response" :
+        {
+            "proxy" : "http://localhost:12306/sse-delay-target"
         }
     },
     {

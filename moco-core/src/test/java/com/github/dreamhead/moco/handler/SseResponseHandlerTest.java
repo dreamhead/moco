@@ -9,6 +9,7 @@ import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -60,9 +61,10 @@ public class SseResponseHandlerTest {
 
         handler.doWriteToResponse(mockRequest(), response);
 
-        assertThat(response.getSseEvents().size(), is(2));
-        assertThat(response.getSseEvents().get(0), is(event1));
-        assertThat(response.getSseEvents().get(1), is(event2));
+        Iterator<SseEvent> actual = response.getSseEvents().iterator();
+        assertThat(actual.next(), is(event1));
+        assertThat(actual.next(), is(event2));
+        assertThat(actual.hasNext(), is(false));
     }
 
     @Test
@@ -95,6 +97,9 @@ public class SseResponseHandlerTest {
         handler.doWriteToResponse(mockRequest(), response);
 
         assertThat(response.isSse(), is(true));
-        assertThat(response.getSseEvents().size(), is(2));
+        Iterator<SseEvent> actual = response.getSseEvents().iterator();
+        assertThat(actual.next().toEventString(), is("data: Hello\n\n"));
+        assertThat(actual.next().toEventString(), is("data: World\n\n"));
+        assertThat(actual.hasNext(), is(false));
     }
 }

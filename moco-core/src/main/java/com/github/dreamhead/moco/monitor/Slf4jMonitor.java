@@ -34,7 +34,7 @@ public final class Slf4jMonitor extends AbstractMonitor {
 
     @Override
     public void onEvent(final SseEvent event) {
-        logger.info("SSE event:\n\n{}\n", event.toEventString());
+        logger.info("SSE event:\n\n{}", event.toEventString());
     }
 
     @Override

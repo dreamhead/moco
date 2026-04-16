@@ -25,7 +25,7 @@ public final class MocoSse {
     public static ResponseHandler sse(final Resource resource) {
         Preconditions.checkNotNull(resource, "Resource should not be null");
         Iterable<String> lines = Splitter.on('\n').split(resource.readFor((Request) null).toString());
-        return new SseResponseHandler(() -> new SseEventParser().parse(lines));
+        return new SseResponseHandler(new SseEventParser().parse(lines));
     }
 
     public static SseEvent event(final String name, final String data, final String... rest) {

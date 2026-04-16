@@ -16,8 +16,21 @@ import static com.google.common.collect.Maps.immutableEntry;
 public final class SseEventParser {
     private static final Splitter FIELD_SPLITTER = Splitter.on(':').limit(2);
 
-    public Iterator<SseEvent> parse(final Iterable<String> lines) {
-        return new SseEventIterator(lines.iterator());
+    public Iterable<SseEvent> parse(final Iterable<String> lines) {
+        return new SseEventIterable(lines);
+    }
+
+    private final class SseEventIterable implements Iterable<SseEvent> {
+        private final Iterable<String> lines;
+
+        SseEventIterable(final Iterable<String> lines) {
+            this.lines = lines;
+        }
+
+        @Override
+        public Iterator<SseEvent> iterator() {
+            return new SseEventIterator(lines.iterator());
+        }
     }
 
     private final class SseEventIterator implements Iterator<SseEvent> {
