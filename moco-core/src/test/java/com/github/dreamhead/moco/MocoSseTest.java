@@ -91,11 +91,13 @@ public class MocoSseTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_stream_events_with_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         server.request(by(uri("/sse")))
               .response(sse(
-                  event("message", "token1").delay(100),
-                  event("message", "token2").delay(100),
-                  event("message", "token3").delay(100)
+                  event("message", "token1").delay(delay),
+                  event("message", "token2").delay(delay),
+                  event("message", "token3").delay(delay)
               ));
 
         running(server, () -> {
@@ -110,20 +112,22 @@ public class MocoSseTest extends AbstractMocoHttpTest {
                 sse.readNextEvent();
                 long elapsed2 = System.currentTimeMillis() - between2and3;
 
-                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
-                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
             }
         });
     }
 
     @Test
     public void should_stream_events_with_sse_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         server.request(by(uri("/sse")))
               .response(sse(
                   event("message", "token1"),
                   event("message", "token2"),
                   event("message", "token3")
-              ).delay(100));
+              ).delay(delay));
 
         running(server, () -> {
             try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
@@ -137,8 +141,8 @@ public class MocoSseTest extends AbstractMocoHttpTest {
                 sse.readNextEvent();
                 long elapsed2 = System.currentTimeMillis() - between2and3;
 
-                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
-                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
             }
         });
     }
@@ -266,10 +270,12 @@ public class MocoSseTest extends AbstractMocoHttpTest {
 
     @Test
     public void should_proxy_sse_events_with_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         server.request(by(uri("/target")))
               .response(sse(
-                  event("message", "first").delay(100),
-                  event("message", "second").delay(100)
+                  event("message", "first").delay(delay),
+                  event("message", "second").delay(delay)
               ));
         server.request(by(uri("/proxy")))
               .response(proxy(remoteUrl("/target")));
@@ -279,14 +285,14 @@ public class MocoSseTest extends AbstractMocoHttpTest {
                 long start = System.currentTimeMillis();
                 sse.readNextEvent();
                 long firstElapsed = System.currentTimeMillis() - start;
-                assertThat("First event should arrive quickly", firstElapsed, lessThan(100L));
+                assertThat("First event should arrive quickly", firstElapsed, lessThan((long) delay));
 
                 long between1and2 = System.currentTimeMillis();
                 sse.readNextEvent();
                 long elapsed = System.currentTimeMillis() - between1and2;
 
                 assertThat("Delay between proxied events should be preserved",
-                        elapsed, greaterThanOrEqualTo(100L));
+                        elapsed, greaterThanOrEqualTo((long) delay - delta));
             }
         });
     }

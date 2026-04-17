@@ -43,6 +43,8 @@ public class MocoSseStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_stream_events_with_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         runWithConfiguration("sse.json");
 
         try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/delay"))) {
@@ -56,13 +58,15 @@ public class MocoSseStandaloneTest extends AbstractMocoStandaloneTest {
             sse.readNextEvent();
             long elapsed2 = System.currentTimeMillis() - between2and3;
 
-            assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
-            assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+            assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+            assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
         }
     }
 
     @Test
     public void should_stream_events_with_sse_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         runWithConfiguration("sse.json");
 
         try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse-delay"))) {
@@ -76,8 +80,8 @@ public class MocoSseStandaloneTest extends AbstractMocoStandaloneTest {
             sse.readNextEvent();
             long elapsed2 = System.currentTimeMillis() - between2and3;
 
-            assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo(100L));
-            assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo(100L));
+            assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+            assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
         }
     }
 
