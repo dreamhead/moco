@@ -1,5 +1,7 @@
 # SSE APIs
 
+**@Since 1.6.0**
+
 Server-Sent Events (SSE) streaming support for mocking real-time event streams, including LLM-style token output.
 
 ## Basic Usage

@@ -1,24 +1,23 @@
 package com.github.dreamhead.moco.handler;
 
+import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
+import com.github.dreamhead.moco.model.DefaultHttpResponse;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.sse.SseEventParser;
 import com.github.dreamhead.moco.util.ReaderLineIterator;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringEncoder;
@@ -56,12 +55,12 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dreamhead.moco.model.DefaultHttpResponse.newResponse;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
 import static com.google.common.net.HttpHeaders.CACHE_CONTROL;
 import static com.google.common.net.HttpHeaders.CONNECTION;
@@ -183,73 +182,88 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
     }
 
-    private ProxyResult setupResponse(final HttpRequest request,
-                                       final ClassicHttpResponse remoteResponse,
-                                       final CloseableHttpClient client) throws IOException {
+    private void setupResponse(final HttpRequest request,
+                                final ClassicHttpResponse remoteResponse,
+                                final CloseableHttpClient client,
+                                final MutableHttpResponse httpResponse) throws IOException {
         if (failover.shouldFailover(remoteResponse)) {
             closeQuietly(remoteResponse);
             closeQuietly(client);
-            return ProxyResult.normal(failover.failover(request));
+            writeNormalResponse(failover.failover(request), httpResponse);
+            return;
         }
 
         if (isSseResponse(remoteResponse)) {
-            return setupSseResult(remoteResponse, client);
+            writeSseResponse(remoteResponse, client, httpResponse);
+            return;
         }
 
-        HttpResponse httpResponse = setupNormalResponse(remoteResponse);
-        failover.onCompleteResponse(request, httpResponse);
+        HttpResponse normalResponse = toHttpResponse(remoteResponse);
+        failover.onCompleteResponse(request, normalResponse);
         closeQuietly(remoteResponse);
         closeQuietly(client);
-        return ProxyResult.normal(httpResponse);
+        writeNormalResponse(normalResponse, httpResponse);
     }
 
-    private ProxyResult setupSseResult(ClassicHttpResponse remoteResponse, CloseableHttpClient client) throws IOException {
+    private void writeSseResponse(final ClassicHttpResponse remoteResponse,
+                                   final CloseableHttpClient client,
+                                   final MutableHttpResponse httpResponse) throws IOException {
         ReaderLineIterator lineIterator = new ReaderLineIterator(
                 new InputStreamReader(remoteResponse.getEntity().getContent(), StandardCharsets.UTF_8));
         Iterable<String> lines = () -> lineIterator;
         Iterable<SseEvent> events = new SseEventParser().parse(lines);
-        return ProxyResult.sse(new CloseOnExhaustIterable(events, () -> {
+        httpResponse.addHeader(CONTENT_TYPE, "text/event-stream");
+        httpResponse.addHeader(CACHE_CONTROL, "no-cache");
+        httpResponse.addHeader(CONNECTION, "keep-alive");
+        httpResponse.addHeader("X-Accel-Buffering", "no");
+        httpResponse.setSseEvents(new CloseOnExhaustIterable(events, () -> {
             closeQuietly(remoteResponse);
             closeQuietly(client);
         }));
     }
 
-    private HttpResponse setupNormalResponse(final ClassicHttpResponse remoteResponse) throws IOException {
-        HttpVersion httpVersion = HttpVersion.valueOf(remoteResponse.getVersion().toString());
-        HttpResponseStatus status = HttpResponseStatus.valueOf(remoteResponse.getCode());
-        FullHttpResponse response = new DefaultFullHttpResponse(httpVersion, status);
-        response.setStatus(status);
+    private HttpResponse toHttpResponse(final ClassicHttpResponse remoteResponse) throws IOException {
+        HttpProtocolVersion version = HttpProtocolVersion.versionOf(remoteResponse.getVersion().toString());
+        int status = remoteResponse.getCode();
 
+        Map<String, String[]> headers = new HashMap<>();
         Arrays.stream(remoteResponse.getHeaders())
                 .filter(this::isResponseHeader)
-                .forEach(header -> response.headers().set(header.getName(), header.getValue()));
+                .forEach(header -> mergeHeader(headers, header.getName(), header.getValue()));
 
         HttpEntity entity = remoteResponse.getEntity();
+        MessageContent content = null;
         if (entity != null) {
-            byte[] content = toByteArray(entity);
-            if (content.length > 0) {
-                ByteBuf buffer = Unpooled.copiedBuffer(content);
-                response.content().writeBytes(buffer);
+            byte[] bytes = toByteArray(entity);
+            if (bytes.length > 0) {
+                content = MessageContent.content().withContent(bytes).build();
             }
         }
 
-        return newResponse(response);
+        return DefaultHttpResponse.builder()
+                .withVersion(version)
+                .withStatus(status)
+                .withHeaders(headers)
+                .withContent(content)
+                .build();
+    }
+
+    private void mergeHeader(final Map<String, String[]> headers, final String name, final String value) {
+        String[] existing = headers.get(name);
+        if (existing == null) {
+            headers.put(name, new String[]{value});
+        } else {
+            headers.put(name, ObjectArrays.concat(existing, value));
+        }
     }
 
     @Override
     protected final void doWriteToResponse(final HttpRequest httpRequest, final MutableHttpResponse httpResponse) {
         Optional<URL> url = remoteUrl(httpRequest);
-        url.ifPresent(actual -> {
-            ProxyResult result = doProxy(httpRequest, actual);
-            if (result.isSse()) {
-                writeSseResponse(result.getSseEvents(), httpResponse);
-            } else {
-                doWritHttpResponse(result.getResponse(), httpResponse);
-            }
-        });
+        url.ifPresent(actual -> doProxy(httpRequest, actual, httpResponse));
     }
 
-    private void doWritHttpResponse(final HttpResponse response, final MutableHttpResponse httpResponse) {
+    private void writeNormalResponse(final HttpResponse response, final MutableHttpResponse httpResponse) {
         httpResponse.setVersion(response.getVersion());
         httpResponse.setStatus(response.getStatus());
         for (Map.Entry<String, String[]> entry : response.getHeaders().entrySet()) {
@@ -262,24 +276,25 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         httpResponse.setContent(response.getContent());
     }
 
-    private ProxyResult doProxy(final HttpRequest request, final URL remoteUrl) {
+    private void doProxy(final HttpRequest request, final URL remoteUrl, final MutableHttpResponse httpResponse) {
         if (failover.isPlayback()) {
             try {
-                return ProxyResult.normal(failover.failover(request));
+                writeNormalResponse(failover.failover(request), httpResponse);
+                return;
             } catch (RuntimeException ignored) {
             }
         }
 
-        return doForward(request, remoteUrl);
+        doForward(request, remoteUrl, httpResponse);
     }
 
-    private ProxyResult doForward(final HttpRequest request, final URL remoteUrl) {
+    private void doForward(final HttpRequest request, final URL remoteUrl, final MutableHttpResponse httpResponse) {
         CloseableHttpClient client = createClient();
         CloseableHttpResponse remoteResponse = null;
         try {
             HttpUriRequestBase remoteRequest = prepareRemoteRequest(request, remoteUrl);
             remoteResponse = client.execute(remoteRequest);
-            return setupResponse(request, remoteResponse, client);
+            setupResponse(request, remoteResponse, client, httpResponse);
         } catch (ClientProtocolException e) {
             closeQuietly(remoteResponse);
             closeQuietly(client);
@@ -289,7 +304,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             closeQuietly(remoteResponse);
             closeQuietly(client);
             logger.error("Failed to load remote and try to failover", e);
-            return ProxyResult.normal(failover.failover(request));
+            writeNormalResponse(failover.failover(request), httpResponse);
         }
     }
 
@@ -333,17 +348,6 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     protected final Failover failover() {
         return failover;
-    }
-
-    private void writeSseResponse(final Iterable<SseEvent> events, final MutableHttpResponse httpResponse) {
-        httpResponse.addHeader(CONTENT_TYPE, "text/event-stream");
-        httpResponse.addHeader(CACHE_CONTROL, "no-cache");
-        httpResponse.addHeader(CONNECTION, "keep-alive");
-        httpResponse.addHeader("X-Accel-Buffering", "no");
-
-        if (httpResponse instanceof DefaultMutableHttpResponse) {
-            ((DefaultMutableHttpResponse) httpResponse).setSseEvents(events);
-        }
     }
 
     private boolean isSseResponse(final ClassicHttpResponse remoteResponse) {
@@ -394,33 +398,4 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         }
     }
 
-    private static final class ProxyResult {
-        private final HttpResponse response;
-        private final Iterable<SseEvent> sseEvents;
-
-        private ProxyResult(final HttpResponse response, final Iterable<SseEvent> sseEvents) {
-            this.response = response;
-            this.sseEvents = sseEvents;
-        }
-
-        static ProxyResult normal(final HttpResponse response) {
-            return new ProxyResult(response, null);
-        }
-
-        static ProxyResult sse(final Iterable<SseEvent> events) {
-            return new ProxyResult(null, events);
-        }
-
-        HttpResponse getResponse() {
-            return response;
-        }
-
-        Iterable<SseEvent> getSseEvents() {
-            return sseEvents;
-        }
-
-        boolean isSse() {
-            return sseEvents != null;
-        }
-    }
 }

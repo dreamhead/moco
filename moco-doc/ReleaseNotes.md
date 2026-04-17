@@ -1,10 +1,21 @@
 # Release
 
-## CLI
-* add `--content-length` for max request content length in standalone server
+## APIs
+* `sse` API for Server-Sent Events streaming support
+  * `event` for named SSE event
+  * `data` for anonymous SSE event
+  * `sse(...).delay(ms)` for global delay between all events
+  * Event modifiers: `id`, `retry`, `delay`
+* SSE events from file
+* SSE JSON API
+  * Array format for inline events
+  * Object format with `delay` and `events`
+  * File format with `delay`
 
-## JUnit 5
-* HTTP and HTTPS with JSON configuration from file/class path
+## Implementation Details
+* Replace logback with tinylog
+* SSE proxy: proxy forwards SSE streams from remote server
+* Optimize ProGuard configuration to exclude unused resources
 
 # Release 1.5.0(1-Sep-2023)
 ## APIs
