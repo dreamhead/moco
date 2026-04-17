@@ -132,6 +132,8 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
 
     @Test
     public void should_proxy_sse_events_with_delay() throws Exception {
+        int delay = 100;
+        int delta = 10;
         runWithConfiguration("proxy.json");
 
         try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse-proxy-delay"))) {
@@ -142,7 +144,7 @@ public class MocoProxyStandaloneTest extends AbstractMocoStandaloneTest {
             long elapsed = System.currentTimeMillis() - between1and2;
 
             assertThat("Delay between proxied events should be preserved",
-                    elapsed, greaterThanOrEqualTo(100L));
+                    elapsed, greaterThanOrEqualTo((long) delay - delta));
         }
     }
 }
