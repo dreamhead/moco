@@ -83,14 +83,19 @@ task proguardCheck(type: Test, dependsOn: proguard) {
                 sourceSets.test.output
 }
 
-publishing.publications.findByName('mavenJava').artifact(proguard.outputs.files.singleFile) {
-    classifier = "standalone"
+if (rootProject.ext.isPublishingJvm) {
+    afterEvaluate {
+        publishing.publications.findByName('maven').artifact(proguard.outputs.files.singleFile) {
+            classifier = "standalone"
+        }
+
+        signMavenPublication.dependsOn proguard
+        publishMavenPublicationToMavenLocal.dependsOn proguard
+        publishMavenPublicationToMavenCentralRepository.dependsOn proguard
+    }
 }
 
 uberjar.dependsOn ":moco-core:jar"
-signMavenJavaPublication.dependsOn proguard
-publishMavenJavaPublicationToMavenLocal.dependsOn proguard
-publishMavenJavaPublicationToMavenRepository.dependsOn proguard
 
 def javaRtLib() {
     javaLibPath("/lib/rt.jar", "/../Classes/classes.jar")
