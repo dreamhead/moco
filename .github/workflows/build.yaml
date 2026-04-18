@@ -23,7 +23,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '${{ matrix.java-version }}'
-          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Run checks
         run: ./gradlew check -i
