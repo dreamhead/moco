@@ -73,8 +73,8 @@ subprojects {
                     }
                 }
                 scm {
-                    connection = 'https://github.com/dreamhead/moco.git'
-                    developerConnection = 'https://github.com/dreamhead/moco.git'
+                    connection = 'scm:git:https://github.com/dreamhead/moco.git'
+                    developerConnection = 'scm:git:https://github.com/dreamhead/moco.git'
                     url = 'https://github.com/dreamhead/moco'
                 }
             }
