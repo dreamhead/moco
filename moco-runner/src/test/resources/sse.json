@@ -46,5 +46,32 @@
             ]
          }
       }
+   },
+   {
+      "request" : {
+         "uri" : "/sse-delay-unit"
+      },
+      "response" : {
+         "sse" : {
+            "delay": { "duration": 100, "unit": "MILLISECOND" },
+            "events": [
+               { "event": "message", "data": "token1" },
+               { "event": "message", "data": "token2" },
+               { "event": "message", "data": "token3" }
+            ]
+         }
+      }
+   },
+   {
+      "request" : {
+         "uri" : "/event-delay-unit"
+      },
+      "response" : {
+         "sse" : [
+            { "event": "message", "data": "token1", "delay": { "duration": 100, "unit": "MILLISECOND" } },
+            { "event": "message", "data": "token2", "delay": { "duration": 100, "unit": "MILLISECOND" } },
+            { "event": "message", "data": "token3" }
+         ]
+      }
    }
 ]

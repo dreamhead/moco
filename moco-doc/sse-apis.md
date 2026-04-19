@@ -85,14 +85,15 @@ server.request(by(uri("/events")))
 }
 ```
 
-### sse(...).delay(int)
+### sse(...).delay(long)
 
-Sets a default delay (ms) for all events without their own delay. Event-level `delay` takes precedence.
+Sets a default delay for all events without their own delay. Event-level `delay` takes precedence.
 
 * Java API
 
 ```java
-sse(event("message", "Hello"), event("message", " World")).delay(50)
+sse(event("message", "Hello"), event("message", " World")).delay(50)           // milliseconds
+sse(event("message", "Hello"), event("message", " World")).delay(1, TimeUnit.SECONDS)
 ```
 
 * JSON
@@ -110,6 +111,24 @@ sse(event("message", "Hello"), event("message", " World")).delay(50)
   }
 }
 ```
+
+With time unit:
+
+```json
+{
+  "response" : {
+    "sse" : {
+      "delay" : { "duration": 1, "unit": "SECOND" },
+      "events" : [
+        { "event": "message", "data": "Hello" },
+        { "event": "message", "data": " World" }
+      ]
+    }
+  }
+}
+```
+
+Supported units: `NANOSECOND`, `MICROSECOND`, `MILLISECOND`, `SECOND`, `MINUTE`, `HOUR`, `DAY`.
 
 ### event(String name, String data, String... rest)
 
@@ -141,6 +160,7 @@ Chain modifiers on events:
 event("message", "Hello").id("1")           // Set event ID
 event("message", "Hello").retry(3000)        // Set reconnection time (ms)
 event("message", "Hello").delay(50)          // Set send delay (ms), must be > 0
+event("message", "Hello").delay(1, TimeUnit.SECONDS)  // Set send delay with time unit
 event("message", "Hello").id("1").retry(3000).delay(50)  // Combine modifiers
 ```
 
@@ -148,6 +168,12 @@ event("message", "Hello").id("1").retry(3000).delay(50)  // Combine modifiers
 
 ```json
 { "event": "message", "data": "Hello", "id": "1", "retry": 3000, "delay": 50 }
+```
+
+With time unit:
+
+```json
+{ "event": "message", "data": "Hello", "delay": { "duration": 1, "unit": "SECOND" } }
 ```
 
 ## Streaming Behavior

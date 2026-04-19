@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public final class SseContainerDeserializer extends JsonDeserializer<SseContainer> {
     @Override
@@ -32,10 +33,10 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
 
     private SseContainer parseObject(final JsonParser jp) throws IOException {
         SseObjectVar var = jp.readValueAs(SseObjectVar.class);
-        int delay = var.delay != null ? var.delay : 0;
+        Delay delay = Delay.from(var.delay);
 
         if (var.file != null) {
-            return SseContainer.fromFile(FileContainer.asFileContainer(var.file), delay);
+            return SseContainer.fromFile(FileContainer.asFileContainer(var.file), delay.duration, delay.unit);
         }
 
         if (var.events != null) {
@@ -43,7 +44,7 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
             for (EventVar eventVar : var.events) {
                 builder.add(eventVar.toEvent());
             }
-            return SseContainer.fromEvents(builder.build(), delay);
+            return SseContainer.fromEvents(builder.build(), delay.duration, delay.unit);
         }
 
         throw new IOException("Invalid SSE configuration: expected 'file' or 'events'");
@@ -52,8 +53,47 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     private static class SseObjectVar {
         private TextContainer file;
-        private Integer delay;
+        private Object delay;
         private List<EventVar> events;
+    }
+
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    private static class DelayVar {
+        private long duration;
+        private String unit;
+    }
+
+    private static final class Delay {
+        private final long duration;
+        private final TimeUnit unit;
+
+        private Delay(final long duration, final TimeUnit unit) {
+            this.duration = duration;
+            this.unit = unit;
+        }
+
+        @SuppressWarnings("unchecked")
+        static Delay from(final Object delay) {
+            if (delay == null) {
+                return new Delay(0, TimeUnit.MILLISECONDS);
+            }
+
+            if (delay instanceof Number) {
+                return new Delay(((Number) delay).longValue(), TimeUnit.MILLISECONDS);
+            }
+
+            if (delay instanceof java.util.Map) {
+                java.util.Map<String, Object> map = (java.util.Map<String, Object>) delay;
+                long duration = ((Number) map.get("duration")).longValue();
+                String unit = (String) map.get("unit");
+                TimeUnit timeUnit = unit != null
+                        ? TimeUnit.valueOf(unit.toUpperCase() + 'S')
+                        : TimeUnit.MILLISECONDS;
+                return new Delay(duration, timeUnit);
+            }
+
+            throw new IllegalArgumentException("Invalid delay format");
+        }
     }
 
     private List<SseEvent> parseEvents(final JsonParser jp) throws IOException {
@@ -75,7 +115,7 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
         private String data;
         private String id;
         private Integer retry;
-        private Integer delay;
+        private Object delay;
 
         public SseEvent toEvent() {
             SseEvent e;
@@ -91,8 +131,9 @@ public final class SseContainerDeserializer extends JsonDeserializer<SseContaine
             if (retry != null) {
                 e = e.retry(retry);
             }
-            if (delay != null) {
-                e = e.delay(delay);
+            Delay d = Delay.from(delay);
+            if (d.duration > 0) {
+                e = e.delay(d.duration, d.unit);
             }
             return e;
         }

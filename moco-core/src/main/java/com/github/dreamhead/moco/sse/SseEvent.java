@@ -5,16 +5,17 @@ import com.google.common.base.Preconditions;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public final class SseEvent {
     private final String id;
     private final String event;
     private final List<String> data;
     private final Integer retry;
-    private final int delay;
+    private final long delay;
 
     SseEvent(final String id, final String event, final List<String> data,
-             final Integer retry, final int delay) {
+             final Integer retry, final long delay) {
         this.id = id;
         this.event = event;
         this.data = data;
@@ -40,12 +41,19 @@ public final class SseEvent {
         return new SseEvent(this.id, this.event, this.data, retry, this.delay);
     }
 
-    public SseEvent delay(final int delay) {
+    public SseEvent delay(final long delay) {
         Preconditions.checkArgument(delay > 0, "Delay must be positive");
         return new SseEvent(this.id, this.event, this.data, this.retry, delay);
     }
 
-    public int getDelay() {
+    public SseEvent delay(final long duration, final TimeUnit unit) {
+        Preconditions.checkArgument(duration > 0, "Delay must be positive");
+        Preconditions.checkNotNull(unit, "Time unit should not be null");
+        return new SseEvent(this.id, this.event, this.data, this.retry,
+                unit.toMillis(duration));
+    }
+
+    public long getDelay() {
         return delay;
     }
 

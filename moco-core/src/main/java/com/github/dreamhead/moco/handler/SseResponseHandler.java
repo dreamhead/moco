@@ -10,18 +10,25 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 
+import java.util.concurrent.TimeUnit;
+
 public class SseResponseHandler extends AbstractHttpResponseHandler {
     private static final MediaType SSE_CONTENT_TYPE = MediaType.create("text", "event-stream");
 
     private final Iterable<SseEvent> events;
-    private int defaultDelay;
+    private long defaultDelay;
 
     public SseResponseHandler(final Iterable<SseEvent> events) {
         this.events = events;
     }
 
-    public SseResponseHandler delay(final int delay) {
+    public SseResponseHandler delay(final long delay) {
         this.defaultDelay = delay;
+        return this;
+    }
+
+    public SseResponseHandler delay(final long duration, final TimeUnit unit) {
+        this.defaultDelay = unit.toMillis(duration);
         return this;
     }
 
@@ -33,7 +40,7 @@ public class SseResponseHandler extends AbstractHttpResponseHandler {
         httpResponse.addHeader("X-Accel-Buffering", "no");
 
         if (httpResponse instanceof DefaultMutableHttpResponse) {
-            ((DefaultMutableHttpResponse) httpResponse).setSseEvents(eventsWithDelay(events));
+            httpResponse.setSseEvents(eventsWithDelay(events));
         }
     }
 

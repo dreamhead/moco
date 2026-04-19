@@ -4,6 +4,8 @@ import com.github.dreamhead.moco.helper.SseTestHelper;
 import com.github.dreamhead.moco.sse.SseEvent;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.proxy;
 import static com.github.dreamhead.moco.Moco.uri;
@@ -128,6 +130,64 @@ public class MocoSseTest extends AbstractMocoHttpTest {
                   event("message", "token2"),
                   event("message", "token3")
               ).delay(delay));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                sse.readNextEvent();
+
+                long between1and2 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed1 = System.currentTimeMillis() - between1and2;
+
+                long between2and3 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed2 = System.currentTimeMillis() - between2and3;
+
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
+            }
+        });
+    }
+
+    @Test
+    public void should_stream_events_with_delay_and_time_unit() throws Exception {
+        int delay = 100;
+        int delta = 10;
+        server.request(by(uri("/sse")))
+              .response(sse(
+                  event("message", "token1").delay(delay, TimeUnit.MILLISECONDS),
+                  event("message", "token2").delay(delay, TimeUnit.MILLISECONDS),
+                  event("message", "token3").delay(delay, TimeUnit.MILLISECONDS)
+              ));
+
+        running(server, () -> {
+            try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
+                sse.readNextEvent();
+
+                long between1and2 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed1 = System.currentTimeMillis() - between1and2;
+
+                long between2and3 = System.currentTimeMillis();
+                sse.readNextEvent();
+                long elapsed2 = System.currentTimeMillis() - between2and3;
+
+                assertThat("Delay between events should be >= 100ms", elapsed1, greaterThanOrEqualTo((long) delay - delta));
+                assertThat("Delay between events should be >= 100ms", elapsed2, greaterThanOrEqualTo((long) delay - delta));
+            }
+        });
+    }
+
+    @Test
+    public void should_stream_events_with_sse_delay_and_time_unit() throws Exception {
+        int delay = 100;
+        int delta = 10;
+        server.request(by(uri("/sse")))
+              .response(sse(
+                  event("message", "token1"),
+                  event("message", "token2"),
+                  event("message", "token3")
+              ).delay(delay, TimeUnit.MILLISECONDS));
 
         running(server, () -> {
             try (SseTestHelper sse = new SseTestHelper(helper.getClient(), remoteUrl("/sse"))) {
