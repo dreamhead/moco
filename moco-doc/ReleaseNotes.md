@@ -1,20 +1,23 @@
-# Release
+# Release 1.6.0(20-Apr-2026)
 
 ## APIs
 * `sse` API for Server-Sent Events streaming support
   * `event` for named SSE event
   * `data` for anonymous SSE event
   * `sse(...).delay(ms)` for global delay between all events
+  * `sse(...).delay(duration, TimeUnit)` for global delay with time unit
   * Event modifiers: `id`, `retry`, `delay`
+  * `event.delay(duration, TimeUnit)` for event delay with time unit
 * SSE events from file
+* SSE proxy: proxy forwards SSE streams from remote server
 * SSE JSON API
   * Array format for inline events
   * Object format with `delay` and `events`
+  * Object format with `delay` as `{duration, unit}` for time unit
   * File format with `delay`
 
 ## Implementation Details
 * Replace logback with tinylog
-* SSE proxy: proxy forwards SSE streams from remote server
 * Optimize ProGuard configuration to exclude unused resources
 
 # Release 1.5.0(1-Sep-2023)

@@ -24,7 +24,7 @@ Integration, especially based on HTTP protocol, e.g. web service, REST etc, is w
 In the old days, we just deployed another WAR to an application server, e.g. Jetty or Tomcat etc. As we all know, it's so boring to develop a WAR and deploy it to any application server, even if we use an embeded server. And the WAR needs to be reassembled even if we just want to change a little bit.
 
 ## Quick Start
-* Download [Standalone Moco Runner](https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/1.5.0/moco-runner-1.5.0-standalone.jar)
+* Download [Standalone Moco Runner](https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/1.6.0/moco-runner-1.6.0-standalone.jar)
 * Write your own configuration file to describe your Moco server configuration as follow:
 ```json
 [
@@ -50,6 +50,7 @@ java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 * Detailed [HTTP APIs](moco-doc/apis.md) or [Socket APIs](moco-doc/socket-apis.md)
 * Detailed [REST API](moco-doc/rest-apis.md)
 * Detailed [Websocket API](moco-doc/websocket-apis.md)
+* Detailed [SSE API](moco-doc/sse-apis.md)
 * [Global Settings](moco-doc/global-settings.md) for multiple configuration files.
 * [Command Line Usages](moco-doc/cmd.md)
 * [Extend Moco](moco-doc/extending.md) if current API does not meet your requirement.
@@ -82,7 +83,7 @@ git clone git@github.com:dreamhead/moco.git
 Check out what you can help [here](moco-doc/plan.md) if you do not have any existing idea.
 
 ## Copyright and license
-Copyright 2012-2023 ZHENG Ye
+Copyright 2012-2026 ZHENG Ye
 
 Licensed under MIT License (the "License"); You may obtain a copy of the License in the LICENSE file, or at:
 

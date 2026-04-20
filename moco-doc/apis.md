@@ -1746,7 +1746,7 @@ server.response(cookie("loggedIn", "true", sameSite("Lax")), status(302))
 ```
 
 ### CORS
-**@Sinace 1.5.0**
+**@Since 1.5.0**
 
 Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g. fonts) on a web page to be requested from another domain outside the domain from which the resource originated. You can add your own `cors` to your response.
 
