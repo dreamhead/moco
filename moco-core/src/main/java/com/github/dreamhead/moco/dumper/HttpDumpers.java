@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
+import com.github.dreamhead.moco.model.MessageContent;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import com.google.common.net.HttpHeaders;
@@ -17,7 +18,11 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
         if (message.hasContent()) {
-            return StringUtil.NEWLINE + StringUtil.NEWLINE + contentForDump(message);
+            String content = contentForDump(message);
+            if (content.isEmpty()) {
+                return "";
+            }
+            return StringUtil.NEWLINE + StringUtil.NEWLINE + content;
         }
 
         return "";
@@ -27,6 +32,11 @@ public final class HttpDumpers {
         String type = message.getHeader(HttpHeaders.CONTENT_TYPE);
         if (isText(type)) {
             return message.getContent().toString();
+        }
+
+        MessageContent content = message.getContent();
+        if (content == null || !content.hasContent()) {
+            return "";
         }
 
         return "<content is binary>";

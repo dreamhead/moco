@@ -87,6 +87,16 @@ public class HttpDumpersTest {
                 .build()), is(""));
     }
 
+    @Test
+    public void should_show_empty_for_empty_content_with_binary_type() {
+        assertThat(asContent(DefaultHttpResponse.builder()
+                .withHeaders(ImmutableMap.of(
+                        HttpHeaders.CONTENT_TYPE, "image/jpeg",
+                        HttpHeaders.CONTENT_LENGTH, "0"))
+                .withStringContent("")
+                .build()), is(""));
+    }
+
     private void assertMessageContent(final String mediaType, final String expectedContent) {
         assertThat(asContent(messageWithHeaders(defaultHeadersFor(mediaType))), is(expectedContent));
     }
