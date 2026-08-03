@@ -11,6 +11,12 @@ public final class Preconditions {
         return reference;
     }
 
+    public static void checkArgument(final boolean expression, final Object errorMessage) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.valueOf(errorMessage));
+        }
+    }
+
     private Preconditions() {
     }
 }

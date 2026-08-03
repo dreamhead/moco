@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 public final class Strings {
+    public static boolean isNullOrEmpty(final String text) {
+        return text == null || text.isEmpty();
+    }
+
     public static String strip(final String text) {
         if (isNullOrEmpty(text)) {
             return "";
