@@ -8,7 +8,7 @@ import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class MocoMount {
     public static MountTo to(final String target) {
@@ -26,7 +26,7 @@ public final class MocoMount {
     }
 
     private static MountPredicate not(final MountPredicate predicate) {
-        checkNotNull(predicate);
+        requireNonNull(predicate);
         return filename -> !predicate.test(filename);
     }
 

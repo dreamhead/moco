@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.util;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Strings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

@@ -5,7 +5,7 @@ import com.github.dreamhead.moco.HttpsCertificate;
 import com.github.dreamhead.moco.Runner;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.base.Strings;
+import com.github.dreamhead.moco.util.Strings;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.Extension;

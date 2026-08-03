@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class Files {
     public static String join(final String path1, final String path2, final String... paths) {
@@ -33,7 +33,7 @@ public final class Files {
      * result is an empty string - never null - when there is no extension.
      */
     public static String getFileExtension(final String fullName) {
-        checkNotNull(fullName);
+        requireNonNull(fullName);
 
         String fileName = new File(fullName).getName();
         int dotIndex = fileName.lastIndexOf('.');
@@ -41,7 +41,7 @@ public final class Files {
     }
 
     public static File directoryOf(final File file) {
-        checkNotNull(file);
+        requireNonNull(file);
         File parentFile = file.getParentFile();
         if (parentFile == null) {
             return new File(".");

@@ -38,8 +38,8 @@ import java.util.Optional;
 import java.util.Random;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableMap.copyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
@@ -56,7 +56,6 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private final ContentResource template;
     private final ImmutableMap<String, ? extends Variable> variables;
-
 
     public static String checkValidVariableName(final String name) {
         if (!RESERVED_NAME.contains(

@@ -12,7 +12,7 @@ import java.security.KeyStore;
 import java.security.Security;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class HttpsCertificate {
     private static final String PROTOCOL = "TLS";
@@ -78,7 +78,7 @@ public final class HttpsCertificate {
     public static HttpsCertificate certificate(final ContentResource resource,
                                                final String keyStorePassword,
                                                final String certPassword) {
-        return new HttpsCertificate(checkNotNull(resource),
+        return new HttpsCertificate(requireNonNull(resource),
                 checkNotNullOrEmpty(keyStorePassword, "Key store password should not be null"),
                 checkNotNullOrEmpty(certPassword, "Cert password should not be null"));
     }

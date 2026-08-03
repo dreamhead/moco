@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSettingBuilder;
-import com.google.common.base.Strings;
+import com.github.dreamhead.moco.util.Strings;
 
 import static com.github.dreamhead.moco.parser.model.RestIds.asIdMatcher;
 

@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
-import com.google.common.base.Strings;
+import com.github.dreamhead.moco.util.Strings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +75,6 @@ public final class HttpRequestFailoverMatcher {
         return thisField.entrySet().stream()
                 .noneMatch(entry -> notMatchMapValue(entry.getValue(), thatField.get(entry.getKey())));
     }
-
 
     private boolean notMatchMapValue(final Object thisValue, final Object thatValue) {
         if (thisValue instanceof String && thatValue instanceof String) {

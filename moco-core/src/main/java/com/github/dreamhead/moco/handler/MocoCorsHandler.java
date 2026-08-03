@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
-import com.google.common.base.Strings;
+import com.github.dreamhead.moco.util.Strings;
 import com.google.common.collect.ImmutableSet;
 
 import java.util.Arrays;

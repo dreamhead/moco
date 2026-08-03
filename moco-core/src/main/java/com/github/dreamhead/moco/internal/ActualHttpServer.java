@@ -17,8 +17,8 @@ import io.netty.handler.ssl.SslHandler;
 import javax.net.ssl.SSLEngine;
 import java.util.Optional;
 
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkArgument;
 
 public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
     private static final int MAX_HEADER_SIZE = 8192;
@@ -80,7 +80,6 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
 
         return thatServer.getPort();
     }
-
 
     private HttpsCertificate mergedCertificate(final HttpsCertificate one, final HttpsCertificate other) {
         if (one != null) {
@@ -188,7 +187,6 @@ public class ActualHttpServer extends HttpConfiguration<ActualHttpServer> {
                                                           final MocoConfig<?>... configs) {
         return ActualHttpServer.createHttpsServerWithMonitor(port, certificate, new QuietMonitor(), configs);
     }
-
 
     @Override
     protected final HttpSetting newSetting(final RequestMatcher matcher) {

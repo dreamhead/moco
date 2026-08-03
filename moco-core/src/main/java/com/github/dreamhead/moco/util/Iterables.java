@@ -6,14 +6,14 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Iterables.isEmpty;
+import static java.util.Objects.requireNonNull;
 
 public final class Iterables {
     public static <T> List<T> asIterable(final T handler, final T[] handlers) {
-        checkNotNull(handler);
-        checkNotNull(handlers);
+        requireNonNull(handler);
+        requireNonNull(handlers);
 
         if (handlers.length == 0) {
             return of(handler);
@@ -26,9 +26,9 @@ public final class Iterables {
     }
 
     public static <T> List<T> asIterable(final T handler, final T handler2, final T[] handlers) {
-        checkNotNull(handler);
-        checkNotNull(handler2);
-        checkNotNull(handlers);
+        requireNonNull(handler);
+        requireNonNull(handler2);
+        requireNonNull(handlers);
 
         if (handlers.length == 0) {
             return of(handler, handler2);
@@ -42,7 +42,7 @@ public final class Iterables {
     }
 
     public static <T> T head(final T[] elements) {
-        checkNotNull(elements);
+        requireNonNull(elements);
 
         if (elements.length == 0) {
             return null;
@@ -53,7 +53,7 @@ public final class Iterables {
 
     @SuppressWarnings("unchecked")
     public static <T> T[] tail(final T[] elements) {
-        checkNotNull(elements);
+        requireNonNull(elements);
 
         if (elements.length <= 1) {
             return (T[]) Array.newInstance(elements.getClass().getComponentType(), 0);

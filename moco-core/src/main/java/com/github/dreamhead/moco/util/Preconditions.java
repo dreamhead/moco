@@ -1,10 +1,8 @@
 package com.github.dreamhead.moco.util;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 public final class Preconditions {
     public static String checkNotNullOrEmpty(final String reference, final Object errorMessage) {
-        if (isNullOrEmpty(reference)) {
+        if (Strings.isNullOrEmpty(reference)) {
             throw new IllegalArgumentException(String.valueOf(errorMessage));
         }
 

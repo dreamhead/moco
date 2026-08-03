@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.rest.SubResourceSetting;
 
 import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class ActualSubResourceSettingBuilder
         implements SubResourceSettingBuilder, NamedSubResourceSettingBuilder {
@@ -26,7 +26,7 @@ public final class ActualSubResourceSettingBuilder
     @Override
     public RestSetting settings(final RestSetting restSetting, final RestSetting... restSettings) {
         return new SubResourceSetting(this.id, this.name, asIterable(
-                checkNotNull(restSetting, "Rest setting should not be null"),
-                checkNotNull(restSettings, "Rest settings should not be null")));
+                requireNonNull(restSetting, "Rest setting should not be null"),
+                requireNonNull(restSettings, "Rest settings should not be null")));
     }
 }
