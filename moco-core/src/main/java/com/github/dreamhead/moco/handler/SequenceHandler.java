@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.ResponseHandler;
-import com.google.common.collect.Iterables;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 
@@ -11,7 +10,7 @@ public final class SequenceHandler extends CollectionHandler {
     }
 
     public static ResponseHandler newSeq(final Iterable<ResponseHandler> handlers) {
-        checkArgument(!Iterables.isEmpty(handlers), "Sequence contents should not be null");
+        checkArgument(handlers.iterator().hasNext(), "Sequence contents should not be null");
         return new SequenceHandler(handlers);
     }
 

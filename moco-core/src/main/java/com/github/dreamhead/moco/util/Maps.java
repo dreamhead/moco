@@ -1,13 +1,12 @@
 package com.github.dreamhead.moco.util;
 
-import com.google.common.collect.Iterables;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
@@ -57,7 +56,11 @@ public final class Maps {
     public static Map<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
         return map.entrySet()
                 .stream()
-                .collect(toImmutableMap(Map.Entry::getKey, e -> Iterables.toArray(e.getValue(), String.class)));
+                .collect(toImmutableMap(Map.Entry::getKey, e -> toArray(e.getValue())));
+    }
+
+    private static String[] toArray(final Iterable<String> values) {
+        return StreamSupport.stream(values.spliterator(), false).toArray(String[]::new);
     }
 
     private Maps() {

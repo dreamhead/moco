@@ -4,7 +4,8 @@ import tools.jackson.databind.JsonNode;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.extractor.ContentRequestExtractor;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.collect.Streams;
+
+import java.util.stream.StreamSupport;
 
 public final class JsonStructRequestMatcher extends JsonRequestMatcher {
     public JsonStructRequestMatcher(final Resource expected, final ContentRequestExtractor extractor) {
@@ -44,7 +45,7 @@ public final class JsonStructRequestMatcher extends JsonRequestMatcher {
                 return true;
             }
             JsonNode templateNode = expected.get(0);
-            return com.google.common.collect.Streams.stream(actual)
+            return StreamSupport.stream(actual.spliterator(), false)
                     .allMatch(node -> doMatch(node, templateNode));
         }
 

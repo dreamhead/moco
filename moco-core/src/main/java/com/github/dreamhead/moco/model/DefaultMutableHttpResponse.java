@@ -7,12 +7,12 @@ import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.util.HttpHeaders;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +70,9 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private String[] newValues(final String name, final Object value) {
         if (this.headers.containsKey(name)) {
             String[] values = this.headers.get(name);
-            return ObjectArrays.concat(values, value.toString());
+            String[] result = Arrays.copyOf(values, values.length + 1);
+            result[values.length] = value.toString();
+            return result;
         }
 
         return new String[]{value.toString()};

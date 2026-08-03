@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.sse;
 
 import com.github.dreamhead.moco.util.Preconditions;
 import com.github.dreamhead.moco.util.Strings;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -11,12 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static com.google.common.collect.Maps.immutableEntry;
 import static java.util.Objects.requireNonNull;
 
 public final class SseEventParser {
-    private static final Splitter FIELD_SPLITTER = Splitter.on(':').limit(2);
-
     public Iterable<SseEvent> parse(final Iterable<String> lines) {
         return new SseEventIterable(lines);
     }
@@ -103,14 +99,12 @@ public final class SseEventParser {
             return null;
         }
 
-        List<String> parts = FIELD_SPLITTER.splitToList(line);
-        if (parts.size() < 2) {
+        String[] parts = line.split(":", 2);
+        if (parts.length < 2) {
             return null;
         }
 
-        String key = Strings.strip(parts.get(0));
-        String value = Strings.strip(parts.get(1));
-        return immutableEntry(key, value);
+        return Map.entry(Strings.strip(parts[0]), Strings.strip(parts[1]));
     }
 
     private boolean hasData(final List<Map.Entry<String, String>> fields) {

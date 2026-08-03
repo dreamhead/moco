@@ -21,7 +21,6 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
-import static com.google.common.collect.Iterables.toArray;
 
 public final class JsonRunner implements Runner {
 
@@ -97,7 +96,7 @@ public final class JsonRunner implements Runner {
         setting.request().ifPresent(builder::add);
         setting.response().ifPresent(builder::add);
 
-        return toArray(builder.build(), MocoConfig.class);
+        return builder.build().toArray(new MocoConfig[0]);
     }
 
     private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {

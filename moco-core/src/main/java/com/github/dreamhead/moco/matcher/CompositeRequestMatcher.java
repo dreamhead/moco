@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.matcher;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
-import com.google.common.collect.Iterables;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,10 +18,11 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
     }
 
     private Iterable<RequestMatcher> applyToMatchers(final MocoConfig config) {
-        Iterable<RequestMatcher> appliedMatchers = StreamSupport.stream(matchers.spliterator(), false)
+        List<RequestMatcher> original = StreamSupport.stream(matchers.spliterator(), false).toList();
+        List<RequestMatcher> appliedMatchers = original.stream()
                 .map(matcher -> matcher.apply(config))
                 .toList();
-        if (Iterables.elementsEqual(matchers, appliedMatchers)) {
+        if (original.equals(appliedMatchers)) {
             return this.matchers;
         }
 

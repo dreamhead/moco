@@ -5,11 +5,11 @@ import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.parser.model.RestBaseSetting.asRestSetting;
 import static com.github.dreamhead.moco.parser.model.RestSubResourceSetting.asSubRestSetting;
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.toArray;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResourceSetting {
@@ -46,9 +46,10 @@ public class ResourceSetting {
 
     @SuppressWarnings("unchecked")
     public final RestSetting[] getSettings() {
-        return toArray(concat(asRestSetting(get), asRestSetting(post),
+        return Stream.of(asRestSetting(get), asRestSetting(post),
                         asRestSetting(put), asRestSetting(delete),
-                        asRestSetting(head), asRestSetting(patch), asSubRestSetting(resource)),
-                RestSetting.class);
+                        asRestSetting(head), asRestSetting(patch), asSubRestSetting(resource))
+                .flatMap(settings -> StreamSupport.stream(settings.spliterator(), false))
+                .toArray(RestSetting[]::new);
     }
 }

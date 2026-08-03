@@ -1,8 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Iterables;
 import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.fluent.Request;
@@ -395,7 +393,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, () -> {
             String response = helper.get(remoteUrl("/random"));
             try {
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
 
                 double result = Double.parseDouble(response);
@@ -416,7 +414,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThanOrEqualTo(100d));
                 assertThat(result, greaterThanOrEqualTo(0d));
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {
                 fail();
@@ -434,7 +432,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
                 assertThat(result, greaterThanOrEqualTo(99d));
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {
                 fail();

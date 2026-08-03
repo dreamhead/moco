@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,7 +134,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
                 return ImmutableMap.of();
             }
 
-            Object value = Iterables.getFirst(headers.entrySet(), null).getValue();
+            Object value = headers.entrySet().iterator().next().getValue();
             if (value instanceof String) {
                 return simpleValueToArray((Map<String, String>) headers);
             }
