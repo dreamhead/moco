@@ -5,8 +5,8 @@ import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonToken;
 import tools.jackson.databind.DeserializationContext;
 import com.github.dreamhead.moco.parser.model.TextContainer;
+import com.github.dreamhead.moco.util.Maps;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,7 +16,6 @@ import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateNa
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
 import static com.github.dreamhead.moco.util.Strings.strip;
 import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.Maps.transformEntries;
 
 public final class TextContainerDeserializerHelper {
     private static final ImmutableMap<String, String> NAMES = ImmutableMap.<String, String>builder()
@@ -58,21 +57,17 @@ public final class TextContainerDeserializerHelper {
         private String with;
         private Map<String, TextContainer> vars;
 
-        private ImmutableMap<String, TextContainer> toTemplateVars() {
-            return copyOf(transformEntries(vars, toLocalContainer()));
+        private Map<String, TextContainer> toTemplateVars() {
+            return vars.entrySet().stream()
+                    .collect(Maps.toUnmodifiableMap(Map.Entry::getKey, e -> toLocalContainer(e.getValue())));
         }
 
-        private Maps.EntryTransformer<String, TextContainer, TextContainer> toLocalContainer() {
-            return new Maps.EntryTransformer<String, TextContainer, TextContainer>() {
-                @Override
-                public TextContainer transformEntry(final String key, final TextContainer container) {
-                    if (container.isRawText()) {
-                        return container;
-                    }
+        private TextContainer toLocalContainer(final TextContainer container) {
+            if (container.isRawText()) {
+                return container;
+            }
 
-                    return toLocal(container);
-                }
-            };
+            return toLocal(container);
         }
 
         private TextContainer toLocal(final TextContainer container) {

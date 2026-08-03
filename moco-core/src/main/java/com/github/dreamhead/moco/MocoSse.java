@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.sse.SseEventParser;
 import com.github.dreamhead.moco.util.Iterables;
 import com.github.dreamhead.moco.util.Preconditions;
-import com.google.common.base.Splitter;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public final class MocoSse {
 
     public static SseResponseHandler sse(final Resource resource) {
         requireNonNull(resource, "Resource should not be null");
-        Iterable<String> lines = Splitter.on('\n').split(resource.readFor((Request) null).toString());
+        Iterable<String> lines = List.of(resource.readFor((Request) null).toString().split("\n", -1));
         return new SseResponseHandler(new SseEventParser().parse(lines));
     }
 

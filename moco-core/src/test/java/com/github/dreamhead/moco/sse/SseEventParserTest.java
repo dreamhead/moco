@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.sse;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
@@ -12,11 +11,10 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SseEventParserTest {
-    private static final Splitter LINE_SPLITTER = Splitter.on('\n');
     private final SseEventParser parser = new SseEventParser();
 
     private List<SseEvent> parse(final String content) {
-        return ImmutableList.copyOf(parser.parse(LINE_SPLITTER.split(content)));
+        return ImmutableList.copyOf(parser.parse(List.of(content.split("\n", -1))));
     }
 
     @Test

@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.dumper.HttpResponseDumper;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +17,11 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActionMonitor {
@@ -38,18 +39,20 @@ public class ActionMonitor {
             return Map.of();
         }
 
-        Multimap<String, String> multimap = ArrayListMultimap.create();
+        // List rather than Set semantics: a repeated query parameter must not be collapsed.
+        Map<String, List<String>> grouped = new LinkedHashMap<>();
         for (String param : query.split("&")) {
             String[] keyValue = param.split("=", 2);
             if (keyValue.length == 2) {
-                multimap.put(keyValue[0], java.net.URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
+                grouped.computeIfAbsent(keyValue[0], key -> new ArrayList<>())
+                        .add(java.net.URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
             } else if (keyValue.length == 1) {
-                multimap.put(keyValue[0], "");
+                grouped.computeIfAbsent(keyValue[0], key -> new ArrayList<>()).add("");
             }
         }
 
         Map<String, String[]> result = new HashMap<>();
-        for (Map.Entry<String, Collection<String>> entry : multimap.asMap().entrySet()) {
+        for (Map.Entry<String, List<String>> entry : grouped.entrySet()) {
             result.put(entry.getKey(), entry.getValue().toArray(new String[0]));
         }
 

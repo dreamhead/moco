@@ -9,13 +9,12 @@ import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.handler.JsonResponseHandler;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Streams;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.status;
@@ -78,7 +77,7 @@ public final class RestRequestDispatcher {
     private <T extends RestSetting> ImmutableList<T> filter(final Iterable<RestSetting> settings,
                                                             final Class<T> type) {
 
-        return Streams.stream(settings)
+        return StreamSupport.stream(settings.spliterator(), false)
                 .filter(type::isInstance)
                 .map(type::cast)
                 .collect(toImmutableList());
@@ -119,10 +118,10 @@ public final class RestRequestDispatcher {
 
         if (allMatcher.match(httpRequest)) {
             Iterable<RestSingleSetting> settings = getSingleSettings.getSettings();
-            if (!Iterables.isEmpty(settings)
-                    && Streams.stream(settings)
+            if (settings.iterator().hasNext()
+                    && StreamSupport.stream(settings.spliterator(), false)
                     .allMatch(setting -> setting.getHandler() instanceof JsonResponseHandler)) {
-                List<Object> result = Streams.stream(settings)
+                List<Object> result = StreamSupport.stream(settings.spliterator(), false)
                         .map(setting -> (JsonResponseHandler)setting.getHandler())
                         .map(JsonResponseHandler::getPojo)
                         .toList();
@@ -166,7 +165,7 @@ public final class RestRequestDispatcher {
     }
 
     private Optional<ResponseHandler> getSubResponseHandler(final HttpRequest httpRequest) {
-        return Streams.stream(subResourceSettings)
+        return StreamSupport.stream(subResourceSettings.spliterator(), false)
                 .map(setting -> setting.getMatched(name, httpRequest))
                 .filter(Optional::isPresent)
                 .map(Optional::get)

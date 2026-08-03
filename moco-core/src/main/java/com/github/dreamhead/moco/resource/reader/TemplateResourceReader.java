@@ -7,9 +7,9 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.util.MediaType;
+import com.github.dreamhead.moco.util.Maps;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.ParseException;
@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -137,8 +138,10 @@ public class TemplateResourceReader implements ContentResourceReader {
         return new TemplateRequest(context);
     }
 
-    private ImmutableMap<String, Object> toVariableString(final Request request) {
-        return copyOf(Maps.transformEntries(this.variables, (key, value) -> value.toTemplateVariable(request)));
+    private Map<String, Object> toVariableString(final Request request) {
+        return this.variables.entrySet().stream()
+                .collect(Maps.toUnmodifiableMap(Map.Entry::getKey,
+                        e -> e.getValue().toTemplateVariable(request)));
     }
 
     @Override

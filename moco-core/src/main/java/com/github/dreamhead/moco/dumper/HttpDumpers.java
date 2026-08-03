@@ -4,16 +4,12 @@ import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.MediaType;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Maps;
 import io.netty.util.internal.StringUtil;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
@@ -62,20 +58,16 @@ public final class HttpDumpers {
         return actual.type().equals(expected.type()) && actual.subtype().equals(expected.subtype());
     }
 
-    private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
-
     public static String asHeaders(final HttpMessage message) {
-        return HEAD_JOINER.join(message.getHeaders().entrySet().stream()
-                .flatMap(HttpDumpers::toEntries)
-                .toList());
+        return message.getHeaders().entrySet().stream()
+                .flatMap(HttpDumpers::toHeaderLines)
+                .collect(Collectors.joining(StringUtil.NEWLINE));
     }
 
-    private static Stream<Map.Entry<String, String>> toEntries(final Map.Entry<String, String[]> input) {
+    private static Stream<String> toHeaderLines(final Map.Entry<String, String[]> input) {
         String key = input.getKey();
         return Arrays.stream(input.getValue())
-                .map(value -> Maps.immutableEntry(key, value))
-                .collect(toImmutableList())
-                .stream();
+                .map(value -> key + ": " + value);
     }
 
     private HttpDumpers() {

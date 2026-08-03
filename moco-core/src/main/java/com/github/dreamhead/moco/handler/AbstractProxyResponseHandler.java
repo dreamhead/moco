@@ -12,7 +12,6 @@ import com.github.dreamhead.moco.sse.SseEventParser;
 import com.github.dreamhead.moco.util.ReaderLineIterator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringEncoder;
@@ -39,6 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -182,7 +182,9 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
         if (existing == null) {
             headers.put(name, new String[]{value});
         } else {
-            headers.put(name, ObjectArrays.concat(existing, value));
+            String[] merged = Arrays.copyOf(existing, existing.length + 1);
+            merged[existing.length] = value;
+            headers.put(name, merged);
         }
     }
 

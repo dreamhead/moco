@@ -1,25 +1,22 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.recorder.MocoGroup;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.google.common.collect.Multimaps.synchronizedMultimap;
 
 public class ChannelSessionGroup {
     private final ChannelGroup group;
-    private final Multimap<MocoGroup, Channel> groupChannels;
+    private final Map<MocoGroup, Set<Channel>> groupChannels;
     private final Map<Channel, MocoGroup> channelGroups;
 
     public ChannelSessionGroup(final ChannelGroup group) {
         this.group = group;
-        this.groupChannels = synchronizedMultimap(HashMultimap.create());
+        this.groupChannels = new ConcurrentHashMap<>();
         this.channelGroups = new ConcurrentHashMap<>();
     }
 
@@ -33,7 +30,10 @@ public class ChannelSessionGroup {
         final MocoGroup group = this.channelGroups.get(channel);
         if (group != null) {
             this.channelGroups.remove(channel);
-            this.groupChannels.remove(group, channel);
+            Set<Channel> channels = this.groupChannels.get(group);
+            if (channels != null) {
+                channels.remove(channel);
+            }
         }
     }
 
@@ -43,14 +43,14 @@ public class ChannelSessionGroup {
             return;
         }
 
-        final Collection<Channel> channels = this.groupChannels.get(group);
+        final Collection<Channel> channels = this.groupChannels.getOrDefault(group, Set.of());
         for (Channel channel : channels) {
             channel.writeAndFlush(message);
         }
     }
 
     public final void join(final MocoGroup group, final Channel channel) {
-        this.groupChannels.put(group, channel);
+        this.groupChannels.computeIfAbsent(group, key -> ConcurrentHashMap.newKeySet()).add(channel);
         this.channelGroups.put(channel, group);
     }
 }

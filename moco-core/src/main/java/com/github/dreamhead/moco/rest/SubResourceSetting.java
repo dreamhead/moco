@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.RestIdMatcher;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.collect.Streams;
 
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.util.URLs.join;
 
@@ -30,7 +30,7 @@ public final class SubResourceSetting implements RestSetting {
 
     @Override
     public Optional<ResponseHandler> getMatched(final RestIdMatcher resourceName, final HttpRequest httpRequest) {
-        return Streams.stream(settings)
+        return StreamSupport.stream(settings.spliterator(), false)
                 .map(setting -> getResponseHandler(resourceName, httpRequest, setting))
                 .filter(Optional::isPresent)
                 .map(Optional::get)

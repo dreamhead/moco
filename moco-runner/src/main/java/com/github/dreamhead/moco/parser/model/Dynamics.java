@@ -11,9 +11,10 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static com.google.common.collect.Iterables.concat;
 
 public class Dynamics {
     private static final Map<String, String> EXTRACTORS = ImmutableMap.<String, String>builder()
@@ -49,7 +50,9 @@ public class Dynamics {
             return fieldsForCurrent;
         }
 
-        return concat(getFields(clazz.getSuperclass()), fieldsForCurrent);
+        return Stream.concat(
+                StreamSupport.stream(getFields(clazz.getSuperclass()).spliterator(), false),
+                fieldsForCurrent.stream()).toList();
     }
 
     private ImmutableList<Field> getFieldsForCurrent(final Class<?> clazz) {

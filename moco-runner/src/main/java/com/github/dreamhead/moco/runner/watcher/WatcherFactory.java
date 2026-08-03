@@ -3,12 +3,12 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.runner.FileRunner;
 import com.github.dreamhead.moco.runner.Runner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
 public final class WatcherFactory {
     private static Logger logger = LoggerFactory.getLogger(WatcherFactory.class);
@@ -22,7 +22,7 @@ public final class WatcherFactory {
     }
 
     public Watcher createConfigurationWatcher(final Iterable<File> files, final FileRunner fileRunner) {
-        return factory.createWatcher(listener(fileRunner), Iterators.toArray(files.iterator(), File.class));
+        return factory.createWatcher(listener(fileRunner), StreamSupport.stream(files.spliterator(), false).toArray(File[]::new));
     }
 
     public Watcher createSettingWatcher(final File settingsFile,
