@@ -1,6 +1,6 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpResponse;

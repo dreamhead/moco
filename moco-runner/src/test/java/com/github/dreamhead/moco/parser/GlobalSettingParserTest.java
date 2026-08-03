@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.parser;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

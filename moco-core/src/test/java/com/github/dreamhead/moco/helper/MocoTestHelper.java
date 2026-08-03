@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.helper;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Executor;
 import org.apache.hc.client5.http.fluent.Request;
@@ -30,7 +30,6 @@ import java.util.Map;
 
 import static com.github.dreamhead.moco.util.HttpHeaders.CONTENT_TYPE;
 import static com.github.dreamhead.moco.util.MediaType.PLAIN_TEXT_UTF_8;
-import static com.google.common.io.ByteStreams.toByteArray;
 
 public class MocoTestHelper {
     private final CloseableHttpClient client;
@@ -148,7 +147,7 @@ public class MocoTestHelper {
     }
 
     public String postStream(final String url, final InputStream stream) throws IOException {
-        return postBytes(url, toByteArray(stream));
+        return postBytes(url, stream.readAllBytes());
     }
 
     public String postFile(final String url, final String file) throws IOException {

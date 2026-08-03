@@ -3,7 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.junit.jupiter.api.AfterEach;
 
 import java.io.IOException;

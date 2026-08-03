@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.io.ByteStreams;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class MocoSeqStandaloneTest extends AbstractMocoStandaloneTest {
     private void assertJson(final String url, final String content) throws IOException {
         ClassicHttpResponse response = helper.getResponse(url);
         HttpEntity entity = response.getEntity();
-        byte[] bytes = ByteStreams.toByteArray(entity.getContent());
+        byte[] bytes = entity.getContent().readAllBytes();
         assertThat(new String(bytes), is(content));
         MediaType mediaType = MediaType.parse(entity.getContentType());
         assertThat(mediaType.type(), is("application"));

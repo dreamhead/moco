@@ -3,8 +3,7 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.support.JsonSupport;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.junit.jupiter.api.Test;
 
@@ -183,7 +182,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             URL resource = Resources.getResource("gbk.json");
-            byte[] bytes = ByteStreams.toByteArray(resource.openStream());
+            byte[] bytes = resource.openStream().readAllBytes();
             String result = helper.postBytes(root(), bytes, gbk);
             assertThat(result, is("response"));
         });

@@ -3,13 +3,11 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import static com.google.common.io.ByteStreams.toByteArray;
 
 public final class ClasspathFileResourceReader extends AbstractFileResourceReader {
     public ClasspathFileResourceReader(final Resource filename, final Charset charset) {
@@ -23,7 +21,7 @@ public final class ClasspathFileResourceReader extends AbstractFileResourceReade
             throw new IllegalArgumentException("%s does not exist".formatted(actualFilename));
         }
         try {
-            return toByteArray(resource.openStream());
+            return resource.openStream().readAllBytes();
         } catch (IOException e) {
             throw new MocoException(e);
         }
