@@ -7,9 +7,11 @@ import com.github.dreamhead.moco.model.DefaultHttpRequest;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.collect.ImmutableMap.of;
+import static java.util.Map.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.Map;
 
 public class HttpRequestMatcherTest {
     @Test

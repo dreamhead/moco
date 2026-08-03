@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.sse;
 
 import com.github.dreamhead.moco.util.Preconditions;
 import com.github.dreamhead.moco.util.Strings;
-import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -84,14 +83,14 @@ public final class SseEventParser {
     }
 
     private List<Map.Entry<String, String>> parseFields(final List<String> lines) {
-        ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builder();
+        List<Map.Entry<String, String>> fields = new ArrayList<>();
         for (String line : lines) {
             Map.Entry<String, String> field = parseLine(line);
             if (field != null) {
-                builder.add(field);
+                fields.add(field);
             }
         }
-        return builder.build();
+        return List.copyOf(fields);
     }
 
     private Map.Entry<String, String> parseLine(final String line) {

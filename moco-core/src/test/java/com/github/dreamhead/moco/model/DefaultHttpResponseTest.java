@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,12 +18,12 @@ public class DefaultHttpResponseTest {
 
     @Test
     public void should_serialize_response_with_sse_events() {
-        SseEvent event1 = SseEvent.event("message", ImmutableList.of("Hello"));
-        SseEvent event2 = SseEvent.event("message", ImmutableList.of("World"));
+        SseEvent event1 = SseEvent.event("message", List.of("Hello"));
+        SseEvent event2 = SseEvent.event("message", List.of("World"));
         HttpResponse response = DefaultHttpResponse.builder()
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withStatus(200)
-                .withSseEvents(ImmutableList.of(event1, event2))
+                .withSseEvents(List.of(event1, event2))
                 .build();
 
         String json = Jsons.toJson(response);
@@ -35,12 +34,12 @@ public class DefaultHttpResponseTest {
 
     @Test
     public void should_deserialize_response_with_sse_events() {
-        SseEvent event1 = SseEvent.event("message", ImmutableList.of("Hello"));
-        SseEvent event2 = SseEvent.event("message", ImmutableList.of("World"));
+        SseEvent event1 = SseEvent.event("message", List.of("Hello"));
+        SseEvent event2 = SseEvent.event("message", List.of("World"));
         HttpResponse response = DefaultHttpResponse.builder()
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withStatus(200)
-                .withSseEvents(ImmutableList.of(event1, event2))
+                .withSseEvents(List.of(event1, event2))
                 .build();
 
         String json = Jsons.toJson(response);

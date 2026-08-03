@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.Http2TestHelper;
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.junit.jupiter.api.Test;
 
 import java.net.http.HttpResponse;
@@ -66,7 +67,7 @@ public class MocoHttps2Test {
         running(server, () -> {
             try (Http2TestHelper helper = new Http2TestHelper(true)) {
                 String response = helper.post(httpsRoot(server.port()) + "/secure-headers", "secure data",
-                        com.google.common.collect.ImmutableMultimap.of("X-Custom", "secure-value"));
+                        RequestHeaders.of("X-Custom", "secure-value"));
                 assertThat(response, is("Secure Headers OK"));
             }
         });

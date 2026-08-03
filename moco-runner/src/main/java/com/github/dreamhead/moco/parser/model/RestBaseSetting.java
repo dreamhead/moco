@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
 import com.github.dreamhead.moco.util.ToStringHelper;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public abstract class RestBaseSetting {
 
     public static Iterable<RestSetting> asRestSetting(final List<? extends RestBaseSetting> setting) {
         if (setting == null || setting.isEmpty()) {
-            return ImmutableList.of();
+            return List.of();
         }
 
         return setting.stream()

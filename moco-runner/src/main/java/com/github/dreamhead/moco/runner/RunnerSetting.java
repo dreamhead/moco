@@ -4,22 +4,23 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.parser.model.RequestSetting;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
-import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 public final class RunnerSetting {
-    private final ImmutableList<InputStream> streams;
+    private final List<InputStream> streams;
     private final RequestSetting request;
     private final ResponseSetting response;
     private final String context;
     private final String fileRoot;
 
-    private RunnerSetting(final ImmutableList<InputStream> streams, final String context, final String fileRoot,
+    private RunnerSetting(final List<InputStream> streams, final String context, final String fileRoot,
                           final RequestSetting requestSetting, final ResponseSetting response) {
         this.streams = streams;
         this.request = requestSetting;
@@ -28,7 +29,7 @@ public final class RunnerSetting {
         this.fileRoot = fileRoot;
     }
 
-    public ImmutableList<InputStream> getStreams() {
+    public List<InputStream> getStreams() {
         return streams;
     }
 
@@ -69,7 +70,7 @@ public final class RunnerSetting {
     }
 
     public static class Builder {
-        private ImmutableList.Builder<InputStream> streams = ImmutableList.builder();
+        private final List<InputStream> streams = new ArrayList<>();
         private RequestSetting request;
         private ResponseSetting response;
         private String context;
@@ -80,7 +81,7 @@ public final class RunnerSetting {
             return this;
         }
 
-        public final Builder addStreams(final ImmutableList<InputStream> streams) {
+        public final Builder addStreams(final List<InputStream> streams) {
             this.streams.addAll(streams);
             return this;
         }
@@ -106,7 +107,7 @@ public final class RunnerSetting {
         }
 
         public final RunnerSetting build() {
-            return new RunnerSetting(streams.build(), context, fileRoot, request, response);
+            return new RunnerSetting(List.copyOf(streams), context, fileRoot, request, response);
         }
     }
 }

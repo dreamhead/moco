@@ -2,8 +2,8 @@ package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
-import com.google.common.collect.ImmutableMap;
 
+import java.util.Map;
 import java.util.Optional;
 
 public final class FormRequestExtractor extends HttpRequestExtractor<String> {
@@ -16,7 +16,7 @@ public final class FormRequestExtractor extends HttpRequestExtractor<String> {
 
     @Override
     protected Optional<String> doExtract(final HttpRequest request) {
-        Optional<ImmutableMap<String, String>> forms = extractor.extract(request);
+        Optional<Map<String, String>> forms = extractor.extract(request);
         return forms.map(formValues -> formValues.get(key));
     }
 }

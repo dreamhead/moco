@@ -16,11 +16,11 @@ import com.github.dreamhead.moco.resource.reader.XmlResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
 import com.github.dreamhead.moco.util.MediaType;
-import com.google.common.collect.ImmutableMap;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.function.Function;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -126,7 +126,7 @@ public final class ResourceFactory {
     }
 
     public static ContentResource templateResource(final ContentResource template,
-                                                   final ImmutableMap<String, ? extends Variable> variables) {
+                                                   final Map<String, ? extends Variable> variables) {
         return contentResource(id("template"), templateConfigApplier(template, variables),
                 new TemplateResourceReader(template, variables));
     }

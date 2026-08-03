@@ -2,7 +2,8 @@ package com.github.dreamhead.moco;
 
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 @JsonDeserialize(as = DefaultHttpRequest.class)
 public interface HttpRequest extends Request, HttpMessage {
@@ -10,5 +11,5 @@ public interface HttpRequest extends Request, HttpMessage {
 
     HttpMethod getMethod();
 
-    ImmutableMap<String, String[]> getQueries();
+    Map<String, String[]> getQueries();
 }

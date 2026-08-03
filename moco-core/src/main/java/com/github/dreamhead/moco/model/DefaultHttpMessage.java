@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.model;
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.util.ToStringHelper;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,16 +12,16 @@ import java.util.Map;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Maps.iterableValueToArray;
 import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
-import static com.google.common.collect.ImmutableMap.copyOf;
+import static com.github.dreamhead.moco.util.Maps.copyOf;
 
 public abstract class DefaultHttpMessage implements HttpMessage {
     private final HttpProtocolVersion version;
     private final MessageContent content;
-    private final ImmutableMap<String, String[]> headers;
+    private final Map<String, String[]> headers;
 
     protected DefaultHttpMessage(final HttpProtocolVersion version,
                                  final MessageContent content,
-                                 final ImmutableMap<String, String[]> headers) {
+                                 final Map<String, String[]> headers) {
         this.version = version;
         this.content = content;
         this.headers = headers;
@@ -34,7 +33,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
     }
 
     @Override
-    public final ImmutableMap<String, String[]> getHeaders() {
+    public final Map<String, String[]> getHeaders() {
         return this.headers;
     }
 
@@ -131,7 +130,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         @SuppressWarnings("unchecked")
         private Map<String, String[]> asHeaders(final Map<String, ?> headers) {
             if (headers.isEmpty()) {
-                return ImmutableMap.of();
+                return Map.of();
             }
 
             Object value = headers.entrySet().iterator().next().getValue();
@@ -158,9 +157,9 @@ public abstract class DefaultHttpMessage implements HttpMessage {
             return content;
         }
 
-        protected final ImmutableMap<String, String[]> getHeaders() {
+        protected final Map<String, String[]> getHeaders() {
             if (headers == null) {
-                return ImmutableMap.of();
+                return Map.of();
             }
 
             return copyOf(headers);

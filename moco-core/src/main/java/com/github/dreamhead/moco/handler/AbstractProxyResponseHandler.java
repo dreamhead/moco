@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.sse.SseEventParser;
 import com.github.dreamhead.moco.util.ReaderLineIterator;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringEncoder;
@@ -38,11 +36,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.github.dreamhead.moco.util.HttpHeaders.CACHE_CONTROL;
 import static com.github.dreamhead.moco.util.HttpHeaders.CONNECTION;
@@ -61,13 +62,13 @@ import static java.util.Optional.of;
  */
 public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseHandler {
 
-    private static final ImmutableSet<String> IGNORED_REQUEST_HEADERS = ImmutableSet.of(
+    private static final Set<String> IGNORED_REQUEST_HEADERS = Set.of(
             HOST.toUpperCase(),
             CONTENT_LENGTH.toUpperCase(),
             "CONNECTION",
             "EXPECT",
             "UPGRADE");
-    private static final ImmutableSet<String> IGNORED_RESPONSE_HEADERS = ImmutableSet.of(
+    private static final Set<String> IGNORED_RESPONSE_HEADERS = Set.of(
             DATE.toUpperCase(), SERVER.toUpperCase());
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractProxyResponseHandler.class);
@@ -355,7 +356,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
 
     @FunctionalInterface
     interface SseEventConsumer {
-        void accept(ImmutableList<SseEvent> events);
+        void accept(List<SseEvent> events);
     }
 
     private static final class SseEventStreamIterable implements Iterable<SseEvent> {
@@ -380,7 +381,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
             iterated = true;
             return new Iterator<>() {
                 private final java.util.Iterator<SseEvent> delegate = events.iterator();
-                private final ImmutableList.Builder<SseEvent> collected = ImmutableList.builder();
+                private final List<SseEvent> collected = new ArrayList<>();
                 private boolean closed;
 
                 @Override
@@ -402,7 +403,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
                     SseEvent event = delegate.next();
                     if (onEvent != null) {
                         collected.add(event);
-                        onEvent.accept(collected.build());
+                        onEvent.accept(List.copyOf(collected));
                     }
                     return event;
                 }

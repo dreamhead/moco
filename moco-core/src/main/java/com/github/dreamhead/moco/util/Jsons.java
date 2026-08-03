@@ -8,7 +8,6 @@ import tools.jackson.databind.exc.UnrecognizedPropertyException;
 import tools.jackson.databind.type.CollectionType;
 import tools.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.MocoException;
-import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.List.of;
 
 public final class Jsons {
     private static Logger logger = LoggerFactory.getLogger(Jsons.class);
@@ -72,20 +70,20 @@ public final class Jsons {
         }
     }
 
-    public static <T> ImmutableList<T> toObjects(final String value, final Class<T> elementClass) {
+    public static <T> List<T> toObjects(final String value, final Class<T> elementClass) {
         return toObjects(new ByteArrayInputStream(value.getBytes()), elementClass);
     }
 
-    public static <T> ImmutableList<T> toObjects(final InputStream stream, final Class<T> elementClass) {
+    public static <T> List<T> toObjects(final InputStream stream, final Class<T> elementClass) {
         return toObjects(of(stream), elementClass);
     }
 
-    public static <T> ImmutableList<T> toObjects(final ImmutableList<InputStream> streams,
+    public static <T> List<T> toObjects(final List<InputStream> streams,
                                                  final Class<T> elementClass) {
         final CollectionType type = DEFAULT_FACTORY.constructCollectionType(List.class, elementClass);
         return streams.stream()
                 .flatMap(Jsons.<T>toObject(type))
-                .collect(toImmutableList());
+                .toList();
     }
 
     private static <T> Function<InputStream, Stream<T>> toObject(final CollectionType type) {

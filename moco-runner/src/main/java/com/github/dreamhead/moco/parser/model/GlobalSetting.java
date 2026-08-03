@@ -1,10 +1,11 @@
 package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.util.Globs;
 import com.github.dreamhead.moco.util.ToStringHelper;
-import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.util.Files.join;
 
@@ -18,7 +19,7 @@ public final class GlobalSetting {
     private RequestSetting request;
     private ResponseSetting response;
 
-    public ImmutableList<String> includes() {
+    public List<String> includes() {
         return Globs.glob(join(fileRoot, include));
     }
 

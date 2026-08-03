@@ -1,12 +1,11 @@
 package com.github.dreamhead.moco.util;
 
-import com.google.common.collect.ImmutableList;
-
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 import static java.util.Objects.requireNonNull;
 
 public final class Iterables {
@@ -18,10 +17,10 @@ public final class Iterables {
             return of(handler);
         }
 
-        return ImmutableList.<T>builder()
-                .add(handler)
-                .add(handlers)
-                .build();
+        List<T> result = new ArrayList<>();
+        result.add(handler);
+        result.addAll(Arrays.asList(handlers));
+        return List.copyOf(result);
     }
 
     public static <T> List<T> asIterable(final T handler, final T handler2, final T[] handlers) {
@@ -33,11 +32,11 @@ public final class Iterables {
             return of(handler, handler2);
         }
 
-        return ImmutableList.<T>builder()
-                .add(handler)
-                .add(handler2)
-                .add(handlers)
-                .build();
+        List<T> result = new ArrayList<>();
+        result.add(handler);
+        result.add(handler2);
+        result.addAll(Arrays.asList(handlers));
+        return List.copyOf(result);
     }
 
     public static <T> T head(final T[] elements) {

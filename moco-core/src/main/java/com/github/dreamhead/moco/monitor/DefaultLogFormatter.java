@@ -7,18 +7,18 @@ import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.dumper.Dumper;
 import com.github.dreamhead.moco.dumper.HttpRequestDumper;
 import com.github.dreamhead.moco.dumper.HttpResponseDumper;
-import com.google.common.collect.ImmutableMap;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Map;
 import java.util.Optional;
 
 public final class DefaultLogFormatter implements LogFormatter {
-    private static final ImmutableMap<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = ImmutableMap.of(
+    private static final Map<Class<? extends Request>, Dumper<Request>> REQUEST_DUMPERS = Map.of(
             HttpRequest.class, new HttpRequestDumper()
     );
 
-    private static final ImmutableMap<Class<? extends Response>, Dumper<Response>> RESPONSE_DUMPERS = ImmutableMap.of(
+    private static final Map<Class<? extends Response>, Dumper<Response>> RESPONSE_DUMPERS = Map.of(
             HttpResponse.class, new HttpResponseDumper()
     );
 
@@ -55,7 +55,7 @@ public final class DefaultLogFormatter implements LogFormatter {
         return writer.toString();
     }
 
-    private <T> Dumper<T> findDumper(final T target, final ImmutableMap<Class<? extends T>, Dumper<T>> dumperClasses) {
+    private <T> Dumper<T> findDumper(final T target, final Map<Class<? extends T>, Dumper<T>> dumperClasses) {
         Optional<Class<? extends T>> dumpClass = dumperClasses.keySet().stream()
                 .filter(input -> input.isInstance(target))
                 .findFirst();

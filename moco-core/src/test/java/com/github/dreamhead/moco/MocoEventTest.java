@@ -2,7 +2,7 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.util.Idles;
-import com.google.common.collect.ImmutableMultimap;
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -122,7 +122,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(by(uri("/target"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(get(template("${base}/${req.headers['foo']}", "base", root()))));
 
-        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "target")), is("event")));
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), RequestHeaders.of("foo", "target")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
@@ -137,7 +137,6 @@ public class MocoEventTest extends AbstractMocoHttpTest {
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }
-
 
     @Test
     public void should_send_get_request_to_target_on_complete_with_template() throws Exception {
@@ -222,7 +221,7 @@ public class MocoEventTest extends AbstractMocoHttpTest {
         server.request(and(by(uri("/target")), by("content"))).response(handler);
         server.request(by(uri("/event"))).response("event").on(complete(post(remoteUrl("/target"), template("${req.headers['foo']}"))));
 
-        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), ImmutableMultimap.of("foo", "content")), is("event")));
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/event"), RequestHeaders.of("foo", "content")), is("event")));
 
         verify(handler).writeToResponse(any(SessionContext.class));
     }

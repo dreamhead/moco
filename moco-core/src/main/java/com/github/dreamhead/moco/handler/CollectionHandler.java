@@ -3,18 +3,18 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.collect.ImmutableList;
 
+import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.ImmutableList.copyOf;
+import java.util.stream.StreamSupport;
 
 public abstract class CollectionHandler extends AbstractResponseHandler {
-    private final ImmutableList<ResponseHandler> handlers;
+    private final List<ResponseHandler> handlers;
     private int index;
 
     protected CollectionHandler(final Iterable<ResponseHandler> handlers) {
-        this.handlers = copyOf(handlers);
+        // List.copyOf takes a Collection, where ImmutableList.copyOf accepted any Iterable.
+        this.handlers = StreamSupport.stream(handlers.spliterator(), false).toList();
     }
 
     @Override

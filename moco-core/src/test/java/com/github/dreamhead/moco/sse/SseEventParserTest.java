@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco.sse;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -14,7 +14,8 @@ public class SseEventParserTest {
     private final SseEventParser parser = new SseEventParser();
 
     private List<SseEvent> parse(final String content) {
-        return ImmutableList.copyOf(parser.parse(List.of(content.split("\n", -1))));
+        return StreamSupport.stream(parser.parse(List.of(content.split("\n", -1))).spliterator(), false)
+                .toList();
     }
 
     @Test
@@ -80,7 +81,7 @@ public class SseEventParserTest {
 
     @Test
     public void should_handle_empty_content() {
-        List<SseEvent> events = ImmutableList.copyOf(parser.parse(ImmutableList.of()));
+        List<SseEvent> events = StreamSupport.stream(parser.parse(List.of()).spliterator(), false).toList();
         assertThat(events.size(), is(0));
     }
 

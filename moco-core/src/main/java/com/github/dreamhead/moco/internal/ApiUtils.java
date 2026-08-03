@@ -27,7 +27,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
-import com.google.common.collect.ImmutableMap;
+import com.github.dreamhead.moco.util.Maps;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -47,9 +47,9 @@ public final class ApiUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static ImmutableMap<String, Variable> toVariables(
-            final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
-        return ImmutableMap.copyOf(variables.entrySet().stream()
+    public static Map<String, Variable> toVariables(
+            final Map<String, ? extends RequestExtractor<?>> variables) {
+        return Maps.copyOf(variables.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey, entry -> new ExtractorVariable(entry.getValue())
                 )));

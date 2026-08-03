@@ -8,6 +8,7 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import com.github.dreamhead.moco.util.HttpHeaders;
 
@@ -31,7 +32,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.collect.ImmutableSet.of;
+import static java.util.Set.of;
 import static org.apache.hc.client5.http.fluent.Request.post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

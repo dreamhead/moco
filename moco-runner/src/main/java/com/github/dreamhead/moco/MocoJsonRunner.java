@@ -3,9 +3,9 @@ package com.github.dreamhead.moco;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
+import java.util.List;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
@@ -40,7 +40,7 @@ public final class MocoJsonRunner {
     }
 
     private static HttpServer parseHttpServer(final Resource resource, final int port) {
-        return PARSER.parseServer(ImmutableList.of(toStream(resource)), port, false);
+        return PARSER.parseServer(List.of(toStream(resource)), port, false);
     }
 
     private static InputStream toStream(final Resource resource) {

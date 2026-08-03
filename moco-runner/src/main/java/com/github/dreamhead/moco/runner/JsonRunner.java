@@ -8,9 +8,10 @@ import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
 import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.MediaType;
-import com.google.common.collect.ImmutableList;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -89,14 +90,14 @@ public final class JsonRunner implements Runner {
     }
 
     private MocoConfig[] toConfigs(final RunnerSetting setting) {
-        ImmutableList.Builder<MocoConfig> builder = ImmutableList.builder();
+        List<MocoConfig> configs = new ArrayList<>();
 
-        setting.context().ifPresent(builder::add);
-        setting.fileRoot().ifPresent(builder::add);
-        setting.request().ifPresent(builder::add);
-        setting.response().ifPresent(builder::add);
+        setting.context().ifPresent(configs::add);
+        setting.fileRoot().ifPresent(configs::add);
+        setting.request().ifPresent(configs::add);
+        setting.response().ifPresent(configs::add);
 
-        return builder.build().toArray(new MocoConfig[0]);
+        return configs.toArray(new MocoConfig[0]);
     }
 
     private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {

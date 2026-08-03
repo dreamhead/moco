@@ -5,8 +5,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.util.HttpHeaders;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import com.github.dreamhead.moco.util.Maps;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
@@ -46,8 +46,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         this.content = content;
     }
 
-    private static final ImmutableSet<String> SINGLE_VALUE_HEADERS =
-            ImmutableSet.of(HttpHeaders.CONTENT_TYPE);
+    private static final Set<String> SINGLE_VALUE_HEADERS =
+            Set.of(HttpHeaders.CONTENT_TYPE);
 
     @Override
     public void addHeader(final String name, final Object value) {
@@ -94,8 +94,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public ImmutableMap<String, String[]> getHeaders() {
-        return ImmutableMap.copyOf(this.headers);
+    public Map<String, String[]> getHeaders() {
+        return Maps.copyOf(this.headers);
     }
 
     @Override

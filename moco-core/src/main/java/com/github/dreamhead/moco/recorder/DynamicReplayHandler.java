@@ -1,12 +1,13 @@
 package com.github.dreamhead.moco.recorder;
 
 import com.github.dreamhead.moco.HttpRequest;
+
+import java.util.List;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.AbstractResponseHandler;
 import com.github.dreamhead.moco.internal.SessionContext;
-import com.google.common.collect.ImmutableList;
 
 import static com.github.dreamhead.moco.Moco.group;
 
@@ -48,7 +49,7 @@ public class DynamicReplayHandler extends AbstractResponseHandler {
         ReplayModifier appliedModifier = this.modifier.apply(config);
 
         if (appliedIdentifier != this.identifier || appliedModifier != this.modifier) {
-            RecorderConfigurations configurations = RecorderConfigurations.create(ImmutableList.of(
+            RecorderConfigurations configurations = RecorderConfigurations.create(List.of(
                     group(this.registry.getGroup()),
                     appliedIdentifier,
                     appliedModifier

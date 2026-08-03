@@ -1,24 +1,25 @@
 package com.github.dreamhead.moco.util;
 
 import com.github.dreamhead.moco.MocoException;
-import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 
 public final class Globs {
-    public static ImmutableList<String> glob(final String glob) {
+    public static List<String> glob(final String glob) {
         Path path = getGlobPath(glob);
 
         int globIndex = getGlobIndex(path);
@@ -52,22 +53,22 @@ public final class Globs {
         return Paths.get(root.toString(), subpath.toString());
     }
 
-    private static ImmutableList<String> doGlob(final Path path, final Path searchPath) {
+    private static List<String> doGlob(final Path path, final Path searchPath) {
         final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + path);
 
         try {
-            final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            final List<String> found = new ArrayList<>();
 
             Files.walkFileTree(searchPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
                     if (matcher.matches(file)) {
-                        builder.add(file.toString());
+                        found.add(file.toString());
                     }
                     return FileVisitResult.CONTINUE;
                 }
             });
-            return builder.build();
+            return List.copyOf(found);
         } catch (IOException e) {
             throw new MocoException(e);
         }

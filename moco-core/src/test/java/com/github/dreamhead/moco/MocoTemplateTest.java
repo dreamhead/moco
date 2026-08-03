@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.github.dreamhead.moco.util.Resources;
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.Header;
@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -37,7 +38,7 @@ import static com.github.dreamhead.moco.Moco.xpath;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.collect.ImmutableMap.of;
+import static java.util.Map.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -76,7 +77,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     public void should_generate_response_with_http_header() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.headers['foo']}"));
 
-        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/template"), ImmutableMultimap.of("foo", "bar")), is("bar")));
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/template"), RequestHeaders.of("foo", "bar")), is("bar")));
     }
 
     @Test

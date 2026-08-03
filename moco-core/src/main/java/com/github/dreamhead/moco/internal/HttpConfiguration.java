@@ -18,12 +18,12 @@ import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
 
 import java.io.File;
+import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.method;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static java.util.Objects.requireNonNull;
 
 public abstract class HttpConfiguration<T extends BaseActualServer>
@@ -58,7 +58,7 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
     public final HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
         requireNonNull(target, "Target should not be null");
-        return this.request(new MountMatcher(mountedDir, target, copyOf(predicates)))
+        return this.request(new MountMatcher(mountedDir, target, List.of(predicates)))
                 .response(new MountHandler(mountedDir, target));
     }
 

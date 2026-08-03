@@ -8,8 +8,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
-
 public final class Maps {
     /**
      * Order-preserving replacement for Guava's {@code ImmutableMap.copyOf}.
@@ -44,19 +42,19 @@ public final class Maps {
     public static Map<String, String> arrayValueToSimple(final Map<String, String[]> map) {
         return map.entrySet()
                 .stream()
-                .collect(toImmutableMap(Map.Entry::getKey, e -> e.getValue()[0]));
+                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()[0]));
     }
 
     public static Map<String, String[]> simpleValueToArray(final Map<String, String> map) {
         return map.entrySet()
                 .stream()
-                .collect(toImmutableMap(Map.Entry::getKey, e -> new String[] {e.getValue()}));
+                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> new String[] {e.getValue()}));
     }
 
     public static Map<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
         return map.entrySet()
                 .stream()
-                .collect(toImmutableMap(Map.Entry::getKey, e -> toArray(e.getValue())));
+                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> toArray(e.getValue())));
     }
 
     private static String[] toArray(final Iterable<String> values) {
