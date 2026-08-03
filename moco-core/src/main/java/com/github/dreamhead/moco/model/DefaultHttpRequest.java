@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
 import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.util.Suppliers;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -104,7 +104,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return client;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("uri", this.uri)
                 .add("method", this.method)

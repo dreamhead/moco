@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.TextContainerDeserializer;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
@@ -105,8 +105,8 @@ public class TextContainer implements Container {
         return toStringHelper().toString();
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
-        return MoreObjects.toStringHelper(this)
+    protected ToStringHelper toStringHelper() {
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("text", text)
                 .add("operation", operation)

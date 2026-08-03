@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.parser.deserializer.FileContainerDeserializer;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
@@ -102,7 +102,7 @@ public final class FileContainer extends TextContainer {
         return this.content != null && this.content.isForTemplate();
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("name", name)
                 .add("charset", charset);

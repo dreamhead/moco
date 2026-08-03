@@ -5,7 +5,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -40,7 +40,7 @@ public final class DefaultHttpResponse extends DefaultHttpMessage implements Htt
         return sseEvents;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("status", this.status);
     }
