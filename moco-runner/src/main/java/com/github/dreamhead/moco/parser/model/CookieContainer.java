@@ -5,9 +5,8 @@ import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
 import com.google.common.base.MoreObjects;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 @JsonDeserialize(using = CookieContainerDeserializer.class)
 public final class CookieContainer implements Container {
@@ -56,7 +55,7 @@ public final class CookieContainer implements Container {
     }
 
     public CookieAttribute[] getOptions() {
-        List<CookieAttribute> options = newArrayList();
+        List<CookieAttribute> options = new ArrayList<>();
         if (this.path != null) {
             options.add(CookieAttribute.path(this.path));
         }

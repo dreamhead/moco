@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -14,12 +13,13 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
-    private Map<String, String[]> headers = Maps.newHashMap();
+    private Map<String, String[]> headers = new HashMap<>();
     private int status;
     private MessageContent content;
     private Iterable<SseEvent> sseEvents;

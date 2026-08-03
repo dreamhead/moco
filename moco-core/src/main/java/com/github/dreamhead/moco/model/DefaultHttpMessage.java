@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
-import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +99,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
 
         @SuppressWarnings("unchecked")
         protected Builder() {
-            this.clazz = (Class<T>) TypeToken.of(getClass()).getRawType();
+            this.clazz = (Class<T>) getClass();
         }
 
         private T self() {

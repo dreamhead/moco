@@ -7,9 +7,10 @@ import com.github.dreamhead.moco.bootstrap.parser.HttpsArgsParser;
 import com.github.dreamhead.moco.bootstrap.parser.StartArgsParser;
 import com.github.dreamhead.moco.runner.Runner;
 import com.github.dreamhead.moco.runner.RunnerFactory;
-import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 
 public final class StartTask implements BootstrapTask {
     private Logger logger = LoggerFactory.getLogger(StartTask.class);
@@ -25,13 +26,12 @@ public final class StartTask implements BootstrapTask {
     public void run(final String[] args) {
         final Runner runner = createRunner(args);
 
-        final Stopwatch stopwatch = Stopwatch.createStarted();
+        final long startedAt = System.nanoTime();
         runner.run();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             runner.stop();
-            stopwatch.stop();
-            logger.info("Total time: " + stopwatch);
+            logger.info("Total time: {} ms", Duration.ofNanos(System.nanoTime() - startedAt).toMillis());
         }));
     }
 

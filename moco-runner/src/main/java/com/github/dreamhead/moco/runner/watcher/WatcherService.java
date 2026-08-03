@@ -17,6 +17,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +27,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
@@ -40,7 +40,7 @@ public final class WatcherService {
     private Multimap<WatchKey, Path> keys = HashMultimap.create();
     private Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
     private Multimap<Path, Path> directoryToFiles = HashMultimap.create();
-    private Map<Path, WatchKey> directoryToKey = newHashMap();
+    private Map<Path, WatchKey> directoryToKey = new HashMap<>();
     private Future<?> result;
 
     public synchronized void start() throws IOException {
