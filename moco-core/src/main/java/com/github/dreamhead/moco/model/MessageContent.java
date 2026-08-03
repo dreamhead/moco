@@ -14,8 +14,6 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.google.common.io.ByteStreams.toByteArray;
-
 @JsonSerialize(using = MessageContentSerializer.class)
 @JsonDeserialize(using = MessageContentDeserializer.class)
 public class MessageContent {
@@ -89,7 +87,7 @@ public class MessageContent {
 
         public final Builder withContent(final InputStream is) {
             try {
-                this.content = toByteArray(is);
+                this.content = is.readAllBytes();
                 return this;
             } catch (IOException e) {
                 throw new MocoException(e);

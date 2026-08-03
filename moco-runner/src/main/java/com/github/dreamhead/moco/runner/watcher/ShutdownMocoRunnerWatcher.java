@@ -11,11 +11,12 @@ import io.netty.handler.codec.string.StringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.google.common.io.CharSource.wrap;
 import static io.netty.channel.ChannelHandler.Sharable;
 
 public final class ShutdownMocoRunnerWatcher implements Watcher {
@@ -75,7 +76,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
 
         private boolean shouldShutdown(final String message) {
             try {
-                return shutdownKey.equals(wrap(message).readFirstLine());
+                return shutdownKey.equals(new BufferedReader(new StringReader(message)).readLine());
             } catch (IOException e) {
                 throw new MocoException(e);
             }

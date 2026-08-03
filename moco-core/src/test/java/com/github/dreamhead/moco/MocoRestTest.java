@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -45,7 +46,6 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.google.common.collect.ImmutableMultimap.of;
-import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -188,7 +188,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> helper.get(remoteUrl("/targets")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XCAFE"));
         assertThat(actual, containsString("0XBABE"));
     }

@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.util;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.Files;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

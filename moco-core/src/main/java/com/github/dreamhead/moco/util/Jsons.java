@@ -9,7 +9,6 @@ import tools.jackson.databind.type.CollectionType;
 import tools.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.MocoException;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.CharStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.util.List;
@@ -93,7 +91,7 @@ public final class Jsons {
     private static <T> Function<InputStream, Stream<T>> toObject(final CollectionType type) {
         return input -> {
             try (InputStream actual = input) {
-                String text = CharStreams.toString(new InputStreamReader(actual));
+                String text = new String(actual.readAllBytes());
                 return DEFAULT_MAPPER.<List<T>>readValue(text, type).stream();
             } catch (UnrecognizedPropertyException e) {
                 logger.info("Unrecognized field: {}", e.getMessage());

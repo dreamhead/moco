@@ -3,8 +3,7 @@ package com.github.dreamhead.moco;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.Header;
@@ -304,7 +303,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, () -> {
             URL resource = Resources.getResource("gbk.response");
             InputStream stream = resource.openStream();
-            assertThat(helper.getAsBytes(remoteUrl("/template")), is(ByteStreams.toByteArray(stream)));
+            assertThat(helper.getAsBytes(remoteUrl("/template")), is(stream.readAllBytes()));
         });
     }
 
