@@ -10,24 +10,30 @@ import java.util.stream.StreamSupport;
 
 public final class Maps {
     /**
-     * Order-preserving replacement for Guava's {@code ImmutableMap.copyOf}.
+     * Unmodifiable copy that keeps insertion order.
      *
-     * <p>{@link Map#copyOf} is deliberately not used: it randomises iteration order once per JVM
-     * run, while header, query, form and cookie maps are dumped and rendered in iteration order.
+     * <p>Named {@code orderedCopyOf} rather than {@code copyOf} on purpose. {@link Map#copyOf}
+     * randomises iteration order once per JVM run, so the two are not interchangeable, and a
+     * same-named helper invites exactly the substitution that must not happen: header, query, form
+     * and cookie maps are rendered in iteration order, so swapping this for {@link Map#copyOf}
+     * makes dumps and assertions pass or fail depending on the run.
      */
-    public static <K, V> Map<K, V> copyOf(final Map<? extends K, ? extends V> map) {
+    public static <K, V> Map<K, V> orderedCopyOf(final Map<? extends K, ? extends V> map) {
         return Collections.unmodifiableMap(new LinkedHashMap<>(map));
     }
 
     /**
-     * Order-preserving collector replacing Guava's {@code ImmutableMap.toImmutableMap}.
+     * Collector to an unmodifiable map that keeps encounter order.
+     *
+     * <p>Deliberately not named {@code toUnmodifiableMap}, for the same reason as
+     * {@link #orderedCopyOf}: {@link Collectors#toUnmodifiableMap} randomises iteration order.
      *
      * <p>Duplicate keys raise {@link IllegalArgumentException} to match Guava. This is reachable
      * from user input - a repeated form field or cookie name - and the exception surfaces to
      * {@code MocoMonitor.onException}, so the type must not drift to
      * {@code IllegalStateException} as {@link Collectors#toMap} would give.
      */
-    public static <T, K, V> Collector<T, ?, Map<K, V>> toUnmodifiableMap(
+    public static <T, K, V> Collector<T, ?, Map<K, V>> toOrderedMap(
             final Function<? super T, ? extends K> keyMapper,
             final Function<? super T, ? extends V> valueMapper) {
         Collector<T, ?, LinkedHashMap<K, V>> collector = Collectors.<T, K, V, LinkedHashMap<K, V>>toMap(
@@ -42,19 +48,19 @@ public final class Maps {
     public static Map<String, String> arrayValueToSimple(final Map<String, String[]> map) {
         return map.entrySet()
                 .stream()
-                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()[0]));
+                .collect(toOrderedMap(Map.Entry::getKey, e -> e.getValue()[0]));
     }
 
     public static Map<String, String[]> simpleValueToArray(final Map<String, String> map) {
         return map.entrySet()
                 .stream()
-                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> new String[] {e.getValue()}));
+                .collect(toOrderedMap(Map.Entry::getKey, e -> new String[] {e.getValue()}));
     }
 
     public static Map<String, String[]> iterableValueToArray(final Map<String, Iterable<String>> map) {
         return map.entrySet()
                 .stream()
-                .collect(toUnmodifiableMap(Map.Entry::getKey, e -> toArray(e.getValue())));
+                .collect(toOrderedMap(Map.Entry::getKey, e -> toArray(e.getValue())));
     }
 
     private static String[] toArray(final Iterable<String> values) {

@@ -49,7 +49,7 @@ public final class ApiUtils {
     @SuppressWarnings("unchecked")
     public static Map<String, Variable> toVariables(
             final Map<String, ? extends RequestExtractor<?>> variables) {
-        return Maps.copyOf(variables.entrySet().stream()
+        return Maps.orderedCopyOf(variables.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey, entry -> new ExtractorVariable(entry.getValue())
                 )));

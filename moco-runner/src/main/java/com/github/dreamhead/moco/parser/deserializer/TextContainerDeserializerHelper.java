@@ -14,7 +14,7 @@ import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
 import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateName;
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
 import static com.github.dreamhead.moco.util.Strings.strip;
-import static com.github.dreamhead.moco.util.Maps.copyOf;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public final class TextContainerDeserializerHelper {
     private static final Map<String, String> NAMES = Map.of(
@@ -57,7 +57,7 @@ public final class TextContainerDeserializerHelper {
 
         private Map<String, TextContainer> toTemplateVars() {
             return vars.entrySet().stream()
-                    .collect(Maps.toUnmodifiableMap(Map.Entry::getKey, e -> toLocalContainer(e.getValue())));
+                    .collect(Maps.toOrderedMap(Map.Entry::getKey, e -> toLocalContainer(e.getValue())));
         }
 
         private TextContainer toLocalContainer(final TextContainer container) {

@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.github.dreamhead.moco.util.Maps.toUnmodifiableMap;
+import static com.github.dreamhead.moco.util.Maps.toOrderedMap;
 import static java.util.Optional.of;
 
 public final class FormsRequestExtractor extends HttpRequestExtractor<Map<String, String>> {
@@ -43,7 +43,7 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<Map<String
         return decoder.getBodyHttpDatas().stream()
                 .filter(data -> data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute)
                 .map(data -> (Attribute) data)
-                .collect(toUnmodifiableMap(Attribute::getName, this::getAttributeValue));
+                .collect(toOrderedMap(Attribute::getName, this::getAttributeValue));
     }
 
     private String getAttributeValue(final Attribute attribute) {

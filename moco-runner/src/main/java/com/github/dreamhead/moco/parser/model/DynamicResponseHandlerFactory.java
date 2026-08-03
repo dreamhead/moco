@@ -33,7 +33,7 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
-import static com.github.dreamhead.moco.util.Maps.copyOf;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 import static java.util.Set.of;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -298,7 +298,7 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
     }
 
     public static Map<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
-        return copyOf(props.entrySet().stream()
+        return orderedCopyOf(props.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> getRequestExtractor(e.getValue()))));
     }
 

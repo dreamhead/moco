@@ -16,7 +16,7 @@ import com.github.dreamhead.moco.util.Xmls;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.util.Maps.arrayValueToSimple;
-import static com.github.dreamhead.moco.util.Maps.toUnmodifiableMap;
+import static com.github.dreamhead.moco.util.Maps.toOrderedMap;
 
 public final class TemplateRequest {
     private final Request request;
@@ -68,7 +68,7 @@ public final class TemplateRequest {
             HttpRequest httpRequest = (HttpRequest) this.request;
             Map<String, String[]> queries = httpRequest.getQueries();
             return queries.entrySet().stream()
-                    .collect(toUnmodifiableMap(Map.Entry::getKey, entry -> entry.getValue()[0]));
+                    .collect(toOrderedMap(Map.Entry::getKey, entry -> entry.getValue()[0]));
         }
 
         throw new IllegalArgumentException("Request is not HTTP request");
