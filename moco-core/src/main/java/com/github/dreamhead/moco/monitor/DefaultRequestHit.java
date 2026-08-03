@@ -7,14 +7,14 @@ import com.github.dreamhead.moco.UnexpectedRequestMatcher;
 import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Objects.requireNonNull;
 
 public final class DefaultRequestHit extends AbstractMonitor implements RequestHit {
-    private List<Request> unexpectedRequests = newArrayList();
-    private List<Request> requests = newArrayList();
+    private List<Request> unexpectedRequests = new ArrayList<>();
+    private List<Request> requests = new ArrayList<>();
 
     @Override
     public void onMessageArrived(final Request request) {
@@ -33,16 +33,16 @@ public final class DefaultRequestHit extends AbstractMonitor implements RequestH
 
     @Override
     public void verify(final UnexpectedRequestMatcher matcher, final VerificationMode mode) {
-        checkNotNull(mode, "Verification mode should not be null")
+        requireNonNull(mode, "Verification mode should not be null")
                 .verify(new VerificationData(unexpectedRequests,
-                        checkNotNull(matcher, "Matcher should not be null"),
+                        requireNonNull(matcher, "Matcher should not be null"),
                         "expect unexpected request hit %s times but %d times"));
     }
 
     @Override
     public void verify(final RequestMatcher matcher, final VerificationMode mode) {
-        checkNotNull(mode, "Verification mode should not be null").verify(new VerificationData(requests,
-                checkNotNull(matcher, "Matcher should not be null"),
+        requireNonNull(mode, "Verification mode should not be null").verify(new VerificationData(requests,
+                requireNonNull(matcher, "Matcher should not be null"),
                 "expect request hit %s times but %d times"));
     }
 }

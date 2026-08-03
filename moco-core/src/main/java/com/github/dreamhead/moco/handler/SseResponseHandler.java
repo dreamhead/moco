@@ -6,10 +6,11 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.collect.ImmutableList;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SseResponseHandler extends AbstractHttpResponseHandler {
@@ -49,15 +50,15 @@ public class SseResponseHandler extends AbstractHttpResponseHandler {
             return events;
         }
 
-        ImmutableList.Builder<SseEvent> builder = ImmutableList.builder();
+        List<SseEvent> delayed = new ArrayList<>();
         for (SseEvent event : events) {
             if (event.delay() > 0) {
-                builder.add(event);
+                delayed.add(event);
             } else {
-                builder.add(event.delay(defaultDelay));
+                delayed.add(event.delay(defaultDelay));
             }
         }
-        return builder.build();
+        return List.copyOf(delayed);
     }
 
     @Override

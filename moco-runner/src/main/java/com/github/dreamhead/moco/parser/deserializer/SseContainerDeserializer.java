@@ -9,9 +9,10 @@ import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.SseContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public final class SseContainerDeserializer extends ValueDeserializer<SseContainer> {
@@ -39,11 +40,11 @@ public final class SseContainerDeserializer extends ValueDeserializer<SseContain
         }
 
         if (var.events != null) {
-            ImmutableList.Builder<SseEvent> builder = ImmutableList.builder();
+            List<SseEvent> events = new ArrayList<>();
             for (EventVar eventVar : var.events) {
-                builder.add(eventVar.toEvent());
+                events.add(eventVar.toEvent());
             }
-            return SseContainer.fromEvents(builder.build(), delay.duration, delay.unit);
+            return SseContainer.fromEvents(List.copyOf(events), delay.duration, delay.unit);
         }
 
         throw new IllegalArgumentException("Invalid SSE configuration: expected 'file' or 'events'");
@@ -96,11 +97,11 @@ public final class SseContainerDeserializer extends ValueDeserializer<SseContain
     }
 
     private List<SseEvent> parseEvents(final JsonParser jp)  {
-        ImmutableList.Builder<SseEvent> builder = ImmutableList.builder();
+        List<SseEvent> events = new ArrayList<>();
         while (jp.nextToken() != JsonToken.END_ARRAY) {
-            builder.add(parseEvent(jp));
+            events.add(parseEvent(jp));
         }
-        return builder.build();
+        return List.copyOf(events);
     }
 
     private SseEvent parseEvent(final JsonParser jp)  {
@@ -119,9 +120,9 @@ public final class SseContainerDeserializer extends ValueDeserializer<SseContain
         public SseEvent toEvent() {
             SseEvent e;
             if (event != null) {
-                e = SseEvent.event(event, ImmutableList.of(data));
+                e = SseEvent.event(event, List.of(data));
             } else {
-                e = SseEvent.data(ImmutableList.of(data));
+                e = SseEvent.data(List.of(data));
             }
 
             if (id != null) {

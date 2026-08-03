@@ -11,15 +11,14 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.server.ServerSetting;
 import com.github.dreamhead.moco.setting.Setting;
-import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.github.dreamhead.moco.RequestMatcher.ANY_REQUEST_MATCHER;
 import static com.github.dreamhead.moco.util.Configs.configItem;
 import static com.github.dreamhead.moco.util.Configs.configItems;
-import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends BaseActualServer> extends BaseServer<T>
         implements ServerSetting, SettingFetcher<T> {
@@ -28,7 +27,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
     private final MocoConfig<?>[] configs;
     private final MocoMonitor monitor;
 
-    private final List<Setting<T>> settings = newArrayList();
+    private final List<Setting<T>> settings = new ArrayList<>();
     private int port;
     private RequestMatcher anyMatcher = ANY_REQUEST_MATCHER;
     private Responser<T> responser;
@@ -53,7 +52,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         this.port = port;
     }
 
-    public final ImmutableList<Setting<T>> getSettings() {
+    public final List<Setting<T>> getSettings() {
         return configItems(settings, configs);
     }
 
@@ -103,7 +102,7 @@ public abstract class BaseActualServer<T extends ResponseSetting<T>, U extends B
         }
     }
 
-    protected final void addSettings(final ImmutableList<Setting<T>> thatSettings) {
+    protected final void addSettings(final List<Setting<T>> thatSettings) {
         for (Setting<T> thatSetting : thatSettings) {
             addSetting(thatSetting);
         }

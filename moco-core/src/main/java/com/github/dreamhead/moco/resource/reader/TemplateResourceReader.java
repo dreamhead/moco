@@ -6,10 +6,8 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
+import com.github.dreamhead.moco.util.Maps;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.ParseException;
@@ -33,19 +31,22 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.ImmutableMap.copyOf;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_31;
     private static final String TEMPLATE_NAME = "template";
-    private static final List<String> RESERVED_NAME = ImmutableList.of("req", "now", "random");
+    private static final List<String> RESERVED_NAME = List.of("req", "now", "random");
 
     private static Logger logger = LoggerFactory.getLogger(TemplateResourceReader.class);
 
@@ -55,8 +56,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     private final ContentResource template;
-    private final ImmutableMap<String, ? extends Variable> variables;
-
+    private final Map<String, ? extends Variable> variables;
 
     public static String checkValidVariableName(final String name) {
         if (!RESERVED_NAME.contains(
@@ -68,7 +68,7 @@ public class TemplateResourceReader implements ContentResourceReader {
     }
 
     public TemplateResourceReader(final ContentResource template,
-                                  final ImmutableMap<String, ? extends Variable> variables) {
+                                  final Map<String, ? extends Variable> variables) {
         this.template = template;
         this.variables = variables;
     }
@@ -125,21 +125,22 @@ public class TemplateResourceReader implements ContentResourceReader {
         return cfg;
     }
 
-    private ImmutableMap<String, Object> variables(final SessionContext context) {
-        return ImmutableMap.<String, Object>builder()
-                .putAll(toVariableString(context.getRequest()))
-                .put("now", new NowMethod())
-                .put("random", new RandomMethod())
-                .put("req", toTemplateRequest(context))
-                .build();
+    private Map<String, Object> variables(final SessionContext context) {
+        Map<String, Object> result = new LinkedHashMap<>(toVariableString(context.getRequest()));
+        result.put("now", new NowMethod());
+        result.put("random", new RandomMethod());
+        result.put("req", toTemplateRequest(context));
+        return Collections.unmodifiableMap(result);
     }
 
     private TemplateRequest toTemplateRequest(final SessionContext context) {
         return new TemplateRequest(context);
     }
 
-    private ImmutableMap<String, Object> toVariableString(final Request request) {
-        return copyOf(Maps.transformEntries(this.variables, (key, value) -> value.toTemplateVariable(request)));
+    private Map<String, Object> toVariableString(final Request request) {
+        return this.variables.entrySet().stream()
+                .collect(Maps.toOrderedMap(Map.Entry::getKey,
+                        e -> e.getValue().toTemplateVariable(request)));
     }
 
     @Override

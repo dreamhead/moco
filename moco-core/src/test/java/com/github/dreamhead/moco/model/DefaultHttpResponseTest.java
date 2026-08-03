@@ -4,9 +4,10 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -17,12 +18,12 @@ public class DefaultHttpResponseTest {
 
     @Test
     public void should_serialize_response_with_sse_events() {
-        SseEvent event1 = SseEvent.event("message", ImmutableList.of("Hello"));
-        SseEvent event2 = SseEvent.event("message", ImmutableList.of("World"));
+        SseEvent event1 = SseEvent.event("message", List.of("Hello"));
+        SseEvent event2 = SseEvent.event("message", List.of("World"));
         HttpResponse response = DefaultHttpResponse.builder()
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withStatus(200)
-                .withSseEvents(ImmutableList.of(event1, event2))
+                .withSseEvents(List.of(event1, event2))
                 .build();
 
         String json = Jsons.toJson(response);
@@ -33,19 +34,20 @@ public class DefaultHttpResponseTest {
 
     @Test
     public void should_deserialize_response_with_sse_events() {
-        SseEvent event1 = SseEvent.event("message", ImmutableList.of("Hello"));
-        SseEvent event2 = SseEvent.event("message", ImmutableList.of("World"));
+        SseEvent event1 = SseEvent.event("message", List.of("Hello"));
+        SseEvent event2 = SseEvent.event("message", List.of("World"));
         HttpResponse response = DefaultHttpResponse.builder()
                 .withVersion(HttpProtocolVersion.VERSION_1_1)
                 .withStatus(200)
-                .withSseEvents(ImmutableList.of(event1, event2))
+                .withSseEvents(List.of(event1, event2))
                 .build();
 
         String json = Jsons.toJson(response);
         HttpResponse deserialized = Jsons.toObject(json, DefaultHttpResponse.class);
-        assertThat(Iterables.size(deserialized.getSseEvents()), is(2));
-        assertThat(Iterables.get(deserialized.getSseEvents(), 0), is(event1));
-        assertThat(Iterables.get(deserialized.getSseEvents(), 1), is(event2));
+        List<SseEvent> events = StreamSupport.stream(deserialized.getSseEvents().spliterator(), false).toList();
+        assertThat(events.size(), is(2));
+        assertThat(events.get(0), is(event1));
+        assertThat(events.get(1), is(event2));
     }
 
     @Test

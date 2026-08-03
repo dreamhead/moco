@@ -27,7 +27,7 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 import com.github.dreamhead.moco.resource.reader.Variable;
-import com.google.common.collect.ImmutableMap;
+import com.github.dreamhead.moco.util.Maps;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class ApiUtils {
     public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2,
@@ -47,9 +47,9 @@ public final class ApiUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static ImmutableMap<String, Variable> toVariables(
-            final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
-        return ImmutableMap.copyOf(variables.entrySet().stream()
+    public static Map<String, Variable> toVariables(
+            final Map<String, ? extends RequestExtractor<?>> variables) {
+        return Maps.orderedCopyOf(variables.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey, entry -> new ExtractorVariable(entry.getValue())
                 )));
@@ -112,11 +112,11 @@ public final class ApiUtils {
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
+        return fileResource(requireNonNull(filename, "Filename should not be null"), charset, null);
     }
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
+        return classpathFileResource(requireNonNull(filename, "Filename should not be null"), charset);
     }
 
     public static <T> RequestMatcher path(final RequestExtractor<T> extractor, final Resource expected) {

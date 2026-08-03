@@ -1,11 +1,12 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
-import static com.google.common.collect.ImmutableMultimap.of;
+import static com.github.dreamhead.moco.helper.RequestHeaders.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 

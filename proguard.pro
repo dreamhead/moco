@@ -80,8 +80,6 @@
 }
 
 
--keep public class com.google.common.io.Files{*;}
--keep public class com.google.common.collect.ImmutableMultimap{*;}
 -keep public class org.slf4j.LoggerFactory{*;}
 -keep public class org.tinylog.**{*;}
 -keep public class com.fasterxml.jackson.core.type.TypeReference{*;}
@@ -109,6 +107,12 @@
 -dontwarn com.jayway.jsonpath.spi.json.JettisonProvider*
 -dontwarn com.jayway.jsonpath.spi.json.TapestryJsonProvider
 -dontwarn com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider
+# json-path ships optional Gson backends that Moco does not bundle.
+-dontwarn com.google.gson.**
+-dontwarn com.jayway.jsonpath.spi.json.GsonJsonProvider
+-dontwarn com.jayway.jsonpath.spi.mapper.GsonMappingProvider*
+# Nullness annotations are compileOnly, so they are absent from the shrunk jar by design.
+-dontwarn org.jspecify.**
 -dontwarn ch.qos.logback.**
 -dontwarn org.tinylog.**
 -dontwarn freemarker.**
@@ -116,7 +120,6 @@
 -dontwarn org.apache.log4j.**
 -dontwarn org.apache.logging.log4j.**
 -dontwarn org.apache.commons.logging.**
--dontwarn com.google.**
 -dontwarn net.sf.cglib.**
 -dontwarn org.osgi.framework.**
 -dontwarn com.ctc.wstx.**

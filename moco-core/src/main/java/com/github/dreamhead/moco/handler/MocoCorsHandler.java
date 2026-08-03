@@ -4,11 +4,11 @@ import com.github.dreamhead.moco.HttpMethod;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableSet;
+import com.github.dreamhead.moco.util.Strings;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -87,8 +87,8 @@ public final class MocoCorsHandler extends AbstractHttpResponseHandler {
         }
     }
 
-    private static final ImmutableSet<HttpMethod> simpleRequestMethods
-            = ImmutableSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
+    private static final Set<HttpMethod> simpleRequestMethods
+            = Set.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
 
     private boolean isSimpleRequest(final HttpRequest httpRequest) {
         HttpMethod method = httpRequest.getMethod();

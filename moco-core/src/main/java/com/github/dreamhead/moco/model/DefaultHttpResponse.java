@@ -5,13 +5,13 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpVersion;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
 
@@ -22,7 +22,7 @@ public final class DefaultHttpResponse extends DefaultHttpMessage implements Htt
 
     public DefaultHttpResponse(final HttpProtocolVersion version,
                                final int status,
-                               final ImmutableMap<String, String[]> headers,
+                               final Map<String, String[]> headers,
                                final MessageContent content,
                                final List<SseEvent> sseEvents) {
         super(version, content, headers);
@@ -40,7 +40,7 @@ public final class DefaultHttpResponse extends DefaultHttpMessage implements Htt
         return sseEvents;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("status", this.status);
     }

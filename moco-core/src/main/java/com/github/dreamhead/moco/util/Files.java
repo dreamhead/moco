@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class Files {
     public static String join(final String path1, final String path2, final String... paths) {
@@ -27,8 +27,21 @@ public final class Files {
         return new File(new File(path1), path2);
     }
 
+    /**
+     * Replacement for Guava's {@code com.google.common.io.Files.getFileExtension}. The base name
+     * is resolved first so a dot in a parent directory is not mistaken for an extension, and the
+     * result is an empty string - never null - when there is no extension.
+     */
+    public static String getFileExtension(final String fullName) {
+        requireNonNull(fullName);
+
+        String fileName = new File(fullName).getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return dotIndex == -1 ? "" : fileName.substring(dotIndex + 1);
+    }
+
     public static File directoryOf(final File file) {
-        checkNotNull(file);
+        requireNonNull(file);
         File parentFile = file.getParentFile();
         if (parentFile == null) {
             return new File(".");

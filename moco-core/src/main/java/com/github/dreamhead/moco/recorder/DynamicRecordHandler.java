@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.recorder;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.mount.AbstractHttpContentResponseHandler;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 public class DynamicRecordHandler extends AbstractHttpContentResponseHandler implements RecordHandler {
     private final RecorderRegistry registry;

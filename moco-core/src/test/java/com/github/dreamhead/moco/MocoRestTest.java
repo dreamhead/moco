@@ -1,10 +1,9 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.helper.RequestHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpResponse;
@@ -16,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -44,8 +44,7 @@ import static com.github.dreamhead.moco.MocoRest.restServer;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
-import static com.google.common.collect.ImmutableMultimap.of;
-import static com.google.common.io.Files.asCharSource;
+import static com.github.dreamhead.moco.helper.RequestHeaders.of;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -94,7 +93,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get().response(json(ImmutableList.of(resource1, resource2)))
+                get().response(json(List.of(resource1, resource2)))
         );
 
         running(server, () -> {
@@ -188,7 +187,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> helper.get(remoteUrl("/targets")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XCAFE"));
         assertThat(actual, containsString("0XBABE"));
     }
@@ -238,7 +237,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         resource2.message = "world";
 
         server.resource("targets",
-                get().request(eq(query("foo"), "bar")).response(json(ImmutableList.of(resource1, resource2)))
+                get().request(eq(query("foo"), "bar")).response(json(List.of(resource1, resource2)))
         );
 
         running(server, () -> {
@@ -458,7 +457,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
 
         running(server, () -> {
             HttpResponse httpResponse = helper.deleteForResponseWithHeaders(remoteUrl("/targets/1"),
-                    ImmutableMultimap.of(HttpHeaders.IF_MATCH, "moco"));
+                    RequestHeaders.of(HttpHeaders.IF_MATCH, "moco"));
             assertThat(httpResponse.getCode(), is(200));
         });
     }

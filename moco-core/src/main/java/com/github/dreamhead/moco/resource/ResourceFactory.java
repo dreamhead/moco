@@ -15,12 +15,12 @@ import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.resource.reader.XmlResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.function.Function;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
@@ -31,7 +31,7 @@ import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fi
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
 import static com.github.dreamhead.moco.util.Functions.checkApply;
-import static com.google.common.net.MediaType.APPLICATION_BINARY;
+import static com.github.dreamhead.moco.util.MediaType.APPLICATION_BINARY;
 
 public final class ResourceFactory {
     public static ContentResource textResource(final Function<Request, String> function) {
@@ -126,7 +126,7 @@ public final class ResourceFactory {
     }
 
     public static ContentResource templateResource(final ContentResource template,
-                                                   final ImmutableMap<String, ? extends Variable> variables) {
+                                                   final Map<String, ? extends Variable> variables) {
         return contentResource(id("template"), templateConfigApplier(template, variables),
                 new TemplateResourceReader(template, variables));
     }

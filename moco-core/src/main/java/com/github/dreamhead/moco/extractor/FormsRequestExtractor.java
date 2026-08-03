@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpRequestExtractor;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.DefaultHttpRequest;
-import com.google.common.collect.ImmutableMap;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.multipart.Attribute;
@@ -15,14 +14,15 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static com.github.dreamhead.moco.util.Maps.toOrderedMap;
 import static java.util.Optional.of;
 
-public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableMap<String, String>> {
+public final class FormsRequestExtractor extends HttpRequestExtractor<Map<String, String>> {
     @Override
-    protected Optional<ImmutableMap<String, String>> doExtract(final HttpRequest request) {
+    protected Optional<Map<String, String>> doExtract(final HttpRequest request) {
         HttpPostRequestDecoder decoder = null;
         try {
             FullHttpRequest targetRequest = ((DefaultHttpRequest) request).toFullHttpRequest();
@@ -39,11 +39,11 @@ public final class FormsRequestExtractor extends HttpRequestExtractor<ImmutableM
         }
     }
 
-    private ImmutableMap<String, String> doExtractForms(final HttpPostRequestDecoder decoder) {
+    private Map<String, String> doExtractForms(final HttpPostRequestDecoder decoder) {
         return decoder.getBodyHttpDatas().stream()
                 .filter(data -> data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute)
                 .map(data -> (Attribute) data)
-                .collect(toImmutableMap(Attribute::getName, this::getAttributeValue));
+                .collect(toOrderedMap(Attribute::getName, this::getAttributeValue));
     }
 
     private String getAttributeValue(final Attribute attribute) {

@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.handler.SseResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +62,7 @@ public class SseContainer implements Container {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("file", fileContainer)
                 .add("events", events)

@@ -6,11 +6,12 @@ import com.github.dreamhead.moco.Server;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
-import com.google.common.collect.ImmutableList;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,7 +22,6 @@ import static com.github.dreamhead.moco.Moco.pathResource;
 import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
-import static com.google.common.collect.Iterables.toArray;
 
 public final class JsonRunner implements Runner {
 
@@ -90,14 +90,14 @@ public final class JsonRunner implements Runner {
     }
 
     private MocoConfig[] toConfigs(final RunnerSetting setting) {
-        ImmutableList.Builder<MocoConfig> builder = ImmutableList.builder();
+        List<MocoConfig> configs = new ArrayList<>();
 
-        setting.context().ifPresent(builder::add);
-        setting.fileRoot().ifPresent(builder::add);
-        setting.request().ifPresent(builder::add);
-        setting.response().ifPresent(builder::add);
+        setting.context().ifPresent(configs::add);
+        setting.fileRoot().ifPresent(configs::add);
+        setting.request().ifPresent(configs::add);
+        setting.response().ifPresent(configs::add);
 
-        return toArray(builder.build(), MocoConfig.class);
+        return configs.toArray(new MocoConfig[0]);
     }
 
     private HttpServer mergeServer(final HttpServer server, final HttpServer parsedServer) {

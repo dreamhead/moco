@@ -1,48 +1,46 @@
 package com.github.dreamhead.moco.util;
 
-import com.google.common.collect.ImmutableList;
-
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.Iterables.isEmpty;
+import static java.util.List.of;
+import static java.util.Objects.requireNonNull;
 
 public final class Iterables {
     public static <T> List<T> asIterable(final T handler, final T[] handlers) {
-        checkNotNull(handler);
-        checkNotNull(handlers);
+        requireNonNull(handler);
+        requireNonNull(handlers);
 
         if (handlers.length == 0) {
             return of(handler);
         }
 
-        return ImmutableList.<T>builder()
-                .add(handler)
-                .add(handlers)
-                .build();
+        List<T> result = new ArrayList<>();
+        result.add(handler);
+        result.addAll(Arrays.asList(handlers));
+        return List.copyOf(result);
     }
 
     public static <T> List<T> asIterable(final T handler, final T handler2, final T[] handlers) {
-        checkNotNull(handler);
-        checkNotNull(handler2);
-        checkNotNull(handlers);
+        requireNonNull(handler);
+        requireNonNull(handler2);
+        requireNonNull(handlers);
 
         if (handlers.length == 0) {
             return of(handler, handler2);
         }
 
-        return ImmutableList.<T>builder()
-                .add(handler)
-                .add(handler2)
-                .add(handlers)
-                .build();
+        List<T> result = new ArrayList<>();
+        result.add(handler);
+        result.add(handler2);
+        result.addAll(Arrays.asList(handlers));
+        return List.copyOf(result);
     }
 
     public static <T> T head(final T[] elements) {
-        checkNotNull(elements);
+        requireNonNull(elements);
 
         if (elements.length == 0) {
             return null;
@@ -53,7 +51,7 @@ public final class Iterables {
 
     @SuppressWarnings("unchecked")
     public static <T> T[] tail(final T[] elements) {
-        checkNotNull(elements);
+        requireNonNull(elements);
 
         if (elements.length <= 1) {
             return (T[]) Array.newInstance(elements.getClass().getComponentType(), 0);
@@ -63,7 +61,7 @@ public final class Iterables {
     }
 
     public static <T> boolean isNullOrEmpty(final Iterable<T> iterable) {
-        return iterable == null || isEmpty(iterable);
+        return iterable == null || !iterable.iterator().hasNext();
     }
 
     private Iterables() {

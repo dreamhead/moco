@@ -2,18 +2,17 @@ package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
 import com.github.dreamhead.moco.runner.JsonRunner;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.junit.jupiter.api.AfterEach;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.github.dreamhead.moco.bootstrap.arg.HttpArgs.httpArgs;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class AbstractMocoStandaloneTest {
     protected final MocoTestHelper helper = new MocoTestHelper();
@@ -32,9 +31,9 @@ public class AbstractMocoStandaloneTest {
     }
 
     private JsonRunner newRunner(final String[] resourceNames) {
-        final ImmutableList<InputStream> streams = Arrays.stream(resourceNames)
+        final List<InputStream> streams = Arrays.stream(resourceNames)
                 .map(this::resourceAsStream)
-                .collect(toImmutableList());
+                .toList();
         return newJsonRunnerWithStreams(streams, httpArgs().withPort(port()).build());
     }
 

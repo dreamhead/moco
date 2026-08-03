@@ -1,35 +1,32 @@
 package com.github.dreamhead.moco.util;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.io.Files;
-import com.google.common.net.MediaType;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Map.entry;
 import static java.util.Optional.of;
 
 public final class FileContentType {
     public static final MediaType DEFAULT_CONTENT_TYPE_WITH_CHARSET = MediaType.PLAIN_TEXT_UTF_8;
 
-    private static final ImmutableMap<String, MediaType> CONTENT_TYPES = ImmutableMap.<String, MediaType>builder()
-            .put("png", MediaType.PNG)
-            .put("gif", MediaType.GIF)
-            .put("jpg", MediaType.JPEG)
-            .put("jpeg", MediaType.JPEG)
-            .put("tiff", MediaType.TIFF)
-            .put("css", MediaType.create("text", "css"))
-            .put("html", MediaType.create("text", "html"))
-            .put("txt", MediaType.create("text", "plain"))
-            .put("js", MediaType.create("application", "javascript"))
-            .put("json", MediaType.create("application", "json"))
-            .put("pdf", MediaType.PDF)
-            .put("zip", MediaType.ZIP)
-            .put("tar", MediaType.TAR)
-            .put("gz", MediaType.GZIP)
-            .put("xml", MediaType.create("text", "xml"))
-            .build();
+    private static final Map<String, MediaType> CONTENT_TYPES = Map.ofEntries(
+            entry("png", MediaType.PNG),
+            entry("gif", MediaType.GIF),
+            entry("jpg", MediaType.JPEG),
+            entry("jpeg", MediaType.JPEG),
+            entry("tiff", MediaType.TIFF),
+            entry("css", MediaType.create("text", "css")),
+            entry("html", MediaType.create("text", "html")),
+            entry("txt", MediaType.create("text", "plain")),
+            entry("js", MediaType.create("application", "javascript")),
+            entry("json", MediaType.create("application", "json")),
+            entry("pdf", MediaType.PDF),
+            entry("zip", MediaType.ZIP),
+            entry("tar", MediaType.TAR),
+            entry("gz", MediaType.GZIP),
+            entry("xml", MediaType.create("text", "xml")));
 
     private final String filename;
     private final Charset charset;
@@ -48,7 +45,7 @@ public final class FileContentType {
         Optional<Charset> targetCharset = toCharset(optionalType.orElse(null));
 
         MediaType type = optionalType.orElse(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
-        if (targetCharset.isPresent() && !type.charset().toJavaUtil().equals(targetCharset)) {
+        if (targetCharset.isPresent() && !type.charset().equals(targetCharset)) {
             return type.withCharset(targetCharset.get());
         }
 
@@ -64,7 +61,7 @@ public final class FileContentType {
             return of(StandardCharsets.UTF_8);
         }
 
-        return type.charset().toJavaUtil();
+        return type.charset();
     }
 
     private Optional<MediaType> toContentType(final String extension) {

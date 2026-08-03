@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.google.common.net.HttpHeaders.UPGRADE;
+import static com.github.dreamhead.moco.util.HttpHeaders.UPGRADE;
 import static io.netty.channel.ChannelHandler.Sharable;
 import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;
 import static io.netty.handler.codec.http.HttpUtil.setContentLength;

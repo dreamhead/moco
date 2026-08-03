@@ -4,22 +4,22 @@ import com.github.dreamhead.moco.HttpProtocolVersion;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.ObjectArrays;
-import com.google.common.net.HttpHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.Maps;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private HttpProtocolVersion version;
-    private Map<String, String[]> headers = Maps.newHashMap();
+    private Map<String, String[]> headers = new HashMap<>();
     private int status;
     private MessageContent content;
     private Iterable<SseEvent> sseEvents;
@@ -46,8 +46,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
         this.content = content;
     }
 
-    private static final ImmutableSet<String> SINGLE_VALUE_HEADERS =
-            ImmutableSet.of(HttpHeaders.CONTENT_TYPE);
+    private static final Set<String> SINGLE_VALUE_HEADERS =
+            Set.of(HttpHeaders.CONTENT_TYPE);
 
     @Override
     public void addHeader(final String name, final Object value) {
@@ -70,7 +70,9 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     private String[] newValues(final String name, final Object value) {
         if (this.headers.containsKey(name)) {
             String[] values = this.headers.get(name);
-            return ObjectArrays.concat(values, value.toString());
+            String[] result = Arrays.copyOf(values, values.length + 1);
+            result[values.length] = value.toString();
+            return result;
         }
 
         return new String[]{value.toString()};
@@ -92,8 +94,8 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
     }
 
     @Override
-    public ImmutableMap<String, String[]> getHeaders() {
-        return ImmutableMap.copyOf(this.headers);
+    public Map<String, String[]> getHeaders() {
+        return Maps.orderedCopyOf(this.headers);
     }
 
     @Override

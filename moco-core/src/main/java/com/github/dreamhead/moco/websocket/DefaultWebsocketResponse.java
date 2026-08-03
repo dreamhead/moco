@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 public class DefaultWebsocketResponse implements MutableWebsocketResponse {
     private MessageContent content;
@@ -18,7 +18,7 @@ public class DefaultWebsocketResponse implements MutableWebsocketResponse {
 
     @Override
     public final String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .add("content", content)
                 .toString();
     }

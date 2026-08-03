@@ -8,8 +8,6 @@ import tools.jackson.databind.exc.UnrecognizedPropertyException;
 import tools.jackson.databind.type.CollectionType;
 import tools.jackson.databind.type.TypeFactory;
 import com.github.dreamhead.moco.MocoException;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.CharStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.util.List;
@@ -25,8 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.List.of;
 
 public final class Jsons {
     private static Logger logger = LoggerFactory.getLogger(Jsons.class);
@@ -74,26 +70,26 @@ public final class Jsons {
         }
     }
 
-    public static <T> ImmutableList<T> toObjects(final String value, final Class<T> elementClass) {
+    public static <T> List<T> toObjects(final String value, final Class<T> elementClass) {
         return toObjects(new ByteArrayInputStream(value.getBytes()), elementClass);
     }
 
-    public static <T> ImmutableList<T> toObjects(final InputStream stream, final Class<T> elementClass) {
+    public static <T> List<T> toObjects(final InputStream stream, final Class<T> elementClass) {
         return toObjects(of(stream), elementClass);
     }
 
-    public static <T> ImmutableList<T> toObjects(final ImmutableList<InputStream> streams,
+    public static <T> List<T> toObjects(final List<InputStream> streams,
                                                  final Class<T> elementClass) {
         final CollectionType type = DEFAULT_FACTORY.constructCollectionType(List.class, elementClass);
         return streams.stream()
                 .flatMap(Jsons.<T>toObject(type))
-                .collect(toImmutableList());
+                .toList();
     }
 
     private static <T> Function<InputStream, Stream<T>> toObject(final CollectionType type) {
         return input -> {
             try (InputStream actual = input) {
-                String text = CharStreams.toString(new InputStreamReader(actual));
+                String text = new String(actual.readAllBytes());
                 return DEFAULT_MAPPER.<List<T>>readValue(text, type).stream();
             } catch (UnrecognizedPropertyException e) {
                 logger.info("Unrecognized field: {}", e.getMessage());

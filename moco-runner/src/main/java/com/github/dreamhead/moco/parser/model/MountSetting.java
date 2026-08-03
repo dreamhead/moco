@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoMount;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.mount.MountPredicate;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class MountSetting extends ResponseSetting {
@@ -37,7 +37,7 @@ public final class MountSetting extends ResponseSetting {
         return this.asResponseSetting().getResponseHandler();
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("dir", dir)
                 .add("uri", uri)

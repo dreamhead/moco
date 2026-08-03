@@ -6,20 +6,19 @@ import com.github.dreamhead.moco.MocoProcedure;
 import com.github.dreamhead.moco.ResponseElement;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 public final class ResponseHandlers {
-    private static final ImmutableMap<String, Class<?>> HANDLERS = ImmutableMap.<String, Class<?>>builder()
-            .put("file", ContentHandler.class)
-            .put("text", ContentHandler.class)
-            .put("pathresource", ContentHandler.class)
-            .put("binary", ContentHandler.class)
-            .put("template", ContentHandler.class)
-            .put("version", VersionResponseHandler.class)
-            .put("json", JsonResponseHandler.class)
-            .build();
+    private static final Map<String, Class<?>> HANDLERS = Map.of(
+            "file", ContentHandler.class,
+            "text", ContentHandler.class,
+            "pathresource", ContentHandler.class,
+            "binary", ContentHandler.class,
+            "template", ContentHandler.class,
+            "version", VersionResponseHandler.class,
+            "json", JsonResponseHandler.class);
 
     public static ResponseHandler responseHandler(final ResponseElement element) {
         if (element instanceof ResponseHandler handler) {

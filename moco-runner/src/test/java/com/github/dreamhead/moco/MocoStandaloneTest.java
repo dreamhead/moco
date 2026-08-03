@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpVersion;
@@ -9,10 +8,12 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import com.github.dreamhead.moco.helper.RequestHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.collect.ImmutableMultimap.of;
+import static com.github.dreamhead.moco.helper.RequestHeaders.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -12,7 +12,7 @@ import com.github.dreamhead.moco.internal.ServerConfig;
 import static com.github.dreamhead.moco.rest.RestIds.checkResourceName;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.URLs.resourceRoot;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class ActualRestServer extends ActualHttpServer implements RestServer {
     public ActualRestServer(final int port,
@@ -35,8 +35,8 @@ public final class ActualRestServer extends ActualHttpServer implements RestServ
         checkResourceName(name);
 
         RestHandler handler = new RestHandler(name, asIterable(
-                checkNotNull(setting, "Rest setting should not be null"),
-                checkNotNull(settings, "Rest settings should not be null")));
+                requireNonNull(setting, "Rest setting should not be null"),
+                requireNonNull(settings, "Rest settings should not be null")));
         this.request(InternalApis.context(resourceRoot(name))).response(handler);
     }
 }

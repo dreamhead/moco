@@ -1,6 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.Http2TestHelper;
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.junit.jupiter.api.Test;
 
 import java.net.http.HttpResponse;
@@ -62,7 +63,7 @@ public class MocoHttp2Test extends AbstractMocoHttpTest {
         running(server, () -> {
             try (Http2TestHelper helper = new Http2TestHelper()) {
                 String response = helper.post(remoteUrl("/headers"), "data",
-                        com.google.common.collect.ImmutableMultimap.of("X-Custom", "value"));
+                        RequestHeaders.of("X-Custom", "value"));
                 assertThat(response, is("Headers OK"));
             }
         });

@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.Response;
 import com.github.dreamhead.moco.ResponseSetting;
 import com.github.dreamhead.moco.setting.Setting;
-import com.google.common.collect.ImmutableList;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Responser<T extends ResponseSetting<T>> {
@@ -17,7 +17,7 @@ public class Responser<T extends ResponseSetting<T>> {
 
     public final Optional<Response> getResponse(final SessionContext context) {
         Request request = context.getRequest();
-        ImmutableList<Setting<T>> settings = fetcher.getSettings();
+        List<Setting<T>> settings = fetcher.getSettings();
         final Optional<Setting<T>> firstSetting = settings.stream()
                 .filter(setting -> setting.match(request))
                 .findFirst();

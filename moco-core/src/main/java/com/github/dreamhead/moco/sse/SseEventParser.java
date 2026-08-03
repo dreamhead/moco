@@ -1,21 +1,17 @@
 package com.github.dreamhead.moco.sse;
 
+import com.github.dreamhead.moco.util.Preconditions;
 import com.github.dreamhead.moco.util.Strings;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static com.google.common.collect.Maps.immutableEntry;
+import static java.util.Objects.requireNonNull;
 
 public final class SseEventParser {
-    private static final Splitter FIELD_SPLITTER = Splitter.on(':').limit(2);
-
     public Iterable<SseEvent> parse(final Iterable<String> lines) {
         return new SseEventIterable(lines);
     }
@@ -61,7 +57,7 @@ public final class SseEventParser {
         }
 
         private SseEvent readNext() {
-            List<String> blockLines = Lists.newArrayList();
+            List<String> blockLines = new ArrayList<>();
             while (lineIterator.hasNext()) {
                 String line = lineIterator.next();
                 if (Strings.strip(line).isEmpty()) {
@@ -87,14 +83,14 @@ public final class SseEventParser {
     }
 
     private List<Map.Entry<String, String>> parseFields(final List<String> lines) {
-        ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builder();
+        List<Map.Entry<String, String>> fields = new ArrayList<>();
         for (String line : lines) {
             Map.Entry<String, String> field = parseLine(line);
             if (field != null) {
-                builder.add(field);
+                fields.add(field);
             }
         }
-        return builder.build();
+        return List.copyOf(fields);
     }
 
     private Map.Entry<String, String> parseLine(final String line) {
@@ -102,14 +98,12 @@ public final class SseEventParser {
             return null;
         }
 
-        List<String> parts = FIELD_SPLITTER.splitToList(line);
-        if (parts.size() < 2) {
+        String[] parts = line.split(":", 2);
+        if (parts.length < 2) {
             return null;
         }
 
-        String key = Strings.strip(parts.get(0));
-        String value = Strings.strip(parts.get(1));
-        return immutableEntry(key, value);
+        return Map.entry(Strings.strip(parts[0]), Strings.strip(parts[1]));
     }
 
     private boolean hasData(final List<Map.Entry<String, String>> fields) {
@@ -119,7 +113,7 @@ public final class SseEventParser {
     private SseEvent parseEvent(final List<Map.Entry<String, String>> fields) {
         String id = null;
         String eventName = null;
-        List<String> data = Lists.newArrayList();
+        List<String> data = new ArrayList<>();
         Integer retry = null;
 
         for (Map.Entry<String, String> field : fields) {

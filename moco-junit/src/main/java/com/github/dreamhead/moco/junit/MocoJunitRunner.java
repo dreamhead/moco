@@ -12,9 +12,9 @@ import static com.github.dreamhead.moco.Moco.file;
 import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpServer;
 import static com.github.dreamhead.moco.MocoJsonRunner.jsonHttpsServer;
 import static com.github.dreamhead.moco.Runner.runner;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class MocoJunitRunner extends ExternalResource {
     private final Runner runner;
@@ -31,7 +31,7 @@ public final class MocoJunitRunner extends ExternalResource {
 
     public static MocoJunitRunner jsonHttpRunner(final int port, final Resource file) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(file, "File should not be null");
+        requireNonNull(file, "File should not be null");
         return new MocoJunitRunner(runner(jsonHttpServer(port, file)));
     }
 
@@ -39,30 +39,30 @@ public final class MocoJunitRunner extends ExternalResource {
                                                   final HttpsCertificate certificate) {
         checkArgument(port > 0, "Port must be greater than zero");
         checkNotNullOrEmpty(filename, "Filename should not be null");
-        checkNotNull(certificate, "Certificate should not be null");
+        requireNonNull(certificate, "Certificate should not be null");
         return jsonHttpsRunner(port, file(filename), certificate);
     }
 
     public static MocoJunitRunner jsonHttpsRunner(final int port, final Resource file,
                                                   final HttpsCertificate certificate) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(file, "File should not be null");
-        checkNotNull(certificate, "Certificate should not be null");
+        requireNonNull(file, "File should not be null");
+        requireNonNull(certificate, "Certificate should not be null");
         return new MocoJunitRunner(runner(jsonHttpsServer(port, file, certificate)));
     }
 
     public static MocoJunitRunner httpRunner(final HttpServer server) {
-        checkNotNull(server, "Server should not be null");
+        requireNonNull(server, "Server should not be null");
         return new MocoJunitRunner(runner(server));
     }
 
     public static MocoJunitRunner httpsRunner(final HttpsServer server) {
-        checkNotNull(server, "Server should not be null");
+        requireNonNull(server, "Server should not be null");
         return new MocoJunitRunner(runner(server));
     }
 
     public static MocoJunitRunner restRunner(final RestServer server) {
-        checkNotNull(server, "Server should not be null");
+        requireNonNull(server, "Server should not be null");
         return httpRunner(server);
     }
 
@@ -74,7 +74,7 @@ public final class MocoJunitRunner extends ExternalResource {
 
     public static MocoJunitRunner jsonRestRunner(final int port, final Resource file) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(file, "File should not be null");
+        requireNonNull(file, "File should not be null");
         return jsonHttpRunner(port, file);
     }
 

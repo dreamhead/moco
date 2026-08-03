@@ -10,8 +10,7 @@ import com.github.dreamhead.moco.extractor.CookiesRequestExtractor;
 import com.github.dreamhead.moco.extractor.FormsRequestExtractor;
 import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.util.Suppliers;
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -27,26 +26,26 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
+import static com.github.dreamhead.moco.util.Maps.toOrderedMap;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
 public final class DefaultHttpRequest extends DefaultHttpMessage implements HttpRequest {
-    private final Supplier<ImmutableMap<String, String>> formSupplier;
-    private final Supplier<ImmutableMap<String, String>> cookieSupplier;
+    private final Supplier<Map<String, String>> formSupplier;
+    private final Supplier<Map<String, String>> cookieSupplier;
 
     private final HttpMethod method;
 
     private final String uri;
-    private final ImmutableMap<String, String[]> queries;
+    private final Map<String, String[]> queries;
 
     @JsonIgnore
     private final Client client;
 
     private DefaultHttpRequest(final HttpProtocolVersion version, final MessageContent content,
                                final HttpMethod method, final String uri,
-                               final ImmutableMap<String, String[]> headers,
-                               final ImmutableMap<String, String[]> queries,
+                               final Map<String, String[]> headers,
+                               final Map<String, String[]> queries,
                                final Client client) {
         super(version, content, headers);
         this.method = method;
@@ -68,34 +67,34 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     }
 
     @JsonIgnore
-    public ImmutableMap<String, String> getForms() {
+    public Map<String, String> getForms() {
         return formSupplier.get();
     }
 
     @JsonIgnore
-    public ImmutableMap<String, String> getCookies() {
+    public Map<String, String> getCookies() {
         return cookieSupplier.get();
     }
 
     @Override
     @JsonSerialize(as = Map.class)
-    public ImmutableMap<String, String[]> getQueries() {
+    public Map<String, String[]> getQueries() {
         return queries;
     }
 
-    private Supplier<ImmutableMap<String, String>> formSupplier() {
+    private Supplier<Map<String, String>> formSupplier() {
         return Suppliers.memoize(() -> {
-            Optional<ImmutableMap<String, String>> forms =
+            Optional<Map<String, String>> forms =
                     new FormsRequestExtractor().extract(DefaultHttpRequest.this);
-            return forms.orElseGet(ImmutableMap::of);
+            return forms.orElseGet(Map::of);
         });
     }
 
-    private Supplier<ImmutableMap<String, String>> cookieSupplier() {
+    private Supplier<Map<String, String>> cookieSupplier() {
         return Suppliers.memoize(() -> {
-            Optional<ImmutableMap<String, String>> cookies =
+            Optional<Map<String, String>> cookies =
                     new CookiesRequestExtractor().extract(DefaultHttpRequest.this);
-            return cookies.orElseGet(ImmutableMap::of);
+            return cookies.orElseGet(Map::of);
         });
     }
 
@@ -104,7 +103,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
         return client;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("uri", this.uri)
                 .add("method", this.method)
@@ -130,7 +129,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     public static HttpRequest newRequest(final FullHttpRequest request, final Client client) {
         QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
-        ImmutableMap<String, String[]> queries = toQueries(decoder);
+        Map<String, String[]> queries = toQueries(decoder);
 
         return builder()
                 .withVersion(HttpProtocolVersion.versionOf(request.protocolVersion().text()))
@@ -143,9 +142,9 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
                 .build();
     }
 
-    private static ImmutableMap<String, String[]> toQueries(final QueryStringDecoder decoder) {
+    private static Map<String, String[]> toQueries(final QueryStringDecoder decoder) {
         return decoder.parameters().entrySet().stream()
-                .collect(toImmutableMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
+                .collect(toOrderedMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
     }
 
     public FullHttpRequest toFullHttpRequest() {
@@ -179,7 +178,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
     public static final class Builder extends DefaultHttpMessage.Builder<Builder> {
         private HttpMethod method;
         private String uri;
-        private ImmutableMap<String, String[]> queries;
+        private Map<String, String[]> queries;
         private Client client;
 
         public Builder withMethod(final HttpMethod method) {
@@ -194,7 +193,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         public Builder withQueries(final Map<String, String[]> queries) {
             if (queries != null) {
-                this.queries = copyOf(queries);
+                this.queries = orderedCopyOf(queries);
             }
 
             return this;

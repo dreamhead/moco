@@ -2,18 +2,14 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Maps;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 import io.netty.util.internal.StringUtil;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public final class HttpDumpers {
     public static String asContent(final HttpMessage message) {
@@ -49,28 +45,29 @@ public final class HttpDumpers {
                     || mediaType.subtype().endsWith("javascript")
                     || mediaType.subtype().endsWith("json")
                     || mediaType.subtype().endsWith("xml")
-                    || mediaType.is(MediaType.FORM_DATA)
+                    || isSameType(mediaType, MediaType.FORM_DATA)
                     || mediaType.subtype().endsWith("form-data");
         } catch (Exception e) {
             return false;
         }
     }
 
-
-    private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
-
-    public static String asHeaders(final HttpMessage message) {
-        return HEAD_JOINER.join(message.getHeaders().entrySet().stream()
-                .flatMap(HttpDumpers::toEntries)
-                .toList());
+    // Guava's is() also handled wildcards and parameter subsets; FORM_DATA carries neither,
+    // so the comparison it performed here reduces to type and subtype equality.
+    private static boolean isSameType(final MediaType actual, final MediaType expected) {
+        return actual.type().equals(expected.type()) && actual.subtype().equals(expected.subtype());
     }
 
-    private static Stream<Map.Entry<String, String>> toEntries(final Map.Entry<String, String[]> input) {
+    public static String asHeaders(final HttpMessage message) {
+        return message.getHeaders().entrySet().stream()
+                .flatMap(HttpDumpers::toHeaderLines)
+                .collect(Collectors.joining(StringUtil.NEWLINE));
+    }
+
+    private static Stream<String> toHeaderLines(final Map.Entry<String, String[]> input) {
         String key = input.getKey();
         return Arrays.stream(input.getValue())
-                .map(value -> Maps.immutableEntry(key, value))
-                .collect(toImmutableList())
-                .stream();
+                .map(value -> key + ": " + value);
     }
 
     private HttpDumpers() {

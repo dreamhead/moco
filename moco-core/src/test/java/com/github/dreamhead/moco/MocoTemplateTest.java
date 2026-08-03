@@ -1,10 +1,7 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.core5.http.Header;
@@ -21,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -40,7 +38,7 @@ import static com.github.dreamhead.moco.Moco.xpath;
 import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.collect.ImmutableMap.of;
+import static java.util.Map.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -79,7 +77,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
     public void should_generate_response_with_http_header() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.headers['foo']}"));
 
-        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/template"), ImmutableMultimap.of("foo", "bar")), is("bar")));
+        running(server, () -> assertThat(helper.getWithHeader(remoteUrl("/template"), RequestHeaders.of("foo", "bar")), is("bar")));
     }
 
     @Test
@@ -304,7 +302,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, () -> {
             URL resource = Resources.getResource("gbk.response");
             InputStream stream = resource.openStream();
-            assertThat(helper.getAsBytes(remoteUrl("/template")), is(ByteStreams.toByteArray(stream)));
+            assertThat(helper.getAsBytes(remoteUrl("/template")), is(stream.readAllBytes()));
         });
     }
 
@@ -396,7 +394,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
         running(server, () -> {
             String response = helper.get(remoteUrl("/random"));
             try {
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
 
                 double result = Double.parseDouble(response);
@@ -417,7 +415,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThanOrEqualTo(100d));
                 assertThat(result, greaterThanOrEqualTo(0d));
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {
                 fail();
@@ -435,7 +433,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
                 double result = Double.parseDouble(response);
                 assertThat(result, lessThan(100d));
                 assertThat(result, greaterThanOrEqualTo(99d));
-                String target = Iterables.get(Splitter.on('.').split(response), 1);
+                String target = response.split("\\.", -1)[1];
                 assertThat(target.length(), lessThanOrEqualTo(6));
             } catch (NumberFormatException e) {
                 fail();

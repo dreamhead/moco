@@ -10,8 +10,6 @@ import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
 import com.github.dreamhead.moco.recorder.RecorderConfig;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -19,6 +17,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -34,17 +33,16 @@ import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.github.dreamhead.moco.util.Iterables.head;
 import static com.github.dreamhead.moco.util.Iterables.tail;
-import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.ImmutableSet.of;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
+import static java.util.Set.of;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 public final class DynamicResponseHandlerFactory extends Dynamics implements ResponseHandlerFactory {
-    private static final ImmutableSet<String> RESOURCES = of("text", "file", "pathResource", "version");
-    private static final ImmutableMap<String, String> COMPOSITES = ImmutableMap.<String, String>builder()
-            .put("headers", "header")
-            .put("cookies", "cookie")
-            .build();
+    private static final Set<String> RESOURCES = of("text", "file", "pathResource", "version");
+    private static final Map<String, String> COMPOSITES = Map.of(
+            "headers", "header",
+            "cookies", "cookie");
 
     @Override
     public ResponseHandler createResponseHandler(final ResponseSetting responseSetting) {
@@ -299,8 +297,8 @@ public final class DynamicResponseHandlerFactory extends Dynamics implements Res
         return asResource(name, text(text), charset);
     }
 
-    public static ImmutableMap<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
-        return copyOf(props.entrySet().stream()
+    public static Map<String, RequestExtractor<?>> toVariables(final Map<String, TextContainer> props) {
+        return orderedCopyOf(props.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> getRequestExtractor(e.getValue()))));
     }
 

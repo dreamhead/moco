@@ -2,12 +2,13 @@ package com.github.dreamhead.moco.resource;
 
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.resource.reader.Variable;
-import com.google.common.collect.ImmutableMap;
 
 import static com.github.dreamhead.moco.resource.ResourceFactory.cookieResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.templateResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
+
+import java.util.Map;
 
 public final class ResourceConfigApplierFactory {
     public static final ResourceConfigApplier DO_NOTHING_APPLIER = (config, resource) -> resource;
@@ -32,7 +33,7 @@ public final class ResourceConfigApplierFactory {
 
     public static ResourceConfigApplier templateConfigApplier(
             final ContentResource template,
-            final ImmutableMap<String, ? extends Variable> variables) {
+            final Map<String, ? extends Variable> variables) {
         return new EmbeddedResourceConfigApplier(template) {
             @Override
             protected Resource newResource(final MocoConfig config) {

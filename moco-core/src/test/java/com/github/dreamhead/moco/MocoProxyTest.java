@@ -1,9 +1,9 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.helper.RequestHeaders;
 import com.github.dreamhead.moco.helper.SseTestHelper;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Resources;
+import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.ContentResponseHandler;
@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_1;
@@ -59,8 +60,7 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.collect.ImmutableMultimap.of;
-import static com.google.common.io.Files.asCharSource;
+import static com.github.dreamhead.moco.helper.RequestHeaders.of;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -168,7 +168,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("proxy"));
-            assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), containsString("proxy"));
+            assertThat(Files.readString(tempFile.toPath(), Charset.defaultCharset()), containsString("proxy"));
         });
     }
 
@@ -183,7 +183,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, () -> {
             assertThat(helper.get(remoteUrl("/proxy")), is("get_proxy"));
             assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("post_proxy"));
-            String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
+            String failoverContent = Files.readString(tempFile.toPath(), Charset.defaultCharset());
             assertThat(failoverContent, containsString("get_proxy"));
             assertThat(failoverContent, containsString("post_proxy"));
         });
@@ -199,7 +199,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
         running(server, () -> {
             assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
             assertThat(helper.postContent(remoteUrl("/proxy"), "proxy"), is("0XCAFEBABE"));
-            assertThat(asCharSource(tempFile, Charset.defaultCharset()).read(), countString("/proxy", 1));
+            assertThat(Files.readString(tempFile.toPath(), Charset.defaultCharset()), countString("/proxy", 1));
         });
     }
 
@@ -427,7 +427,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
 
         running(server, () -> {
             URL resource = Resources.getResource("gbk.json");
-            byte[] bytes = ByteStreams.toByteArray(resource.openStream());
+            byte[] bytes = resource.openStream().readAllBytes();
             String result = helper.postBytes(root(), bytes, gbk);
             assertThat(result, is("response"));
         });
@@ -457,7 +457,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
                 assertThat(event2.toEventString(), containsString("data: World"));
             }
 
-            String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
+            String failoverContent = Files.readString(tempFile.toPath(), Charset.defaultCharset());
             assertThat(failoverContent, containsString("Hello"));
             assertThat(failoverContent, containsString("World"));
         });
@@ -510,7 +510,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
                         firstElapsed + elapsed, greaterThanOrEqualTo((long) delay * 2 - delta * 2));
             }
 
-            String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
+            String failoverContent = Files.readString(tempFile.toPath(), Charset.defaultCharset());
             assertThat(failoverContent, containsString("first"));
             assertThat(failoverContent, containsString("second"));
         });
@@ -533,7 +533,7 @@ public class MocoProxyTest extends AbstractMocoHttpTest {
                 assertThat(event1.toEventString(), containsString("data: Hello"));
             }
 
-            String failoverContent = asCharSource(tempFile, Charset.defaultCharset()).read();
+            String failoverContent = Files.readString(tempFile.toPath(), Charset.defaultCharset());
             assertThat(failoverContent, containsString("Hello"));
             assertThat(failoverContent, not(containsString("World")));
         });

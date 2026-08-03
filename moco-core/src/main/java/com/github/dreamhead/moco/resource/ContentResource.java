@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.resource;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 import com.github.dreamhead.moco.resource.reader.JsonResourceReader;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 import java.util.Optional;
 

@@ -1,13 +1,14 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.net.HttpHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
+
+import java.util.Map;
 
 public interface HttpMessage extends Message {
     HttpProtocolVersion getVersion();
 
-    ImmutableMap<String, String[]> getHeaders();
+    Map<String, String[]> getHeaders();
 
     String getHeader(String name);
 

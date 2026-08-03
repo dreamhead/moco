@@ -24,7 +24,6 @@ def runnerMainResources = sourceSets.main.resources
 
 dependencies {
     api(project(':moco-core'))
-    implementation(libs.guava)
     implementation(libs.netty.handler)
     implementation(libs.jackson.databind)
     implementation(libs.slf4j.api)

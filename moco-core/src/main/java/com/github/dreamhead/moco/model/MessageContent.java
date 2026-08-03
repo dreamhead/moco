@@ -5,7 +5,6 @@ import tools.jackson.databind.annotation.JsonSerialize;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.dumper.MessageContentDeserializer;
 import com.github.dreamhead.moco.dumper.MessageContentSerializer;
-import com.google.common.base.Objects;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,8 +12,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-
-import static com.google.common.io.ByteStreams.toByteArray;
+import java.util.Objects;
 
 @JsonSerialize(using = MessageContentSerializer.class)
 @JsonDeserialize(using = MessageContentDeserializer.class)
@@ -58,12 +56,12 @@ public class MessageContent {
         }
 
         MessageContent that = (MessageContent) obj;
-        return Objects.equal(this.charset, that.charset) && Arrays.equals(content, that.content);
+        return Objects.equals(this.charset, that.charset) && Arrays.equals(content, that.content);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hashCode(Arrays.hashCode(this.content), this.charset);
+        return Objects.hash(Arrays.hashCode(this.content), this.charset);
     }
 
     public static Builder content() {
@@ -89,7 +87,7 @@ public class MessageContent {
 
         public final Builder withContent(final InputStream is) {
             try {
-                this.content = toByteArray(is);
+                this.content = is.readAllBytes();
                 return this;
             } catch (IOException e) {
                 throw new MocoException(e);

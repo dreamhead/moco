@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.dreamhead.moco.ResponseHandler;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.stream.StreamSupport;
 
@@ -16,7 +16,7 @@ public final class CollectionContainer implements Container {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("collection", collection)
                 .toString();

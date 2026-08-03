@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco.internal;
 
 import com.github.dreamhead.moco.HttpsCertificate;
-import com.google.common.io.Closeables;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
@@ -61,13 +60,11 @@ public class AlpnSslHandler extends SslHandler {
     }
 
     private static KeyStore loadKeyStore(final HttpsCertificate certificate) throws Exception {
-        InputStream is = certificate.getResource().readFor((com.github.dreamhead.moco.Request) null).toInputStream();
-        try {
+        try (InputStream is = certificate.getResource()
+                .readFor((com.github.dreamhead.moco.Request) null).toInputStream()) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(is, certificate.getKeyStorePassword());
             return keyStore;
-        } finally {
-            Closeables.closeQuietly(is);
         }
     }
 

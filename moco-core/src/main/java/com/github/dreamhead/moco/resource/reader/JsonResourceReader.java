@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.resource.reader;
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 import java.nio.charset.Charset;
 import java.util.function.Function;

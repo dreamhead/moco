@@ -18,13 +18,13 @@ import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.util.RedirectDelegate;
 
 import java.io.File;
+import java.util.List;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.method;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableList.copyOf;
+import static java.util.Objects.requireNonNull;
 
 public abstract class HttpConfiguration<T extends BaseActualServer>
         extends BaseActualServer<HttpResponseSetting, T> implements HttpsServer {
@@ -36,29 +36,29 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
 
     @Override
     public final HttpResponseSetting get(final RequestMatcher matcher) {
-        return requestByHttpMethod(HttpMethod.GET, checkNotNull(matcher, "Matcher should not be null"));
+        return requestByHttpMethod(HttpMethod.GET, requireNonNull(matcher, "Matcher should not be null"));
     }
 
     @Override
     public final HttpResponseSetting post(final RequestMatcher matcher) {
-        return requestByHttpMethod(HttpMethod.POST, checkNotNull(matcher, "Matcher should not be null"));
+        return requestByHttpMethod(HttpMethod.POST, requireNonNull(matcher, "Matcher should not be null"));
     }
 
     @Override
     public final HttpResponseSetting put(final RequestMatcher matcher) {
-        return requestByHttpMethod(HttpMethod.PUT, checkNotNull(matcher, "Matcher should not be null"));
+        return requestByHttpMethod(HttpMethod.PUT, requireNonNull(matcher, "Matcher should not be null"));
     }
 
     @Override
     public final HttpResponseSetting delete(final RequestMatcher matcher) {
-        return requestByHttpMethod(HttpMethod.DELETE, checkNotNull(matcher, "Matcher should not be null"));
+        return requestByHttpMethod(HttpMethod.DELETE, requireNonNull(matcher, "Matcher should not be null"));
     }
 
     @Override
     public final HttpResponseSetting mount(final String dir, final MountTo target, final MountPredicate... predicates) {
         File mountedDir = new File(checkNotNullOrEmpty(dir, "Directory should not be null"));
-        checkNotNull(target, "Target should not be null");
-        return this.request(new MountMatcher(mountedDir, target, copyOf(predicates)))
+        requireNonNull(target, "Target should not be null");
+        return this.request(new MountMatcher(mountedDir, target, List.of(predicates)))
                 .response(new MountHandler(mountedDir, target));
     }
 
@@ -68,14 +68,14 @@ public abstract class HttpConfiguration<T extends BaseActualServer>
 
     @Override
     public final HttpResponseSetting proxy(final ProxyConfig config) {
-        return proxy(checkNotNull(config, "Proxy config should not be null"), Failover.DEFAULT_FAILOVER);
+        return proxy(requireNonNull(config, "Proxy config should not be null"), Failover.DEFAULT_FAILOVER);
     }
 
     @Override
     public final HttpResponseSetting proxy(final ProxyConfig proxyConfig, final Failover failover) {
-        ProxyConfig config = checkNotNull(proxyConfig, "Proxy config should not be null");
+        ProxyConfig config = requireNonNull(proxyConfig, "Proxy config should not be null");
         this.request(InternalApis.context(config.localBase()))
-                .response(Moco.proxy(config, checkNotNull(failover, "Failover should not be null")));
+                .response(Moco.proxy(config, requireNonNull(failover, "Failover should not be null")));
         return this;
     }
 

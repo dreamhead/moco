@@ -3,8 +3,6 @@ package com.github.dreamhead.moco.runner.watcher;
 import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.util.Files;
 import com.github.dreamhead.moco.util.MocoExecutors;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +15,11 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +27,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.util.Idles.idle;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.sun.nio.file.SensitivityWatchEventModifier.HIGH;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
@@ -37,10 +37,10 @@ public final class WatcherService {
     private ExecutorService executor = MocoExecutors.executor();
     private WatchService service;
     private boolean running;
-    private Multimap<WatchKey, Path> keys = HashMultimap.create();
-    private Multimap<Path, Function<File, Void>> listeners = HashMultimap.create();
-    private Multimap<Path, Path> directoryToFiles = HashMultimap.create();
-    private Map<Path, WatchKey> directoryToKey = newHashMap();
+    private Map<WatchKey, Set<Path>> keys = new HashMap<>();
+    private Map<Path, Set<Function<File, Void>>> listeners = new HashMap<>();
+    private Map<Path, Set<Path>> directoryToFiles = new HashMap<>();
+    private Map<Path, WatchKey> directoryToKey = new HashMap<>();
     private Future<?> result;
 
     public synchronized void start() throws IOException {
@@ -73,7 +73,7 @@ public final class WatcherService {
     private void loop() {
         try {
             WatchKey key = service.take();
-            Collection<Path> paths = keys.get(key);
+            Collection<Path> paths = keys.getOrDefault(key, Set.of());
 
             List<WatchEvent<?>> events = key.pollEvents().stream()
                     .filter(e -> e.kind().equals(ENTRY_MODIFY))
@@ -84,7 +84,7 @@ public final class WatcherService {
                         .filter(p -> p.endsWith(context))
                         .collect(Collectors.toList());
                 for (Path path : contextPaths) {
-                    for (Function<File, Void> listener : this.listeners.get(path)) {
+                    for (Function<File, Void> listener : this.listeners.getOrDefault(path, Set.of())) {
                         listener.apply(path.toFile());
                     }
                     break;
@@ -113,9 +113,9 @@ public final class WatcherService {
         Path directory = Files.directoryOf(file).toPath();
         WatchKey key = registerDirectory(directory);
         Path path = file.toPath();
-        keys.put(key, path);
-        listeners.put(path, listener);
-        directoryToFiles.put(directory, path);
+        keys.computeIfAbsent(key, k -> new HashSet<>()).add(path);
+        listeners.computeIfAbsent(path, k -> new HashSet<>()).add(listener);
+        directoryToFiles.computeIfAbsent(directory, k -> new HashSet<>()).add(path);
 
         idle(REGISTER_INTERVAL, TimeUnit.MILLISECONDS);
     }
@@ -137,11 +137,17 @@ public final class WatcherService {
     public void unregister(final File file) {
         Path directory = Files.directoryOf(file).toPath();
         Path path = file.toPath();
-        if (!directoryToFiles.containsEntry(directory, path)) {
+        if (!directoryToFiles.getOrDefault(directory, Set.of()).contains(path)) {
             return;
         }
 
-        directoryToFiles.remove(directory, path);
+        Set<Path> directoryFiles = directoryToFiles.get(directory);
+        directoryFiles.remove(path);
+        // Guava dropped the key once its last value went, and both the containsKey check
+        // below and the isEmpty() check at the end rely on that.
+        if (directoryFiles.isEmpty()) {
+            directoryToFiles.remove(directory);
+        }
 
         if (!directoryToFiles.containsKey(directory)) {
             WatchKey key = directoryToKey.remove(directory);

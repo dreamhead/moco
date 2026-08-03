@@ -3,8 +3,8 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.parser.ResponseHandlerFactory;
-import com.google.common.base.MoreObjects;
 import com.github.dreamhead.moco.parser.deserializer.SseContainerDeserializer;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Map;
@@ -50,7 +50,7 @@ public class ResponseSetting extends BaseResourceSetting {
         return responseSetting;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("version", version)
                 .add("status", status)

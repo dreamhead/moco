@@ -1,10 +1,9 @@
 package com.github.dreamhead.moco.sse;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -12,11 +11,11 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SseEventParserTest {
-    private static final Splitter LINE_SPLITTER = Splitter.on('\n');
     private final SseEventParser parser = new SseEventParser();
 
     private List<SseEvent> parse(final String content) {
-        return ImmutableList.copyOf(parser.parse(LINE_SPLITTER.split(content)));
+        return StreamSupport.stream(parser.parse(List.of(content.split("\n", -1))).spliterator(), false)
+                .toList();
     }
 
     @Test
@@ -82,7 +81,7 @@ public class SseEventParserTest {
 
     @Test
     public void should_handle_empty_content() {
-        List<SseEvent> events = ImmutableList.copyOf(parser.parse(ImmutableList.of()));
+        List<SseEvent> events = StreamSupport.stream(parser.parse(List.of()).spliterator(), false).toList();
         assertThat(events.size(), is(0));
     }
 

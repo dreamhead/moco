@@ -3,8 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.List;
 import java.util.function.Function;
@@ -19,7 +18,7 @@ public final class RestSubResourceSetting extends ResourceSetting {
     private String id;
 
     @Override
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper().add("id", id);
     }
 
@@ -35,7 +34,7 @@ public final class RestSubResourceSetting extends ResourceSetting {
 
     public static Iterable<RestSetting> asSubRestSetting(final List<RestSubResourceSetting> setting) {
         if (setting == null || setting.isEmpty()) {
-            return ImmutableList.of();
+            return List.of();
         }
 
         return setting.stream()

@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
@@ -21,7 +22,6 @@ import static com.github.dreamhead.moco.Runner.running;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.port;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.root;
-import static com.google.common.io.Files.asCharSource;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,7 +48,7 @@ public class MocoLogTest {
 
         running(server, () -> assertThat(helper.postContent(root(), "0XCAFE"), is("0XBABE")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
@@ -61,7 +61,7 @@ public class MocoLogTest {
 
         running(server, () -> assertThat(helper.postContent(root(), "0XCAFE"), is("0XBABE")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
@@ -83,7 +83,7 @@ public class MocoLogTest {
             }
         });
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("RuntimeException"));
     }
 
@@ -95,7 +95,7 @@ public class MocoLogTest {
 
         running(server, () -> assertThat(helper.postContent(root(), "0XCAFE"), is("0XBABE")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
     }
@@ -109,7 +109,7 @@ public class MocoLogTest {
 
         running(server, () -> assertThat(helper.postContent(remoteUrl("/foo?param=actual"), "0XCAFE"), is("0XBABE")));
 
-        String actual = asCharSource(file, Charset.defaultCharset()).read();
+        String actual = Files.readString(file.toPath(), Charset.defaultCharset());
         assertThat(actual, containsString("0XBABE"));
         assertThat(actual, containsString("0XCAFE"));
         assertThat(actual, containsString("/foo?param=actual"));

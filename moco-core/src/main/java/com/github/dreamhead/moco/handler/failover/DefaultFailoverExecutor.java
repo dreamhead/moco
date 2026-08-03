@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.model.HttpRequestFailoverMatcher;
 import com.github.dreamhead.moco.model.Session;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +13,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 
 public final class DefaultFailoverExecutor implements FailoverExecutor {
     private static Logger logger = LoggerFactory.getLogger(DefaultFailoverExecutor.class);
@@ -35,18 +37,19 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
         Jsons.writeToFile(this.file, prepareTargetSessions(this.file, targetSession));
     }
 
-    private ImmutableList<Session> prepareTargetSessions(final File file, final Session targetSession) {
+    private List<Session> prepareTargetSessions(final File file, final Session targetSession) {
         if (file.length() == 0) {
             return of(targetSession);
         }
 
-        return ImmutableList.<Session>builder()
-                .addAll(toUniqueSessions(targetSession, restoreSessions(file)))
-                .add(targetSession)
-                .build();
+        return Stream.concat(
+                        StreamSupport.stream(
+                                toUniqueSessions(targetSession, restoreSessions(file)).spliterator(), false),
+                        Stream.of(targetSession))
+                .toList();
     }
 
-    private Iterable<Session> toUniqueSessions(final Session targetSession, final ImmutableList<Session> sessions) {
+    private Iterable<Session> toUniqueSessions(final Session targetSession, final List<Session> sessions) {
         Optional<Session> session = sessions.stream()
                 .filter(isForRequest(targetSession.getRequest()))
                 .findFirst();
@@ -59,7 +62,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
         return sessions;
     }
 
-    private ImmutableList<Session> restoreSessions(final File file) {
+    private List<Session> restoreSessions(final File file) {
         try {
             InputStream inputStream = new FileInputStream(file);
             return Jsons.toObjects(inputStream, Session.class);
@@ -73,7 +76,7 @@ public final class DefaultFailoverExecutor implements FailoverExecutor {
 
     @Override
     public HttpResponse failover(final HttpRequest request) {
-        ImmutableList<Session> sessions = restoreSessions(this.file);
+        List<Session> sessions = restoreSessions(this.file);
         final Optional<Session> session = sessions.stream().filter(isForRequest(request)).findFirst();
 
         return session.map(Session::getResponse).orElseThrow(() -> {
