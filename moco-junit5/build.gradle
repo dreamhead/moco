@@ -15,7 +15,6 @@ dependencies {
     api(project(':moco-core'))
     api(project(':moco-runner'))
     api(libs.junit.jupiter5.api)
-    implementation(libs.guava)
 
     testImplementation(coreTestOutput)
     testImplementation(runnerTestOutput)

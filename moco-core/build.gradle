@@ -6,7 +6,8 @@ plugins {
 apply from: rootProject.file('moco-publishing.gradle')
 
 dependencies {
-    implementation(libs.guava)
+    compileOnly(libs.jspecify)
+
     implementation(libs.netty.codec.http)
     implementation(libs.netty.codec.http2)
     implementation(libs.netty.handler)

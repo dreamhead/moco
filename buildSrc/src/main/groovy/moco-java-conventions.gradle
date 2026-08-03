@@ -17,6 +17,39 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+// Guava was removed in 2.0.0. This keeps it from creeping back in one import at a time.
+def checkNoGuava = tasks.register('checkNoGuava') {
+    description = 'Fails if any source file imports com.google.common.'
+    group = 'verification'
+
+    def sources = sourceSets.collect { it.allJava.asFileTree }
+    inputs.files(sources)
+
+    doLast {
+        def offenders = []
+        sources.each { tree ->
+            tree.visit { details ->
+                if (!details.directory && details.file.name.endsWith('.java')) {
+                    details.file.eachLine { line, number ->
+                        if (line.startsWith('import ') && line.contains('com.google.common')) {
+                            offenders << "${details.file}:${number}: ${line.trim()}"
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!offenders.isEmpty()) {
+            throw new GradleException("Guava was removed in 2.0.0, but these files import it:\n  "
+                    + offenders.join('\n  '))
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn checkNoGuava
+}
+
 jar {
     manifest {
         attributes(
