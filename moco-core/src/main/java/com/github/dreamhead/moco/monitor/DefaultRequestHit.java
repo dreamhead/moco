@@ -7,14 +7,14 @@ import com.github.dreamhead.moco.UnexpectedRequestMatcher;
 import com.github.dreamhead.moco.VerificationData;
 import com.github.dreamhead.moco.VerificationMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
 public final class DefaultRequestHit extends AbstractMonitor implements RequestHit {
-    private List<Request> unexpectedRequests = newArrayList();
-    private List<Request> requests = newArrayList();
+    private List<Request> unexpectedRequests = new ArrayList<>();
+    private List<Request> requests = new ArrayList<>();
 
     @Override
     public void onMessageArrived(final Request request) {

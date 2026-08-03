@@ -4,8 +4,8 @@ import com.github.dreamhead.moco.util.Strings;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,7 @@ public final class SseEventParser {
         }
 
         private SseEvent readNext() {
-            List<String> blockLines = Lists.newArrayList();
+            List<String> blockLines = new ArrayList<>();
             while (lineIterator.hasNext()) {
                 String line = lineIterator.next();
                 if (Strings.strip(line).isEmpty()) {
@@ -119,7 +119,7 @@ public final class SseEventParser {
     private SseEvent parseEvent(final List<Map.Entry<String, String>> fields) {
         String id = null;
         String eventName = null;
-        List<String> data = Lists.newArrayList();
+        List<String> data = new ArrayList<>();
         Integer retry = null;
 
         for (Map.Entry<String, String> field : fields) {

@@ -2,11 +2,11 @@ package com.github.dreamhead.moco.handler.failover;
 
 import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.HttpResponse;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.primitives.Ints;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public final class Failover {
     public static final Failover DEFAULT_FAILOVER = new Failover(FailoverExecutor.EMPTY_FAILOVER,
@@ -22,12 +22,14 @@ public final class Failover {
         this.statuses = asProxyStatuses(statuses);
     }
 
-    private ImmutableSet<Integer> asProxyStatuses(final int[] proxyStatuses) {
+    private Set<Integer> asProxyStatuses(final int[] proxyStatuses) {
         if (proxyStatuses.length == 0) {
-            return ImmutableSet.of(HttpResponseStatus.BAD_REQUEST.code());
+            return Set.of(HttpResponseStatus.BAD_REQUEST.code());
         }
 
-        return ImmutableSet.copyOf(Ints.asList(proxyStatuses));
+        // Collected rather than Set.of(...), which would reject the repeated status in
+        // failover(file, 400, 400) where Guava's ImmutableSet.copyOf silently de-duplicated.
+        return IntStream.of(proxyStatuses).boxed().collect(Collectors.toUnmodifiableSet());
     }
 
     public boolean shouldFailover(final int statusCode) {

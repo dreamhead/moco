@@ -3,24 +3,23 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.MocoEventTrigger;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.ResponseSetting;
-import com.google.common.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>>
         extends AbstractResponseBase<T> implements ResponseSetting<T> {
 
     protected ResponseHandler handler;
-    protected List<MocoEventTrigger> eventTriggers = newArrayList();
+    protected List<MocoEventTrigger> eventTriggers = new ArrayList<>();
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
     protected BaseResponseSettingConfiguration() {
-        this.clazz = (Class<T>) TypeToken.of(getClass()).getRawType();
+        this.clazz = (Class<T>) getClass();
     }
 
     private T self() {

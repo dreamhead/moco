@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.handler.proxy;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.join;
 import static com.github.dreamhead.moco.util.URLs.toBase;
-import static com.google.common.base.Strings.nullToEmpty;
 
 public final class ProxyConfig {
     private final String localBase;
@@ -27,7 +26,7 @@ public final class ProxyConfig {
     }
 
     public String remoteUrl(final String uri) {
-        String relative = nullToEmpty(uri.replaceFirst(this.localBase, ""));
+        String relative = uri.replaceFirst(this.localBase, "");
         return join(remoteBase, relative);
     }
 
