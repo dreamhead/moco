@@ -12,7 +12,7 @@ import java.util.Map;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Maps.iterableValueToArray;
 import static com.github.dreamhead.moco.util.Maps.simpleValueToArray;
-import static com.github.dreamhead.moco.util.Maps.copyOf;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public abstract class DefaultHttpMessage implements HttpMessage {
     private final HttpProtocolVersion version;
@@ -162,7 +162,7 @@ public abstract class DefaultHttpMessage implements HttpMessage {
                 return Map.of();
             }
 
-            return copyOf(headers);
+            return orderedCopyOf(headers);
         }
     }
 }

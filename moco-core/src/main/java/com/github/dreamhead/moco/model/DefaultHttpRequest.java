@@ -26,8 +26,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static com.github.dreamhead.moco.model.MessageContent.content;
-import static com.github.dreamhead.moco.util.Maps.copyOf;
-import static com.github.dreamhead.moco.util.Maps.toUnmodifiableMap;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
+import static com.github.dreamhead.moco.util.Maps.toOrderedMap;
 
 @JsonDeserialize(builder = DefaultHttpRequest.Builder.class)
 public final class DefaultHttpRequest extends DefaultHttpMessage implements HttpRequest {
@@ -144,7 +144,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
     private static Map<String, String[]> toQueries(final QueryStringDecoder decoder) {
         return decoder.parameters().entrySet().stream()
-                .collect(toUnmodifiableMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
+                .collect(toOrderedMap(Map.Entry::getKey, entry -> entry.getValue().toArray(new String[0])));
     }
 
     public FullHttpRequest toFullHttpRequest() {
@@ -193,7 +193,7 @@ public final class DefaultHttpRequest extends DefaultHttpMessage implements Http
 
         public Builder withQueries(final Map<String, String[]> queries) {
             if (queries != null) {
-                this.queries = copyOf(queries);
+                this.queries = orderedCopyOf(queries);
             }
 
             return this;

@@ -95,7 +95,7 @@ public final class DefaultMutableHttpResponse implements MutableHttpResponse {
 
     @Override
     public Map<String, String[]> getHeaders() {
-        return Maps.copyOf(this.headers);
+        return Maps.orderedCopyOf(this.headers);
     }
 
     @Override

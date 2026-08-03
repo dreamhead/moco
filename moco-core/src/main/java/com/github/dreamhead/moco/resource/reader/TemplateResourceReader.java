@@ -41,7 +41,7 @@ import java.util.Random;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.Maps.copyOf;
+import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_31;
@@ -139,7 +139,7 @@ public class TemplateResourceReader implements ContentResourceReader {
 
     private Map<String, Object> toVariableString(final Request request) {
         return this.variables.entrySet().stream()
-                .collect(Maps.toUnmodifiableMap(Map.Entry::getKey,
+                .collect(Maps.toOrderedMap(Map.Entry::getKey,
                         e -> e.getValue().toTemplateVariable(request)));
     }
 
