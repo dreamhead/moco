@@ -1,7 +1,6 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.Resources;
-import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpResponse;
@@ -18,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.HttpProtocolVersion.VERSION_1_0;
 import static com.github.dreamhead.moco.Moco.and;
@@ -125,7 +125,6 @@ public class MocoTest extends AbstractMocoHttpTest {
     @Test
     public void should_return_expected_response_based_on_specified_request() throws Exception {
         server.request(by("foo")).response("bar");
-
 
         running(server, () -> assertThat(helper.postContent(root(), "foo"), is("bar")));
     }

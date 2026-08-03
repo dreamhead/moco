@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 import org.jspecify.annotations.NonNull;
 
 import java.net.URI;

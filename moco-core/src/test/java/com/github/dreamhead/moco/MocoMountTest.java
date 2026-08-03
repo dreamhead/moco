@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.CharStreams;
-import com.google.common.net.HttpHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.MocoMount.exclude;

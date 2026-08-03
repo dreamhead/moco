@@ -7,7 +7,7 @@ import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 public class ContentHandler extends AbstractContentResponseHandler {
     private final ContentResource resource;

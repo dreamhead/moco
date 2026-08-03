@@ -1,10 +1,10 @@
 package com.github.dreamhead.moco;
 
+import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.Jsons;
+import com.github.dreamhead.moco.util.MediaType;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpResponse;

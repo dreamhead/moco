@@ -2,8 +2,8 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
+import com.github.dreamhead.moco.util.HttpHeaders;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.HttpHeaders;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Test;
 

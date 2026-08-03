@@ -1,12 +1,12 @@
 package com.github.dreamhead.moco;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.net.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import com.github.dreamhead.moco.util.MediaType;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;

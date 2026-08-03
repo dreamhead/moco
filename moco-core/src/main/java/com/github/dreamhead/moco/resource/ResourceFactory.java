@@ -15,8 +15,8 @@ import com.github.dreamhead.moco.resource.reader.Variable;
 import com.github.dreamhead.moco.resource.reader.XmlResourceReader;
 import com.github.dreamhead.moco.util.Cookies;
 import com.github.dreamhead.moco.util.FileContentType;
+import com.github.dreamhead.moco.util.MediaType;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.MediaType;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -31,7 +31,7 @@ import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.fi
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.templateConfigApplier;
 import static com.github.dreamhead.moco.resource.ResourceConfigApplierFactory.uriConfigApplier;
 import static com.github.dreamhead.moco.util.Functions.checkApply;
-import static com.google.common.net.MediaType.APPLICATION_BINARY;
+import static com.github.dreamhead.moco.util.MediaType.APPLICATION_BINARY;
 
 public final class ResourceFactory {
     public static ContentResource textResource(final Function<Request, String> function) {

@@ -6,9 +6,9 @@ import com.github.dreamhead.moco.MutableHttpResponse;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.sse.SseEvent;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 import com.google.common.collect.ImmutableList;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
 
 import java.util.concurrent.TimeUnit;
 

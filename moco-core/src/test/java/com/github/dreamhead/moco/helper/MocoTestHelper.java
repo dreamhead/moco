@@ -28,9 +28,9 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import static com.github.dreamhead.moco.util.HttpHeaders.CONTENT_TYPE;
+import static com.github.dreamhead.moco.util.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.io.ByteStreams.toByteArray;
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 
 public class MocoTestHelper {
     private final CloseableHttpClient client;
@@ -179,7 +179,6 @@ public class MocoTestHelper {
     public ClassicHttpResponse execute(final Request request) throws IOException {
         return (ClassicHttpResponse) executor.execute(request).returnResponse();
     }
-
 
     public String executeAsString(final Request request) throws IOException {
         final Content content = executeForContent(request);

@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
-import com.google.common.net.MediaType;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -48,7 +47,7 @@ public final class FileContentType {
         Optional<Charset> targetCharset = toCharset(optionalType.orElse(null));
 
         MediaType type = optionalType.orElse(DEFAULT_CONTENT_TYPE_WITH_CHARSET);
-        if (targetCharset.isPresent() && !type.charset().toJavaUtil().equals(targetCharset)) {
+        if (targetCharset.isPresent() && !type.charset().equals(targetCharset)) {
             return type.withCharset(targetCharset.get());
         }
 
@@ -64,7 +63,7 @@ public final class FileContentType {
             return of(StandardCharsets.UTF_8);
         }
 
-        return type.charset().toJavaUtil();
+        return type.charset();
     }
 
     private Optional<MediaType> toContentType(final String extension) {

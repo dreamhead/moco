@@ -6,9 +6,9 @@ import com.github.dreamhead.moco.Server;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.internal.ActualHttpServer;
 import com.github.dreamhead.moco.parser.HttpServerParser;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 import com.google.common.collect.ImmutableList;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
 
 import java.io.InputStream;
 import java.util.Optional;
