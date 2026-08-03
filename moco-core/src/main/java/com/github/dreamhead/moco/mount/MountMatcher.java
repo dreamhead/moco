@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.github.dreamhead.moco.util.Strings.isNullOrEmpty;
 
 public final class MountMatcher extends AbstractRequestMatcher {
     private final MountPathExtractor extractor;

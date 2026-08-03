@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.sse;
 
+import com.github.dreamhead.moco.util.Preconditions;
 import com.github.dreamhead.moco.util.Strings;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 
@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static com.google.common.collect.Maps.immutableEntry;
+import static java.util.Objects.requireNonNull;
 
 public final class SseEventParser {
     private static final Splitter FIELD_SPLITTER = Splitter.on(':').limit(2);

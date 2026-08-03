@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
     @Override
@@ -21,14 +21,14 @@ public abstract class AbstractResponseBase<T> implements ResponseBase<T> {
 
     @Override
     public final T response(final ResponseElement element, final ResponseElement... elements) {
-        return this.response(with(checkNotNull(element, "Response element should not be null")),
-                Arrays.stream(checkNotNull(elements, "Response elements should not be null"))
+        return this.response(with(requireNonNull(element, "Response element should not be null")),
+                Arrays.stream(requireNonNull(elements, "Response elements should not be null"))
                         .map(Moco::with)
                         .toArray(ResponseHandler[]::new));
     }
 
     @Override
     public final T response(final Resource resource) {
-        return this.response(with(checkNotNull(resource, "Resource should not be null")));
+        return this.response(with(requireNonNull(resource, "Resource should not be null")));
     }
 }

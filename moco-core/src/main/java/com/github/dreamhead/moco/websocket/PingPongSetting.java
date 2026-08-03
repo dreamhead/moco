@@ -9,7 +9,7 @@ import com.github.dreamhead.moco.resource.Resource;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class PingPongSetting implements PongResponse {
     private final RequestMatcher ping;
@@ -26,12 +26,12 @@ public class PingPongSetting implements PongResponse {
 
     @Override
     public final void pong(final Resource message) {
-        this.pong(with(with(checkNotNull(message, "Pong message should not be null"))));
+        this.pong(with(with(requireNonNull(message, "Pong message should not be null"))));
     }
 
     @Override
     public final void pong(final ResponseHandler message) {
-        this.pong = checkNotNull(message, "Pong message should not be null");
+        this.pong = requireNonNull(message, "Pong message should not be null");
     }
 
     public final boolean match(final Request request) {

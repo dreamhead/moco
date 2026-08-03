@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.github.dreamhead.moco.util.Strings.isNullOrEmpty;
 
 public abstract class XmlRequestMatcher extends AbstractRequestMatcher {
     protected abstract boolean doMatch(Node actual, Node expected);

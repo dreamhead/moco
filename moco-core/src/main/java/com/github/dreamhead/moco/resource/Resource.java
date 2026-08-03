@@ -10,7 +10,7 @@ import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
 
 import java.util.function.Function;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class Resource implements Identifiable, ConfigApplier<Resource>,
         ResourceReader, ResponseElement, Transformer<byte[]> {
@@ -48,7 +48,7 @@ public class Resource implements Identifiable, ConfigApplier<Resource>,
 
     @Override
     public final Transformer<byte[]> transform(final Function<byte[], byte[]> transformer) {
-        checkNotNull(transformer, "Transformer should not be null");
+        requireNonNull(transformer, "Transformer should not be null");
         this.reader = new TransformResourceReader(transformer, reader(ContentResourceReader.class));
         return this;
     }

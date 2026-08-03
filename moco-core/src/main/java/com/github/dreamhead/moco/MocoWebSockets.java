@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.websocket.WebSocketBroadcastHandler;
 
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class MocoWebSockets {
     public static ResponseHandler broadcast(final String content) {
@@ -15,16 +15,16 @@ public final class MocoWebSockets {
 
     public static ResponseHandler broadcast(final String content, final MocoGroup group) {
         return broadcast(text(checkNotNullOrEmpty(content, "Broadcast content should not be null")),
-                checkNotNull(group, "Group should not be null"));
+                requireNonNull(group, "Group should not be null"));
     }
 
     public static ResponseHandler broadcast(final Resource content, final MocoGroup group) {
-        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"),
-                checkNotNull(group, "Group should not be null"));
+        return new WebSocketBroadcastHandler(requireNonNull(content, "Broadcast content should not be null"),
+                requireNonNull(group, "Group should not be null"));
     }
 
     public static ResponseHandler broadcast(final Resource content) {
-        return new WebSocketBroadcastHandler(checkNotNull(content, "Broadcast content should not be null"), null);
+        return new WebSocketBroadcastHandler(requireNonNull(content, "Broadcast content should not be null"), null);
     }
 
     private MocoWebSockets() {

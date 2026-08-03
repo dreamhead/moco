@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.dreamhead.moco.handler.AndResponseHandler.and;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting<T>>
         extends AbstractResponseBase<T> implements ResponseSetting<T> {
@@ -28,8 +28,8 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
 
     @Override
     public final T response(final ResponseHandler handler, final ResponseHandler... handlers) {
-        ResponseHandler responseHandler = and(checkNotNull(handler, "Handler should not be null"),
-                checkNotNull(handlers, "Handlers should not be null"));
+        ResponseHandler responseHandler = and(requireNonNull(handler, "Handler should not be null"),
+                requireNonNull(handlers, "Handlers should not be null"));
         this.handler = targetHandler(responseHandler);
         return self();
     }
@@ -44,7 +44,7 @@ public abstract class BaseResponseSettingConfiguration<T extends ResponseSetting
 
     @Override
     public final T on(final MocoEventTrigger trigger) {
-        this.eventTriggers.add(checkNotNull(trigger, "Trigger should not be null"));
+        this.eventTriggers.add(requireNonNull(trigger, "Trigger should not be null"));
         return self();
     }
 }

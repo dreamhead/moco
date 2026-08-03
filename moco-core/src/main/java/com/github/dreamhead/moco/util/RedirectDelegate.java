@@ -10,7 +10,7 @@ import static com.github.dreamhead.moco.Moco.status;
 import static com.github.dreamhead.moco.Moco.text;
 import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class RedirectDelegate {
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final String url) {
@@ -20,6 +20,6 @@ public final class RedirectDelegate {
     public HttpResponseSetting redirectTo(final HttpResponseSetting setting, final Resource url) {
         return setting.response(status(HttpResponseStatus.FOUND.code()),
                 with(new HttpHeader(checkNotNullOrEmpty(HttpHeaders.LOCATION, "Header name should not be null"),
-                        checkNotNull(checkNotNull(url, "URL should not be null"), "Header value should not be null"))));
+                        requireNonNull(requireNonNull(url, "URL should not be null"), "Header value should not be null"))));
     }
 }

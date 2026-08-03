@@ -2,10 +2,12 @@ package com.github.dreamhead.moco.sse;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Preconditions;
+import com.github.dreamhead.moco.util.Preconditions;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.Objects.requireNonNull;
 
 public record SseEvent(
         String id,
@@ -38,7 +40,7 @@ public record SseEvent(
     }
 
     public SseEvent id(final String id) {
-        Preconditions.checkNotNull(id, "Event ID should not be null");
+        requireNonNull(id, "Event ID should not be null");
         return new SseEvent(id, this.event, this.data, this.retry, this.delay);
     }
 
@@ -54,7 +56,7 @@ public record SseEvent(
 
     public SseEvent delay(final long duration, final TimeUnit unit) {
         Preconditions.checkArgument(duration > 0, "Delay must be positive");
-        Preconditions.checkNotNull(unit, "Time unit should not be null");
+        requireNonNull(unit, "Time unit should not be null");
         return new SseEvent(this.id, this.event, this.data, this.retry,
                 unit.toMillis(duration));
     }

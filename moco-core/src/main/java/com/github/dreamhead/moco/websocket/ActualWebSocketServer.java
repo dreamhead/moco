@@ -36,9 +36,9 @@ import java.util.Optional;
 
 import static com.github.dreamhead.moco.Moco.by;
 import static com.github.dreamhead.moco.Moco.text;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class ActualWebSocketServer
         extends BaseActualServer<WebsocketResponseSetting, ActualWebSocketServer>
@@ -57,12 +57,12 @@ public final class ActualWebSocketServer
 
     public void connected(final Resource resource) {
         checkArgument(this.connected == null, "Only one connected can be setup");
-        this.connected = checkNotNull(resource, "Connected resource should not be null");
+        this.connected = requireNonNull(resource, "Connected resource should not be null");
     }
 
     public void connected(final String text) {
         checkArgument(this.connected == null, "Only one connected can be setup");
-        this.connected(text(checkNotNull(text, "Connected text should not be null")));
+        this.connected(text(requireNonNull(text, "Connected text should not be null")));
     }
 
     @Override
@@ -72,13 +72,13 @@ public final class ActualWebSocketServer
 
     @Override
     public PongResponse ping(final Resource message) {
-        Resource resource = checkNotNull(message, "Ping message should not be null");
+        Resource resource = requireNonNull(message, "Ping message should not be null");
         return ping(by(resource));
     }
 
     @Override
     public PongResponse ping(final RequestMatcher matcher) {
-        RequestMatcher actual = checkNotNull(matcher, "Ping message should not be null");
+        RequestMatcher actual = requireNonNull(matcher, "Ping message should not be null");
         PingPongSetting setting = new PingPongSetting(actual);
         settings.add(setting);
         return setting;

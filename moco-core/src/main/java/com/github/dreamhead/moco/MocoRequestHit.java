@@ -6,7 +6,7 @@ import com.github.dreamhead.moco.verification.AtMostVerification;
 import com.github.dreamhead.moco.verification.BetweenVerification;
 import com.github.dreamhead.moco.verification.TimesVerification;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 
 public final class MocoRequestHit {
     public static RequestHit requestHit() {

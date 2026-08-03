@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 import static com.github.dreamhead.moco.resource.ResourceFactory.classpathFileResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.fileResource;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class ApiUtils {
     public static MocoMonitor mergeMonitor(final MocoMonitor monitor, final MocoMonitor monitor2,
@@ -112,11 +112,11 @@ public final class ApiUtils {
     }
 
     public static ContentResource file(final Resource filename, final Charset charset) {
-        return fileResource(checkNotNull(filename, "Filename should not be null"), charset, null);
+        return fileResource(requireNonNull(filename, "Filename should not be null"), charset, null);
     }
 
     public static ContentResource pathResource(final Resource filename, final Charset charset) {
-        return classpathFileResource(checkNotNull(filename, "Filename should not be null"), charset);
+        return classpathFileResource(requireNonNull(filename, "Filename should not be null"), charset);
     }
 
     public static <T> RequestMatcher path(final RequestExtractor<T> extractor, final Resource expected) {

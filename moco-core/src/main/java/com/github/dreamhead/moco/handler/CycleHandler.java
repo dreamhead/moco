@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.handler;
 import com.github.dreamhead.moco.ResponseHandler;
 import com.google.common.collect.Iterables;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 
 public final class CycleHandler extends CollectionHandler {
     private CycleHandler(final Iterable<ResponseHandler> handlers) {

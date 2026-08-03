@@ -11,32 +11,32 @@ import static com.github.dreamhead.moco.rest.RestIdMatchers.eq;
 import static com.github.dreamhead.moco.rest.RestIds.checkId;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.all;
 import static com.github.dreamhead.moco.rest.builder.RestSettingBuilders.single;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
 
 public final class MocoRest {
     public static RestServer restServer(final int port, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(configs, "Config should not be null");
+        requireNonNull(configs, "Config should not be null");
         return new ActualRestServer(port, null, new QuietMonitor(),
-                checkNotNull(configs, "Configuration should not be null"));
+                requireNonNull(configs, "Configuration should not be null"));
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor, final MocoConfig... configs) {
         checkArgument(port > 0, "Port must be greater than zero");
-        checkNotNull(configs, "Config should not be null");
+        requireNonNull(configs, "Config should not be null");
         return new ActualRestServer(port, null,
-                checkNotNull(monitor, "Monitor should not be null"),
-                checkNotNull(configs, "Configuration should not be null"));
+                requireNonNull(monitor, "Monitor should not be null"),
+                requireNonNull(configs, "Configuration should not be null"));
     }
 
     public static RestServer restServer(final int port, final MocoMonitor monitor,
                                         final MocoMonitor monitor2, final MocoMonitor... monitors) {
         checkArgument(port > 0, "Port must be greater than zero");
         return new ActualRestServer(port, null,
-                mergeMonitor(checkNotNull(monitor, "Monitor should not be null"),
-                        checkNotNull(monitor2, "Monitor should not be null"),
-                        checkNotNull(monitors, "Monitor should not be null")));
+                mergeMonitor(requireNonNull(monitor, "Monitor should not be null"),
+                        requireNonNull(monitor2, "Monitor should not be null"),
+                        requireNonNull(monitors, "Monitor should not be null")));
     }
 
     public static RestIdMatcher anyId() {
@@ -48,7 +48,7 @@ public final class MocoRest {
     }
 
     public static SubResourceSettingBuilder id(final RestIdMatcher id) {
-        return new ActualSubResourceSettingBuilder(checkNotNull(id, "ID matcher should not be null"));
+        return new ActualSubResourceSettingBuilder(requireNonNull(id, "ID matcher should not be null"));
     }
 
     public static RestSettingBuilder get(final String id) {
@@ -60,7 +60,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder get(final RestIdMatcher idMatcher) {
-        return single(HttpMethod.GET, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return single(HttpMethod.GET, requireNonNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder post() {
@@ -68,7 +68,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder put(final RestIdMatcher idMatcher) {
-        return single(HttpMethod.PUT, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return single(HttpMethod.PUT, requireNonNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder put(final String id) {
@@ -76,7 +76,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder delete(final RestIdMatcher idMatcher) {
-        return single(HttpMethod.DELETE, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return single(HttpMethod.DELETE, requireNonNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder delete(final String id) {
@@ -88,7 +88,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder head(final RestIdMatcher idMatcher) {
-        return single(HttpMethod.HEAD, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return single(HttpMethod.HEAD, requireNonNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder head(final String id) {
@@ -96,7 +96,7 @@ public final class MocoRest {
     }
 
     public static RestSettingBuilder patch(final RestIdMatcher idMatcher) {
-        return single(HttpMethod.PATCH, checkNotNull(idMatcher, "ID Matcher should not be null"));
+        return single(HttpMethod.PATCH, requireNonNull(idMatcher, "ID Matcher should not be null"));
     }
 
     public static RestSettingBuilder patch(final String id) {
