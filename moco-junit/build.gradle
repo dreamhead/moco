@@ -14,7 +14,6 @@ dependencies {
     api(project(':moco-core'))
     api(project(':moco-runner'))
     api(libs.junit4)
-    implementation(libs.guava)
 
     testImplementation(coreTestOutput)
     testImplementation(runnerTestOutput)

@@ -26,6 +26,8 @@ public interface ResponseHandler extends ConfigApplier<ResponseHandler> {
 You just want to rewrite your own HTTP content in most cases, you can extend `AbstractHttpContentResponseHandler`.
 
 ```java
+import com.github.dreamhead.moco.util.MediaType;
+
 public class AbstractContentResponseHandler extends AbstractHttpContentResponseHandler {
     protected MessageContent responseContent(HttpRequest httpRequest) {
         return MessageContent.content("hello Moco"); 
@@ -36,3 +38,6 @@ public class AbstractContentResponseHandler extends AbstractHttpContentResponseH
     }
 }
 ```
+
+**Since 2.0.0** `MediaType` is `com.github.dreamhead.moco.util.MediaType`. Before 2.0.0 it was
+Guava's `com.google.common.net.MediaType`.

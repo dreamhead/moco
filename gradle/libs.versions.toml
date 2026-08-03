@@ -1,5 +1,5 @@
 [versions]
-guava = "33.6.0-jre"
+jspecify = "1.0.0"
 netty = "4.2.12.Final"
 slf4j = "2.0.17"
 jackson = "3.1.3"
@@ -20,7 +20,7 @@ tyrus-client = "2.0.0"
 maven-publish-plugin = "0.36.0"
 
 [libraries]
-guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 netty-codec-http = { module = "io.netty:netty-codec-http", version.ref = "netty" }
 netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty" }
 netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }

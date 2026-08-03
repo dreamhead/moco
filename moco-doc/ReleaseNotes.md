@@ -1,3 +1,37 @@
+# Release 2.0.0(unreleased)
+
+## Breaking changes
+
+* Guava is no longer a dependency. Moco's public API no longer exposes any Guava type, which means
+  several signatures changed. **Recompilation is required** even where the source still compiles,
+  because the erased return types changed.
+  * `ImmutableMap` and `ImmutableList` in the API are now `java.util.Map` and `java.util.List`. This
+    affects `HttpMessage.getHeaders`, `HttpRequest.getQueries`, `DefaultHttpRequest.getForms`,
+    `getCookies`, `Moco.template(..., variables)`, `Jsons.toObjects`, `Globs.glob`,
+    `Configs.configItems`, `SettingFetcher.getSettings` and the `RunnerSetting`/parser types.
+    Code that stored a result in an `ImmutableMap`/`ImmutableList` variable, or that *implements*
+    `HttpMessage`, `HttpRequest`, `Content` or `SettingFetcher`, must be updated.
+  * `MediaType` moved from `com.google.common.net.MediaType` to
+    `com.github.dreamhead.moco.util.MediaType`. It keeps `create`, `parse`, `type`, `subtype`,
+    `charset`, `withCharset` and the constants Moco used, and renders identically on the wire.
+    `charset()` now returns `java.util.Optional`, so a trailing `.toJavaUtil()` should be dropped.
+  * `FileContentType.DEFAULT_CONTENT_TYPE_WITH_CHARSET` changes type accordingly.
+  * `CookiesRequestExtractor` and `FormsRequestExtractor` now extend
+    `HttpRequestExtractor<Map<String, String>>`.
+* `MocoMonitor` no longer carries Guava's `@Subscribe` on its methods. Moco has had no `EventBus`
+  since 2013, so this changes nothing inside Moco. It *does* matter if you registered a
+  `MocoMonitor` on your own Guava `EventBus`, because Guava resolves `@Subscribe` through
+  interfaces: those methods will now silently never be registered, with **no compile error**.
+  Annotate your own overrides with `@Subscribe` instead.
+
+## Implementation Details
+
+* Removed the Guava dependency from all modules. The standalone jar shrinks by roughly 210 KB and
+  the uber jar by about 3 MB.
+* `org.jspecify:jspecify` is now declared explicitly as `compileOnly`; it previously arrived only
+  as a transitive dependency of Guava.
+* A `checkNoGuava` verification task now fails the build if Guava is reimported.
+
 # Release 1.6.1(2-May-2026)
 
 ## APIs
