@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.util;
 import com.github.dreamhead.moco.HttpHeader;
 import com.github.dreamhead.moco.HttpResponseSetting;
 import com.github.dreamhead.moco.resource.Resource;
-import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import static com.github.dreamhead.moco.Moco.status;

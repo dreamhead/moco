@@ -4,7 +4,7 @@ import com.github.dreamhead.moco.HttpRequest;
 import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.reader.ContentResourceReader;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 
 import java.util.function.Function;
 

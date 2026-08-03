@@ -1,11 +1,11 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.net.HttpHeaders;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.HttpCookie;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
 import static org.hamcrest.CoreMatchers.is;

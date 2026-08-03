@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.google.common.net.HttpHeaders;
 import io.netty.handler.codec.http.cookie.ClientCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.CookieHeaderNames;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.CookieAttribute.domain;
 import static com.github.dreamhead.moco.CookieAttribute.httpOnly;

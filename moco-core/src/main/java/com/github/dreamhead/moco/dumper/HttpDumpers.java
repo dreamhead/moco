@@ -2,10 +2,10 @@ package com.github.dreamhead.moco.dumper;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.HttpHeaders;
+import com.github.dreamhead.moco.util.MediaType;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import com.google.common.net.HttpHeaders;
-import com.google.common.net.MediaType;
 import io.netty.util.internal.StringUtil;
 
 import java.util.Arrays;
@@ -49,13 +49,18 @@ public final class HttpDumpers {
                     || mediaType.subtype().endsWith("javascript")
                     || mediaType.subtype().endsWith("json")
                     || mediaType.subtype().endsWith("xml")
-                    || mediaType.is(MediaType.FORM_DATA)
+                    || isSameType(mediaType, MediaType.FORM_DATA)
                     || mediaType.subtype().endsWith("form-data");
         } catch (Exception e) {
             return false;
         }
     }
 
+    // Guava's is() also handled wildcards and parameter subsets; FORM_DATA carries neither,
+    // so the comparison it performed here reduces to type and subtype equality.
+    private static boolean isSameType(final MediaType actual, final MediaType expected) {
+        return actual.type().equals(expected.type()) && actual.subtype().equals(expected.subtype());
+    }
 
     private static final Joiner.MapJoiner HEAD_JOINER = Joiner.on(StringUtil.NEWLINE).withKeyValueSeparator(": ");
 

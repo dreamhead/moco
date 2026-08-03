@@ -36,9 +36,9 @@ import com.github.dreamhead.moco.resource.ContentResource;
 import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 
+import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.Jsons;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.HttpHeaders;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -63,11 +63,11 @@ import static com.github.dreamhead.moco.resource.ResourceFactory.uriResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.versionResource;
 import static com.github.dreamhead.moco.resource.ResourceFactory.xmlResource;
 import static com.github.dreamhead.moco.resource.reader.TemplateResourceReader.checkValidVariableName;
+import static com.github.dreamhead.moco.util.HttpHeaders.SET_COOKIE;
 import static com.github.dreamhead.moco.util.Iterables.asIterable;
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
 import static com.github.dreamhead.moco.util.URLs.toUrlFunction;
-import static com.google.common.net.HttpHeaders.SET_COOKIE;
 import static java.util.Objects.requireNonNull;
 
 public final class Moco {

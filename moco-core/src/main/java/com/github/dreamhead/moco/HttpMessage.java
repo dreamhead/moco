@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.model.MessageContent;
+import com.github.dreamhead.moco.util.HttpHeaders;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.HttpHeaders;
 
 public interface HttpMessage extends Message {
     HttpProtocolVersion getVersion();

@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.support;
 
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.net.MediaType;
+import com.github.dreamhead.moco.util.MediaType;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;

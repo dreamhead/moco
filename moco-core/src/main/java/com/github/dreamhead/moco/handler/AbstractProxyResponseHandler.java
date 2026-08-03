@@ -44,14 +44,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.github.dreamhead.moco.util.HttpHeaders.CACHE_CONTROL;
+import static com.github.dreamhead.moco.util.HttpHeaders.CONNECTION;
+import static com.github.dreamhead.moco.util.HttpHeaders.CONTENT_LENGTH;
+import static com.github.dreamhead.moco.util.HttpHeaders.CONTENT_TYPE;
+import static com.github.dreamhead.moco.util.HttpHeaders.DATE;
+import static com.github.dreamhead.moco.util.HttpHeaders.HOST;
+import static com.github.dreamhead.moco.util.HttpHeaders.SERVER;
 import static com.github.dreamhead.moco.util.URLs.toUrl;
-import static com.google.common.net.HttpHeaders.CACHE_CONTROL;
-import static com.google.common.net.HttpHeaders.CONNECTION;
-import static com.google.common.net.HttpHeaders.CONTENT_LENGTH;
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static com.google.common.net.HttpHeaders.DATE;
-import static com.google.common.net.HttpHeaders.HOST;
-import static com.google.common.net.HttpHeaders.SERVER;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 

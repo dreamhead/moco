@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco;
 
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.google.common.net.HttpHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpResponse;

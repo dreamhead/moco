@@ -1,7 +1,7 @@
 package com.github.dreamhead.moco.handler;
 
 import com.github.dreamhead.moco.HttpResponse;
-import com.google.common.net.HttpHeaders;
+import com.github.dreamhead.moco.util.HttpHeaders;
 
 public class HeaderDetector {
     public final boolean hasContentType(final HttpResponse httpResponse) {
