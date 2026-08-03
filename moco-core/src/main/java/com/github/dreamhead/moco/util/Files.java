@@ -27,6 +27,19 @@ public final class Files {
         return new File(new File(path1), path2);
     }
 
+    /**
+     * Replacement for Guava's {@code com.google.common.io.Files.getFileExtension}. The base name
+     * is resolved first so a dot in a parent directory is not mistaken for an extension, and the
+     * result is an empty string - never null - when there is no extension.
+     */
+    public static String getFileExtension(final String fullName) {
+        checkNotNull(fullName);
+
+        String fileName = new File(fullName).getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return dotIndex == -1 ? "" : fileName.substring(dotIndex + 1);
+    }
+
     public static File directoryOf(final File file) {
         checkNotNull(file);
         File parentFile = file.getParentFile();
