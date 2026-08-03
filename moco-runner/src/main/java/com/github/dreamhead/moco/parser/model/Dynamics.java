@@ -2,29 +2,25 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.RequestExtractor;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
 public class Dynamics {
-    private static final Map<String, String> EXTRACTORS = ImmutableMap.<String, String>builder()
-            .put("headers", "header")
-            .put("queries", "query")
-            .put("xpaths", "xpath")
-            .put("jsonPaths", "jsonPath")
-            .put("cookies", "cookie")
-            .put("forms", "form")
-            .build();
+    private static final Map<String, String> EXTRACTORS = Map.of(
+            "headers", "header",
+            "queries", "query",
+            "xpaths", "xpath",
+            "jsonPaths", "jsonPath",
+            "cookies", "cookie",
+            "forms", "form");
 
     protected final Predicate<Field> isClassField() {
         return field -> "class".equals(field.getName());
@@ -45,7 +41,7 @@ public class Dynamics {
     }
 
     protected final Iterable<Field> getFields(final Class<?> clazz) {
-        ImmutableList<Field> fieldsForCurrent = getFieldsForCurrent(clazz);
+        List<Field> fieldsForCurrent = getFieldsForCurrent(clazz);
         if (clazz.getSuperclass() == null) {
             return fieldsForCurrent;
         }
@@ -55,13 +51,13 @@ public class Dynamics {
                 fieldsForCurrent.stream()).toList();
     }
 
-    private ImmutableList<Field> getFieldsForCurrent(final Class<?> clazz) {
+    private List<Field> getFieldsForCurrent(final Class<?> clazz) {
         return Arrays.stream(clazz.getDeclaredFields())
                 .map(field -> {
                     field.setAccessible(true);
                     return field;
                 })
-                .collect(toImmutableList());
+                .toList();
     }
 
     protected final <T> Predicate<Field> isValidField(final T target) {

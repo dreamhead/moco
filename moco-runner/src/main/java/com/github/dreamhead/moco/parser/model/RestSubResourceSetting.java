@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.MocoRest;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.util.ToStringHelper;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.function.Function;
@@ -35,7 +34,7 @@ public final class RestSubResourceSetting extends ResourceSetting {
 
     public static Iterable<RestSetting> asSubRestSetting(final List<RestSubResourceSetting> setting) {
         if (setting == null || setting.isEmpty()) {
-            return ImmutableList.of();
+            return List.of();
         }
 
         return setting.stream()

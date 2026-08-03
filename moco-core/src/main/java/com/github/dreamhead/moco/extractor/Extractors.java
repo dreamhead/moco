@@ -1,19 +1,20 @@
 package com.github.dreamhead.moco.extractor;
 
 import com.github.dreamhead.moco.RequestExtractor;
-import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 public final class Extractors {
-    private static ImmutableMap<String, RequestExtractor<?>> extractors = ImmutableMap.<String, RequestExtractor<?>>builder()
-            .put("file", new ContentRequestExtractor())
-            .put("text", new ContentRequestExtractor())
-            .put("pathresource", new ContentRequestExtractor())
-            .put("binary", new ContentRequestExtractor())
-            .put("xml", new ContentRequestExtractor())
-            .put("json", new ContentRequestExtractor())
-            .put("uri", new UriRequestExtractor())
-            .put("method", new HttpMethodExtractor())
-            .put("version", new VersionExtractor()).build();
+    private static Map<String, RequestExtractor<?>> extractors = Map.of(
+            "file", new ContentRequestExtractor(),
+            "text", new ContentRequestExtractor(),
+            "pathresource", new ContentRequestExtractor(),
+            "binary", new ContentRequestExtractor(),
+            "xml", new ContentRequestExtractor(),
+            "json", new ContentRequestExtractor(),
+            "uri", new UriRequestExtractor(),
+            "method", new HttpMethodExtractor(),
+            "version", new VersionExtractor());
 
     public static RequestExtractor<?> extractor(final String id) {
         if (extractors.containsKey(id)) {

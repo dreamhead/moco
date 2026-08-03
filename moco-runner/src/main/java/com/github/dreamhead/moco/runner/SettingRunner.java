@@ -4,7 +4,6 @@ import com.github.dreamhead.moco.MocoException;
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.parser.GlobalSettingParser;
 import com.github.dreamhead.moco.parser.model.GlobalSetting;
-import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,12 +16,11 @@ import java.util.stream.Stream;
 
 import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithSetting;
 import static com.github.dreamhead.moco.runner.RunnerSetting.aRunnerSetting;
-import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.stream.Collectors.toList;
 
 public final class SettingRunner implements Runner {
     private final GlobalSettingParser parser = new GlobalSettingParser();
-    private final ImmutableList<GlobalSetting> globalSettings;
+    private final List<GlobalSetting> globalSettings;
     private final String env;
     private final StartArgs startArgs;
     private Runner runner;
@@ -58,7 +56,7 @@ public final class SettingRunner implements Runner {
         return setting -> aRunnerSetting()
                 .addStreams(setting.includes().stream()
                         .map(toStream())
-                        .collect(toImmutableList()))
+                        .toList())
                 .withContext(setting.getContext())
                 .withFileRoot(setting.getFileRoot())
                 .withRequest(setting.getRequest())

@@ -12,12 +12,11 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.AntPathMatcher;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.Xmls;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
 import static com.github.dreamhead.moco.util.Maps.arrayValueToSimple;
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static com.github.dreamhead.moco.util.Maps.toUnmodifiableMap;
 
 public final class TemplateRequest {
     private final Request request;
@@ -64,18 +63,18 @@ public final class TemplateRequest {
         throw new IllegalArgumentException("Request is not HTTP request");
     }
 
-    public ImmutableMap<String, String> getQueries() {
+    public Map<String, String> getQueries() {
         if (this.request instanceof HttpRequest) {
             HttpRequest httpRequest = (HttpRequest) this.request;
-            ImmutableMap<String, String[]> queries = httpRequest.getQueries();
+            Map<String, String[]> queries = httpRequest.getQueries();
             return queries.entrySet().stream()
-                    .collect(toImmutableMap(Map.Entry::getKey, entry -> entry.getValue()[0]));
+                    .collect(toUnmodifiableMap(Map.Entry::getKey, entry -> entry.getValue()[0]));
         }
 
         throw new IllegalArgumentException("Request is not HTTP request");
     }
 
-    public ImmutableMap<String, String> getForms() {
+    public Map<String, String> getForms() {
         if (this.request instanceof DefaultHttpRequest) {
             return ((DefaultHttpRequest) this.request).getForms();
         }
@@ -83,7 +82,7 @@ public final class TemplateRequest {
         throw new IllegalArgumentException("Request is not HTTP request");
     }
 
-    public ImmutableMap<String, String> getCookies() {
+    public Map<String, String> getCookies() {
         if (this.request instanceof DefaultHttpRequest) {
             return ((DefaultHttpRequest) this.request).getCookies();
         }

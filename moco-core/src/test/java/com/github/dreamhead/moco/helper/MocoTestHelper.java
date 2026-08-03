@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco.helper;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.github.dreamhead.moco.util.Resources;
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Executor;
@@ -26,6 +25,7 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.util.HttpHeaders.CONTENT_TYPE;
@@ -68,19 +68,19 @@ public class MocoTestHelper {
         return execute(Request.get(url));
     }
 
-    public String getWithHeader(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
+    public String getWithHeader(final String url, final List<Map.Entry<String, String>> headers) throws IOException {
         return executeAsString(requestWithHeaders(Request.get(url), headers));
     }
 
-    private Request requestWithHeaders(final Request request, final ImmutableMultimap<String, String> headers) {
+    private Request requestWithHeaders(final Request request, final List<Map.Entry<String, String>> headers) {
         Request target = request;
-        for (Map.Entry<String, String> entry : headers.entries()) {
+        for (Map.Entry<String, String> entry : headers) {
             target = target.addHeader(entry.getKey(), entry.getValue());
         }
         return target;
     }
 
-    public ClassicHttpResponse getResponseWithHeader(final String url, final ImmutableMultimap<String, String> headers)
+    public ClassicHttpResponse getResponseWithHeader(final String url, final List<Map.Entry<String, String>> headers)
             throws IOException {
         return execute(requestWithHeaders(Request.get(url), headers));
     }
@@ -120,10 +120,10 @@ public class MocoTestHelper {
     }
 
     public ClassicHttpResponse putForResponseWithHeaders(final String url, final String content,
-                                                  final ImmutableMultimap<String, String> headers) throws IOException {
+                                                  final List<Map.Entry<String, String>> headers) throws IOException {
         Request request = Request.put(url)
                 .bodyByteArray(content.getBytes());
-        for (Map.Entry<String, String> entry : headers.entries()) {
+        for (Map.Entry<String, String> entry : headers) {
             request.addHeader(entry.getKey(), entry.getValue());
         }
         return execute(request);
@@ -133,10 +133,10 @@ public class MocoTestHelper {
         return execute(Request.delete(url));
     }
 
-    public ClassicHttpResponse deleteForResponseWithHeaders(final String url, final ImmutableMultimap<String, String> headers)
+    public ClassicHttpResponse deleteForResponseWithHeaders(final String url, final List<Map.Entry<String, String>> headers)
             throws IOException {
         Request request = Request.delete(url);
-        for (Map.Entry<String, String> entry : headers.entries()) {
+        for (Map.Entry<String, String> entry : headers) {
             request.addHeader(entry.getKey(), entry.getValue());
         }
         return execute(request);
@@ -163,7 +163,7 @@ public class MocoTestHelper {
                 .bodyString(content, ContentType.DEFAULT_TEXT));
     }
 
-    public ClassicHttpResponse optionsForResponse(final String url, final ImmutableMultimap<String, String> headers) throws IOException {
+    public ClassicHttpResponse optionsForResponse(final String url, final List<Map.Entry<String, String>> headers) throws IOException {
         return execute(requestWithHeaders(Request.options(url), headers));
     }
 

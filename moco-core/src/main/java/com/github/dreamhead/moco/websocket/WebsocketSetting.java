@@ -1,6 +1,8 @@
 package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.MocoConfig;
+
+import java.util.List;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;
@@ -8,7 +10,7 @@ import com.github.dreamhead.moco.setting.BaseSetting;
 import com.github.dreamhead.moco.setting.Setting;
 
 import static com.github.dreamhead.moco.util.Configs.configItem;
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 
 public final class WebsocketSetting extends BaseSetting<WebsocketResponseSetting>
         implements Setting<WebsocketResponseSetting>, WebsocketResponseSetting {

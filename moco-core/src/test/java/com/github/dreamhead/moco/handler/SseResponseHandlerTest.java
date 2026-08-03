@@ -6,7 +6,6 @@ import com.github.dreamhead.moco.MocoSse;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.resource.ResourceFactory;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -28,7 +27,7 @@ public class SseResponseHandlerTest {
 
     @Test
     public void should_set_sse_headers() {
-        List<SseEvent> events = ImmutableList.of(MocoSse.data("Hello"));
+        List<SseEvent> events = List.of(MocoSse.data("Hello"));
         SseResponseHandler handler = new SseResponseHandler(events);
         DefaultMutableHttpResponse response = DefaultMutableHttpResponse.newResponse(mockRequest(), 200);
 
@@ -42,7 +41,7 @@ public class SseResponseHandlerTest {
 
     @Test
     public void should_mark_response_as_sse() {
-        List<SseEvent> events = ImmutableList.of(MocoSse.data("Hello"));
+        List<SseEvent> events = List.of(MocoSse.data("Hello"));
         SseResponseHandler handler = new SseResponseHandler(events);
         DefaultMutableHttpResponse response = DefaultMutableHttpResponse.newResponse(mockRequest(), 200);
 
@@ -55,7 +54,7 @@ public class SseResponseHandlerTest {
     public void should_store_events_in_response() {
         SseEvent event1 = MocoSse.data("Hello");
         SseEvent event2 = MocoSse.event("message", "World");
-        List<SseEvent> events = ImmutableList.of(event1, event2);
+        List<SseEvent> events = List.of(event1, event2);
         SseResponseHandler handler = new SseResponseHandler(events);
         DefaultMutableHttpResponse response = DefaultMutableHttpResponse.newResponse(mockRequest(), 200);
 
@@ -69,7 +68,7 @@ public class SseResponseHandlerTest {
 
     @Test
     public void should_not_set_content() {
-        List<SseEvent> events = ImmutableList.of(MocoSse.data("Hello"));
+        List<SseEvent> events = List.of(MocoSse.data("Hello"));
         SseResponseHandler handler = new SseResponseHandler(events);
         DefaultMutableHttpResponse response = DefaultMutableHttpResponse.newResponse(mockRequest(), 200);
 

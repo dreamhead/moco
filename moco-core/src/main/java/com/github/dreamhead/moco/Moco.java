@@ -38,11 +38,11 @@ import com.github.dreamhead.moco.resource.reader.ExtractorVariable;
 
 import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.Jsons;
-import com.google.common.collect.ImmutableMap;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -516,7 +516,7 @@ public final class Moco {
     }
 
     public static ContentResource template(final ContentResource resource) {
-        return template(requireNonNull(resource, "Template should not be null"), ImmutableMap.of());
+        return template(requireNonNull(resource, "Template should not be null"), Map.of());
     }
 
     public static ContentResource template(final ContentResource template, final String name, final String value) {
@@ -550,7 +550,7 @@ public final class Moco {
 
     public static <T> ContentResource template(final ContentResource template, final String name, final RequestExtractor<T> extractor) {
         return templateResource(requireNonNull(template, "Template should not be null"),
-                ImmutableMap.of(checkValidVariableName(name),
+                Map.of(checkValidVariableName(name),
                         new ExtractorVariable<>(requireNonNull(extractor, "Template variable extractor should not be null")))
         );
     }
@@ -558,7 +558,7 @@ public final class Moco {
     public static <ExtractorType1, ExtractorType2> ContentResource template(final ContentResource template, final String name1, final RequestExtractor<ExtractorType1> extractor1,
                                                                             final String name2, final RequestExtractor<ExtractorType2> extractor2) {
         return templateResource(requireNonNull(template, "Template should not be null"),
-                ImmutableMap.of(checkValidVariableName(name1),
+                Map.of(checkValidVariableName(name1),
                         new ExtractorVariable<>(requireNonNull(extractor1, "Template variable extractor should not be null")),
                         checkValidVariableName(name2),
                         new ExtractorVariable<>(requireNonNull(extractor2, "Template variable extractor should not be null")))
@@ -566,13 +566,13 @@ public final class Moco {
     }
 
     public static ContentResource template(final String template,
-                                           final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+                                           final Map<String, ? extends RequestExtractor<?>> variables) {
         return template(text(requireNonNull(template, "Template should not be null")),
                 requireNonNull(variables, "Template variable should not be null"));
     }
 
     public static ContentResource template(final ContentResource template,
-                                           final ImmutableMap<String, ? extends RequestExtractor<?>> variables) {
+                                           final Map<String, ? extends RequestExtractor<?>> variables) {
         return templateResource(requireNonNull(template, "Template should not be null"),
                 ApiUtils.toVariables(requireNonNull(variables, "Template variable should not be null")));
     }

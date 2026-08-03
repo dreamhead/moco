@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.util;
 
 import com.github.dreamhead.moco.ConfigApplier;
 import com.github.dreamhead.moco.MocoConfig;
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
@@ -21,12 +20,12 @@ public final class Configs {
         return target;
     }
 
-    public static <T extends ConfigApplier<T>> ImmutableList<T> configItems(final List<T> items,
+    public static <T extends ConfigApplier<T>> List<T> configItems(final List<T> items,
                                                                             final MocoConfig<?>... configs) {
         requireNonNull(items, "config items should not be null");
         return items.stream()
                 .map(item -> configItem(item, configs))
-                .collect(ImmutableList.toImmutableList());
+                .toList();
     }
 
     private Configs() {

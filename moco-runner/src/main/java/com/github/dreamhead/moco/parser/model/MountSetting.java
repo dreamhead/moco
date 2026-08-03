@@ -9,7 +9,7 @@ import com.github.dreamhead.moco.util.ToStringHelper;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.ImmutableList.of;
+import static java.util.List.of;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class MountSetting extends ResponseSetting {

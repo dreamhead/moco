@@ -3,7 +3,6 @@ package com.github.dreamhead.moco.internal;
 import com.github.dreamhead.moco.model.DefaultMutableHttpResponse;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.sse.SseEvent;
-import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 /**
  * Handler for processing individual HTTP/2 streams.
@@ -167,7 +167,7 @@ public class Http2StreamHandler extends SimpleChannelInboundHandler<Http2StreamF
         return Unpooled.EMPTY_BUFFER;
     }
 
-    private static final ImmutableSet<String> HTTP2_DISALLOWED_HEADERS = ImmutableSet.of(
+    private static final Set<String> HTTP2_DISALLOWED_HEADERS = Set.of(
             "connection", "keep-alive", "proxy-connection",
             "transfer-encoding", "upgrade",
             "content-length"

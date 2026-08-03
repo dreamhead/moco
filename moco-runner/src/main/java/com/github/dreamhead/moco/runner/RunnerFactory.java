@@ -4,9 +4,9 @@ import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.runner.watcher.ShutdownMocoRunnerWatcher;
 import com.github.dreamhead.moco.runner.watcher.Watcher;
 import com.github.dreamhead.moco.runner.watcher.WatcherFactory;
-import com.google.common.collect.ImmutableList;
 
 import java.io.File;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.github.dreamhead.moco.runner.FileRunner.createConfigurationFileRunner;
@@ -47,7 +47,7 @@ public final class RunnerFactory {
 
     private Runner createDynamicConfigurationRunner(final StartArgs startArgs) {
         String pathname = startArgs.getConfigurationFile().get();
-        ImmutableList<String> glob = glob(pathname);
+        List<String> glob = glob(pathname);
         Iterable<File> files = glob.stream()
                 .map(File::new)
                 .collect(Collectors.toList());

@@ -1,7 +1,5 @@
 package com.github.dreamhead.moco.helper;
 
-import com.google.common.collect.ImmutableMultimap;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -14,6 +12,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Test helper for making HTTP/2 requests in integration tests.
@@ -149,13 +149,13 @@ public class Http2TestHelper implements AutoCloseable {
     /**
      * Sends an HTTP/2 POST request with content and custom headers.
      */
-    public String post(final String url, final String content, final ImmutableMultimap<String, String> headers) throws IOException {
+    public String post(final String url, final String content, final List<Map.Entry<String, String>> headers) throws IOException {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .POST(HttpRequest.BodyPublishers.ofString(content))
                 .timeout(Duration.ofSeconds(DEFAULT_TIMEOUT_SECONDS));
 
-        for (java.util.Map.Entry<String, String> entry : headers.entries()) {
+        for (java.util.Map.Entry<String, String> entry : headers) {
             builder.header(entry.getKey(), entry.getValue());
         }
 

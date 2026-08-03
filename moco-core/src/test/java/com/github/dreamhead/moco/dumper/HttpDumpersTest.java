@@ -3,10 +3,10 @@ package com.github.dreamhead.moco.dumper;
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.model.DefaultHttpResponse;
 import com.github.dreamhead.moco.util.HttpHeaders;
-import com.google.common.collect.ImmutableMap;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.dumper.HttpDumpers.asContent;
@@ -76,13 +76,13 @@ public class HttpDumpersTest {
 
     @Test
     public void should_parse_content_when_content_length_not_set() {
-        assertThat(asContent(messageWithHeaders(ImmutableMap.of(HttpHeaders.CONTENT_TYPE, "text/plain"))), is(EXPECTED_MESSAGE_BODY));
+        assertThat(asContent(messageWithHeaders(Map.of(HttpHeaders.CONTENT_TYPE, "text/plain"))), is(EXPECTED_MESSAGE_BODY));
     }
 
     @Test
     public void should_not_parse_content_when_content_length_not_set() {
         assertThat(asContent(DefaultHttpResponse.builder()
-                .withHeaders(ImmutableMap.of(HttpHeaders.CONTENT_TYPE, "text/plain"))
+                .withHeaders(Map.of(HttpHeaders.CONTENT_TYPE, "text/plain"))
                 .withStringContent("")
                 .build()), is(""));
     }
@@ -90,7 +90,7 @@ public class HttpDumpersTest {
     @Test
     public void should_show_empty_for_empty_content_with_binary_type() {
         assertThat(asContent(DefaultHttpResponse.builder()
-                .withHeaders(ImmutableMap.of(
+                .withHeaders(Map.of(
                         HttpHeaders.CONTENT_TYPE, "image/jpeg",
                         HttpHeaders.CONTENT_LENGTH, "0"))
                 .withStringContent("")
@@ -109,9 +109,10 @@ public class HttpDumpersTest {
     }
 
     private Map<String, String> defaultHeadersFor(final String mediaType) {
-        return ImmutableMap.<String, String>builder()
-                .put(HttpHeaders.CONTENT_LENGTH, String.valueOf(MESSAGE_BODY.length()))
-                .put(HttpHeaders.CONTENT_TYPE, mediaType)
-                .build();
+        // Ordered on purpose: the dumped output renders headers in iteration order.
+        Map<String, String> headers = new LinkedHashMap<>();
+        headers.put(HttpHeaders.CONTENT_LENGTH, String.valueOf(MESSAGE_BODY.length()));
+        headers.put(HttpHeaders.CONTENT_TYPE, mediaType);
+        return headers;
     }
 }
