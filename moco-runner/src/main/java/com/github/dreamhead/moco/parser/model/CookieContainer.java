@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.CookieAttribute;
 import com.github.dreamhead.moco.parser.deserializer.CookieContainerDeserializer;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public final class CookieContainer implements Container {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("value", value)
                 .add("path", path)

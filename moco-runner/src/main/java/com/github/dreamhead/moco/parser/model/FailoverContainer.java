@@ -4,7 +4,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.handler.failover.Failover;
 import com.github.dreamhead.moco.parser.deserializer.FailoverContainerDeserializer;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import static com.github.dreamhead.moco.Moco.playback;
 
@@ -34,7 +34,7 @@ public final class FailoverContainer {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("file", file)
                 .add("status", status)

@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.model;
 
 import com.github.dreamhead.moco.HttpMessage;
 import com.github.dreamhead.moco.HttpProtocolVersion;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
@@ -54,8 +54,8 @@ public abstract class DefaultHttpMessage implements HttpMessage {
         return this.content;
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
-        return MoreObjects.toStringHelper(this)
+    protected ToStringHelper toStringHelper() {
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("version", this.version)
                 .add("headers", this.headers)

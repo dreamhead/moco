@@ -3,7 +3,7 @@ package com.github.dreamhead.moco.parser.model;
 import com.github.dreamhead.moco.ResponseBase;
 import com.github.dreamhead.moco.RestSetting;
 import com.github.dreamhead.moco.RestSettingBuilder;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -42,8 +42,8 @@ public abstract class RestBaseSetting {
                 .collect(Collectors.toList());
     }
 
-    protected final MoreObjects.ToStringHelper toStringHelper() {
-        return MoreObjects.toStringHelper(this)
+    protected final ToStringHelper toStringHelper() {
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("request", request)
                 .add("response", response);

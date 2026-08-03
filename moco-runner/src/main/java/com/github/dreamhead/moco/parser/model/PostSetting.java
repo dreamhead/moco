@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.MocoEventAction;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.Map;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public final class PostSetting extends BaseActionSetting {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("url", url)
                 .add("headers", headers)

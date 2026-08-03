@@ -1,8 +1,8 @@
 package com.github.dreamhead.moco.parser.model;
 
+import com.github.dreamhead.moco.util.ToStringHelper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.MoreObjects;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public abstract class BaseResourceSetting {
@@ -12,8 +12,8 @@ public abstract class BaseResourceSetting {
     private FileContainer pathResource;
     private Object json;
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
-        return MoreObjects.toStringHelper(this)
+    protected ToStringHelper toStringHelper() {
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("text", text)
                 .add("file", file)

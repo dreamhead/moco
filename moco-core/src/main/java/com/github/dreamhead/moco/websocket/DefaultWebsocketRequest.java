@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.internal.Client;
 import com.github.dreamhead.moco.model.MessageContent;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import static com.github.dreamhead.moco.util.ByteBufs.toByteArray;
@@ -24,7 +24,7 @@ public class DefaultWebsocketRequest implements WebsocketRequest {
 
     @Override
     public final String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .add("content", content)
                 .add("client", client)
                 .toString();

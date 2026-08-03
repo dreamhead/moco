@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.parser.RequestMatcherFactory;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public final class RequestSetting extends BaseResourceSetting {
 
     private StructSetting struct;
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
+    protected ToStringHelper toStringHelper() {
         return super.toStringHelper()
                 .add("version", version)
                 .add("URI", uri)

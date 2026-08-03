@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.github.dreamhead.moco.handler.cors.CorsConfig;
 import com.github.dreamhead.moco.parser.deserializer.CorsContainerDeserializer;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public final class CorsContainer {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("allowOrigin", allowOrigin)
                 .add("allowMethods", allowMethods)

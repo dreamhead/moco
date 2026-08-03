@@ -2,7 +2,7 @@ package com.github.dreamhead.moco.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.dreamhead.moco.RestSetting;
-import com.google.common.base.MoreObjects;
+import com.github.dreamhead.moco.util.ToStringHelper;
 
 import java.util.List;
 
@@ -31,8 +31,8 @@ public class ResourceSetting {
         return toStringHelper().toString();
     }
 
-    protected MoreObjects.ToStringHelper toStringHelper() {
-        return MoreObjects.toStringHelper(this)
+    protected ToStringHelper toStringHelper() {
+        return ToStringHelper.of(this)
                 .omitNullValues()
                 .add("name", name)
                 .add("get", get)
