@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.Iterables.isEmpty;
 import static java.util.Objects.requireNonNull;
 
 public final class Iterables {
@@ -63,7 +62,7 @@ public final class Iterables {
     }
 
     public static <T> boolean isNullOrEmpty(final Iterable<T> iterable) {
-        return iterable == null || isEmpty(iterable);
+        return iterable == null || !iterable.iterator().hasNext();
     }
 
     private Iterables() {
