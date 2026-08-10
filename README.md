@@ -97,5 +97,5 @@ https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=dreamhead/moco&type=Date)](https://star-history.com/#dreamhead/moco&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=dreamhead/moco&type=Date)](https://star-history.dera.page/#dreamhead/moco&Date)
 
