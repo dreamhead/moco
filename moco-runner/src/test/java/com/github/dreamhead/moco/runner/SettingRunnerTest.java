@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.runner;
 
 import com.github.dreamhead.moco.bootstrap.arg.StartArgs;
 import com.github.dreamhead.moco.helper.MocoTestHelper;
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.Header;
 import org.junit.jupiter.api.AfterEach;

@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -450,6 +449,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             assertThat(response.getCode(), is(400));
         });
     }
+
     @Test
     public void should_throw_exception_for_random_with_start_greater_than_end() throws Exception {
         server.request(by(uri("/template"))).response(template("${random(100,99)}"));
@@ -459,6 +459,7 @@ public class MocoTemplateTest extends AbstractMocoHttpTest {
             assertThat(response.getCode(), is(400));
         });
     }
+
     @Test
     public void should_return_json() throws Exception {
         server.request(by(uri("/template"))).response(template("${req.json.code} ${req.json.message}"));

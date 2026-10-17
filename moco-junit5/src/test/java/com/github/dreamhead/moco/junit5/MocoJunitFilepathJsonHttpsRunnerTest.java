@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @ExtendWith(MocoExtension.class)
-@MocoHttpServer(filepath = "src/test/resources/foo.json", port=12306)
+@MocoHttpServer(filepath = "src/test/resources/foo.json", port = 12306)
 @MocoCertificate(filepath = "src/test/resources/certificate/cert.jks", keyStorePassword = "mocohttps", certPassword = "mocohttps")
 public class MocoJunitFilepathJsonHttpsRunnerTest extends AbstractMocoJunit5Test {
     @Test

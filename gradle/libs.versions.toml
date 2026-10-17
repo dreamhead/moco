@@ -14,10 +14,9 @@ freemarker = "2.3.34"
 jsonassert = "1.5.3"
 tinylog = "2.7.0"
 commons-cli = "1.11.0"
-proguard = "7.9.1"
 websocket = "2.0.0"
 tyrus-client = "2.0.0"
-maven-publish-plugin = "0.36.0"
+checkstyle = "12.3.1"
 
 [libraries]
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
@@ -48,5 +47,3 @@ junit-jupiter5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.r
 junit-jupiter5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5-base" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
 
-[plugins]
-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }

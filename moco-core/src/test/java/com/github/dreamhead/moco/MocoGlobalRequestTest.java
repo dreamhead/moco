@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.junit.jupiter.api.Test;
 

@@ -17,8 +17,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.SocketConfig;
-import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.util.Timeout;
 
 import javax.net.ssl.SSLContext;

@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ProtocolException;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,7 @@ public class MocoCorsStandaloneTest extends AbstractMocoStandaloneTest {
         assertThat(response.getHeader("Access-Control-Allow-Methods").getValue(), is("*"));
         assertThat(response.getHeader("Access-Control-Allow-Headers").getValue(), is("*"));
     }
+
     @Test
     public void should_support_cors() throws IOException, ProtocolException {
         runWithConfiguration("cors.json");

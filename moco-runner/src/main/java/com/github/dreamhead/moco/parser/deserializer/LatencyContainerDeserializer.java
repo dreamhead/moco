@@ -27,7 +27,7 @@ public final class LatencyContainerDeserializer extends ValueDeserializer<Latenc
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class InternalLatencyContainer {
+    private static final class InternalLatencyContainer {
         private long duration;
         private String unit;
 

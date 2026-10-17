@@ -6,8 +6,6 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.ValueDeserializer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
-import java.io.IOException;
-
 public final class TextContainerDeserializer extends ValueDeserializer<TextContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 

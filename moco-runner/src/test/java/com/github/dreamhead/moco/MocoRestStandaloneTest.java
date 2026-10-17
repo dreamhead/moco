@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import com.github.dreamhead.moco.util.HttpHeaders;
 import com.github.dreamhead.moco.util.Jsons;
 import com.github.dreamhead.moco.util.MediaType;
@@ -234,7 +233,7 @@ public class MocoRestStandaloneTest extends AbstractMocoStandaloneTest {
         return Jsons.toObject(entity.getContent(), Plain.class);
     }
 
-    private static class Plain {
+    private static final class Plain {
         public int code;
         public String message;
     }

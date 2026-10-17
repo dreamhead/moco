@@ -12,7 +12,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.github.dreamhead.moco.Moco.by;

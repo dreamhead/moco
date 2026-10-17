@@ -339,7 +339,7 @@ public abstract class AbstractProxyResponseHandler extends AbstractHttpResponseH
     }
 
     // Inner classes
-    private static class TrustAllX509TrustManager implements X509TrustManager {
+    private static final class TrustAllX509TrustManager implements X509TrustManager {
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) {
         }

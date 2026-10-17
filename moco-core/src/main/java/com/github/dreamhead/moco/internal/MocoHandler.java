@@ -18,11 +18,9 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static com.github.dreamhead.moco.util.HttpHeaders.UPGRADE;
 import static io.netty.channel.ChannelHandler.Sharable;

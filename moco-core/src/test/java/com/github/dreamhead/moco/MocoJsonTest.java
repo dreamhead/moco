@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Map;
 
 import static com.github.dreamhead.moco.Moco.and;
 import static com.github.dreamhead.moco.Moco.by;
@@ -289,7 +288,7 @@ public class MocoJsonTest extends AbstractMocoHttpTest {
         });
     }
 
-    private static class PlainA {
+    private static final class PlainA {
         public int code;
         public String message;
     }

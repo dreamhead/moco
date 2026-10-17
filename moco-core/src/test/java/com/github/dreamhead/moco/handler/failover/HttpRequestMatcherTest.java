@@ -11,8 +11,6 @@ import static java.util.Map.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.Map;
-
 public class HttpRequestMatcherTest {
     @Test
     public void should_be_match_if_request_is_same() {

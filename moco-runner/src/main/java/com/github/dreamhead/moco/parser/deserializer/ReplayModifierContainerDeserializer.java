@@ -8,8 +8,6 @@ import com.github.dreamhead.moco.parser.model.ReplayContainer;
 import com.github.dreamhead.moco.parser.model.ReplayModifierContainer;
 import com.github.dreamhead.moco.parser.model.ResponseSetting;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.util.Strings.strip;
 
 public class ReplayModifierContainerDeserializer extends ValueDeserializer<ReplayModifierContainer> {

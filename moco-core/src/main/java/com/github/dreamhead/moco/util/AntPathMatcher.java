@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AntPathMatcher {
+public final class AntPathMatcher {
 
     /** Default path separator: "/". */
     public static final String DEFAULT_PATH_SEPARATOR = "/";
@@ -21,13 +21,13 @@ public class AntPathMatcher {
     private static final char[] WILDCARD_CHARS = {'*', '?', '{'};
 
 
-    private String pathSeparator;
+    private final String pathSeparator;
 
-    private PathSeparatorPatternCache pathSeparatorPatternCache;
+    private final PathSeparatorPatternCache pathSeparatorPatternCache;
 
-    private boolean caseSensitive = true;
+    private final boolean caseSensitive;
 
-    private boolean trimTokens = false;
+    private final boolean trimTokens;
 
     private volatile Boolean cachePatterns;
 
@@ -35,66 +35,59 @@ public class AntPathMatcher {
 
     final Map<String, AntPathStringMatcher> stringMatcherCache = new ConcurrentHashMap<>(256);
 
-
-    /**
-     * Create a new instance with the {@link #DEFAULT_PATH_SEPARATOR}.
-     */
-    public AntPathMatcher() {
-        this.pathSeparator = DEFAULT_PATH_SEPARATOR;
-        this.pathSeparatorPatternCache = new PathSeparatorPatternCache(DEFAULT_PATH_SEPARATOR);
-    }
-
-    /**
-     * A convenient, alternative constructor to use with a custom path separator.
-     * @param pathSeparator the path separator to use, must not be {@code null}.
-     * @since 4.1
-     */
-    public AntPathMatcher(String pathSeparator) {
+    private AntPathMatcher(final String pathSeparator, final boolean caseSensitive, final boolean trimTokens) {
         this.pathSeparator = pathSeparator;
         this.pathSeparatorPatternCache = new PathSeparatorPatternCache(pathSeparator);
-    }
-
-
-    /**
-     * Set the path separator to use for pattern parsing.
-     * <p>Default is "/", as in Ant.
-     */
-    public void setPathSeparator(String pathSeparator) {
-        this.pathSeparator = (pathSeparator != null ? pathSeparator : DEFAULT_PATH_SEPARATOR);
-        this.pathSeparatorPatternCache = new PathSeparatorPatternCache(this.pathSeparator);
-    }
-
-    /**
-     * Specify whether to perform pattern matching in a case-sensitive fashion.
-     * <p>Default is {@code true}. Switch this to {@code false} for case-insensitive matching.
-     * @since 4.2
-     */
-    public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
-    }
-
-    /**
-     * Specify whether to trim tokenized paths and patterns.
-     * <p>Default is {@code false}.
-     */
-    public void setTrimTokens(boolean trimTokens) {
         this.trimTokens = trimTokens;
     }
 
-    /**
-     * Specify whether to cache parsed pattern metadata for patterns passed
-     * into this matcher's {@link #match} method. A value of {@code true}
-     * activates an unlimited pattern cache; a value of {@code false} turns
-     * the pattern cache off completely.
-     * <p>Default is for the cache to be on, but with the variant to automatically
-     * turn it off when encountering too many patterns to cache at runtime
-     * (the threshold is 65536), assuming that arbitrary permutations of patterns
-     * are coming in, with little chance for encountering a recurring pattern.
-     * @since 4.0.1
-     * @see #getStringMatcher(String)
-     */
-    public void setCachePatterns(boolean cachePatterns) {
-        this.cachePatterns = cachePatterns;
+    public static AntPathMatcher create() {
+        return builder().create();
+    }
+
+    public static Builder ignoreCase() {
+        return builder().ignoreCase();
+    }
+
+    public static Builder trimTokens() {
+        return builder().trimTokens();
+    }
+
+    public static Builder pathSeparator(final char separator) {
+        return builder().pathSeparator(separator);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String pathSeparator = DEFAULT_PATH_SEPARATOR;
+        private boolean caseSensitive = true;
+        private boolean trimTokens = false;
+
+        private Builder() {
+        }
+
+        public Builder ignoreCase() {
+            this.caseSensitive = false;
+            return this;
+        }
+
+        public Builder trimTokens() {
+            this.trimTokens = true;
+            return this;
+        }
+
+        public Builder pathSeparator(final char separator) {
+            this.pathSeparator = String.valueOf(separator);
+            return this;
+        }
+
+        public AntPathMatcher create() {
+            return new AntPathMatcher(this.pathSeparator, this.caseSensitive, this.trimTokens);
+        }
     }
 
     private void deactivatePatternCache() {
@@ -102,7 +95,6 @@ public class AntPathMatcher {
         this.tokenizedPatternCache.clear();
         this.stringMatcherCache.clear();
     }
-
 
     public boolean isPattern(String path) {
         if (path == null) {
@@ -189,12 +181,10 @@ public class AntPathMatcher {
                 }
             }
             return true;
-        }
-        else if (pattIdxStart > pattIdxEnd) {
+        } else if (pattIdxStart > pattIdxEnd) {
             // String not exhausted, but pattern is. Failure.
             return false;
-        }
-        else if (!fullMatch && "**".equals(pattDirs[pattIdxStart])) {
+        } else if (!fullMatch && "**".equals(pattDirs[pattIdxStart])) {
             // Path start definitely matches due to "**" part in pattern.
             return true;
         }
@@ -505,11 +495,9 @@ public class AntPathMatcher {
 
         if (path1EndsWithSeparator && path2StartsWithSeparator) {
             return path1 + path2.substring(1);
-        }
-        else if (path1EndsWithSeparator || path2StartsWithSeparator) {
+        } else if (path1EndsWithSeparator || path2StartsWithSeparator) {
             return path1 + path2;
-        }
-        else {
+        } else {
             return path1 + this.pathSeparator + path2;
         }
     }
@@ -534,7 +522,6 @@ public class AntPathMatcher {
     public Comparator<String> getPatternComparator(String path) {
         return new AntPatternComparator(path);
     }
-
 
     /**
      * Tests whether a string matches against a pattern via a {@link Pattern}.
@@ -572,17 +559,14 @@ public class AntPathMatcher {
                 String match = matcher.group();
                 if ("?".equals(match)) {
                     patternBuilder.append('.');
-                }
-                else if ("*".equals(match)) {
+                } else if ("*".equals(match)) {
                     patternBuilder.append(".*");
-                }
-                else if (match.startsWith("{") && match.endsWith("}")) {
+                } else if (match.startsWith("{") && match.endsWith("}")) {
                     int colonIdx = match.indexOf(':');
                     if (colonIdx == -1) {
                         patternBuilder.append(DEFAULT_VARIABLE_PATTERN);
                         this.variableNames.add(matcher.group(1));
-                    }
-                    else {
+                    } else {
                         String variablePattern = match.substring(colonIdx + 1, match.length() - 1);
                         patternBuilder.append('(');
                         patternBuilder.append(variablePattern);
@@ -597,8 +581,7 @@ public class AntPathMatcher {
             if (end == 0) {
                 this.exactMatch = true;
                 this.pattern = null;
-            }
-            else {
+            } else {
                 this.exactMatch = false;
                 patternBuilder.append(quote(pattern, end, pattern.length()));
                 this.pattern = Pattern.compile(patternBuilder.toString(),
@@ -620,8 +603,7 @@ public class AntPathMatcher {
         public boolean matchStrings(String str, Map<String, String> uriTemplateVariables) {
             if (this.exactMatch) {
                 return this.caseSensitive ? this.rawPattern.equals(str) : this.rawPattern.equalsIgnoreCase(str);
-            }
-            else if (this.pattern != null) {
+            } else if (this.pattern != null) {
                 Matcher matcher = this.pattern.matcher(str);
                 if (matcher.matches()) {
                     if (uriTemplateVariables != null) {
@@ -648,7 +630,6 @@ public class AntPathMatcher {
         }
 
     }
-
 
     /**
      * The default {@link Comparator} implementation returned by
@@ -684,11 +665,9 @@ public class AntPathMatcher {
 
             if (info1.isLeastSpecific() && info2.isLeastSpecific()) {
                 return 0;
-            }
-            else if (info1.isLeastSpecific()) {
+            } else if (info1.isLeastSpecific()) {
                 return 1;
-            }
-            else if (info2.isLeastSpecific()) {
+            } else if (info2.isLeastSpecific()) {
                 return -1;
             }
 
@@ -696,21 +675,17 @@ public class AntPathMatcher {
             boolean pattern2EqualsPath = pattern2.equals(this.path);
             if (pattern1EqualsPath && pattern2EqualsPath) {
                 return 0;
-            }
-            else if (pattern1EqualsPath) {
+            } else if (pattern1EqualsPath) {
                 return -1;
-            }
-            else if (pattern2EqualsPath) {
+            } else if (pattern2EqualsPath) {
                 return 1;
             }
 
             if (info1.isPrefixPattern() && info2.isPrefixPattern()) {
                 return info2.getLength() - info1.getLength();
-            }
-            else if (info1.isPrefixPattern() && info2.getDoubleWildcards() == 0) {
+            } else if (info1.isPrefixPattern() && info2.getDoubleWildcards() == 0) {
                 return 1;
-            }
-            else if (info2.isPrefixPattern() && info1.getDoubleWildcards() == 0) {
+            } else if (info2.isPrefixPattern() && info1.getDoubleWildcards() == 0) {
                 return -1;
             }
 
@@ -724,21 +699,18 @@ public class AntPathMatcher {
 
             if (info1.getSingleWildcards() < info2.getSingleWildcards()) {
                 return -1;
-            }
-            else if (info2.getSingleWildcards() < info1.getSingleWildcards()) {
+            } else if (info2.getSingleWildcards() < info1.getSingleWildcards()) {
                 return 1;
             }
 
             if (info1.getUriVars() < info2.getUriVars()) {
                 return -1;
-            }
-            else if (info2.getUriVars() < info1.getUriVars()) {
+            } else if (info2.getUriVars() < info1.getUriVars()) {
                 return 1;
             }
 
             return 0;
         }
-
 
         /**
          * Value class that holds information about the pattern, e.g. number of
@@ -760,7 +732,7 @@ public class AntPathMatcher {
 
             private Integer length;
 
-            public PatternInfo(String pattern) {
+            PatternInfo(String pattern) {
                 this.pattern = pattern;
                 if (this.pattern != null) {
                     initCounters();
@@ -779,21 +751,17 @@ public class AntPathMatcher {
                         if (this.pattern.charAt(pos) == '{') {
                             this.uriVars++;
                             pos++;
-                        }
-                        else if (this.pattern.charAt(pos) == '*') {
+                        } else if (this.pattern.charAt(pos) == '*') {
                             if (pos + 1 < this.pattern.length() && this.pattern.charAt(pos + 1) == '*') {
                                 this.doubleWildcards++;
                                 pos += 2;
-                            }
-                            else if (pos > 0 && !this.pattern.substring(pos - 1).equals(".*")) {
+                            } else if (pos > 0 && !this.pattern.substring(pos - 1).equals(".*")) {
                                 this.singleWildcards++;
                                 pos++;
-                            }
-                            else {
+                            } else {
                                 pos++;
                             }
-                        }
-                        else {
+                        } else {
                             pos++;
                         }
                     }
@@ -837,7 +805,6 @@ public class AntPathMatcher {
         }
     }
 
-
     /**
      * A simple cache for patterns that depend on the configured path separator.
      */
@@ -847,7 +814,7 @@ public class AntPathMatcher {
 
         private final String endsOnDoubleWildCard;
 
-        public PathSeparatorPatternCache(String pathSeparator) {
+        PathSeparatorPatternCache(String pathSeparator) {
             this.endsOnWildCard = pathSeparator + "*";
             this.endsOnDoubleWildCard = pathSeparator + "**";
         }

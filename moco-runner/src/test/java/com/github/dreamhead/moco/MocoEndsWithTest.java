@@ -3,7 +3,6 @@ package com.github.dreamhead.moco;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;

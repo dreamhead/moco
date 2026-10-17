@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.websocket;
 
 import com.github.dreamhead.moco.MocoConfig;
 
-import java.util.List;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;
 import com.github.dreamhead.moco.matcher.AndRequestMatcher;

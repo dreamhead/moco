@@ -80,7 +80,7 @@ public class ActualHttpServerTest extends AbstractMocoHttpTest {
         running(mergedServer, () -> assertThat(helper.get(root()), is("foo.response")));
     }
 
-    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+    private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
 
     @Test
     public void should_merge_https_server() throws Exception {

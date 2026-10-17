@@ -747,7 +747,7 @@ public class MocoRestTest extends BaseMocoHttpTest<RestServer> {
         return entity;
     }
 
-    private static class Plain {
+    private static final class Plain {
         public int code;
         public String message;
     }

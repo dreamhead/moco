@@ -111,9 +111,9 @@ public class MocoGlobalResponseTest {
 
     @Test
     public void should_return_all_response_for_mount_with_header() throws Exception {
-        String MOUNT_DIR = "src/test/resources/test";
+        String mountDir = "src/test/resources/test";
         server = httpServer(port(), response(header("foo", "bar")));
-        server.mount(MOUNT_DIR, to("/dir"));
+        server.mount(mountDir, to("/dir"));
 
         running(server, () -> {
             HttpResponse response = helper.getResponse(remoteUrl("/dir/dir.response"));

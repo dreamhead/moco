@@ -6,8 +6,8 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.internal.SessionContext;
 import com.github.dreamhead.moco.model.MessageContent;
 import com.github.dreamhead.moco.resource.ContentResource;
-import com.github.dreamhead.moco.util.MediaType;
 import com.github.dreamhead.moco.util.Maps;
+import com.github.dreamhead.moco.util.MediaType;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.ParseException;
@@ -41,7 +41,6 @@ import java.util.Random;
 import static com.github.dreamhead.moco.model.MessageContent.content;
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;
 import static com.github.dreamhead.moco.util.Preconditions.checkNotNullOrEmpty;
-import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public class TemplateResourceReader implements ContentResourceReader {
     private static final Version CURRENT_VERSION = Configuration.VERSION_2_3_31;
@@ -148,7 +147,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         return template.getContentType(request);
     }
 
-    private static class NowMethod implements TemplateMethodModelEx {
+    private static final class NowMethod implements TemplateMethodModelEx {
         @Override
         public Object exec(final List arguments) {
             if (arguments.size() < 1) {
@@ -178,7 +177,7 @@ public class TemplateResourceReader implements ContentResourceReader {
         }
     }
 
-    private static class RandomMethod implements TemplateMethodModelEx {
+    private static final class RandomMethod implements TemplateMethodModelEx {
         @Override
         public Object exec(final List arguments) {
             final Range range = getRange(arguments);

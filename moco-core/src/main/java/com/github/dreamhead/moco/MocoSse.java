@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.sse.SseEventParser;
 import com.github.dreamhead.moco.util.Iterables;
-import com.github.dreamhead.moco.util.Preconditions;
 
 import java.util.List;
 

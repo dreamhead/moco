@@ -35,7 +35,7 @@ public abstract class AbstractRunnerTest {
     }
 
     protected void changeFileContent(final File response, final String content) {
-        try (PrintStream stream = new PrintStream(new FileOutputStream(response))){
+        try (PrintStream stream = new PrintStream(new FileOutputStream(response))) {
             stream.print(content);
         } catch (IOException e) {
             fail("failed to change file content");

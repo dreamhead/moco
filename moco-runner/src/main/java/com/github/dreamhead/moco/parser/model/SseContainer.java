@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @JsonDeserialize(using = com.github.dreamhead.moco.parser.deserializer.SseContainerDeserializer.class)
-public class SseContainer implements Container {
+public final class SseContainer implements Container {
     private final FileContainer fileContainer;
     private final List<SseEvent> events;
     private final long delay;
@@ -40,7 +40,7 @@ public class SseContainer implements Container {
         return new SseContainer(null, events, delay, unit);
     }
 
-    public final ResponseHandler asResponseHandler() {
+    public ResponseHandler asResponseHandler() {
         if (fileContainer != null) {
             return applyDelay(MocoSse.sse(toResource()));
         }

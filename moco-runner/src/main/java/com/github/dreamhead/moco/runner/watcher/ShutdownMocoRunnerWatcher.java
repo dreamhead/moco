@@ -59,7 +59,7 @@ public final class ShutdownMocoRunnerWatcher implements Watcher {
     }
 
     @Sharable
-    private class ShutdownHandler extends SimpleChannelInboundHandler<String> {
+    private final class ShutdownHandler extends SimpleChannelInboundHandler<String> {
         private final ExecutorService service = Executors.newCachedThreadPool();
 
         @Override

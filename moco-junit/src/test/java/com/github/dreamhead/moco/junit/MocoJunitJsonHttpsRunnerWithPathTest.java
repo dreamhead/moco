@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MocoJunitJsonHttpsRunnerWithPathTest extends AbstractMocoStandaloneTest {
-    private final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
+    private static final HttpsCertificate DEFAULT_CERTIFICATE = certificate(pathResource("cert.jks"), "mocohttps", "mocohttps");
 
     @Rule
     public MocoJunitRunner runner = MocoJunitRunner.jsonHttpsRunner(12306, pathResource("foo.json"), DEFAULT_CERTIFICATE);

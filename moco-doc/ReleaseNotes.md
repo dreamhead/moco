@@ -2,6 +2,7 @@
 
 ## Breaking changes
 
+* **A BREAK CHANGE**: remove socket api
 * Guava is no longer a dependency. Moco's public API no longer exposes any Guava type, which means
   several signatures changed. **Recompilation is required** even where the source still compiles,
   because the erased return types changed.
@@ -23,6 +24,10 @@
   `MocoMonitor` on your own Guava `EventBus`, because Guava resolves `@Subscribe` through
   interfaces: those methods will now silently never be registered, with **no compile error**.
   Annotate your own overrides with `@Subscribe` instead.
+
+## APIs
+
+* HTTP 2 Support
 
 ## Implementation Details
 

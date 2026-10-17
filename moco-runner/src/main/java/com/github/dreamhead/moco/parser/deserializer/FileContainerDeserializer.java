@@ -8,8 +8,6 @@ import tools.jackson.databind.ValueDeserializer;
 import com.github.dreamhead.moco.parser.model.FileContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.parser.model.FileContainer.aFileContainer;
 import static com.github.dreamhead.moco.parser.model.FileContainer.asFileContainer;
 import static com.github.dreamhead.moco.util.Strings.strip;
@@ -48,7 +46,7 @@ public final class FileContainerDeserializer extends ValueDeserializer<FileConta
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class FileVar {
+    private static final class FileVar {
         private TextContainer name;
         private String charset;
 

@@ -9,7 +9,6 @@ public final class DomainCookieAttribute extends ActualCookieAttribute {
         this.domain = actualDomain;
     }
 
-
     @Override
     public void visit(final DefaultCookie cookie) {
         cookie.setDomain(this.domain);

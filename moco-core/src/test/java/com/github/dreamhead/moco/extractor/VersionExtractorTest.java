@@ -12,19 +12,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class VersionExtractorTest {
-	private VersionExtractor extractor;
-	private HttpRequest request;
+    private VersionExtractor extractor;
+    private HttpRequest request;
 
-	@BeforeEach
-	public void setUp() {
-		extractor = new VersionExtractor();
+    @BeforeEach
+    public void setUp() {
+        extractor = new VersionExtractor();
         request = mock(HttpRequest.class);
     }
 
-	@Test
-	public void should_extract_version() {
+    @Test
+    public void should_extract_version() {
         when(request.getVersion()).thenReturn(HttpProtocolVersion.VERSION_1_0);
-		assertThat(extractor.extract(request).get(),
-				is(HttpVersion.HTTP_1_0.toString()));
-	}
+        assertThat(extractor.extract(request).get(),
+                is(HttpVersion.HTTP_1_0.toString()));
+    }
 }

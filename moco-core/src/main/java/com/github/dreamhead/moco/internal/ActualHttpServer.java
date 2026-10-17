@@ -14,7 +14,6 @@ import com.github.dreamhead.moco.setting.HttpSetting;
 import com.github.dreamhead.moco.websocket.ActualWebSocketServer;
 import io.netty.handler.ssl.SslHandler;
 
-import javax.net.ssl.SSLEngine;
 import java.util.Optional;
 
 import static com.github.dreamhead.moco.util.Preconditions.checkArgument;

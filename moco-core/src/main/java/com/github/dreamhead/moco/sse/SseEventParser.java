@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static java.util.Objects.requireNonNull;
-
 public final class SseEventParser {
     public Iterable<SseEvent> parse(final Iterable<String> lines) {
         return new SseEventIterable(lines);

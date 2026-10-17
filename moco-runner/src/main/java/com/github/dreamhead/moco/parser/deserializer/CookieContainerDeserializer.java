@@ -8,8 +8,6 @@ import tools.jackson.databind.ValueDeserializer;
 import com.github.dreamhead.moco.parser.model.CookieContainer;
 import com.github.dreamhead.moco.parser.model.LatencyContainer;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.util.Strings.strip;
 
 public final class CookieContainerDeserializer extends ValueDeserializer<CookieContainer> {

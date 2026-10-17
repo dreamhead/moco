@@ -15,7 +15,10 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class JsonSupport {
+public final class JsonSupport {
+    private JsonSupport() {
+    }
+
     public static void assertEquals(final String expected, final ClassicHttpResponse response) {
         HttpEntity entity = response.getEntity();
         MediaType mediaType = MediaType.parse(entity.getContentType());

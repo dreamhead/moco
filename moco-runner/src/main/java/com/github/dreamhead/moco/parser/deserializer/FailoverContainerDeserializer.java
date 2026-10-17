@@ -7,8 +7,6 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.ValueDeserializer;
 import com.github.dreamhead.moco.parser.model.FailoverContainer;
 
-import java.io.IOException;
-
 public final class FailoverContainerDeserializer extends ValueDeserializer<FailoverContainer> {
     @Override
     public FailoverContainer deserialize(final JsonParser jp, final DeserializationContext ctxt)  {
@@ -26,7 +24,7 @@ public final class FailoverContainerDeserializer extends ValueDeserializer<Failo
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class InternalFailoverContainer {
+    private static final class InternalFailoverContainer {
         private String file;
         private int[] status;
 

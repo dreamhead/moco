@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @ExtendWith(MocoExtension.class)
-@MocoHttpServer(classpath = "foo.json", port=12306)
+@MocoHttpServer(classpath = "foo.json", port = 12306)
 public class MocoJunitClasspathJsonHttpRunnerTest extends AbstractMocoJunit5Test {
     @Test
     public void should_return_expected_message() throws IOException {

@@ -118,7 +118,7 @@ public final class TemplateRequest {
 
         final MessageContent content = resource.readFor(this.context);
         final String path = content.toString();
-        AntPathMatcher matcher = new AntPathMatcher();
+        AntPathMatcher matcher = AntPathMatcher.create();
         return matcher.extractUriTemplateVariables(path, this.getUri());
     }
 

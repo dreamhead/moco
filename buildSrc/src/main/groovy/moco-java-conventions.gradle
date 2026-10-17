@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'checkstyle'
 }
 
 java {
@@ -67,3 +68,35 @@ jar {
 
 group = 'com.github.dreamhead'
 version = '2.0.0-SNAPSHOT'
+
+// Checkstyle configuration
+checkstyle {
+    toolVersion = libs.versions.checkstyle.get()
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    maxWarnings = 0
+    maxErrors = 0
+}
+
+checkstyleMain {
+    source = 'src/main/java'
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+checkstyleTest {
+    source = 'src/test/java'
+    configFile = rootProject.file('config/checkstyle/checkstyle-test.xml')
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
+// Create a lifecycle task for all checkstyle tasks
+tasks.register('checkstyleAll') {
+    group = 'verification'
+    description = 'Run all checkstyle checks'
+    dependsOn tasks.withType(Checkstyle)
+}

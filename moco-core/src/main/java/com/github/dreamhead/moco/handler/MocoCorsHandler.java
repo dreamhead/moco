@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public final class MocoCorsHandler extends AbstractHttpResponseHandler {
     private final CorsConfig[] configs;
@@ -87,11 +86,11 @@ public final class MocoCorsHandler extends AbstractHttpResponseHandler {
         }
     }
 
-    private static final Set<HttpMethod> simpleRequestMethods
+    private static final Set<HttpMethod> SIMPLE_REQUEST_METHODS
             = Set.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
 
     private boolean isSimpleRequest(final HttpRequest httpRequest) {
         HttpMethod method = httpRequest.getMethod();
-        return simpleRequestMethods.contains(method);
+        return SIMPLE_REQUEST_METHODS.contains(method);
     }
 }

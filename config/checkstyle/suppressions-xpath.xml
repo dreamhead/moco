@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionXpathFilter Experimental Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2_xpath_experimental.dtd">
+<!--
+  常量命名判据（Google Java Style §5.2.4）：
+  static final 字段仅当内容深度不可变——即无可观测的行为变化——时才是常量，用 UPPER_SNAKE_CASE；
+  否则视为普通字段，用 lowerCamelCase。
+  透明的内部记忆化（如 String.hashCode 的惰性缓存）不改变行为，不属可观察状态。
+  ConstantName 按语法检查（static final 一律 UPPER），语义上属于非常量的类型在本清单按类型豁免。
+-->
+<suppressions>
+    <!-- 无方法体的方法（接口方法、抽象方法）允许紧凑排列，不要求空行分隔 -->
+    <suppress-xpath checks="EmptyLineSeparator" query="//METHOD_DEF[not(SLIST)]"/>
+    <!-- Logger 持有可变配置（官方非常量示例），其状态变化会改变程序行为 -->
+    <suppress-xpath checks="ConstantName" query="//VARIABLE_DEF[./TYPE//IDENT[@text='Logger']]/IDENT"/>
+</suppressions>

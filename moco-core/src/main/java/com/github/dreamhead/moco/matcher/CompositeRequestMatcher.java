@@ -5,7 +5,6 @@ import com.github.dreamhead.moco.Request;
 import com.github.dreamhead.moco.RequestMatcher;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
@@ -28,7 +27,6 @@ public abstract class CompositeRequestMatcher extends AbstractRequestMatcher {
 
         return appliedMatchers;
     }
-
 
     @Override
     public final RequestMatcher doApply(final MocoConfig config) {

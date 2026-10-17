@@ -8,7 +8,6 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import com.github.dreamhead.moco.util.HttpHeaders;
 

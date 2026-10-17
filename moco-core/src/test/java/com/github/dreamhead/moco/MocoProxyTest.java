@@ -1,6 +1,5 @@
 package com.github.dreamhead.moco;
 
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import com.github.dreamhead.moco.helper.SseTestHelper;
 import com.github.dreamhead.moco.sse.SseEvent;
 import com.github.dreamhead.moco.util.Resources;

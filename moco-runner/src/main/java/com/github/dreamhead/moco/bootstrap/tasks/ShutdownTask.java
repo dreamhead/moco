@@ -40,7 +40,7 @@ public final class ShutdownTask implements BootstrapTask {
         });
     }
 
-    private class ShutdownHandler extends ChannelInboundHandlerAdapter {
+    private final class ShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelActive(final ChannelHandlerContext ctx) throws Exception {
             ctx.writeAndFlush(shutdownKey + "\r\n").addListener(ChannelFutureListener.CLOSE);

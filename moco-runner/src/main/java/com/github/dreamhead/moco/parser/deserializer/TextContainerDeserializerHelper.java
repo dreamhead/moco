@@ -7,14 +7,12 @@ import tools.jackson.databind.DeserializationContext;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 import com.github.dreamhead.moco.util.Maps;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static com.github.dreamhead.moco.parser.model.TextContainer.builder;
 import static com.github.dreamhead.moco.parser.model.TextContainer.getTemplateName;
 import static com.github.dreamhead.moco.parser.model.TextContainer.isForTemplate;
 import static com.github.dreamhead.moco.util.Strings.strip;
-import static com.github.dreamhead.moco.util.Maps.orderedCopyOf;
 
 public final class TextContainerDeserializerHelper {
     private static final Map<String, String> NAMES = Map.of(
@@ -51,7 +49,7 @@ public final class TextContainerDeserializerHelper {
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class Template {
+    private static final class Template {
         private String with;
         private Map<String, TextContainer> vars;
 

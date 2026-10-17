@@ -12,7 +12,6 @@ import com.github.dreamhead.moco.sse.SseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public final class SseContainerDeserializer extends ValueDeserializer<SseContainer> {
@@ -51,14 +50,14 @@ public final class SseContainerDeserializer extends ValueDeserializer<SseContain
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class SseObjectVar {
+    private static final class SseObjectVar {
         private TextContainer file;
         private Object delay;
         private List<EventVar> events;
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class DelayVar {
+    private static final class DelayVar {
         private long duration;
         private String unit;
     }
@@ -110,7 +109,7 @@ public final class SseContainerDeserializer extends ValueDeserializer<SseContain
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class EventVar {
+    private static final class EventVar {
         private String event;
         private String data;
         private String id;

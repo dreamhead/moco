@@ -9,8 +9,6 @@ import com.github.dreamhead.moco.parser.model.FailoverContainer;
 import com.github.dreamhead.moco.parser.model.ProxyContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
-import java.io.IOException;
-
 import static com.github.dreamhead.moco.parser.model.ProxyContainer.builder;
 import static com.github.dreamhead.moco.util.Strings.strip;
 
@@ -31,7 +29,7 @@ public final class ProxyContainerDeserializer extends ValueDeserializer<ProxyCon
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class InternalProxyContainer {
+    private static final class InternalProxyContainer {
         private TextContainer url;
         private String from;
         private String to;

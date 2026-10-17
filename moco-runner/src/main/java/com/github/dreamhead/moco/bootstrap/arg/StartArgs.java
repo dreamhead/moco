@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
-
 public abstract class StartArgs extends ShutdownPortOption {
     private final ServerType type;
     private final Optional<Integer> port;

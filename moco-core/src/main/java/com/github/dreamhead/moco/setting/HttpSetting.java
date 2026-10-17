@@ -2,7 +2,6 @@ package com.github.dreamhead.moco.setting;
 
 import com.github.dreamhead.moco.HttpResponseSetting;
 
-import java.util.List;
 import com.github.dreamhead.moco.MocoConfig;
 import com.github.dreamhead.moco.RequestMatcher;
 import com.github.dreamhead.moco.internal.InternalApis;

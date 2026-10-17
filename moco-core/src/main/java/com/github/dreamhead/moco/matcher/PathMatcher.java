@@ -9,12 +9,12 @@ import com.github.dreamhead.moco.resource.Resource;
 import com.github.dreamhead.moco.util.AntPathMatcher;
 
 public class PathMatcher<T> extends AbstractOperatorMatcher<T> {
-    private static final AntPathMatcher matcher = new AntPathMatcher();
+    private static final AntPathMatcher PATH_MATCHER = AntPathMatcher.create();
 
     public PathMatcher(final RequestExtractor<T> extractor, final Resource expected) {
         super(extractor, expected, input -> {
             final String target = expected.readFor((Request) null).toString();
-            return matcher.match(target, input);
+            return PATH_MATCHER.match(target, input);
         });
     }
 

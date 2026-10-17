@@ -9,14 +9,11 @@ import com.github.dreamhead.moco.parser.model.ReplayContainer;
 import com.github.dreamhead.moco.parser.model.ReplayModifierContainer;
 import com.github.dreamhead.moco.parser.model.TextContainer;
 
-import java.io.IOException;
-
 public class ReplayContainerDeserializer extends ValueDeserializer<ReplayContainer> {
     private TextContainerDeserializerHelper helper = new TextContainerDeserializerHelper();
 
     @Override
-    public final ReplayContainer deserialize(final JsonParser p, final DeserializationContext ctxt)
-             {
+    public final ReplayContainer deserialize(final JsonParser p, final DeserializationContext ctxt) {
         JsonToken currentToken = p.currentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             return new ReplayContainer(null, helper.text(p), null, null);
@@ -32,7 +29,7 @@ public class ReplayContainerDeserializer extends ValueDeserializer<ReplayContain
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    private static class InternalReplayContainer {
+    private static final class InternalReplayContainer {
         private String group;
         private TextContainer identifier;
         private ReplayModifierContainer modifier;

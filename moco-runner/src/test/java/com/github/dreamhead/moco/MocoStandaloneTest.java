@@ -8,7 +8,6 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import com.github.dreamhead.moco.helper.RequestHeaders;
 import com.github.dreamhead.moco.util.HttpHeaders;
 
 import static com.github.dreamhead.moco.helper.RemoteTestUtils.remoteUrl;
