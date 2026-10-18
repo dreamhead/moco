@@ -1,21 +1,5 @@
 plugins {
     id "com.vanniktech.maven.publish" version "${mavenPublishVersion}" apply false
-    id 'idea'
-}
-
-idea {
-    project {
-        jdkName = JavaVersion.VERSION_17
-        languageLevel = JavaVersion.VERSION_17
-        vcs = "Git"
-    }
-
-    workspace.iws.withXml { provider ->
-        def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find {
-            it.@type == 'JUnit'
-        }
-        junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
-    }
 }
 
 wrapper {

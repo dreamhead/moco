@@ -39,7 +39,6 @@ httpclient-fluent = { module = "org.apache.httpcomponents.client5:httpclient5-fl
 jsonassert = { module = "org.skyscreamer:jsonassert", version.ref = "jsonassert" }
 websocket-api = { module = "jakarta.websocket:jakarta.websocket-api", version.ref = "websocket" }
 tyrus-client = { module = "org.glassfish.tyrus.bundles:tyrus-standalone-client", version.ref = "tyrus-client" }
-junit4 = { module = "junit:junit", version = "4.7" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
