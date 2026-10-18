@@ -1,7 +1,7 @@
 [versions]
 jspecify = "1.0.0"
 netty = "4.2.19.Final"
-slf4j = "2.0.17"
+slf4j = "2.0.20"
 jackson = "3.2.3"
 junit = "6.0.3"
 junit5-base = "5.0.0"
