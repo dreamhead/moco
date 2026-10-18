@@ -3,6 +3,7 @@
 ## Breaking changes
 
 * **A BREAK CHANGE**: remove socket api
+* **A BREAK CHANGE**: remove JUnit 4 support (`moco-junit` module). Migrate to `moco-junit5`.
 * Guava is no longer a dependency. Moco's public API no longer exposes any Guava type, which means
   several signatures changed. **Recompilation is required** even where the source still compiles,
   because the erased return types changed.

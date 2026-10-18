@@ -1,2 +1,2 @@
 rootProject.name = 'moco'
-include 'moco-core', 'moco-runner', 'moco-junit', 'moco-junit5'
+include 'moco-core', 'moco-runner', 'moco-junit5'
