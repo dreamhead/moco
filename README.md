@@ -87,7 +87,7 @@ Check out what you can help [here](moco-doc/plan.md) if you do not have any exis
 ## Copyright and license
 Copyright 2012-2026 ZHENG Ye
 
-Licensed under MIT License (the "License"); You may obtain a copy of the License in the LICENSE file, or at:
+Licensed under MIT License (the "License"); You may obtain a copy of the License in [MIT-LICENSE.txt](MIT-LICENSE.txt), or at:
 
 https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt
 
